@@ -1,0 +1,130 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Cancel-Previous:
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/main'
+    steps:
+      - uses: khan/pull-request-workflow-cancel@1.0.0
+        with:
+          workflows: "python.yml"
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+  Backend-Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pipenv"
+          cache-dependency-path: |
+            backend/Pipfile.lock
+
+      - name: Install pipenv and deps
+        run: |
+          python -m pip install --upgrade pipenv wheel
+          make -C backend deps
+
+      - name: Lint source code
+        run: make -C backend lint
+
+  Backend-Test:
+    runs-on: ubuntu-latest
+    needs:
+      - Backend-Lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          cache: "pipenv"
+          cache-dependency-path: |
+            backend/Pipfile.lock
+
+      - name: Install pipenv and deps
+        run: |
+          python -m pip install --upgrade pipenv wheel
+          make -C backend deps
+
+      - name: Install dependencies
+        run: make -C backend deps
+
+      - name: Run tests
+        run: make -C backend test
+
+      - name: Build docs
+        run: make -C backend docs
+
+      - name: Upload backend coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          flags: backend
+          directory: backend
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  Frontend-Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up node 20.x
+        uses: actions/setup-node@v3
+        with:
+          noe-version: "20.x"
+          cache: "npm"
+          cache-dependency-path: |
+            frontend/package-lock.json
+
+      - name: Install deps
+        run: make -C frontend deps
+
+      - name: Lint source code
+        run: make -C frontend lint
+
+  Frontend-Test:
+    runs-on: ubuntu-latest
+    needs:
+      - Frontend-Lint
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up node 20.x
+        uses: actions/setup-node@v3
+        with:
+          noe-version: "20.x"
+          cache: "npm"
+          cache-dependency-path: |
+            frontend/package-lock.json
+
+      - name: Install dependencies
+        run: make -C frontend deps
+
+      - name: Run tests
+        run: make -C frontend test
+
+      - name: Upload frontend coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          flags: frontend
+          directory: frontend
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
