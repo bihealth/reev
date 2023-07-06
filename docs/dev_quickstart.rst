@@ -38,8 +38,8 @@ Now you can install a specific python version:
 
 .. code-block:: bash
 
-    $ pyenv install 3.11
-    $ pyenv local 3.11
+    $ pyenv install 3.10
+    $ pyenv local 3.10
 
 Install pipenv:
 
