@@ -22,6 +22,7 @@ jobs:
         with:
           release-type: python
           package-name: reev
+          token: ${{ secrets.BOT_TOKEN }}
 
   Container-Release:
     needs: release-please
