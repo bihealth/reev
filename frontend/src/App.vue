@@ -1,85 +1,71 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
+  <main>
+    <!-- Search Bar -->
+    <input type="text" v-model="input" placeholder="Search genes ..." />
+    <div class="item gene" v-for="gene in filteredList()" :key="gene">
+      <p>{{ gene }}</p>
     </div>
-  </header>
-
-  <RouterView />
+    <div class="item error" v-if="input && !filteredList().length">
+      <p>No results found!</p>
+    </div>
+  </main>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script setup>
+import { ref } from 'vue'
+
+let input = ref('')
+const genes = ['BRCA1', 'TP53', 'EGFR', 'KRAS', 'ALK', 'PIK3CA', 'BRAF']
+
+function filteredList() {
+  return genes.filter((gene) => gene.toLowerCase().includes(input.value.toLowerCase()))
+}
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
 }
 
-.logo {
+body {
+  padding: 20px;
+  min-height: 100vh;
+  background-color: rgb(234, 242, 255);
+}
+
+input {
   display: block;
-  margin: 0 auto 2rem;
+  width: 350px;
+  margin: 20px auto;
+  padding: 10px 45px;
+  background: white url('assets/search-icon.svg') no-repeat 15px center;
+  background-size: 15px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
 
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
+.item {
+  width: 350px;
+  margin: 0 auto 10px auto;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
 }
 
-nav a.router-link-exact-active {
-  color: var(--color-text);
+.gene {
+  background-color: rgb(97, 62, 252);
+  cursor: pointer;
 }
 
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
+.error {
+  background-color: tomato;
 }
 </style>
