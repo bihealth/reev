@@ -9,6 +9,7 @@ pydantic = "*"
 uvicorn = "*"
 python-dotenv = "*"
 httpx = "*"
+pytest-asyncio = "*"
 
 [dev-packages]
 black = "*"
