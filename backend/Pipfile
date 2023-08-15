@@ -8,6 +8,7 @@ fastapi = "*"
 pydantic = "*"
 uvicorn = "*"
 python-dotenv = "*"
+httpx = "*"
 
 [dev-packages]
 black = "*"
