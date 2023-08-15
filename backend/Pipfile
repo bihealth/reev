@@ -7,6 +7,7 @@ name = "pypi"
 fastapi = "*"
 pydantic = "*"
 uvicorn = "*"
+python-dotenv = "*"
 
 [dev-packages]
 black = "*"
