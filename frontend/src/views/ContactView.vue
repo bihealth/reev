@@ -1,29 +1,66 @@
-<script lang="ts" setup>
-import { useCounterStore } from '../stores/counter'
-
-const counterStore = useCounterStore()
-</script>
-
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-    <p>
-      <span>Counter: {{ counterStore.count }}</span>
-      <button @click="counterStore.increment()">Increment</button>
-    </p>
-    <p>
-      <span>From API: {{ counterStore.apiValue }}</span>
-      <button @click="counterStore.fetchApiValue()">Fetch</button>
-    </p>
-  </div>
+  <v-container class="contact-view">
+    <v-row>
+      <v-col cols="12">
+        <h2 class="title">Contact Us</h2>
+        <p class="description">
+          We'd love to hear from you! Feel free to reach out to us through any of the following
+          channels:
+        </p>
+        <div class="contact-links">
+          <v-btn text icon href="https://twitter.com/your_twitter_handle">
+            <v-icon left>mdi-twitter</v-icon>
+            Twitter
+          </v-btn>
+          <v-btn text icon href="https://github.com/your_github_username">
+            <v-icon left>mdi-github</v-icon>
+            GitHub
+          </v-btn>
+          <v-btn text icon @click="sendEmail">
+            <v-icon left>mdi-email</v-icon>
+            Email
+          </v-btn>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-<style>
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
+<script lang="ts">
+export default {
+  name: 'ContactView',
+  methods: {
+    sendEmail() {
+      window.location.href = 'mailto:your@email.com'
+    }
   }
+}
+</script>
+
+<style scoped>
+.contact-view {
+  padding: 40px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.v-btn {
+  margin-bottom: 10px;
 }
 </style>

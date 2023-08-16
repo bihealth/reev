@@ -85,9 +85,7 @@ def read_root():
 
 
 @app.get("/api/search")
-async def search_gene(
-    geneSymbol: str = Query(...), spdi: str = Query(""), genomeRelease: str = Query("hg19")
-):
+async def search_gene(geneSymbol: str = Query(...), genomeRelease: str = Query("hg19")):
     gene_details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
     return JSONResponse(content=gene_details)
 
