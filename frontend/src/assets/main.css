@@ -34,7 +34,6 @@ a,
   #app {
     display: grid;
     grid-template-columns: 1fr;
-    padding: 0 2rem;
     width: 100%; /* Take up the full available width */
     max-width: none; /* Remove max-width to utilize full width */
     align-items: center; /* Center horizontally */
