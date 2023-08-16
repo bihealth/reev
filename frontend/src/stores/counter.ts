@@ -1,15 +1,20 @@
-import { ref, computed } from 'vue'
-import type { Ref } from 'vue'
 import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import type { Ref } from 'vue'
 
 export const useCounterStore = defineStore('counter', () => {
   const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
+  const geneData: Ref<JSON | null> = ref(null)
+  const apiValue: Ref<string | null> = ref(null)
+
   function increment() {
     count.value++
   }
 
-  const apiValue: Ref<string | null> = ref(null)
+  function setGeneData(data: JSON) {
+    geneData.value = data
+  }
+
   const fetchApiValue = async () => {
     console.log('fetchApiValue')
     const response = await fetch('/api/hello', {
@@ -26,5 +31,5 @@ export const useCounterStore = defineStore('counter', () => {
     }
   }
 
-  return { count, doubleCount, increment, apiValue, fetchApiValue }
+  return { count, increment, geneData, apiValue, fetchApiValue, setGeneData }
 })

@@ -3,11 +3,12 @@ import sys
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import RedirectResponse, Response, StreamingResponse
+from starlette.responses import JSONResponse, RedirectResponse, Response, StreamingResponse
 
 # Load environment
 env = os.environ
@@ -24,6 +25,20 @@ BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annona
 
 
 app = FastAPI()
+
+# Configure CORS settings
+origins = [
+    "http://localhost",  # Update with the actual frontend URL
+    "http://localhost:8081",  # Update with the actual frontend URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Reverse proxy implementation
@@ -67,6 +82,14 @@ app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 @app.get("/api/hello")
 def read_root():
     return {"Hello": "World"}
+
+
+@app.get("/api/search")
+async def search_gene(
+    geneSymbol: str = Query(...), spdi: str = Query(""), genomeRelease: str = Query("hg19")
+):
+    gene_details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
+    return JSONResponse(content=gene_details)
 
 
 if SERVE_FRONTEND:
