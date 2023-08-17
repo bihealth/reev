@@ -2,7 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 import ContactView from '@/views/ContactView.vue'
-import GeneDetailsView from '@/views/GeneDetailsView.vue'
+import GeneDetailsView from '@/views/GeneDetailView.vue'
+import VariantDetailView from '@/views/VariantDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/gene/:geneSymbol',
       name: 'gene',
       component: GeneDetailsView
+    },
+    {
+      path: '/variant/:variantId',
+      name: 'variant',
+      component: VariantDetailView
     }
   ]
 })

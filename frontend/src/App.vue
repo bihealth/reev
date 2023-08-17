@@ -3,14 +3,14 @@
     <v-app-bar app class="top-bar">
       <v-toolbar-title>
         <router-link to="/">
-          <img src="@/assets/logo.svg" id="logo" alt="logo" width="20" height="20" />
-          My App
+          <img src="@/assets/reev-logo.png" id="logo" alt="logo" width="100" />
+          Explanation and Evaluation of Variants
         </router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="topbar-links">
-        <v-btn to="/about" text> About </v-btn>
-        <v-btn to="/contact" text> Contact </v-btn>
+        <v-btn to="/about"> About </v-btn>
+        <v-btn to="/contact"> Contact </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 
@@ -19,7 +19,7 @@
     </v-main>
 
     <v-footer app class="footer">
-      <!-- Content of your footer -->
+      <!-- Content of the footer -->
     </v-footer>
   </v-app>
 </template>
@@ -54,5 +54,6 @@ export default {
 #logo {
   margin-left: 25px;
   margin-right: 10px;
+  margin-top: 10px;
 }
 </style>
