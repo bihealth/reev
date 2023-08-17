@@ -79,15 +79,16 @@ async def reverse_proxy(request: Request):
 app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
 
+# Routes
 @app.get("/api/hello")
 def read_root():
     return {"Hello": "World"}
 
 
 @app.get("/api/search")
-async def search_gene(geneSymbol: str = Query(...), genomeRelease: str = Query("hg19")):
-    gene_details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
-    return JSONResponse(content=gene_details)
+async def search(geneSymbol: str = Query(...), genomeRelease: str = Query("hg19")):
+    details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
+    return JSONResponse(content=details)
 
 
 if SERVE_FRONTEND:

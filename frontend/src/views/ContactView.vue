@@ -8,15 +8,11 @@
           channels:
         </p>
         <div class="contact-links">
-          <v-btn text icon href="https://twitter.com/your_twitter_handle">
-            <v-icon left>mdi-twitter</v-icon>
-            Twitter
-          </v-btn>
-          <v-btn text icon href="https://github.com/your_github_username">
+          <v-btn href="https://github.com/bihealth" target="_blank">
             <v-icon left>mdi-github</v-icon>
             GitHub
           </v-btn>
-          <v-btn text icon @click="sendEmail">
+          <v-btn href="mailto:random.mail@adress.com" target="_blank">
             <v-icon left>mdi-email</v-icon>
             Email
           </v-btn>
@@ -28,12 +24,7 @@
 
 <script lang="ts">
 export default {
-  name: 'ContactView',
-  methods: {
-    sendEmail() {
-      window.location.href = 'mailto:your@email.com'
-    }
-  }
+  name: 'ContactView'
 }
 </script>
 
