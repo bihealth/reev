@@ -39,3 +39,29 @@ a,
     align-items: center; /* Center horizontally */
   }
 }
+
+.top-bar {
+  background-color: rgb(22, 132, 144);
+  color: white;
+}
+
+.footer {
+  background-color: rgb(22, 132, 144);
+  color: white;
+  padding: 20px;
+}
+
+.topbar-links {
+  display: flex;
+}
+
+.topbar-links v-btn {
+  margin: 0 10px;
+  color: white;
+}
+
+#logo {
+  margin-left: 25px;
+  margin-right: 10px;
+  margin-top: 10px;
+}

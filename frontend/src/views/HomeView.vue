@@ -1,48 +1,52 @@
-<script lang="ts">
+<script setup lang="ts">
+/**
+ * Display of Home default page.
+ *
+ * Implements the search bar for variants and genes.
+ */
+
 import { searchGene } from '@/api/search'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGeneDataStore } from '@/stores/geneData'
 
-export default {
-  name: 'HomeView',
-  setup() {
-    const router = useRouter()
-    const geneDataStore = useGeneDataStore()
+import Header from '@/components/Header.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
-    const geneSymbol = ref('')
-    const genomeRelease = ref('hg19')
-    const genomeReleases = ['hg19', 'hg38']
-    const examples = [
-      'BRCA1',
-      'EGFR',
-      'HGNC:1097',
-      ' ENTREZ:1956',
-      'UNIPROT:B7ZA85',
-      'CHROM:POS:REF:ALT'
-    ]
+const router = useRouter()
+const geneDataStore = useGeneDataStore()
 
-    const useExample = (example: string) => {
-      geneSymbol.value = example
-    }
+const geneSymbol = ref('')
+const genomeRelease = ref('hg19')
+const genomeReleases = ['hg19', 'hg38']
+const examples = [
+  'BRCA1',
+  'EGFR',
+  'HGNC:1097',
+  ' ENTREZ:1956',
+  'UNIPROT:B7ZA85',
+  'CHROM:POS:REF:ALT'
+]
 
-    const search = async () => {
-      try {
-        const data = await searchGene(geneSymbol.value, genomeRelease.value)
-        geneDataStore.setGeneData(data)
-        router.push({ name: 'gene', params: { geneSymbol: geneSymbol.value } })
-      } catch (error) {
-        console.error(error)
-      }
-    }
+const useExample = (example: string) => {
+  geneSymbol.value = example
+}
 
-    return { geneSymbol, genomeReleases, genomeRelease, examples, search, useExample }
+const performSearch = async () => {
+  try {
+    const data = await searchGene(geneSymbol.value, genomeRelease.value)
+    geneDataStore.setGeneData(data)
+    router.push({ name: 'gene', params: { geneSymbol: geneSymbol.value } })
+  } catch (error) {
+    console.error(error)
   }
 }
 </script>
 
 <template>
+  <Header />
   <v-container class="home-view">
+    <!-- <SearchBar :geneSymbol="geneSymbol" @update:geneSymbol="updateGeneSymbol" /> -->
     <v-row>
       <v-col cols="12" md="7" class="search-container">
         <v-text-field
@@ -60,7 +64,7 @@ export default {
         ></v-select>
       </v-col>
       <v-col cols="12" md="3">
-        <v-btn @click="search" color="primary" class="search-button">
+        <v-btn @click="performSearch" color="primary" class="search-button">
           Search for variants and genes
         </v-btn>
       </v-col>

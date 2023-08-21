@@ -1,4 +1,9 @@
+<script setup lang="ts">
+import Header from '@/components/Header.vue'
+</script>
+
 <template>
+  <Header />
   <v-container class="about-view">
     <v-row>
       <v-col cols="12">
@@ -18,12 +23,6 @@
     </v-row>
   </v-container>
 </template>
-
-<script lang="ts">
-export default {
-  name: 'AboutView'
-}
-</script>
 
 <style scoped>
 .about-view {
