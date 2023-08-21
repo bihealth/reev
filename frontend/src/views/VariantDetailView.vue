@@ -1,16 +1,14 @@
-<script lang="ts">
+<script setup lang="ts">
 import { useGeneDataStore } from '@/stores/geneData'
 
-export default {
-  name: 'VariantDetailView',
-  setup() {
-    const geneDataStore = useGeneDataStore()
-    return { geneData: geneDataStore.geneData }
-  }
-}
+import Header from '@/components/HeaderDetailPage.vue'
+
+const geneDataStore = useGeneDataStore()
+const geneData = geneDataStore.geneData
 </script>
 
 <template>
+  <Header />
   <v-layout class="rounded rounded-md">
     <v-app-bar title="Application bar"></v-app-bar>
 
