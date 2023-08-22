@@ -82,8 +82,7 @@ app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
 
 # Routes
-
-if SERVE_FRONTEND:  #: pragma: no cover
+if SERVE_FRONTEND:  # pragma: no cover
     print(f"SERVE_FRONTEND = {SERVE_FRONTEND}", file=sys.stderr)
     app.mount("/ui", StaticFiles(directory=SERVE_FRONTEND), name="app")
 
