@@ -48,7 +48,7 @@ async def test_proxy_mehari(monkeypatch, httpx_mock):
         text="Mocked response",
     )
 
-    response = client.get(f"/proxy/mehari/{MOCKED_URL_TOKEN}")
+    response = client.get(f"http://0.0.0.0:8080/proxy/mehari/{MOCKED_URL_TOKEN}")
     assert response.status_code == 200
     assert response.text == "Mocked response"
 
