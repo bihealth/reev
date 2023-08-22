@@ -5,16 +5,15 @@
  * Implements the search bar for variants and genes.
  */
 
-import { searchGene } from '@/api/search'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+// import { useGeneInfoStore } from '@/stores/geneInfo'
 
 import Header from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 const router = useRouter()
-const geneInfoStore = useGeneInfoStore()
+// const geneInfoStore = useGeneInfoStore()
 
 const searchTerm = ref('')
 const genomeRelease = ref('grch37')
@@ -76,10 +75,8 @@ const performSearch = async () => {
     />
 
     <v-row>
-      <v-col cols="12" md="6">
-        <h2>Example Queries</h2>
-      </v-col>
-      <v-col cols="12">
+      <v-col>
+        <h2>Example Queries:</h2>
         <div class="examples">
           <div
             class="example"
@@ -96,25 +93,6 @@ const performSearch = async () => {
 </template>
 
 <style scoped>
-.home-view {
-  padding: 20px;
-}
-
-.search-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.gene-input,
-.genome-select {
-  margin-right: 10px;
-}
-
-.search-button {
-  margin-top: 16px;
-}
-
 .examples {
   display: flex;
   flex-direction: column;

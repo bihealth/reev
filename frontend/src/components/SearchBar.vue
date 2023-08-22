@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { searchGene } from '@/api/search'
-import { useRouter } from 'vue-router'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+// import { useRouter } from 'vue-router'
+// import { useGeneInfoStore } from '@/stores/geneInfo'
 
 export interface GenomeReleaseChoice {
   value: string
@@ -24,21 +22,11 @@ const props = withDefaults(defineProps<Props>(), {
   ]
 })
 
-const emit = defineEmits(['update:searchTerm', 'update:genomeRelease', 'clickSearch'])
+// const emit = defineEmits(['update:searchTerm', 'update:genomeRelease', 'clickSearch'])
 
-const router = useRouter()
+// const router = useRouter()
 
-const geneInfoStore = useGeneInfoStore()
-
-// const performSearch = async (symbol: string, release: string) => {
-//   try {
-//     const data = await searchGene(symbol, release)
-//     geneInfoStore.setGeneData(data)
-//     router.push({ name: 'gene', params: { searchTerm: symbol } })
-//   } catch (error) {
-//     console.error(error)
-//   }
-// }
+// const geneInfoStore = useGeneInfoStore()
 </script>
 
 <template>

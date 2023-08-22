@@ -9,7 +9,7 @@ const geneInfoStore = useGeneInfoStore()
 if (geneInfoStore.geneInfo === null) {
   router.push({ name: 'home' })
 } else {
-  // const { geneSymbol } = geneInfoStore.geneInfo
+  // const searchTerm = geneInfoStore.geneInfo.searchTerm
 }
 </script>
 
