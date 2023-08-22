@@ -18,6 +18,7 @@ client = TestClient(main.app)
 @pytest.fixture
 def non_mocked_hosts() -> typing.List[str]:
     """List of hosts that should not be mocked.
+
     We read the host from ``client``.
     """
     return [client._base_url.host]
