@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted } from 'vue'
+import { computed, watch, onMounted } from 'vue'
 
 import { StoreState, useGeneInfoStore } from '@/stores/geneInfo'
 
@@ -25,15 +25,40 @@ const loadDataToStore = async () => geneInfoStore.loadData(props.searchTerm)
 onMounted(loadDataToStore)
 
 watch(() => props.searchTerm, loadDataToStore)
+
+// TODO: There is no variantQueryStore at the moment, so
+// this function is modifyed from the original.
+const linkOutPubMedHpoTerms = computed((): string | null => {
+  if (geneInfoStore.geneInfo?.hgnc?.symbol) {
+    const symbol = geneInfoStore.geneInfo.hgnc.symbol
+    return `https://www.ncbi.nlm.nih.gov/pubmed/?term=${symbol}`
+  } else {
+    return null
+  }
+})
+
+const scrollToSection = (id: string) => {
+  this.$vuetify.goTo(`#${id}`, { offset: -80 }) // Adjust offset as needed
+}
+const sections = [
+  { id: 'first', title: 'First Section' },
+  { id: 'second', title: 'Second Section' },
+  { id: 'third', title: 'Third Section' }
+]
 </script>
 
 <template>
   <HeaderDetailPage />
   <v-layout class="rounded rounded-md">
-    <v-navigation-drawer floating permanent location="right">
+    <v-navigation-drawer permanent location="right">
       <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
-        <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
+        <v-list-item
+          v-for="section in sections"
+          :key="section.id"
+          @click="scrollToSection(section.id)"
+        >
+          <v-list-item-title>{{ section.title }}</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
