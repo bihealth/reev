@@ -3,11 +3,12 @@ import sys
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Query
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import RedirectResponse, Response, StreamingResponse
+from starlette.responses import JSONResponse, RedirectResponse, Response, StreamingResponse
 
 # Load environment
 env = os.environ
@@ -17,20 +18,36 @@ load_dotenv()
 SERVE_FRONTEND = env.get("REEV_SERVE_FRONTEND")
 #: Debug mode
 DEBUG = env.get("REEV_DEBUG", "false").lower() in ("true", "1")
-#: Prefixes for varfish-docker-compose-ng
-BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari")
-BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno")
+#: Prefix for the backend of annonars service
 BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annonars")
+#: Prefix for the backend of mehari service
+BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari")
+#: Prefix for the backend of viguno service
+BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno")
 
 
 app = FastAPI()
 
+# Configure CORS settings
+origins = [
+    "http://localhost",  # Update with the actual frontend URL
+    "http://localhost:8081",  # Update with the actual frontend URL
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Reverse proxy implementation
 client = httpx.AsyncClient()
 
 
-async def reverse_proxy(request: Request):
+async def reverse_proxy(request: Request) -> Response:
+    """Implement reverse proxy for backend services."""
     url = request.url
     backend_url = None
 
@@ -42,7 +59,7 @@ async def reverse_proxy(request: Request):
         backend_url = BACKEND_PREFIX_VIGUNO + url.path.replace("/proxy/viguno", "")
 
     if backend_url:
-        backend_url = backend_url + ("?" + url.query if url.query else "")
+        backend_url = backend_url + (f"?{url.query}" if url.query else "")
         backend_req = client.build_request(
             method=request.method,
             url=backend_url,
@@ -56,17 +73,24 @@ async def reverse_proxy(request: Request):
             headers=backend_resp.headers,
             background=BackgroundTask(backend_resp.aclose),
         )
-
-    return Response(status_code=404, content="Reverse proxy route not found")
+    else:
+        return Response(status_code=404, content="Reverse proxy route not found")
 
 
 # Register reverse proxy route
 app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
 
+# Routes
 @app.get("/api/hello")
 def read_root():
     return {"Hello": "World"}
+
+
+@app.get("/api/search")
+async def search(geneSymbol: str = Query(...), genomeRelease: str = Query("hg19")):
+    details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
+    return JSONResponse(content=details)
 
 
 if SERVE_FRONTEND:
@@ -75,5 +99,5 @@ if SERVE_FRONTEND:
 
     @app.get("/")
     async def redirect():
-        response = RedirectResponse(url=f"/ui/index.html")
+        response = RedirectResponse(url="/ui/index.html")
         return response
