@@ -14,10 +14,6 @@ from starlette.responses import JSONResponse, RedirectResponse, Response, Stream
 env = os.environ
 load_dotenv()
 
-# Load environment
-env = os.environ
-load_dotenv()
-
 #: Path to frontend build, if any.
 SERVE_FRONTEND = env.get("REEV_SERVE_FRONTEND")
 #: Debug mode
