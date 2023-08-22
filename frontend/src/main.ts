@@ -1,30 +1,20 @@
-import './assets/main.css'
 import '@mdi/font/css/materialdesignicons.css'
-import '@fortawesome/fontawesome-free/css/all.css'
+import 'vuetify/styles'
+import './assets/main.css'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import App from '@/App.vue'
-import router from '@/router'
 import { createVuetify } from 'vuetify'
-import 'vuetify/styles'
+import { md3 } from 'vuetify/blueprints'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { fa } from 'vuetify/iconsets/fa'
-import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
+
+import App from '@/App.vue'
+import router from '@/router'
 
 const app = createApp(App)
 const vuetify = createVuetify({
-  theme: {
-    defaultTheme: 'light'
-  },
-  icons: {
-    defaultSet: 'mdi',
-    aliases,
-    sets: {
-      mdi,
-      fa
-    }
-  },
+  blueprint: md3,
   components,
   directives
 })

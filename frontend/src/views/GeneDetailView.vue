@@ -1,14 +1,33 @@
 <script setup lang="ts">
-import { useGeneDataStore } from '@/stores/geneData'
+import { watch, onMounted } from 'vue'
 
-import Header from '@/components/HeaderDetailPage.vue'
+import { StoreState, useGeneInfoStore } from '@/stores/geneInfo'
 
-const geneDataStore = useGeneDataStore()
-const geneData = geneDataStore.geneData
+import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+
+export interface Props {
+  searchTerm?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  searchTerm: ''
+})
+
+const geneInfoStore = useGeneInfoStore()
+
+const loadDataToStore = async () => geneInfoStore.loadData(props.searchTerm)
+
+// When the component is mounted or the search term is changed through
+// the router then we need to fetch the gene information from the backend
+// through the store.
+
+onMounted(loadDataToStore)
+
+watch(() => props.searchTerm, loadDataToStore)
 </script>
 
 <template>
-  <Header />
+  <HeaderDetailPage />
   <v-layout class="rounded rounded-md">
     <v-app-bar title="Application bar"></v-app-bar>
 
@@ -19,9 +38,15 @@ const geneData = geneDataStore.geneData
     </v-navigation-drawer>
 
     <v-main class="d-flex align-center justify-center" style="min-height: 300px">
-      <div class="gene-details">
+      <p>{{ xz }}</p>
+      <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-details">
         <h1>Gene Detail View</h1>
-        <pre>{{ geneData }}</pre>
+        <pre>{{ JSON.stringify(geneInfoStore.geneInfo, null, 2).slice(0, 1000) }}</pre>
+      </div>
+
+      <div v-else>
+        <h1>Loading gene information</h1>
+        <v-progress-circular indeterminate></v-progress-circular>
       </div>
     </v-main>
   </v-layout>

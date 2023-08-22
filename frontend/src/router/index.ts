@@ -25,9 +25,10 @@ const router = createRouter({
       component: ContactView
     },
     {
-      path: '/gene/:geneSymbol',
+      path: '/gene/:searchTerm',
       name: 'gene',
-      component: GeneDetailsView
+      component: GeneDetailsView,
+      props: (route) => ({ searchTerm: route.params.searchTerm })
     },
     {
       path: '/variant/:variantId',

@@ -52,11 +52,15 @@ async def reverse_proxy(request: Request) -> Response:
     backend_url = None
 
     if url.path.startswith("/proxy/annonars"):
-        backend_url = BACKEND_PREFIX_ANNONARS + url.path.replace("/proxy/annonars", "/annos")
+        backend_url = BACKEND_PREFIX_ANNONARS + url.path.replace("/proxy/annonars", "")
     elif url.path.startswith("/proxy/mehari"):
         backend_url = BACKEND_PREFIX_MEHARI + url.path.replace("/proxy/mehari", "")
     elif url.path.startswith("/proxy/viguno"):
         backend_url = BACKEND_PREFIX_VIGUNO + url.path.replace("/proxy/viguno", "")
+
+    import sys
+
+    print(f"backend_url = {backend_url}", file=sys.stderr)
 
     if backend_url:
         backend_url = backend_url + (f"?{url.query}" if url.query else "")

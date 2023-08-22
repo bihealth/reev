@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { useGeneDataStore } from '@/stores/geneData'
-
-// const props = defineProps<{
-//   case?: any
-//   smallVar?: any
-// }>()
+import { useGeneInfoStore } from '@/stores/geneInfo'
 
 const router = useRouter()
-const geneDataStore = useGeneDataStore()
 
-if (geneDataStore.geneData === null) {
+const geneInfoStore = useGeneInfoStore()
+
+if (geneInfoStore.geneInfo === null) {
   router.push({ name: 'home' })
 } else {
-  // const { geneSymbol } = geneDataStore.geneData
+  // const { geneSymbol } = geneInfoStore.geneInfo
 }
 </script>
 
@@ -24,8 +20,6 @@ if (geneDataStore.geneData === null) {
         <img src="@/assets/reev-logo.png" id="logo" alt="logo" width="100" />
       </router-link>
     </v-toolbar-title>
-    <!-- Representation of searched prompt in square -->
-    <v-text-field label="{geneSymbol}" class="gene-input"></v-text-field>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
       <v-btn to="/about"> About </v-btn>

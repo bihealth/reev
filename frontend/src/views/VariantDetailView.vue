@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { useGeneDataStore } from '@/stores/geneData'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 
 import Header from '@/components/HeaderDetailPage.vue'
 
-const geneDataStore = useGeneDataStore()
-const geneData = geneDataStore.geneData
+const geneInfoStore = useGeneInfoStore()
+const geneInfo = geneInfoStore.geneInfo
 </script>
 
 <template>
@@ -21,7 +21,7 @@ const geneData = geneDataStore.geneData
     <v-main class="d-flex align-center justify-center" style="min-height: 300px">
       <div class="variant-details">
         <h1>Variant Detail View</h1>
-        <pre>{{ geneData }}</pre>
+        <pre>{{ geneInfo }}</pre>
       </div>
     </v-main>
   </v-layout>
