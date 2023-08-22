@@ -82,17 +82,8 @@ app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
 
 # Routes
-@app.get("/api/hello")
-def read_root():
-    return {"Hello": "World"}
 
-
-@app.get("/api/search")
-async def search(geneSymbol: str = Query(...), genomeRelease: str = Query("hg19")):
-    details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
-    return JSONResponse(content=details)
-
-
+#: pragma: no cover
 if SERVE_FRONTEND:
     print(f"SERVE_FRONTEND = {SERVE_FRONTEND}", file=sys.stderr)
     app.mount("/ui", StaticFiles(directory=SERVE_FRONTEND), name="app")
