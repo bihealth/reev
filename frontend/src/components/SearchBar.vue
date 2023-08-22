@@ -8,7 +8,7 @@ const props = defineProps({
   geneSymbol: String
 })
 
-const emit = defineEmits()
+// const emit = defineEmits()
 
 const router = useRouter()
 const geneDataStore = useGeneDataStore()
@@ -17,10 +17,10 @@ const geneSymbol = ref(props.geneSymbol)
 const genomeRelease = ref('hg19')
 const genomeReleases = ['hg19', 'hg38']
 
-const updateGeneSymbol = (event: InputEvent) => {
-  geneSymbol.value = (event.target as HTMLInputElement).value
-  emit('update:geneSymbol', geneSymbol.value)
-}
+// const updateGeneSymbol = (event: InputEvent) => {
+//   geneSymbol.value = (event.target as HTMLInputElement).value
+//   emit('update:geneSymbol', geneSymbol.value)
+// }
 
 const performSearch = async (symbol: string, release: string) => {
   try {

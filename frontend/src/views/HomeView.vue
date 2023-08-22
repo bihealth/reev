@@ -10,8 +10,8 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGeneDataStore } from '@/stores/geneData'
 
-import Header from '@/components/Header.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import Header from '@/components/HeaderDefault.vue'
+// import SearchBar from '@/components/SearchBar.vue'
 
 const router = useRouter()
 const geneDataStore = useGeneDataStore()

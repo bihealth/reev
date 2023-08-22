@@ -2,10 +2,10 @@
 import { useRouter } from 'vue-router'
 import { useGeneDataStore } from '@/stores/geneData'
 
-const props = defineProps<{
-  case?: any
-  smallVar?: any
-}>()
+// const props = defineProps<{
+//   case?: any
+//   smallVar?: any
+// }>()
 
 const router = useRouter()
 const geneDataStore = useGeneDataStore()
@@ -13,7 +13,7 @@ const geneDataStore = useGeneDataStore()
 if (geneDataStore.geneData === null) {
   router.push({ name: 'home' })
 } else {
-  const { geneSymbol } = geneDataStore.geneData
+  // const { geneSymbol } = geneDataStore.geneData
 }
 </script>
 
