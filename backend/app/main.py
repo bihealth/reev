@@ -18,10 +18,12 @@ load_dotenv()
 SERVE_FRONTEND = env.get("REEV_SERVE_FRONTEND")
 #: Debug mode
 DEBUG = env.get("REEV_DEBUG", "false").lower() in ("true", "1")
-#: Prefixes for varfish-docker-compose-ng
-BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari")
-BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno")
+#: Prefix for the backend of annonars service
 BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annonars")
+#: Prefix for the backend of mehari service
+BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari")
+#: Prefix for the backend of viguno service
+BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno")
 
 
 app = FastAPI()
@@ -45,7 +47,8 @@ app.add_middleware(
 client = httpx.AsyncClient()
 
 
-async def reverse_proxy(request: Request):
+async def reverse_proxy(request: Request) -> Response:
+    """Implement reverse proxy for backend services."""
     url = request.url
     backend_url = None
 
@@ -57,7 +60,7 @@ async def reverse_proxy(request: Request):
         backend_url = BACKEND_PREFIX_VIGUNO + url.path.replace("/proxy/viguno", "")
 
     if backend_url:
-        backend_url = backend_url + ("?" + url.query if url.query else "")
+        backend_url = backend_url + (f"?{url.query}" if url.query else "")
         backend_req = client.build_request(
             method=request.method,
             url=backend_url,
@@ -71,8 +74,8 @@ async def reverse_proxy(request: Request):
             headers=backend_resp.headers,
             background=BackgroundTask(backend_resp.aclose),
         )
-
-    return Response(status_code=404, content="Reverse proxy route not found")
+    else:
+        return Response(status_code=404, content="Reverse proxy route not found")
 
 
 # Register reverse proxy route
@@ -97,5 +100,5 @@ if SERVE_FRONTEND:
 
     @app.get("/")
     async def redirect():
-        response = RedirectResponse(url=f"/ui/index.html")
+        response = RedirectResponse(url="/ui/index.html")
         return response

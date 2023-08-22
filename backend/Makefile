@@ -35,7 +35,8 @@ format-black:
 lint: \
 	lint-isort \
 	lint-black \
-	lint-flake8
+	lint-flake8 \
+	lint-mypy
 
 .PHONY: lint-isort
 lint-isort:
@@ -48,6 +49,10 @@ lint-black:
 .PHONY: lint-flake8
 flake8:
 	pipenv run flake8 --max-line-length 100 $(DIRS_PYTHON)
+
+.PHONY: lint-mypy
+lint-mypy:
+	pipenv run mypy $(DIRS_PYTHON)
 
 .PHONY: test
 test:
