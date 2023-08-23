@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Header from '@/components/HeaderDefault.vue'
+import HeaderDefault from '@/components/HeaderDefault.vue'
 </script>
 
 <template>
-  <Header />
+  <HeaderDefault />
   <v-container class="about-view">
     <v-row>
       <v-col cols="12">

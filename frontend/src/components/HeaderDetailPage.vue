@@ -8,8 +8,6 @@ const geneInfoStore = useGeneInfoStore()
 
 if (geneInfoStore.geneInfo === null) {
   router.push({ name: 'home' })
-} else {
-  // const searchTerm = geneInfoStore.geneInfo.searchTerm
 }
 </script>
 
@@ -17,7 +15,7 @@ if (geneInfoStore.geneInfo === null) {
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
       <router-link to="/">
-        <img src="@/assets/reev-logo.png" id="logo" alt="logo" width="100" />
+        <img src="@/assets/reev-logo.svg" id="logo" class="nav" alt="logo" width="100" />
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -27,3 +25,21 @@ if (geneInfoStore.geneInfo === null) {
     </v-toolbar-items>
   </v-app-bar>
 </template>
+
+<style scoped>
+.top-bar {
+  background-color: white;
+  border-bottom: 2px solid rgb(111, 100, 210);
+}
+
+.topbar-links {
+  display: flex;
+  margin: 0 10px;
+}
+
+#logo {
+  margin-left: 25px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+</style>

@@ -2,7 +2,7 @@
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
       <router-link to="/">
-        <img src="@/assets/reev-logo.png" id="logo" alt="logo" width="100" />
+        <img src="@/assets/reev-logo.svg" id="logo" alt="logo" width="100" />
         Explanation and Evaluation of Variants
       </router-link>
     </v-toolbar-title>
@@ -13,3 +13,21 @@
     </v-toolbar-items>
   </v-app-bar>
 </template>
+
+<style scoped>
+.top-bar {
+  background-color: white;
+  border-bottom: 2px solid rgb(111, 100, 210);
+}
+
+.topbar-links {
+  display: flex;
+  margin: 0 10px;
+}
+
+#logo {
+  margin-left: 25px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+</style>

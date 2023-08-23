@@ -7,13 +7,11 @@
 
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-// import { useGeneInfoStore } from '@/stores/geneInfo'
 
-import Header from '@/components/HeaderDefault.vue'
+import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 const router = useRouter()
-// const geneInfoStore = useGeneInfoStore()
 
 const searchTerm = ref('')
 const genomeRelease = ref('grch37')
@@ -66,7 +64,7 @@ const performSearch = async () => {
 </script>
 
 <template>
-  <Header />
+  <HeaderDefault />
   <v-container class="home-view">
     <SearchBar
       v-model:search-term="searchTerm"

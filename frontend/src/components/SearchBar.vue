@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// import { useRouter } from 'vue-router'
-// import { useGeneInfoStore } from '@/stores/geneInfo'
-
 export interface GenomeReleaseChoice {
   value: string
   label: string
@@ -21,12 +18,6 @@ const props = withDefaults(defineProps<Props>(), {
     { value: 'grch38', label: 'GRCh38' }
   ]
 })
-
-// const emit = defineEmits(['update:searchTerm', 'update:genomeRelease', 'clickSearch'])
-
-// const router = useRouter()
-
-// const geneInfoStore = useGeneInfoStore()
 </script>
 
 <template>
@@ -55,7 +46,3 @@ const props = withDefaults(defineProps<Props>(), {
     </v-col>
   </v-row>
 </template>
-
-<style scoped>
-/* Your styling here */
-</style>

@@ -1,7 +1,6 @@
 /** Store for gene details.
  *
  * This includes the data retrieved from the APIs.
- *
  */
 
 import { defineStore } from 'pinia'
@@ -63,11 +62,9 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
   }
 
   return {
-    // state
     storeState,
     geneSymbol,
     geneInfo,
-    // actions
     loadData
   }
 })

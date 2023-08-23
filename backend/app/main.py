@@ -58,10 +58,6 @@ async def reverse_proxy(request: Request) -> Response:
     elif url.path.startswith("/proxy/viguno"):
         backend_url = BACKEND_PREFIX_VIGUNO + url.path.replace("/proxy/viguno", "")
 
-    import sys
-
-    print(f"backend_url = {backend_url}", file=sys.stderr)
-
     if backend_url:
         backend_url = backend_url + (f"?{url.query}" if url.query else "")
         backend_req = client.build_request(
@@ -86,14 +82,6 @@ app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
 
 # Routes
-@app.get("/api/search")
-async def search_gene(
-    geneSymbol: str = Query(...), spdi: str = Query(""), genomeRelease: str = Query("hg19")
-):
-    gene_details = {"geneSymbol": geneSymbol, "genomeRelease": genomeRelease}
-    return JSONResponse(content=gene_details)
-
-
 if SERVE_FRONTEND:  # pragma: no cover
     print(f"SERVE_FRONTEND = {SERVE_FRONTEND}", file=sys.stderr)
     app.mount("/ui", StaticFiles(directory=SERVE_FRONTEND), name="app")

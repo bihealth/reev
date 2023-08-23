@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Header from '@/components/HeaderDefault.vue'
+import HeaderDefault from '@/components/HeaderDefault.vue'
 </script>
 
 <template>
-  <Header />
+  <HeaderDefault />
   <v-container class="contact-view">
     <v-row>
       <v-col cols="12">
@@ -13,11 +13,11 @@ import Header from '@/components/HeaderDefault.vue'
           channels:
         </p>
         <div class="contact-links">
-          <v-btn href="https://github.com/bihealth" target="_blank">
+          <v-btn href="https://github.com/bihealth/reev/discussions" target="_blank">
             <v-icon left>mdi-github</v-icon>
             GitHub
           </v-btn>
-          <v-btn href="mailto:random.mail@adress.com" target="_blank">
+          <v-btn href="mailto:cubi-helpdesk@bih-charite.de">
             <v-icon left>mdi-email</v-icon>
             Email
           </v-btn>
