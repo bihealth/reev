@@ -40,7 +40,7 @@ onMounted(loadDataToStore)
 watch(() => props.searchTerm, loadDataToStore)
 watch(() => route.hash, scrollToSection)
 
-const sections = [
+const SECTIONS = [
   { id: 'hgnc', title: 'HGNC' },
   { id: 'constraints-scores', title: 'Constraints / Scores' },
   { id: 'ncbi-summary', title: 'NCBI Summary' },
@@ -59,7 +59,7 @@ const sections = [
     <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
       <v-list density="compact" nav>
         <v-list-item
-          v-for="section in sections"
+          v-for="section in SECTIONS"
           :key="section.id"
           @click="router.push({ hash: `#${section.id}` })"
         >

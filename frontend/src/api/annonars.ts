@@ -12,7 +12,6 @@ export class AnnonarsClient {
   }
 
   async fetchGeneInfo(hgncId: string): Promise<any> {
-    console.log(`${this.apiBaseUrl}genes/info?hgnc-id=${hgncId}`)
     const response = await fetch(`${this.apiBaseUrl}genes/info?hgnc-id=${hgncId}`, {
       method: 'GET'
     })

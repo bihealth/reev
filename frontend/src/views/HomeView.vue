@@ -38,7 +38,7 @@ type RouteLoctionBuilder = () => RouteLocationFragment
 
 // We iterate the regexps in the `Map` and will use the route from the
 // first match.
-const searchRegexp: [RegExp, RouteLoctionBuilder][] = [
+const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
   [
     /^.*$/,
     (): RouteLocationFragment => ({
@@ -51,7 +51,7 @@ const searchRegexp: [RegExp, RouteLoctionBuilder][] = [
 ]
 
 const performSearch = async () => {
-  for (const [regexp, getRoute] of searchRegexp) {
+  for (const [regexp, getRoute] of SEARCH_REGEXPS) {
     if (regexp.test(searchTerm.value)) {
       const routeLocation = getRoute()
       console.log(`term {searchTerm.value} matched {regexp}, route is`, routeLocation)
