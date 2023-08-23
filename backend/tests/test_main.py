@@ -29,7 +29,7 @@ async def test_proxy_annonars(monkeypatch, httpx_mock):
     """Test proxying to annonars backend."""
     monkeypatch.setattr(main, "BACKEND_PREFIX_ANNONARS", f"http://{MOCKED_BACKEND_HOST}")
     httpx_mock.add_response(
-        url=f"http://{MOCKED_BACKEND_HOST}/annos/{MOCKED_URL_TOKEN}",
+        url=f"http://{MOCKED_BACKEND_HOST}/{MOCKED_URL_TOKEN}",
         method="GET",
         text="Mocked response",
     )
