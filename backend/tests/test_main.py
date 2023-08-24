@@ -2,7 +2,6 @@ import typing
 
 import pytest
 from app import main
-from requests_mock import Mocker
 from starlette.testclient import TestClient
 
 #: Host name to use for the mocked backend.
