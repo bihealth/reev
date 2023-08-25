@@ -7,6 +7,9 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      deps: {
+        inline: ['vuetify']
+      },
       coverage: {
         provider: 'istanbul'
       },
@@ -19,3 +22,7 @@ export default mergeConfig(
     }
   })
 )
+// "vite-plugin-vuetify": "^1.0.2",
+
+// "vite": "^4.4.9",
+// "vitest": "^0.34.3"

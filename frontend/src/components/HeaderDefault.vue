@@ -8,8 +8,8 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
-      <v-btn to="/about"> About </v-btn>
-      <v-btn to="/contact"> Contact </v-btn>
+      <v-btn id="about" to="/about"> About </v-btn>
+      <v-btn id="contact" to="/contact"> Contact </v-btn>
     </v-toolbar-items>
   </v-app-bar>
 </template>
