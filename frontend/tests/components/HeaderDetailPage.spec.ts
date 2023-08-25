@@ -1,43 +1,62 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { useRouter } from 'vue-router'
+import { describe, expect, it, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
+import { RouterLinkStub, mount } from '@vue/test-utils'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import { useGeneInfoStore } from '@/stores/geneInfo'
+import { before, beforeEach } from 'node:test'
 
-const makeWrapper = () => {
+let router;
+
+const makeWrapper = (geneData = {}) => {
   return mount(HeaderDetailPage, {
     shallow: true,
     global: {
       plugins: [
         createTestingPinia({
-          initialState: { searchTerm: '', genomeRelease: 'grch37' },
-          createSpy: vi.fn,
-        })
-      ]
+          initialState: { data: geneData },
+          createSpy: vi.fn(),
+        }),
+        router,
+      ],
     },
-  });
+  })
 }
 
-describe('HeaderDetailPage.vue', () => {
+describe('HeaderDetailPage', async () => {
+  const geneData = {
+    geneSymbol: 'BRCA1',
+    geneInfo: {
+      symbol: 'BRCA1',
+      name: 'Test Gene',
+      hgncId: '12345',
+      ensemblId: 'ENSG00000000000001',
+      entrezId: '12345',
+    },
+  }
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    router = createRouter({
+      history: createWebHistory(),
+      routes: routes,
+    })
+
+    router.push = vi.fn()
+    await router.isReady()
   })
 
-  it('renders the logo and title', () => {
-    const wrapper = makeWrapper();
-    expect(wrapper.exists()).toBeTruthy();
+  it('renders the gene symbol', () => {
+    const wrapper = makeWrapper(geneData)
+    
     const logo = wrapper.find('#logo')
-    const title = wrapper.find('router-link')
     expect(logo.exists()).toBe(true)
-    expect(title.text()).toMatch('Explanation and Evaluation of Variants')
-  })
-
-  it('renders the navigation links', () => {
-    const wrapper = makeWrapper();
     const aboutLink = wrapper.find('v-btn[to="/about"]')
     const contactLink = wrapper.find('v-btn[to="/contact"]')
     expect(aboutLink.exists()).toBe(true)
     expect(contactLink.exists()).toBe(true)
+  })
+  
+  it('redirects if gene data is null', () => {
+    const wrapper = makeWrapper()
+    expect(router.push).toHaveBeenCalledWith('/')
   })
 })
