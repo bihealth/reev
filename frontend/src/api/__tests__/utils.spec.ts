@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { roundIt } from '@/api/utils'
+import { roundIt } from '../utils'
 
 describe('roundIt method', () => {
   it('should round a positive value with default digits', () => {
@@ -14,12 +14,12 @@ describe('roundIt method', () => {
 
   it('should handle zero value', () => {
     const result = roundIt(0)
-    expect(result).toBe('<abbr title=\'0\'>NaN</abbr>')
+    expect(result).toBe("<abbr title='0'>NaN</abbr>")
   })
 
   it('should handle NaN value', () => {
     const result = roundIt(NaN)
-    expect(result).toBe('<abbr title=\'NaN\'>NaN</abbr>')
+    expect(result).toBe("<abbr title='NaN'>NaN</abbr>")
   })
 
   it('should add label to title if provided', () => {
@@ -31,4 +31,4 @@ describe('roundIt method', () => {
     const result = roundIt(-10.12345)
     expect(result).toBe('<abbr title="-10.12345">-10.12</abbr>')
   })
-});
+})

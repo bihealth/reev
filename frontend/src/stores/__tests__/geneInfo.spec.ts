@@ -1,15 +1,14 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useGeneInfoStore, StoreState } from '@/stores/geneInfo'
-import { AnnonarsClient } from '@/api/annonars'
+import { useGeneInfoStore, StoreState } from '../geneInfo'
 
 const mockFetchGeneInfo = (hgncId: string) => {
-    expect(hgncId).toBe('BRCA1')
-    return Promise.resolve({ gene: 'info' })
+  expect(hgncId).toBe('BRCA1')
+  return Promise.resolve({ gene: 'info' })
 }
 
 class MockAnnonarsClient {
-    fetchGeneInfo = mockFetchGeneInfo
+  fetchGeneInfo = mockFetchGeneInfo
 }
 
 // vi.mock('@/api/annonars', () => ({

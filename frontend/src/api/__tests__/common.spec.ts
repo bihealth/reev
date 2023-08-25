@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { API_BASE_PREFIX } from '@/api/common'
+import { API_BASE_PREFIX } from '../common'
 
 describe('API_BASE_PREFIX constant', () => {
-  it.skip('returns the correct API base prefix in development mode', () => {
+  it('returns the correct API base prefix in development mode', () => {
     const originalMode = import.meta.env.MODE
     import.meta.env.MODE = 'development'
 

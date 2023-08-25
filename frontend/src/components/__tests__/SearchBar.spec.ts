@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import SearchBar from '@/components/SearchBar.vue'
+import SearchBar from '../SearchBar.vue'
 
 describe('SearchBar.vue', () => {
   it('renders the search bar with the correct default props', () => {

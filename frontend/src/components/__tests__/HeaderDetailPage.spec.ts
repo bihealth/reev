@@ -1,11 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
-import { RouterLinkStub, mount } from '@vue/test-utils'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-import { before, beforeEach } from 'node:test'
+import { mount } from '@vue/test-utils'
+import HeaderDetailPage from '../HeaderDetailPage.vue'
+import { beforeEach } from 'node:test'
 
-let router;
+let router
 
 const makeWrapper = (geneData = {}) => {
   return mount(HeaderDetailPage, {
@@ -14,11 +13,11 @@ const makeWrapper = (geneData = {}) => {
       plugins: [
         createTestingPinia({
           initialState: { data: geneData },
-          createSpy: vi.fn(),
+          createSpy: vi.fn()
         }),
-        router,
-      ],
-    },
+        router
+      ]
+    }
   })
 }
 
@@ -30,14 +29,14 @@ describe('HeaderDetailPage', async () => {
       name: 'Test Gene',
       hgncId: '12345',
       ensemblId: 'ENSG00000000000001',
-      entrezId: '12345',
-    },
+      entrezId: '12345'
+    }
   }
 
   beforeEach(() => {
     router = createRouter({
       history: createWebHistory(),
-      routes: routes,
+      routes: routes
     })
 
     router.push = vi.fn()
@@ -46,7 +45,7 @@ describe('HeaderDetailPage', async () => {
 
   it('renders the gene symbol', () => {
     const wrapper = makeWrapper(geneData)
-    
+
     const logo = wrapper.find('#logo')
     expect(logo.exists()).toBe(true)
     const aboutLink = wrapper.find('v-btn[to="/about"]')
@@ -54,7 +53,7 @@ describe('HeaderDetailPage', async () => {
     expect(aboutLink.exists()).toBe(true)
     expect(contactLink.exists()).toBe(true)
   })
-  
+
   it('redirects if gene data is null', () => {
     const wrapper = makeWrapper()
     expect(router.push).toHaveBeenCalledWith('/')

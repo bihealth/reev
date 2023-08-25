@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { AnnonarsClient } from '@/api/annonars'
+import { AnnonarsClient } from '../annonars'
 
 describe('Annonars Client', () => {
   it('fetches gene info correctly', async () => {
-    const mockFetch = (url: string, options: any) => {
+    const mockFetch: any = (url: string, options: any) => {
       expect(url).toBe('/proxy/annonars/genes/info?hgnc-id=BRCA1')
       expect(options.method).toBe('GET')
       return Promise.resolve({
@@ -19,7 +19,7 @@ describe('Annonars Client', () => {
   })
 
   it.fails('fails to fetch gene info with POST', async () => {
-    const mockFetch = (url: string, options: any) => {
+    const mockFetch: any = (url: string, options: any) => {
       expect(url).toBe('/proxy/annonars/genes/info')
       expect(options.method).toBe('POST')
       return Promise.resolve({
@@ -35,7 +35,7 @@ describe('Annonars Client', () => {
   })
 
   it.fails('fails to fetch gene info with wrong hgnc-id', async () => {
-    const mockFetch = (url: string, options: any) => {
+    const mockFetch: any = (url: string, options: any) => {
       expect(url).toBe('/proxy/annonars/genes/info?hgnc-id=BRCA1')
       expect(options.method).toBe('GET')
       return Promise.resolve({

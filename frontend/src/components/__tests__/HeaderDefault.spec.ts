@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import HeaderDefault from '@/components/HeaderDefault.vue'
+import HeaderDefault from '../HeaderDefault.vue'
 
 describe('HeaderDefault.vue', () => {
   it('renders the logo and title', () => {
