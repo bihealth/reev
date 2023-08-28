@@ -1,24 +1,15 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useGeneInfoStore, StoreState } from '../geneInfo'
+import createFetchMock from 'vitest-fetch-mock'
 
-const mockFetchGeneInfo = (hgncId: string) => {
-  expect(hgncId).toBe('BRCA1')
-  return Promise.resolve({ gene: 'info' })
-}
-
-class MockAnnonarsClient {
-  fetchGeneInfo = mockFetchGeneInfo
-}
-
-// vi.mock('@/api/annonars', () => ({
-//     const Client = vi.fn().mockImplementation(MockAnnonarsClient)
-//     return { Client }
-// }))
+const fetchMocker = createFetchMock(vi)
 
 describe('geneInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    fetchMocker.enableMocks()
+    fetchMocker.resetMocks()
   })
 
   it('should have initial state', () => {
@@ -29,22 +20,22 @@ describe('geneInfo Store', () => {
     expect(store.geneInfo).toBe(null)
   })
 
-  it.skip('should clear state', () => {
+  it('should clear state', () => {
     const store = useGeneInfoStore()
-
     store.storeState = StoreState.Active
     store.geneSymbol = 'BRCA1'
-    store.geneInfo = { gene: 'info' }
+    store.geneInfo = JSON.parse(JSON.stringify({ gene: 'info' }))
 
-    store.$clear()
+    store.clearData()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.geneSymbol).toBe(null)
     expect(store.geneInfo).toBe(null)
   })
 
-  it.skip('should load data', async () => {
+  it('should load data', async () => {
     const store = useGeneInfoStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ genes: { BRCA1: { gene: 'info' } } }))
 
     await store.loadData('BRCA1')
 
@@ -54,33 +45,30 @@ describe('geneInfo Store', () => {
   })
 
   it('should fail to load data with invalid request', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(vi.fn())
     const store = useGeneInfoStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.loadData('123')
+    await store.loadData('invalid')
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.geneSymbol).toBe(null)
     expect(store.geneInfo).toBe(null)
   })
 
-  it.skip('should not load data if gene symbol is the same', async () => {
+  it('should not load data if gene symbol is the same', async () => {
     const store = useGeneInfoStore()
+    fetchMocker.mockResponse(JSON.stringify({ genes: { BRCA1: { gene: 'info' } } }))
 
-    const mockFetch = (url: string, options: any) => {
-      expect(url).toBe('/proxy/annonars/genes/info?hgnc-id=BRCA1')
-      expect(options.method).toBe('GET')
-      return Promise.resolve({
-        json: () => Promise.resolve({ gene: 'info' })
-      })
-    }
-
-    globalThis.fetch = mockFetch
-
-    await store.loadData('BRCA1')
     await store.loadData('BRCA1')
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.geneSymbol).toBe('BRCA1')
     expect(store.geneInfo).toEqual({ gene: 'info' })
+
+    await store.loadData('BRCA1')
+
+    expect(fetchMocker.mock.calls.length).toBe(1)
   })
 })

@@ -40,7 +40,11 @@ const props = withDefaults(defineProps<Props>(), {
       ></v-select>
     </v-col>
     <v-col cols="12" md="3">
-      <v-btn @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)" color="primary">
+      <v-btn
+        id="search"
+        @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
+        color="primary"
+      >
         search
       </v-btn>
     </v-col>

@@ -1,48 +1,24 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import HeaderDefault from '../HeaderDefault.vue'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { createRouter, createWebHistory } from 'vue-router'
+import { routes } from '@/router'
 
 const vuetify = createVuetify({
   components,
   directives
 })
 
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
-import AboutView from '@/views/AboutView.vue'
-import ContactView from '@/views/ContactView.vue'
-import GeneDetailsView from '@/views/GeneDetailView.vue'
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: AboutView
-    },
-    {
-      path: '/contact',
-      name: 'contact',
-      component: ContactView
-    },
-    {
-      path: '/gene/:searchTerm',
-      name: 'gene',
-      component: GeneDetailsView,
-      props: (route) => ({ searchTerm: route.params.searchTerm })
-    }
-  ]
+  routes: routes
 })
+// Mock router push
+router.push = vi.fn()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
@@ -61,8 +37,11 @@ describe('HeaderDefault.vue', () => {
         }
       }
     )
+
     const logo = wrapper.find('#logo')
+    const title = wrapper.find('a[href="/"]')
     expect(logo.exists()).toBe(true)
+    expect(title.text()).toBe('Explanation and Evaluation of Variants')
   })
 
   it('renders the navigation links', () => {
@@ -79,6 +58,7 @@ describe('HeaderDefault.vue', () => {
         }
       }
     )
+
     const aboutLink = wrapper.find('#about')
     const contactLink = wrapper.find('#contact')
     expect(aboutLink.exists()).toBe(true)

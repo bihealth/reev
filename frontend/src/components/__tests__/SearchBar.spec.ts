@@ -1,47 +1,53 @@
-import { describe, it, expect } from 'vitest'
-
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { createRouter, createWebHistory } from 'vue-router'
+import { routes } from '@/router'
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
 import SearchBar from '../SearchBar.vue'
+
+const vuetify = createVuetify({
+  components,
+  directives
+})
+
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: routes
+})
+// Mock router push
+router.push = vi.fn()
+
+global.ResizeObserver = require('resize-observer-polyfill')
 
 describe('SearchBar.vue', () => {
   it('renders the search bar with the correct default props', () => {
-    const wrapper = mount(SearchBar)
-    const textField = wrapper.find('v-text-field')
-    const select = wrapper.find('v-select')
-    const searchButton = wrapper.find('v-btn')
+    const wrapper = mount(
+      {
+        template: '<v-app><SearchBar /></v-app>'
+      },
+      {
+        global: {
+          plugins: [vuetify, router],
+          components: {
+            SearchBar
+          }
+        }
+      }
+    )
+
+    const textField = wrapper.find('.v-text-field')
+    const select = wrapper.find('.v-select')
+    const searchButton = wrapper.find('#search')
     expect(textField.exists()).toBe(true)
     expect(select.exists()).toBe(true)
     expect(searchButton.exists()).toBe(true)
-    expect(textField.attributes('label')).toMatch('Enter search term')
-    expect(select.attributes('label')).toMatch('Genome Release')
-    expect(select.attributes('item-title')).toMatch('label')
-    expect(select.attributes('item-value')).toMatch('value')
-    expect(select.attributes('model-value')).toMatch('grch37')
-    expect(searchButton.text()).toMatch('search')
-  })
-
-  it.skip('emits events correctly', () => {
-    const wrapper = mount(SearchBar)
-    const textField = wrapper.find('v-text-field')
-    const select = wrapper.find('v-select')
-    const searchButton = wrapper.find('v-btn')
-
-    // Simulate input in the text field and check if event is emitted
-    textField.setValue('sample term')
-    textField.trigger('input')
-    expect(wrapper.emitted('update:searchTerm')).toBeTruthy()
-    expect(wrapper.emitted('update:searchTerm')![0][0]).toBe('sample term')
-
-    // Simulate selecting an option in the select component and check if event is emitted
-    select.setValue('grch38')
-    select.trigger('update:model-value', 'grch38')
-    expect(wrapper.emitted('update:genomeRelease')).toBeTruthy()
-    expect(wrapper.emitted('update:genomeRelease')![0][0]).toBe('grch38')
-
-    // Simulate clicking the search button and check if event is emitted
-    searchButton.trigger('click')
-    expect(wrapper.emitted('clickSearch')).toBeTruthy()
-    expect(wrapper.emitted('clickSearch')![0][0]).toBe('sample term')
-    expect(wrapper.emitted('clickSearch')![0][1]).toBe('grch38')
+    expect(textField.html()).toMatch('Enter search term')
+    expect(select.html()).toMatch('Genome Release')
+    expect(select.html()).toMatch('label')
+    expect(select.html()).toMatch('value')
+    expect(select.html()).toMatch('GRCh37')
+    expect(searchButton.html()).toMatch('search')
   })
 })

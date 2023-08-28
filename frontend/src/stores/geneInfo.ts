@@ -30,7 +30,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     geneInfo.value = JSON.parse(localStorage.getItem('geneInfo')!)
   }
 
-  const $clear = () => {
+  function clearData() {
     storeState.value = StoreState.Initial
     geneSymbol.value = null
     geneInfo.value = null
@@ -43,7 +43,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     }
 
     // Clear against artifact
-    $clear()
+    clearData()
 
     // Load data via API
     storeState.value = StoreState.Loading
@@ -65,6 +65,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     storeState,
     geneSymbol,
     geneInfo,
-    loadData
+    loadData,
+    clearData
   }
 })

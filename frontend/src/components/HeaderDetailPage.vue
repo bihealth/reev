@@ -1,14 +1,14 @@
 <script setup lang="ts">
-// import { useRouter } from 'vue-router'
-// import { useGeneInfoStore } from '@/stores/geneInfo'
+import { useRouter } from 'vue-router'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 
-// const router = useRouter()
+const router = useRouter()
 
-// const geneInfoStore = useGeneInfoStore()
+const geneInfoStore = useGeneInfoStore()
 
-// if (geneInfoStore.geneInfo === null) {
-//   router.push({ name: 'home' })
-// }
+if (geneInfoStore.geneInfo === null) {
+  router.push({ name: 'home' })
+}
 </script>
 
 <template>
@@ -20,13 +20,13 @@
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
-      <v-btn to="/about"> About </v-btn>
-      <v-btn to="/contact"> Contact </v-btn>
+      <v-btn id="about" to="/about"> About </v-btn>
+      <v-btn id="contact" to="/contact"> Contact </v-btn>
     </v-toolbar-items>
   </v-app-bar>
 </template>
 
-<!-- <style scoped>
+<style scoped>
 .top-bar {
   background-color: white;
   border-bottom: 2px solid rgb(111, 100, 210);
@@ -42,4 +42,4 @@
   margin-right: 10px;
   margin-top: 10px;
 }
-</style> -->
+</style>
