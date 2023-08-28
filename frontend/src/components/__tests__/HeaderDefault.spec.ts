@@ -42,6 +42,7 @@ const makeWrapper = () => {
 describe('HeaderDefault.vue', () => {
   it('renders the logo and title', () => {
     const wrapper = makeWrapper()
+    console.log(wrapper.html())
 
     const logo = wrapper.find('#logo')
     const title = wrapper.find('a[href="/"]')

@@ -85,4 +85,17 @@ describe('HomeView', async () => {
     expect(select.exists()).toBe(true)
     expect(searchButton.exists()).toBe(true)
   })
+
+  it('renders example search terms', () => {
+    const wrapper = makeWrapper()
+    const store = useGeneInfoStore()
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+
+    const subtitle = wrapper.find('h2')
+    const exampleTerms = wrapper.findAll('.example')
+    expect(subtitle.exists()).toBe(true)
+    expect(exampleTerms.length).toBe(6)
+  })
 })

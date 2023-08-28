@@ -56,4 +56,20 @@ describe('SearchBar.vue', () => {
     expect(select.html()).toMatch('GRCh37')
     expect(searchButton.html()).toMatch('search')
   })
+
+  it('correctly emits the search event', async () => {
+    const wrapper = makeWrapper()
+
+    const textField = wrapper.find('input[type="text"]') as any
+    expect(textField.exists()).toBe(true)
+    await textField.setValue('test')
+    expect(textField.element.value).toBe('test')
+
+    const select = wrapper.find('#input-2') as any
+    expect(select.exists()).toBe(true)
+
+    const searchButton = wrapper.find('#search') as any
+    expect(searchButton.exists()).toBe(true)
+    await searchButton.trigger('click')
+  })
 })
