@@ -25,7 +25,7 @@ const routes = [
     path: '/gene/:searchTerm',
     name: 'gene',
     component: GeneDetailsView,
-    props: (route) => ({ searchTerm: route.params.searchTerm })
+    props: (route: any) => ({ searchTerm: route.params.searchTerm })
   }
 ]
 

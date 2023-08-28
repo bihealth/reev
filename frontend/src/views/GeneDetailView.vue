@@ -314,20 +314,6 @@ const SECTIONS = [
                 </div>
                 <div>
                   <a
-                    :href="`${props.hgmdProPrefix}/gene.php?gene=${geneInfoStore.geneInfo?.hgnc?.symbol}`"
-                    target="_blank"
-                    v-if="props.hgmdProEnabled"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    HGMD Pro
-                  </a>
-                  <span v-else>
-                    <v-icon>mdi-launch</v-icon>
-                    HGMD Pro
-                  </span>
-                </div>
-                <div>
-                  <a
                     :href="`https://www.kegg.jp/kegg-bin/search_pathway_text?map=map&keyword=${geneInfoStore.geneInfo?.hgnc?.symbol}&mode=1&viewImage=true`"
                     target="_blank"
                   >
@@ -386,16 +372,6 @@ const SECTIONS = [
                   </a>
                 </div>
 
-                <div v-if="props.smallVar">
-                  <a
-                    :href="`https://stuart.radboudumc.nl/metadome/dashboard/transcript/${smallVar.ensembl_transcript_id}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    MetaDome
-                  </a>
-                </div>
-
                 <div>
                   <template v-if="geneInfoStore.geneInfo?.hgnc?.uniprot_ids?.length">
                     <template
@@ -434,7 +410,7 @@ const SECTIONS = [
           <v-divider></v-divider>
           <div>
             <div>
-              <div v-if="geneInfoStore.geneInfo.dbnsfp?.orphanet_disorder?.length">
+              <div v-if="geneInfoStore.geneInfo?.dbnsfp?.orphanet_disorder?.length">
                 <strong>Orphanet Disorders:</strong>
                 {{ geneInfoStore.geneInfo.dbnsfp.orphanet_disorder.join(', ') }}
               </div>

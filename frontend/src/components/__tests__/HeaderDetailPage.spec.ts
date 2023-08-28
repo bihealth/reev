@@ -76,7 +76,7 @@ describe('HeaderDetailPage', async () => {
     store.geneSymbol = null
     store.geneInfo = null
 
-    const wrapper = makeWrapper()
+    makeWrapper()
 
     expect(router.push).toHaveBeenCalled()
   })

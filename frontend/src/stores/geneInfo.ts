@@ -23,7 +23,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
   const geneSymbol = ref<string | null>(null)
 
   // The retrieved gene data
-  const geneInfo = ref<JSON | null>(null)
+  const geneInfo = ref<any | null>(null)
 
   // Load stored geneInfo from localStorage when the store initializes
   if (localStorage.getItem('geneInfo')) {

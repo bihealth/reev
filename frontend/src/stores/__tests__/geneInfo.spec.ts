@@ -48,7 +48,7 @@ describe('geneInfo Store', () => {
 
   it('should fail to load data with invalid request', async () => {
     // Disable error logging
-    vi.spyOn(console, 'error').mockImplementation(vi.fn())
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useGeneInfoStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
