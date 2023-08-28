@@ -1,7 +1,9 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { setActivePinia, createPinia } from 'pinia'
-import { useGeneInfoStore, StoreState } from '../geneInfo'
 import createFetchMock from 'vitest-fetch-mock'
+
+import { setActivePinia, createPinia } from 'pinia'
+
+import { useGeneInfoStore, StoreState } from '../geneInfo'
 
 const fetchMocker = createFetchMock(vi)
 

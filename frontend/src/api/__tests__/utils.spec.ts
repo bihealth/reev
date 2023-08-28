@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest'
+
 import { roundIt } from '../utils'
 
 describe('roundIt method', () => {

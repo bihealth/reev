@@ -2,9 +2,11 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
+
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+
 import ContactView from '../ContactView.vue'
 
 const vuetify = createVuetify({
@@ -21,21 +23,25 @@ router.push = vi.fn()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
-describe('ContactView', async () => {
-  it('renders the header', () => {
-    const wrapper = mount(
-      {
-        template: '<v-app><ContactView /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router],
-          components: {
-            ContactView
-          }
+const makeWrapper = () => {
+  return mount(
+    {
+      template: '<v-app><ContactView /></v-app>'
+    },
+    {
+      global: {
+        plugins: [vuetify, router],
+        components: {
+          ContactView
         }
       }
-    )
+    }
+  )
+}
+
+describe('ContactView', async () => {
+  it('renders the header', () => {
+    const wrapper = makeWrapper()
 
     const logo = wrapper.find('#logo')
     const aboutLink = wrapper.find('#about')
@@ -46,19 +52,7 @@ describe('ContactView', async () => {
   })
 
   it('renders the main content', () => {
-    const wrapper = mount(
-      {
-        template: '<v-app><ContactView /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router],
-          components: {
-            ContactView
-          }
-        }
-      }
-    )
+    const wrapper = makeWrapper()
 
     const mainContent = wrapper.find('.contact-view')
     const githubLink = wrapper.find('.mdi-github')

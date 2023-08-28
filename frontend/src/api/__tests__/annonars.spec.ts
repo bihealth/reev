@@ -1,52 +1,35 @@
-import { describe, it, expect } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
+
 import { AnnonarsClient } from '../annonars'
+import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
+
+const fetchMocker = createFetchMock(vi)
 
 describe('Annonars Client', () => {
+  beforeEach(() => {
+    fetchMocker.enableMocks()
+    fetchMocker.resetMocks()
+  })
+
   it('fetches gene info correctly', async () => {
-    const mockFetch: any = (url: string, options: any) => {
-      expect(url).toBe('/proxy/annonars/genes/info?hgnc-id=BRCA1')
-      expect(options.method).toBe('GET')
-      return Promise.resolve({
-        json: () => Promise.resolve({ gene: 'info' })
-      })
-    }
-    globalThis.fetch = mockFetch
+    fetchMocker.mockResponseOnce(JSON.stringify(BRCA1geneInfo))
 
     const client = new AnnonarsClient()
     const result = await client.fetchGeneInfo('BRCA1')
-
-    expect(result).toEqual({ gene: 'info' })
+    expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1geneInfo))
   })
 
-  it.fails('fails to fetch gene info with POST', async () => {
-    const mockFetch: any = (url: string, options: any) => {
-      expect(url).toBe('/proxy/annonars/genes/info')
-      expect(options.method).toBe('POST')
-      return Promise.resolve({
-        json: () => Promise.resolve({ gene: 'info' })
-      })
-    }
-    globalThis.fetch = mockFetch
-
-    const client = new AnnonarsClient()
-    const result = await client.fetchGeneInfo('BRCA1')
-
-    expect(result).toEqual({ gene: 'info' })
-  })
-
-  it.fails('fails to fetch gene info with wrong hgnc-id', async () => {
-    const mockFetch: any = (url: string, options: any) => {
-      expect(url).toBe('/proxy/annonars/genes/info?hgnc-id=BRCA1')
-      expect(options.method).toBe('GET')
-      return Promise.resolve({
-        json: () => Promise.resolve({ gene: 'info' })
-      })
-    }
-    globalThis.fetch = mockFetch
+  it('fails to fetch gene info with wrong hgnc-id', async () => {
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('hgnc-id=BRCA1')) {
+        return Promise.resolve(JSON.stringify(BRCA1geneInfo))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
 
     const client = new AnnonarsClient()
     const result = await client.fetchGeneInfo('123')
-
-    expect(result).toEqual({ gene: 'info' })
+    expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 })

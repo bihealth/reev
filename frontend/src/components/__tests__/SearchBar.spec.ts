@@ -2,9 +2,11 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
+
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+
 import SearchBar from '../SearchBar.vue'
 
 const vuetify = createVuetify({
@@ -21,21 +23,25 @@ router.push = vi.fn()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
-describe('SearchBar.vue', () => {
-  it('renders the search bar with the correct default props', () => {
-    const wrapper = mount(
-      {
-        template: '<v-app><SearchBar /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router],
-          components: {
-            SearchBar
-          }
+const makeWrapper = () => {
+  return mount(
+    {
+      template: '<v-app><SearchBar /></v-app>'
+    },
+    {
+      global: {
+        plugins: [vuetify, router],
+        components: {
+          SearchBar
         }
       }
-    )
+    }
+  )
+}
+
+describe('SearchBar.vue', () => {
+  it('renders the search bar with the correct default props', () => {
+    const wrapper = makeWrapper()
 
     const textField = wrapper.find('.v-text-field')
     const select = wrapper.find('.v-select')

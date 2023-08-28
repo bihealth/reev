@@ -2,11 +2,14 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
+
 import { createTestingPinia } from '@pinia/testing'
 import { useGeneInfoStore } from '@/stores/geneInfo'
+
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+
 import HeaderDetailPage from '../HeaderDetailPage.vue'
 import { StoreState } from '@/stores/geneInfo'
 
@@ -24,6 +27,20 @@ router.push = vi.fn()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
+const makeWrapper = () => {
+  return mount(
+    { template: '<v-app><HeaderDetailPage /></v-app>' },
+    {
+      global: {
+        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+        components: {
+          HeaderDetailPage
+        }
+      }
+    }
+  )
+}
+
 describe('HeaderDetailPage', async () => {
   it('renders the gene symbol and nav links', () => {
     const geneData = {
@@ -38,19 +55,7 @@ describe('HeaderDetailPage', async () => {
       }
     }
 
-    const wrapper = mount(
-      {
-        template: '<v-app><HeaderDetailPage /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-          components: {
-            HeaderDetailPage
-          }
-        }
-      }
-    )
+    const wrapper = makeWrapper()
 
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
@@ -71,19 +76,7 @@ describe('HeaderDetailPage', async () => {
     store.geneSymbol = null
     store.geneInfo = null
 
-    const wrapper = mount(
-      {
-        template: '<v-app><HeaderDetailPage /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-          components: {
-            HeaderDetailPage
-          }
-        }
-      }
-    )
+    const wrapper = makeWrapper()
 
     expect(router.push).toHaveBeenCalled()
   })

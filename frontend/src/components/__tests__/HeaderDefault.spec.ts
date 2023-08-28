@@ -1,12 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import HeaderDefault from '../HeaderDefault.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import { routes } from '@/router'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
+
+import HeaderDefault from '../HeaderDefault.vue'
 
 const vuetify = createVuetify({
   components,
@@ -22,21 +23,25 @@ router.push = vi.fn()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
-describe('HeaderDefault.vue', () => {
-  it('renders the logo and title', () => {
-    const wrapper = mount(
-      {
-        template: '<v-app><HeaderDefault /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router],
-          components: {
-            HeaderDefault
-          }
+const makeWrapper = () => {
+  return mount(
+    {
+      template: '<v-app><HeaderDefault /></v-app>'
+    },
+    {
+      global: {
+        plugins: [vuetify, router],
+        components: {
+          HeaderDefault
         }
       }
-    )
+    }
+  )
+}
+
+describe('HeaderDefault.vue', () => {
+  it('renders the logo and title', () => {
+    const wrapper = makeWrapper()
 
     const logo = wrapper.find('#logo')
     const title = wrapper.find('a[href="/"]')
@@ -45,19 +50,7 @@ describe('HeaderDefault.vue', () => {
   })
 
   it('renders the navigation links', () => {
-    const wrapper = mount(
-      {
-        template: '<v-app><HeaderDefault /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router],
-          components: {
-            HeaderDefault
-          }
-        }
-      }
-    )
+    const wrapper = makeWrapper()
 
     const aboutLink = wrapper.find('#about')
     const contactLink = wrapper.find('#contact')

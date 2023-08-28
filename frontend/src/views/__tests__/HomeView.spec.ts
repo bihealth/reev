@@ -2,11 +2,14 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
+
 import { createTestingPinia } from '@pinia/testing'
 import { useGeneInfoStore } from '@/stores/geneInfo'
+
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+
 import HomeView from '../HomeView.vue'
 import { StoreState } from '@/stores/geneInfo'
 
@@ -24,34 +27,37 @@ router.push = vi.fn()
 
 global.ResizeObserver = require('resize-observer-polyfill')
 
-describe('HomeView', async () => {
-  it('renders the header', () => {
-    const geneData = {
-      storeState: 'active',
-      geneSymbol: 'BRCA1',
-      geneInfo: {
-        symbol: 'BRCA1',
-        name: 'Test Gene',
-        hgncId: '12345',
-        ensemblId: 'ENSG00000000000001',
-        entrezId: '12345'
-      }
-    }
+const geneData = {
+  storeState: 'active',
+  geneSymbol: 'BRCA1',
+  geneInfo: {
+    symbol: 'BRCA1',
+    name: 'Test Gene',
+    hgncId: '12345',
+    ensemblId: 'ENSG00000000000001',
+    entrezId: '12345'
+  }
+}
 
-    const wrapper = mount(
-      {
-        template: '<v-app><HomeView /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-          components: {
-            HomeView
-          }
+const makeWrapper = () => {
+  return mount(
+    {
+      template: '<v-app><HomeView /></v-app>'
+    },
+    {
+      global: {
+        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+        components: {
+          HomeView
         }
       }
-    )
+    }
+  )
+}
 
+describe('HomeView', async () => {
+  it('renders the header', () => {
+    const wrapper = makeWrapper()
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
@@ -66,32 +72,7 @@ describe('HomeView', async () => {
   })
 
   it('renders the search bar', () => {
-    const geneData = {
-      storeState: 'active',
-      geneSymbol: 'BRCA1',
-      geneInfo: {
-        symbol: 'BRCA1',
-        name: 'Test Gene',
-        hgncId: '12345',
-        ensemblId: 'ENSG00000000000001',
-        entrezId: '12345'
-      }
-    }
-
-    const wrapper = mount(
-      {
-        template: '<v-app><HomeView /></v-app>'
-      },
-      {
-        global: {
-          plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-          components: {
-            HomeView
-          }
-        }
-      }
-    )
-
+    const wrapper = makeWrapper()
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
