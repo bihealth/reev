@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
@@ -9,7 +9,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import GeneDetailView from '../GeneDetailView.vue'
 import { StoreState } from '@/stores/geneInfo'
-import { before, beforeEach } from 'node:test'
+import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 
 const vuetify = createVuetify({
   components,
@@ -26,27 +26,22 @@ router.push = vi.fn()
 global.ResizeObserver = require('resize-observer-polyfill')
 
 describe('GeneDetailView', async () => {
-  beforeEach(() => {
-    createTestingPinia({ createSpy: vi.fn() })
-  })
-  it.skip('renders the header', () => {
+  it('renders the header', () => {
     const geneData = {
       storeState: 'active',
       geneSymbol: 'BRCA1',
-      geneInfo: {
-        genes: {
-          BRCA1: {
-            symbol: 'BRCA1',
-            name: 'Test Gene',
-            hgncId: '12345',
-            ensemblId: 'ENSG00000000000001',
-            entrezId: '12345'
-          }
-        }
-      }
+      geneInfo: BRCA1geneInfo
     }
 
-    const store = useGeneInfoStore()
+    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const store = useGeneInfoStore(pinia)
+    const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
+      store.storeState = StoreState.Active
+      store.geneSymbol = geneSymbol
+      store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+    })
+    store.loadData = mockLoadData
+
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
@@ -56,8 +51,11 @@ describe('GeneDetailView', async () => {
         template: '<v-app><GeneDetailView /></v-app>'
       },
       {
+        props: {
+          searchTerm: 'BRCA1'
+        },
         global: {
-          plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+          plugins: [vuetify, router, pinia],
           components: {
             GeneDetailView
           }
@@ -73,26 +71,36 @@ describe('GeneDetailView', async () => {
     expect(contactLink.exists()).toBe(true)
   })
 
-  it.skip('renders the search bar', () => {
+  it('renders info-cards and navigation drawer', () => {
     const geneData = {
       storeState: 'active',
       geneSymbol: 'BRCA1',
-      geneInfo: {
-        symbol: 'BRCA1',
-        name: 'Test Gene',
-        hgncId: '12345',
-        ensemblId: 'ENSG00000000000001',
-        entrezId: '12345'
-      }
+      geneInfo: BRCA1geneInfo
     }
+
+    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const store = useGeneInfoStore(pinia)
+    const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
+      store.storeState = StoreState.Active
+      store.geneSymbol = geneSymbol
+      store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+    })
+    store.loadData = mockLoadData
+
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const wrapper = mount(
       {
         template: '<v-app><GeneDetailView /></v-app>'
       },
       {
+        props: {
+          searchTerm: 'BRCA1'
+        },
         global: {
-          plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+          plugins: [vuetify, router, pinia],
           components: {
             GeneDetailView
           }
@@ -100,16 +108,25 @@ describe('GeneDetailView', async () => {
       }
     )
 
-    const store = useGeneInfoStore()
-    store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
-    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
-
-    const textField = wrapper.find('.v-text-field')
-    const select = wrapper.find('.v-select')
-    const searchButton = wrapper.find('#search')
-    expect(textField.exists()).toBe(true)
-    expect(select.exists()).toBe(true)
-    expect(searchButton.exists()).toBe(true)
+    const navigationDrawer = wrapper.find('.v-navigation-drawer')
+    const hgnc = wrapper.find('#hgnc')
+    const constraintsScores = wrapper.find('#constraints-scores')
+    const ncbiSummary = wrapper.find('#ncbi-summary')
+    const alternativeIdentifiers = wrapper.find('#alternative-identifiers')
+    const externalResources = wrapper.find('#external-resources')
+    const diseaseAnnotations = wrapper.find('#disease-annotation')
+    const acmgList = wrapper.find('#acmg-list')
+    const geneRifs = wrapper.find('#gene-rifs')
+    const locusSpecificDatabases = wrapper.find('#locus-specific-databases')
+    expect(navigationDrawer.exists()).toBe(true)
+    expect(hgnc.exists()).toBe(true)
+    expect(constraintsScores.exists()).toBe(true)
+    expect(ncbiSummary.exists()).toBe(true)
+    expect(alternativeIdentifiers.exists()).toBe(true)
+    expect(externalResources.exists()).toBe(true)
+    expect(diseaseAnnotations.exists()).toBe(true)
+    expect(acmgList.exists()).toBe(true)
+    expect(geneRifs.exists()).toBe(true)
+    expect(locusSpecificDatabases.exists()).toBe(true)
   })
 })
