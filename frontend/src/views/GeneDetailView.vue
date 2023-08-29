@@ -34,11 +34,22 @@ const loadDataToStore = async () => {
 // When the component is mounted or the search term is changed through
 // the router then we need to fetch the gene information from the backend
 // through the store.
-
 onMounted(loadDataToStore)
 
 watch(() => props.searchTerm, loadDataToStore)
 watch(() => route.hash, scrollToSection)
+
+// If geneInfoStore.storeState is StoreState.Error then redirect to the
+// home page.
+watch(
+  () => geneInfoStore.storeState,
+  (storeState) => {
+    if (storeState == StoreState.Error) {
+      geneInfoStore.clearData()
+      router.push({ name: 'home' })
+    }
+  }
+)
 
 const SECTIONS = [
   { id: 'hgnc', title: 'HGNC' },

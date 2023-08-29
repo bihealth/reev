@@ -71,5 +71,8 @@ describe('SearchBar.vue', () => {
     const searchButton = wrapper.find('#search') as any
     expect(searchButton.exists()).toBe(true)
     await searchButton.trigger('click')
+    await searchButton.trigger('click')
+    expect(wrapper.emitted()).toHaveProperty('click')
+    expect(wrapper.emitted('click')).toHaveLength(2)
   })
 })
