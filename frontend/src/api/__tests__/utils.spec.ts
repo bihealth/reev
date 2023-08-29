@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 
-import { roundIt } from '../utils'
+import { roundIt, search } from '../utils'
 
 describe('roundIt method', () => {
   it('should round a positive value with default digits', () => {
@@ -31,5 +31,22 @@ describe('roundIt method', () => {
   it('should handle negative value', () => {
     const result = roundIt(-10.12345)
     expect(result).toBe('<abbr title="-10.12345">-10.12</abbr>')
+  })
+})
+
+describe('search method', () => {
+  it('should return route location if match', () => {
+    const result = search('BRCA1')
+    expect(result).toEqual({
+      name: 'gene',
+      params: {
+        searchTerm: 'BRCA1'
+      }
+    })
+  })
+
+  it.skip('should return null if no match', () => {
+    const result = search('foo')
+    expect(result).toBe(null)
   })
 })

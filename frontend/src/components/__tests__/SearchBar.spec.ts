@@ -60,12 +60,12 @@ describe('SearchBar.vue', () => {
   it('correctly emits the search event', async () => {
     const wrapper = makeWrapper()
 
-    const textField = wrapper.find('input[type="text"]') as any
+    const textField = wrapper.find('#search-term') as any
     expect(textField.exists()).toBe(true)
     await textField.setValue('test')
     expect(textField.element.value).toBe('test')
 
-    const select = wrapper.find('#input-2') as any
+    const select = wrapper.find('#genome-release') as any
     expect(select.exists()).toBe(true)
 
     const searchButton = wrapper.find('#search') as any

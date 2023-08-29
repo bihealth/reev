@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router'
 
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import { search } from '@/api/utils'
 
 const router = useRouter()
 
@@ -29,37 +30,14 @@ const useExample = (example: string) => {
   searchTerm.value = example
 }
 
-interface RouteLocationFragment {
-  name: string
-  params?: any
-}
-
-type RouteLoctionBuilder = () => RouteLocationFragment
-
-// We iterate the regexps in the `Map` and will use the route from the
-// first match.
-const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
-  [
-    /^.*$/,
-    (): RouteLocationFragment => ({
-      name: 'gene',
-      params: {
-        searchTerm: searchTerm.value
-      }
-    })
-  ]
-]
-
 const performSearch = async () => {
-  for (const [regexp, getRoute] of SEARCH_REGEXPS) {
-    if (regexp.test(searchTerm.value)) {
-      const routeLocation = getRoute()
-      console.log(`term {searchTerm.value} matched {regexp}, route is`, routeLocation)
-      router.push(routeLocation)
-      return
-    }
+  const routeLocation: any = search(searchTerm.value)
+  console.log(routeLocation)
+  if (routeLocation) {
+    router.push(routeLocation)
+  } else {
+    console.error('no route found for {searchTerm.value}')
   }
-  console.error('no route found for {searchTerm.value}')
 }
 </script>
 
@@ -74,7 +52,7 @@ const performSearch = async () => {
 
     <v-row>
       <v-col>
-        <h2>Example Queries:</h2>
+        <h2 style="margin-top: 40px">Example Queries:</h2>
         <div class="examples">
           <div
             class="example"
@@ -92,6 +70,7 @@ const performSearch = async () => {
 
 <style scoped>
 .examples {
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
 }

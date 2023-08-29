@@ -21,32 +21,49 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <v-row>
-    <v-col cols="12" md="7" class="search-container">
-      <v-text-field
-        :model-value="props.searchTerm"
-        @input="$emit('update:searchTerm', $event.target.value)"
-        label="Enter search term"
-      ></v-text-field>
-    </v-col>
-    <v-col cols="12" md="2">
+  <v-toolbar floating id="search-bar">
+    <v-text-field
+      variant="outlined"
+      hide-details
+      single-line
+      :model-value="props.searchTerm"
+      @input="$emit('update:searchTerm', $event.target.value)"
+      label="Enter search term"
+      id="search-term"
+    ></v-text-field>
+    <div>
       <v-select
+        variant="outlined"
+        hide-details
+        single-line
         :model-value="props.genomeRelease"
         @update:model-value="$emit('update:genomeRelease', $event)"
         :items="props.genomeReleaseChoices"
         item-title="label"
         item-value="value"
         label="Genome Release"
+        id="genome-release"
       ></v-select>
-    </v-col>
-    <v-col cols="12" md="3">
-      <v-btn
-        id="search"
-        @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
-        color="primary"
-      >
-        search
-      </v-btn>
-    </v-col>
-  </v-row>
+    </div>
+
+    <v-btn
+      id="search"
+      @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
+      color="primary"
+    >
+      <v-icon>mdi-magnify</v-icon>
+      search
+    </v-btn>
+  </v-toolbar>
 </template>
+
+<style scoped>
+#search-bar {
+  background-color: white;
+  padding: 0 10px;
+}
+
+#search {
+  margin-left: 10px;
+}
+</style>
