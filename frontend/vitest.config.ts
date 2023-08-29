@@ -7,6 +7,7 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      setupFiles: ['./src/vitest.setup.ts'],
       deps: {
         inline: ['vuetify']
       },

@@ -1,0 +1,1 @@
+globalThis.ResizeObserver = require('resize-observer-polyfill')

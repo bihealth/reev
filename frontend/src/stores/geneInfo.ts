@@ -25,11 +25,6 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
   // The retrieved gene data
   const geneInfo = ref<any | null>(null)
 
-  // Load stored geneInfo from localStorage when the store initializes
-  if (localStorage.getItem('geneInfo')) {
-    geneInfo.value = JSON.parse(localStorage.getItem('geneInfo')!)
-  }
-
   function clearData() {
     storeState.value = StoreState.Initial
     geneSymbol.value = null

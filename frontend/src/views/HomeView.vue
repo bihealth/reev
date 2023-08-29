@@ -54,7 +54,7 @@ const performSearch = async () => {
   for (const [regexp, getRoute] of SEARCH_REGEXPS) {
     if (regexp.test(searchTerm.value)) {
       const routeLocation = getRoute()
-      console.log(`term {searchTerm.value} matched {regexp}, route is`, routeLocation)
+      console.log(`term ${searchTerm.value} matched ${regexp}, route is`, routeLocation)
       router.push(routeLocation)
       return
     }

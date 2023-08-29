@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -40,6 +41,14 @@ const makeWrapper = () => {
 }
 
 describe('SearchBar.vue', () => {
+  it("xx", async () => {
+    const wrapper = makeWrapper()
+    const searchBar = wrapper.findComponent(SearchBar)
+    await searchBar.setValue("HGNC:1100", "searchTerm")
+    await searchBar.setValue("grch37", "genomeRelease")
+    await nextTick()
+  })
+
   it('renders the search bar with the correct default props', () => {
     const wrapper = makeWrapper()
 

@@ -1,6 +1,7 @@
+import { nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type Router } from 'vue-router'
 import { routes } from '@/router'
 
 import { createTestingPinia } from '@pinia/testing'
@@ -11,21 +12,13 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import HomeView from '../HomeView.vue'
+import SearchBar from '../../components/SearchBar.vue'
 import { StoreState } from '@/stores/geneInfo'
 
 const vuetify = createVuetify({
   components,
   directives
 })
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
-global.ResizeObserver = require('resize-observer-polyfill')
 
 const geneData = {
   storeState: 'active',
@@ -39,7 +32,7 @@ const geneData = {
   }
 }
 
-const makeWrapper = () => {
+const makeWrapper = (router: Router) => {
   return mount(
     {
       template: '<v-app><HomeView /></v-app>'
@@ -55,9 +48,16 @@ const makeWrapper = () => {
   )
 }
 
-describe('HomeView', async () => {
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
+  routes: routes
+})
+// Mock router push
+router.push = vi.fn()
+
+describe('HomeView with mocked router', async () => {
   it('renders the header', () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(router)
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
@@ -72,7 +72,7 @@ describe('HomeView', async () => {
   })
 
   it('renders the search bar', () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(router)
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
@@ -87,7 +87,7 @@ describe('HomeView', async () => {
   })
 
   it('renders example search terms', () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(router)
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
@@ -97,5 +97,28 @@ describe('HomeView', async () => {
     const exampleTerms = wrapper.findAll('.example')
     expect(subtitle.exists()).toBe(true)
     expect(exampleTerms.length).toBe(6)
+  })
+})
+
+describe('HomeView with real router', async () => {
+  it('renders correctly uses the router', async () => {
+    const wrapper = makeWrapper(router)
+    const store = useGeneInfoStore()
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+
+    // search bar value is updated to "HGNC:1100"
+    const searchBar = wrapper.findComponent(SearchBar)
+    await searchBar.setValue("HGNC:1100", "searchTerm")
+
+    // press search
+    const button = wrapper.findComponent('#search') as any
+    await button.trigger("click")
+
+    await nextTick()
+
+    expect(router.push).toHaveBeenCalledOnce()
+    expect(router.push).toHaveBeenCalledWith({"name": "gene", "params": {"searchTerm": "HGNC:1100"}})
   })
 })

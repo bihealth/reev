@@ -24,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
   <v-row>
     <v-col cols="12" md="7" class="search-container">
       <v-text-field
+        class="the-search-bar"
         :model-value="props.searchTerm"
         @input="$emit('update:searchTerm', $event.target.value)"
         label="Enter search term"
@@ -50,3 +51,5 @@ const props = withDefaults(defineProps<Props>(), {
     </v-col>
   </v-row>
 </template>
+
+<!-- (GRCh37) 17:41197728:G:T -->
