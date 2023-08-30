@@ -68,6 +68,13 @@ describe('HeaderDetailPage', async () => {
     expect(contactLink.exists()).toBe(true)
   })
 
+  it('renders the search bar', () => {
+    const wrapper = makeWrapper()
+
+    const search = wrapper.find('#search')
+    expect(search.exists()).toBe(true)
+  })
+
   it('redirects if gene data is null', async () => {
     const store = useGeneInfoStore()
     store.storeState = StoreState.Initial

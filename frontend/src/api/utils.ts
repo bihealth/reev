@@ -15,3 +15,41 @@ export const roundIt = (value: number, digits: number = 2, label?: string): stri
   const useLabel = label ? `${label}: ` : ''
   return `<abbr title="${useLabel}${value}">${roundedValue}</abbr>`
 }
+
+/**
+ * Take a `searchTerm` and return a route location that can be used to navigate to
+ * the correct page.
+ *
+ * @param searchTerm The search term to use.
+ */
+export const search = (searchTerm: string) => {
+  interface RouteLocationFragment {
+    name: string
+    params?: any
+  }
+
+  type RouteLoctionBuilder = () => RouteLocationFragment
+
+  // We iterate the regexps in the `Map` and will use the route from the
+  // first match.
+  const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
+    [
+      /^.*$/,
+      (): RouteLocationFragment => ({
+        name: 'gene',
+        params: {
+          searchTerm: searchTerm
+        }
+      })
+    ]
+  ]
+
+  for (const [regexp, getRoute] of SEARCH_REGEXPS) {
+    if (regexp.test(searchTerm)) {
+      const routeLocation = getRoute()
+      console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)
+      return routeLocation
+    }
+  }
+  return null
+}
