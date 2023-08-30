@@ -26,8 +26,6 @@ const router = createRouter({
 // Mock router push
 router.push = vi.fn()
 
-global.ResizeObserver = require('resize-observer-polyfill')
-
 const geneData = {
   storeState: 'active',
   geneSymbol: 'BRCA1',

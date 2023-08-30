@@ -22,8 +22,6 @@ const router = createRouter({
 // Mock router push
 router.push = vi.fn()
 
-global.ResizeObserver = require('resize-observer-polyfill')
-
 const makeWrapper = () => {
   return mount(
     {
@@ -41,14 +39,6 @@ const makeWrapper = () => {
 }
 
 describe('SearchBar.vue', () => {
-  it("xx", async () => {
-    const wrapper = makeWrapper()
-    const searchBar = wrapper.findComponent(SearchBar)
-    await searchBar.setValue("HGNC:1100", "searchTerm")
-    await searchBar.setValue("grch37", "genomeRelease")
-    await nextTick()
-  })
-
   it('renders the search bar with the correct default props', () => {
     const wrapper = makeWrapper()
 
@@ -66,7 +56,7 @@ describe('SearchBar.vue', () => {
     expect(searchButton.html()).toMatch('search')
   })
 
-  it('correctly emits the search event', async () => {
+  it('correctly inputs data', async () => {
     const wrapper = makeWrapper()
 
     const textField = wrapper.find('input[type="text"]') as any
@@ -77,11 +67,30 @@ describe('SearchBar.vue', () => {
     const select = wrapper.find('#input-2') as any
     expect(select.exists()).toBe(true)
 
-    const searchButton = wrapper.find('#search') as any
+    const searchButton = wrapper.findComponent('#search') as any
     expect(searchButton.exists()).toBe(true)
     await searchButton.trigger('click')
+    await nextTick()
     await searchButton.trigger('click')
+    await nextTick()
     expect(wrapper.emitted()).toHaveProperty('click')
     expect(wrapper.emitted('click')).toHaveLength(2)
+  })
+
+  it('correctly emits search', async () => {
+    const wrapper = makeWrapper()
+
+    // search bar values are updated
+    const searchBar = wrapper.findComponent(SearchBar)
+    expect(searchBar.exists()).toBe(true)
+    await searchBar.setValue('HGNC:1100', 'searchTerm')
+    await searchBar.setValue('grch37', 'genomeRelease')
+    expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
+    expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
+    const searchButton = searchBar.findComponent('#search') as any
+    expect(searchButton.exists()).toBe(true)
+    await searchButton.trigger('click')
+    await nextTick()
+    expect(searchBar.emitted()).toHaveProperty('clickSearch')
   })
 })

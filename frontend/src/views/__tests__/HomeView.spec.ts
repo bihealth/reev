@@ -110,15 +110,15 @@ describe('HomeView with real router', async () => {
 
     // search bar value is updated to "HGNC:1100"
     const searchBar = wrapper.findComponent(SearchBar)
-    await searchBar.setValue("HGNC:1100", "searchTerm")
+    await searchBar.setValue('HGNC:1100', 'searchTerm')
 
     // press search
     const button = wrapper.findComponent('#search') as any
-    await button.trigger("click")
+    await button.trigger('click')
 
     await nextTick()
 
     expect(router.push).toHaveBeenCalledOnce()
-    expect(router.push).toHaveBeenCalledWith({"name": "gene", "params": {"searchTerm": "HGNC:1100"}})
+    expect(router.push).toHaveBeenCalledWith({ name: 'gene', params: { searchTerm: 'HGNC:1100' } })
   })
 })

@@ -21,8 +21,6 @@ const router = createRouter({
 // Mock router push
 router.push = vi.fn()
 
-global.ResizeObserver = require('resize-observer-polyfill')
-
 const makeWrapper = () => {
   return mount(
     {
