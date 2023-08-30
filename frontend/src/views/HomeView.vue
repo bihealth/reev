@@ -59,7 +59,6 @@ const performSearch = async () => {
       return
     }
   }
-  console.error('no route found for {searchTerm.value}')
 }
 </script>
 
