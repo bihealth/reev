@@ -19,7 +19,7 @@ coverage:
 # --------------
 # which folders/files to ignore
 ignore:
-  - frontend/src/roter/index.ts
+  - "frontend/src/roter/**/*"
 
 # Pull request comments:
 # ----------------------
