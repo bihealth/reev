@@ -3,12 +3,12 @@ import sys
 
 import httpx
 from dotenv import load_dotenv
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import JSONResponse, RedirectResponse, Response, StreamingResponse
+from starlette.responses import RedirectResponse, Response, StreamingResponse
 
 # Load environment
 env = os.environ
@@ -52,7 +52,7 @@ async def reverse_proxy(request: Request) -> Response:
     backend_url = None
 
     if url.path.startswith("/proxy/annonars"):
-        backend_url = BACKEND_PREFIX_ANNONARS + url.path.replace("/proxy/annonars", "/annos")
+        backend_url = BACKEND_PREFIX_ANNONARS + url.path.replace("/proxy/annonars", "")
     elif url.path.startswith("/proxy/mehari"):
         backend_url = BACKEND_PREFIX_MEHARI + url.path.replace("/proxy/mehari", "")
     elif url.path.startswith("/proxy/viguno"):

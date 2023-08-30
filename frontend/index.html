@@ -11,3 +11,39 @@
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
+
+<style>
+  #app {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Ensure the content takes up at least the full viewport height */
+    font-weight: normal;
+  }
+  
+  a,
+  .green {
+    text-decoration: none;
+    color: rgb(111, 100, 210);
+    transition: 0.4s;
+  }
+  
+  @media (min-width: 1024px) {
+    body {
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
+    }
+  
+    #app {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%; /* Take up the full available width */
+      max-width: none; /* Remove max-width to utilize full width */
+      align-items: center; /* Center horizontally */
+    }
+  }
+  </style>

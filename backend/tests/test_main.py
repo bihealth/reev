@@ -2,7 +2,6 @@ import typing
 
 import pytest
 from app import main
-from requests_mock import Mocker
 from starlette.testclient import TestClient
 
 #: Host name to use for the mocked backend.
@@ -18,6 +17,7 @@ client = TestClient(main.app)
 @pytest.fixture
 def non_mocked_hosts() -> typing.List[str]:
     """List of hosts that should not be mocked.
+
     We read the host from ``client``.
     """
     return [client._base_url.host]
@@ -28,7 +28,7 @@ async def test_proxy_annonars(monkeypatch, httpx_mock):
     """Test proxying to annonars backend."""
     monkeypatch.setattr(main, "BACKEND_PREFIX_ANNONARS", f"http://{MOCKED_BACKEND_HOST}")
     httpx_mock.add_response(
-        url=f"http://{MOCKED_BACKEND_HOST}/annos/{MOCKED_URL_TOKEN}",
+        url=f"http://{MOCKED_BACKEND_HOST}/{MOCKED_URL_TOKEN}",
         method="GET",
         text="Mocked response",
     )
