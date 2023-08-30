@@ -1,2 +1,8 @@
-declare const require: any
-globalThis.ResizeObserver = require('resize-observer-polyfill')
+// Fix undefined ResizeObserver error
+class ResizeObserverStub {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+window.ResizeObserver = window.ResizeObserver || ResizeObserverStub
