@@ -1,0 +1,21 @@
+codecov:
+  bot: this-is-codecov-bot
+comment:
+  require_changes: true
+coverage:
+  status:
+    project:
+      default:
+        target: 70%
+        threshold: 30%
+        base: auto
+        flags:
+          - frontend
+  range: 70..100
+  round: down
+  precision: 2
+  parsers:
+    javascript:
+      enable_partials: no
+ignore:
+  - "frontend/src/roter/index.ts"
