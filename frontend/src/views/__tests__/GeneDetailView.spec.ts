@@ -80,6 +80,8 @@ describe('GeneDetailView', async () => {
     const wrapper = makeWrapper()
 
     const navigationDrawer = wrapper.find('.v-navigation-drawer')
+    expect(navigationDrawer.exists()).toBe(true)
+
     const hgnc = wrapper.find('#hgnc')
     const constraintsScores = wrapper.find('#constraints-scores')
     const ncbiSummary = wrapper.find('#ncbi-summary')
@@ -89,7 +91,6 @@ describe('GeneDetailView', async () => {
     const acmgList = wrapper.find('#acmg-list')
     const geneRifs = wrapper.find('#gene-rifs')
     const locusSpecificDatabases = wrapper.find('#locus-specific-databases')
-    expect(navigationDrawer.exists()).toBe(true)
     expect(hgnc.exists()).toBe(true)
     expect(constraintsScores.exists()).toBe(true)
     expect(ncbiSummary.exists()).toBe(true)
@@ -99,5 +100,8 @@ describe('GeneDetailView', async () => {
     expect(acmgList.exists()).toBe(true)
     expect(geneRifs.exists()).toBe(true)
     expect(locusSpecificDatabases.exists()).toBe(true)
+
+    const launchImage = wrapper.findAll('.mdi-launch')
+    expect(launchImage.length).toBe(14)
   })
 })

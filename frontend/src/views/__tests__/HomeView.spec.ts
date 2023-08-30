@@ -98,9 +98,22 @@ describe('HomeView with mocked router', async () => {
     expect(subtitle.exists()).toBe(true)
     expect(exampleTerms.length).toBe(6)
   })
-})
 
-describe('HomeView with real router', async () => {
+  it('uses example by click', async () => {
+    const wrapper = makeWrapper(router)
+    const store = useGeneInfoStore()
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+
+    const exampleTerm = wrapper.find('.example')
+    expect(exampleTerm.exists()).toBe(true)
+    expect(exampleTerm.text()).toBe('BRCA1')
+    await exampleTerm.trigger('click')
+    await nextTick()
+    expect(store.geneSymbol).toBe('BRCA1')
+  })
+
   it('renders correctly uses the router', async () => {
     const wrapper = makeWrapper(router)
     const store = useGeneInfoStore()
