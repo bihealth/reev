@@ -74,15 +74,4 @@ describe('HeaderDetailPage', async () => {
     const search = wrapper.find('#search')
     expect(search.exists()).toBe(true)
   })
-
-  it('redirects if gene data is null', async () => {
-    const store = useGeneInfoStore()
-    store.storeState = StoreState.Initial
-    store.geneSymbol = null
-    store.geneInfo = null
-
-    makeWrapper()
-
-    expect(router.push).toHaveBeenCalled()
-  })
 })

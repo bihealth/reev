@@ -22,12 +22,11 @@ const routes = [
     component: ContactView
   },
   {
-    path: '/gene/:searchTerm',
+    path: '/gene/:searchTerm/:genomeRelease',
     name: 'gene',
     component: GeneDetailsView,
     props: (route: any) => {
-      // remark: the following line is not covered because we stub out the router
-      return { searchTerm: route.params.searchTerm }
+      return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
     }
   }
 ]

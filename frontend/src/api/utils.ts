@@ -22,7 +22,7 @@ export const roundIt = (value: number, digits: number = 2, label?: string): stri
  *
  * @param searchTerm The search term to use.
  */
-export const search = (searchTerm: string) => {
+export const search = (searchTerm: string, genomeRelease: string) => {
   interface RouteLocationFragment {
     name: string
     params?: any
@@ -38,7 +38,8 @@ export const search = (searchTerm: string) => {
       (): RouteLocationFragment => ({
         name: 'gene',
         params: {
-          searchTerm: searchTerm
+          searchTerm: searchTerm,
+          genomeRelease: genomeRelease
         }
       })
     ]

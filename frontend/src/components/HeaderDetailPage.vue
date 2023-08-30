@@ -1,37 +1,33 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useGeneInfoStore } from '@/stores/geneInfo'
 
 import SearchBar from '@/components/SearchBar.vue'
 import { search } from '@/api/utils'
 
+export interface Props {
+  searchTerm?: string
+  genomeRelease?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  searchTerm: '',
+  genomeRelease: 'grch37'
+})
+
 const router = useRouter()
 
-const geneInfoStore = useGeneInfoStore()
-
-const searchTerm = ref('')
-const genomeRelease = ref('grch37')
+const searchTermRef = ref(props.searchTerm)
+const genomeReleaseRef = ref(props.genomeRelease)
 
 const performSearch = async () => {
-  const routeLocation: any = search(searchTerm.value)
-  console.log(routeLocation)
+  const routeLocation: any = search(searchTermRef.value, genomeReleaseRef.value)
   if (routeLocation) {
     router.push(routeLocation)
   } else {
-    console.log(`no route found for ${searchTerm.value}`)
+    console.error(`no route found for ${searchTermRef.value}`)
   }
 }
-
-// Load props search term and genome release from local storage on mount
-onMounted(() => {
-  searchTerm.value = localStorage.getItem('searchTerm') || ''
-  genomeRelease.value = localStorage.getItem('genomeRelease') || 'grch37'
-
-  if (geneInfoStore.geneInfo === null) {
-    router.push({ name: 'home' })
-  }
-})
 </script>
 
 <template>
@@ -43,8 +39,8 @@ onMounted(() => {
     </v-toolbar-title>
     <SearchBar
       class="top-search-bar"
-      v-model:search-term="searchTerm"
-      v-model:genome-release="genomeRelease"
+      v-model:search-term="searchTermRef"
+      v-model:genome-release="genomeReleaseRef"
       @click-search="performSearch"
     />
     <v-spacer></v-spacer>
