@@ -23,7 +23,9 @@ const examples = [
   'HGNC:1100',
   'ENTREZ:1956',
   'UNIPROT:B7ZA85',
-  'CHROM:POS:REF:ALT'
+  'CHROM:POS:REF:ALT',
+  'chr17:41197728:G:T',
+  'NC_000017.10:g.41197728G>T'
 ]
 
 const useExample = (example: string) => {

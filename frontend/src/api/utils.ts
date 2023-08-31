@@ -34,6 +34,16 @@ export const search = (searchTerm: string, genomeRelease: string) => {
   // first match.
   const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
     [
+      /^chr\d+:\d+:[A-Z]:[A-Z]$/,
+      (): RouteLocationFragment => ({
+        name: 'variant',
+        params: {
+          searchTerm: searchTerm,
+          genomeRelease: genomeRelease
+        }
+      })
+    ],
+    [
       /^.*$/,
       (): RouteLocationFragment => ({
         name: 'gene',
@@ -53,4 +63,21 @@ export const search = (searchTerm: string, genomeRelease: string) => {
     }
   }
   return null
+}
+
+/**
+ * Take a query string and return an object with the chromosome, pos, reference and
+ * alternative value.
+ *
+ * @param query Incoming query string
+ */
+export const infoFromQuery = (query: string): any => {
+  const [chromosome, pos, reference, alternative, hgnc_id] = query.split(':')
+  return {
+    chromosome: chromosome,
+    pos: pos,
+    reference: reference,
+    alternative: alternative,
+    hgnc_id: hgnc_id
+  }
 }

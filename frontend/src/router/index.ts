@@ -3,7 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 import ContactView from '@/views/ContactView.vue'
-import GeneDetailsView from '@/views/GeneDetailView.vue'
+import GeneDetailView from '@/views/GeneDetailView.vue'
+import VariantDetailView from '@/views/VariantDetailView.vue'
 
 const routes = [
   {
@@ -24,7 +25,15 @@ const routes = [
   {
     path: '/gene/:searchTerm/:genomeRelease',
     name: 'gene',
-    component: GeneDetailsView,
+    component: GeneDetailView,
+    props: (route: any) => {
+      return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
+    }
+  },
+  {
+    path: '/variant/:searchTerm/:genomeRelease',
+    name: 'variant',
+    component: VariantDetailView,
     props: (route: any) => {
       return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
     }
