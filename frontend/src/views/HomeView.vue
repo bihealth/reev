@@ -24,7 +24,7 @@ const examples = [
   'ENTREZ:1956',
   'UNIPROT:B7ZA85',
   'CHROM:POS:REF:ALT',
-  'chr17:41197728:G:T',
+  'chr17:41197751:G:T',
   'NC_000017.10:g.41197728G>T'
 ]
 

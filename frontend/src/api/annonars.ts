@@ -13,10 +13,8 @@ export class AnnonarsClient {
 
   async fetchGeneInfo(hgncId: string): Promise<any> {
     const response = await fetch(`${this.apiBaseUrl}genes/info?hgnc_id=${hgncId}`, {
-      method: 'GET',
-      mode: 'no-cors'
+      method: 'GET'
     })
-    console.log(response.json())
     return await response.json()
   }
 
@@ -33,8 +31,7 @@ export class AnnonarsClient {
       `alternative=${alternative}`
 
     const response = await fetch(url, {
-      method: 'GET',
-      mode: 'no-cors'
+      method: 'GET'
     })
     return await response.json()
   }

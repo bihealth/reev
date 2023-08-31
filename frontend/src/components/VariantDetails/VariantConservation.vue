@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'
-import { separateIt as sepIt } from '@varfish/moreUtils'
+import { separateIt as sepIt } from '@/api/utils'
 
 const props = defineProps<{
   varAnnos: any
@@ -16,15 +16,15 @@ const ucscConservation = computed(() => {
 })
 
 const transcriptIds = computed(() => {
-  let res: string[] = ucscConservation.value.map(({ enst_id }) => enst_id)
+  let res: string[] = ucscConservation.value.map(({ enst_id }: any) => enst_id)
   res = [...new Set(res)]
   res.sort()
   return res
 })
 
-const consInfo = computed(() => {
+const consInfo: any = computed(() => {
   let seen = new Set()
-  let res = {}
+  let res: any = {}
   for (const { chromosome, enst_id, start, stop, alignment } of ucscConservation.value) {
     const key = `${enst_id}-${chromosome}-${enst_id}-${start}-${stop}`
     if (!seen.has(key)) {
@@ -37,13 +37,13 @@ const consInfo = computed(() => {
   }
 
   for (const key in res) {
-    res[key].sort((a, b) => a.start - b.start)
+    res[key].sort((a: any, b: any) => a.start - b.start)
   }
 
   return res
 })
 
-const selectedTranscript = ref(null)
+const selectedTranscript = ref('')
 
 const initSelectedTranscript = () => {
   if (transcriptIds.value?.length) {
@@ -65,7 +65,7 @@ onMounted(initSelectedTranscript)
     <div v-if="ucscConservation">
       <div class="float-right">
         <select v-model="selectedTranscript" class="form-control custom-select custom-select-sm">
-          <option v-for="transcript in transcriptIds" :value="transcript">
+          <option v-for="transcript in transcriptIds" :value="transcript" :key="transcript">
             {{ transcript }}
           </option>
         </select>

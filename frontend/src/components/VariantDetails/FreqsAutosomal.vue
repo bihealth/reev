@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { roundIt, separateIt as sep } from '@varfish/moreUtils'
+import { roundIt, separateIt as sep } from '@/api/utils'
 
 const props = defineProps<{
   smallVar: any
@@ -33,7 +33,7 @@ const bySex = computed(() => {
 })
 
 const byPop = computed(() => {
-  const res = {}
+  const res: any = {}
   for (const record of noCohort.value?.by_population ?? []) {
     res[record.population] = record
   }
@@ -55,7 +55,7 @@ const idKey = (token: string): string => {
   return `id-${props.dataset}-${token}`
 }
 
-const sexExpanded = ref({})
+const sexExpanded: any = ref({})
 </script>
 
 <template>
@@ -66,25 +66,25 @@ const sexExpanded = ref({})
         <template v-if="props.dataset === 'gnomad_genomes'"> gnomAD Genomes </template>
       </span>
       <a
-        v-if="smallVar.release == 'GRCh37'"
+        v-if="smallVar.genome_release == 'grch37'"
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
+        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
         target="_blank"
       >
-        <i-mdi-launch />
+        <v-icon>mdi-launch</v-icon>
         @gnomAD
       </a>
       <a
-        v-if="smallVar.release == 'GRCh38'"
+        v-if="smallVar.genome_release == 'grch38'"
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
+        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
         target="_blank"
       >
-        <i-mdi-launch />
+        <v-icon>mdi-launch</v-icon>
         @gnomAD
       </a>
     </div>
@@ -99,16 +99,16 @@ const sexExpanded = ref({})
         </tr>
       </thead>
       <tbody>
-        <template v-for="(label, key) of allPopLabels">
+        <template v-for="(label, key) of allPopLabels" :key="key">
           <template v-if="byPop[key]?.counts?.overall?.an">
             <tr>
               <td>
                 {{ label }}
                 <a @click.prevent="sexExpanded[key] = true" v-if="!sexExpanded[key]">
-                  <i-mdi-chevron-right />
+                  <v-icon>mdi-chevron-down</v-icon>
                 </a>
                 <a @click.prevent="sexExpanded[key] = false" v-else>
-                  <i-mdi-chevron-down />
+                  <v-icon>mdi-chevron-down</v-icon>
                 </a>
               </td>
               <td></td>
@@ -189,20 +189,20 @@ const sexExpanded = ref({})
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
-        v-if="smallVar.release == 'GRCh37'"
+        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
+        v-if="smallVar.genome_release == 'GRCh37'"
       >
-        <i-mdi-launch />
+        <v-icon>mdi-launch</v-icon>
         gnomAD
       </a>
       <a
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
-        v-if="smallVar.release == 'GRCh38'"
+        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
+        v-if="smallVar.genome_release == 'GRCh38'"
       >
-        <i-mdi-launch />
+        <v-icon>mdi-launch</v-icon>
         gnomAD
       </a>
     </div>

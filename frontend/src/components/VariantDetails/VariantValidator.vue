@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { VariantValidatorStates } from '@variants/enums'
+enum VariantValidatorStates {
+  Initial = 0,
+  Running = 1,
+  Done = 2
+}
 
 const props = defineProps<{
   smallVariant?: any
@@ -14,7 +18,7 @@ const queryVariantValidatorApi = async () => {
   variantValidatorResults.value = null
   variantValidatorState.value = VariantValidatorStates.Running
   const res = await fetch(
-    `/proxy/variantvalidator/${props.smallVariant.release}/` +
+    `/proxy/variantvalidator/${props.smallVariant.genome_release}/` +
       `${props.smallVariant.chromosome}-${props.smallVariant.start}-` +
       `${props.smallVariant.reference}-${props.smallVariant.alternative}` +
       `/all?content-type=application%2Fjson`
@@ -196,16 +200,16 @@ const queryVariantValidatorApi = async () => {
     </div>
     <div v-else-if="variantValidatorState === VariantValidatorStates.Running">
       <div class="alert alert-info">
-        <i-fa-solid-circle-notch class="spin" />
+        <v-icon class="spin">mdi-circle-outline</v-icon>
         <strong class="pl-2">Loading ...</strong>
       </div>
     </div>
     <div v-else>
       <div class="alert alert-secondary text-muted">
-        <i-fa-solid-info-circle />
+        <v-icon>mdi-information-outline</v-icon>
         Click&nbsp;
         <span class="badge badge-primary">
-          <i-fa-solid-cloud-upload-alt />
+          <v-icon>mdi-cloud-upload-outline</v-icon>
           Submit
         </span>
         to submit the variant to VariantValidator.org. Results will be displayed here.
@@ -214,7 +218,7 @@ const queryVariantValidatorApi = async () => {
     <div class="row">
       <div class="col pr-0 text-right">
         <button class="btn btn-primary" type="button" @click="queryVariantValidatorApi()">
-          <i-fa-solid-cloud-upload-alt />
+          <v-icon>mdi-cloud-upload-outline</v-icon>
           Submit
         </button>
       </div>

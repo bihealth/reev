@@ -16,7 +16,7 @@ const props = defineProps<{ txCsq: any }>()
         </tr>
       </thead>
       <tbody>
-        <tr v-for="txCsq in props.txCsq">
+        <tr v-for="txCsq in props.txCsq" :key="txCsq">
           <td>{{ txCsq['gene-symbol'] }}</td>
           <td>
             {{ txCsq['feature-id'] }}

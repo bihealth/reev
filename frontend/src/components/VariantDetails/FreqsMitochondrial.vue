@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt, isVariantMtHomopolymer } from '@varfish/moreUtils'
+import { roundIt, isVariantMtHomopolymer } from '@/api/utils'
 
 const props = defineProps<{
   smallVar: any
@@ -29,7 +29,7 @@ const gnomadMtDna = computed(() => {
   <div>
     <div v-if="!isVariantMtHomopolymer(props.smallVar)" class="text-muted pb-3">
       <small>
-        <i-mdi-alert-circle-outline />
+        <v-icon>mdi-alert-circle-outline</v-icon>
         Variant in homopolymeric region
       </small>
     </div>

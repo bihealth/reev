@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt } from '@varfish/moreUtils'
+import { roundIt } from '@/api/utils'
 
-import ScoreDisplay from '@varfish/components/ScoreDisplay.vue'
+import ScoreDisplay from '@/components/ScoreDisplay.vue'
 
-const props = defineProps<{
+export interface Props {
   smallVar: any
   varAnnos: any
-  umdPredictorApiToken: string
-}>()
+  umdPredictorApiToken?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  umdPredictorApiToken: ''
+})
 
 const bestOf = (obj: any, keys: string[]) => {
   if (!obj) {
@@ -62,10 +66,10 @@ const siftScore = computed((): number | null =>
   decodeMultiDbnsfp(props.varAnnos?.dbnsfp?.SIFT_score)
 )
 
-const translatedSiftScore = computed((): number | null => {
+const translatedSiftScore = computed((): number => {
   const value = siftScore.value
   if (value === null) {
-    return null
+    return 0
   } else {
     return 1 - value
   }
@@ -75,10 +79,10 @@ const fathmmScore = computed((): number | null =>
   decodeMultiDbnsfp(props.varAnnos?.dbnsfp?.FATHMM_score)
 )
 
-const translatedFathmmScore = computed((): number | null => {
+const translatedFathmmScore = computed((): number => {
   const value = fathmmScore.value
   if (value === null) {
-    return null
+    return 0
   } else {
     return 10 - value
   }
@@ -106,7 +110,7 @@ const ucscLinkout = computed((): string => {
   if (!props.smallVar) {
     return '#'
   }
-  const db = props.smallVar.release === 'GRCh37' ? 'hg19' : 'hg38'
+  const db = props.smallVar.genome_release === 'grch37' ? 'hg19' : 'hg38'
   const prefix = db == 'hg19' ? 'chr' : ''
   return (
     `https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=${db}&position=` +
@@ -120,18 +124,19 @@ const ensemblLinkout = computed((): string => {
     return '#'
   }
   const loc = `${props.smallVar.chromosome}:${props.smallVar.start}-${props.smallVar.end}`
-  if (props.smallVar.release === 'GRCh37') {
+  if (props.smallVar.genome_release === 'grch37') {
     return `https://grch37.ensembl.org/Homo_sapiens/Location/View?r=${loc}`
-  } else if (props.smallVar.release === 'GRCh38') {
+  } else if (props.smallVar.release === 'grch38') {
     return `https://ensembl.org/Homo_sapiens/Location/View?r=${loc}`
   }
+  return '#'
 })
 
 const dgvLinkout = computed((): string => {
   if (!props.smallVar) {
     return '#'
   }
-  const db = props.smallVar.release === 'GRCh37' ? 'hg19' : 'hg38'
+  const db = props.smallVar.genome_release === 'grch37' ? 'hg19' : 'hg38'
   return (
     `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.smallVar.chromosome}:` +
     `${props.smallVar.start}-${props.smallVar.end};search=Search`
@@ -142,18 +147,18 @@ const gnomadLinkout = computed((): string => {
   if (!props.smallVar) {
     return '#'
   }
-  const dataset = props.smallVar.release === 'GRCh37' ? 'gnomad_r2_1' : 'gnomad_r3'
+  const dataset = props.smallVar.genome_release === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
   return (
     `https://gnomad.broadinstitute.org/region/${props.smallVar.chromosome}:` +
     `${props.smallVar.start}-${props.smallVar.end}?dataset=${dataset}`
   )
 })
 
-const mt85Linkout = computed((): string => {
+const mt85Linkout = computed((): string | null => {
   if (!props.smallVar) {
     return '#'
   }
-  if (props.smallVar.release === 'GRCh37') {
+  if (props.smallVar.genome_release === 'grch37') {
     return (
       `https://www.genecascade.org/MT85/ChrPos85.cgi?chromosome=${props.smallVar.chromosome}` +
       `&position=${props.smallVar.start}&ref=${props.smallVar.reference}&alt=${props.smallVar.alternative}`
@@ -163,11 +168,11 @@ const mt85Linkout = computed((): string => {
   }
 })
 
-const mt2021Linkout = computed((): string => {
+const mt2021Linkout = computed((): string | null => {
   if (!props.smallVar) {
     return '#'
   }
-  if (props.smallVar.release === 'GRCh37') {
+  if (props.smallVar.genome_release === 'grch37') {
     return (
       `https://www.genecascade.org/MTc2021/ChrPos102.cgi?chromosome=${props.smallVar.chromosome}` +
       `&position=${props.smallVar.start}&ref=${props.smallVar.reference}&alt=${props.smallVar.alternative}`
@@ -181,7 +186,7 @@ const varsomeLinkout = computed((): string => {
   if (!props.smallVar) {
     return '#'
   }
-  const urlRelease = props.smallVar.release === 'GRCh37' ? 'hg19' : 'hg38'
+  const urlRelease = props.smallVar.genome_release === 'grch37' ? 'hg19' : 'hg38'
   const chrom = props.smallVar.chromosome.startsWith('chr')
     ? props.smallVar.chromosome
     : `chr${props.smallVar.chromosome}`
@@ -199,14 +204,14 @@ const umdpredictorLinkout = computed((): string => {
   if (!props.smallVar) {
     return '#'
   }
-  if (props.smallVar.release === 'GRCh37') {
+  if (props.smallVar.genome_release === 'grch37') {
     return (
       `https://www.umd.be/HSF3/variants.php?search=1&chrom=${props.smallVar.chromosome}` +
       `&start=${props.smallVar.start}&end=${props.smallVar.end}&ref=${props.smallVar.reference}` +
       `&alt=${props.smallVar.alternative}`
     )
   } else {
-    return null
+    return '#'
   }
 })
 
@@ -216,7 +221,7 @@ const jumpToLocus = async () => {
     : `chr${props.smallVar.chromosome}`
   await fetch(
     `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.smallVar.start}-${props.smallVar.end}`
-  ).catch((e) => {
+  ).catch(() => {
     const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
     alert(msg)
     console.error(msg)
@@ -234,59 +239,59 @@ const jumpToLocus = async () => {
         <div class="card-body p-2">
           <div>
             <a :href="dgvLinkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               DGV
             </a>
           </div>
           <div>
             <a :href="ensemblLinkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               ENSEBML
             </a>
           </div>
           <div>
             <a :href="gnomadLinkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               gnomAD
             </a>
           </div>
           <div>
             <a v-if="mt85Linkout" :href="mt85Linkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               MutationTaster 85
             </a>
             <span v-else>
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               MutationTaster 85
             </span>
           </div>
           <div>
             <a v-if="mt2021Linkout" :href="mt2021Linkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               MutationTaster 2021
             </a>
             <span v-else>
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               MutationTaster 2021
             </span>
           </div>
           <div>
             <a v-if="props.umdPredictorApiToken" :href="umdpredictorLinkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               UMD Predictor
             </a>
-            <span v-else-if="smallVar?.release !== 'GRCh37'" class="text-muted">
-              <i-mdi-launch />
+            <span v-else-if="smallVar?.genome_release !== 'grch37'" class="text-muted">
+              <v-icon>mdi-launch</v-icon>
               UMD Predictor (not available for GRCh38)
             </span>
             <span v-else class="text-muted">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               UMD Predictor (API token not configured)
             </span>
           </div>
           <div>
             <a :href="ucscLinkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               UCSC Genome Browser
             </a>
           </div>
@@ -295,13 +300,13 @@ const jumpToLocus = async () => {
               :href="`https://varseak.bio/ssp.php?gene={{ smallVar.symbol }}&hgvs={{ smallVar.hgvs_c }}`"
               target="_blank"
             >
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               VarSeak Splice Site Predictor
             </a>
           </div>
           <div>
             <a :href="varsomeLinkout" target="_blank">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               varsome
             </a>
           </div>
@@ -315,7 +320,7 @@ const jumpToLocus = async () => {
         <div class="card-body p-2">
           <div>
             <a href="#" target="_blank" @click.prevent="jumpToLocus()">
-              <i-mdi-launch />
+              <v-icon>mdi-launch</v-icon>
               Jump to Location in IGV
             </a>
           </div>

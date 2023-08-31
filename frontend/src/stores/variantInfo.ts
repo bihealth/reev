@@ -18,27 +18,35 @@ export enum StoreState {
 }
 
 export const useVariantInfoStore = defineStore('variantInfo', () => {
-  // The current store state
+  /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  // The current variant query
-  const smallVariant = ref<string | null>(null)
+  /** The search query of the variant. */
+  const variantTerm = ref<string | null>(null)
 
-  // The retrieved variant data
-  const variantInfo = ref<any | null>(null)
+  /** The small variant that the previous record has been retrieved for. */
+  const smallVariant = ref<any | null>(null)
 
-  // The retrieved tx csq data
+  /** Variant-related information from annonars. */
+  const varAnnos = ref<any | null>(null)
+
+  /** Information about related gene. */
+  const geneInfo = ref<any | null>(null)
+
+  /** Transcript consequence information from mehari. */
   const txCsq = ref<any | null>(null)
 
   function clearData() {
     storeState.value = StoreState.Initial
-    smallVariant.value = null
-    variantInfo.value = null
+    variantTerm.value = null
+    varAnnos.value = null
+    txCsq.value = null
+    geneInfo.value = null
   }
 
   const loadData = async (variantQuery: string, genomeRelease: string) => {
     // Do not re-load data if the variant symbol is the same
-    if (variantQuery === smallVariant.value) {
+    if (variantQuery === variantTerm.value) {
       return
     }
 
@@ -60,7 +68,8 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
-      variantInfo.value = variantData
+      varAnnos.value = variantData.result
+      smallVariant.value = variantData.query
 
       const txCsqData = await mehariClient.retrieveTxCsq(
         genomeRelease,
@@ -69,9 +78,13 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
-      txCsq.value = txCsqData
+      txCsq.value = txCsqData.result
 
-      smallVariant.value = variantQuery
+      const hgncId = txCsqData.result[0]['gene-id']
+      const geneData = await annonarsClient.fetchGeneInfo(hgncId)
+      geneInfo.value = geneData['genes'][hgncId]
+
+      variantTerm.value = variantQuery
       storeState.value = StoreState.Active
     } catch (e) {
       console.error('There was an error loading the variant data.', e)
@@ -81,8 +94,11 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
 
   return {
     storeState,
+    variantTerm,
     smallVariant,
-    variantInfo,
+    varAnnos,
+    geneInfo,
+    txCsq,
     loadData,
     clearData
   }
