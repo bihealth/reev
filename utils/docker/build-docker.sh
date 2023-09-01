@@ -12,6 +12,8 @@ DOCKER_VERSION=$(echo $GIT_TAG | sed -e 's/^v//')
 ORG=bihealth
 REPO=reev
 
+git describe --tags --dirty >VERSION
+
 sudo docker build . \
     --file utils/docker/Dockerfile \
     --pull \

@@ -2,7 +2,8 @@
 import { watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { StoreState, useGeneInfoStore } from '@/stores/geneInfo'
+import { StoreState } from '@/stores/misc'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import { roundIt } from '@/api/utils'

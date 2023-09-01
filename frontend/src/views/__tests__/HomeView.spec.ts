@@ -13,7 +13,7 @@ import * as directives from 'vuetify/directives'
 
 import HomeView from '../HomeView.vue'
 import SearchBar from '../../components/SearchBar.vue'
-import { StoreState } from '@/stores/geneInfo'
+import { StoreState } from '@/stores/misc'
 
 const vuetify = createVuetify({
   components,
@@ -39,7 +39,23 @@ const makeWrapper = (router: Router) => {
     },
     {
       global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+        plugins: [
+          vuetify,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn(),
+            initialState: {
+              geneInfo: {
+                storeState: StoreState.Active,
+                geneSymbol: geneData.geneSymbol,
+                geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
+              },
+              misc: {
+                appVersion: 'v0.0.0'
+              }
+            }
+          })
+        ],
         components: {
           HomeView
         }
@@ -58,10 +74,6 @@ router.push = vi.fn()
 describe('HomeView with mocked router', async () => {
   it('renders the header', () => {
     const wrapper = makeWrapper(router)
-    const store = useGeneInfoStore()
-    store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
-    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const logo = wrapper.find('#logo')
     const aboutLink = wrapper.find('#about')
@@ -73,10 +85,6 @@ describe('HomeView with mocked router', async () => {
 
   it('renders the search bar', () => {
     const wrapper = makeWrapper(router)
-    const store = useGeneInfoStore()
-    store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
-    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const textField = wrapper.find('.v-text-field')
     const select = wrapper.find('.v-select')
@@ -88,10 +96,6 @@ describe('HomeView with mocked router', async () => {
 
   it('renders example search terms', () => {
     const wrapper = makeWrapper(router)
-    const store = useGeneInfoStore()
-    store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
-    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const subtitle = wrapper.find('h2')
     const exampleTerms = wrapper.findAll('.example')
@@ -102,9 +106,6 @@ describe('HomeView with mocked router', async () => {
   it('uses example by click', async () => {
     const wrapper = makeWrapper(router)
     const store = useGeneInfoStore()
-    store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
-    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const exampleTerm = wrapper.find('.example')
     expect(exampleTerm.exists()).toBe(true)

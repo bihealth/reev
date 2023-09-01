@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
+import { createTestingPinia } from '@pinia/testing'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -28,7 +29,18 @@ const makeWrapper = () => {
     },
     {
       global: {
-        plugins: [vuetify, router],
+        plugins: [
+          vuetify,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn(),
+            initialState: {
+              misc: {
+                appVersion: 'v0.0.0'
+              }
+            }
+          })
+        ],
         components: {
           HeaderDefault
         }
@@ -44,7 +56,7 @@ describe('HeaderDefault.vue', () => {
     const logo = wrapper.find('#logo')
     const title = wrapper.find('a[href="/"]')
     expect(logo.exists()).toBe(true)
-    expect(title.text()).toBe('Explanation and Evaluation of Variants')
+    expect(title.text()).toBe('Explanation and Evaluation of Variants v0.0.0')
   })
 
   it('renders the navigation links', () => {

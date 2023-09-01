@@ -59,6 +59,8 @@ RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
 FROM backend-base AS backend-runtime
 
+ARG version_file=utils/docker/empty-file-dont-remove
+
 ENV REEV_SERVE_FRONTEND=/home/reev/ui
 
 COPY --from=backend-deps /.venv /.venv
@@ -69,6 +71,7 @@ RUN useradd --create-home reev
 WORKDIR /home/reev
 USER reev
 
+COPY ${version_file} /VERSION
 COPY backend/. .
 COPY --from=frontend-build /dist /home/reev/ui
 

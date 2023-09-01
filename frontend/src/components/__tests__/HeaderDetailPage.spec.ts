@@ -11,7 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import HeaderDetailPage from '../HeaderDetailPage.vue'
-import { StoreState } from '@/stores/geneInfo'
+import { StoreState } from '@/stores/misc'
 
 const vuetify = createVuetify({
   components,
