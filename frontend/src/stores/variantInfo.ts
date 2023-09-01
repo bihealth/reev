@@ -80,9 +80,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
       )
       txCsq.value = txCsqData.result
       
-      console.log(txCsqData)
       const hgncId = txCsqData.result[0]['gene-id']
-      console.log(hgncId)
       const geneData = await annonarsClient.fetchGeneInfo(hgncId)
       geneInfo.value = geneData['genes'][hgncId]
 

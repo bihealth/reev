@@ -8,6 +8,7 @@ const props = defineProps<{
 
 /** Return the conservation records. */
 const ucscConservation = computed(() => {
+  console.log(props.varAnnos.ucsc_conservation)
   if (props.varAnnos?.ucsc_conservation?.length) {
     return props.varAnnos?.ucsc_conservation[0].records
   } else {
@@ -62,6 +63,7 @@ onMounted(initSelectedTranscript)
 
 <template>
   <div class="m-2">
+    {{ }}
     <div v-if="ucscConservation">
       <div class="float-right">
         <select v-model="selectedTranscript" class="form-control custom-select custom-select-sm">
