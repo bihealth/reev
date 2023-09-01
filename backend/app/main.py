@@ -20,11 +20,11 @@ SERVE_FRONTEND = env.get("REEV_SERVE_FRONTEND")
 #: Debug mode
 DEBUG = env.get("REEV_DEBUG", "false").lower() in ("true", "1")
 #: Prefix for the backend of annonars service
-BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annonars")
+BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annonars:8080")
 #: Prefix for the backend of mehari service
-BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari")
+BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari:8080")
 #: Prefix for the backend of viguno service
-BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno")
+BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno:8080")
 
 
 app = FastAPI()
