@@ -14,7 +14,6 @@ export default defineConfig({
     vueJsx(),
     vuetify()
   ],
-  base: './',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
