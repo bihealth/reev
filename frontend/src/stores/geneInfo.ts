@@ -6,14 +6,8 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import { StoreState } from '@/stores/misc'
 import { AnnonarsClient } from '@/api/annonars'
-
-export enum StoreState {
-  Initial = 'initial',
-  Loading = 'loading',
-  Active = 'active',
-  Error = 'error'
-}
 
 export const useGeneInfoStore = defineStore('geneInfo', () => {
   // The current store state

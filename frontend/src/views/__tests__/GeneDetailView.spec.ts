@@ -11,7 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import GeneDetailView from '../GeneDetailView.vue'
-import { StoreState } from '@/stores/geneInfo'
+import { StoreState } from '@/stores/misc'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 
 const vuetify = createVuetify({

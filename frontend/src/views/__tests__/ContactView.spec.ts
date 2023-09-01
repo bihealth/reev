@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
+import { createTestingPinia } from '@pinia/testing'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -28,7 +29,18 @@ const makeWrapper = () => {
     },
     {
       global: {
-        plugins: [vuetify, router],
+        plugins: [
+          vuetify,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn(),
+            initialState: {
+              misc: {
+                appVersion: 'v0.0.0'
+              }
+            }
+          })
+        ],
         components: {
           ContactView
         }

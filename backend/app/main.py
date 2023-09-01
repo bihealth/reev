@@ -1,5 +1,6 @@
 import os
 import pathlib
+import subprocess
 import sys
 
 import httpx
@@ -25,6 +26,14 @@ BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annona
 BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari:8080")
 #: Prefix for the backend of viguno service
 BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno:8080")
+#: Path to REEV version file.
+VERSION_FILE = env.get("REEV_VERSION_FILE", "/VERSION")
+#: The REEV version from the file (``None`` if to load dynamically from git)
+REEV_VERSION = None
+# Try to obtain version from file, otherwise keep it at ``None``
+if os.path.exists(VERSION_FILE):
+    with open(VERSION_FILE) as f:
+        REEV_VERSION = f.read().strip() or None
 
 
 app = FastAPI()
@@ -80,6 +89,16 @@ async def reverse_proxy(request: Request) -> Response:
 
 # Register reverse proxy route
 app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
+
+
+# Register app for returning REEV version.
+@app.get("/version")
+async def version():
+    if REEV_VERSION:
+        version = REEV_VERSION
+    else:
+        version = subprocess.check_output(["git", "describe", "--tags", "--dirty"]).strip()
+    return Response(content=version)
 
 
 # Register route for favicon.
