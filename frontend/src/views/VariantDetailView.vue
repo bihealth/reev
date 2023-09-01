@@ -96,20 +96,20 @@ const genomeReleaseRef = ref(props.genomeRelease)
       <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
         <div id="gene" class="variant-item">
           <h2>Gene</h2>
-          <router-link
-            :to="{
-              name: 'gene',
-              params: {
-                searchTerm: `HGNC:1100`,
-                genomeRelease: genomeReleaseRef
-              }
-            }"
-          >
-            <h3>
-              Link to {{ variantInfoStore.varAnnos?.result?.cadd.GeneName }}
+          <h3>
+            Link to
+            <router-link
+              :to="{
+                name: 'gene',
+                params: {
+                  searchTerm: `HGNC:1100`,
+                  genomeRelease: genomeReleaseRef
+                }
+              }"
+              >{{ variantInfoStore.varAnnos?.cadd.GeneName }}
               <v-icon>mdi-open-in-new</v-icon>
-            </h3>
-          </router-link>
+            </router-link>
+          </h3>
           <v-divider />
           <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
         </div>
