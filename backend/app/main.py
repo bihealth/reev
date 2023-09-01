@@ -88,11 +88,18 @@ async def favicon():
     return FileResponse(pathlib.Path(__file__).parent.parent.parent / "frontend/public/favicon.ico")
 
 
-# Routes
+# Server front-end (assets directory and index file for root ("/") entrypoint) when configured
 if SERVE_FRONTEND:  # pragma: no cover
-    print(f"SERVE_FRONTEND = {SERVE_FRONTEND}", file=sys.stderr)
+    print(f"serving front-end from {SERVE_FRONTEND}", file=sys.stderr)
     app.mount("/assets", StaticFiles(directory=f"{SERVE_FRONTEND}/assets"), name="ui")
 
     @app.get("/")
     async def index():
+        """Render the index.html page at the root URL"""
+        return FileResponse(f"{SERVE_FRONTEND}/index.html")
+
+    @app.api_route("/{path_name:path}", methods=["GET"])
+    async def catch_all(request: Request, path_name: str):
+        """Catch-all route forwarding to frontend."""
+        _, _ = request, path_name
         return FileResponse(f"{SERVE_FRONTEND}/index.html")
