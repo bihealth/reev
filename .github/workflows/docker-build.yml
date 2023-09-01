@@ -43,6 +43,10 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
 
+      - name: Write "git describe --tags --dirty" to VERSION
+        run: |
+          git describe --tags --dirty > VERSION
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
