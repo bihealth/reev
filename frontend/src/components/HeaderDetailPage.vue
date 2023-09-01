@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-
-const router = useRouter()
-
-const geneInfoStore = useGeneInfoStore()
-
-if (geneInfoStore.geneInfo === null) {
-  router.push({ name: 'home' })
-}
-</script>
-
 <template>
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
