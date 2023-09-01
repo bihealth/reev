@@ -81,10 +81,12 @@ async def reverse_proxy(request: Request) -> Response:
 # Register reverse proxy route
 app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
+
 # Register route for favicon.
 @app.get("/favicon.ico")
 async def favicon():
     return FileResponse(pathlib.Path(__file__).parent.parent.parent / "frontend/public/favicon.ico")
+
 
 # Routes
 if SERVE_FRONTEND:  # pragma: no cover
