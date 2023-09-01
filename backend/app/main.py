@@ -104,7 +104,7 @@ async def version():
 # Register route for favicon.
 @app.get("/favicon.ico")
 async def favicon():
-    return FileResponse(pathlib.Path(__file__).parent.parent.parent / "frontend/public/favicon.ico")
+    return FileResponse(pathlib.Path(__file__).parent / "assets/favicon.ico")
 
 
 # Server front-end (assets directory and index file for root ("/") entrypoint) when configured
