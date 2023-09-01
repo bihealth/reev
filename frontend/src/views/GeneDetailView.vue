@@ -22,8 +22,10 @@ const geneInfoStore = useGeneInfoStore()
 
 const scrollToSection = async () => {
   const sectionId = route.hash.slice(1)
-  const elem = document.getElementById(sectionId)
-  elem?.scrollIntoView()
+  if (sectionId) {
+    const elem = document.getElementById(sectionId)
+    elem?.scrollIntoView()
+  }
 }
 
 const loadDataToStore = async () => {

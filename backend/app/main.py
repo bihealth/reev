@@ -1,4 +1,5 @@
 import os
+import pathlib
 import sys
 
 import httpx
@@ -8,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import RedirectResponse, Response, StreamingResponse
+from starlette.responses import FileResponse, RedirectResponse, Response, StreamingResponse
 
 # Load environment
 env = os.environ
@@ -80,13 +81,16 @@ async def reverse_proxy(request: Request) -> Response:
 # Register reverse proxy route
 app.add_route("/proxy/{path:path}", reverse_proxy, methods=["GET", "POST"])
 
+# Register route for favicon.
+@app.get("/favicon.ico")
+async def favicon():
+    return FileResponse(pathlib.Path(__file__).parent.parent.parent / "frontend/public/favicon.ico")
 
 # Routes
 if SERVE_FRONTEND:  # pragma: no cover
     print(f"SERVE_FRONTEND = {SERVE_FRONTEND}", file=sys.stderr)
-    app.mount("/ui", StaticFiles(directory=SERVE_FRONTEND), name="app")
+    app.mount("/assets", StaticFiles(directory=f"{SERVE_FRONTEND}/assets"), name="ui")
 
     @app.get("/")
-    async def redirect():
-        response = RedirectResponse(url="/ui/index.html")
-        return response
+    async def index():
+        return FileResponse(f"{SERVE_FRONTEND}/index.html")
