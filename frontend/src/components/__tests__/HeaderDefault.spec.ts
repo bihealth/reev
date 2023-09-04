@@ -56,7 +56,7 @@ describe('HeaderDefault.vue', () => {
     const logo = wrapper.find('#logo')
     const title = wrapper.find('a[href="/"]')
     expect(logo.exists()).toBe(true)
-    expect(title.text()).toBe('Explanation and Evaluation of Variants')
+    expect(title.text()).toBe('REEV: Explanation and Evaluation of Variants')
   })
 
   it('renders the navigation links', () => {

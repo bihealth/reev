@@ -311,7 +311,12 @@ const jumpToLocus = async () => {
           <tbody>
             <tr>
               <th class="align-middle">BayesDel</th>
-              <template v-if="props.varAnnos?.dbnsfp?.BayesDel_addAF_score">
+              <template
+                v-if="
+                  props.varAnnos?.dbnsfp?.BayesDel_addAF_score &&
+                  props.varAnnos?.dbnsfp?.BayesDel_addAF_score !== Infinity
+                "
+              >
                 <td
                   class="text-center align-middle"
                   v-html="roundIt(props.varAnnos?.dbnsfp?.BayesDel_addAF_score, 4)"
@@ -380,7 +385,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">CADD</th>
-              <template v-if="varAnnos?.cadd?.PHRED">
+              <template v-if="varAnnos?.cadd?.PHRED && varAnnos?.cadd?.PHRED !== Infinity">
                 <td class="text-center align-middle">
                   {{ varAnnos?.cadd?.PHRED }}
                 </td>
@@ -433,7 +438,9 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">FATHMM</th>
-              <template v-if="fathmmScore && translatedFathmmScore">
+              <template
+                v-if="fathmmScore && translatedFathmmScore && translatedFathmmScore !== Infinity"
+              >
                 <td class="text-center align-middle">{{ fathmmScore }}</td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
@@ -477,7 +484,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">Gerp++</th>
-              <template v-if="gerpScore">
+              <template v-if="gerpScore && gerpScore !== Infinity">
                 <td class="text-center align-middle">{{ gerpScore }}</td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
@@ -504,7 +511,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">MMSplice</th>
-              <template v-if="bestMMSplice.key">
+              <template v-if="bestMMSplice.key && bestMMSplice.score !== Infinity">
                 <td class="text-center align-middle">
                   {{ bestMMSplice.score }}
                   <span class="text-muted ml-2">({{ bestMMSplice.key }})</span>
@@ -527,7 +534,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">MPC</th>
-              <template v-if="mpcScore">
+              <template v-if="mpcScore && mpcScore !== Infinity">
                 <td class="text-center align-middle" v-html="roundIt(mpcScore, 4)" />
                 <td class="text-center align-middle">
                   <ScoreDisplay
@@ -557,7 +564,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">PolyPhen2</th>
-              <template v-if="polyphenScore !== null">
+              <template v-if="polyphenScore !== null && polyphenScore !== Infinity">
                 <td class="text-center align-middle">
                   {{ polyphenScore }}
                 </td>
@@ -603,7 +610,12 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">PhyloP-100</th>
-              <template v-if="props.varAnnos?.dbnsfp?.phyloP100way_vertebrate">
+              <template
+                v-if="
+                  props.varAnnos?.dbnsfp?.phyloP100way_vertebrate &&
+                  props.varAnnos?.dbnsfp?.phyloP100way_vertebrate !== Infinity
+                "
+              >
                 <td class="text-center align-middle">
                   {{ props.varAnnos?.dbnsfp?.phyloP100way_vertebrate }}
                 </td>
@@ -661,7 +673,12 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">PrimateAI</th>
-              <template v-if="props.varAnnos?.dbnsfp?.PrimateAI_score">
+              <template
+                v-if="
+                  props.varAnnos?.dbnsfp?.PrimateAI_score &&
+                  props.varAnnos?.dbnsfp?.PrimateAI_score !== Infinity
+                "
+              >
                 <td
                   class="text-center align-middle"
                   v-html="roundIt(props.varAnnos?.dbnsfp?.PrimateAI_score, 4)"
@@ -720,7 +737,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">SIFT</th>
-              <template v-if="siftScore && translatedSiftScore">
+              <template v-if="siftScore && translatedSiftScore && translatedSiftScore !== Infinity">
                 <td class="text-center align-middle">{{ siftScore }}</td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
@@ -764,7 +781,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">SpliceAI</th>
-              <template v-if="bestSpliceAi.key">
+              <template v-if="bestSpliceAi.key && bestSpliceAi.score !== Infinity">
                 <td class="text-center align-middle">
                   {{ bestSpliceAi.score }}
                   <span class="text-muted ml-2">({{ bestSpliceAi.key }})</span>
@@ -787,7 +804,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">REVEL</th>
-              <template v-if="revelScore">
+              <template v-if="revelScore && revelScore !== Infinity">
                 <td class="text-center align-middle">
                   {{ revelScore }}
                 </td>
