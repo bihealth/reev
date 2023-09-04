@@ -25,6 +25,7 @@ const examples = [
   'UNIPROT:B7ZA85',
   'CHROM:POS:REF:ALT',
   'chr17:41197751:G:T',
+  'chr17:41197708:T:G',
   'NC_000017.10:g.41197728G>T'
 ]
 

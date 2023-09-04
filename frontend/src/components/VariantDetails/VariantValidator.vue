@@ -18,7 +18,7 @@ const queryVariantValidatorApi = async () => {
   variantValidatorResults.value = null
   variantValidatorState.value = VariantValidatorStates.Running
   const res = await fetch(
-    `/proxy/variantvalidator/${props.smallVariant.genome_release}/` +
+    `/proxy/variantvalidator/${props.smallVariant.release}/` +
       `${props.smallVariant.chromosome}-${props.smallVariant.start}-` +
       `${props.smallVariant.reference}-${props.smallVariant.alternative}` +
       `/all?content-type=application%2Fjson`
@@ -200,7 +200,7 @@ const queryVariantValidatorApi = async () => {
     </div>
     <div v-else-if="variantValidatorState === VariantValidatorStates.Running">
       <div class="alert alert-info">
-        <v-icon class="spin">mdi-circle-outline</v-icon>
+        <v-progress-circular indeterminate></v-progress-circular>
         <strong class="pl-2">Loading ...</strong>
       </div>
     </div>
@@ -217,10 +217,9 @@ const queryVariantValidatorApi = async () => {
     </div>
     <div class="row">
       <div class="col pr-0 text-right">
-        <button class="btn btn-primary" type="button" @click="queryVariantValidatorApi()">
-          <v-icon>mdi-cloud-upload-outline</v-icon>
+        <v-btn prepend-icon="mdi-cloud-upload-outline" @click="queryVariantValidatorApi()">
           Submit
-        </button>
+        </v-btn>
       </div>
     </div>
   </div>

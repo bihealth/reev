@@ -13,11 +13,11 @@ const loadBeacon = () => {
   }
   beaconAddress.value =
     'https://beacon-network.org:443/#/widget?rs=' +
-    props.smallVariant.genome_release +
+    props.smallVariant.release +
     '&chrom=' +
     props.smallVariant.chromosome +
     '&pos=' +
-    props.smallVariant.pos +
+    props.smallVariant.start +
     '&ref=' +
     props.smallVariant.reference +
     '&allele=' +
@@ -28,10 +28,7 @@ const loadBeacon = () => {
 <template>
   <h3>
     Query Beacon -----|>
-    <button style="float: right; background-color: greenyellow" class="btn" @click="loadBeacon()">
-      <v-icon>mdi-refresh</v-icon>
-      Load
-    </button>
+    <v-btn prepend-icon="mdi-refresh" style="float: right" @click="loadBeacon()"> Load </v-btn>
   </h3>
   <div class="card-body">
     <iframe
@@ -45,11 +42,13 @@ const loadBeacon = () => {
     </iframe>
     <p v-else class="text-muted text-center">
       <i>Click</i>&nbsp;
-      <span style="background-color: greenyellow" class="badge badge-warning">
+      <span>
         <v-icon>mdi-refresh</v-icon>
         Load
       </span>
-      <i> to submit the variant to the GA4GH Beacon network. The results will appear here. </i>
+      <i>
+        button to submit the variant to the GA4GH Beacon network. The results will appear here.
+      </i>
     </p>
   </div>
 </template>

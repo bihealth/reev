@@ -68,8 +68,15 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
-      varAnnos.value = variantData.result
-      smallVariant.value = variantData.query
+      if (
+        variantData.result.cadd === null &&
+        variantData.result.dbnsfp === null &&
+        variantData.result.dbscsnv === null
+      ) {
+        throw new Error('No variant data found.')
+      } else {
+        varAnnos.value = variantData.result
+      }
 
       const txCsqData = await mehariClient.retrieveTxCsq(
         genomeRelease,
@@ -78,13 +85,29 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
-      txCsq.value = txCsqData.result
-      
+      if (txCsqData.result.length === 0) {
+        throw new Error('No transcript consequence data found.')
+      } else {
+        txCsq.value = txCsqData.result
+      }
+
       const hgncId = txCsqData.result[0]['gene-id']
       const geneData = await annonarsClient.fetchGeneInfo(hgncId)
+      if (geneData?.genes === null) {
+        throw new Error('No gene data found.')
+      }
       geneInfo.value = geneData['genes'][hgncId]
 
       variantTerm.value = variantQuery
+      smallVariant.value = {
+        release: genomeRelease,
+        chromosome: chromosome,
+        start: pos,
+        end: (Number(pos) + reference.length - 1).toString(),
+        reference: reference,
+        alternative: alternative,
+        hgnc_id: hgncId
+      }
       storeState.value = StoreState.Active
     } catch (e) {
       console.error('There was an error loading the variant data.', e)

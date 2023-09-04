@@ -96,7 +96,7 @@ describe('HomeView with mocked router', async () => {
     const subtitle = wrapper.find('h2')
     const exampleTerms = wrapper.findAll('.example')
     expect(subtitle.exists()).toBe(true)
-    expect(exampleTerms.length).toBe(8)
+    expect(exampleTerms.length).toBe(9)
   })
 
   it('uses example by click', async () => {

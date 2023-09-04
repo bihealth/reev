@@ -25,9 +25,14 @@ export class AnnonarsClient {
     reference: string,
     alternative: string
   ): Promise<any> {
+    let chrom = chromosome.replace('chr', '')
+    if (genomeRelease !== 'grch37') {
+      chrom = `chr${chrom}`
+    }
+
     const url =
       `${this.apiBaseUrl}annos/variant?genome_release=${genomeRelease}&` +
-      `chromosome=${chromosome}&pos=${pos}&reference=${reference}&` +
+      `chromosome=${chrom}&pos=${pos}&reference=${reference}&` +
       `alternative=${alternative}`
 
     const response = await fetch(url, {

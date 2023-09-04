@@ -14,7 +14,7 @@ const interpretations = [
 </script>
 
 <template>
-  <div style="font-size: small;">
+  <div style="font-size: small">
     <v-icon>mdi-information</v-icon>
     Note that VarFish is using a local copy of Clinvar to display this information. The link-outs to
     NCBI ClinVar will display the most current data that may differ from our "frozen" copy.
@@ -24,21 +24,21 @@ const interpretations = [
     <div>
       <strong>Interpretation: </strong>
       {{
-        props.clinvar.summary_props.clinvar_pathogenicity
+        props.clinvar.summary_clinvar_pathogenicity
           .map((num: any) => interpretations[num])
           .join(', ')
       }}
     </div>
     <div>
       <strong>Review Status: </strong>
-      <template v-for="i of [1, 2, 3, 4, 5]" :key="i">
-        <div v-if="i <= props.clinvar.summary_props.clinvar_gold_stars">
+      <div v-for="i of [1, 2, 3, 4, 5]" :key="i" style="display: inline">
+        <div v-if="i <= props.clinvar.summary_clinvar_gold_stars" style="display: inline">
           <v-icon>mdi-star</v-icon>
         </div>
-        <div v-else>
+        <div v-else style="display: inline">
           <v-icon>mdi-star-outline</v-icon>
         </div>
-      </template>
+      </div>
     </div>
     <div>
       <strong>Accession: </strong>

@@ -66,22 +66,22 @@ const sexExpanded: any = ref({})
         <template v-if="props.dataset === 'gnomad_genomes'"> gnomAD Genomes </template>
       </span>
       <a
-        v-if="smallVar.genome_release == 'grch37'"
+        v-if="smallVar.release == 'grch37'"
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
+        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
         target="_blank"
       >
         <v-icon>mdi-launch</v-icon>
         @gnomAD
       </a>
       <a
-        v-if="smallVar.genome_release == 'grch38'"
+        v-if="smallVar.release == 'grch38'"
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
+        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
         target="_blank"
       >
         <v-icon>mdi-launch</v-icon>
@@ -189,8 +189,8 @@ const sexExpanded: any = ref({})
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
-        v-if="smallVar.genome_release == 'GRCh37'"
+        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
+        v-if="smallVar.release == 'grch37'"
       >
         <v-icon>mdi-launch</v-icon>
         gnomAD
@@ -199,8 +199,8 @@ const sexExpanded: any = ref({})
         :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
           /^chr/,
           ''
-        )}-${smallVar.pos}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
-        v-if="smallVar.genome_release == 'GRCh38'"
+        )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
+        v-if="smallVar.release == 'grch38'"
       >
         <v-icon>mdi-launch</v-icon>
         gnomAD
