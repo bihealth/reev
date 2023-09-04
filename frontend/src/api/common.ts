@@ -1,3 +1,5 @@
-export const API_BASE_PREFIX = import.meta.env.MODE == 'development' ? '//localhost:8080/' : '/'
+export const API_BASE_PREFIX_ANNONARS =
+  import.meta.env.MODE == 'development' ? '//localhost:8080/proxy/annonars' : '/proxy/annonars'
 
-export const API_PROXY_BASE_PREFIX = `${API_BASE_PREFIX}proxy/`
+export const API_BASE_PREFIX_MEHARI =
+  import.meta.env.MODE == 'development' ? '//localhost:8080/proxy/mehari' : '/proxy/mehari'

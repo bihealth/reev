@@ -15,3 +15,131 @@ export const roundIt = (value: number, digits: number = 2, label?: string): stri
   const useLabel = label ? `${label}: ` : ''
   return `<abbr title="${useLabel}${value}">${roundedValue}</abbr>`
 }
+
+/**
+ * Converts a number to a string with thousands separator.
+ *
+ * @param value     The number to separate.
+ * @param separator The separator to use.
+ */
+export const separateIt = (value: number, separator: string = ' '): string => {
+  const asString = `${value}`
+  if (!asString.length) {
+    return '0'
+  }
+  const splitString = asString.split('.', 1)
+  const cardinal = splitString[0]
+  if (!cardinal?.length) {
+    splitString[0] = '0'
+  } else {
+    const offset = cardinal.length % 3
+    const arr = [cardinal.slice(0, offset)]
+    for (let i = 0; i <= cardinal.length; i += 3) {
+      arr.push(cardinal.slice(offset + i, offset + i + 3))
+    }
+    splitString[0] = arr.join(separator)
+  }
+  return splitString.join('.')
+}
+
+/**
+ * Returns whether the given variant looks mitochondrial.
+ *
+ * @param smallVar Small variant to check.
+ * @returns whether the position is on the mitochondrial genome
+ */
+export const isVariantMt = (smallVar: any): boolean => {
+  return ['MT', 'M', 'chrMT', 'chrM'].includes(smallVar?.chromosome)
+}
+
+/**
+ * Returns whether the given position is in a homopolymer on the mitochondrial chromosome.
+ *
+ * @param smallVar Small variant to check.
+ * @returns whether the position is in a mitochondrial homopolymer
+ */
+export const isVariantMtHomopolymer = (smallVar: any): any => {
+  if (!smallVar) {
+    return false
+  }
+  const { start, end } = smallVar
+  const positionCheck = (pos: number) => {
+    return (
+      (pos >= 66 && pos <= 71) ||
+      (pos >= 300 && pos <= 316) ||
+      (pos >= 513 && pos <= 525) ||
+      (pos >= 3106 && pos <= 3107) ||
+      (pos >= 12418 && pos <= 12425) ||
+      (pos >= 16182 && pos <= 16194)
+    )
+  }
+  if (isVariantMt(smallVar)) {
+    return positionCheck(start) || positionCheck(end)
+  }
+}
+
+/**
+ * Take a `searchTerm` and return a route location that can be used to navigate to
+ * the correct page.
+ *
+ * @param searchTerm The search term to use.
+ */
+export const search = (searchTerm: string, genomeRelease: string) => {
+  interface RouteLocationFragment {
+    name: string
+    params?: any
+  }
+
+  type RouteLoctionBuilder = () => RouteLocationFragment
+
+  // We iterate the regexps in the `Map` and will use the route from the
+  // first match.
+  const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
+    [
+      /^chr\d+:\d+:[A-Z]:[A-Z]$/,
+      (): RouteLocationFragment => ({
+        name: 'variant',
+        params: {
+          searchTerm: searchTerm,
+          genomeRelease: genomeRelease
+        }
+      })
+    ],
+    [
+      /^.*$/,
+      (): RouteLocationFragment => ({
+        name: 'gene',
+        params: {
+          searchTerm: searchTerm,
+          genomeRelease: genomeRelease
+        }
+      })
+    ]
+  ]
+
+  for (const [regexp, getRoute] of SEARCH_REGEXPS) {
+    if (regexp.test(searchTerm)) {
+      const routeLocation = getRoute()
+      console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)
+      return routeLocation
+    }
+  }
+  return null
+}
+
+/**
+ * Take a query string and return an object with the chromosome, pos, reference and
+ * alternative value.
+ *
+ * @param query Incoming query string
+ */
+export const infoFromQuery = (query: string): any => {
+  const [chromosome, pos, reference, alternative, hgnc_id] = query.split(':')
+  return {
+    chromosome: chromosome,
+    pos: pos,
+    reference: reference,
+    alternative: alternative,
+    hgnc_id: hgnc_id
+  }
+}

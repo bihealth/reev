@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, onMounted } from 'vue'
+import { watch, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { StoreState } from '@/stores/misc'
@@ -10,10 +10,12 @@ import { roundIt } from '@/api/utils'
 
 export interface Props {
   searchTerm?: string
+  genomeRelease?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  searchTerm: ''
+  searchTerm: '',
+  genomeRelease: 'grch37'
 })
 
 const router = useRouter()
@@ -65,10 +67,14 @@ const SECTIONS = [
   { id: 'gene-rifs', title: 'Gene RIFs' },
   { id: 'locus-specific-databases', title: 'Locus-Specific Databases' }
 ]
+
+// We need to use refs here because of props mutations in the parent
+const searchTermRef = ref(props.searchTerm)
+const genomeReleaseRef = ref(props.genomeRelease)
 </script>
 
 <template>
-  <HeaderDetailPage />
+  <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
     <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
       <v-list density="compact" nav>
