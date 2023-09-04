@@ -36,17 +36,18 @@ describe('roundIt method', () => {
 
 describe('search method', () => {
   it('should return route location if match', () => {
-    const result = search('BRCA1')
+    const result = search('BRCA1', 'ghcr37')
     expect(result).toEqual({
       name: 'gene',
       params: {
-        searchTerm: 'BRCA1'
+        searchTerm: 'BRCA1',
+        genomeRelease: 'ghcr37'
       }
     })
   })
 
   it.skip('should return null if no match', () => {
-    const result = search('foo')
+    const result = search('foo', 'foo37')
     expect(result).toBe(null)
   })
 })

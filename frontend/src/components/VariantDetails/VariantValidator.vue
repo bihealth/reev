@@ -46,7 +46,7 @@ const queryVariantValidatorApi = async () => {
         }}</span>
       </span>
     </p>
-    <div class="container-fluid" v-if="variantValidatorState === VariantValidatorStates.Done">
+    <!-- <div class="container-fluid" v-if="variantValidatorState === VariantValidatorStates.Done">
       <ul class="nav nav-pills pb-3" id="pills-tab" role="tablist">
         <template v-for="(data, identifier, index) in variantValidatorResults" :key="index">
           <li class="nav-item" v-if="identifier !== 'metadata' && identifier !== 'flag'">
@@ -197,7 +197,7 @@ const queryVariantValidatorApi = async () => {
           </div>
         </template>
       </div>
-    </div>
+    </div> -->
     <div v-else-if="variantValidatorState === VariantValidatorStates.Running">
       <div class="alert alert-info">
         <v-progress-circular indeterminate></v-progress-circular>

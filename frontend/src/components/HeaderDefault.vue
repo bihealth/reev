@@ -15,9 +15,14 @@ onMounted(() => {
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
       <router-link to="/">
-        <img src="@/assets/reev-logo.svg" id="logo" alt="logo" width="70" />
+        <img
+          style="vertical-align: middle"
+          src="@/assets/reev-logo.svg"
+          id="logo"
+          alt="logo"
+          width="70"
+        />
         Explanation and Evaluation of Variants
-        <small>{{ miscStore?.appVersion }}</small>
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -43,5 +48,6 @@ onMounted(() => {
   margin-left: 25px;
   margin-right: 10px;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>
