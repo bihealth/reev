@@ -48,7 +48,7 @@ const performSearch = async () => {
 <style scoped>
 .top-bar {
   background-color: white;
-  border-bottom: 2px solid rgb(111, 100, 210);
+  border-bottom: 2px solid rgb(229, 85, 64);
 }
 
 .top-search-bar {
