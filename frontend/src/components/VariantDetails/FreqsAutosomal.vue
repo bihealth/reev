@@ -88,7 +88,7 @@ const sexExpanded: any = ref({})
         @gnomAD
       </a>
     </div>
-    <table class="table table-reactive" v-if="selAnnos">
+    <v-table class="table table-reactive" v-if="selAnnos">
       <thead>
         <tr>
           <th>Population</th>
@@ -180,7 +180,7 @@ const sexExpanded: any = ref({})
           <td class="text-right text-nowrap" v-html="roundIt(bySex?.xy?.af, FREQ_DIGITS)"></td>
         </tr>
       </tbody>
-    </table>
+    </v-table>
 
     <div class="text-muted text-center font-italic pb-3" v-else>
       No allele frequency information available in local database. Try to lookup the variant

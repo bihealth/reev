@@ -20,7 +20,7 @@ const genomeRelease = ref('grch37')
 
 const examples = [
   'BRCA1',
-  'EGFR',
+  'chr17:41197708:T:G',
   'HGNC:1100',
   'ENTREZ:1956',
   'UNIPROT:B7ZA85',
