@@ -10,6 +10,7 @@ import { useRouter } from 'vue-router'
 
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import { search } from '@/api/utils'
 
 const router = useRouter()
 
@@ -22,42 +23,23 @@ const examples = [
   'HGNC:1100',
   'ENTREZ:1956',
   'UNIPROT:B7ZA85',
-  'CHROM:POS:REF:ALT'
+  'CHROM:POS:REF:ALT',
+  'CHROM:POS:REF:ALT',
+  'chr17:41197751:G:T',
+  'chr17:41197708:T:G',
+  'NC_000017.10:g.41197728G>T'
 ]
 
 const useExample = (example: string) => {
   searchTerm.value = example
 }
 
-interface RouteLocationFragment {
-  name: string
-  params?: any
-}
-
-type RouteLoctionBuilder = () => RouteLocationFragment
-
-// We iterate the regexps in the `Map` and will use the route from the
-// first match.
-const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
-  [
-    /^.*$/,
-    (): RouteLocationFragment => ({
-      name: 'gene',
-      params: {
-        searchTerm: searchTerm.value
-      }
-    })
-  ]
-]
-
 const performSearch = async () => {
-  for (const [regexp, getRoute] of SEARCH_REGEXPS) {
-    if (regexp.test(searchTerm.value)) {
-      const routeLocation = getRoute()
-      console.log(`term ${searchTerm.value} matched ${regexp}, route is`, routeLocation)
-      router.push(routeLocation)
-      return
-    }
+  const routeLocation: any = search(searchTerm.value, genomeRelease.value)
+  if (routeLocation) {
+    router.push(routeLocation)
+  } else {
+    console.error(`no route found for ${searchTerm.value}`)
   }
 }
 </script>

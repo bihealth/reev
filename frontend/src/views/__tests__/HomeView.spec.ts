@@ -100,7 +100,7 @@ describe('HomeView with mocked router', async () => {
     const subtitle = wrapper.find('h2')
     const exampleTerms = wrapper.findAll('.example')
     expect(subtitle.exists()).toBe(true)
-    expect(exampleTerms.length).toBe(6)
+    expect(exampleTerms.length).toBe(10)
   })
 
   it('uses example by click', async () => {
@@ -133,6 +133,9 @@ describe('HomeView with mocked router', async () => {
     await nextTick()
 
     expect(router.push).toHaveBeenCalledOnce()
-    expect(router.push).toHaveBeenCalledWith({ name: 'gene', params: { searchTerm: 'HGNC:1100' } })
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'gene',
+      params: { searchTerm: 'HGNC:1100', genomeRelease: 'grch37' }
+    })
   })
 })
