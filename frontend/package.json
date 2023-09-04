@@ -42,6 +42,7 @@
     "prettier": "^3.0.2",
     "typescript": "~5.2.2",
     "vite": "^4.3.9",
+    "vite-plugin-vuetify": "^1.0.2",
     "vitest": "^0.32.4",
     "vitest-fetch-mock": "^0.2.2",
     "vue-cli-plugin-vuetify": "~2.5.8",
