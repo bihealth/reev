@@ -8,6 +8,9 @@ coverage.lcov
 # Environment variables
 .env
 
+# Local favicon
+/frontend/favicon.ico
+
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,pycharm,vim,emacs
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,pycharm,vim,emacs
 

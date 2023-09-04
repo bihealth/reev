@@ -28,7 +28,13 @@ const performSearch = async () => {
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
       <router-link to="/">
-        <img src="@/assets/reev-logo.svg" id="logo" alt="logo" width="100" />
+        <img
+          style="vertical-align: middle"
+          src="@/assets/reev-logo.svg"
+          id="logo"
+          alt="logo"
+          width="70"
+        />
       </router-link>
     </v-toolbar-title>
     <SearchBar
@@ -64,5 +70,6 @@ const performSearch = async () => {
 #logo {
   margin-left: 25px;
   margin-top: 10px;
+  margin-bottom: 10px;
 }
 </style>

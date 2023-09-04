@@ -433,7 +433,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">FATHMM</th>
-              <template v-if="fathmmScore">
+              <template v-if="fathmmScore && translatedFathmmScore">
                 <td class="text-center align-middle">{{ fathmmScore }}</td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
@@ -720,7 +720,7 @@ const jumpToLocus = async () => {
 
             <tr>
               <th class="align-middle">SIFT</th>
-              <template v-if="siftScore">
+              <template v-if="siftScore && translatedSiftScore">
                 <td class="text-center align-middle">{{ siftScore }}</td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
