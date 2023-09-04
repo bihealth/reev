@@ -40,4 +40,11 @@ export class AnnonarsClient {
     })
     return await response.json()
   }
+
+  async fetchGenes(query: string): Promise<any> {
+    const response = await fetch(`${this.apiBaseUrl}genes/search?${query}`, {
+      method: 'GET'
+    })
+    return await response.json()
+  }
 }
