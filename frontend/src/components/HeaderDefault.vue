@@ -24,6 +24,7 @@ onMounted(() => {
         />
         REEV: Explanation and Evaluation of Variants
       </router-link>
+      <strong style="font-size: 130%; color: indigo">EXPERIMENTAL</strong>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">

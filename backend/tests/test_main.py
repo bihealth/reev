@@ -87,17 +87,16 @@ async def test_version(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_version_no_version(monkeypatch):
+async def test_version_no_version(monkeypatch, fp):
     """Test version endpoint with no version."""
     monkeypatch.setattr(main, "REEV_VERSION", None)
+    # We mock the output of ``git describe`` as subprocesses will be triggered
+    # internally.
+    fp.register(["git", "describe", "--tags", "--dirty"], stdout="v0.0.0-16-g7a4205d-dirty")
     response = client.get("/version")
+
     assert response.status_code == 200
-    # The following lines do not work in a GitHub Actions workflow, as the
-    # tests are running not in the repository.
-    # expected = subprocess.check_output(["git", "describe", "--tags", "--dirty"]).strip().decode()
-    # The following line is a workaround for the above.
-    expected = "v0.0.0-16-g7a4205d-dirty"
-    assert response.text == expected
+    assert response.text == "v0.0.0-16-g7a4205d-dirty"
 
 
 @pytest.mark.asyncio
