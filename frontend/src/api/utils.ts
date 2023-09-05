@@ -83,6 +83,7 @@ export const isVariantMtHomopolymer = (smallVar: any): any => {
  * the correct page.
  *
  * @param searchTerm The search term to use.
+ * @param genomeRelease The genome release to use.
  */
 export const search = (searchTerm: string, genomeRelease: string) => {
   interface RouteLocationFragment {

@@ -1,19 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 import SearchBar from '@/components/SearchBar.vue'
 import { search } from '@/api/utils'
+
 export interface Props {
   searchTerm?: string
   genomeRelease?: string
 }
+
 const props = withDefaults(defineProps<Props>(), {
   searchTerm: '',
   genomeRelease: 'grch37'
 })
+
 const router = useRouter()
+
 const searchTermRef = ref(props.searchTerm)
 const genomeReleaseRef = ref(props.genomeRelease)
+
+/**
+ * Perform a search based on the current search term and genome release.
+ *
+ * If a route is found for the search term then redirect to that route.
+ * Otherwise log an error.
+ */
 const performSearch = async () => {
   const routeLocation: any = search(searchTermRef.value, genomeReleaseRef.value)
   if (routeLocation) {
@@ -22,6 +34,12 @@ const performSearch = async () => {
     console.error(`no route found for ${searchTermRef.value}`)
   }
 }
+
+const updateTerms = async () => {
+  searchTermRef.value = props.searchTerm
+}
+
+watch(() => props.searchTerm, updateTerms)
 </script>
 
 <template>

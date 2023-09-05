@@ -20,12 +20,11 @@ const genomeRelease = ref('grch37')
 
 const examples = [
   'BRCA1',
-  'chr17:41197708:T:G',
+  'EMP',
+  'TP53',
   'HGNC:1100',
-  'ENTREZ:1956',
-  'UNIPROT:B7ZA85',
-  'CHROM:POS:REF:ALT',
-  'CHROM:POS:REF:ALT',
+  'HGNC:777',
+  'chr17:41197708:T:G',
   'chr17:41197751:G:T',
   'chr17:41197708:T:G',
   'NC_000017.10:g.41197728G>T'
@@ -35,6 +34,12 @@ const useExample = (example: string) => {
   searchTerm.value = example
 }
 
+/**
+ * Perform a search based on the current search term and genome release.
+ *
+ * If a route is found for the search term then redirect to that route.
+ * Otherwise log an error.
+ */
 const performSearch = async () => {
   const routeLocation: any = search(searchTerm.value, genomeRelease.value)
   if (routeLocation) {
@@ -80,7 +85,11 @@ const performSearch = async () => {
 }
 
 .example {
+  width: 250px;
   margin-top: 10px;
   cursor: pointer;
+  border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px;
+  padding: 5px 10px;
 }
 </style>

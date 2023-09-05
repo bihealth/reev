@@ -10,13 +10,13 @@ import { StoreState } from '@/stores/misc'
 import { AnnonarsClient } from '@/api/annonars'
 
 export const useGeneInfoStore = defineStore('geneInfo', () => {
-  // The current store state
+  /* The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  // The current gene query
+  /* The current gene query. */
   const geneSymbol = ref<string | null>(null)
 
-  // The retrieved gene data
+  /* The retrieved gene data. */
   const geneInfo = ref<any | null>(null)
 
   function clearData() {
