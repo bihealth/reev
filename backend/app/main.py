@@ -31,7 +31,7 @@ VERSION_FILE = env.get("REEV_VERSION_FILE", "/VERSION")
 #: The REEV version from the file (``None`` if to load dynamically from git)
 REEV_VERSION = None
 # Try to obtain version from file, otherwise keep it at ``None``
-if os.path.exists(VERSION_FILE):
+if os.path.exists(VERSION_FILE):  # pragma: no cover
     with open(VERSION_FILE) as f:
         REEV_VERSION = f.read().strip() or None
 

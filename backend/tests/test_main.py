@@ -1,3 +1,4 @@
+import subprocess
 import typing
 
 import pytest
@@ -74,3 +75,45 @@ async def test_invalid_proxy_route(monkeypatch, httpx_mock):
     response = client.get("/proxy/some-other-path")
     assert response.status_code == 404
     assert response.text == "Reverse proxy route not found"
+
+
+@pytest.mark.asyncio
+async def test_version(monkeypatch):
+    """Test version endpoint."""
+    monkeypatch.setattr(main, "REEV_VERSION", "1.2.3")
+    response = client.get("/version")
+    assert response.status_code == 200
+    assert response.text == "1.2.3"
+
+
+@pytest.mark.asyncio
+async def test_version_no_version(monkeypatch):
+    """Test version endpoint with no version."""
+    monkeypatch.setattr(main, "REEV_VERSION", None)
+    response = client.get("/version")
+    assert response.status_code == 200
+    expected = subprocess.check_output(["git", "describe", "--tags", "--dirty"]).strip().decode()
+    assert response.text == expected
+
+
+@pytest.mark.asyncio
+async def test_variantvalidator(monkeypatch, httpx_mock):
+    """Test variant validator endpoint."""
+    variantvalidator_url = "https://rest.variantvalidator.org/VariantValidator/variantvalidator"
+    httpx_mock.add_response(
+        url=f"{variantvalidator_url}/{MOCKED_URL_TOKEN}",
+        method="GET",
+        text="Mocked response",
+    )
+
+    response = client.get(f"/variantvalidator/{MOCKED_URL_TOKEN}")
+    assert response.status_code == 200
+    assert response.text == "Mocked response"
+
+
+@pytest.mark.asyncio
+async def test_favicon():
+    """Test favicon endpoint."""
+    response = client.get("/favicon.ico")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/vnd.microsoft.icon"
