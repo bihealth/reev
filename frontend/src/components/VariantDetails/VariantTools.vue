@@ -211,27 +211,27 @@ const jumpToLocus = async () => {
 </script>
 
 <template>
-  <v-card>
-    <v-card-title>External Resources</v-card-title>
-    <v-card-item>
+  <div>
+    <h2>External Resources</h2>
+    <div class="external-resource-item">
       <a :href="dgvLinkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         DGV
       </a>
-    </v-card-item>
-    <v-card-item>
+    </div>
+    <div class="external-resource-item">
       <a :href="ensemblLinkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         ENSEBML
       </a>
-    </v-card-item>
-    <v-card-item>
+    </div>
+    <div class="external-resource-item">
       <a :href="gnomadLinkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         gnomAD
       </a>
-    </v-card-item>
-    <v-card-item>
+    </div>
+    <div class="external-resource-item">
       <a v-if="mt85Linkout" :href="mt85Linkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         MutationTaster 85
@@ -240,8 +240,8 @@ const jumpToLocus = async () => {
         <v-icon>mdi-launch</v-icon>
         MutationTaster 85
       </span>
-    </v-card-item>
-    <v-card-item>
+    </div>
+    <div class="external-resource-item">
       <a v-if="mt2021Linkout" :href="mt2021Linkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         MutationTaster 2021
@@ -250,39 +250,39 @@ const jumpToLocus = async () => {
         <v-icon>mdi-launch</v-icon>
         MutationTaster 2021
       </span>
-    </v-card-item>
-    <v-card-item>
+    </div>
+    <div class="external-resource-item">
       <a :href="ucscLinkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         UCSC Genome Browser
       </a>
-    </v-card-item>
-    <v-card-item>
+    </div>
+    <div class="external-resource-item">
       <a :href="varsomeLinkout" target="_blank">
         <v-icon>mdi-launch</v-icon>
         varsome
       </a>
-    </v-card-item>
-  </v-card>
+    </div>
+  </div>
 
   <v-divider />
 
-  <v-card>
-    <v-card-title>IGV</v-card-title>
-    <v-card-item>
+  <div>
+    <h2>IGV</h2>
+    <div>
       <div>
         <a href="#" target="_blank" @click.prevent="jumpToLocus()">
           <v-icon>mdi-launch</v-icon>
           Jump to Location in IGV
         </a>
       </div>
-    </v-card-item>
-  </v-card>
+    </div>
+  </div>
 
   <v-divider />
 
-  <v-card>
-    <v-card-title>Precomputed Scores</v-card-title>
+  <div>
+    <h2>Precomputed Scores</h2>
     <v-table>
       <thead>
         <tr>
@@ -833,10 +833,20 @@ const jumpToLocus = async () => {
         </tr>
       </tbody>
     </v-table>
-  </v-card>
+  </div>
 </template>
 
 <style scoped>
+.external-resource-item {
+  float: left;
+  margin-right: 10px;
+}
+
+.external-resource-item:last-child {
+  float: none;
+  margin-right: 0;
+}
+
 .benign-very-strong {
   padding: 2px;
   background-color: hsla(120, 100%, 50%, 0.65);

@@ -35,6 +35,8 @@ const queryVariantValidatorApi = async () => {
     variantValidatorState.value = VariantValidatorStates.Error
   }
 }
+
+const activeIdentifier = ref<string>('')
 </script>
 
 <template>
@@ -55,12 +57,14 @@ const queryVariantValidatorApi = async () => {
         <v-list-item
           v-for="(data, identifier, index) in variantValidatorResults"
           :key="index"
-          style="display: inline-block"
+          class="variant-validator-result-tab"
         >
           <div v-if="String(identifier) !== 'metadata' && String(identifier) !== 'flag'">
             <v-btn
               :id="'variant-validator-result-' + index + '-tab'"
               :href="'#variant-validator-result-' + index"
+              @click="activeIdentifier = String(identifier)"
+              :class="{ 'active-tab': String(identifier) === activeIdentifier }"
               >{{ identifier }}</v-btn
             >
           </div>
@@ -72,6 +76,7 @@ const queryVariantValidatorApi = async () => {
             v-if="String(identifier) !== 'metadata' && String(identifier) !== 'flag'"
             :id="'variant-validator-result-' + index"
             variant="outlined"
+            v-show="String(identifier) === activeIdentifier"
           >
             <div v-if="data.validation_warnings && data.validation_warnings.length">
               <v-list>
@@ -83,7 +88,8 @@ const queryVariantValidatorApi = async () => {
             <v-card-title>Results for {{ identifier }}</v-card-title>
             <v-divider />
             <v-card-subtitle>HGVS-Compliant Variant Descriptions</v-card-subtitle>
-            <v-table class="card-body v-table v-table-hover v-table-striped">
+            <v-divider />
+            <v-table>
               <thead>
                 <tr>
                   <th>Type</th>
@@ -125,9 +131,11 @@ const queryVariantValidatorApi = async () => {
                 </tr>
               </tbody>
             </v-table>
+
             <v-divider />
             <v-card-subtitle>Genomic Variants</v-card-subtitle>
-            <v-table class="card-body v-table v-table-hover v-table-striped">
+            <v-divider />
+            <v-table>
               <thead>
                 <tr>
                   <th>Variant Description</th>
@@ -210,18 +218,7 @@ const queryVariantValidatorApi = async () => {
 </template>
 
 <style scoped>
-.spin {
-  animation-name: spin;
-  animation-duration: 2000ms;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.variant-validator-result-tab {
+  float: left;
 }
 </style>

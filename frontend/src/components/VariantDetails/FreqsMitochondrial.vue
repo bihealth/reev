@@ -27,14 +27,14 @@ const gnomadMtDna = computed(() => {
 
 <template>
   <div>
-    <div v-if="!isVariantMtHomopolymer(props.smallVar)" class="text-muted pb-3">
+    <div v-if="!isVariantMtHomopolymer(props.smallVar)">
       <small>
         <v-icon>mdi-alert-circle-outline</v-icon>
         Variant in homopolymeric region
       </small>
     </div>
 
-    <table class="table table-reactive">
+    <v-table>
       <thead>
         <tr class="text-center">
           <th>Database</th>
@@ -73,6 +73,6 @@ const gnomadMtDna = computed(() => {
           />
         </tr>
       </tbody>
-    </table>
+    </v-table>
   </div>
 </template>

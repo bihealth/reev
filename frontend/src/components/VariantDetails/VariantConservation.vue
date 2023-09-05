@@ -61,11 +61,11 @@ onMounted(initSelectedTranscript)
 </script>
 
 <template>
-  <div class="m-2">
+  <div>
     {{}}
     <div v-if="ucscConservation">
       <div class="float-right">
-        <select v-model="selectedTranscript" class="form-control custom-select custom-select-sm">
+        <select v-model="selectedTranscript">
           <option v-for="transcript in transcriptIds" :value="transcript" :key="transcript">
             {{ transcript }}
           </option>
