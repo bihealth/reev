@@ -6,6 +6,7 @@ import AboutView from '@/views/AboutView.vue'
 import ContactView from '@/views/ContactView.vue'
 import GeneDetailView from '@/views/GeneDetailView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
+import GenesListView from '@/views/GenesListView.vue'
 
 const routes = [
   {
@@ -38,6 +39,11 @@ const routes = [
     props: (route: any) => {
       return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
     }
+  },
+  {
+    path: '/genes/search',
+    name: 'genes',
+    component: GenesListView
   }
 ]
 

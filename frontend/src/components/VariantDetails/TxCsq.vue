@@ -3,8 +3,8 @@ const props = defineProps<{ txCsq: any }>()
 </script>
 
 <template>
-  <div class="table-responsive" style="font-size: 90%">
-    <table class="table table-hover">
+  <div>
+    <v-table>
       <thead>
         <tr>
           <th>Gene</th>
@@ -28,6 +28,6 @@ const props = defineProps<{ txCsq: any }>()
           <td>{{ txCsq['rank'].ord }} / {{ txCsq['rank'].total }}</td>
         </tr>
       </tbody>
-    </table>
+    </v-table>
   </div>
 </template>

@@ -36,11 +36,11 @@ describe('roundIt method', () => {
 
 describe('search method', () => {
   it('should return route location if match', () => {
-    const result = search('BRCA1', 'ghcr37')
+    const result = search('HGNC:1100', 'ghcr37')
     expect(result).toEqual({
       name: 'gene',
       params: {
-        searchTerm: 'BRCA1',
+        searchTerm: 'HGNC:1100',
         genomeRelease: 'ghcr37'
       }
     })

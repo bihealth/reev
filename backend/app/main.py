@@ -101,6 +101,30 @@ async def version():
     return Response(content=version)
 
 
+# Register app for returning proxy for variantvalidator.org.
+@app.get("/variantvalidator/{path:path}")
+async def variantvalidator(request: Request, path: str):
+    """Implement reverse proxy for variantvalidator.org."""
+    url = request.url
+    # Change grch to GRCh and chr to nothing in path
+    path = path.replace("grch", "GRCh").replace("chr", "")
+    backend_url = "https://rest.variantvalidator.org/VariantValidator/variantvalidator/" + path
+
+    backend_url = backend_url + (f"?{url.query}" if url.query else "")
+    backend_req = client.build_request(
+        method=request.method,
+        url=backend_url,
+        content=await request.body(),
+    )
+    backend_resp = await client.send(backend_req, stream=True)
+    return StreamingResponse(
+        backend_resp.aiter_raw(),
+        status_code=backend_resp.status_code,
+        headers=backend_resp.headers,
+        background=BackgroundTask(backend_resp.aclose),
+    )
+
+
 # Register route for favicon.
 @app.get("/favicon.ico")
 async def favicon():

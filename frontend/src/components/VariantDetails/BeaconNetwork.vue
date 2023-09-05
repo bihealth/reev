@@ -30,7 +30,7 @@ const loadBeacon = () => {
     Query Beacon -----|>
     <v-btn prepend-icon="mdi-refresh" style="float: right" @click="loadBeacon()"> Load </v-btn>
   </h3>
-  <div class="card-body">
+  <div>
     <iframe
       v-if="beaconAddress"
       ref="beaconFrame"

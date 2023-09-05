@@ -22,7 +22,7 @@ onMounted(() => {
           alt="logo"
           width="70"
         />
-        Explanation and Evaluation of Variants
+        REEV: Explanation and Evaluation of Variants
       </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>

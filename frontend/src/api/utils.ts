@@ -83,11 +83,13 @@ export const isVariantMtHomopolymer = (smallVar: any): any => {
  * the correct page.
  *
  * @param searchTerm The search term to use.
+ * @param genomeRelease The genome release to use.
  */
 export const search = (searchTerm: string, genomeRelease: string) => {
   interface RouteLocationFragment {
     name: string
     params?: any
+    query?: any
   }
 
   type RouteLoctionBuilder = () => RouteLocationFragment
@@ -95,6 +97,16 @@ export const search = (searchTerm: string, genomeRelease: string) => {
   // We iterate the regexps in the `Map` and will use the route from the
   // first match.
   const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
+    [
+      /^HGNC:\d+$/,
+      (): RouteLocationFragment => ({
+        name: 'gene',
+        params: {
+          searchTerm: searchTerm,
+          genomeRelease: genomeRelease
+        }
+      })
+    ],
     [
       /^chr\d+:\d+:[A-Z]:[A-Z]$/,
       (): RouteLocationFragment => ({
@@ -108,10 +120,10 @@ export const search = (searchTerm: string, genomeRelease: string) => {
     [
       /^.*$/,
       (): RouteLocationFragment => ({
-        name: 'gene',
-        params: {
-          searchTerm: searchTerm,
-          genomeRelease: genomeRelease
+        name: 'genes',
+        query: {
+          q: searchTerm,
+          fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
         }
       })
     ]

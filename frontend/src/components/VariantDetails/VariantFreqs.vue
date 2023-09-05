@@ -26,6 +26,7 @@ const gnomadGenomes = 'gnomad_genomes'
         :var-annos="props.varAnnos"
         :dataset="gnomadExomes"
       />
+      <v-divider />
       <VariantDetailsFreqsAutosomal
         :small-var="props.smallVar"
         :var-annos="props.varAnnos"

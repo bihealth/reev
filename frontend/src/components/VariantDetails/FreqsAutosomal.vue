@@ -60,8 +60,8 @@ const sexExpanded: any = ref({})
 
 <template>
   <div>
-    <div class="ml-2 mr-2 mb-3 mt-2">
-      <span class="font-weight-bolder" style="font-size: 120%">
+    <div>
+      <span style="font-size: 120%">
         <template v-if="props.dataset === 'gnomad_exomes'"> gnomAD Exomes </template>
         <template v-if="props.dataset === 'gnomad_genomes'"> gnomAD Genomes </template>
       </span>
@@ -88,14 +88,14 @@ const sexExpanded: any = ref({})
         @gnomAD
       </a>
     </div>
-    <table class="table table-reactive" v-if="selAnnos">
+    <v-table v-if="selAnnos">
       <thead>
         <tr>
           <th>Population</th>
           <th></th>
-          <th class="text-right text-nowrap">Allele Count</th>
-          <th class="text-right text-nowrap">Homozygotes</th>
-          <th class="text-right text-nowrap">Allele Frequency</th>
+          <th>Allele Count</th>
+          <th>Homozygotes</th>
+          <th>Allele Frequency</th>
         </tr>
       </thead>
       <tbody>
@@ -112,44 +112,35 @@ const sexExpanded: any = ref({})
                 </a>
               </td>
               <td></td>
-              <td class="text-right text-nowrap">
+              <td>
                 {{ sep(byPop[key]?.counts?.overall?.an) }}
               </td>
-              <td class="text-right text-nowrap">
+              <td>
                 {{ sep(byPop[key]?.counts?.overall?.nhomalt) }}
               </td>
-              <td
-                class="text-right text-nowrap"
-                v-html="roundIt(byPop[key]?.counts?.overall?.af, FREQ_DIGITS)"
-              ></td>
+              <td v-html="roundIt(byPop[key]?.counts?.overall?.af, FREQ_DIGITS)"></td>
             </tr>
-            <tr :id="idKey(key) + '-xx'" class="bg-light" :class="{ 'd-none': !sexExpanded[key] }">
+            <tr :id="idKey(key) + '-xx'" :class="{ 'd-none': !sexExpanded[key] }">
               <td></td>
-              <td class="text-right text-nowrap">XX</td>
-              <td class="text-right text-nowrap">
+              <td>XX</td>
+              <td>
                 {{ sep(byPop[key]?.counts?.xx?.an) }}
               </td>
-              <td class="text-right text-nowrap">
+              <td>
                 {{ sep(byPop[key]?.counts?.xx?.nhomalt) }}
               </td>
-              <td
-                class="text-right text-nowrap"
-                v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"
-              ></td>
+              <td v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"></td>
             </tr>
-            <tr :id="idKey(key) + '-xy'" class="bg-light" :class="{ 'd-none': !sexExpanded[key] }">
+            <tr :id="idKey(key) + '-xy'" :class="{ 'd-none': !sexExpanded[key] }">
               <td></td>
-              <td class="text-right text-nowrap">XY</td>
-              <td class="text-right text-nowrap">
+              <td>XY</td>
+              <td>
                 {{ sep(byPop[key].counts?.xy?.an) }}
               </td>
-              <td class="text-right text-nowrap">
+              <td>
                 {{ sep(byPop[key].counts?.xy?.nhomalt) }}
               </td>
-              <td
-                class="text-right text-nowrap"
-                v-html="roundIt(byPop[key].counts?.xy?.af, FREQ_DIGITS)"
-              ></td>
+              <td v-html="roundIt(byPop[key].counts?.xy?.af, FREQ_DIGITS)"></td>
             </tr>
           </template>
         </template>
@@ -157,32 +148,32 @@ const sexExpanded: any = ref({})
         <tr>
           <th>Total</th>
           <td></td>
-          <td class="text-right text-nowrap">{{ sep(bySex?.overall?.an) }}</td>
-          <td class="text-right text-nowrap">
+          <td>{{ sep(bySex?.overall?.an) }}</td>
+          <td>
             {{ sep(bySex?.overall?.nhomalt) }}
           </td>
-          <td class="text-right text-nowrap" v-html="roundIt(bySex?.overall?.af, FREQ_DIGITS)"></td>
+          <td v-html="roundIt(bySex?.overall?.af, FREQ_DIGITS)"></td>
         </tr>
 
         <tr>
           <td></td>
-          <td class="text-right text-nowrap">XX</td>
-          <td class="text-right text-nowrap">{{ sep(bySex?.xx?.an) }}</td>
-          <td class="text-right text-nowrap">{{ sep(bySex?.xx?.nhomalt) }}</td>
-          <td class="text-right text-nowrap" v-html="roundIt(bySex?.xx?.af, FREQ_DIGITS)"></td>
+          <td>XX</td>
+          <td>{{ sep(bySex?.xx?.an) }}</td>
+          <td>{{ sep(bySex?.xx?.nhomalt) }}</td>
+          <td v-html="roundIt(bySex?.xx?.af, FREQ_DIGITS)"></td>
         </tr>
 
         <tr>
           <td></td>
-          <td class="text-right text-nowrap">XY</td>
-          <td class="text-right text-nowrap">{{ sep(bySex?.xy?.an) }}</td>
-          <td class="text-right text-nowrap">{{ sep(bySex?.xy?.nhomalt) }}</td>
-          <td class="text-right text-nowrap" v-html="roundIt(bySex?.xy?.af, FREQ_DIGITS)"></td>
+          <td>XY</td>
+          <td>{{ sep(bySex?.xy?.an) }}</td>
+          <td>{{ sep(bySex?.xy?.nhomalt) }}</td>
+          <td v-html="roundIt(bySex?.xy?.af, FREQ_DIGITS)"></td>
         </tr>
       </tbody>
-    </table>
+    </v-table>
 
-    <div class="text-muted text-center font-italic pb-3" v-else>
+    <div v-else>
       No allele frequency information available in local database. Try to lookup the variant
       directly:
       <a

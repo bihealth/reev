@@ -11,17 +11,18 @@ export enum StoreState {
   Initial = 'initial',
   Loading = 'loading',
   Active = 'active',
-  Error = 'error'
+  Error = 'error',
+  Redirect = 'redirect'
 }
 
 export const useMiscStore = defineStore('misc', () => {
-  // The current store state
+  /* The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  // The app version.
+  /* The app version. */
   const appVersion = ref<string | null>(null)
 
-  // Initialize store, load version.
+  // Initialize store, load version
   const initialize = async () => {
     storeState.value = StoreState.Loading
     try {
