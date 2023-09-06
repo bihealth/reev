@@ -115,7 +115,7 @@ describe('HomeView with mocked router', async () => {
     expect(store.geneSymbol).toBe('BRCA1')
   })
 
-  it('renders correctly uses the router', async () => {
+  it('correctly uses the router', async () => {
     const wrapper = makeWrapper(router)
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active

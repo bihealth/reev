@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { useMiscStore } from '@/stores/misc'
-
-const miscStore = useMiscStore()
-
-onMounted(() => {
-  if (miscStore?.initialize) {
-    miscStore?.initialize()
-  }
-})
-</script>
-
 <template>
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
