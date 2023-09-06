@@ -8,6 +8,25 @@ import { useGenesListStore } from '../genesList'
 
 const fetchMocker = createFetchMock(vi)
 
+const exampleGenesList = {
+  genes: [
+    {
+      score: 0.75,
+      data: {
+        hgnc_id: 'HGNC:3333',
+        symbol: 'EMP1'
+      }
+    },
+    {
+      score: 0.75,
+      data: {
+        hgnc_id: 'HGNC:3334',
+        symbol: 'EMP2'
+      }
+    }
+  ]
+}
+
 describe('geneInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -37,42 +56,56 @@ describe('geneInfo Store', () => {
     expect(store.genesList).toBe(null)
   })
 
-  //   it('should load data', async () => {
-  //     const store = useGenesListStore()
-  //     fetchMocker.mockResponses(JSON.stringify({ result: { BRCA1: { gene: 'info' } } }))
+  it('should load data', async () => {
+    const store = useGenesListStore()
+    fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
 
-  //     await store.loadData('q=BRCA1&fields=symbol')
+    await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
-  //     expect(store.storeState).toBe(StoreState.Active)
-  //     expect(store.query).toBe('q=BRCA1&fields=symbol')
-  //     expect(store.genesList).toEqual({ gene: 'info' })
-  //   })
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.query).toBe('q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
+    expect(store.genesList).toEqual(exampleGenesList.genes)
+  })
 
-  //   it('should fail to load data with invalid request', async () => {
-  //     // Disable error logging
-  //     vi.spyOn(console, 'error').mockImplementation(() => {})
-  //     const store = useGeneInfoStore()
-  //     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
+  it('should fail to load data with invalid request', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    const store = useGenesListStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-  //     await store.loadData('invalid')
+    await store.loadData('invalid')
 
-  //     expect(store.storeState).toBe(StoreState.Error)
-  //     expect(store.geneSymbol).toBe(null)
-  //     expect(store.geneInfo).toBe(null)
-  //   })
+    expect(store.storeState).toBe(StoreState.Error)
+    expect(store.query).toBe(null)
+    expect(store.genesList).toBe(null)
+  })
 
-  //   it('should not load data if gene symbol is the same', async () => {
-  //     const store = useGeneInfoStore()
-  //     fetchMocker.mockResponse(JSON.stringify({ genes: { BRCA1: { gene: 'info' } } }))
+  it('should not load data if gene symbol is the same', async () => {
+    const store = useGenesListStore()
+    fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
 
-  //     await store.loadData('BRCA1')
+    await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
-  //     expect(store.storeState).toBe(StoreState.Active)
-  //     expect(store.geneSymbol).toBe('BRCA1')
-  //     expect(store.geneInfo).toEqual({ gene: 'info' })
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.query).toBe('q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
+    expect(store.genesList).toEqual(exampleGenesList.genes)
 
-  //     await store.loadData('BRCA1')
+    await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
-  //     expect(fetchMocker.mock.calls.length).toBe(1)
-  //   })
+    expect(fetchMocker.mock.calls.length).toBe(1)
+  })
+
+  it('should redirect if the searchTerm has match', async () => {
+    const store = useGenesListStore()
+    fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+
+    await store.loadData({ q: 'EMP1', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
+
+    expect(store.storeState).toBe(StoreState.Redirect)
+    expect(store.redirectHgncId).toBe('HGNC:3333')
+    expect(store.query).toBe('q=EMP1&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
+    expect(store.genesList).toEqual(exampleGenesList.genes)
+
+    expect(fetchMocker.mock.calls.length).toBe(1)
+  })
 })

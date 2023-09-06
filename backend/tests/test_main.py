@@ -1,4 +1,3 @@
-import subprocess
 import typing
 
 import pytest

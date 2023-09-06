@@ -2,7 +2,8 @@
 import { watch, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { StoreState, useVariantInfoStore } from '@/stores/variantInfo'
+import { useVariantInfoStore } from '@/stores/variantInfo'
+import { StoreState } from '@/stores/misc'
 
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
