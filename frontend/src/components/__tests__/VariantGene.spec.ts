@@ -25,26 +25,21 @@ const router = createRouter({
 router.push = vi.fn()
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><VariantGene /></v-app>'
+  return mount(VariantGene, {
+    props: {
+      gene: BRCA1GeneInfo
     },
-    {
-      props: {
-        gene: BRCA1GeneInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          VariantGene
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        VariantGene
       }
     }
-  )
+  })
 }
 
 describe('VariantGene', async () => {
-  it.fails('renders the VariantGene info', async () => {
+  it('renders the VariantGene info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('HGNC')
     expect(wrapper.text()).toContain('NCBI Summary')

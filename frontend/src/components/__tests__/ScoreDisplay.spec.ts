@@ -24,24 +24,19 @@ const router = createRouter({
 router.push = vi.fn()
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><ScoreDisplay /></v-app>'
+  return mount(ScoreDisplay, {
+    props: {
+      rangeLower: 0,
+      rangeUpper: 1,
+      value: 0.5
     },
-    {
-      props: {
-        rangeLower: 0,
-        rangeUpper: 1,
-        value: 0.5
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          ScoreDisplay
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        ScoreDisplay
       }
     }
-  )
+  })
 }
 
 describe('ScoreDisplay', async () => {

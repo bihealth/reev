@@ -25,26 +25,21 @@ const router = createRouter({
 router.push = vi.fn()
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><VariantConservation /></v-app>'
+  return mount(VariantConservation, {
+    props: {
+      varAnnos: BRCA1VariantInfo
     },
-    {
-      props: {
-        varAnnos: BRCA1VariantInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          VariantConservation
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        VariantConservation
       }
     }
-  )
+  })
 }
 
 describe('VariantConservation', async () => {
-  it.fails('renders the VariantConservation info', async () => {
+  it('renders the VariantConservation info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('The following shows UCSC 100 vertebrate conservation.')
   })

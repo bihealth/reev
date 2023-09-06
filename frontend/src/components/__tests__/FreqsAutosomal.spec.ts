@@ -35,28 +35,23 @@ const smallVariantInfo = {
 }
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><FreqsAutosomal /></v-app>'
+  return mount(FreqsAutosomal, {
+    props: {
+      smallVar: smallVariantInfo,
+      varAnnos: BRCA1VariantInfo,
+      dataset: 'gnomad_genomes'
     },
-    {
-      props: {
-        smallVar: smallVariantInfo,
-        varAnnos: BRCA1VariantInfo,
-        dataset: 'gnomad_genomes'
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          FreqsAutosomal
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        FreqsAutosomal
       }
     }
-  )
+  })
 }
 
 describe('FreqsAutosomal', async () => {
-  it.fails('renders the FreqsAutosomal info', async () => {
+  it('renders the FreqsAutosomal info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('gnomAD Genomes')
   })

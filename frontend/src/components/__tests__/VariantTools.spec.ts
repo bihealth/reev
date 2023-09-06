@@ -35,27 +35,22 @@ const smallVariantInfo = {
 }
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><VariantTools /></v-app>'
+  return mount(VariantTools, {
+    props: {
+      smallVar: smallVariantInfo,
+      varAnnos: BRCA1VariantInfo
     },
-    {
-      props: {
-        smallVar: smallVariantInfo,
-        varAnnos: BRCA1VariantInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          VariantTools
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        VariantTools
       }
     }
-  )
+  })
 }
 
 describe('VariantTools', async () => {
-  it.fails('renders the VariantTools info', async () => {
+  it('renders the VariantTools info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('External Resources')
     expect(wrapper.text()).toContain('IGV')

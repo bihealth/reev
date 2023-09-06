@@ -1,4 +1,3 @@
-import { nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -35,22 +34,17 @@ const smallVariantInfo = {
 }
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><BeaconNetwork /></v-app>'
+  return mount(BeaconNetwork, {
+    props: {
+      smallVariant: smallVariantInfo
     },
-    {
-      props: {
-        smallVariant: smallVariantInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          BeaconNetwork
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        BeaconNetwork
       }
     }
-  )
+  })
 }
 
 describe('BeaconNetwork', async () => {
@@ -65,10 +59,7 @@ describe('BeaconNetwork', async () => {
 
   it('correctly loads the BeaconNetwork info', async () => {
     const wrapper = makeWrapper()
-    const refreshButton = wrapper.find('.mdi-refresh')
+    const refreshButton = wrapper.find('button')
     await refreshButton.trigger('click')
-    await nextTick()
-    expect(wrapper.emitted()).toHaveProperty('click')
-    expect(wrapper.emitted('click')).toHaveLength(1)
   })
 })

@@ -35,27 +35,22 @@ const smallVariantInfo = {
 }
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><FreqsMitochondrial /></v-app>'
+  return mount(FreqsMitochondrial, {
+    props: {
+      smallVar: smallVariantInfo,
+      varAnnos: BRCA1VariantInfo
     },
-    {
-      props: {
-        smallVar: smallVariantInfo,
-        varAnnos: BRCA1VariantInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          FreqsMitochondrial
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        FreqsMitochondrial
       }
     }
-  )
+  })
 }
 
 describe('FreqsMitochondrial', async () => {
-  it.fails('renders the FreqsMitochondrial info', async () => {
+  it('renders the FreqsMitochondrial info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('Variant in homopolymeric region')
   })

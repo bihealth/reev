@@ -34,22 +34,17 @@ const smallVariantInfo = {
 }
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><VariantValidator /></v-app>'
+  return mount(VariantValidator, {
+    props: {
+      smallVariant: smallVariantInfo
     },
-    {
-      props: {
-        smallVariant: smallVariantInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          VariantValidator
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        VariantValidator
       }
     }
-  )
+  })
 }
 
 describe('VariantValidator', async () => {

@@ -25,26 +25,21 @@ const router = createRouter({
 router.push = vi.fn()
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><TxCsq /></v-app>'
+  return mount(TxCsq, {
+    props: {
+      txCsq: BRCA1TxInfo
     },
-    {
-      props: {
-        txCsq: BRCA1TxInfo
-      },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: {
-          TxCsq
-        }
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: {
+        TxCsq
       }
     }
-  )
+  })
 }
 
 describe('TxCsq', async () => {
-  it.fails('renders the TxCsq info', async () => {
+  it('renders the TxCsq info', async () => {
     const wrapper = makeWrapper()
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)

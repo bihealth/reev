@@ -38,24 +38,22 @@ const clinVarInfo = {
 }
 
 const makeWrapper = (cvInfo: Object) => {
-  return mount(
-    { template: '<v-app><ClinVar /></v-app>' },
-    {
-      props: { clinvar: cvInfo },
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
-        components: { ClinVar }
-      }
+  return mount(ClinVar, {
+    props: { clinvar: cvInfo },
+    global: {
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      components: { ClinVar }
     }
-  )
+  })
 }
 
 describe('ClinVar', async () => {
-  it.fails('renders the ClinVar info', async () => {
+  it('renders the ClinVar info', async () => {
     const wrapper = makeWrapper(clinVarInfo)
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
-    // TODO: test stars
-    expect(wrapper.text()).toContain('Pathogenic')
+    expect(wrapper.text()).toContain('VCV000041833')
+    const starts = wrapper.findAll('.mdi-star-outline')
+    expect(starts.length).toBe(5)
   })
 
   it('renders the ClinVar info (not found)', async () => {
