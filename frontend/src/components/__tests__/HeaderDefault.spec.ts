@@ -37,7 +37,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('HeaderDefault.vue', () => {
+describe.concurrent('HeaderDefault.vue', () => {
   it('renders the logo and title', () => {
     const wrapper = makeWrapper()
 

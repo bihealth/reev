@@ -50,7 +50,7 @@ const makeWrapper = (variantData: Object) => {
   })
 }
 
-describe('FreqsAutosomal', async () => {
+describe.concurrent('FreqsAutosomal', async () => {
   it('renders the FreqsAutosomal info', async () => {
     const wrapper = makeWrapper(BRCA1VariantInfo['result'])
     expect(wrapper.text()).toContain('gnomAD Genomes')

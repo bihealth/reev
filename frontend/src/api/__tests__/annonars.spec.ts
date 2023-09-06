@@ -8,7 +8,7 @@ import * as EMPSearchInfo from '@/assets/__tests__/EMPSearchInfo.json'
 
 const fetchMocker = createFetchMock(vi)
 
-describe('Annonars Client', () => {
+describe.concurrent('Annonars Client', () => {
   beforeEach(() => {
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()

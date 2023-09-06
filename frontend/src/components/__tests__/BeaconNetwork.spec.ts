@@ -47,7 +47,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('BeaconNetwork', async () => {
+describe.concurrent('BeaconNetwork', async () => {
   it('renders the BeaconNetwork info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('Query Beacon -----|>')

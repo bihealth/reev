@@ -38,7 +38,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('VariantConservation', async () => {
+describe.concurrent('VariantConservation', async () => {
   it('renders the VariantConservation info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('The following shows UCSC 100 vertebrate conservation.')

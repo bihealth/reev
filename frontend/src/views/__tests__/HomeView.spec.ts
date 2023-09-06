@@ -73,7 +73,7 @@ const router = createRouter({
 // Mock router push
 router.push = vi.fn()
 
-describe('HomeView with mocked router', async () => {
+describe.concurrent('HomeView with mocked router', async () => {
   it('renders the header and the footer', () => {
     const wrapper = makeWrapper(router)
     const header = wrapper.findComponent(HeaderDefault)

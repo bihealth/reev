@@ -67,7 +67,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('GeneDetailView', async () => {
+describe.concurrent('GeneDetailView', async () => {
   it('renders the header', async () => {
     const wrapper = makeWrapper()
 

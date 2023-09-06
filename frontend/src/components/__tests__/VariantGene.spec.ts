@@ -38,7 +38,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('VariantGene', async () => {
+describe.concurrent('VariantGene', async () => {
   it('renders the VariantGene info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('HGNC')

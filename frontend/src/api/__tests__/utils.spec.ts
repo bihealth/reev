@@ -9,7 +9,7 @@ import {
   infoFromQuery
 } from '../utils'
 
-describe('roundIt method', () => {
+describe.concurrent('roundIt method', () => {
   it('should round a positive value with default digits', () => {
     const result = roundIt(3.14159)
     expect(result).toBe('<abbr title="3.14159">3.14</abbr>')

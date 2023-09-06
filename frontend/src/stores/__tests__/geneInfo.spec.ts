@@ -8,7 +8,7 @@ import { useGeneInfoStore } from '../geneInfo'
 
 const fetchMocker = createFetchMock(vi)
 
-describe('geneInfo Store', () => {
+describe.concurrent('geneInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     fetchMocker.enableMocks()

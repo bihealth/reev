@@ -49,7 +49,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('FooterDefault.vue', () => {
+describe.concurrent('FooterDefault.vue', () => {
   it('renders information', () => {
     const wrapper = makeWrapper()
     const footer = wrapper.find('footer')

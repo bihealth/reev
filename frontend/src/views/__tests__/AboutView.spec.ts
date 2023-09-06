@@ -48,7 +48,7 @@ const makeWrapper = () => {
     }
   )
 }
-describe('AboutView', async () => {
+describe.concurrent('AboutView', async () => {
   it('renders the header', () => {
     const wrapper = makeWrapper()
 

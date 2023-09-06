@@ -50,7 +50,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('VariantFreqs', async () => {
+describe.concurrent('VariantFreqs', async () => {
   it('renders the VariantFreqs info', async () => {
     const wrapper = makeWrapper()
     const freqsAutosomal = wrapper.findComponent(VariantDetailsFreqsAutosomal)

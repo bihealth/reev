@@ -67,7 +67,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('FreqsMitochondrial', async () => {
+describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.html()).toContain('HelixMTdb')

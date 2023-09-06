@@ -49,7 +49,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('VariantTools', async () => {
+describe.concurrent('VariantTools', async () => {
   it('renders the VariantTools info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('External Resources')

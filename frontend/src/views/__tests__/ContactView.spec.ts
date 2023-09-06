@@ -49,7 +49,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('ContactView', async () => {
+describe.concurrent('ContactView', async () => {
   it('renders the header', () => {
     const wrapper = makeWrapper()
 

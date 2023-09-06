@@ -53,7 +53,7 @@ const geneData = {
   }
 }
 
-describe('HeaderDetailPage', async () => {
+describe.concurrent('HeaderDetailPage', async () => {
   it('renders the gene symbol and nav links', () => {
     const wrapper = makeWrapper()
 

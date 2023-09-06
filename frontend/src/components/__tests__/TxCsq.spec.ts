@@ -38,7 +38,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('TxCsq', async () => {
+describe.concurrent('TxCsq', async () => {
   it('renders the TxCsq info', async () => {
     const wrapper = makeWrapper()
     const table = wrapper.find('table')

@@ -39,7 +39,7 @@ const makeWrapper = () => {
   })
 }
 
-describe('ScoreDisplay', async () => {
+describe.concurrent('ScoreDisplay', async () => {
   it('renders the ScoreDisplay with default props', async () => {
     const wrapper = makeWrapper()
     const svg = wrapper.find('svg')

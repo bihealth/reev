@@ -54,7 +54,7 @@ global.fetch = vi.fn((): any =>
   Promise.resolve({ json: () => Promise.resolve(VariantValidatorInfo) })
 )
 
-describe('VariantValidator', async () => {
+describe.concurrent('VariantValidator', async () => {
   it('renders the VariantValidator info', async () => {
     const wrapper = makeWrapper()
     expect(wrapper.text()).toContain('to submit the variant to VariantValidator.org.')

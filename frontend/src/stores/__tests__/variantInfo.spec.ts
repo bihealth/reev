@@ -21,7 +21,7 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-describe('geneInfo Store', () => {
+describe.concurrent('geneInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     fetchMocker.enableMocks()

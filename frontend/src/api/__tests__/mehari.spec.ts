@@ -6,7 +6,7 @@ import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 
 const fetchMocker = createFetchMock(vi)
 
-describe('Mehari Client', () => {
+describe.concurrent('Mehari Client', () => {
   beforeEach(() => {
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()

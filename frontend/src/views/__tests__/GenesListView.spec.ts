@@ -80,7 +80,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('GenesListView', async () => {
+describe.concurrent('GenesListView', async () => {
   it('renders the header, footer and searchBar', async () => {
     const wrapper = makeWrapper()
 

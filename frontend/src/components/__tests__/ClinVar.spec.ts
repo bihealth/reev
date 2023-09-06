@@ -47,7 +47,7 @@ const makeWrapper = (cvInfo: Object) => {
   })
 }
 
-describe('ClinVar', async () => {
+describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info', async () => {
     const wrapper = makeWrapper(clinVarInfo)
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')

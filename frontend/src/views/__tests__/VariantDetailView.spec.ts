@@ -97,7 +97,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('VariantDetailView', async () => {
+describe.concurrent('VariantDetailView', async () => {
   it('renders the header', async () => {
     const wrapper = makeWrapper()
 
