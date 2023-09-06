@@ -10,7 +10,6 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import FreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
-import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 
 const vuetify = createVuetify({
   components,
@@ -21,24 +20,43 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: routes
 })
+
 // Mock router push
 router.push = vi.fn()
 
 const smallVariantInfo = {
   release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
+  chromosome: 'chrM',
+  start: '70',
+  end: '70',
   reference: 'G',
   alternative: 'A',
   hgnc_id: 'HGNC:1100'
+}
+
+const variantInfo = {
+  helixmtdb: {
+    num_total: 1,
+    num_het: 1,
+    num_hom: 0
+  },
+  'gnomad-mtdna': {
+    an: 0,
+    ac_het: 0,
+    ac_hom: 0
+  },
+  mtdna: {
+    an: 0,
+    ac_het: 0,
+    ac_hom: 0
+  }
 }
 
 const makeWrapper = () => {
   return mount(FreqsMitochondrial, {
     props: {
       smallVar: smallVariantInfo,
-      varAnnos: BRCA1VariantInfo
+      varAnnos: variantInfo
     },
     global: {
       plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
@@ -52,6 +70,9 @@ const makeWrapper = () => {
 describe('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
     const wrapper = makeWrapper()
-    expect(wrapper.text()).toContain('Variant in homopolymeric region')
+    expect(wrapper.html()).toContain('HelixMTdb')
+    expect(wrapper.html()).toContain('gnomAD-MT')
+    const table = wrapper.find('table')
+    expect(table.exists()).toBe(true)
   })
 })

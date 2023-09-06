@@ -27,7 +27,7 @@ router.push = vi.fn()
 const makeWrapper = () => {
   return mount(VariantConservation, {
     props: {
-      varAnnos: BRCA1VariantInfo
+      varAnnos: BRCA1VariantInfo['result']
     },
     global: {
       plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],

@@ -38,7 +38,7 @@ const makeWrapper = () => {
   return mount(VariantTools, {
     props: {
       smallVar: smallVariantInfo,
-      varAnnos: BRCA1VariantInfo
+      varAnnos: BRCA1VariantInfo['result']
     },
     global: {
       plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],

@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -10,6 +11,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import * as VariantValidatorInfo from '@/assets/__tests__/BRCA1VariantValidator.json'
 
 const vuetify = createVuetify({
   components,
@@ -47,10 +49,23 @@ const makeWrapper = () => {
   })
 }
 
+// Mock fetch
+global.fetch = vi.fn((): any =>
+  Promise.resolve({ json: () => Promise.resolve(VariantValidatorInfo) })
+)
+
 describe('VariantValidator', async () => {
-  it.fails('renders the VariantValidator info', async () => {
+  it('renders the VariantValidator info', async () => {
     const wrapper = makeWrapper()
-    expect(wrapper.text()).toContain('VariantValidator HGVS Version:')
-    expect(wrapper.text()).toContain('VariantValidator Version:')
+    expect(wrapper.text()).toContain('to submit the variant to VariantValidator.org.')
+
+    const submitButton = wrapper.find('button')
+    expect(submitButton.exists()).toBe(true)
+    submitButton.trigger('click')
+    await nextTick()
+    expect(wrapper.text()).toContain('Loading ...')
+    const icon = wrapper.find('.v-progress-circular')
+    expect(icon.exists()).toBe(true)
+    await nextTick()
   })
 })

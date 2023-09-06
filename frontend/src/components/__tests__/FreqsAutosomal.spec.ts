@@ -34,11 +34,11 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-const makeWrapper = () => {
+const makeWrapper = (variantData: Object) => {
   return mount(FreqsAutosomal, {
     props: {
       smallVar: smallVariantInfo,
-      varAnnos: BRCA1VariantInfo,
+      varAnnos: variantData,
       dataset: 'gnomad_genomes'
     },
     global: {
@@ -52,7 +52,15 @@ const makeWrapper = () => {
 
 describe('FreqsAutosomal', async () => {
   it('renders the FreqsAutosomal info', async () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(BRCA1VariantInfo['result'])
     expect(wrapper.text()).toContain('gnomAD Genomes')
+    const table = wrapper.find('table')
+    expect(table.exists()).toBe(true)
+  })
+
+  it('renders the FreqsAutosomal info with no data', async () => {
+    const wrapper = makeWrapper({})
+    expect(wrapper.text()).toContain('gnomAD Genomes')
+    expect(wrapper.text()).toContain('No allele frequency information available in local database.')
   })
 })
