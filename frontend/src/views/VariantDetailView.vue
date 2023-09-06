@@ -85,6 +85,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
         <v-list-item
           v-for="section in SECTIONS"
           :key="section.id"
+          :id="`${section.id}-nav`"
           @click="router.push({ hash: `#${section.id}` })"
         >
           <v-list-item-title>{{ section.title }}</v-list-item-title>
@@ -107,7 +108,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
                   genomeRelease: genomeReleaseRef
                 }
               }"
-              >{{ variantInfoStore.varAnnos?.cadd.GeneName }}
+              >{{ variantInfoStore.varAnnos?.cadd?.GeneName }}
               <v-icon>mdi-open-in-new</v-icon>
             </router-link>
           </h3>

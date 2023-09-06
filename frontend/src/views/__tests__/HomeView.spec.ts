@@ -14,6 +14,8 @@ import * as directives from 'vuetify/directives'
 import HomeView from '../HomeView.vue'
 import SearchBar from '../../components/SearchBar.vue'
 import { StoreState } from '@/stores/misc'
+import HeaderDefault from '@/components/HeaderDefault.vue'
+import FooterDefault from '@/components/FooterDefault.vue'
 
 const vuetify = createVuetify({
   components,
@@ -72,8 +74,12 @@ const router = createRouter({
 router.push = vi.fn()
 
 describe('HomeView with mocked router', async () => {
-  it('renders the header', () => {
+  it('renders the header and the footer', () => {
     const wrapper = makeWrapper(router)
+    const header = wrapper.findComponent(HeaderDefault)
+    const footer = wrapper.findComponent(FooterDefault)
+    expect(header.exists()).toBe(true)
+    expect(footer.exists()).toBe(true)
 
     const logo = wrapper.find('#logo')
     const aboutLink = wrapper.find('#about')
@@ -125,6 +131,7 @@ describe('HomeView with mocked router', async () => {
     // search bar value is updated to "HGNC:1100"
     const searchBar = wrapper.findComponent(SearchBar)
     await searchBar.setValue('HGNC:1100', 'searchTerm')
+    await searchBar.setValue('grch37', 'genomeRelease')
 
     // press search
     const button = wrapper.findComponent('#search') as any
