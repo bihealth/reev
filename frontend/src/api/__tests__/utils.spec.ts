@@ -159,5 +159,20 @@ describe('infoFromQuery method', () => {
       alternative: undefined,
       hgnc_id: undefined
     })
+
+  it('should return null if no entry', () => {
+    const result = search('', 'foo37')
+    expect(result).toBe(null)
+  })
+
+  it('should remove whitespace', () => {
+    const result = search(' HGNC:1100  ', 'ghcr37')
+    expect(result).toEqual({
+      name: 'gene',
+      params: {
+        searchTerm: 'HGNC:1100',
+        genomeRelease: 'ghcr37'
+      }
+    })
   })
 })
