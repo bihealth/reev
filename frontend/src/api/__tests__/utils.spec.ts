@@ -159,6 +159,7 @@ describe('infoFromQuery method', () => {
       alternative: undefined,
       hgnc_id: undefined
     })
+  })
 
   it('should return null if no entry', () => {
     const result = search('', 'foo37')
