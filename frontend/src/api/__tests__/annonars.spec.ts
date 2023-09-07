@@ -43,6 +43,19 @@ describe.concurrent('Annonars Client', () => {
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1VariantInfo))
   })
 
+  it('do removes chr prefix from chromosome if genome release is grch38', async () => {
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('chr')) {
+        return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
+
+    const client = new AnnonarsClient()
+    const result = await client.fetchVariantInfo('grch38', 'chr17', 43044295, 'A', 'G')
+    expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1VariantInfo))
+  })
+
   it('fails to fetch variant info with wrong variant', async () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('alternative=G')) {

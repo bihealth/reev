@@ -145,6 +145,7 @@ const activeIdentifier = ref<string>('')
               <tbody>
                 <tr
                   v-if="
+                    data.primary_assembly_loci &&
                     data.primary_assembly_loci.grch37 &&
                     data.primary_assembly_loci.grch37.hgvs_genomic_description
                   "
@@ -153,15 +154,16 @@ const activeIdentifier = ref<string>('')
                     {{ data.primary_assembly_loci.grch37.hgvs_genomic_description }}
                   </td>
                   <td>
-                    GRCh37:{{ data.primary_assembly_loci.grch37.vcf.chr }}:{{
-                      data.primary_assembly_loci.grch37.vcf.pos
-                    }}:{{ data.primary_assembly_loci.grch37.vcf.ref }}:{{
-                      data.primary_assembly_loci.grch37.vcf.alt
+                    GRCh37:{{ data.primary_assembly_loci.grch37?.vcf?.chr }}:{{
+                      data.primary_assembly_loci.grch37?.vcf?.pos
+                    }}:{{ data.primary_assembly_loci.grch37?.vcf?.ref }}:{{
+                      data.primary_assembly_loci.grch37?.vcf?.alt
                     }}
                   </td>
                 </tr>
                 <tr
                   v-if="
+                    data.primary_assembly_loci &&
                     data.primary_assembly_loci.grch38 &&
                     data.primary_assembly_loci.grch38.hgvs_genomic_description
                   "
@@ -170,10 +172,10 @@ const activeIdentifier = ref<string>('')
                     {{ data.primary_assembly_loci.grch38.hgvs_genomic_description }}
                   </td>
                   <td>
-                    GRCh38:{{ data.primary_assembly_loci.grch38.vcf.chr }}:{{
-                      data.primary_assembly_loci.grch38.vcf.pos
-                    }}:{{ data.primary_assembly_loci.grch38.vcf.ref }}:{{
-                      data.primary_assembly_loci.grch38.vcf.alt
+                    GRCh38:{{ data.primary_assembly_loci.grch38?.vcf?.chr }}:{{
+                      data.primary_assembly_loci.grch38?.vcf?.pos
+                    }}:{{ data.primary_assembly_loci.grch38?.vcf?.ref }}:{{
+                      data.primary_assembly_loci.grch38?.vcf?.alt
                     }}
                   </td>
                 </tr>

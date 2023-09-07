@@ -30,4 +30,14 @@ describe.concurrent('miscInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.appVersion).toBe('v0.0.0')
   })
+
+  it('should handle error', async () => {
+    const store = useMiscStore()
+    fetchMocker.mockRejectOnce('error')
+
+    await store.initialize()
+
+    expect(store.storeState).toBe(StoreState.Error)
+    expect(store.appVersion).toBe(null)
+  })
 })

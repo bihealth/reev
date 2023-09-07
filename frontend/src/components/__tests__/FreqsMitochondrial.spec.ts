@@ -52,11 +52,11 @@ const variantInfo = {
   }
 }
 
-const makeWrapper = () => {
+const makeWrapper = (variantData: Object) => {
   return mount(FreqsMitochondrial, {
     props: {
       smallVar: smallVariantInfo,
-      varAnnos: variantInfo
+      varAnnos: variantData
     },
     global: {
       plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
@@ -69,10 +69,37 @@ const makeWrapper = () => {
 
 describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(variantInfo)
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)
+  })
+
+  it('renders the FreqsMitochondrial info with no helixmtdb', async () => {
+    const variantInfoNoHelixmtdb: any = structuredClone(variantInfo)
+    variantInfoNoHelixmtdb.helixmtdb = {}
+    const wrapper = makeWrapper(variantInfoNoHelixmtdb)
+    expect(wrapper.html()).toContain('HelixMTdb')
+    expect(wrapper.html()).toContain('gnomAD-MT')
+    const table = wrapper.find('table')
+    expect(table.exists()).toBe(true)
+  })
+
+  it('renders the FreqsMitochondrial info with no gnomad-mtdna', async () => {
+    const variantInfoNoGnomad: any = structuredClone(variantInfo)
+    variantInfoNoGnomad['gnomad-mtdna'] = {}
+    const wrapper = makeWrapper(variantInfoNoGnomad)
+    expect(wrapper.html()).toContain('HelixMTdb')
+    expect(wrapper.html()).toContain('gnomAD-MT')
+    const table = wrapper.find('table')
+    expect(table.exists()).toBe(true)
+  })
+
+  it.skip('renders the FreqsMitochondrial info with invalid data', async () => {
+    const wrapper = makeWrapper(smallVariantInfo)
+    console.log(wrapper.html())
+    const alertIcon = wrapper.find('.mdi-alert-circle-outline')
+    expect(alertIcon.exists()).toBe(true)
   })
 })

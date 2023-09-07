@@ -178,11 +178,11 @@ describe.concurrent('GenesListView', async () => {
     expect(wrapper.emitted('click')).toHaveLength(1)
   })
 
-  it.fails('redirects to gene info page if storeState is Redirect', async () => {
+  it('renders info page if storeState is Loading', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn() })
     const store = useGenesListStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async () => {
-      store.storeState = StoreState.Redirect
+      store.storeState = StoreState.Loading
       store.query = 'q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
       store.redirectHgncId = 'HGNC:3333'
     })
@@ -194,8 +194,49 @@ describe.concurrent('GenesListView', async () => {
     store.loadData = mockLoadData
     store.clearData = mockClearData
 
-    store.storeState = StoreState.Redirect
+    store.storeState = StoreState.Loading
     store.query = 'q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
+    store.redirectHgncId = 'HGNC:3333'
+    const wrapper = mount(
+      {
+        template: '<v-app><GenesListView /></v-app>'
+      },
+      {
+        query: {
+          q: 'EMP1',
+          fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
+        },
+        global: {
+          plugins: [vuetify, router, pinia],
+          components: {
+            GenesListView
+          }
+        }
+      }
+    )
+    await nextTick()
+
+    expect(wrapper.html()).toContain('Searching for genes')
+  })
+
+  it.skip('redirects to gene info page if storeState is Redirect', async () => {
+    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const store = useGenesListStore(pinia)
+    const mockLoadData = vi.fn().mockImplementation(async () => {
+      store.storeState = StoreState.Redirect
+      store.query = 'q=EMP1&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
+      store.redirectHgncId = 'HGNC:3333'
+    })
+    const mockClearData = vi.fn().mockImplementation(() => {
+      store.storeState = StoreState.Redirect
+      store.query = null
+      store.redirectHgncId = null
+    })
+    store.loadData = mockLoadData
+    store.clearData = mockClearData
+
+    store.storeState = StoreState.Redirect
+    store.query = 'q=EMP1&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
     store.redirectHgncId = 'HGNC:3333'
     mount(
       {
@@ -203,7 +244,7 @@ describe.concurrent('GenesListView', async () => {
       },
       {
         query: {
-          q: 'EMP',
+          q: 'EMP1',
           fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
         },
         global: {

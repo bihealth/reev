@@ -32,10 +32,10 @@ router.push = vi.fn()
 const geneData = {
   storeState: 'active',
   geneSymbol: 'BRCA1',
-  geneInfo: BRCA1geneInfo
+  geneInfo: BRCA1geneInfo.genes['HGNC:1100']
 }
 
-const makeWrapper = () => {
+const makeWrapper = (geneDataExample: Object) => {
   const pinia = createTestingPinia({ createSpy: vi.fn() })
   const store = useGeneInfoStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
@@ -47,7 +47,7 @@ const makeWrapper = () => {
 
   store.storeState = StoreState.Active
   store.geneSymbol = geneData.geneSymbol
-  store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+  store.geneInfo = JSON.parse(JSON.stringify(geneDataExample))
 
   return mount(
     {
@@ -68,8 +68,27 @@ const makeWrapper = () => {
 }
 
 describe.concurrent('GeneDetailView', async () => {
+  it('renders the page with invalid data', async () => {
+    const wrapper = makeWrapper(geneData)
+
+    const header = wrapper.findComponent(HeaderDetailPage)
+    const searchBar = wrapper.findComponent(SearchBar)
+    expect(header.exists()).toBe(true)
+    expect(searchBar.exists()).toBe(true)
+
+    const logo = wrapper.find('#logo')
+    const aboutLink = wrapper.find('#about')
+    const contactLink = wrapper.find('#contact')
+    expect(logo.exists()).toBe(true)
+    expect(aboutLink.exists()).toBe(true)
+    expect(contactLink.exists()).toBe(true)
+
+    const launchImage = wrapper.findAll('.mdi-launch')
+    expect(launchImage.length).toBe(14)
+  })
+
   it('renders the header', async () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(geneData.geneInfo)
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -85,7 +104,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('renders info-cards and navigation drawer', () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(geneData.geneInfo)
 
     const navigationDrawer = wrapper.find('.v-navigation-drawer')
     expect(navigationDrawer.exists()).toBe(true)
@@ -110,11 +129,11 @@ describe.concurrent('GeneDetailView', async () => {
     expect(locusSpecificDatabases.exists()).toBe(true)
 
     const launchImage = wrapper.findAll('.mdi-launch')
-    expect(launchImage.length).toBe(14)
+    expect(launchImage.length).toBe(2562)
   })
 
   it('emits update in header', async () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(geneData.geneInfo)
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
@@ -134,7 +153,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('emits scroll to section', async () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(geneData.geneInfo)
 
     const hgncLink = wrapper.find('#hgnc-nav')
     expect(hgncLink.exists()).toBe(true)

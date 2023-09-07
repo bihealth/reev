@@ -98,6 +98,101 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.txCsq).toBe(null)
   })
 
+  it('should fail to load data with invalid fetchVariantInfo response', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    const store = useVariantInfoStore()
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('annos/variant')) {
+        return Promise.resolve(
+          JSON.stringify({ result: { cadd: null, dbnsfp: null, dbscsnv: null } })
+        )
+      } else if (req.url.includes('tx/csq')) {
+        return Promise.resolve(JSON.stringify(BRCA1TxInfo))
+      } else if (req.url.includes('genes/info')) {
+        return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
+      } else {
+        return Promise.resolve(JSON.stringify({ status: 400 }))
+      }
+    })
+
+    await store.loadData('chr17:43044295:G:A', 'grch37')
+
+    expect(console.error).toHaveBeenCalled()
+    expect(console.error).toHaveBeenCalledWith(
+      'There was an error loading the variant data.',
+      new Error('No variant data found.')
+    )
+    expect(store.storeState).toBe(StoreState.Error)
+    expect(store.variantTerm).toBe(null)
+    expect(store.smallVariant).toBe(null)
+    expect(store.varAnnos).toBe(null)
+    expect(store.geneInfo).toBe(null)
+    expect(store.txCsq).toBe(null)
+  })
+
+  it('should fail to load data with invalid retrieveTxCsq response', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    const store = useVariantInfoStore()
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('annos/variant')) {
+        return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
+      } else if (req.url.includes('tx/csq')) {
+        return Promise.resolve(JSON.stringify({ result: [] }))
+      } else if (req.url.includes('genes/info')) {
+        return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
+      } else {
+        return Promise.resolve(JSON.stringify({ status: 400 }))
+      }
+    })
+
+    await store.loadData('chr17:43044295:G:A', 'grch37')
+
+    expect(console.error).toHaveBeenCalled()
+    expect(console.error).toHaveBeenCalledWith(
+      'There was an error loading the variant data.',
+      new Error('No transcript consequence data found.')
+    )
+    expect(store.storeState).toBe(StoreState.Error)
+    expect(store.variantTerm).toBe(null)
+    expect(store.smallVariant).toBe(null)
+    expect(store.varAnnos).toBe(null)
+    expect(store.geneInfo).toBe(null)
+    expect(store.txCsq).toBe(null)
+  })
+
+  it('should fail to load data with invalid fetchGeneInfo response', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    const store = useVariantInfoStore()
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('annos/variant')) {
+        return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
+      } else if (req.url.includes('tx/csq')) {
+        return Promise.resolve(JSON.stringify(BRCA1TxInfo))
+      } else if (req.url.includes('genes/info')) {
+        return Promise.resolve(JSON.stringify({ genes: null }))
+      } else {
+        return Promise.resolve(JSON.stringify({ status: 400 }))
+      }
+    })
+
+    await store.loadData('chr17:43044295:G:A', 'grch37')
+
+    expect(console.error).toHaveBeenCalled()
+    expect(console.error).toHaveBeenCalledWith(
+      'There was an error loading the variant data.',
+      new Error('No gene data found.')
+    )
+    expect(store.storeState).toBe(StoreState.Error)
+    expect(store.variantTerm).toBe(null)
+    expect(store.smallVariant).toBe(null)
+    expect(store.varAnnos).toBe(null)
+    expect(store.geneInfo).toBe(null)
+    expect(store.txCsq).toBe(null)
+  })
+
   it('should not load data if variant is the same', async () => {
     const store = useVariantInfoStore()
     fetchMocker.mockResponse((req) => {

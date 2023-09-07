@@ -55,5 +55,7 @@ describe.concurrent('VariantTools', async () => {
     expect(wrapper.text()).toContain('External Resources')
     expect(wrapper.text()).toContain('IGV')
     expect(wrapper.text()).toContain('Precomputed Scores')
+    const launchIcons = wrapper.findAll('.mdi-launch')
+    expect(launchIcons.length).toBe(8)
   })
 })

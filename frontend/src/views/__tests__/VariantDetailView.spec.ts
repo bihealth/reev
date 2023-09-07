@@ -53,9 +53,9 @@ const variantData = {
   storeState: StoreState.Active,
   variantTerm: 'chr17:12345:A:T',
   smallVariant: smallVariantInfo,
-  varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)),
-  geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)),
-  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo))
+  varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
+  geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
+  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result
 }
 
 const makeWrapper = () => {
