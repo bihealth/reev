@@ -8,7 +8,6 @@ import { ref } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { AnnonarsClient } from '@/api/annonars'
-import { search } from '@/api/utils'
 
 export const useGenesListStore = defineStore('genesList', () => {
   /* The current store state. */
