@@ -58,7 +58,7 @@ export const isVariantMt = (smallVar: any): boolean => {
  * @param smallVar Small variant to check.
  * @returns whether the position is in a mitochondrial homopolymer
  */
-export const isVariantMtHomopolymer = (smallVar: any): any => {
+export const isVariantMtHomopolymer = (smallVar: any): boolean => {
   if (!smallVar) {
     return false
   }
@@ -75,6 +75,8 @@ export const isVariantMtHomopolymer = (smallVar: any): any => {
   }
   if (isVariantMt(smallVar)) {
     return positionCheck(start) || positionCheck(end)
+  } else {
+    return false
   }
 }
 
@@ -141,7 +143,6 @@ export const search = (searchTerm: string, genomeRelease: string) => {
       return routeLocation
     }
   }
-  return null
 }
 
 /**

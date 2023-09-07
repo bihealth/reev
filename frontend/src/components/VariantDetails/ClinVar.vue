@@ -16,7 +16,7 @@ const interpretations = [
 <template>
   <div style="font-size: small">
     <v-icon>mdi-information</v-icon>
-    Note that VarFish is using a local copy of Clinvar to display this information. The link-outs to
+    Note that REEV is using a local copy of Clinvar to display this information. The link-outs to
     NCBI ClinVar will display the most current data that may differ from our "frozen" copy.
   </div>
   <v-divider />

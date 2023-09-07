@@ -7,7 +7,7 @@ import { StoreState, useMiscStore } from '../misc'
 
 const fetchMocker = createFetchMock(vi)
 
-describe('miscInfo Store', () => {
+describe.concurrent('miscInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     fetchMocker.enableMocks()

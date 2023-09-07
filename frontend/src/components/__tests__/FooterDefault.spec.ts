@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
@@ -8,7 +8,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import AboutView from '../AboutView.vue'
+import FooterDefault from '@/components/FooterDefault.vue'
 
 const vuetify = createVuetify({
   components,
@@ -25,7 +25,7 @@ router.push = vi.fn()
 const makeWrapper = () => {
   return mount(
     {
-      template: '<v-app><AboutView /></v-app>'
+      template: '<v-app><FooterDefault /></v-app>'
     },
     {
       global: {
@@ -42,31 +42,19 @@ const makeWrapper = () => {
           })
         ],
         components: {
-          AboutView
+          FooterDefault
         }
       }
     }
   )
 }
-describe.concurrent('AboutView', async () => {
-  it('renders the header', () => {
+
+describe.concurrent('FooterDefault.vue', () => {
+  it('renders information', () => {
     const wrapper = makeWrapper()
-
-    const logo = wrapper.find('#logo')
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
-    expect(logo.exists()).toBe(true)
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
-  })
-
-  it('renders the main content', () => {
-    const wrapper = makeWrapper()
-
-    const mainContent = wrapper.find('.about-view')
-    expect(mainContent.exists()).toBe(true)
-    expect(mainContent.html()).toMatch('REEV: Explanation and Evaluation of Variants')
-    expect(mainContent.html()).toMatch('ClinVar is a freely accessible, public archive')
-    expect(mainContent.html()).toMatch('Coral emoji from OpenMoji')
+    const footer = wrapper.find('footer')
+    expect(footer.exists()).toBe(true)
+    expect(footer.text()).toContain('REEV: Explanation and Evaluation of Variants')
+    expect(footer.text()).toContain('v0.0.0')
   })
 })

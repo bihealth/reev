@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -13,6 +14,8 @@ import * as directives from 'vuetify/directives'
 import GeneDetailView from '../GeneDetailView.vue'
 import { StoreState } from '@/stores/misc'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
+import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
 const vuetify = createVuetify({
   components,
@@ -64,9 +67,14 @@ const makeWrapper = () => {
   )
 }
 
-describe('GeneDetailView', async () => {
-  it('renders the header', () => {
+describe.concurrent('GeneDetailView', async () => {
+  it('renders the header', async () => {
     const wrapper = makeWrapper()
+
+    const header = wrapper.findComponent(HeaderDetailPage)
+    const searchBar = wrapper.findComponent(SearchBar)
+    expect(header.exists()).toBe(true)
+    expect(searchBar.exists()).toBe(true)
 
     const logo = wrapper.find('#logo')
     const aboutLink = wrapper.find('#about')
@@ -103,5 +111,84 @@ describe('GeneDetailView', async () => {
 
     const launchImage = wrapper.findAll('.mdi-launch')
     expect(launchImage.length).toBe(14)
+  })
+
+  it('emits update in header', async () => {
+    const wrapper = makeWrapper()
+
+    const header = wrapper.findComponent(HeaderDetailPage)
+    expect(header.exists()).toBe(true)
+    await header.setValue('HGNC:1100', 'searchTermRef')
+    await header.setValue('grch37', 'genomeReleaseRef')
+    expect(header.emitted()).toHaveProperty('update:searchTermRef')
+    expect(header.emitted()).toHaveProperty('update:genomeReleaseRef')
+    expect(header.vm.$props).toStrictEqual({ searchTerm: '', genomeRelease: 'grch37' })
+
+    const searchBar = wrapper.findComponent(SearchBar)
+    expect(searchBar.exists()).toBe(true)
+    await searchBar.setValue('HGNC:1100', 'searchTerm')
+    await searchBar.setValue('grch37', 'genomeRelease')
+    expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
+    expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
+    expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch37' })
+  })
+
+  it('emits scroll to section', async () => {
+    const wrapper = makeWrapper()
+
+    const hgncLink = wrapper.find('#hgnc-nav')
+    expect(hgncLink.exists()).toBe(true)
+
+    await hgncLink.trigger('click')
+    await nextTick()
+    expect(router.push).toHaveBeenCalled()
+    expect(router.push).toHaveBeenCalledWith({
+      hash: '#hgnc'
+    })
+
+    // Check if hgnc triggered scrollIntoView()
+    const hgncSection = wrapper.find('#hgnc')
+    expect(hgncSection.exists()).toBe(true)
+    expect(hgncSection.element.scrollTop).toBe(0)
+  })
+
+  it('redirects if mounting with storeState Error', async () => {
+    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const store = useGeneInfoStore(pinia)
+    const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
+      store.storeState = StoreState.Error
+      store.geneSymbol = geneSymbol
+      store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+    })
+    const mockClearData = vi.fn().mockImplementation(() => {
+      store.storeState = StoreState.Initial
+      store.geneSymbol = ''
+      store.geneInfo = {}
+    })
+    store.loadData = mockLoadData
+    store.clearData = mockClearData
+
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+
+    mount(
+      {
+        template: '<v-app><GeneDetailView /></v-app>'
+      },
+      {
+        props: {
+          searchTerm: 'BRCA1'
+        },
+        global: {
+          plugins: [vuetify, router, pinia],
+          components: {
+            GeneDetailView
+          }
+        }
+      }
+    )
+    await nextTick()
+    expect(router.push).toHaveBeenCalledWith({ name: 'home' })
   })
 })

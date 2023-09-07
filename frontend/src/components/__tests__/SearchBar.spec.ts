@@ -23,22 +23,17 @@ const router = createRouter({
 router.push = vi.fn()
 
 const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><SearchBar /></v-app>'
-    },
-    {
-      global: {
-        plugins: [vuetify, router],
-        components: {
-          SearchBar
-        }
+  return mount(SearchBar, {
+    global: {
+      plugins: [vuetify, router],
+      components: {
+        SearchBar
       }
     }
-  )
+  })
 }
 
-describe('SearchBar.vue', () => {
+describe.concurrent('SearchBar.vue', () => {
   it('renders the search bar with the correct default props', () => {
     const wrapper = makeWrapper()
 

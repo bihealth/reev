@@ -5,7 +5,7 @@ import { MiscClient } from '../misc'
 
 const fetchMocker = createFetchMock(vi)
 
-describe('Misc Client', () => {
+describe.concurrent('Misc Client', () => {
   beforeEach(() => {
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()

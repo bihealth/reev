@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/router'
-import { createTestingPinia } from '@pinia/testing'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -29,18 +28,7 @@ const makeWrapper = () => {
     },
     {
       global: {
-        plugins: [
-          vuetify,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn(),
-            initialState: {
-              misc: {
-                appVersion: 'v0.0.0'
-              }
-            }
-          })
-        ],
+        plugins: [vuetify, router],
         components: {
           HeaderDefault
         }
@@ -49,7 +37,7 @@ const makeWrapper = () => {
   )
 }
 
-describe('HeaderDefault.vue', () => {
+describe.concurrent('HeaderDefault.vue', () => {
   it('renders the logo and title', () => {
     const wrapper = makeWrapper()
 

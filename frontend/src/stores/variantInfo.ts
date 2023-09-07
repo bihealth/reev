@@ -9,13 +9,7 @@ import { ref } from 'vue'
 import { AnnonarsClient } from '@/api/annonars'
 import { MehariClient } from '@/api/mehari'
 import { infoFromQuery } from '@/api/utils'
-
-export enum StoreState {
-  Initial = 'initial',
-  Loading = 'loading',
-  Active = 'active',
-  Error = 'error'
-}
+import { StoreState } from '@/stores/misc'
 
 export const useVariantInfoStore = defineStore('variantInfo', () => {
   /** The current store state. */
@@ -39,6 +33,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
   function clearData() {
     storeState.value = StoreState.Initial
     variantTerm.value = null
+    smallVariant.value = null
     varAnnos.value = null
     txCsq.value = null
     geneInfo.value = null

@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import { onMounted } from 'vue'
-import { useMiscStore } from '@/stores/misc'
-
-const miscStore = useMiscStore()
-
-onMounted(() => {
-  if (miscStore?.initialize) {
-    miscStore?.initialize()
-  }
-})
-</script>
-
 <template>
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
@@ -24,6 +11,7 @@ onMounted(() => {
         />
         REEV: Explanation and Evaluation of Variants
       </router-link>
+      <strong style="font-size: 130%; color: indigo">EXPERIMENTAL</strong>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">

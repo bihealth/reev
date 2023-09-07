@@ -25,7 +25,7 @@ const props = defineProps<{ txCsq: any }>()
           <td>{{ (txCsq['consequences'] ?? []).join(', ') }}</td>
           <td>{{ txCsq['hgvs-t'] }}</td>
           <td>{{ txCsq['hgvs-p'] }}</td>
-          <td>{{ txCsq['rank'].ord }} / {{ txCsq['rank'].total }}</td>
+          <td>{{ txCsq['rank']?.ord }} / {{ txCsq['rank']?.total }}</td>
         </tr>
       </tbody>
     </v-table>

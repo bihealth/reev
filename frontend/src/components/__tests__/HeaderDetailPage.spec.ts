@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
@@ -11,6 +12,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 import HeaderDetailPage from '../HeaderDetailPage.vue'
+import SearchBar from '@/components/SearchBar.vue'
 import { StoreState } from '@/stores/misc'
 
 const vuetify = createVuetify({
@@ -39,20 +41,20 @@ const makeWrapper = () => {
   )
 }
 
-describe('HeaderDetailPage', async () => {
-  it('renders the gene symbol and nav links', () => {
-    const geneData = {
-      storeState: 'active',
-      geneSymbol: 'BRCA1',
-      geneInfo: {
-        symbol: 'BRCA1',
-        name: 'Test Gene',
-        hgncId: '12345',
-        ensemblId: 'ENSG00000000000001',
-        entrezId: '12345'
-      }
-    }
+const geneData = {
+  storeState: 'active',
+  geneSymbol: 'BRCA1',
+  geneInfo: {
+    symbol: 'BRCA1',
+    name: 'Test Gene',
+    hgncId: '12345',
+    ensemblId: 'ENSG00000000000001',
+    entrezId: '12345'
+  }
+}
 
+describe.concurrent('HeaderDetailPage', async () => {
+  it('renders the gene symbol and nav links', () => {
     const wrapper = makeWrapper()
 
     const store = useGeneInfoStore()
@@ -66,5 +68,42 @@ describe('HeaderDetailPage', async () => {
     expect(logo.exists()).toBe(true)
     expect(aboutLink.exists()).toBe(true)
     expect(contactLink.exists()).toBe(true)
+  })
+
+  it('renders the search bar', async () => {
+    const wrapper = makeWrapper()
+    const store = useGeneInfoStore()
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+
+    // search bar value is updated to "HGNC:1100"
+    const searchBar = wrapper.findComponent(SearchBar)
+    expect(searchBar.exists()).toBe(true)
+  })
+
+  it('correctly emits search', async () => {
+    const wrapper = makeWrapper()
+    const store = useGeneInfoStore()
+    store.storeState = StoreState.Active
+    store.geneSymbol = geneData.geneSymbol
+    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
+
+    // search bar value is updated to "HGNC:1100"
+    const searchBar = wrapper.findComponent(SearchBar)
+    await searchBar.setValue('HGNC:1100', 'searchTerm')
+    await searchBar.setValue('grch37', 'genomeRelease')
+
+    // press search
+    const button = wrapper.findComponent('#search') as any
+    await button.trigger('click')
+
+    await nextTick()
+
+    expect(router.push).toHaveBeenCalledOnce()
+    expect(router.push).toHaveBeenCalledWith({
+      name: 'gene',
+      params: { searchTerm: 'HGNC:1100', genomeRelease: 'grch37' }
+    })
   })
 })
