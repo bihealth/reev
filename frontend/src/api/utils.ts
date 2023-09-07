@@ -130,6 +130,11 @@ export const search = (searchTerm: string, genomeRelease: string) => {
   ]
 
   for (const [regexp, getRoute] of SEARCH_REGEXPS) {
+    // Remove trailing whitespace
+    searchTerm = searchTerm.trim()
+    if (!searchTerm) {
+      return null
+    }
     if (regexp.test(searchTerm)) {
       const routeLocation = getRoute()
       console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)
