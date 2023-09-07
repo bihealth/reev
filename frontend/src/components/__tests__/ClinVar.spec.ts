@@ -52,8 +52,20 @@ describe.concurrent('ClinVar', async () => {
     const wrapper = makeWrapper(clinVarInfo)
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
     expect(wrapper.text()).toContain('VCV000041833')
-    const starts = wrapper.findAll('.mdi-star-outline')
-    expect(starts.length).toBe(5)
+    const starsOutline = wrapper.findAll('.mdi-star-outline')
+    expect(starsOutline.length).toBe(5)
+  })
+
+  it('renders the ClinVar info with stars', async () => {
+    const clinVarInfoStars = structuredClone(clinVarInfo)
+    clinVarInfoStars.summary_clinvar_gold_stars = 3
+    const wrapper = makeWrapper(clinVarInfoStars)
+    expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
+    expect(wrapper.text()).toContain('VCV000041833')
+    const stars = wrapper.findAll('.mdi-star-outline')
+    expect(stars.length).toBe(2)
+    const starsOutline = wrapper.findAll('.mdi-star-outline')
+    expect(starsOutline.length).toBe(2)
   })
 
   it('renders the ClinVar info (not found)', async () => {

@@ -8,6 +8,7 @@ import { ref } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { AnnonarsClient } from '@/api/annonars'
+import { search } from '@/api/utils'
 
 export const useGenesListStore = defineStore('genesList', () => {
   /* The current store state. */
@@ -34,7 +35,6 @@ export const useGenesListStore = defineStore('genesList', () => {
     }
     const queryArray = query.value.split('&')
     const searchTerm = queryArray[0].split('=')[1]
-
     for (const gene of genesList.value) {
       if (gene.data.hgnc_id === searchTerm) {
         return gene.data.hgnc_id
@@ -86,6 +86,7 @@ export const useGenesListStore = defineStore('genesList', () => {
       }
     } catch (e) {
       console.error('There was an error while searching for genes.', e)
+      clearData()
       storeState.value = StoreState.Error
     }
   }

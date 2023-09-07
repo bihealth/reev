@@ -11,6 +11,7 @@ import * as directives from 'vuetify/directives'
 
 import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
+import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 
 const vuetify = createVuetify({
@@ -35,10 +36,19 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-const makeWrapper = () => {
+const smallVariantInfoMitochondrial = {
+  release: 'grch37',
+  chromosome: 'chrM',
+  start: '70',
+  end: '70',
+  reference: 'G',
+  alternative: 'A',
+  hgnc_id: 'HGNC:1100'
+}
+const makeWrapper = (variantInfo: Object) => {
   return mount(VariantFreqs, {
     props: {
-      smallVar: smallVariantInfo,
+      smallVar: variantInfo,
       varAnnos: BRCA1VariantInfo
     },
     global: {
@@ -52,8 +62,14 @@ const makeWrapper = () => {
 
 describe.concurrent('VariantFreqs', async () => {
   it('renders the VariantFreqs info', async () => {
-    const wrapper = makeWrapper()
+    const wrapper = makeWrapper(smallVariantInfo)
     const freqsAutosomal = wrapper.findComponent(VariantDetailsFreqsAutosomal)
+    expect(freqsAutosomal.exists()).toBe(true)
+  })
+
+  it('renders the VariantFreqs info for Mitochondrial Variants', async () => {
+    const wrapper = makeWrapper(smallVariantInfoMitochondrial)
+    const freqsAutosomal = wrapper.findComponent(VariantDetailsFreqsMitochondrial)
     expect(freqsAutosomal.exists()).toBe(true)
   })
 })

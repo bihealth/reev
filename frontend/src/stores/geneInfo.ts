@@ -46,6 +46,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
       storeState.value = StoreState.Active
     } catch (e) {
       console.error('There was an error loading the gene data.', e)
+      clearData()
       storeState.value = StoreState.Error
     }
   }

@@ -34,7 +34,7 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-const makeWrapper = (variantData: Object) => {
+const makeWrapper = (variantData: Object | null) => {
   return mount(FreqsAutosomal, {
     props: {
       smallVar: smallVariantInfo,
@@ -59,7 +59,7 @@ describe.concurrent('FreqsAutosomal', async () => {
   })
 
   it('renders the FreqsAutosomal info with no data', async () => {
-    const wrapper = makeWrapper({})
+    const wrapper = makeWrapper(null)
     expect(wrapper.text()).toContain('gnomAD Genomes')
     expect(wrapper.text()).toContain('No allele frequency information available in local database.')
   })

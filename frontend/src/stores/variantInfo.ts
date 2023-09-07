@@ -106,6 +106,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
       storeState.value = StoreState.Active
     } catch (e) {
       console.error('There was an error loading the variant data.', e)
+      clearData()
       storeState.value = StoreState.Error
     }
   }
