@@ -146,8 +146,8 @@ export const search = (searchTerm: string, genomeRelease: string) => {
 }
 
 /**
- * Take a query string and return an object with the chromosome, pos, reference and
- * alternative value.
+ * Return an object with the chromosome, pos, reference and
+ * alternative values from the given query string.
  *
  * @param query Incoming query string
  */
@@ -160,4 +160,8 @@ export const infoFromQuery = (query: string): any => {
     alternative: alternative,
     hgnc_id: hgnc_id
   }
+}
+
+export function copy(value: Object) {
+  return JSON.parse(JSON.stringify(value))
 }

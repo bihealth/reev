@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 import { StoreState } from '@/stores/misc'
 
+import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
@@ -67,6 +68,7 @@ const SECTIONS = [
   { id: 'clinvar', title: 'ClinVar' },
   { id: 'freqs', title: 'Population Frequencies' },
   { id: 'variant-tools', title: 'Variant Tools' },
+  { id: 'acmg-rating', title: 'ACMG Rating' },
   { id: 'tx-csq', title: 'Consequences' },
   { id: 'conservation', title: 'Conservation' },
   { id: 'variant-validator', title: 'VariantValidator' }
@@ -144,6 +146,12 @@ const genomeReleaseRef = ref(props.genomeRelease)
             :small-var="variantInfoStore.smallVariant"
             :var-annos="variantInfoStore.varAnnos"
           />
+        </div>
+
+        <div id="acmg-rating" class="variant-item">
+          <h2>ACMG Rating</h2>
+          <v-divider />
+          <AcmgRating :small-variant="variantInfoStore.smallVariant" />
         </div>
 
         <div id="tx-csq" class="variant-item">
