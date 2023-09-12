@@ -14,7 +14,7 @@ const props = defineProps({
 const acmgRatingStore = useVariantAcmgRatingStore()
 const variantInfoStore = useVariantInfoStore()
 
-const emptyAcmgRatingTemplate = {
+const emptyAcmgRatingTemplate: any = {
   pvs1: 0,
   ps1: 0,
   ps2: 0,
@@ -210,9 +210,7 @@ const convertEmptyToNull = (classOverride: any) => {
 }
 
 const onSubmitAcmgRating = async () => {
-  const acmgRatingToSubmitNoAuto = copy(acmgRatingToSubmit.value)
-  delete acmgRatingToSubmitNoAuto['class_auto']
-  const acmgRatingToSubmitEmpty = isEqual(acmgRatingToSubmitNoAuto, emptyAcmgRatingTemplate)
+  const acmgRatingToSubmitEmpty = isEqual(acmgRatingToSubmit, emptyAcmgRatingTemplate)
   if (acmgRatingStore.acmgRating && acmgRatingToSubmitEmpty) {
     // IS not empty but SHOULD be empty, so delete the ACMG rating
     await acmgRatingStore.deleteAcmgRating()
@@ -244,6 +242,239 @@ onMounted(async () => {
     resetAcmgRating()
   }
 })
+
+const acmgCriteriaInfo = {
+  pathogenic: {
+    'very-strong-evidence': {
+      name: 'Very Strong Evidence',
+      criteria: [
+        {
+          name: 'PVS1',
+          id: 'pvs1',
+          description:
+            'Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where LOF is a known mechanism of disease',
+          hint: 'null variant'
+        }
+      ]
+    },
+    'strong-evidence': {
+      name: 'Strong Evidence',
+      criteria: [
+        {
+          name: 'PS1',
+          id: 'ps1',
+          description:
+            'Same amino acid change as a previously established pathogenic variant regardless of nucleotide change',
+          hint: 'literature: this AA exchange'
+        },
+        {
+          name: 'PS2',
+          id: 'ps2',
+          description:
+            'De novo (both maternity and paternity confirmed) in a patient with the disease and no family history',
+          hint: 'confirmed de novo'
+        },
+        {
+          name: 'PS3',
+          id: 'ps3',
+          description:
+            'Well-established in vitro or in vivo functional studies supportive of a damaging effect on the gene or gene product',
+          hint: 'supported by functional studies'
+        },
+        {
+          name: 'PS4',
+          id: 'ps4',
+          description:
+            'The prevalence of the variant in affected individuals is significantly increased compared with the prevalence in controls',
+          hint: 'prevalende in disease controls'
+        }
+      ]
+    },
+    'moderate-evidence': {
+      name: 'Moderate Evidence',
+      criteria: [
+        {
+          name: 'PM1',
+          id: 'pm1',
+          description:
+            'Located in a mutational hot spot and/or critical and well-established functional domain (e.g., active site of an enzyme) without benign variation',
+          hint: 'variant in horspot (missense)'
+        },
+        {
+          name: 'PM2',
+          id: 'pm2',
+          description:
+            'Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium',
+          hint: 'rare in 1:20.000 in ExAC'
+        },
+        {
+          name: 'PM3',
+          id: 'pm3',
+          description: 'For recessive disorders, detected in trans with a pathogenic variant',
+          hint: 'AR: trans with known pathogenic'
+        },
+        {
+          name: 'PM4',
+          id: 'pm4',
+          description:
+            'Protein length changes as a result of in-frame deletions/insertions in a nonrepeat region or stop-loss variants',
+          hint: 'protein length change'
+        },
+        {
+          name: 'PM5',
+          id: 'pm5',
+          description:
+            'Novel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before',
+          hint: 'literature: AA exchange same pos'
+        },
+        {
+          name: 'PM6',
+          id: 'pm6',
+          description: 'Assumed de novo, but without confirmation of paternity and maternity',
+          hint: 'assumed de novo'
+        }
+      ]
+    },
+    'supporting-evidence': {
+      name: 'Supporting Evidence',
+      criteria: [
+        {
+          name: 'PP1',
+          id: 'pp1',
+          description:
+            'Cosegregation with disease in multiple affected family members in a gene definitively known to cause the disease',
+          hint: 'cosegregates in family'
+        },
+        {
+          name: 'PP2',
+          id: 'pp2',
+          description:
+            'Missense variant in a gene that has a low rate of benign missense variation and in which missense variants are a common mechanism of disease',
+          hint: 'few missense in gene'
+        },
+        {
+          name: 'PP3',
+          id: 'pp3',
+          description:
+            'Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc.)',
+          hint: 'predicted pathogenic'
+        },
+        {
+          name: 'PP4',
+          id: 'pp4',
+          description:
+            "Patient's phenotype or family history is highly specific for a disease with a single genetic etiology",
+          hint: 'phenotype/pedigree match gene'
+        },
+        {
+          name: 'PP5',
+          id: 'pp5',
+          description:
+            'Reputable source recently reports variant as pathogenic, but the evidence is not available to the laboratoryto perform an independent evaluation',
+          hint: 'reliable source: pathogenic'
+        }
+      ]
+    }
+  },
+  benign: {
+    'standalone-evidence': {
+      name: 'Standalone Evidence',
+      criteria: [
+        {
+          name: 'BA1',
+          id: 'ba1',
+          description:
+            'Allele frequency is >5% in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium',
+          hint: 'allele frequency > 5%'
+        }
+      ]
+    },
+    'strong-evidence': {
+      name: 'Strong Evidence',
+      criteria: [
+        {
+          name: 'BS1',
+          id: 'bs1',
+          description: 'Allele frequency is greater than expected for disorder',
+          hint: 'disease: allele freq. too high'
+        },
+        {
+          name: 'BS2',
+          id: 'bs2',
+          description:
+            'Observed in a healthy adult individual for a recessive (homozygous), dominant (heterozygous), or X-linked (hemizygous) disorder, with full penetrance expected at an early age',
+          hint: 'observed in healthy individual'
+        },
+        {
+          name: 'BS3',
+          id: 'bs3',
+          description:
+            'Well-established in vitro or in vivo functional studies show no damaging effect on protein function or splicing',
+          hint: 'functional studies: benign'
+        },
+        {
+          name: 'BS4',
+          id: 'bs4',
+          description: 'Lack of segregation in affected members of a family',
+          hint: 'lack of segregation'
+        }
+      ]
+    },
+    'supporting evidence': {
+      name: 'Supporting Evidence',
+      criteria: [
+        {
+          name: 'BP1',
+          id: 'bp1',
+          description:
+            'Missense variant in a gene for which primarily truncating variants are known to cause disease',
+          hint: 'missense in gene with truncating'
+        },
+        {
+          name: 'BP2',
+          id: 'bp2',
+          description:
+            'Observed in trans with a pathogenic variant for a fully penetrant dominant gene/disorder or observed in cis with a pathogenic variant in any inheritance pattern',
+          hint: 'other variant is causative'
+        },
+        {
+          name: 'BP3',
+          id: 'bp3',
+          description:
+            'In-frame deletions/insertions in a repetitive region without a known function',
+          hint: 'in-frame del/ins in repeat'
+        },
+        {
+          name: 'BP4',
+          id: 'bp4',
+          description:
+            'Multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary,splicing impact, etc.)',
+          hint: 'predicted benign'
+        },
+        {
+          name: 'BP5',
+          id: 'bp5',
+          description: 'Variant found in a case with an alternate molecular basis for disease',
+          hint: 'other variant is causative'
+        },
+        {
+          name: 'BP6',
+          id: 'bp6',
+          description:
+            'Reputable source recently reports variant as benign, but the evidence is not available to the laboratory to perform an independent evaluation',
+          hint: 'reliable source: benign'
+        },
+        {
+          name: 'BP7',
+          id: 'bp7',
+          description:
+            'A synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensus sequence nor the creation of a new splice site AND the nucleotide is not highly conserved',
+          hint: 'synonymous: no splice effect'
+        }
+      ]
+    }
+  }
+}
 </script>
 
 <template>
@@ -251,483 +482,51 @@ onMounted(async () => {
   <v-row>
     <v-col cols="12" md="4">
       <div>
-        <div>
-          <h3>Pathogenic:</h3>
-        </div>
+        <h3>Pathogenic:</h3>
       </div>
-      <div>
+      <div v-for="(criteriaType, criteriaKey) in acmgCriteriaInfo.pathogenic" :key="criteriaKey">
         <div>
           <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Very Strong Evidence
+            {{ criteriaType.name }}
           </strong>
         </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where LOF is a known mechanism of disease"
-          >
-            <v-switch
-              color="primary"
-              label="PVS1"
-              v-model="acmgRatingToSubmit.pvs1"
-              hint="null variant"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Strong Evidence
-          </strong>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Same amino acid change as a previously established pathogenic variant regardless of nucleotide change"
-          >
-            <v-switch
-              color="primary"
-              label="PS1"
-              v-model="acmgRatingToSubmit.ps1"
-              hint="literature: this AA exchange"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="De novo (both maternity and paternity confirmed) in a patient with the disease and no family history"
-          >
-            <v-switch
-              color="primary"
-              label="PS2"
-              v-model="acmgRatingToSubmit.ps2"
-              hint="confirmed de novo"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Well-established in vitro or in vivo functional studies supportive of a damaging effect on the gene or gene product"
-          >
-            <v-switch
-              color="primary"
-              label="PS3"
-              v-model="acmgRatingToSubmit.ps3"
-              hint="supported by functional studies"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="The prevalence of the variant in affected individuals is significantly increased compared with the prevalence in controls"
-          >
-            <v-switch
-              color="primary"
-              label="PS4"
-              v-model="acmgRatingToSubmit.ps4"
-              hint="prevalende in disease controls"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Moderate Evidence
-          </strong>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Located in a mutational hot spot and/or critical and well-established functional domain (e.g., active site of an enzyme) without benign variation"
-          >
-            <v-switch
-              color="primary"
-              label="PM1"
-              v-model="acmgRatingToSubmit.pm1"
-              hint="variant in horspot (missense)"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium"
-          >
-            <v-switch
-              color="primary"
-              label="PM2"
-              v-model="acmgRatingToSubmit.pm2"
-              hint="rare in 1:20.000 in ExAC"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="For recessive disorders, detected in trans with a pathogenic variant"
-          >
-            <v-switch
-              color="primary"
-              label="PM3"
-              v-model="acmgRatingToSubmit.pm3"
-              hint="AR: trans with known pathogenic"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Protein length changes as a result of in-frame deletions/insertions in a nonrepeat region or stop-loss variants"
-          >
-            <v-switch
-              color="primary"
-              label="PM4"
-              v-model="acmgRatingToSubmit.pm4"
-              hint="protein length change"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Novel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before"
-          >
-            <v-switch
-              color="primary"
-              label="PM5"
-              v-model="acmgRatingToSubmit.pm5"
-              hint="literature: AA exchange same pos"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Assumed de novo, but without confirmation of paternity and maternity"
-          >
-            <v-switch
-              color="primary"
-              label="PM6"
-              v-model="acmgRatingToSubmit.pm6"
-              hint="assumed de novo"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Supporting Evidence
-          </strong>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Cosegregation with disease in multiple affected family members in a gene definitively known to cause the disease"
-          >
-            <v-switch
-              color="primary"
-              label="PP1"
-              v-model="acmgRatingToSubmit.pp1"
-              hint="cosegregates in family"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Missense variant in a gene that has a low rate of benign missense variation and in which missense variants are a common mechanism of disease"
-          >
-            <v-switch
-              color="primary"
-              label="PP2"
-              v-model="acmgRatingToSubmit.pp2"
-              hint="few missense in gene"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc.)"
-          >
-            <v-switch
-              color="primary"
-              label="PP3"
-              v-model="acmgRatingToSubmit.pp3"
-              hint="predicted pathogenic"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Patient's phenotype or family history is highly specific for a disease with a single genetic etiology"
-          >
-            <v-switch
-              color="primary"
-              label="PP4"
-              v-model="acmgRatingToSubmit.pp4"
-              hint="phenotype/pedigree match gene"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Reputable source recently reports variant as pathogenic, but the evidence is not available to the laboratoryto perform an independent evaluation"
-          >
-            <v-switch
-              color="primary"
-              label="PP5"
-              v-model="acmgRatingToSubmit.pp5"
-              hint="reliable source: pathogenic"
-            ></v-switch>
+        <div v-for="(criteria, criterionKey) in criteriaType.criteria" :key="criterionKey">
+          <div>
+            <div class="form-check form-check-inline" :title="criteria.description">
+              <v-switch
+                color="primary"
+                :label="criteria.name"
+                :model-value="acmgRatingToSubmit[criteria.id]"
+                @update:model-value="acmgRatingToSubmit[criteria.id] = $event"
+                :hint="criteria.hint"
+              ></v-switch>
+            </div>
           </div>
         </div>
       </div>
     </v-col>
     <v-col cols="12" md="4">
       <div>
-        <div>
-          <h3>Benign:</h3>
-        </div>
+        <h3>Benign:</h3>
       </div>
-      <div>
+      <div v-for="(criteriaType, criteriaKey) in acmgCriteriaInfo.benign" :key="criteriaKey">
         <div>
           <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Standalone Evidence
+            {{ criteriaType.name }}
           </strong>
         </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Allele frequency is >5% in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium"
-          >
-            <v-switch
-              color="primary"
-              label="BA1"
-              v-model="acmgRatingToSubmit.ba1"
-              hint="allele frequency > 5%"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Strong Evidence
-          </strong>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Allele frequency is greater than expected for disorder"
-          >
-            <v-switch
-              color="primary"
-              label="BS1"
-              v-model="acmgRatingToSubmit.bs1"
-              hint="disease: allele freq. too high"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Observed in a healthy adult individual for a recessive (homozygous), dominant (heterozygous), or X-linked (hemizygous) disorder, with full penetrance expected at an early age"
-          >
-            <v-switch
-              color="primary"
-              label="BS2"
-              v-model="acmgRatingToSubmit.bs2"
-              hint="observed in healthy individual"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Well-established in vitro or in vivo functional studies show no damaging effect on protein function or splicing"
-          >
-            <v-switch
-              color="primary"
-              label="BS3"
-              v-model="acmgRatingToSubmit.bs3"
-              hint="functional studies: benign"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Lack of segregation in affected members of a family"
-          >
-            <v-switch
-              color="primary"
-              label="BS4"
-              v-model="acmgRatingToSubmit.bs4"
-              hint="lack of segregation"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <strong style="font-variant: small-caps" class="text-small text-muted text-capitalize">
-            Supporting Evidence
-          </strong>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Missense variant in a gene for which primarily truncating variants are known to cause disease"
-          >
-            <v-switch
-              color="primary"
-              label="BP1"
-              v-model="acmgRatingToSubmit.bp1"
-              hint="missense in truncation gene"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Observed in trans with a pathogenic variant for a fully penetrant dominant gene/disorder or observed in cis with a pathogenic variant in any inheritance pattern"
-          >
-            <v-switch
-              color="primary"
-              label="BP2"
-              v-model="acmgRatingToSubmit.bp2"
-              hint="other variant is causative"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="In-frame deletions/insertions in a repetitive region without a known function"
-          >
-            <v-switch
-              color="primary"
-              label="BP3"
-              v-model="acmgRatingToSubmit.bp3"
-              hint="in-frame indel in repeat"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary, splicing impact, etc.)"
-          >
-            <v-switch
-              color="primary"
-              label="BP4"
-              v-model="acmgRatingToSubmit.bp4"
-              hint="prediction: benign"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Variant found in a case with an alternate molecular basis for disease"
-          >
-            <v-switch
-              color="primary"
-              label="BP5"
-              v-model="acmgRatingToSubmit.bp5"
-              hint="different gene in other case"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="Reputable source recently reports variant as benign, but the evidence is not available to the laboratory to perform anindependent evaluation"
-          >
-            <v-switch
-              color="primary"
-              label="BP6"
-              v-model="acmgRatingToSubmit.bp6"
-              hint="reputable source: benign"
-            ></v-switch>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div
-            class="form-check form-check-inline"
-            title="A synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensussequence nor the creation of a new splice site AND the nucleotide is not highly conserved"
-          >
-            <v-switch
-              color="primary"
-              label="BP7"
-              v-model="acmgRatingToSubmit.bp7"
-              hint="silent, no splicing/conservation"
-            ></v-switch>
+        <div v-for="(criteria, criteriaKey) in criteriaType.criteria" :key="criteriaKey">
+          {{ criteria.id }} {{ acmgRatingToSubmit[criteria.id] }}
+          <div>
+            <div :title="criteria.description">
+              <v-switch
+                color="primary"
+                :label="criteria.name"
+                :model-value="acmgRatingToSubmit[criteria.id]"
+                @update:model-value="acmgRatingToSubmit[criteria.id] = $event"
+                :hint="criteria.hint"
+              ></v-switch>
+            </div>
           </div>
         </div>
       </div>
@@ -779,24 +578,9 @@ onMounted(async () => {
       <v-divider />
 
       <div class="button-group">
-        <v-btn type="v-btn" class="btn btn-sm btn-secondary" @click="unsetAcmgRating()">
-          Clear
-        </v-btn>
-        <v-btn type="v-btn" class="btn btn-sm btn-secondary" @click="resetAcmgRating()">
-          Reset
-        </v-btn>
-        <v-btn
-          type="submit"
-          class="btn btn-sm"
-          :class="
-            acmgRatingConflicting
-              ? 'btn-warning'
-              : acmgRatingSubmitted
-              ? 'btn-success'
-              : 'btn-primary'
-          "
-          @click="onSubmitAcmgRating()"
-        >
+        <v-btn @click="unsetAcmgRating()"> Clear </v-btn>
+        <v-btn @click="resetAcmgRating()"> Reset </v-btn>
+        <v-btn @click="onSubmitAcmgRating()">
           <div v-if="acmgRatingConflicting">
             <v-icon>mdi-circle-outline</v-icon>
           </div>
