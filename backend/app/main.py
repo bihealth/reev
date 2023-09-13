@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import FileResponse, RedirectResponse, Response, StreamingResponse
+from starlette.responses import FileResponse, JSONResponse, Response, StreamingResponse
 
 # Load environment
 env = os.environ
@@ -34,7 +34,37 @@ REEV_VERSION = None
 if os.path.exists(VERSION_FILE):  # pragma: no cover
     with open(VERSION_FILE) as f:
         REEV_VERSION = f.read().strip() or None
-
+#: Template for ACMG rating
+ACMG_RATING: dict = {
+    "pvs1": False,
+    "ps1": False,
+    "ps2": False,
+    "ps3": False,
+    "ps4": False,
+    "pm1": False,
+    "pm2": False,
+    "pm3": False,
+    "pm4": False,
+    "pm5": False,
+    "pm6": False,
+    "pp1": False,
+    "pp2": False,
+    "pp3": False,
+    "pp4": False,
+    "pp5": False,
+    "ba1": False,
+    "bs1": False,
+    "bs2": False,
+    "bs3": False,
+    "bs4": False,
+    "bp1": False,
+    "bp2": False,
+    "bp3": False,
+    "bp4": False,
+    "bp5": False,
+    "bp6": False,
+    "bp7": False,
+}
 
 app = FastAPI()
 
@@ -123,6 +153,37 @@ async def variantvalidator(request: Request, path: str):
         headers=backend_resp.headers,
         background=BackgroundTask(backend_resp.aclose),
     )
+
+
+# Register app for retrieving ACMG classification.
+@app.get("/acmg/{path:path}")
+async def acmg(request: Request):
+    """Implement searching for ACMG classification."""
+    query_params = request.query_params
+    chromosome = query_params.get("chromosome")
+    position = query_params.get("position")
+    reference = query_params.get("reference")
+    alternative = query_params.get("alternative")
+    build = query_params.get("release")
+
+    if not chromosome or not position or not reference or not alternative or not build:
+        return Response(status_code=400, content="Missing query parameters")
+
+    url = (
+        f"http://wintervar.wglab.org/api_new.php?"
+        f"queryType=position&chr={chromosome}&pos={position}"
+        f"&ref={reference}&alt={alternative}&build={build}"
+    )
+    backend_req = client.build_request(method="GET", url=url)
+    backend_resp = await client.send(backend_req)
+    if backend_resp.status_code != 200:
+        return Response(status_code=backend_resp.status_code, content=backend_resp.content)
+
+    acmg_rating = ACMG_RATING.copy()
+    for key, value in backend_resp.json().items():
+        if key.lower() in acmg_rating:
+            acmg_rating[key.lower()] = True if value == 1 else False
+    return JSONResponse(acmg_rating)
 
 
 # Register route for favicon.

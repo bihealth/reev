@@ -1,4 +1,5 @@
-/** Store for gene details.
+/**
+ * Store for gene details.
  *
  * This includes the data retrieved from the APIs.
  */

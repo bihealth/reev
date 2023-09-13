@@ -6,7 +6,8 @@ import {
   isVariantMt,
   isVariantMtHomopolymer,
   search,
-  infoFromQuery
+  infoFromQuery,
+  copy
 } from '../utils'
 
 describe.concurrent('roundIt method', () => {
@@ -41,7 +42,7 @@ describe.concurrent('roundIt method', () => {
   })
 })
 
-describe('separateIt method', () => {
+describe.concurrent('separateIt method', () => {
   it('should separate a positive value with default separator', () => {
     const result = separateIt(123456789)
     expect(result).toBe(' 123 456 789 ')
@@ -68,7 +69,7 @@ describe('separateIt method', () => {
   })
 })
 
-describe('isVariantMt method', () => {
+describe.concurrent('isVariantMt method', () => {
   it('should return true if mitochondrial chromosome', () => {
     const result_MT = isVariantMt({ chromosome: 'MT' })
     const result_M = isVariantMt({ chromosome: 'M' })
@@ -86,7 +87,7 @@ describe('isVariantMt method', () => {
   })
 })
 
-describe('isVariantMtHomopolymer method', () => {
+describe.concurrent('isVariantMtHomopolymer method', () => {
   it('should return true if mitochondrial homopolymer', () => {
     const result = isVariantMtHomopolymer({ chromosome: 'MT', start: 70 })
     expect(result).toBe(true)
@@ -108,7 +109,7 @@ describe('isVariantMtHomopolymer method', () => {
   })
 })
 
-describe('search method', () => {
+describe.concurrent('search method', () => {
   it('should return "gene" route location for HGNC queries', () => {
     const result = search('HGNC:1100', 'ghcr37')
     expect(result).toEqual({
@@ -143,7 +144,7 @@ describe('search method', () => {
   })
 })
 
-describe('infoFromQuery method', () => {
+describe.concurrent('infoFromQuery method', () => {
   it('should return info from query', () => {
     const result = infoFromQuery('chr37:12345:A:G')
     expect(result).toEqual({
@@ -180,5 +181,12 @@ describe('infoFromQuery method', () => {
         genomeRelease: 'ghcr37'
       }
     })
+  })
+})
+
+describe.concurrent('copy method', () => {
+  it('should return a JSON object for given dict', () => {
+    const result = copy({ foo: 'bar' })
+    expect(result).toEqual({ foo: 'bar' })
   })
 })
