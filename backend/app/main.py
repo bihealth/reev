@@ -161,9 +161,23 @@ async def variantvalidator(request: Request, path: str):
 async def acmg(request: Request, path: str):
     """Implement searching for ACMG classification."""
     query_params = request.query_params
-    print(query_params)
+    chromosome = query_params.get("chromosome")
+    position = query_params.get("position")
+    reference = query_params.get("reference")
+    alternative = query_params.get("alternative")
+    build = query_params.get("release")
+
+    url = f"http://wintervar.wglab.org/api_new.php?queryType=position&chr={chromosome}&pos={position}&ref={reference}&alt={alternative}&build={build}"
+    backend_req = client.build_request(method="GET", url=url)
+    backend_resp = await client.send(backend_req)
+    if backend_resp.status_code != 200:
+        return Response(status_code=backend_resp.status_code, content=backend_resp.content)
+
     acmg_rating = ACMG_RATING.copy()
     acmg_rating["class_override"] = query_params.get("class_override", None)
+    for key, value in backend_resp.json().items():
+        if key.lower() in acmg_rating:
+            acmg_rating[key.lower()] = True if value == 1 else False
     return JSONResponse(acmg_rating)
 
 

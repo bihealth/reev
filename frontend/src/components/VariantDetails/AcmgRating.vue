@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import isEqual from 'lodash.isequal'
 
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
@@ -40,7 +39,6 @@ const emptyAcmgRatingTemplate: any = {
   bp5: false,
   bp6: false,
   bp7: false,
-  // class_auto: 3,
   class_override: null
 }
 
@@ -81,7 +79,6 @@ const resetAcmgRating = () => {
     acmgRatingToSubmit.value.bp5 = acmgRatingStore.acmgRating.bp5
     acmgRatingToSubmit.value.bp6 = acmgRatingStore.acmgRating.bp6
     acmgRatingToSubmit.value.bp7 = acmgRatingStore.acmgRating.bp7
-    // acmgRatingToSubmit.value.class_auto = acmgRatingStore.acmgRating.class_auto
     acmgRatingToSubmit.value.class_override = acmgRatingStore.acmgRating.class_override
   } else {
     unsetAcmgRating()
@@ -170,13 +167,7 @@ const convertEmptyToNull = (classOverride: any) => {
 }
 
 const onSubmitAcmgRating = async () => {
-  if (isEqual(acmgRatingToSubmit, emptyAcmgRatingTemplate)) {
-    // IS empty and SHOULD be empty, so no update needed
-    return
-  } else {
-    // Submit ACMG rating to ClinVar
-    await acmgRatingStore.submitAcmgRating(props.smallVariant, acmgRatingToSubmit.value)
-  }
+  await acmgRatingStore.submitAcmgRating(props.smallVariant, acmgRatingToSubmit.value)
 }
 
 watch(
