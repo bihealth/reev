@@ -38,8 +38,7 @@ const emptyAcmgRatingTemplate: any = {
   bp4: false,
   bp5: false,
   bp6: false,
-  bp7: false,
-  class_override: null
+  bp7: false
 }
 
 const acmgRatingToSubmit = ref({ ...emptyAcmgRatingTemplate })
@@ -79,7 +78,6 @@ const resetAcmgRating = () => {
     acmgRatingToSubmit.value.bp5 = acmgRatingStore.acmgRating.bp5
     acmgRatingToSubmit.value.bp6 = acmgRatingStore.acmgRating.bp6
     acmgRatingToSubmit.value.bp7 = acmgRatingStore.acmgRating.bp7
-    acmgRatingToSubmit.value.class_override = acmgRatingStore.acmgRating.class_override
   } else {
     unsetAcmgRating()
   }
@@ -157,14 +155,6 @@ const calculateAcmgRating = computed(() => {
   }
   return computedClassAuto
 })
-
-const convertEmptyToNull = (classOverride: any) => {
-  if (classOverride === '' || classOverride === null) {
-    acmgRatingToSubmit.value.class_override = null
-  } else {
-    acmgRatingToSubmit.value.class_override = classOverride
-  }
-}
 
 const onSubmitAcmgRating = async () => {
   await acmgRatingStore.submitAcmgRating(props.smallVariant, acmgRatingToSubmit.value)
@@ -249,7 +239,7 @@ const acmgCriteriaInfo = {
           id: 'pm2',
           description:
             'Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium',
-          hint: 'rare in 1:20.000 in ExAC'
+          hint: 'rare; < 1:20.000 in ExAC'
         },
         {
           name: 'PM3',
@@ -301,7 +291,7 @@ const acmgCriteriaInfo = {
           id: 'pp3',
           description:
             'Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc.)',
-          hint: 'predicted pathogenic'
+          hint: 'predicted pathogenic >= 2'
         },
         {
           name: 'PP4',
@@ -386,34 +376,34 @@ const acmgCriteriaInfo = {
           id: 'bp3',
           description:
             'In-frame deletions/insertions in a repetitive region without a known function',
-          hint: 'in-frame del/ins in repeat'
+          hint: 'in-frame indel in repeat'
         },
         {
           name: 'BP4',
           id: 'bp4',
           description:
             'Multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary,splicing impact, etc.)',
-          hint: 'predicted benign'
+          hint: 'prediction: benign'
         },
         {
           name: 'BP5',
           id: 'bp5',
           description: 'Variant found in a case with an alternate molecular basis for disease',
-          hint: 'other variant is causative'
+          hint: 'different gene in other case'
         },
         {
           name: 'BP6',
           id: 'bp6',
           description:
             'Reputable source recently reports variant as benign, but the evidence is not available to the laboratory to perform an independent evaluation',
-          hint: 'reliable source: benign'
+          hint: 'reputable source: benign'
         },
         {
           name: 'BP7',
           id: 'bp7',
           description:
             'A synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensus sequence nor the creation of a new splice site AND the nucleotide is not highly conserved',
-          hint: 'synonymous: no splice effect'
+          hint: 'silent, no splicing/conservation'
         }
       ]
     }
@@ -482,21 +472,6 @@ const acmgCriteriaInfo = {
           {{ calculateAcmgRating }}
         </h1>
       </div>
-      <div title="Manually override the automatically determined class">
-        <div>
-          <label for="acmg-class-override"><strong>ACMG class override</strong></label>
-        </div>
-        <div style="margin-bottom: 12px">
-          <v-text-field
-            label="Label"
-            variant="outlined"
-            id="acmg-class-override"
-            style="width: 135px; height: 50px"
-            @change="convertEmptyToNull(acmgRatingToSubmit.class_override)"
-            v-model.number="acmgRatingToSubmit.class_override"
-          />
-        </div>
-      </div>
       <div>
         <div>
           <label for="acmg-class"><strong>Score explanation:</strong></label>
@@ -522,9 +497,7 @@ const acmgCriteriaInfo = {
       <div class="button-group">
         <v-btn @click="unsetAcmgRating()"> Clear </v-btn>
         <v-btn @click="resetAcmgRating()"> Reset </v-btn>
-        <v-btn prepend-icon="mdi-star-check" @click="onSubmitAcmgRating()">
-          Submit to ClinVar
-        </v-btn>
+        <v-btn prepend-icon="mdi-star-check" @click="onSubmitAcmgRating()"> Save changes </v-btn>
       </div>
       <div v-if="acmgRatingConflicting">
         <div>
@@ -539,15 +512,11 @@ const acmgCriteriaInfo = {
           <div>
             <v-icon>mdi-information</v-icon>
             Select all fulfilled criteria to get the classification following Richards
-            <i>et al.</i> (2015). If necessary, you can also specify a manual override.
-            <span class="badge badge-primary">Submit</span> indicates that there are changes not yet
-            submitted, while <span class="badge badge-success">Submit</span> indicates that changes
-            have been submitted or not made at all.
-            <span class="badge badge-warning">Submit</span> indicates that there are conflicting
-            variant interpretations. In that case, submission is possible, but not recommended.
-            Press <span class="badge badge-secondary">Reset</span> to reset the form to the last
-            submitted state. Press <span class="badge badge-secondary">Clear</span> and
-            <span class="badge badge-primary">Submit</span> to delete ACMG rating.
+            <i>et al.</i> (2015). If necessary, you can also specify a manual override. Press
+            <span style="background-color: wheat">Reset</span> to reset the form to the last
+            submitted state. Press <span style="background-color: wheat">Clear</span> to delete ACMG
+            rating and <span style="background-color: wheat">Submit</span> to submit rating to
+            ClinVar.
           </div>
         </div>
       </div>

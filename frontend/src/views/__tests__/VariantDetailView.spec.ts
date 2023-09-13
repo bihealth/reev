@@ -6,6 +6,7 @@ import { routes } from '@/router'
 
 import { createTestingPinia } from '@pinia/testing'
 import { useVariantInfoStore } from '@/stores/variantInfo'
+import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
@@ -13,6 +14,7 @@ import * as directives from 'vuetify/directives'
 
 import VariantDetailView from '../VariantDetailView.vue'
 import { StoreState } from '@/stores/misc'
+import { AcmgRatingInfo } from '@/components/__tests__/AcmgRating.spec'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
@@ -55,28 +57,41 @@ const variantData = {
   smallVariant: smallVariantInfo,
   varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
   geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
-  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result
+  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result,
+  acmgRating: AcmgRatingInfo
 }
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn() })
-  const store = useVariantInfoStore(pinia)
+  const variantInfoStore = useVariantInfoStore(pinia)
+  const variantAcmgStore = useVariantAcmgRatingStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (variantTerm: string) => {
-    store.storeState = StoreState.Active
-    store.variantTerm = variantTerm
-    store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-    store.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-    store.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-    store.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+    variantInfoStore.storeState = StoreState.Active
+    variantInfoStore.variantTerm = variantTerm
+    variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
+    variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+    variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
   })
-  store.loadData = mockLoadData
+  variantInfoStore.loadData = mockLoadData
 
-  store.storeState = StoreState.Active
-  store.variantTerm = 'chr17:12345:A:T'
-  store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-  store.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-  store.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-  store.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+  const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
+    variantAcmgStore.storeState = StoreState.Active
+    variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
+  })
+  variantAcmgStore.retrieveAcmgRating = mockRetrieveAcmgRating
+
+  // Initial load
+  variantInfoStore.storeState = StoreState.Active
+  variantInfoStore.variantTerm = 'chr17:12345:A:T'
+  variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+  variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
+  variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+  variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+  variantAcmgStore.storeState = StoreState.Active
+  variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+  variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
 
   return mount(
     {
@@ -176,32 +191,45 @@ describe.concurrent('VariantDetailView', async () => {
 
   it('redirects if mounting with storeState Error', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn() })
-    const store = useVariantInfoStore(pinia)
+    const variantInfoStore = useVariantInfoStore(pinia)
+    const variantAcmgStore = useVariantAcmgRatingStore(pinia)
+
     const mockLoadData = vi.fn().mockImplementation(async (variantTerm: string) => {
-      store.storeState = StoreState.Error
-      store.variantTerm = variantTerm
-      store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-      store.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-      store.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-      store.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+      variantInfoStore.storeState = StoreState.Error
+      variantInfoStore.variantTerm = variantTerm
+      variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+      variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
+      variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+      variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
     })
     const mockClearData = vi.fn().mockImplementation(() => {
-      store.storeState = StoreState.Initial
-      store.variantTerm = ''
-      store.smallVariant = null
-      store.varAnnos = null
-      store.geneInfo = null
-      store.txCsq = null
+      variantInfoStore.storeState = StoreState.Initial
+      variantInfoStore.variantTerm = ''
+      variantInfoStore.smallVariant = null
+      variantInfoStore.varAnnos = null
+      variantInfoStore.geneInfo = null
+      variantInfoStore.txCsq = null
     })
-    store.loadData = mockLoadData
-    store.clearData = mockClearData
+    variantInfoStore.loadData = mockLoadData
+    variantInfoStore.clearData = mockClearData
 
-    store.storeState = StoreState.Active
-    store.variantTerm = 'chr17:12345:A:T'
-    store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-    store.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-    store.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-    store.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+    const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
+      variantAcmgStore.storeState = StoreState.Active
+      variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+      variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
+    })
+    variantAcmgStore.retrieveAcmgRating = mockRetrieveAcmgRating
+
+    // Initial load
+    variantInfoStore.storeState = StoreState.Active
+    variantInfoStore.variantTerm = 'chr17:12345:A:T'
+    variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
+    variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+    variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+    variantAcmgStore.storeState = StoreState.Active
+    variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
 
     mount(
       {

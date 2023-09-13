@@ -64,7 +64,6 @@ ACMG_RATING: dict = {
     "bp5": False,
     "bp6": False,
     "bp7": False,
-    "class_override": None,
 }
 
 app = FastAPI()
@@ -158,7 +157,7 @@ async def variantvalidator(request: Request, path: str):
 
 # Register app for retrieving ACMG classification.
 @app.get("/acmg/{path:path}")
-async def acmg(request: Request, path: str):
+async def acmg(request: Request):
     """Implement searching for ACMG classification."""
     query_params = request.query_params
     chromosome = query_params.get("chromosome")
@@ -167,14 +166,20 @@ async def acmg(request: Request, path: str):
     alternative = query_params.get("alternative")
     build = query_params.get("release")
 
-    url = f"http://wintervar.wglab.org/api_new.php?queryType=position&chr={chromosome}&pos={position}&ref={reference}&alt={alternative}&build={build}"
+    if not chromosome or not position or not reference or not alternative or not build:
+        return Response(status_code=400, content="Missing query parameters")
+
+    url = (
+        f"http://wintervar.wglab.org/api_new.php?"
+        f"queryType=position&chr={chromosome}&pos={position}"
+        f"&ref={reference}&alt={alternative}&build={build}"
+    )
     backend_req = client.build_request(method="GET", url=url)
     backend_resp = await client.send(backend_req)
     if backend_resp.status_code != 200:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
 
     acmg_rating = ACMG_RATING.copy()
-    acmg_rating["class_override"] = query_params.get("class_override", None)
     for key, value in backend_resp.json().items():
         if key.lower() in acmg_rating:
             acmg_rating[key.lower()] = True if value == 1 else False
