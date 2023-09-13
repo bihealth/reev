@@ -1,14 +1,13 @@
 /**
- * Pinia store for handling per-variant ACMG rating.
- *
- * ## Store Dependencies
- *
- * - `caseDetailsStore`
+ * Store for handling per-variant ACMG rating.
  */
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { StoreState } from '@/stores/misc'
+import { API_BASE_PREFIX } from '@/api/common'
+
+const API_BASE_URL = API_BASE_PREFIX
 
 /** Alias definition of SmallVariant type; to be defined later. */
 type SmallVariant = any
@@ -16,11 +15,11 @@ type SmallVariant = any
 type AcmgRating = any
 
 export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => {
+  /** The current store state. */
+  const storeState = ref<StoreState>(StoreState.Initial)
+
   /** The small variant that acmgRating are handled for. */
   const smallVariant = ref<SmallVariant | null>(null)
-
-  /* The current store state. */
-  const storeState = ref<StoreState>(StoreState.Initial)
 
   /** The small variants ACMG rating as fetched from API. */
   const acmgRating = ref<AcmgRating | null>(null)
@@ -28,22 +27,39 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   function clearData() {
     storeState.value = StoreState.Initial
     acmgRating.value = null
+    smallVariant.value = null
   }
 
-  const createAcmgRating = async (smallVariant: SmallVariant, acmgRating: Object) => {
-    console.log('createAcmgRating', smallVariant, acmgRating)
+  const retrieveAcmgRating = async (smallVar: SmallVariant) => {
+    // Do not re-load data if the small variant is the same
+    if (smallVar === smallVariant.value) {
+      return
+    }
+
+    // Clear against artifact
+    clearData()
+
+    // Load data via API
+    storeState.value = StoreState.Loading
+    try {
+      const response = await fetch(`${API_BASE_URL}acmg/?small-var=${smallVar}`, {
+        method: 'GET'
+      })
+      // const body = await response.json()
+      acmgRating.value = response.json()
+      smallVariant.value = smallVar
+      storeState.value = StoreState.Active
+    } catch (e) {
+      console.error('There was an error loading the ACMG data.', e)
+      clearData()
+      storeState.value = StoreState.Error
+    }
   }
 
-  const retrieveAcmgRating = async (smallVariant: SmallVariant) => {
-    console.log('retrieveAcmgRating', smallVariant)
-  }
-
-  const updateAcmgRating = async (acmgRating: Object) => {
-    console.log('updateAcmgRating', acmgRating)
-  }
-
-  const deleteAcmgRating = async () => {
-    console.log('deleteAcmgRating')
+  const submitAcmgRating = async (smallVar: SmallVariant, payload: Object) => {
+    // TODO: Implement the API call to submit the ACMG rating to ClinVar
+    smallVariant.value = smallVar
+    acmgRating.value = payload
   }
 
   return {
@@ -51,9 +67,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
     storeState,
     acmgRating,
     clearData,
-    createAcmgRating,
     retrieveAcmgRating,
-    updateAcmgRating,
-    deleteAcmgRating
+    submitAcmgRating
   }
 })

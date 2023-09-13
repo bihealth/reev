@@ -1,4 +1,5 @@
-/** Store for variant details.
+/**
+ * Store for variant details.
  *
  * This includes the data retrieved from the APIs.
  */

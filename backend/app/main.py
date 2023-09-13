@@ -10,7 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from starlette.background import BackgroundTask
 from starlette.requests import Request
-from starlette.responses import FileResponse, RedirectResponse, Response, StreamingResponse
+from starlette.responses import FileResponse, JSONResponse, Response, StreamingResponse
 
 # Load environment
 env = os.environ
@@ -34,7 +34,38 @@ REEV_VERSION = None
 if os.path.exists(VERSION_FILE):  # pragma: no cover
     with open(VERSION_FILE) as f:
         REEV_VERSION = f.read().strip() or None
-
+#: Template for ACMG rating
+ACMG_RATING: dict = {
+    "pvs1": False,
+    "ps1": False,
+    "ps2": False,
+    "ps3": False,
+    "ps4": False,
+    "pm1": False,
+    "pm2": False,
+    "pm3": False,
+    "pm4": False,
+    "pm5": False,
+    "pm6": False,
+    "pp1": False,
+    "pp2": False,
+    "pp3": False,
+    "pp4": False,
+    "pp5": False,
+    "ba1": False,
+    "bs1": False,
+    "bs2": False,
+    "bs3": False,
+    "bs4": False,
+    "bp1": False,
+    "bp2": False,
+    "bp3": False,
+    "bp4": False,
+    "bp5": False,
+    "bp6": False,
+    "bp7": False,
+    "class_override": None,
+}
 
 app = FastAPI()
 
@@ -123,6 +154,17 @@ async def variantvalidator(request: Request, path: str):
         headers=backend_resp.headers,
         background=BackgroundTask(backend_resp.aclose),
     )
+
+
+# Register app for retrieving ACMG classification.
+@app.get("/acmg/{path:path}")
+async def acmg(request: Request, path: str):
+    """Implement searching for ACMG classification."""
+    query_params = request.query_params
+    print(query_params)
+    acmg_rating = ACMG_RATING.copy()
+    acmg_rating["class_override"] = query_params.get("class_override", None)
+    return JSONResponse(acmg_rating)
 
 
 # Register route for favicon.

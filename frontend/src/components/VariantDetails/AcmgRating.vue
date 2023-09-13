@@ -2,48 +2,45 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import isEqual from 'lodash.isequal'
 
-import { copy } from '@/api/utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import { useVariantInfoStore } from '@/stores/variantInfo'
 
 const props = defineProps({
   smallVariant: Object
 })
 
 const acmgRatingStore = useVariantAcmgRatingStore()
-const variantInfoStore = useVariantInfoStore()
 
 const emptyAcmgRatingTemplate: any = {
-  pvs1: 0,
-  ps1: 0,
-  ps2: 0,
-  ps3: 0,
-  ps4: 0,
-  pm1: 0,
-  pm2: 0,
-  pm3: 0,
-  pm4: 0,
-  pm5: 0,
-  pm6: 0,
-  pp1: 0,
-  pp2: 0,
-  pp3: 0,
-  pp4: 0,
-  pp5: 0,
-  ba1: 0,
-  bs1: 0,
-  bs2: 0,
-  bs3: 0,
-  bs4: 0,
-  bp1: 0,
-  bp2: 0,
-  bp3: 0,
-  bp4: 0,
-  bp5: 0,
-  bp6: 0,
-  bp7: 0,
-  class_auto: 3,
+  pvs1: false,
+  ps1: false,
+  ps2: false,
+  ps3: false,
+  ps4: false,
+  pm1: false,
+  pm2: false,
+  pm3: false,
+  pm4: false,
+  pm5: false,
+  pm6: false,
+  pp1: false,
+  pp2: false,
+  pp3: false,
+  pp4: false,
+  pp5: false,
+  ba1: false,
+  bs1: false,
+  bs2: false,
+  bs3: false,
+  bs4: false,
+  bp1: false,
+  bp2: false,
+  bp3: false,
+  bp4: false,
+  bp5: false,
+  bp6: false,
+  bp7: false,
+  // class_auto: 3,
   class_override: null
 }
 
@@ -84,49 +81,12 @@ const resetAcmgRating = () => {
     acmgRatingToSubmit.value.bp5 = acmgRatingStore.acmgRating.bp5
     acmgRatingToSubmit.value.bp6 = acmgRatingStore.acmgRating.bp6
     acmgRatingToSubmit.value.bp7 = acmgRatingStore.acmgRating.bp7
-    acmgRatingToSubmit.value.class_auto = acmgRatingStore.acmgRating.class_auto
+    // acmgRatingToSubmit.value.class_auto = acmgRatingStore.acmgRating.class_auto
     acmgRatingToSubmit.value.class_override = acmgRatingStore.acmgRating.class_override
   } else {
     unsetAcmgRating()
   }
 }
-
-const acmgRatingSubmitted = computed(() => {
-  if (!acmgRatingStore.acmgRating) {
-    return false
-  }
-  return (
-    acmgRatingToSubmit.value.pvs1 === acmgRatingStore.acmgRating.pvs1 &&
-    acmgRatingToSubmit.value.ps1 === acmgRatingStore.acmgRating.ps1 &&
-    acmgRatingToSubmit.value.ps2 === acmgRatingStore.acmgRating.ps2 &&
-    acmgRatingToSubmit.value.ps3 === acmgRatingStore.acmgRating.ps3 &&
-    acmgRatingToSubmit.value.ps4 === acmgRatingStore.acmgRating.ps4 &&
-    acmgRatingToSubmit.value.pm1 === acmgRatingStore.acmgRating.pm1 &&
-    acmgRatingToSubmit.value.pm2 === acmgRatingStore.acmgRating.pm2 &&
-    acmgRatingToSubmit.value.pm3 === acmgRatingStore.acmgRating.pm3 &&
-    acmgRatingToSubmit.value.pm4 === acmgRatingStore.acmgRating.pm4 &&
-    acmgRatingToSubmit.value.pm5 === acmgRatingStore.acmgRating.pm5 &&
-    acmgRatingToSubmit.value.pm6 === acmgRatingStore.acmgRating.pm6 &&
-    acmgRatingToSubmit.value.pp1 === acmgRatingStore.acmgRating.pp1 &&
-    acmgRatingToSubmit.value.pp2 === acmgRatingStore.acmgRating.pp2 &&
-    acmgRatingToSubmit.value.pp3 === acmgRatingStore.acmgRating.pp3 &&
-    acmgRatingToSubmit.value.pp4 === acmgRatingStore.acmgRating.pp4 &&
-    acmgRatingToSubmit.value.pp5 === acmgRatingStore.acmgRating.pp5 &&
-    acmgRatingToSubmit.value.ba1 === acmgRatingStore.acmgRating.ba1 &&
-    acmgRatingToSubmit.value.bs1 === acmgRatingStore.acmgRating.bs1 &&
-    acmgRatingToSubmit.value.bs2 === acmgRatingStore.acmgRating.bs2 &&
-    acmgRatingToSubmit.value.bs3 === acmgRatingStore.acmgRating.bs3 &&
-    acmgRatingToSubmit.value.bs4 === acmgRatingStore.acmgRating.bs4 &&
-    acmgRatingToSubmit.value.bp1 === acmgRatingStore.acmgRating.bp1 &&
-    acmgRatingToSubmit.value.bp2 === acmgRatingStore.acmgRating.bp2 &&
-    acmgRatingToSubmit.value.bp3 === acmgRatingStore.acmgRating.bp3 &&
-    acmgRatingToSubmit.value.bp4 === acmgRatingStore.acmgRating.bp4 &&
-    acmgRatingToSubmit.value.bp5 === acmgRatingStore.acmgRating.bp5 &&
-    acmgRatingToSubmit.value.bp6 === acmgRatingStore.acmgRating.bp6 &&
-    acmgRatingToSubmit.value.bp7 === acmgRatingStore.acmgRating.bp7 &&
-    acmgRatingToSubmit.value.class_override === acmgRatingStore.acmgRating.class_override
-  )
-})
 
 const updateAcmgClass = (acmgClass: number, isConflicting: boolean) => {
   acmgRatingToSubmit.value.class_auto = acmgClass
@@ -210,19 +170,12 @@ const convertEmptyToNull = (classOverride: any) => {
 }
 
 const onSubmitAcmgRating = async () => {
-  const acmgRatingToSubmitEmpty = isEqual(acmgRatingToSubmit, emptyAcmgRatingTemplate)
-  if (acmgRatingStore.acmgRating && acmgRatingToSubmitEmpty) {
-    // IS not empty but SHOULD be empty, so delete the ACMG rating
-    await acmgRatingStore.deleteAcmgRating()
-  } else if (!acmgRatingStore.acmgRating && acmgRatingToSubmitEmpty) {
+  if (isEqual(acmgRatingToSubmit, emptyAcmgRatingTemplate)) {
     // IS empty and SHOULD be empty, so no update needed
-    acmgRatingToSubmit.value = copy(emptyAcmgRatingTemplate)
-  } else if (acmgRatingStore.acmgRating && !acmgRatingToSubmitEmpty) {
-    // IS not empty and SHOULD not be empty, so update the ACMG rating
-    await acmgRatingStore.updateAcmgRating(acmgRatingToSubmit.value)
-  } else if (!acmgRatingStore.acmgRating && !acmgRatingToSubmitEmpty) {
-    // IS empty but SHOULD not be empty, so create the ACMG rating
-    await acmgRatingStore.createAcmgRating(variantInfoStore.smallVariant, acmgRatingToSubmit.value)
+    return
+  } else {
+    // Submit ACMG rating to ClinVar
+    await acmgRatingStore.submitAcmgRating(props.smallVariant, acmgRatingToSubmit.value)
   }
 }
 
@@ -478,11 +431,10 @@ const acmgCriteriaInfo = {
 </script>
 
 <template>
-  {{ acmgRatingToSubmit }}
   <v-row>
     <v-col cols="12" md="4">
       <div>
-        <h3>Pathogenic:</h3>
+        <h3><strong>Pathogenic:</strong></h3>
       </div>
       <div v-for="(criteriaType, criteriaKey) in acmgCriteriaInfo.pathogenic" :key="criteriaKey">
         <div>
@@ -507,7 +459,7 @@ const acmgCriteriaInfo = {
     </v-col>
     <v-col cols="12" md="4">
       <div>
-        <h3>Benign:</h3>
+        <h3><strong>Benign:</strong></h3>
       </div>
       <div v-for="(criteriaType, criteriaKey) in acmgCriteriaInfo.benign" :key="criteriaKey">
         <div>
@@ -516,7 +468,6 @@ const acmgCriteriaInfo = {
           </strong>
         </div>
         <div v-for="(criteria, criteriaKey) in criteriaType.criteria" :key="criteriaKey">
-          {{ criteria.id }} {{ acmgRatingToSubmit[criteria.id] }}
           <div>
             <div :title="criteria.description">
               <v-switch
@@ -580,17 +531,8 @@ const acmgCriteriaInfo = {
       <div class="button-group">
         <v-btn @click="unsetAcmgRating()"> Clear </v-btn>
         <v-btn @click="resetAcmgRating()"> Reset </v-btn>
-        <v-btn @click="onSubmitAcmgRating()">
-          <div v-if="acmgRatingConflicting">
-            <v-icon>mdi-circle-outline</v-icon>
-          </div>
-          <div v-else-if="acmgRatingSubmitted">
-            <v-icon>mdi-star-check-outline</v-icon>
-          </div>
-          <div else>
-            <v-icon>mdi-star-check</v-icon>
-          </div>
-          Submit
+        <v-btn prepend-icon="mdi-star-check" @click="onSubmitAcmgRating()">
+          Submit to ClinVar
         </v-btn>
       </div>
       <div v-if="acmgRatingConflicting">
