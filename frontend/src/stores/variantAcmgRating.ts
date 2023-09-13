@@ -42,7 +42,6 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
     // Load data via API
     storeState.value = StoreState.Loading
     try {
-      console.log(smallVar)
       const release = smallVar.release === 'grch37' ? 'hg19' : 'hg38'
       const chromosome = smallVar.chromosome.replace('chr', '')
       const pos = smallVar.start
@@ -53,6 +52,9 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
           `&position=${pos}&reference=${ref}&alternative=${alt}`,
         { method: 'GET' }
       )
+      if (!response.ok) {
+        throw new Error('There was an error loading the ACMG data.')
+      }
       acmgRating.value = await response.json()
       smallVariant.value = smallVar
       storeState.value = StoreState.Active
