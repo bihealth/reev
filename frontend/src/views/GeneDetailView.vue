@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { watch, onMounted, ref } from 'vue'
+import { watch, onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { StoreState } from '@/stores/misc'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import ClinvarFreqPlot from '@/components/ClinVarFreqPlot.vue'
+import GtexGenePlot from '@/components/GtexGenePlot.vue'
 import { roundIt } from '@/api/utils'
 
 export interface Props {
@@ -65,8 +67,59 @@ const SECTIONS = [
   { id: 'disease-annotation', title: 'Disease Annotation' },
   { id: 'acmg-list', title: 'ACMG Supplementary Findings List' },
   { id: 'gene-rifs', title: 'Gene RIFs' },
-  { id: 'locus-specific-databases', title: 'Locus-Specific Databases' }
+  { id: 'locus-specific-databases', title: 'Locus-Specific Databases' },
+  { id: 'clinvar-impact', title: 'Clinvar By Impact' },
+  { id: 'clinvar-frequency', title: 'Clinvar By Frequency' },
+  { id: 'gtex', title: 'GTEx Expression' }
 ]
+
+const variantImpactLabels = [
+  "3' UTR",
+  "5' UTR",
+  'downstream',
+  'frameshift',
+  'inframe indel',
+  'start lost',
+  'intron',
+  'missense',
+  'non-coding',
+  'stop gained',
+  'no alteration',
+  'splice acceptor',
+  'splice donor',
+  'stop lost',
+  'synonymous',
+  'upstream gene'
+]
+
+const clinsigLabels = [
+  'benign', // 0
+  'likely benign', // 1
+  'uncertain signifiance', // 2
+  'likely pathogenic', // 3
+  'pathogenic' // 4
+]
+
+const clinsigColor = ['#5d9936', '#a3f56c', '#f5c964', '#f59f9f', '#b05454']
+
+const perImpactCounts = computed(() => {
+  const result = []
+  const sum = {
+    impact: variantImpactLabels.length - 1,
+    counts: [0, 0, 0, 0, 0]
+  }
+
+  if (geneInfoStore.geneClinvar?.per_impact_counts) {
+    for (const perImpactCount of geneInfoStore.geneClinvar.per_impact_counts) {
+      result.push(perImpactCount)
+      for (let i = 0; i < sum.counts.length; ++i) {
+        sum.counts[i] += perImpactCount.counts[i]
+      }
+    }
+    result.push(sum)
+  }
+  return result
+})
 
 // We need to use refs here because of props mutations in the parent
 const searchTermRef = ref(props.searchTerm)
@@ -516,6 +569,98 @@ const genomeReleaseRef = ref(props.genomeRelease)
               </div>
             </div>
             <div v-else>No locus-specific database available for gene.</div>
+          </div>
+        </div>
+
+        <div id="clinvar-impact" class="gene-item">
+          <div>
+            <span class="font-weight-bolder" style="font-size: 120%"> ClinVar By Impact </span>
+          </div>
+          <div v-if="geneInfoStore.geneClinvar?.per_impact_counts?.length">
+            <table>
+              <tr>
+                <thead>
+                  <th>impact</th>
+                  <th v-for="i in [0, 1, 2, 3, 4]" :key="i">
+                    {{ clinsigLabels[i] }}
+                  </th>
+                  <th>total</th>
+                </thead>
+                <tbody>
+                  <tr v-for="row in perImpactCounts" :key="row">
+                    <td
+                      :class="{
+                        'font-weight-bolder': variantImpactLabels[row.impact] == 'overall'
+                      }"
+                    >
+                      {{ variantImpactLabels[row.impact] }}
+                    </td>
+                    <td
+                      class="text-right"
+                      :class="{
+                        'font-weight-bolder': variantImpactLabels[row.impact] == 'overall'
+                      }"
+                      v-for="(count, idx) in row.counts"
+                      :style="`background-color: ${clinsigColor[idx]}`"
+                      :key="idx"
+                    >
+                      {{ count }}
+                    </td>
+                    <td
+                      class="text-right"
+                      :class="{
+                        'font-weight-bolder': variantImpactLabels[row.impact] == 'overall'
+                      }"
+                    >
+                      {{ row.counts.reduce((a: any, b: any) => a + b, 0) }}
+                    </td>
+                  </tr>
+                </tbody>
+              </tr>
+            </table>
+          </div>
+          <div v-else class="text-center font-italic">No ClinVar data for gene.</div>
+        </div>
+
+        <div id="clinvar-frequency" class="gene-item">
+          <div>
+            <div>
+              <span class="font-weight-bolder" style="font-size: 120%"> ClinVar By Frequency </span>
+            </div>
+            <div v-if="geneInfoStore.geneClinvar?.per_freq_counts?.length">
+              <ClinvarFreqPlot
+                :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+                :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
+              />
+            </div>
+            <div v-else class="text-muted text-center font-italic">No ClinVar data for gene.</div>
+          </div>
+        </div>
+
+        <div id="gtex" class="gene-item">
+          <div>
+            <div>
+              <span class="font-weight-bolder" style="font-size: 120%"> GTEx Expression </span>
+              <small>
+                <a
+                  :href="`https://gtexportal.org/home/gene/${geneInfoStore.geneInfo?.gtex.ensembl_gene_id}`"
+                  target="_blank"
+                  v-if="geneInfoStore.geneInfo.gtex"
+                >
+                  <v-icon>mdi-launch</v-icon>
+                  GTEx Portal
+                </a>
+              </small>
+            </div>
+            <div v-if="geneInfoStore.geneInfo.gtex">
+              <GtexGenePlot
+                :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+                :expression-records="geneInfoStore.geneInfo.gtex.records"
+              />
+            </div>
+            <div v-else class="text-muted text-center font-italic">
+              No GTEx data available for gene.
+            </div>
           </div>
         </div>
       </div>

@@ -12,6 +12,12 @@ import { MehariClient } from '@/api/mehari'
 import { infoFromQuery } from '@/api/utils'
 import { StoreState } from '@/stores/misc'
 
+type SmallVariant = any
+type GeneInfo = any
+type GeneClinvarInfo = any
+type VarAnnos = any
+type TxCsq = any
+
 export const useVariantInfoStore = defineStore('variantInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
@@ -20,16 +26,19 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
   const variantTerm = ref<string | null>(null)
 
   /** The small variant that the previous record has been retrieved for. */
-  const smallVariant = ref<any | null>(null)
+  const smallVariant = ref<SmallVariant | null>(null)
 
   /** Variant-related information from annonars. */
-  const varAnnos = ref<any | null>(null)
+  const varAnnos = ref<VarAnnos | null>(null)
+
+  /** ClinVar gene-related information from annoars. */
+  const geneClinvar = ref<GeneClinvarInfo | null>(null)
 
   /** Information about related gene. */
-  const geneInfo = ref<any | null>(null)
+  const geneInfo = ref<GeneInfo | null>(null)
 
   /** Transcript consequence information from mehari. */
-  const txCsq = ref<any | null>(null)
+  const txCsq = ref<TxCsq | null>(null)
 
   function clearData() {
     storeState.value = StoreState.Initial
@@ -38,6 +47,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
     varAnnos.value = null
     txCsq.value = null
     geneInfo.value = null
+    geneClinvar.value = null
   }
 
   const loadData = async (variantQuery: string, genomeRelease: string) => {
@@ -87,12 +97,18 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         txCsq.value = txCsqData.result
       }
 
-      const hgncId = txCsqData.result[0]['gene-id']
+      const hgncId: string = txCsqData.result[0]['gene-id']
       const geneData = await annonarsClient.fetchGeneInfo(hgncId)
       if (geneData?.genes === null) {
         throw new Error('No gene data found.')
       }
       geneInfo.value = geneData['genes'][hgncId]
+
+      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncId)
+      if (geneClinvarData?.result === null) {
+        throw new Error('No gene clinvar data found.')
+      }
+      geneClinvar.value = geneClinvarData['genes'][hgncId]
 
       variantTerm.value = variantQuery
       smallVariant.value = {
@@ -117,6 +133,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
     variantTerm,
     smallVariant,
     varAnnos,
+    geneClinvar,
     geneInfo,
     txCsq,
     loadData,

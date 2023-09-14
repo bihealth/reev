@@ -6,6 +6,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { StoreState } from '@/stores/misc'
 import { useVariantInfoStore } from '../variantInfo'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
+import * as BRCA1Clinvar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 
@@ -67,6 +68,8 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
+      } else if (req.url.includes('clinvar')) {
+        return Promise.resolve(JSON.stringify(BRCA1Clinvar))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
@@ -111,6 +114,8 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
+      } else if (req.url.includes('clinvar')) {
+        return Promise.resolve(JSON.stringify(BRCA1Clinvar))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
@@ -142,6 +147,8 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ result: [] }))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
+      } else if (req.url.includes('clinvar')) {
+        return Promise.resolve(JSON.stringify(BRCA1Clinvar))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
@@ -173,6 +180,8 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify({ genes: null }))
+      } else if (req.url.includes('clinvar')) {
+        return Promise.resolve(JSON.stringify(BRCA1Clinvar))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
@@ -202,6 +211,8 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
+      } else if (req.url.includes('clinvar')) {
+        return Promise.resolve(JSON.stringify(BRCA1Clinvar))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
@@ -218,6 +229,6 @@ describe.concurrent('geneInfo Store', () => {
 
     await store.loadData('chr17:43044295:G:A', 'grch37')
 
-    expect(fetchMocker.mock.calls.length).toBe(3)
+    expect(fetchMocker.mock.calls.length).toBe(4)
   })
 })

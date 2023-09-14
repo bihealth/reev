@@ -41,6 +41,13 @@ export class AnnonarsClient {
     return await response.json()
   }
 
+  async fetchGeneClinvarInfo(hgncId: string): Promise<any> {
+    const response = await fetch(`${this.apiBaseUrl}genes/clinvar?hgnc_id=${hgncId}`, {
+      method: 'GET'
+    })
+    return await response.json()
+  }
+
   async fetchGenes(query: string): Promise<any> {
     const response = await fetch(`${this.apiBaseUrl}genes/search?${query}`, {
       method: 'GET'
