@@ -9,7 +9,7 @@ export default mergeConfig(
     test: {
       setupFiles: ['./src/vitest.setup.ts'],
       deps: {
-        inline: ['vuetify']
+        inline: ['vuetify', 'vitest-canvas-mock']
       },
       coverage: {
         provider: 'istanbul'

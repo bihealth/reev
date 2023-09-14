@@ -27,7 +27,10 @@ const makeWrapper = () => {
   return mount(GtexGenePlotVue, {
     props: {
       geneSymbol: 'BRCA1',
-      expressionRecords: [{ tissue: 1, tissue_detailed: 1, tpms: [1, 1] }, { tissue: 1, tissue_detailed: 1, tpms: [1, 1] }],
+      expressionRecords: [
+        { tissue: 1, tissue_detailed: 1, tpms: [1, 1] },
+        { tissue: 1, tissue_detailed: 1, tpms: [1, 1] }
+      ]
     },
     global: {
       plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],

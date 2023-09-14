@@ -27,7 +27,10 @@ const makeWrapper = () => {
   return mount(ClinVarFreqPlot, {
     props: {
       geneSymbol: 'BRCA1',
-      perFreqCounts: [{ coarse_clinsig: 1, counts: [1, 2] }, { coarse_clinsig: 2, counts: [0, 2] }],
+      perFreqCounts: [
+        { coarse_clinsig: 1, counts: [1, 2] },
+        { coarse_clinsig: 2, counts: [0, 2] }
+      ]
     },
     global: {
       plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
