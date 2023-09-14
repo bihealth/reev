@@ -11,19 +11,23 @@ import { StoreState } from '@/stores/misc'
 import { AnnonarsClient } from '@/api/annonars'
 
 export const useGeneInfoStore = defineStore('geneInfo', () => {
-  /* The current store state. */
+  /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  /* The current gene query. */
+  /** The current gene query. */
   const geneSymbol = ref<string | null>(null)
 
-  /* The retrieved gene data. */
+  /** The retrieved gene data. */
   const geneInfo = ref<any | null>(null)
+
+  /** ClinVar gene-related information from annoars. */
+  const geneClinvar = ref<any | null>(null)
 
   function clearData() {
     storeState.value = StoreState.Initial
     geneSymbol.value = null
     geneInfo.value = null
+    geneClinvar.value = null
   }
 
   const loadData = async (geneSymbolQuery: string) => {
@@ -41,7 +45,16 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
       const hgncId = geneSymbolQuery
       const client = new AnnonarsClient()
       const data = await client.fetchGeneInfo(hgncId)
+      if (data?.genes === null) {
+        throw new Error('No gene data found.')
+      }
       geneInfo.value = data['genes'][hgncId]
+
+      const geneClinvarData = await client.fetchGeneClinvarInfo(hgncId)
+      if (geneClinvarData?.genes === null) {
+        throw new Error('No gene clinvar data found.')
+      }
+      geneClinvar.value = geneClinvarData['genes'][hgncId]
 
       geneSymbol.value = geneSymbolQuery
       storeState.value = StoreState.Active
@@ -56,6 +69,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     storeState,
     geneSymbol,
     geneInfo,
+    geneClinvar,
     loadData,
     clearData
   }

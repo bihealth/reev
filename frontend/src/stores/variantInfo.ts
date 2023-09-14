@@ -12,7 +12,6 @@ import { MehariClient } from '@/api/mehari'
 import { infoFromQuery } from '@/api/utils'
 import { StoreState } from '@/stores/misc'
 
-
 type SmallVariant = any
 type GeneInfo = any
 type GeneClinvarInfo = any
@@ -105,11 +104,11 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
       }
       geneInfo.value = geneData['genes'][hgncId]
 
-      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo([hgncId])
-      if (geneClinvarData?.genes === null) {
+      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncId)
+      if (geneClinvarData?.result === null) {
         throw new Error('No gene clinvar data found.')
       }
-      geneClinvar.value = geneClinvarData[0]
+      geneClinvar.value = geneClinvarData['genes'][hgncId]
 
       variantTerm.value = variantQuery
       smallVariant.value = {
@@ -134,6 +133,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
     variantTerm,
     smallVariant,
     varAnnos,
+    geneClinvar,
     geneInfo,
     txCsq,
     loadData,

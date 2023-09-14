@@ -17,6 +17,8 @@
     "@mdi/font": "^7.2.96",
     "pinia": "^2.1.6",
     "resize-observer-polyfill": "^1.5.1",
+    "vega": "^5.25.0",
+    "vega-embed": "^6.22.2",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
     "vuetify": "^3.3.14"

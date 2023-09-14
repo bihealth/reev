@@ -115,7 +115,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
             </router-link>
           </h3>
           <v-divider />
-          <VariantDetailsGene :gene="variantInfoStore.geneInfo" :gene-clinvar="variantInfoStore.geneClinvar"/>
+          <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
         </div>
 
         <div id="beacon-network" class="variant-item">
