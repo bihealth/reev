@@ -69,6 +69,27 @@ describe.concurrent('Annonars Client', () => {
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 
+  it('fetches gene clinvar info correctly', async () => {
+    fetchMocker.mockResponseOnce(JSON.stringify(BRCA1geneInfo))
+
+    const client = new AnnonarsClient()
+    const result = await client.fetchGeneClinvarInfo('BRCA1')
+    expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1geneInfo))
+  })
+
+  it('fails to fetch gene clinvar info with wrong HGNC id', async () => {
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('hgnc_id=BRCA1')) {
+        return Promise.resolve(JSON.stringify(BRCA1geneInfo))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
+
+    const client = new AnnonarsClient()
+    const result = await client.fetchGeneClinvarInfo('123')
+    expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
+  })
+
   it('fetches genes correctly', async () => {
     fetchMocker.mockResponseOnce(JSON.stringify(EMPSearchInfo))
 
