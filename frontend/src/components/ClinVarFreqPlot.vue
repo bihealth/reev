@@ -124,7 +124,7 @@ const vegaEncoding = {
       Population frequency of ClinVar variants
     </figcaption>
     <VegaPlot
-      :data-values="vegaData"
+      :data-values="vegaData as any"
       :encoding="vegaEncoding"
       :mark="false"
       :layer="vegaLayer"

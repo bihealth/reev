@@ -1,11 +1,11 @@
-<script setup lang="js">
+<script setup lang="ts">
 /** Simple wrapper around vega for plotting data.
  *
  * The "vue-vega" library has not been updated for a long time.
  */
 import * as vega from 'vega'
 import vegaEmbed from 'vega-embed'
-import { onMounted, computed, ref, watch } from 'vue'
+import { onMounted, computed, ref, type Ref, watch } from 'vue'
 
 /** Define the props. */
 const props = defineProps({
@@ -58,13 +58,15 @@ const vegaLiteSpec = computed(() => {
       name: props.dataName
     },
     encoding: props.encoding,
-    transform: props.transform
+    transform: props.transform,
+    mark: true,
+    layer: []
   }
   if (props.mark !== undefined && props.mark !== null && props.mark !== false) {
-    res.mark = props.mark
+    res.mark = props.mark as any
   }
   if (props.layer !== undefined && props.layer !== null) {
-    res.layer = props.layer
+    res.layer = props.layer as any
   }
   return res
 })
@@ -78,22 +80,27 @@ watch(
         .changeset()
         .remove(() => true)
         .insert(newValue)
-      vegaViewRef.value.change(props.dataName, changeset).run()
-      vegaViewRef.value.resize()
+
+      ;(vegaViewRef.value as any).change(props.dataName, changeset).run()
+      ;(vegaViewRef.value as any).resize()
     }
   }
 )
 
 /** `ref` to `vegaEmbed()` result so we can `await` the rendering. */
-const vegaEmbedPromiseRef = ref(null)
+const vegaEmbedPromiseRef: Ref<Promise<{ view: any }> | null> = ref(null)
 
 /** Create vega-embed plot on mounting. */
 onMounted(() => {
   const vegaOpts = {
     renderer: props.renderer
   }
-  vegaEmbedPromiseRef.value = vegaEmbed(plotDivRef.value, vegaLiteSpec.value, vegaOpts)
-  vegaEmbedPromiseRef.value.then(({ view }) => {
+  vegaEmbedPromiseRef.value = vegaEmbed(
+    plotDivRef.value as any,
+    vegaLiteSpec.value as any,
+    vegaOpts as any
+  )
+  vegaEmbedPromiseRef.value.then(({ view }: { view: any }) => {
     vegaViewRef.value = view
   })
 })
