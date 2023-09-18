@@ -586,8 +586,8 @@ onMounted(async () => {
                   {{ criteria.name }}: {{ criteria.scoreCustom || criteria.score.score }}
                 </div>
               </div>
-              <div>
-                Score computed: {{ acmgRatingScoreComputed }} /// Custom score:
+              <div style="color: blue">
+                Score computed: {{ acmgRatingScoreComputed }} /VS/ Custom score:
                 {{ acmgRatingScore }}
               </div>
             </td>

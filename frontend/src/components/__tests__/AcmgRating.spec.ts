@@ -36,7 +36,7 @@ const smallVariantInfo = {
 }
 
 export const AcmgRatingInfo = {
-  pvs1: false,
+  pvs1: true,
   ps1: false,
   ps2: false,
   ps3: false,
@@ -46,7 +46,7 @@ export const AcmgRatingInfo = {
   pm3: false,
   pm4: false,
   pm5: false,
-  pm6: false,
+  pm6: true,
   pp1: false,
   pp2: false,
   pp3: false,
@@ -55,13 +55,13 @@ export const AcmgRatingInfo = {
   ba1: false,
   bs1: false,
   bs2: false,
-  bs3: false,
+  bs3: true,
   bs4: false,
   bp1: false,
   bp2: false,
   bp3: false,
   bp4: false,
-  bp5: false,
+  bp5: true,
   bp6: false,
   bp7: false
 }
@@ -73,13 +73,13 @@ const makeWrapper = () => {
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
     store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-    store.acmgRating = JSON.parse(JSON.stringify(AcmgRatingInfo))
+    store.acmgRatingComputed = JSON.parse(JSON.stringify(AcmgRatingInfo))
   })
   store.retrieveAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
   store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-  store.acmgRating = JSON.parse(JSON.stringify(AcmgRatingInfo))
+  store.acmgRatingComputed = JSON.parse(JSON.stringify(AcmgRatingInfo))
 
   return mount(AcmgRating, {
     props: {
@@ -102,5 +102,18 @@ describe.concurrent('AcmgRating', async () => {
 
     const switchers = wrapper.findAll('.v-switch')
     expect(switchers.length).toBe(28)
+  })
+
+  it('should correctly update the AcmgRating info', async () => {
+    const wrapper = makeWrapper()
+    const switchers = wrapper.findAll('.v-switch')
+    const switcher = switchers[0]
+    await switcher.trigger('click')
+
+    expect(wrapper.text()).toContain('Pathogenic')
+    expect(wrapper.text()).toContain('Benign')
+
+    const updatedSwitchers = wrapper.findAll('.v-switch')
+    expect(updatedSwitchers.length).toBe(28)
   })
 })
