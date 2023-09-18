@@ -22,11 +22,14 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   const smallVariant = ref<SmallVariant | null>(null)
 
   /** The small variants ACMG rating as fetched from API. */
-  const acmgRating = ref<AcmgRating | null>(null)
+  const acmgRatingComputed = ref<AcmgRating | null>(null)
+
+  /** The small variants ACMG rating updated by user */
+  const acmgRatingCustom = ref<AcmgRating | null>(null)
 
   function clearData() {
     storeState.value = StoreState.Initial
-    acmgRating.value = null
+    acmgRatingComputed.value = null
     smallVariant.value = null
   }
 
@@ -55,7 +58,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
       if (!response.ok) {
         throw new Error('There was an error loading the ACMG data.')
       }
-      acmgRating.value = await response.json()
+      acmgRatingComputed.value = await response.json()
       smallVariant.value = smallVar
       storeState.value = StoreState.Active
     } catch (e) {
@@ -68,13 +71,14 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   const submitAcmgRating = async (smallVar: SmallVariant, payload: Object) => {
     // TODO: Implement the API call to submit the ACMG rating to ClinVar
     smallVariant.value = smallVar
-    acmgRating.value = payload
+    acmgRatingComputed.value = payload
   }
 
   return {
     smallVariant,
     storeState,
-    acmgRating,
+    acmgRatingComputed,
+    acmgRatingCustom,
     clearData,
     retrieveAcmgRating,
     submitAcmgRating
