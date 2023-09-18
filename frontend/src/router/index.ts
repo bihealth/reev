@@ -7,6 +7,7 @@ import ContactView from '@/views/ContactView.vue'
 import GeneDetailView from '@/views/GeneDetailView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
 import GenesListView from '@/views/GenesListView.vue'
+import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
 
 const routes = [
   {
@@ -44,6 +45,11 @@ const routes = [
     path: '/genes/search',
     name: 'genes',
     component: GenesListView
+  },
+  {
+    path: '/acmg-docs',
+    name: 'acmg-docs',
+    component: ACMGCriteriaDocs
   }
 ]
 

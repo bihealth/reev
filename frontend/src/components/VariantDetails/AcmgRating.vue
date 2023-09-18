@@ -110,7 +110,7 @@ const acmgRating = {
       id: 'pm1',
       description:
         'Located in a mutational hot spot and/or critical and well-established functional domain (e.g., active site of an enzyme) without benign variation',
-      hint: 'variant in horspot (missense)',
+      hint: 'variant in hotspot (missense)',
       score: ACMGRankingScores.PM,
       scoreCustom: null,
       active: false
@@ -511,6 +511,9 @@ onMounted(async () => {
         <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
           {{ calculateAcmgRating }}
         </h1>
+        <router-link to="/acmg-docs" target="_blank">
+          <h3>Further documentation <v-icon>mdi-open-in-new</v-icon></h3>
+        </router-link>
       </div>
     </v-col>
     <v-col cols="12" md="5">
