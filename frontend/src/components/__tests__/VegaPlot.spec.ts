@@ -92,6 +92,8 @@ const makeWrapper = () => {
 }
 
 describe.concurrent('VegaPlot', async () => {
+  // Skipping tests due to error with vega-embed
+  // DataCloneError: #<Object> could not be cloned.
   it.skip('renders the VegaPlot info', async () => {
     const wrapper = makeWrapper()
     console.log(wrapper.html())

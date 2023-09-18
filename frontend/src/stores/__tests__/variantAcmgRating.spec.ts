@@ -29,20 +29,21 @@ describe.concurrent('geneInfo Store', () => {
     const store = useVariantAcmgRatingStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
-    expect(store.acmgRating).toBe(null)
+    expect(store.acmgRatingComputed).toBe(null)
+    expect(store.acmgRatingCustom).toBe(null)
     expect(store.smallVariant).toBe(null)
   })
 
   it('should clear state', () => {
     const store = useVariantAcmgRatingStore()
     store.storeState = StoreState.Active
-    store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
+    store.acmgRatingComputed = JSON.parse(JSON.stringify({ acmg: 'rating' }))
     store.smallVariant = JSON.parse(JSON.stringify({ gene: 'info' }))
 
     store.clearData()
 
     expect(store.storeState).toBe(StoreState.Initial)
-    expect(store.acmgRating).toBe(null)
+    expect(store.acmgRatingComputed).toBe(null)
     expect(store.smallVariant).toBe(null)
   })
 
@@ -53,7 +54,7 @@ describe.concurrent('geneInfo Store', () => {
     await store.retrieveAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.acmgRating).toStrictEqual(JSON.parse(JSON.stringify({ acmg: 'rating' })))
+    expect(store.acmgRatingComputed).toStrictEqual(JSON.parse(JSON.stringify({ acmg: 'rating' })))
     expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
   })
 
@@ -66,7 +67,7 @@ describe.concurrent('geneInfo Store', () => {
     await store.retrieveAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Error)
-    expect(store.acmgRating).toBe(null)
+    expect(store.acmgRatingComputed).toBe(null)
     expect(store.smallVariant).toBe(null)
   })
 
@@ -76,7 +77,7 @@ describe.concurrent('geneInfo Store', () => {
     await store.retrieveAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.acmgRating).toStrictEqual(JSON.parse(JSON.stringify({ acmg: 'rating' })))
+    expect(store.acmgRatingComputed).toStrictEqual(JSON.parse(JSON.stringify({ acmg: 'rating' })))
     expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
 
     await store.retrieveAcmgRating(store.smallVariant)
