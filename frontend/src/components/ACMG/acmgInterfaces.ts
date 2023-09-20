@@ -164,6 +164,8 @@ interface CriteriaStateType {
   description: string
 }
 
+// class CriteriaState implements CriteriaStateType {
+
 const CriteriaState: Record<string, CriteriaStateType> = {
   pvs1: {
     id: 'pvs1',
