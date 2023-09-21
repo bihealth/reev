@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import { ACMGRanking } from '@/components/ACMG/acmgInterfaces'
+import { ACMGRanking, AcmgEvidenceLevel } from '@/components/ACMG/acmgInterfaces'
 
 const props = defineProps({
   smallVariant: Object
@@ -20,10 +20,6 @@ const ScoreExplanation = {
 }
 
 const acmgRatingConflicting = ref(false)
-const acmgRatingScore = ref(0)
-const acmgRatingScoreComputed = ref(0)
-const acmgRatingPathogenicScore = ref(0)
-const acmgRatingBenignScore = ref(0)
 const showTooltip = ref(false)
 const showSwitches = ref(false)
 const showFailed = ref(false)
@@ -45,8 +41,6 @@ const setInterVarAcmgRating = () => {
     }
 
     ACMGRanking.userSelected = { ...ACMGRanking.interVar }
-    const acmgScore = calculateAcmgScore(ACMGRanking.interVar)
-    acmgRatingScoreComputed.value = acmgScore.acmgScore
   } else {
     unsetAcmgRating()
   }
@@ -56,11 +50,8 @@ const resetAcmgRating = () => {
   ACMGRanking.userSelected = { ...ACMGRanking.interVar }
 }
 
-const updateAcmgClass = (isConflicting: boolean, pathogenicScore: number, benignScore: number) => {
+const updateAcmgConflicting = (isConflicting: boolean) => {
   acmgRatingConflicting.value = isConflicting
-  acmgRatingPathogenicScore.value = pathogenicScore
-  acmgRatingBenignScore.value = -benignScore
-  acmgRatingScore.value = pathogenicScore + benignScore
 }
 
 const calculateAcmgScore = (acmgRating: any) => {
@@ -84,7 +75,7 @@ const calculateAcmgScore = (acmgRating: any) => {
   }
 }
 
-const calculateAcmgRating = computed(() => {
+const calculateAcmgRatingOld = computed(() => {
   const acmgScores = calculateAcmgScore(ACMGRanking.userSelected)
   const acmgScore = acmgScores.acmgScore
   const pathogenicScore = acmgScores.pathogenicScore
@@ -108,9 +99,81 @@ const calculateAcmgRating = computed(() => {
   }
   if (isConflicting) {
     computedClassAuto = 3
-    updateAcmgClass(true, pathogenicScore, benignScore)
+    updateAcmgConflicting(true)
   } else {
-    updateAcmgClass(false, pathogenicScore, benignScore)
+    updateAcmgConflicting(false)
+  }
+  return ScoreExplanation[computedClassAuto as 1 | 2 | 3 | 4 | 5]
+})
+
+function countTrueBooleans(...variables: boolean[]): number {
+  const trueVariables = variables.filter((variable) => variable === true);
+  return trueVariables.length;
+}
+
+const calculateAcmgRating = computed(() => {
+  const pvs = countTrueBooleans(ACMGRanking.userSelected.pvs1.active)
+  const ps = countTrueBooleans(
+    ACMGRanking.userSelected.ps1.active,
+    ACMGRanking.userSelected.ps2.active,
+    ACMGRanking.userSelected.ps3.active,
+    ACMGRanking.userSelected.ps4.active)
+  const pm = countTrueBooleans(
+    ACMGRanking.userSelected.pm1.active,
+    ACMGRanking.userSelected.pm2.active,
+    ACMGRanking.userSelected.pm3.active,
+    ACMGRanking.userSelected.pm4.active,
+    ACMGRanking.userSelected.pm5.active,
+    ACMGRanking.userSelected.pm6.active)
+  const pp = countTrueBooleans(
+    ACMGRanking.userSelected.pp1.active,
+    ACMGRanking.userSelected.pp2.active,
+    ACMGRanking.userSelected.pp3.active,
+    ACMGRanking.userSelected.pp4.active,
+    ACMGRanking.userSelected.pp5.active)
+  const ba = countTrueBooleans(ACMGRanking.userSelected.ba1.active)
+  const bs = countTrueBooleans(
+    ACMGRanking.userSelected.bs1.active,
+    ACMGRanking.userSelected.bs2.active,
+    ACMGRanking.userSelected.bs3.active,
+    ACMGRanking.userSelected.bs4.active)
+  const bp = countTrueBooleans(
+    ACMGRanking.userSelected.bp1.active,
+    ACMGRanking.userSelected.bp2.active,
+    ACMGRanking.userSelected.bp3.active,
+    ACMGRanking.userSelected.bp4.active,
+    ACMGRanking.userSelected.bp5.active, 
+    ACMGRanking.userSelected.bp6.active,
+    ACMGRanking.userSelected.bp7.active)
+  const isPathogenic =
+    (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
+    ps >= 2 ||
+    (ps === 1 && (pm >= 3 || (pm >= 2 && pp >= 2) || (pm === 1 && pp >= 4)))
+  const isLikelyPathogenic =
+    (pvs === 1 && pm === 1) ||
+    (ps === 1 && pm >= 1 && pm <= 2) ||
+    (ps === 1 && pp >= 2) ||
+    pm >= 3 ||
+    (pm === 2 && pp >= 2) ||
+    (pm === 1 && pp >= 4)
+  const isLikelyBenign = (bs >= 1 && bp >= 1) || bp >= 2
+  const isBenign = ba > 0 || bs >= 2
+  const isConflicting = (isPathogenic || isLikelyPathogenic) && (isBenign || isLikelyBenign)
+    var computedClassAuto = 3
+  if (isPathogenic) {
+    computedClassAuto = 5
+  } else if (isLikelyPathogenic) {
+    computedClassAuto = 4
+  } else if (isBenign) {
+    computedClassAuto = 1
+  } else if (isLikelyBenign) {
+    computedClassAuto = 2
+  }
+  if (isConflicting) {
+    computedClassAuto = 3
+    updateAcmgConflicting(true)
+  } else {
+    updateAcmgConflicting(false)
   }
   return ScoreExplanation[computedClassAuto as 1 | 2 | 3 | 4 | 5]
 })
@@ -173,10 +236,6 @@ onMounted(async () => {
             </v-btn>
           </h2>
         </div>
-        <h2>
-          {{ acmgRatingScore }} points = {{ acmgRatingPathogenicScore }}P -
-          {{ acmgRatingBenignScore }}B
-        </h2>
         <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
           {{ calculateAcmgRating }}
         </h1>
@@ -239,10 +298,6 @@ onMounted(async () => {
                 >
                   {{ criteria.id }}: +{{ criteria.evidence }}
                 </div>
-              </div>
-              <div style="color: #2196f3">
-                Score computed: {{ acmgRatingScoreComputed }} /VS/ Custom score:
-                {{ acmgRatingScore }}
               </div>
             </td>
           </tr>
@@ -309,7 +364,7 @@ onMounted(async () => {
         <div v-if="criteria.evidence < 0">
           <v-switch
             color="primary"
-            :label="criteria.name"
+            :label="criteria.id"
             :model-value="criteria.active"
             @update:model-value="criteria.active = $event as any"
             style="margin-right: 20px"
