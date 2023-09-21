@@ -1,3 +1,5 @@
+import { type Ref, ref } from 'vue'
+
 interface CriteriaDescType {
   id: string
   label: string
@@ -25,11 +27,11 @@ enum AcmgEvidenceLevel {
 
 class CriteriaState {
   id: string
-  active: boolean
+  active: Ref<boolean>
   evidence: AcmgEvidenceLevel
   description: string
 
-  constructor(id: string, active: boolean, evidence: AcmgEvidenceLevel, description: string) {
+  constructor(id: string, active: Ref<boolean>, evidence: AcmgEvidenceLevel, description: string) {
     this.id = id
     this.active = active
     this.evidence = evidence
@@ -38,61 +40,47 @@ class CriteriaState {
 }
 
 class ACMGRanking {
-  default: Record<string, CriteriaState>
-  interVar: Record<string, CriteriaState>
-  userSelected: Record<string, CriteriaState>
+  ranking: Record<string, CriteriaState>
 
   constructor() {
-    this.default = {}
-    this.interVar = {}
-    this.userSelected = {}
+    this.ranking = {}
 
     // Initialize the ranking criteria
     for (const key in CriteriaDefinitions) {
-      const criteriaDesc = CriteriaDefinitions[key]
-      this.default[key] = new CriteriaState(
+      const criteriaDesc = {...CriteriaDefinitions[key]}
+      this.ranking[key] = new CriteriaState(
         key, 
-        false, 
+        ref(false), 
         criteriaDesc.evidence, 
-        criteriaDesc.hint
-      )
-      this.interVar[key] = new CriteriaState(
-        key, 
-        false, 
-        criteriaDesc.evidence, 
-        criteriaDesc.hint
-      )
-      this.userSelected[key] = new CriteriaState(
-        key,
-        false,
-        criteriaDesc.evidence,
         criteriaDesc.hint
       )
     }
   }
 
-  setCriteria(criteria: CriteriaState, ranking: Record<string, CriteriaState>) {
-    ranking[criteria.id] = criteria
+  setCriteria(criteria: CriteriaState) {
+    this.ranking[criteria.id].evidence = criteria.evidence
+    this.ranking[criteria.id].description = criteria.description
+    this.ranking[criteria.id].active = ref(criteria.active.value)
   }
 
-  getCriteria(id: string, ranking: Record<string, CriteriaState>) {
-    return ranking[id]
+  getCriteria(id: string) {
+    return this.ranking[id]
   }
 
-  resetAllCriteria(ranking: Record<string, CriteriaState>, rankingOverride: Record<string, CriteriaState>) {
-    for (const key in ranking) {
-      this.setCriteria(rankingOverride[key], ranking)
+  resetAllCriteria(rankingOverride: Record<string, CriteriaState>) {
+    for (const key in rankingOverride) {
+      console.log(key)
+      this.setCriteria(rankingOverride[key])
     }
   }
 
-  changeCriteriaState(id: string, ranking: Record<string, CriteriaState>) {
-    const criteria = this.getCriteria(id, ranking)
-    criteria.active = !criteria.active
-    this.setCriteria(criteria, ranking)
+  changeCriteriaState(id: string) {
+    this.ranking[id].active.value = !this.ranking[id].active.value
   }
 
-  getActiveCriteria(ranking: Record<string, CriteriaState>) {
-    return Object.keys(ranking).filter((key) => ranking[key].active === true)
+
+  getActiveCriteria() {
+    return Object.keys(this.ranking).filter((key) => this.ranking[key].active.value === true)
   }
 }
 

@@ -11,7 +11,9 @@ const props = defineProps({
 
 const acmgRatingStore = useVariantAcmgRatingStore()
 
-const acmgRanking = new ACMGRanking()
+const acmgRankingDefault = new ACMGRanking()
+const acmgRankingInterVar = new ACMGRanking()
+const acmgRankingUserSelected = new ACMGRanking()
 const acmgRatingConflicting = ref(false)
 const showSwitches = ref(false)
 const showFailed = ref(false)
@@ -20,26 +22,22 @@ const setInterVarAcmgRating = () => {
   if (acmgRatingStore.acmgRatingInterVar) {
     for (const [key, value] of Object.entries(acmgRatingStore.acmgRatingInterVar)) {
       if (value === true) {
-        for (const [criteriaKey, criteria] of Object.entries(acmgRanking.interVar) as any) {
-          if (criteriaKey === key) {
-            criteria.active = true
-          }
-        }
+        acmgRankingInterVar.changeCriteriaState(key)
       }
     }
 
-    acmgRanking.resetAllCriteria(acmgRanking.userSelected, acmgRanking.interVar)
+    acmgRankingUserSelected.resetAllCriteria(acmgRankingInterVar.ranking)
   } else {
     unsetAcmgRating()
   }
 }
 
 const unsetAcmgRating = () => {
-  acmgRanking.resetAllCriteria(acmgRanking.userSelected, acmgRanking.default)
+  acmgRankingUserSelected.resetAllCriteria(acmgRankingDefault.ranking)
 }
 
 const resetAcmgRating = () => {
-  acmgRanking.resetAllCriteria(acmgRanking.userSelected, acmgRanking.interVar)
+  acmgRankingUserSelected.resetAllCriteria(acmgRankingInterVar.ranking)
 }
 
 const updateAcmgConflicting = (isConflicting: boolean) => {
@@ -52,43 +50,43 @@ function countTrueBooleans(...variables: boolean[]): number {
 }
 
 const calculateAcmgRating = computed(() => {
-  const pvs = countTrueBooleans(acmgRanking.userSelected.pvs1.active)
+  const pvs = countTrueBooleans(acmgRankingUserSelected.ranking.pvs1.active.value)
   const ps = countTrueBooleans(
-    acmgRanking.userSelected.ps1.active,
-    acmgRanking.userSelected.ps2.active,
-    acmgRanking.userSelected.ps3.active,
-    acmgRanking.userSelected.ps4.active
+    acmgRankingUserSelected.ranking.ps1.active.value,
+    acmgRankingUserSelected.ranking.ps2.active.value,
+    acmgRankingUserSelected.ranking.ps3.active.value,
+    acmgRankingUserSelected.ranking.ps4.active.value
   )
   const pm = countTrueBooleans(
-    acmgRanking.userSelected.pm1.active,
-    acmgRanking.userSelected.pm2.active,
-    acmgRanking.userSelected.pm3.active,
-    acmgRanking.userSelected.pm4.active,
-    acmgRanking.userSelected.pm5.active,
-    acmgRanking.userSelected.pm6.active
+    acmgRankingUserSelected.ranking.pm1.active.value,
+    acmgRankingUserSelected.ranking.pm2.active.value,
+    acmgRankingUserSelected.ranking.pm3.active.value,
+    acmgRankingUserSelected.ranking.pm4.active.value,
+    acmgRankingUserSelected.ranking.pm5.active.value,
+    acmgRankingUserSelected.ranking.pm6.active.value
   )
   const pp = countTrueBooleans(
-    acmgRanking.userSelected.pp1.active,
-    acmgRanking.userSelected.pp2.active,
-    acmgRanking.userSelected.pp3.active,
-    acmgRanking.userSelected.pp4.active,
-    acmgRanking.userSelected.pp5.active
+    acmgRankingUserSelected.ranking.pp1.active.value,
+    acmgRankingUserSelected.ranking.pp2.active.value,
+    acmgRankingUserSelected.ranking.pp3.active.value,
+    acmgRankingUserSelected.ranking.pp4.active.value,
+    acmgRankingUserSelected.ranking.pp5.active.value
   )
-  const ba = countTrueBooleans(acmgRanking.userSelected.ba1.active)
+  const ba = countTrueBooleans(acmgRankingUserSelected.ranking.ba1.active.value)
   const bs = countTrueBooleans(
-    acmgRanking.userSelected.bs1.active,
-    acmgRanking.userSelected.bs2.active,
-    acmgRanking.userSelected.bs3.active,
-    acmgRanking.userSelected.bs4.active
+    acmgRankingUserSelected.ranking.bs1.active.value,
+    acmgRankingUserSelected.ranking.bs2.active.value,
+    acmgRankingUserSelected.ranking.bs3.active.value,
+    acmgRankingUserSelected.ranking.bs4.active.value
   )
   const bp = countTrueBooleans(
-    acmgRanking.userSelected.bp1.active,
-    acmgRanking.userSelected.bp2.active,
-    acmgRanking.userSelected.bp3.active,
-    acmgRanking.userSelected.bp4.active,
-    acmgRanking.userSelected.bp5.active,
-    acmgRanking.userSelected.bp6.active,
-    acmgRanking.userSelected.bp7.active
+    acmgRankingUserSelected.ranking.bp1.active.value,
+    acmgRankingUserSelected.ranking.bp2.active.value,
+    acmgRankingUserSelected.ranking.bp3.active.value,
+    acmgRankingUserSelected.ranking.bp4.active.value,
+    acmgRankingUserSelected.ranking.bp5.active.value,
+    acmgRankingUserSelected.ranking.bp6.active.value,
+    acmgRankingUserSelected.ranking.bp7.active.value
   )
   const isPathogenic =
     (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
@@ -125,7 +123,7 @@ const calculateAcmgRating = computed(() => {
 })
 
 const switchCriteria = (criteriaKey: string) => {
-  acmgRanking.changeCriteriaState(criteriaKey, acmgRanking.userSelected)
+  acmgRankingUserSelected.changeCriteriaState(criteriaKey)
 }
 
 watch(
@@ -177,10 +175,7 @@ onMounted(async () => {
           <div>
             <v-icon>mdi-information-outline</v-icon>
             Select all fulfilled criteria to get the classification following Richards
-            <i>et al.</i> (2015). If necessary, you can also specify a manual override. Press
-            <span style="background-color: wheat">Reset</span> to reset criteria to the default
-            state. Press <span style="background-color: wheat">Clear</span> to set all criteria to
-            initial state.
+            <i>et al.</i> (2015).
           </div>
         </div>
       </div>
@@ -199,12 +194,12 @@ onMounted(async () => {
           <tr>
             <td>InterVar</td>
             <td class="d-flex flex-row flex-wrap">
-              <div v-for="(criteria, criteriaKey) in acmgRanking.interVar" :key="criteriaKey">
-                <div v-if="criteria.active && criteria.evidence > 0" style="margin-right: 10px">
+              <div v-for="(criteria, criteriaKey) in acmgRankingInterVar.ranking" :key="criteriaKey">
+                <div v-if="criteria.active.value && criteria.evidence > 0" style="margin-right: 10px">
                   {{ criteria.id }}: +{{ criteria.evidence }}
                 </div>
                 <div
-                  v-else-if="criteria.active && criteria.evidence < 0"
+                  v-else-if="criteria.active.value && criteria.evidence < 0"
                   style="margin-right: 10px"
                 >
                   {{ criteria.id }}: {{ criteria.evidence }}
@@ -215,12 +210,12 @@ onMounted(async () => {
           <tr>
             <td>Manually selected</td>
             <td class="d-flex flex-row flex-wrap">
-              <div v-for="(criteria, criteriaKey) in acmgRanking.userSelected" :key="criteriaKey">
-                <div v-if="criteria.active && criteria.evidence > 0" style="margin-right: 10px">
+              <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
+                <div v-if="criteria.active.value && criteria.evidence > 0" style="margin-right: 10px">
                   {{ criteria.id }}: +{{ criteria.evidence }}
                 </div>
                 <div
-                  v-else-if="criteria.active && criteria.evidence < 0"
+                  v-else-if="criteria.active.value && criteria.evidence < 0"
                   style="margin-right: 10px"
                 >
                   {{ criteria.id }}: {{ criteria.evidence }}
@@ -231,11 +226,11 @@ onMounted(async () => {
           <tr>
             <td>Difference</td>
             <td class="d-flex flex-row flex-wrap">
-              <div v-for="(criteria, criteriaKey) in acmgRanking.userSelected" :key="criteriaKey">
+              <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
                 <div
                   v-if="
-                    acmgRanking.interVar[criteriaKey].active !== criteria.active ||
-                    acmgRanking.interVar[criteriaKey].evidence !== criteria.evidence
+                    acmgRankingInterVar.ranking[criteriaKey].active.value !== criteria.active.value ||
+                    acmgRankingInterVar.ranking[criteriaKey].evidence !== criteria.evidence
                   "
                   style="margin-right: 10px"
                 >
@@ -260,13 +255,13 @@ onMounted(async () => {
       <div style="margin-right: 20px">
         <h3><strong>Pathogenic:</strong></h3>
       </div>
-      <div v-for="(criteria, criteriaKey) in acmgRanking.userSelected" :key="criteriaKey">
+      <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
         <div v-if="criteria.evidence > 0">
-          {{ criteria.active }}
+          {{ criteria.active.value }}
           <v-switch
             color="primary"
             :label="criteria.id"
-            :model-value="criteria.active"
+            :model-value="acmgRankingUserSelected.ranking[criteriaKey].active.value"
             @update:model-value="switchCriteria(criteriaKey)"
             style="margin-right: 20px"
           ></v-switch>
@@ -278,13 +273,13 @@ onMounted(async () => {
       <div style="margin-right: 20px">
         <h3><strong>Benign:</strong></h3>
       </div>
-      <div v-for="(criteria, criteriaKey) in acmgRanking.userSelected" :key="criteriaKey">
+      <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
         <div v-if="criteria.evidence < 0">
           <v-switch
             color="primary"
             :label="criteria.id"
-            :model-value="criteria.active"
-            @update:model-value="criteria.active = $event as any"
+            :model-value="criteria.active.value"
+            @update:model-value="switchCriteria(criteriaKey)"
             style="margin-right: 20px"
           ></v-switch>
         </div>
@@ -308,16 +303,16 @@ onMounted(async () => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(criteria, criteriaKey) in acmgRanking.userSelected" :key="criteriaKey">
-            <td v-if="criteria.active || showFailed">
+          <tr v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
+            <td v-if="criteria.active.value || showFailed">
               <v-card class="mx-auto" width="200" style="margin: 10px">
                 <div class="d-flex justify-content-between">
                   <v-switch
                     style="margin-left: 10px"
                     color="primary"
                     :label="criteria.id"
-                    :model-value="criteria.active"
-                    @update:model-value="criteria.active = $event as any"
+                    :model-value="criteria.active.value"
+                    @update:model-value="switchCriteria(criteriaKey)"
                   />
                   <v-tooltip :text="criteria.id">
                     <template v-slot:activator="{ props }">
@@ -348,7 +343,7 @@ onMounted(async () => {
                 </v-expansion-panels>
               </v-card>
             </td>
-            <td v-if="criteria.active || showFailed">
+            <td v-if="criteria.active.value || showFailed">
               {{ criteria.description }}
             </td>
           </tr>
