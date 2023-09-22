@@ -36,14 +36,20 @@ const updateAcmgConflicting = (isConflicting: boolean) => {
   acmgRatingConflicting.value = isConflicting
 }
 
-const calculateAcmgRating = (): string => {
-  const pvs = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicVeryStrong)
-  const ps = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicStrong)
-  const pm = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicModerate)
-  const pp = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicSupporting)
-  const ba = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.BenignStandalone)
-  const bs = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.BenignStrong)
-  const bp = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.BenignSupporting)
+const calculateAcmgRating = computed((): string => {
+  const pvs = acmgRatingStore.acmgRating.getActiveEvidenceCounts(
+    AcmgEvidenceLevel.PathogenicVeryStrong
+  )
+  const ps = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicStrong)
+  const pm = acmgRatingStore.acmgRating.getActiveEvidenceCounts(
+    AcmgEvidenceLevel.PathogenicModerate
+  )
+  const pp = acmgRatingStore.acmgRating.getActiveEvidenceCounts(
+    AcmgEvidenceLevel.PathogenicSupporting
+  )
+  const ba = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStandalone)
+  const bs = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStrong)
+  const bp = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignSupporting)
   const isPathogenic =
     (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
     ps >= 2 ||
@@ -76,7 +82,7 @@ const calculateAcmgRating = (): string => {
     updateAcmgConflicting(false)
   }
   return computedClass
-}
+})
 
 const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
   if (presence === Presence.Present) {
@@ -96,15 +102,6 @@ watch(
   }
 )
 
-const acmgRatingClass = ref('')
-
-watch(
-  () => acmgRatingStore.acmgRating.criteriaStates.User,
-  () => {
-    acmgRatingClass.value = calculateAcmgRating()
-  }
-)
-
 onMounted(async () => {
   if (props.smallVariant) {
     await acmgRatingStore.setAcmgRating(props.smallVariant)
@@ -120,7 +117,7 @@ onMounted(async () => {
           <h2 for="acmg-class"><strong>ACMG classification:</strong></h2>
         </div>
         <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
-          {{ acmgRatingClass }}
+          {{ calculateAcmgRating }}
         </h1>
         <router-link to="/acmg-docs" target="_blank">
           Further documentation <v-icon>mdi-open-in-new</v-icon>
@@ -169,7 +166,6 @@ onMounted(async () => {
             )
           "
         >
-          {{ acmgRatingStore.acmgRating.getCriteriaState(criteria) }}
           <v-switch
             color="primary"
             :label="criteria"

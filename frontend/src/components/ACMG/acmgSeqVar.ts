@@ -622,12 +622,12 @@ class MultiSourceAcmgCriteriaState {
     return this.criteriaStates
   }
 
-  /** Returns the number of criteria with a given evidence level. */
-  getEvidenceCounts(evidence: AcmgEvidenceLevel) {
+  /** Returns the number of active criteria with a given evidence level. */
+  getActiveEvidenceCounts(evidence: AcmgEvidenceLevel) {
     let count = 0
     for (const criteria of ALL_ACMG_CRITERIA) {
       const criteriaState = this.getCriteriaState(criteria)
-      if (criteriaState.evidenceLevel === evidence) {
+      if (criteriaState.evidenceLevel === evidence && criteriaState.presence === Presence.Present) {
         count++
       }
     }
