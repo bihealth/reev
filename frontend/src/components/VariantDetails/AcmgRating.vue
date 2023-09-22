@@ -3,8 +3,16 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import { ACMGRanking } from '@/components/ACMG/acmgInterfaces'
-import { AcmgEvidenceLevel } from '@/components/ACMG/acmgInterfaces'
+import {
+  AcmgCriteria,
+  AcmgEvidenceLevel,
+  StateSource,
+  Presence,
+  ALL_ACMG_CRITERIA,
+  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
+  ACMG_EVIDENCE_LEVELS_BENIGN,
+  ACMG_CRITERIA_DEFS
+} from '@/components/ACMG/acmgSeqVar'
 
 const props = defineProps({
   smallVariant: Object
@@ -12,98 +20,30 @@ const props = defineProps({
 
 const acmgRatingStore = useVariantAcmgRatingStore()
 
-const acmgRankingDefault = new ACMGRanking()
-const acmgRankingInterVar = new ACMGRanking()
-const acmgRankingUserSelected = new ACMGRanking()
 const acmgRatingConflicting = ref(false)
 const showSwitches = ref(false)
 const showFailed = ref(false)
-// genomeReleaseChoices: () => [
-//     { value: 'grch37', label: 'GRCh37' },
-//     { value: 'grch38', label: 'GRCh38' }
-//   ]
-// const evidenceOptionsValues = Object.values(AcmgEvidenceLevel).filter(value => typeof value === 'number');
-
-const evidenceOptionsLabels = Object.values(AcmgEvidenceLevel).filter(
-  (value) => typeof value === 'string'
-)
-const evidenceOptions = evidenceOptionsLabels.map((value) => {
-  console.log(value, typeof value)
-  return { value: AcmgEvidenceLevel[value as string], label: value }
-})
-console.log(evidenceOptions)
-
-const setInterVarAcmgRating = () => {
-  if (acmgRatingStore.acmgRatingInterVar) {
-    for (const [key, value] of Object.entries(acmgRatingStore.acmgRatingInterVar)) {
-      if (value === true) {
-        acmgRankingInterVar.changeCriteriaState(key)
-      }
-    }
-
-    acmgRankingUserSelected.resetAllCriteria(acmgRankingInterVar.ranking)
-  } else {
-    unsetAcmgRating()
-  }
-}
 
 const unsetAcmgRating = () => {
-  acmgRankingUserSelected.resetAllCriteria(acmgRankingDefault.ranking)
+  acmgRatingStore.acmgRating.setUserPresenceAbsent()
 }
 
 const resetAcmgRating = () => {
-  acmgRankingUserSelected.resetAllCriteria(acmgRankingInterVar.ranking)
+  acmgRatingStore.acmgRating.setUserPresenceInterVar()
 }
 
 const updateAcmgConflicting = (isConflicting: boolean) => {
   acmgRatingConflicting.value = isConflicting
 }
 
-function countTrueBooleans(...variables: boolean[]): number {
-  const trueVariables = variables.filter((variable) => variable === true)
-  return trueVariables.length
-}
-
-const calculateAcmgRating = computed(() => {
-  console.log('computing')
-  const pvs = countTrueBooleans(acmgRankingUserSelected.ranking.pvs1.active.value)
-  const ps = countTrueBooleans(
-    acmgRankingUserSelected.ranking.ps1.active.value,
-    acmgRankingUserSelected.ranking.ps2.active.value,
-    acmgRankingUserSelected.ranking.ps3.active.value,
-    acmgRankingUserSelected.ranking.ps4.active.value
-  )
-  const pm = countTrueBooleans(
-    acmgRankingUserSelected.ranking.pm1.active.value,
-    acmgRankingUserSelected.ranking.pm2.active.value,
-    acmgRankingUserSelected.ranking.pm3.active.value,
-    acmgRankingUserSelected.ranking.pm4.active.value,
-    acmgRankingUserSelected.ranking.pm5.active.value,
-    acmgRankingUserSelected.ranking.pm6.active.value
-  )
-  const pp = countTrueBooleans(
-    acmgRankingUserSelected.ranking.pp1.active.value,
-    acmgRankingUserSelected.ranking.pp2.active.value,
-    acmgRankingUserSelected.ranking.pp3.active.value,
-    acmgRankingUserSelected.ranking.pp4.active.value,
-    acmgRankingUserSelected.ranking.pp5.active.value
-  )
-  const ba = countTrueBooleans(acmgRankingUserSelected.ranking.ba1.active.value)
-  const bs = countTrueBooleans(
-    acmgRankingUserSelected.ranking.bs1.active.value,
-    acmgRankingUserSelected.ranking.bs2.active.value,
-    acmgRankingUserSelected.ranking.bs3.active.value,
-    acmgRankingUserSelected.ranking.bs4.active.value
-  )
-  const bp = countTrueBooleans(
-    acmgRankingUserSelected.ranking.bp1.active.value,
-    acmgRankingUserSelected.ranking.bp2.active.value,
-    acmgRankingUserSelected.ranking.bp3.active.value,
-    acmgRankingUserSelected.ranking.bp4.active.value,
-    acmgRankingUserSelected.ranking.bp5.active.value,
-    acmgRankingUserSelected.ranking.bp6.active.value,
-    acmgRankingUserSelected.ranking.bp7.active.value
-  )
+const calculateAcmgRating = (): string => {
+  const pvs = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicVeryStrong)
+  const ps = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicStrong)
+  const pm = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicModerate)
+  const pp = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.PathogenicSupporting)
+  const ba = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.BenignStandalone)
+  const bs = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.BenignStrong)
+  const bp = acmgRatingStore.acmgRating.getEvidenceCounts(AcmgEvidenceLevel.BenignSupporting)
   const isPathogenic =
     (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
     ps >= 2 ||
@@ -119,7 +59,7 @@ const calculateAcmgRating = computed(() => {
   const isLikelyBenign = (bs === 1 && bp === 1) || bp >= 2
   const isConflicting = (isPathogenic || isLikelyPathogenic) && (isBenign || isLikelyBenign)
 
-  var computedClass = 'Uncertain significance'
+  let computedClass = 'Uncertain significance'
   if (isPathogenic) {
     computedClass = 'Pathogenic'
   } else if (isLikelyPathogenic) {
@@ -136,39 +76,51 @@ const calculateAcmgRating = computed(() => {
     updateAcmgConflicting(false)
   }
   return computedClass
-})
+}
 
-const switchCriteria = (criteriaKey: string) => {
-  acmgRankingUserSelected.changeCriteriaState(criteriaKey)
+const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
+  if (presence === Presence.Present) {
+    acmgRatingStore.acmgRating.setPresence(StateSource.User, criteria, Presence.Absent)
+  } else {
+    acmgRatingStore.acmgRating.setPresence(StateSource.User, criteria, Presence.Present)
+  }
 }
 
 watch(
   () => [props.smallVariant, acmgRatingStore.storeState],
   async () => {
     if (props.smallVariant && acmgRatingStore.storeState === StoreState.Active) {
-      await acmgRatingStore.retrieveAcmgRating(props.smallVariant)
+      await acmgRatingStore.setAcmgRating(props.smallVariant)
       resetAcmgRating()
     }
   }
 )
 
+const acmgRatingClass = ref('')
+
+watch(
+  () => acmgRatingStore.acmgRating.criteriaStates.User,
+  () => {
+    acmgRatingClass.value = calculateAcmgRating()
+  }
+)
+
 onMounted(async () => {
   if (props.smallVariant) {
-    await acmgRatingStore.retrieveAcmgRating(props.smallVariant)
-    setInterVarAcmgRating()
+    await acmgRatingStore.setAcmgRating(props.smallVariant)
   }
 })
 </script>
 
 <template>
   <v-row>
-    <v-col cols="12" md="4" class="section">
+    <v-col cols="12" md="6" class="section">
       <div>
         <div>
           <h2 for="acmg-class"><strong>ACMG classification:</strong></h2>
         </div>
         <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
-          {{ calculateAcmgRating }}
+          {{ acmgRatingClass }}
         </h1>
         <router-link to="/acmg-docs" target="_blank">
           Further documentation <v-icon>mdi-open-in-new</v-icon>
@@ -196,84 +148,6 @@ onMounted(async () => {
         </div>
       </div>
     </v-col>
-    <v-col cols="12" md="6" class="section">
-      <h3>Active criteria:</h3>
-      <v-divider />
-      <v-table>
-        <thead>
-          <tr>
-            <th>Mode</th>
-            <th>Criteria</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>InterVar</td>
-            <td class="d-flex flex-row flex-wrap">
-              <div
-                v-for="(criteria, criteriaKey) in acmgRankingInterVar.ranking"
-                :key="criteriaKey"
-              >
-                <div
-                  v-if="criteria.active.value && criteria.evidence > 0"
-                  style="margin-right: 10px"
-                >
-                  {{ criteria.id }}: +{{ criteria.evidence }}
-                </div>
-                <div
-                  v-else-if="criteria.active.value && criteria.evidence < 0"
-                  style="margin-right: 10px"
-                >
-                  {{ criteria.id }}: {{ criteria.evidence }}
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Manually selected</td>
-            <td class="d-flex flex-row flex-wrap">
-              <div
-                v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking"
-                :key="criteriaKey"
-              >
-                <div
-                  v-if="criteria.active.value && criteria.evidence > 0"
-                  style="margin-right: 10px"
-                >
-                  {{ criteria.id }}: +{{ criteria.evidence }}
-                </div>
-                <div
-                  v-else-if="criteria.active.value && criteria.evidence < 0"
-                  style="margin-right: 10px"
-                >
-                  {{ criteria.id }}: {{ criteria.evidence }}
-                </div>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>Difference</td>
-            <td class="d-flex flex-row flex-wrap">
-              <div
-                v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking"
-                :key="criteriaKey"
-              >
-                <div
-                  v-if="
-                    acmgRankingInterVar.ranking[criteriaKey].active.value !==
-                      criteria.active.value ||
-                    acmgRankingInterVar.ranking[criteriaKey].evidence !== criteria.evidence
-                  "
-                  style="margin-right: 10px"
-                >
-                  {{ criteria.id }}: +{{ criteria.evidence }}
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-    </v-col>
   </v-row>
   <v-row style="margin-bottom: 15px">
     <v-col>
@@ -287,16 +161,29 @@ onMounted(async () => {
       <div style="margin-right: 20px">
         <h3><strong>Pathogenic:</strong></h3>
       </div>
-      <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
-        <div v-if="criteria.evidence > 0">
-          {{ criteria.active.value }}
+      <div v-for="criteria in ALL_ACMG_CRITERIA" :key="criteria">
+        <div
+          v-if="
+            ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(
+              acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
+            )
+          "
+        >
+          {{ acmgRatingStore.acmgRating.getCriteriaState(criteria) }}
           <v-switch
             color="primary"
-            :label="criteria.id"
-            :model-value="acmgRankingUserSelected.ranking[criteriaKey].active.value"
-            @update:model-value="switchCriteria(criteriaKey)"
+            :label="criteria"
+            :model-value="
+              acmgRatingStore.acmgRating.getCriteriaState(criteria).presence === Presence.Present
+            "
+            @update:model-value="
+              switchCriteria(
+                criteria,
+                acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
+              )
+            "
             style="margin-right: 20px"
-          ></v-switch>
+          />
         </div>
       </div>
     </v-col>
@@ -305,15 +192,28 @@ onMounted(async () => {
       <div style="margin-right: 20px">
         <h3><strong>Benign:</strong></h3>
       </div>
-      <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
-        <div v-if="criteria.evidence < 0">
+      <div v-for="criteria in ALL_ACMG_CRITERIA" :key="criteria">
+        <div
+          v-if="
+            ACMG_EVIDENCE_LEVELS_BENIGN.includes(
+              acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
+            )
+          "
+        >
           <v-switch
             color="primary"
-            :label="criteria.id"
-            :model-value="criteria.active.value"
-            @update:model-value="switchCriteria(criteriaKey)"
+            :label="criteria"
+            :model-value="
+              acmgRatingStore.acmgRating.getCriteriaState(criteria).presence === Presence.Present
+            "
+            @update:model-value="
+              switchCriteria(
+                criteria,
+                acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
+              )
+            "
             style="margin-right: 20px"
-          ></v-switch>
+          />
         </div>
       </div>
     </v-col>
@@ -335,18 +235,31 @@ onMounted(async () => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
-            <td v-if="criteria.active.value || showFailed">
+          <tr v-for="criteria in ALL_ACMG_CRITERIA" :key="criteria">
+            <td
+              v-if="
+                acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                  Presence.Present || showFailed
+              "
+            >
               <v-card class="mx-auto" width="200" style="margin: 10px">
                 <div class="d-flex justify-content-between">
                   <v-switch
-                    style="margin-left: 10px"
                     color="primary"
-                    :label="criteria.id"
-                    :model-value="criteria.active.value"
-                    @update:model-value="switchCriteria(criteriaKey)"
+                    :label="criteria"
+                    :model-value="
+                      acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                      Presence.Present
+                    "
+                    @update:model-value="
+                      switchCriteria(
+                        criteria,
+                        acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
+                      )
+                    "
+                    style="margin-right: 20px; margin-left: 10px"
                   />
-                  <v-tooltip :text="criteria.id">
+                  <v-tooltip :text="ACMG_CRITERIA_DEFS.get(criteria)?.hint">
                     <template v-slot:activator="{ props }">
                       <v-icon style="margin: 10px" v-bind="props">mdi-information</v-icon>
                     </template>
@@ -354,29 +267,27 @@ onMounted(async () => {
                 </div>
                 <v-divider />
                 <v-select
-                  v-model="criteria.evidence"
-                  :items="evidenceOptions"
-                  label="Select Custom Score"
+                  :model-value="acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel"
+                  @update:model-value="
+                    acmgRatingStore.acmgRating.setEvidenceLevel(StateSource.User, criteria, $event)
+                  "
+                  :items="
+                    ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(
+                      acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
+                    )
+                      ? ACMG_EVIDENCE_LEVELS_PATHOGENIC
+                      : ACMG_EVIDENCE_LEVELS_BENIGN
+                  "
                 ></v-select>
-                <!-- <v-expansion-panels>
-                  <v-expansion-panel>
-                    <v-expansion-panel-title>
-                      <template v-slot:default="{}">
-                        <v-row no-gutters>
-                          <v-col class="d-flex justify-start">
-                            Score: {{ criteria.evidence }}
-                          </v-col>
-                        </v-row>
-                      </template>
-                    </v-expansion-panel-title>
-                    <v-expansion-panel-text>
-                    </v-expansion-panel-text>
-                  </v-expansion-panel>
-                </v-expansion-panels> -->
               </v-card>
             </td>
-            <td v-if="criteria.active.value || showFailed">
-              {{ criteria.description }}
+            <td
+              v-if="
+                acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                  Presence.Present || showFailed
+              "
+            >
+              {{ ACMG_CRITERIA_DEFS.get(criteria)?.description ?? '' }}
             </td>
           </tr>
         </tbody>
