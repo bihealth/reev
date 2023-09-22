@@ -33,7 +33,7 @@ describe.concurrent('miscInfo Store', () => {
 
   it('should handle error', async () => {
     const store = useMiscStore()
-    fetchMocker.mockRejectOnce('error')
+    fetchMocker.mockRejectOnce(new Error('error'))
 
     await store.initialize()
 
