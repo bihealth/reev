@@ -11,6 +11,12 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+import {
+  MultiSourceAcmgCriteriaState,
+  StateSource,
+  AcmgCriteria,
+  Presence
+} from '@/components/ACMG/acmgSeqVar'
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 
 const vuetify = createVuetify({
@@ -35,37 +41,6 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-export const AcmgRatingInfo = {
-  pvs1: true,
-  ps1: false,
-  ps2: false,
-  ps3: false,
-  ps4: false,
-  pm1: false,
-  pm2: false,
-  pm3: false,
-  pm4: false,
-  pm5: false,
-  pm6: true,
-  pp1: false,
-  pp2: false,
-  pp3: false,
-  pp4: false,
-  pp5: false,
-  ba1: false,
-  bs1: false,
-  bs2: false,
-  bs3: true,
-  bs4: false,
-  bp1: false,
-  bp2: false,
-  bp3: false,
-  bp4: false,
-  bp5: true,
-  bp6: false,
-  bp7: false
-}
-
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn() })
   const store = useVariantAcmgRatingStore(pinia)
@@ -73,13 +48,15 @@ const makeWrapper = () => {
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
     store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-    store.acmgRatingComputed = JSON.parse(JSON.stringify(AcmgRatingInfo))
+    store.acmgRating = new MultiSourceAcmgCriteriaState()
+    store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
   })
-  store.retrieveAcmgRating = mockRetrieveAcmgRating
+  store.setAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
   store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-  store.acmgRatingComputed = JSON.parse(JSON.stringify(AcmgRatingInfo))
+  store.acmgRating = new MultiSourceAcmgCriteriaState()
+  store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
 
   return mount(AcmgRating, {
     props: {
@@ -101,7 +78,7 @@ describe.concurrent('AcmgRating', async () => {
     expect(wrapper.text()).toContain('Benign')
 
     const switchers = wrapper.findAll('.v-switch')
-    expect(switchers.length).toBe(28)
+    expect(switchers.length).toBe(29)
   })
 
   it('should correctly update the AcmgRating info', async () => {
@@ -114,6 +91,6 @@ describe.concurrent('AcmgRating', async () => {
     expect(wrapper.text()).toContain('Benign')
 
     const updatedSwitchers = wrapper.findAll('.v-switch')
-    expect(updatedSwitchers.length).toBe(28)
+    expect(updatedSwitchers.length).toBe(29)
   })
 })
