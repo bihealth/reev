@@ -32,6 +32,8 @@ describe.concurrent('miscInfo Store', () => {
   })
 
   it('should handle error', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useMiscStore()
     fetchMocker.mockRejectOnce(new Error('error'))
 

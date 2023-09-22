@@ -6,12 +6,7 @@ import { ref } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { API_BASE_PREFIX } from '@/api/common'
-import {
-  MultiSourceAcmgCriteriaState,
-  StateSource,
-  AcmgCriteria,
-  Presence
-} from '@/components/ACMG/acmgSeqVar'
+import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/api/acmgSeqVar'
 
 const API_BASE_URL = API_BASE_PREFIX
 

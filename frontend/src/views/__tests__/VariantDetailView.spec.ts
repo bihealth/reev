@@ -17,12 +17,7 @@ import { StoreState } from '@/stores/misc'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
-import {
-  MultiSourceAcmgCriteriaState,
-  StateSource,
-  AcmgCriteria,
-  Presence
-} from '@/components/ACMG/acmgSeqVar'
+import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/api/acmgSeqVar'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import VariantGene from '@/components/VariantDetails/VariantGene.vue'

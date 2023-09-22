@@ -12,7 +12,7 @@ import {
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   ACMG_EVIDENCE_LEVELS_BENIGN,
   ACMG_CRITERIA_DEFS
-} from '@/components/ACMG/acmgSeqVar'
+} from '@/api/acmgSeqVar'
 
 const props = defineProps({
   smallVariant: Object

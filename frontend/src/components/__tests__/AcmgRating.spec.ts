@@ -11,12 +11,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import {
-  MultiSourceAcmgCriteriaState,
-  StateSource,
-  AcmgCriteria,
-  Presence
-} from '@/components/ACMG/acmgSeqVar'
+import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/api/acmgSeqVar'
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 
 const vuetify = createVuetify({
