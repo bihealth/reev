@@ -16,14 +16,18 @@ interface CriteriaStateType {
 }
 
 enum AcmgEvidenceLevel {
-  PVS = 8,
-  PS = 4,
+  Pvs,
+  Ps = 4,
   PM = 2,
   PP = 1,
   BA = -8,
   BS = -4,
   BP = -2
 }
+
+// const ACMG_EVIDENCE_LEVEL_LABELS: Map<AcmgEvidenceLevel, string> = new Map([
+//   [AcmgEvidenceLevel.Pvs, 'PVS1'],
+// ])
 
 class CriteriaState {
   id: string
@@ -47,11 +51,11 @@ class ACMGRanking {
 
     // Initialize the ranking criteria
     for (const key in CriteriaDefinitions) {
-      const criteriaDesc = {...CriteriaDefinitions[key]}
+      const criteriaDesc = { ...CriteriaDefinitions[key] }
       this.ranking[key] = new CriteriaState(
-        key, 
-        ref(false), 
-        criteriaDesc.evidence, 
+        key,
+        ref(false),
+        criteriaDesc.evidence,
         criteriaDesc.hint
       )
     }
@@ -69,7 +73,6 @@ class ACMGRanking {
 
   resetAllCriteria(rankingOverride: Record<string, CriteriaState>) {
     for (const key in rankingOverride) {
-      console.log(key)
       this.setCriteria(rankingOverride[key])
     }
   }
@@ -77,7 +80,6 @@ class ACMGRanking {
   changeCriteriaState(id: string) {
     this.ranking[id].active.value = !this.ranking[id].active.value
   }
-
 
   getActiveCriteria() {
     return Object.keys(this.ranking).filter((key) => this.ranking[key].active.value === true)
@@ -89,7 +91,7 @@ const CriteriaDefinitions: Record<string, CriteriaDescType> = {
     id: 'pvs1',
     label: 'PVS1',
     hint: 'null variant',
-    evidence: AcmgEvidenceLevel.PVS,
+    evidence: AcmgEvidenceLevel.Pvs,
     description:
       'Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where LOF is a known mechanism of disease'
   },
@@ -97,7 +99,7 @@ const CriteriaDefinitions: Record<string, CriteriaDescType> = {
     id: 'ps1',
     label: 'PS1',
     hint: 'same amino acid change',
-    evidence: AcmgEvidenceLevel.PS,
+    evidence: AcmgEvidenceLevel.Ps,
     description:
       'Same amino acid change as a previously established pathogenic variant regardless of nucleotide change'
   },
@@ -105,7 +107,7 @@ const CriteriaDefinitions: Record<string, CriteriaDescType> = {
     id: 'ps2',
     label: 'PS2',
     hint: 'de novo (both maternity and paternity confirmed)',
-    evidence: AcmgEvidenceLevel.PS,
+    evidence: AcmgEvidenceLevel.Ps,
     description:
       'De novo (both maternity and paternity confirmed) in a patient with the disease and no family history'
   },
@@ -113,7 +115,7 @@ const CriteriaDefinitions: Record<string, CriteriaDescType> = {
     id: 'ps3',
     label: 'PS3',
     hint: 'well-established in vitro or in vivo functional studies',
-    evidence: AcmgEvidenceLevel.PS,
+    evidence: AcmgEvidenceLevel.Ps,
     description:
       'Well-established in vitro or in vivo functional studies supportive of a damaging effect on the gene or gene product'
   },
@@ -121,7 +123,7 @@ const CriteriaDefinitions: Record<string, CriteriaDescType> = {
     id: 'ps4',
     label: 'PS4',
     hint: 'prevalence in disease controls',
-    evidence: AcmgEvidenceLevel.PS,
+    evidence: AcmgEvidenceLevel.Ps,
     description:
       'The prevalence of the variant in affected individuals is significantly increased compared with the prevalence in controls'
   },

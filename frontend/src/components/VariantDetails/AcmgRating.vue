@@ -4,6 +4,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { ACMGRanking } from '@/components/ACMG/acmgInterfaces'
+import { AcmgEvidenceLevel } from '@/components/ACMG/acmgInterfaces'
 
 const props = defineProps({
   smallVariant: Object
@@ -17,6 +18,20 @@ const acmgRankingUserSelected = new ACMGRanking()
 const acmgRatingConflicting = ref(false)
 const showSwitches = ref(false)
 const showFailed = ref(false)
+// genomeReleaseChoices: () => [
+//     { value: 'grch37', label: 'GRCh37' },
+//     { value: 'grch38', label: 'GRCh38' }
+//   ]
+// const evidenceOptionsValues = Object.values(AcmgEvidenceLevel).filter(value => typeof value === 'number');
+
+const evidenceOptionsLabels = Object.values(AcmgEvidenceLevel).filter(
+  (value) => typeof value === 'string'
+)
+const evidenceOptions = evidenceOptionsLabels.map((value) => {
+  console.log(value, typeof value)
+  return { value: AcmgEvidenceLevel[value as string], label: value }
+})
+console.log(evidenceOptions)
 
 const setInterVarAcmgRating = () => {
   if (acmgRatingStore.acmgRatingInterVar) {
@@ -50,6 +65,7 @@ function countTrueBooleans(...variables: boolean[]): number {
 }
 
 const calculateAcmgRating = computed(() => {
+  console.log('computing')
   const pvs = countTrueBooleans(acmgRankingUserSelected.ranking.pvs1.active.value)
   const ps = countTrueBooleans(
     acmgRankingUserSelected.ranking.ps1.active.value,
@@ -194,8 +210,14 @@ onMounted(async () => {
           <tr>
             <td>InterVar</td>
             <td class="d-flex flex-row flex-wrap">
-              <div v-for="(criteria, criteriaKey) in acmgRankingInterVar.ranking" :key="criteriaKey">
-                <div v-if="criteria.active.value && criteria.evidence > 0" style="margin-right: 10px">
+              <div
+                v-for="(criteria, criteriaKey) in acmgRankingInterVar.ranking"
+                :key="criteriaKey"
+              >
+                <div
+                  v-if="criteria.active.value && criteria.evidence > 0"
+                  style="margin-right: 10px"
+                >
                   {{ criteria.id }}: +{{ criteria.evidence }}
                 </div>
                 <div
@@ -210,8 +232,14 @@ onMounted(async () => {
           <tr>
             <td>Manually selected</td>
             <td class="d-flex flex-row flex-wrap">
-              <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
-                <div v-if="criteria.active.value && criteria.evidence > 0" style="margin-right: 10px">
+              <div
+                v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking"
+                :key="criteriaKey"
+              >
+                <div
+                  v-if="criteria.active.value && criteria.evidence > 0"
+                  style="margin-right: 10px"
+                >
                   {{ criteria.id }}: +{{ criteria.evidence }}
                 </div>
                 <div
@@ -226,10 +254,14 @@ onMounted(async () => {
           <tr>
             <td>Difference</td>
             <td class="d-flex flex-row flex-wrap">
-              <div v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking" :key="criteriaKey">
+              <div
+                v-for="(criteria, criteriaKey) in acmgRankingUserSelected.ranking"
+                :key="criteriaKey"
+              >
                 <div
                   v-if="
-                    acmgRankingInterVar.ranking[criteriaKey].active.value !== criteria.active.value ||
+                    acmgRankingInterVar.ranking[criteriaKey].active.value !==
+                      criteria.active.value ||
                     acmgRankingInterVar.ranking[criteriaKey].evidence !== criteria.evidence
                   "
                   style="margin-right: 10px"
@@ -321,7 +353,12 @@ onMounted(async () => {
                   </v-tooltip>
                 </div>
                 <v-divider />
-                <v-expansion-panels>
+                <v-select
+                  v-model="criteria.evidence"
+                  :items="evidenceOptions"
+                  label="Select Custom Score"
+                ></v-select>
+                <!-- <v-expansion-panels>
                   <v-expansion-panel>
                     <v-expansion-panel-title>
                       <template v-slot:default="{}">
@@ -333,14 +370,9 @@ onMounted(async () => {
                       </template>
                     </v-expansion-panel-title>
                     <v-expansion-panel-text>
-                      <!-- <v-select
-                        v-model="criteria.evidence"
-                        :items="[8, 4, 2, 1, null]"
-                        label="Select Custom Score"
-                      ></v-select> -->
                     </v-expansion-panel-text>
                   </v-expansion-panel>
-                </v-expansion-panels>
+                </v-expansion-panels> -->
               </v-card>
             </td>
             <td v-if="criteria.active.value || showFailed">
