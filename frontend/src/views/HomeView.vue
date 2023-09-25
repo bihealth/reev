@@ -11,7 +11,7 @@ import { useRouter } from 'vue-router'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import { search } from '@/api/utils'
+import { search } from '@/lib/utils'
 
 const router = useRouter()
 

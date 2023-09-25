@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt, isVariantMtHomopolymer } from '@/api/utils'
+import { roundIt, isVariantMtHomopolymer } from '@/lib/utils'
 
 const props = defineProps<{
   smallVar: any

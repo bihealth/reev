@@ -6,13 +6,12 @@ import { ref } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { API_BASE_PREFIX } from '@/api/common'
+import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
 
 const API_BASE_URL = API_BASE_PREFIX
 
 /** Alias definition of SmallVariant type; to be defined later. */
 type SmallVariant = any
-/** Alias definition of AcmgRating type; to be defined later. */
-type AcmgRating = any
 
 export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => {
   /** The current store state. */
@@ -21,19 +20,34 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   /** The small variant that acmgRating are handled for. */
   const smallVariant = ref<SmallVariant | null>(null)
 
-  /** The small variants ACMG rating as fetched from API. */
-  const acmgRatingComputed = ref<AcmgRating | null>(null)
+  /** The small variants ACMG rating. */
+  const acmgRating = ref<MultiSourceAcmgCriteriaState>(new MultiSourceAcmgCriteriaState())
 
-  /** The small variants ACMG rating updated by user */
-  const acmgRatingCustom = ref<AcmgRating | null>(null)
-
+  /**
+   * Clear the data in the store.
+   */
   function clearData() {
     storeState.value = StoreState.Initial
-    acmgRatingComputed.value = null
+    acmgRating.value = new MultiSourceAcmgCriteriaState()
     smallVariant.value = null
   }
 
-  const retrieveAcmgRating = async (smallVar: SmallVariant) => {
+  /**
+   * Capitalize the first letter of a string.
+   *
+   * @param string The string to capitalize.
+   * @returns The capitalized string.
+   */
+  function capitalizeFirstLetter(string: string): string {
+    return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+
+  /**
+   * Retrieve the ACMG rating for a small variant.
+   *
+   * @param smallVar The small variant to retrieve the ACMG rating for.
+   */
+  const setAcmgRating = async (smallVar: SmallVariant) => {
     // Do not re-load data if the small variant is the same
     if (smallVar === smallVariant.value) {
       return
@@ -42,7 +56,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
     // Clear against artifact
     clearData()
 
-    // Load data via API
+    // Load data from InterVar via API
     storeState.value = StoreState.Loading
     try {
       const release = smallVar.release === 'grch37' ? 'hg19' : 'hg38'
@@ -58,7 +72,24 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
       if (!response.ok) {
         throw new Error('There was an error loading the ACMG data.')
       }
-      acmgRatingComputed.value = await response.json()
+      const acmgRatingInterVarData = await response.json()
+      // Go through the data and setPresense for each criteria
+      for (const [criteriaId, value] of Object.entries(acmgRatingInterVarData)) {
+        const criteriaIdKey = capitalizeFirstLetter(criteriaId) as keyof typeof AcmgCriteria
+        if (value === true) {
+          acmgRating.value.setPresence(
+            StateSource.InterVar,
+            AcmgCriteria[criteriaIdKey],
+            Presence.Present
+          )
+        } else {
+          acmgRating.value.setPresence(
+            StateSource.InterVar,
+            AcmgCriteria[criteriaIdKey],
+            Presence.Absent
+          )
+        }
+      }
       smallVariant.value = smallVar
       storeState.value = StoreState.Active
     } catch (e) {
@@ -68,19 +99,11 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
     }
   }
 
-  const submitAcmgRating = async (smallVar: SmallVariant, payload: Object) => {
-    // TODO: Implement the API call to submit the ACMG rating to ClinVar
-    smallVariant.value = smallVar
-    acmgRatingComputed.value = payload
-  }
-
   return {
     smallVariant,
     storeState,
-    acmgRatingComputed,
-    acmgRatingCustom,
+    acmgRating,
     clearData,
-    retrieveAcmgRating,
-    submitAcmgRating
+    setAcmgRating
   }
 })

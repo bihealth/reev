@@ -3,7 +3,7 @@ import { watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import SearchBar from '@/components/SearchBar.vue'
-import { search } from '@/api/utils'
+import { search } from '@/lib/utils'
 
 export interface Props {
   searchTerm?: string

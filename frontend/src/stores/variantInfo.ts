@@ -9,7 +9,7 @@ import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
 import { MehariClient } from '@/api/mehari'
-import { infoFromQuery } from '@/api/utils'
+import { infoFromQuery } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 
 type SmallVariant = any

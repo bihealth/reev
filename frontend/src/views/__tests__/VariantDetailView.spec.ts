@@ -14,10 +14,10 @@ import * as directives from 'vuetify/directives'
 
 import VariantDetailView from '../VariantDetailView.vue'
 import { StoreState } from '@/stores/misc'
-import { AcmgRatingInfo } from '@/components/__tests__/AcmgRating.spec'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
+import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import VariantGene from '@/components/VariantDetails/VariantGene.vue'
@@ -57,8 +57,7 @@ const variantData = {
   smallVariant: smallVariantInfo,
   varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
   geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
-  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result,
-  acmgRating: AcmgRatingInfo
+  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result
 }
 
 const makeWrapper = () => {
@@ -78,9 +77,14 @@ const makeWrapper = () => {
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     variantAcmgStore.storeState = StoreState.Active
     variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-    variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
+    variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
+    variantAcmgStore.acmgRating.setPresence(
+      StateSource.InterVar,
+      AcmgCriteria.Pvs1,
+      Presence.Present
+    )
   })
-  variantAcmgStore.retrieveAcmgRating = mockRetrieveAcmgRating
+  variantAcmgStore.setAcmgRating = mockRetrieveAcmgRating
 
   // Initial load
   variantInfoStore.storeState = StoreState.Active
@@ -91,7 +95,7 @@ const makeWrapper = () => {
   variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
   variantAcmgStore.storeState = StoreState.Active
   variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-  variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
+  variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
   return mount(
     {
@@ -216,9 +220,9 @@ describe.concurrent('VariantDetailView', async () => {
     const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
       variantAcmgStore.storeState = StoreState.Active
       variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-      variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
+      variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     })
-    variantAcmgStore.retrieveAcmgRating = mockRetrieveAcmgRating
+    variantAcmgStore.setAcmgRating = mockRetrieveAcmgRating
 
     // Initial load
     variantInfoStore.storeState = StoreState.Active
@@ -229,7 +233,7 @@ describe.concurrent('VariantDetailView', async () => {
     variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
     variantAcmgStore.storeState = StoreState.Active
     variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
-    variantAcmgStore.acmgRating = JSON.parse(JSON.stringify(variantData.acmgRating))
+    variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
     mount(
       {
