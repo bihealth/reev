@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
+import { type SmallVariant } from '@/stores/variantInfo'
 import {
   AcmgCriteria,
   StateSource,
@@ -15,7 +16,7 @@ import {
 } from '@/lib/acmgSeqVar'
 
 const props = defineProps({
-  smallVariant: Object
+  smallVariant: Object as () => SmallVariant | undefined
 })
 
 const acmgRatingStore = useVariantAcmgRatingStore()

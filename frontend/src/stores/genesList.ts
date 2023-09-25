@@ -30,7 +30,7 @@ export const useGenesListStore = defineStore('genesList', () => {
   }
 
   const checkResultsMatch = async () => {
-    if (query.value === null) {
+    if (query.value === null || genesList.value === null) {
       return null
     }
     const queryArray = query.value.split('&')

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps({
-  smallVariant: Object
+  smallVariant: Object as () => SmallVariant | undefined
 })
 
 const beaconAddress = ref('')
