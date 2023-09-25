@@ -14,6 +14,7 @@ import {
   ACMG_CRITERIA_DEFS,
   AcmgEvidenceLevel
 } from '@/lib/acmgSeqVar'
+import AcmgCriteriaCard from '../AcmgCriteriaCard.vue'
 
 const props = defineProps({
   smallVariant: Object as () => SmallVariant | undefined
@@ -221,44 +222,11 @@ onMounted(async () => {
                   Presence.Present || showFailed
               "
             >
-              <v-card class="mx-auto" width="200" style="margin: 10px">
-                <div class="d-flex justify-content-between">
-                  <v-switch
-                    :color="findSwitchColor(criteria)"
-                    :label="criteria"
-                    :model-value="
-                      acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
-                      Presence.Present
-                    "
-                    @update:model-value="
-                      switchCriteria(
-                        criteria,
-                        acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
-                      )
-                    "
-                    style="margin-right: 20px; margin-left: 10px"
-                  />
-                  <v-tooltip :text="ACMG_CRITERIA_DEFS.get(criteria)?.hint">
-                    <template v-slot:activator="{ props }">
-                      <v-icon style="margin: 10px" v-bind="props">mdi-information</v-icon>
-                    </template>
-                  </v-tooltip>
-                </div>
-                <v-divider />
-                <v-select
-                  :model-value="acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel"
-                  @update:model-value="
-                    acmgRatingStore.acmgRating.setEvidenceLevel(StateSource.User, criteria, $event)
-                  "
-                  :items="
-                    ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(
-                      acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
-                    )
-                      ? ACMG_EVIDENCE_LEVELS_PATHOGENIC
-                      : ACMG_EVIDENCE_LEVELS_BENIGN
-                  "
-                ></v-select>
-              </v-card>
+              <AcmgCriteriaCard
+                :acmgRating="acmgRatingStore.acmgRating"
+                :criteria="criteria"
+                :criteriaState="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
+              />
             </td>
             <td
               v-if="
