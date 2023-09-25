@@ -10,7 +10,8 @@ import {
   ALL_ACMG_CRITERIA,
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   ACMG_EVIDENCE_LEVELS_BENIGN,
-  ACMG_CRITERIA_DEFS
+  ACMG_CRITERIA_DEFS,
+  AcmgEvidenceLevel
 } from '@/lib/acmgSeqVar'
 
 const props = defineProps({
@@ -45,6 +46,27 @@ const calculateAcmgRating = computed((): string => {
   }
   return acmgClass
 })
+
+const findSwitchColor = (criteria: AcmgCriteria): string => {
+  const evidence = acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
+  if (evidence === AcmgEvidenceLevel.PathogenicVeryStrong) {
+    return 'red-accent-4'
+  } else if (evidence === AcmgEvidenceLevel.PathogenicStrong) {
+    return 'orange-darken-4'
+  } else if (evidence === AcmgEvidenceLevel.PathogenicModerate) {
+    return 'amber-darken-4'
+  } else if (evidence === AcmgEvidenceLevel.PathogenicSupporting) {
+    return 'yellow-darken-3'
+  } else if (evidence === AcmgEvidenceLevel.BenignStandalone) {
+    return 'green-darken-4'
+  } else if (evidence === AcmgEvidenceLevel.BenignStrong) {
+    return 'light-green'
+  } else if (evidence === AcmgEvidenceLevel.BenignSupporting) {
+    return 'lime'
+  } else {
+    return 'primary'
+  }
+}
 
 const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
   if (presence === Presence.Present) {
@@ -131,7 +153,7 @@ onMounted(async () => {
           "
         >
           <v-switch
-            color="primary"
+            :color="findSwitchColor(criteria)"
             :label="criteria"
             :model-value="
               acmgRatingStore.acmgRating.getCriteriaState(criteria).presence === Presence.Present
@@ -161,7 +183,7 @@ onMounted(async () => {
           "
         >
           <v-switch
-            color="primary"
+            :color="findSwitchColor(criteria)"
             :label="criteria"
             :model-value="
               acmgRatingStore.acmgRating.getCriteriaState(criteria).presence === Presence.Present
@@ -201,7 +223,7 @@ onMounted(async () => {
               <v-card class="mx-auto" width="200" style="margin: 10px">
                 <div class="d-flex justify-content-between">
                   <v-switch
-                    color="primary"
+                    :color="findSwitchColor(criteria)"
                     :label="criteria"
                     :model-value="
                       acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
