@@ -106,126 +106,132 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
       label: 'PVS1',
       hint: 'Very strong evidence of pathogenicity',
-      description:
-        'Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where LOF is a known mechanism of disease'
+      description: `Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon, 
+        single or multi-exon deletion) in a gene where LOF is a known mechanism of disease. Caution! 
+        PVS1 confronts with PM4 and PP3! Use as strong if not subject to NMD but >10% of the protein 
+        are affected.`
     },
     {
       criteria: AcmgCriteria.Ps1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS1',
       hint: 'same amino acid change',
-      description:
-        'Same amino acid change as a previously established pathogenic variant regardless of nucleotide change'
+      description: `Same amino acid change as a previously established pathogenic variant regardless of 
+        nucleotide change. CAVE not applicable for same nucleotide change, for same nucleotide 
+        change use PS4.`
     },
     {
       criteria: AcmgCriteria.Ps2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS2',
       hint: 'de novo (both maternity and paternity confirmed)',
-      description:
-        'De novo (both maternity and paternity confirmed) in a patient with the disease and no family history'
+      description: `De novo (both maternity and paternity confirmed) in a patient with the disease and no 
+        family history.`
     },
     {
       criteria: AcmgCriteria.Ps3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS3',
       hint: 'well-established in vitro or in vivo functional studies',
-      description:
-        'Well-established in vitro or in vivo functional studies supportive of a damaging effect on the gene or gene product'
+      description: `Well-established in vitro or in vivo functional studies supportive of a damaging effect on 
+        the gene or gene product.`
     },
     {
       criteria: AcmgCriteria.Ps4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS4',
       hint: 'prevalence in disease controls',
-      description:
-        'The prevalence of the variant in affected individuals is significantly increased compared with the prevalence in controls'
+      description: `The prevalence of the variant in affected individuals is significantly increased compared 
+        with the prevalence in controls.`
     },
     {
       criteria: AcmgCriteria.Pm1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM1',
       hint: 'variant in hotspot (missense)',
-      description:
-        'Located in a mutational hot spot and/or critical and well-established functional domain (e.g., active site of an enzyme) without benign variation'
+      description: `Located in a mutational hot spot and/or critical and well-established functional domain 
+        (e.g., active site of an enzyme) without benign variation.`
     },
     {
       criteria: AcmgCriteria.Pm2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM2',
       hint: 'absent from controls (or at extremely low frequency if recessive)',
-      description:
-        'Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium'
+      description: `Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing 
+        Project, 1000 Genomes Project, or Exome Aggregation Consortium. New recommendation: use on 
+        supporting only.`
     },
     {
       criteria: AcmgCriteria.Pm3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM3',
       hint: 'AR: trans with known pathogenic',
-      description: 'For recessive disorders, detected in trans with a pathogenic variant'
+      description: `For recessive disorders, detected in trans with a pathogenic variant.`
     },
     {
       criteria: AcmgCriteria.Pm4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM4',
       hint: 'protein length change',
-      description:
-        'Protein length changes as a result of in-frame deletions/insertions in a nonrepeat region or stop-loss variants'
+      description: `Protein length changes as a result of in-frame deletions/insertions in a nonrepeat region 
+        or stop-loss variants. Do not use in combination with PVS1 or PP3.`
     },
     {
       criteria: AcmgCriteria.Pm5,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM5',
       hint: 'literature: AA exchange same pos',
-      description:
-        'Novel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before'
+      description: `Novel missense change at an amino acid residue where a different missense change determined 
+        to be pathogenic has been seen before.`
     },
     {
       criteria: AcmgCriteria.Pm6,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM6',
       hint: 'assumed de novo',
-      description: 'Assumed de novo, but without confirmation of paternity and maternity'
+      description: `Assumed de novo, but without confirmation of paternity and maternity.`
     },
     {
       criteria: AcmgCriteria.Pp1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP1',
       hint: 'cosegregates in family',
-      description:
-        'Cosegregation with disease in multiple affected family members in a gene definitively known to cause the disease'
+      description: `Cosegregation with disease in multiple affected family members in a gene definitively known 
+        to cause the disease.`
     },
     {
       criteria: AcmgCriteria.Pp2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP2',
       hint: 'few missense in gene',
-      description:
-        'Missense variant in a gene that has a low rate of benign missense variation and in which missense variants are a common mechanism of disease'
+      description: `Missense variant in a gene that has a low rate of benign missense variation and in which 
+        missense variants are a common mechanism of disease.`
     },
     {
       criteria: AcmgCriteria.Pp3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP3',
       hint: 'predicted pathogenic',
-      description:
-        'Multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc.)'
+      description: `Multiple lines of computational evidence support a deleterious effect on the gene or gene 
+        product (conservation, evolutionary, splicing impact, etc.). Do not use in combination with 
+        PVS1 or PM4.`
     },
     {
       criteria: AcmgCriteria.Pp4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP4',
       hint: 'phenotype/pedigree match gene',
-      description:
-        "Patient's phenotype or family history is highly specific for a disease with a single genetic etiology"
+      description: `Patient's phenotype or family history is highly specific for a disease with a single 
+        genetic etiology.`
     },
     {
       criteria: AcmgCriteria.Pp5,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP5',
       hint: 'reliable source: pathogenic',
-      description:
-        'Reputable source recently reports variant as pathogenic, but the evidence is not available to the laboratoryto perform an independent evaluation'
+      description: `Reputable source recently reports variant as pathogenic, but the evidence is not available 
+        to the laboratoryto perform an independent evaluation. Note: Not recommended to use anymore, 
+        use PS3 and PS4 at different levels of evidence.`
     },
     {
       criteria: AcmgCriteria.Ba1,

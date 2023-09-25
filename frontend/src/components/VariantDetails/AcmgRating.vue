@@ -111,6 +111,7 @@ onMounted(async () => {
 
 <template>
   <v-row>
+    <v-col cols="12" md="3"></v-col>
     <v-col cols="12" md="6" class="section">
       <div>
         <div>
@@ -145,6 +146,7 @@ onMounted(async () => {
         </div>
       </div>
     </v-col>
+    <v-col cols="12" md="3"></v-col>
   </v-row>
   <v-row style="margin-bottom: 15px">
     <v-col>
@@ -215,14 +217,10 @@ onMounted(async () => {
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
+    <v-col class="d-flex flex-row flex-wrap">
       <v-btn color="black" variant="outlined" @click="showFailed = !showFailed">
         {{ showFailed ? 'Hide' : 'Show' }} failed criteria
       </v-btn>
-    </v-col>
-  </v-row>
-  <v-row>
-    <v-col class="d-flex flex-row flex-wrap">
       <v-table>
         <thead>
           <tr>

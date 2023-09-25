@@ -18,7 +18,8 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Description: Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites,
                 initiation codon, single or multi-exon deletion) in a gene where LOF is a known
-                mechanism of disease
+                mechanism of disease. Caution! PVS1 confronts with PM4 and PP3! Use as strong if not
+                subject to NMD but >10% of the protein are affected.
               </p>
               <p>Hint: Null variant</p>
             </li>
@@ -26,7 +27,8 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <h3>PS1 - Same amino acid change</h3>
               <p>
                 Description: Same amino acid change as a previously established pathogenic variant
-                regardless of nucleotide change
+                regardless of nucleotide change. CAVE not applicable for same nucleotide change, for
+                same nucleotide change use PS4.
               </p>
               <p>Hint: Literature: this AA exchange</p>
             </li>
@@ -66,7 +68,8 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <h3>PM2 - Absent from controls</h3>
               <p>
                 Description: Absent from controls (or at extremely low frequency if recessive) in
-                Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium
+                Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium. New
+                recommendation: use on supporting level only.
               </p>
               <p>Hint: Rare; &lt; 1:20,000 in ExAC</p>
             </li>
@@ -81,7 +84,8 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <h3>PM4 - Protein length changes</h3>
               <p>
                 Description: Protein length changes as a result of in-frame deletions/insertions in
-                a nonrepeat region or stop-loss variants
+                a nonrepeat region or stop-loss variants. Do not use in combination with PVS1 or
+                PP3.
               </p>
               <p>Hint: Protein length change</p>
             </li>
@@ -120,7 +124,8 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <h3>PP3 - Multiple lines of computational evidence</h3>
               <p>
                 Description: Multiple lines of computational evidence support a deleterious effect
-                on the gene or gene product (conservation, evolutionary, splicing impact, etc.)
+                on the gene or gene product (conservation, evolutionary, splicing impact, etc.). Do
+                not use in combination with PVS1 or PM4.
               </p>
               <p>Hint: Predicted pathogenic >= 2</p>
             </li>
@@ -136,7 +141,9 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <h3>PP5 - Reputable source reports variant as pathogenic</h3>
               <p>
                 Description: Reputable source recently reports variant as pathogenic, but the
-                evidence is not available to the laboratory to perform an independent evaluation
+                evidence is not available to the laboratory to perform an independent evaluation.
+                Note: Not recommended to use anymore, use PS3 and PS4 at different levels of
+                evidence.
               </p>
               <p>Hint: Reliable source: pathogenic</p>
             </li>
