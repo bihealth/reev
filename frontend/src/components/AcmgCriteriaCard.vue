@@ -57,7 +57,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
 </script>
 
 <template>
-  <v-card class="mx-auto" width="150" style="margin: 10px">
+  <v-card class="mx-auto compact-form" width="150" style="margin: 10px">
     <div class="d-flex justify-content-between">
       <v-switch
         :color="findSwitchColor()"
@@ -65,6 +65,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
         :model-value="props.criteriaState.presence === Presence.Present"
         @update:model-value="switchCriteria(props.criteria, props.criteriaState.presence)"
         hide-details="auto"
+        density="compact"
         class="switch"
       />
       <v-tooltip :text="ACMG_CRITERIA_DEFS.get(props.criteria)?.hint">
@@ -82,6 +83,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
           : ACMG_EVIDENCE_LEVELS_BENIGN
       "
       hide-details="auto"
+      density="compact"
       class="select"
     />
   </v-card>
@@ -94,5 +96,10 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
 }
 .select {
   margin: 0px;
+}
+
+.compact-form {
+  transform: scale(0.9);
+  transform-origin: left;
 }
 </style>
