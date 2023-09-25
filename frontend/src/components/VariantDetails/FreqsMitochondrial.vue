@@ -2,9 +2,10 @@
 import { computed } from 'vue'
 
 import { roundIt, isVariantMtHomopolymer } from '@/lib/utils'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps<{
-  smallVar: any
+  smallVar: SmallVariant
   varAnnos: any
 }>()
 

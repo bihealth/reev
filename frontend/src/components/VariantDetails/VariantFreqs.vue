@@ -3,9 +3,10 @@ import { isVariantMt } from '@/lib/utils'
 
 import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps<{
-  smallVar: any
+  smallVar: SmallVariant
   varAnnos: any
 }>()
 

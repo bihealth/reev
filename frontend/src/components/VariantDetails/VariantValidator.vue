@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { API_BASE_PREFIX } from '@/api/common'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 const API_BASE_URL = API_BASE_PREFIX
 
@@ -12,7 +13,7 @@ enum VariantValidatorStates {
 }
 
 const props = defineProps<{
-  smallVariant?: any
+  smallVariant?: SmallVariant
 }>()
 
 const variantValidatorState = ref<VariantValidatorStates>(VariantValidatorStates.Initial)
@@ -23,9 +24,9 @@ const queryVariantValidatorApi = async () => {
   variantValidatorState.value = VariantValidatorStates.Running
   const url =
     API_BASE_URL +
-    `variantvalidator/${props.smallVariant.release}/` +
-    `${props.smallVariant.chromosome}-${props.smallVariant.start}-` +
-    `${props.smallVariant.reference}-${props.smallVariant.alternative}` +
+    `variantvalidator/${props.smallVariant?.release}/` +
+    `${props.smallVariant?.chromosome}-${props.smallVariant?.start}-` +
+    `${props.smallVariant?.reference}-${props.smallVariant?.alternative}` +
     `/all?content-type=application%2Fjson`
   const res = await fetch(url)
   if (res.ok) {

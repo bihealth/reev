@@ -12,11 +12,16 @@ import { MehariClient } from '@/api/mehari'
 import { infoFromQuery } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 
-type SmallVariant = any
-type GeneInfo = any
-type GeneClinvarInfo = any
-type VarAnnos = any
-type TxCsq = any
+/** Alias definition of SmallVariant type. */
+export type SmallVariant = {
+  release: string
+  chromosome: string
+  start: string
+  end: string
+  reference: string
+  alternative: string
+  hgnc_id?: string
+}
 
 export const useVariantInfoStore = defineStore('variantInfo', () => {
   /** The current store state. */
@@ -29,16 +34,16 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
   const smallVariant = ref<SmallVariant | null>(null)
 
   /** Variant-related information from annonars. */
-  const varAnnos = ref<VarAnnos | null>(null)
+  const varAnnos = ref<any | null>(null)
 
   /** ClinVar gene-related information from annoars. */
-  const geneClinvar = ref<GeneClinvarInfo | null>(null)
+  const geneClinvar = ref<any | null>(null)
 
   /** Information about related gene. */
-  const geneInfo = ref<GeneInfo | null>(null)
+  const geneInfo = ref<any | null>(null)
 
   /** Transcript consequence information from mehari. */
-  const txCsq = ref<TxCsq | null>(null)
+  const txCsq = ref<any | null>(null)
 
   function clearData() {
     storeState.value = StoreState.Initial

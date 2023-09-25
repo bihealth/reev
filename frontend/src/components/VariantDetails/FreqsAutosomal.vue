@@ -2,9 +2,10 @@
 import { computed, ref } from 'vue'
 
 import { roundIt, separateIt as sep } from '@/lib/utils'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps<{
-  smallVar: any
+  smallVar: SmallVariant
   varAnnos: any
   dataset: string
 }>()

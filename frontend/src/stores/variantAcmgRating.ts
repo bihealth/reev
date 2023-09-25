@@ -7,11 +7,9 @@ import { ref } from 'vue'
 import { StoreState } from '@/stores/misc'
 import { API_BASE_PREFIX } from '@/api/common'
 import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
+import { type SmallVariant } from './variantInfo'
 
 const API_BASE_URL = API_BASE_PREFIX
-
-/** Alias definition of SmallVariant type; to be defined later. */
-type SmallVariant = any
 
 export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => {
   /** The current store state. */

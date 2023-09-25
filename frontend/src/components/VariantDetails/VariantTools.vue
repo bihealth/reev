@@ -4,9 +4,10 @@ import { computed } from 'vue'
 import { roundIt } from '@/lib/utils'
 
 import ScoreDisplay from '@/components/VariantDetails/ScoreDisplay.vue'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 export interface Props {
-  smallVar: any
+  smallVar: SmallVariant | null
   varAnnos: any
 }
 
@@ -197,11 +198,11 @@ const varsomeLinkout = computed((): string => {
 })
 
 const jumpToLocus = async () => {
-  const chrPrefixed = props.smallVar.chromosome.startsWith('chr')
-    ? props.smallVar.chromosome
-    : `chr${props.smallVar.chromosome}`
+  const chrPrefixed = props.smallVar?.chromosome.startsWith('chr')
+    ? props.smallVar?.chromosome
+    : `chr${props.smallVar?.chromosome}`
   await fetch(
-    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.smallVar.start}-${props.smallVar.end}`
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.smallVar?.start}-${props.smallVar?.end}`
   ).catch((e) => {
     const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
     alert(msg)

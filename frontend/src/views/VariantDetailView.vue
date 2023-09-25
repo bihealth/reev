@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { useVariantInfoStore } from '@/stores/variantInfo'
 import { StoreState } from '@/stores/misc'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
@@ -121,7 +122,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
         <div id="beacon-network" class="variant-item">
           <h2>Beacon Network</h2>
           <v-divider />
-          <BeaconNetwork :small-variant="variantInfoStore.smallVariant" />
+          <BeaconNetwork :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
         <div id="clinvar" class="variant-item">
@@ -134,7 +135,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <h2>Population Frequencies</h2>
           <v-divider />
           <VariantDetailsFreqs
-            :small-var="variantInfoStore.smallVariant"
+            :small-var="variantInfoStore.smallVariant as SmallVariant"
             :var-annos="variantInfoStore.varAnnos"
           />
         </div>
@@ -151,7 +152,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
         <div id="acmg-rating" class="variant-item">
           <h2>ACMG Rating</h2>
           <v-divider />
-          <AcmgRating :small-variant="variantInfoStore.smallVariant" />
+          <AcmgRating :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
         <div id="tx-csq" class="variant-item">
@@ -169,7 +170,9 @@ const genomeReleaseRef = ref(props.genomeRelease)
         <div id="variant-validator" class="variant-item">
           <h2>Variant Validator</h2>
           <v-divider />
-          <VariantDetailsVariantValidator :small-variant="variantInfoStore.smallVariant" />
+          <VariantDetailsVariantValidator
+            :small-variant="variantInfoStore.smallVariant || undefined"
+          />
         </div>
       </div>
 
