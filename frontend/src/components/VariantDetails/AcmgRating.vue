@@ -4,15 +4,13 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { type SmallVariant } from '@/stores/variantInfo'
+import AcmgCriteriaCard from '@/components/AcmgCriteriaCard.vue'
 import {
-  AcmgCriteria,
-  StateSource,
   Presence,
   ALL_ACMG_CRITERIA,
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   ACMG_EVIDENCE_LEVELS_BENIGN,
-  ACMG_CRITERIA_DEFS,
-  AcmgEvidenceLevel
+  ACMG_CRITERIA_DEFS
 } from '@/lib/acmgSeqVar'
 
 const props = defineProps({
@@ -47,35 +45,6 @@ const calculateAcmgRating = computed((): string => {
   }
   return acmgClass
 })
-
-const findSwitchColor = (criteria: AcmgCriteria): string => {
-  const evidence = acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
-  if (evidence === AcmgEvidenceLevel.PathogenicVeryStrong) {
-    return 'red-accent-4'
-  } else if (evidence === AcmgEvidenceLevel.PathogenicStrong) {
-    return 'orange-darken-4'
-  } else if (evidence === AcmgEvidenceLevel.PathogenicModerate) {
-    return 'amber-darken-4'
-  } else if (evidence === AcmgEvidenceLevel.PathogenicSupporting) {
-    return 'yellow-darken-3'
-  } else if (evidence === AcmgEvidenceLevel.BenignStandalone) {
-    return 'green-darken-4'
-  } else if (evidence === AcmgEvidenceLevel.BenignStrong) {
-    return 'light-green'
-  } else if (evidence === AcmgEvidenceLevel.BenignSupporting) {
-    return 'lime'
-  } else {
-    return 'primary'
-  }
-}
-
-const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
-  if (presence === Presence.Present) {
-    acmgRatingStore.acmgRating.setPresence(StateSource.User, criteria, Presence.Absent)
-  } else {
-    acmgRatingStore.acmgRating.setPresence(StateSource.User, criteria, Presence.Present)
-  }
-}
 
 watch(
   () => [props.smallVariant, acmgRatingStore.storeState],
@@ -153,19 +122,10 @@ onMounted(async () => {
             )
           "
         >
-          <v-switch
-            :color="findSwitchColor(criteria)"
-            :label="criteria"
-            :model-value="
-              acmgRatingStore.acmgRating.getCriteriaState(criteria).presence === Presence.Present
-            "
-            @update:model-value="
-              switchCriteria(
-                criteria,
-                acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
-              )
-            "
-            style="margin-right: 20px"
+          <AcmgCriteriaCard
+            :acmg-rating="acmgRatingStore.acmgRating"
+            :criteria="criteria"
+            :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
           />
         </div>
       </div>
@@ -183,19 +143,10 @@ onMounted(async () => {
             )
           "
         >
-          <v-switch
-            :color="findSwitchColor(criteria)"
-            :label="criteria"
-            :model-value="
-              acmgRatingStore.acmgRating.getCriteriaState(criteria).presence === Presence.Present
-            "
-            @update:model-value="
-              switchCriteria(
-                criteria,
-                acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
-              )
-            "
-            style="margin-right: 20px"
+          <AcmgCriteriaCard
+            :acmg-rating="acmgRatingStore.acmgRating"
+            :criteria="criteria"
+            :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
           />
         </div>
       </div>
@@ -221,44 +172,11 @@ onMounted(async () => {
                   Presence.Present || showFailed
               "
             >
-              <v-card class="mx-auto" width="200" style="margin: 10px">
-                <div class="d-flex justify-content-between">
-                  <v-switch
-                    :color="findSwitchColor(criteria)"
-                    :label="criteria"
-                    :model-value="
-                      acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
-                      Presence.Present
-                    "
-                    @update:model-value="
-                      switchCriteria(
-                        criteria,
-                        acmgRatingStore.acmgRating.getCriteriaState(criteria).presence
-                      )
-                    "
-                    style="margin-right: 20px; margin-left: 10px"
-                  />
-                  <v-tooltip :text="ACMG_CRITERIA_DEFS.get(criteria)?.hint">
-                    <template v-slot:activator="{ props }">
-                      <v-icon style="margin: 10px" v-bind="props">mdi-information</v-icon>
-                    </template>
-                  </v-tooltip>
-                </div>
-                <v-divider />
-                <v-select
-                  :model-value="acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel"
-                  @update:model-value="
-                    acmgRatingStore.acmgRating.setEvidenceLevel(StateSource.User, criteria, $event)
-                  "
-                  :items="
-                    ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(
-                      acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
-                    )
-                      ? ACMG_EVIDENCE_LEVELS_PATHOGENIC
-                      : ACMG_EVIDENCE_LEVELS_BENIGN
-                  "
-                ></v-select>
-              </v-card>
+              <AcmgCriteriaCard
+                :acmg-rating="acmgRatingStore.acmgRating"
+                :criteria="criteria"
+                :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
+              />
             </td>
             <td
               v-if="
