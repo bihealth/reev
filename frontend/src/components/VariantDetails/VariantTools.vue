@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt } from '@/api/utils'
+import { roundIt } from '@/lib/utils'
 
 import ScoreDisplay from '@/components/VariantDetails/ScoreDisplay.vue'
 

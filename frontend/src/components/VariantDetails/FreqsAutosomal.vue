@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { roundIt, separateIt as sep } from '@/api/utils'
+import { roundIt, separateIt as sep } from '@/lib/utils'
 
 const props = defineProps<{
   smallVar: any

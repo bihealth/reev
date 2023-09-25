@@ -5,7 +5,7 @@ import { setActivePinia, createPinia } from 'pinia'
 
 import { StoreState } from '../misc'
 import { useVariantAcmgRatingStore } from '../variantAcmgRating'
-import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/api/acmgSeqVar'
+import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
 
 const fetchMocker = createFetchMock(vi)
 

@@ -8,7 +8,7 @@ import { useGeneInfoStore } from '@/stores/geneInfo'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import ClinvarFreqPlot from '@/components/ClinVarFreqPlot.vue'
 import GtexGenePlot from '@/components/GtexGenePlot.vue'
-import { roundIt } from '@/api/utils'
+import { roundIt } from '@/lib/utils'
 
 export interface Props {
   searchTerm?: string

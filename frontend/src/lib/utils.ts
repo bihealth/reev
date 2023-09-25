@@ -139,7 +139,7 @@ export const search = (searchTerm: string, genomeRelease: string) => {
     }
     if (regexp.test(searchTerm)) {
       const routeLocation = getRoute()
-      console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)
+      // console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)
       return routeLocation
     }
   }

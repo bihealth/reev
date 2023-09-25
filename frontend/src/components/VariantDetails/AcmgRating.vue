@@ -5,14 +5,13 @@ import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import {
   AcmgCriteria,
-  AcmgEvidenceLevel,
   StateSource,
   Presence,
   ALL_ACMG_CRITERIA,
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   ACMG_EVIDENCE_LEVELS_BENIGN,
   ACMG_CRITERIA_DEFS
-} from '@/api/acmgSeqVar'
+} from '@/lib/acmgSeqVar'
 
 const props = defineProps({
   smallVariant: Object
@@ -37,51 +36,14 @@ const updateAcmgConflicting = (isConflicting: boolean) => {
 }
 
 const calculateAcmgRating = computed((): string => {
-  const pvs = acmgRatingStore.acmgRating.getActiveEvidenceCounts(
-    AcmgEvidenceLevel.PathogenicVeryStrong
-  )
-  const ps = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicStrong)
-  const pm = acmgRatingStore.acmgRating.getActiveEvidenceCounts(
-    AcmgEvidenceLevel.PathogenicModerate
-  )
-  const pp = acmgRatingStore.acmgRating.getActiveEvidenceCounts(
-    AcmgEvidenceLevel.PathogenicSupporting
-  )
-  const ba = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStandalone)
-  const bs = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStrong)
-  const bp = acmgRatingStore.acmgRating.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignSupporting)
-  const isPathogenic =
-    (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
-    ps >= 2 ||
-    (ps === 1 && (pm >= 3 || (pm === 2 && pp >= 2) || (pm === 1 && pp >= 4)))
-  const isLikelyPathogenic =
-    (pvs === 1 && pm === 1) ||
-    (ps === 1 && pm >= 1 && pm <= 2) ||
-    (ps === 1 && pp >= 2) ||
-    pm >= 3 ||
-    (pm === 2 && pp >= 2) ||
-    (pm === 1 && pp >= 4)
-  const isBenign = ba > 0 || bs >= 2
-  const isLikelyBenign = (bs === 1 && bp === 1) || bp >= 2
-  const isConflicting = (isPathogenic || isLikelyPathogenic) && (isBenign || isLikelyBenign)
-
-  let computedClass = 'Uncertain significance'
-  if (isPathogenic) {
-    computedClass = 'Pathogenic'
-  } else if (isLikelyPathogenic) {
-    computedClass = 'Likely pathogenic'
-  } else if (isBenign) {
-    computedClass = 'Benign'
-  } else if (isLikelyBenign) {
-    computedClass = 'Likely benign'
-  }
+  let [acmgClass, isConflicting] = acmgRatingStore.acmgRating.getAcmgClass()
   if (isConflicting) {
-    computedClass = 'Uncertain significance'
+    acmgClass = 'Uncertain significance'
     updateAcmgConflicting(true)
   } else {
     updateAcmgConflicting(false)
   }
-  return computedClass
+  return acmgClass
 })
 
 const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {

@@ -639,6 +639,45 @@ class MultiSourceAcmgCriteriaState {
     }
     return count
   }
+
+  /** Returns the ACMG class for current criteria state. */
+  getAcmgClass(): [string, boolean] {
+    const pvs = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicVeryStrong)
+    const ps = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicStrong)
+    const pm = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicModerate)
+    const pp = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicSupporting)
+    const ba = this.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStandalone)
+    const bs = this.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStrong)
+    const bp = this.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignSupporting)
+    const isPathogenic =
+      (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
+      ps >= 2 ||
+      (ps === 1 && (pm >= 3 || (pm === 2 && pp >= 2) || (pm === 1 && pp >= 4)))
+    const isLikelyPathogenic =
+      (pvs === 1 && pm === 1) ||
+      (ps === 1 && pm >= 1 && pm <= 2) ||
+      (ps === 1 && pp >= 2) ||
+      pm >= 3 ||
+      (pm === 2 && pp >= 2) ||
+      (pm === 1 && pp >= 4)
+    const isBenign = ba > 0 || bs >= 2
+    const isLikelyBenign = (bs === 1 && bp === 1) || bp >= 2
+    const isConflicting = (isPathogenic || isLikelyPathogenic) && (isBenign || isLikelyBenign)
+
+    if (isConflicting) {
+      return ['Conflicting', isConflicting]
+    } else if (isPathogenic) {
+      return ['Pathogenic', isConflicting]
+    } else if (isLikelyPathogenic) {
+      return ['Likely pathogenic', isConflicting]
+    } else if (isBenign) {
+      return ['Benign', isConflicting]
+    } else if (isLikelyBenign) {
+      return ['Likely benign', isConflicting]
+    } else {
+      return ['Uncertain significance', isConflicting]
+    }
+  }
 }
 
 export {
