@@ -8,6 +8,7 @@ import GeneDetailView from '@/views/GeneDetailView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
 import GenesListView from '@/views/GenesListView.vue'
 import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
+import PathNotFound from '@/views/PathNotFound.vue'
 
 const routes = [
   {
@@ -50,6 +51,11 @@ const routes = [
     path: '/acmg-docs',
     name: 'acmg-docs',
     component: ACMGCriteriaDocs
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: PathNotFound
   }
 ]
 
