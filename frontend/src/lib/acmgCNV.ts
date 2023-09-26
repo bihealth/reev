@@ -1,85 +1,85 @@
 /** The predefined ACMG criteria. */
 enum AcmgCriteria {
-  Loss1A = '1A',
-  Loss1B = '1B',
-  Loss2A = '2A',
-  Loss2B = '2B',
-  Loss2C1 = '2C-1',
-  Loss2C2 = '2C-2',
-  Loss2D1 = '2D-1',
-  Loss2D2 = '2D-2',
-  Loss2D3 = '2D-3',
-  Loss2D4 = '2D-4',
-  Loss2E = '2E',
-  Loss2F = '2F',
-  Loss2G = '2G',
-  Loss2H = '2H',
-  Loss3A = '3A',
-  Loss3B = '3B',
-  Loss3C = '3C',
-  Loss4A = '4A',
-  Loss4B = '4B',
-  Loss4C = '4C',
-  Loss4D = '4D',
-  Loss4E = '4E',
-  Loss4F = '4F',
-  Loss4G = '4G',
-  Loss4H = '4H',
-  Loss4I = '4I',
-  Loss4J = '4J',
-  Loss4K = '4K',
-  Loss4L = '4L',
-  Loss4M = '4M',
-  Loss4N = '4N',
-  Loss4O = '4O',
-  Loss5A = '5A',
-  Loss5B = '5B',
-  Loss5C = '5C',
-  Loss5D = '5D',
-  Loss5E = '5E',
-  Loss5F = '5F',
-  Loss5G = '5G',
-  Loss5H = '5H',
-  Gain1A = '1A',
-  Gain1B = '1B',
-  Gain2A = '2A',
-  Gain2B = '2B',
-  Gain2C = '2C',
-  Gain2D = '2D',
-  Gain2E = '2E',
-  Gain2F = '2F',
-  Gain2G = '2G',
-  Gain2H = '2H',
-  Gain2I = '2I',
-  Gain2J = '2J',
-  Gain2K = '2K',
-  Gain2L = '2L',
-  Gain3A = '3A',
-  Gain3B = '3B',
-  Gain3C = '3C',
-  Gain4A = '4A',
-  Gain4B = '4B',
-  Gain4C = '4C',
-  Gain4D = '4D',
-  Gain4E = '4E',
-  Gain4F = '4F',
-  Gain4G = '4G',
-  Gain4H = '4H',
-  Gain4I = '4I',
-  Gain4J = '4J',
-  Gain4K = '4K',
-  Gain4L = '4L',
-  Gain4M = '4M',
-  Gain4N = '4N',
-  Gain4O = '4O',
-  Gain5A = '5A',
-  Gain5B = '5B',
-  Gain5C = '5C',
-  Gain5D = '5D',
-  Gain5E = '5E',
-  Gain5F = '5F',
-  Gain5G = '5G',
-  Gain5H = '5H',
+  Loss1A = 'L1A',
+  Loss1B = 'L1B',
+  Loss2A = 'L2A',
+  Loss2B = 'L2B',
+  Loss2C1 = 'L2C-1',
+  Loss2C2 = 'L2C-2',
+  Loss2D1 = 'L2D-1',
+  Loss2D2 = 'L2D-2',
+  Loss2D3 = 'L2D-3',
+  Loss2D4 = 'L2D-4',
+  Loss2E = 'L2E',
+  Loss2F = 'L2F',
+  Loss2G = 'L2G',
+  Loss2H = 'L2H',
+  Loss3A = 'L3A',
+  Loss3B = 'L3B',
+  Loss3C = 'L3C',
+  Loss4A = 'L4A',
+  Loss4B = 'L4B',
+  Loss4C = 'L4C',
+  Loss4D = 'L4D',
+  Loss4E = 'L4E',
+  Loss4F = 'L4F',
+  Loss4G = 'L4G',
+  Loss4H = 'L4H',
+  Loss4I = 'L4I',
+  Loss4J = 'L4J',
+  Loss4K = 'L4K',
+  Loss4L = 'L4L',
+  Loss4M = 'L4M',
+  Loss4N = 'L4N',
+  Loss4O = 'L4O',
+  Loss5A = 'L5A',
+  Loss5B = 'L5B',
+  Loss5C = 'L5C',
+  Loss5D = 'L5D',
+  Loss5E = 'L5E',
+  Loss5F = 'L5F',
+  Loss5G = 'L5G',
+  Loss5H = 'L5H',
+  Gain1A = 'G1A',
+  Gain1B = 'G1B',
+  Gain2A = 'G2A',
+  Gain2B = 'G2B',
+  Gain2C = 'G2C',
+  Gain2D = 'G2D',
+  Gain2E = 'G2E',
+  Gain2F = 'G2F',
+  Gain2G = 'G2G',
+  Gain2H = 'G2H',
+  Gain2I = 'G2I',
+  Gain2J = 'G2J',
+  Gain2K = 'G2K',
+  Gain2L = 'G2L',
+  Gain3A = 'G3A',
+  Gain3B = 'G3B',
+  Gain3C = 'G3C',
+  Gain4A = 'G4A',
+  Gain4B = 'G4B',
+  Gain4C = 'G4C',
+  Gain4D = 'G4D',
+  Gain4E = 'G4E',
+  Gain4F = 'G4F',
+  Gain4G = 'G4G',
+  Gain4H = 'G4H',
+  Gain4I = 'G4I',
+  Gain4J = 'G4J',
+  Gain4K = 'G4K',
+  Gain4L = 'G4L',
+  Gain4M = 'G4M',
+  Gain4N = 'G4N',
+  Gain4O = 'G4O',
+  Gain5A = 'G5A',
+  Gain5B = 'G5B',
+  Gain5C = 'G5C',
+  Gain5D = 'G5D',
+  Gain5E = 'G5E',
+  Gain5F = 'G5F',
+  Gain5G = 'G5G',
+  Gain5H = 'G5H'
 }
 
 /** Array of all ACMG criteria. */
@@ -168,8 +168,8 @@ const ALL_ACMG_CRITERIA = [
 /** Detailed definition of one ACMG criteria such as PVS1. */
 interface CriteriaDefinition {
   criteria: AcmgCriteria
-  defaultScore: Number | null,
-  maxScore: Number,
+  defaultScore: Number | null
+  maxScore: Number
   label: string
   hint: string
   description: string
@@ -417,7 +417,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
     },
     {
       criteria: AcmgCriteria.Loss4E,
-      defaultScore: 0.10,
+      defaultScore: 0.1,
       maxScore: 0.3,
       label: '4E',
       hint: 'Individual case evidence — unknown inheritance (range: 0 to 0.15)',
@@ -965,13 +965,6 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
   ].map((def: CriteriaDefinition) => [def.criteria, def])
 )
 
-/** The presence of a criteria. */
-enum Presence {
-  Present = 'Present',
-  Absent = 'Absent',
-  Unknown = 'Unknown'
-}
-
 /** The state of a criteria.
  *
  * Could stem from the default definition (e.g., from the ACMG guidelines paper),
@@ -980,14 +973,12 @@ enum Presence {
 interface CriteriaState {
   /** Criteria referred to. */
   criteria: AcmgCriteria
-  /** Whether it's present (true), absent (false), or unknown (null) */
-  presence: Presence
   /** Optionally, an evidence level
    *
    * This is used by prediction tools to override the default and by the user
    * to override both default and prediction tools.
    */
-  evidenceLevel: Number
+  defaultScore: number | null
 }
 
 /** Define where a given selection state comes from. */
@@ -1023,18 +1014,332 @@ class MultiSourceAcmgCriteriaState {
   protected createCriteriaStateMap(source: StateSource): CriteriaToState {
     const isDefault = source === StateSource.Default
     return {
-      '1A': {
+      L1A: {
         criteria: AcmgCriteria.Loss1A,
-        presence: Presence.Unknown,
         defaultScore: isDefault ? 0 : null
       },
+      L1B: {
+        criteria: AcmgCriteria.Loss1B,
+        defaultScore: isDefault ? -0.6 : null
+      },
+      L2A: {
+        criteria: AcmgCriteria.Loss2A,
+        defaultScore: isDefault ? 1 : null
+      },
+      L2B: {
+        criteria: AcmgCriteria.Loss2B,
+        defaultScore: isDefault ? 0 : null
+      },
+      'L2C-1': {
+        criteria: AcmgCriteria.Loss2C1,
+        defaultScore: isDefault ? 0.9 : null
+      },
+      'L2C-2': {
+        criteria: AcmgCriteria.Loss2C2,
+        defaultScore: isDefault ? 0 : null
+      },
+      'L2D-1': {
+        criteria: AcmgCriteria.Loss2D1,
+        defaultScore: isDefault ? 0 : null
+      },
+      'L2D-2': {
+        criteria: AcmgCriteria.Loss2D2,
+        defaultScore: isDefault ? 0.9 : null
+      },
+      'L2D-3': {
+        criteria: AcmgCriteria.Loss2D3,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      'L2D-4': {
+        criteria: AcmgCriteria.Loss2D4,
+        defaultScore: isDefault ? 0.9 : null
+      },
+      L2E: {
+        criteria: AcmgCriteria.Loss2E,
+        defaultScore: isDefault ? 0.9 : null
+      },
+      L2F: {
+        criteria: AcmgCriteria.Loss2F,
+        defaultScore: isDefault ? -1 : null
+      },
+      L2G: {
+        criteria: AcmgCriteria.Loss2G,
+        defaultScore: isDefault ? 0 : null
+      },
+      L2H: {
+        criteria: AcmgCriteria.Loss2H,
+        defaultScore: isDefault ? 0.15 : null
+      },
+      L3A: {
+        criteria: AcmgCriteria.Loss3A,
+        defaultScore: isDefault ? 0 : null
+      },
+      L3B: {
+        criteria: AcmgCriteria.Loss3B,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      L3C: {
+        criteria: AcmgCriteria.Loss3C,
+        defaultScore: isDefault ? 0.9 : null
+      },
+      L4A: {
+        criteria: AcmgCriteria.Loss4A,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      L4B: {
+        criteria: AcmgCriteria.Loss4B,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      L4C: {
+        criteria: AcmgCriteria.Loss4C,
+        defaultScore: isDefault ? 0.15 : null
+      },
+      L4D: {
+        criteria: AcmgCriteria.Loss4D,
+        defaultScore: isDefault ? 0 : null
+      },
+      L4E: {
+        criteria: AcmgCriteria.Loss4E,
+        defaultScore: isDefault ? 0.1 : null
+      },
+      L4F: {
+        criteria: AcmgCriteria.Loss4F,
+        defaultScore: isDefault ? 0.15 : null
+      },
+      L4G: {
+        criteria: AcmgCriteria.Loss4G,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      L4H: {
+        criteria: AcmgCriteria.Loss4H,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      L4I: {
+        criteria: AcmgCriteria.Loss4I,
+        defaultScore: isDefault ? -0.45 : null
+      },
+      L4J: {
+        criteria: AcmgCriteria.Loss4J,
+        defaultScore: isDefault ? -0.3 : null
+      },
+      L4K: {
+        criteria: AcmgCriteria.Loss4K,
+        defaultScore: isDefault ? -0.15 : null
+      },
+      L4L: {
+        criteria: AcmgCriteria.Loss4L,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      L4M: {
+        criteria: AcmgCriteria.Loss4M,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      L4N: {
+        criteria: AcmgCriteria.Loss4N,
+        defaultScore: isDefault ? -0.9 : null
+      },
+      L4O: {
+        criteria: AcmgCriteria.Loss4O,
+        defaultScore: isDefault ? -1 : null
+      },
+      L5A: {
+        criteria: AcmgCriteria.Loss5A,
+        defaultScore: isDefault ? 0 : null
+      },
+      L5B: {
+        criteria: AcmgCriteria.Loss5B,
+        defaultScore: isDefault ? -0.3 : null
+      },
+      L5C: {
+        criteria: AcmgCriteria.Loss5C,
+        defaultScore: isDefault ? -0.15 : null
+      },
+      L5D: {
+        criteria: AcmgCriteria.Loss5D,
+        defaultScore: isDefault ? 0 : null
+      },
+      L5E: {
+        criteria: AcmgCriteria.Loss5E,
+        defaultScore: isDefault ? 0 : null
+      },
+      L5F: {
+        criteria: AcmgCriteria.Loss5F,
+        defaultScore: isDefault ? 0 : null
+      },
+      L5G: {
+        criteria: AcmgCriteria.Loss5G,
+        defaultScore: isDefault ? 0.1 : null
+      },
+      L5H: {
+        criteria: AcmgCriteria.Loss5H,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      G1A: {
+        criteria: AcmgCriteria.Gain1A,
+        defaultScore: isDefault ? 0 : null
+      },
+      G1B: {
+        criteria: AcmgCriteria.Gain1B,
+        defaultScore: isDefault ? -0.6 : null
+      },
+      G2A: {
+        criteria: AcmgCriteria.Gain2A,
+        defaultScore: isDefault ? 1 : null
+      },
+      G2B: {
+        criteria: AcmgCriteria.Gain2B,
+        defaultScore: isDefault ? 0 : null
+      },
+      G2C: {
+        criteria: AcmgCriteria.Gain2C,
+        defaultScore: isDefault ? -1 : null
+      },
+      G2D: {
+        criteria: AcmgCriteria.Gain2D,
+        defaultScore: isDefault ? -1 : null
+      },
+      G2E: {
+        criteria: AcmgCriteria.Gain2E,
+        defaultScore: isDefault ? 0 : null
+      },
+      G2F: {
+        criteria: AcmgCriteria.Gain2F,
+        defaultScore: isDefault ? -1 : null
+      },
+      G2G: {
+        criteria: AcmgCriteria.Gain2G,
+        defaultScore: isDefault ? 0 : null
+      },
+      G2H: {
+        criteria: AcmgCriteria.Gain2H,
+        defaultScore: isDefault ? 0 : null
+      },
+      G2I: {
+        criteria: AcmgCriteria.Gain2I,
+        defaultScore: isDefault ? 0 : null
+      },
+      G2J: {
+        criteria: AcmgCriteria.Gain2J,
+        defaultScore: isDefault ? 0 : null
+      },
+      G2K: {
+        criteria: AcmgCriteria.Gain2K,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      G2L: {
+        criteria: AcmgCriteria.Gain2L,
+        defaultScore: isDefault ? 0 : null
+      },
+      G3A: {
+        criteria: AcmgCriteria.Gain3A,
+        defaultScore: isDefault ? 0 : null
+      },
+      G3B: {
+        criteria: AcmgCriteria.Gain3B,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      G3C: {
+        criteria: AcmgCriteria.Gain3C,
+        defaultScore: isDefault ? 0.9 : null
+      },
+      G4A: {
+        criteria: AcmgCriteria.Gain4A,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      G4B: {
+        criteria: AcmgCriteria.Gain4B,
+        defaultScore: isDefault ? 0.15 : null
+      },
+      G4C: {
+        criteria: AcmgCriteria.Gain4C,
+        defaultScore: isDefault ? 0.15 : null
+      },
+      G4D: {
+        criteria: AcmgCriteria.Gain4D,
+        defaultScore: isDefault ? 0 : null
+      },
+      G4E: {
+        criteria: AcmgCriteria.Gain4E,
+        defaultScore: isDefault ? 0.1 : null
+      },
+      G4F: {
+        criteria: AcmgCriteria.Gain4F,
+        defaultScore: isDefault ? 0.15 : null
+      },
+      G4G: {
+        criteria: AcmgCriteria.Gain4G,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      G4H: {
+        criteria: AcmgCriteria.Gain4H,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      G4I: {
+        criteria: AcmgCriteria.Gain4I,
+        defaultScore: isDefault ? -0.45 : null
+      },
+      G4J: {
+        criteria: AcmgCriteria.Gain4J,
+        defaultScore: isDefault ? -0.3 : null
+      },
+      G4K: {
+        criteria: AcmgCriteria.Gain4K,
+        defaultScore: isDefault ? -0.15 : null
+      },
+      G4L: {
+        criteria: AcmgCriteria.Gain4L,
+        defaultScore: isDefault ? 0.45 : null
+      },
+      G4M: {
+        criteria: AcmgCriteria.Gain4M,
+        defaultScore: isDefault ? 0.3 : null
+      },
+      G4N: {
+        criteria: AcmgCriteria.Gain4N,
+        defaultScore: isDefault ? -0.9 : null
+      },
+      G4O: {
+        criteria: AcmgCriteria.Gain4O,
+        defaultScore: isDefault ? -1 : null
+      },
+      G5A: {
+        criteria: AcmgCriteria.Gain5A,
+        defaultScore: isDefault ? 0 : null
+      },
+      G5B: {
+        criteria: AcmgCriteria.Gain5B,
+        defaultScore: isDefault ? -0.3 : null
+      },
+      G5C: {
+        criteria: AcmgCriteria.Gain5C,
+        defaultScore: isDefault ? -0.15 : null
+      },
+      G5D: {
+        criteria: AcmgCriteria.Gain5D,
+        defaultScore: isDefault ? 0 : null
+      },
+      G5E: {
+        criteria: AcmgCriteria.Gain5E,
+        defaultScore: isDefault ? 0 : null
+      },
+      G5F: {
+        criteria: AcmgCriteria.Gain5F,
+        defaultScore: isDefault ? 0 : null
+      },
+      G5G: {
+        criteria: AcmgCriteria.Gain5G,
+        defaultScore: isDefault ? 0.1 : null
+      },
+      G5H: {
+        criteria: AcmgCriteria.Gain5H,
+        defaultScore: isDefault ? 0.3 : null
+      }
     }
   }
 
   /** Gets the effective `CriteriaState` for an `AcmgCriteria`.*/
   getCriteriaState(criteria: AcmgCriteria): CriteriaState {
-    let presence = Presence.Unknown
-    let evidenceLevel = AcmgEvidenceLevel.NotSet
+    let defaultScore = null
 
     for (const stateSource of ALL_STATE_SOURCES) {
       if (!this.criteriaStates[stateSource]) {
@@ -1047,19 +1352,15 @@ class MultiSourceAcmgCriteriaState {
           throw new Error('criteria mismatch; should never happen')
         }
 
-        if (criteriaState.presence !== Presence.Unknown) {
-          presence = criteriaState.presence
-        }
-        if (criteriaState.evidenceLevel !== AcmgEvidenceLevel.NotSet) {
-          evidenceLevel = criteriaState.evidenceLevel
+        if (criteriaState.defaultScore !== null) {
+          defaultScore = criteriaState.defaultScore
         }
       }
     }
 
     return {
       criteria,
-      presence,
-      evidenceLevel
+      defaultScore
     }
   }
 
@@ -1075,39 +1376,8 @@ class MultiSourceAcmgCriteriaState {
     }
   }
 
-  /** Sets the `presence` of a `CriteriaState` for a given `StateSource` and `AcmgCriteria. */
-  setPresence(source: StateSource, criteria: AcmgCriteria, presence: Presence) {
-    if (source === StateSource.Default) {
-      throw new Error('Cannot set presence for default source')
-    }
-    if (
-      !this.criteriaStates[source] ||
-      !this.criteriaStates[source][criteria] ||
-      !this.criteriaStates[source][criteria].presence
-    ) {
-      throw new Error(`Criteria ${criteria} not found for source ${source}`)
-    } else {
-      this.criteriaStates[source][criteria].presence = presence
-    }
-  }
-
-  /** Resets the presence of all criteria for a `StateSource.User` to `Presence.Absent`. */
-  setUserPresenceAbsent() {
-    for (const criteria of ALL_ACMG_CRITERIA) {
-      this.setPresence(StateSource.User, criteria, Presence.Absent)
-    }
-  }
-
-  /** Resets the presence of all criteria for a `StateSource.User` to a presence of `StateSource.InterVar`. */
-  setUserPresenceInterVar() {
-    for (const criteria of ALL_ACMG_CRITERIA) {
-      const criteriaStateInterVar = this.getCriteriaStateFromSource(criteria, StateSource.InterVar)
-      this.setPresence(StateSource.User, criteria, criteriaStateInterVar.presence)
-    }
-  }
-
-  /** Sets the `evidenceLevel` of a `CriteriaState` for a given `StateSource` and `AcmgCriteria`. */
-  setEvidenceLevel(source: StateSource, criteria: AcmgCriteria, evidenceLevel: AcmgEvidenceLevel) {
+  /** Sets the `Score` of a `CriteriaState` for a given `StateSource` and `AcmgCriteria`. */
+  setScore(source: StateSource, criteria: AcmgCriteria, defaultScore: number | null) {
     if (source === StateSource.Default) {
       throw new Error('Cannot set presence for default source')
     }
@@ -1115,11 +1385,11 @@ class MultiSourceAcmgCriteriaState {
     if (
       !this.criteriaStates[source] ||
       !this.criteriaStates[source][criteria] ||
-      !this.criteriaStates[source][criteria].evidenceLevel
+      !this.criteriaStates[source][criteria].defaultScore
     ) {
       throw new Error(`Criteria ${criteria} not found for source ${source}`)
     } else {
-      this.criteriaStates[source][criteria].evidenceLevel = evidenceLevel
+      this.criteriaStates[source][criteria].defaultScore = defaultScore
     }
   }
 
@@ -1128,41 +1398,21 @@ class MultiSourceAcmgCriteriaState {
     return this.criteriaStates
   }
 
-  /** Returns the number of active criteria with a given evidence level. */
-  getActiveEvidenceCounts(evidence: AcmgEvidenceLevel) {
-    let count = 0
+  /** Returns the ACMG class for current criteria state. */
+  getAcmgClass() {
+    let score = 0
+
     for (const criteria of ALL_ACMG_CRITERIA) {
       const criteriaState = this.getCriteriaState(criteria)
-      if (criteriaState.evidenceLevel === evidence && criteriaState.presence === Presence.Present) {
-        count++
-      }
+      score += criteriaState.defaultScore || 0
     }
-    return count
-  }
 
-  /** Returns the ACMG class for current criteria state. */
-  getAcmgClass(): [string, boolean] {
-    const pvs = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicVeryStrong)
-    const ps = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicStrong)
-    const pm = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicModerate)
-    const pp = this.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicSupporting)
-    const ba = this.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStandalone)
-    const bs = this.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignStrong)
-    const bp = this.getActiveEvidenceCounts(AcmgEvidenceLevel.BenignSupporting)
-    const isPathogenic =
-      (pvs === 1 && (ps >= 1 || pm >= 2 || (pm === 1 && pp === 1) || pp >= 2)) ||
-      ps >= 2 ||
-      (ps === 1 && (pm >= 3 || (pm === 2 && pp >= 2) || (pm === 1 && pp >= 4)))
-    const isLikelyPathogenic =
-      (pvs === 1 && pm === 1) ||
-      (ps === 1 && pm >= 1 && pm <= 2) ||
-      (ps === 1 && pp >= 2) ||
-      pm >= 3 ||
-      (pm === 2 && pp >= 2) ||
-      (pm === 1 && pp >= 4)
-    const isBenign = ba > 0 || bs >= 2
-    const isLikelyBenign = (bs === 1 && bp === 1) || bp >= 2
-    const isConflicting = (isPathogenic || isLikelyPathogenic) && (isBenign || isLikelyBenign)
+    const isPathogenic = score >= 0.99
+    const isLikelyPathogenic = score >= 0.9 && score < 0.99
+    const isUncertainSignificance = score > -0.89 && score < 0.9
+    const isLikelyBenign = score <= -0.9 && score > -0.99
+    const isBenign = score <= -0.99
+    const isConflicting = (isPathogenic || isLikelyPathogenic) && (isLikelyBenign || isBenign)
 
     if (isConflicting) {
       return ['Conflicting', isConflicting]
@@ -1174,24 +1424,19 @@ class MultiSourceAcmgCriteriaState {
       return ['Benign', isConflicting]
     } else if (isLikelyBenign) {
       return ['Likely benign', isConflicting]
-    } else {
+    } else if (isUncertainSignificance) {
       return ['Uncertain significance', isConflicting]
     }
   }
 }
 
 export {
-  AcmgCriteria,
-  AcmgEvidenceLevel,
   ACMG_CRITERIA_DEFS,
   ALL_ACMG_CRITERIA,
   ALL_STATE_SOURCES,
-  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
-  ACMG_EVIDENCE_LEVELS_BENIGN,
   type CriteriaDefinition,
   type CriteriaState,
   type CriteriaToState,
   MultiSourceAcmgCriteriaState,
-  Presence,
   StateSource
 }
