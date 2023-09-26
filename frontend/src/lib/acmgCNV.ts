@@ -1,5 +1,5 @@
-/** The predefined ACMG criteria. */
-enum AcmgCriteria {
+/** The predefined ACMG criteria for CNVs. */
+enum AcmgCriteriaCNV {
   Loss1A = 'L1A',
   Loss1B = 'L1B',
   Loss2A = 'L2A',
@@ -82,92 +82,92 @@ enum AcmgCriteria {
   Gain5H = 'G5H'
 }
 
-/** Array of all ACMG criteria. */
-const ALL_ACMG_CRITERIA = [
-  AcmgCriteria.Loss1A,
-  AcmgCriteria.Loss1B,
-  AcmgCriteria.Loss2A,
-  AcmgCriteria.Loss2B,
-  AcmgCriteria.Loss2C1,
-  AcmgCriteria.Loss2C2,
-  AcmgCriteria.Loss2D1,
-  AcmgCriteria.Loss2D2,
-  AcmgCriteria.Loss2D3,
-  AcmgCriteria.Loss2D4,
-  AcmgCriteria.Loss2E,
-  AcmgCriteria.Loss2F,
-  AcmgCriteria.Loss2G,
-  AcmgCriteria.Loss2H,
-  AcmgCriteria.Loss3A,
-  AcmgCriteria.Loss3B,
-  AcmgCriteria.Loss3C,
-  AcmgCriteria.Loss4A,
-  AcmgCriteria.Loss4B,
-  AcmgCriteria.Loss4C,
-  AcmgCriteria.Loss4D,
-  AcmgCriteria.Loss4E,
-  AcmgCriteria.Loss4F,
-  AcmgCriteria.Loss4G,
-  AcmgCriteria.Loss4H,
-  AcmgCriteria.Loss4I,
-  AcmgCriteria.Loss4J,
-  AcmgCriteria.Loss4K,
-  AcmgCriteria.Loss4L,
-  AcmgCriteria.Loss4M,
-  AcmgCriteria.Loss4N,
-  AcmgCriteria.Loss4O,
-  AcmgCriteria.Loss5A,
-  AcmgCriteria.Loss5B,
-  AcmgCriteria.Loss5C,
-  AcmgCriteria.Loss5D,
-  AcmgCriteria.Loss5E,
-  AcmgCriteria.Loss5F,
-  AcmgCriteria.Loss5G,
-  AcmgCriteria.Loss5H,
-  AcmgCriteria.Gain1A,
-  AcmgCriteria.Gain1B,
-  AcmgCriteria.Gain2A,
-  AcmgCriteria.Gain2B,
-  AcmgCriteria.Gain2D,
-  AcmgCriteria.Gain2E,
-  AcmgCriteria.Gain2F,
-  AcmgCriteria.Gain2G,
-  AcmgCriteria.Gain2H,
-  AcmgCriteria.Gain2I,
-  AcmgCriteria.Gain2J,
-  AcmgCriteria.Gain2K,
-  AcmgCriteria.Gain2L,
-  AcmgCriteria.Gain3A,
-  AcmgCriteria.Gain3B,
-  AcmgCriteria.Gain3C,
-  AcmgCriteria.Gain4A,
-  AcmgCriteria.Gain4B,
-  AcmgCriteria.Gain4C,
-  AcmgCriteria.Gain4D,
-  AcmgCriteria.Gain4E,
-  AcmgCriteria.Gain4F,
-  AcmgCriteria.Gain4G,
-  AcmgCriteria.Gain4H,
-  AcmgCriteria.Gain4I,
-  AcmgCriteria.Gain4J,
-  AcmgCriteria.Gain4K,
-  AcmgCriteria.Gain4L,
-  AcmgCriteria.Gain4M,
-  AcmgCriteria.Gain4N,
-  AcmgCriteria.Gain4O,
-  AcmgCriteria.Gain5A,
-  AcmgCriteria.Gain5B,
-  AcmgCriteria.Gain5C,
-  AcmgCriteria.Gain5D,
-  AcmgCriteria.Gain5E,
-  AcmgCriteria.Gain5F,
-  AcmgCriteria.Gain5G,
-  AcmgCriteria.Gain5H
+/** Array of all ACMG criteria for CNVs. */
+const ALL_ACMG_CRITERIA_CNV = [
+  AcmgCriteriaCNV.Loss1A,
+  AcmgCriteriaCNV.Loss1B,
+  AcmgCriteriaCNV.Loss2A,
+  AcmgCriteriaCNV.Loss2B,
+  AcmgCriteriaCNV.Loss2C1,
+  AcmgCriteriaCNV.Loss2C2,
+  AcmgCriteriaCNV.Loss2D1,
+  AcmgCriteriaCNV.Loss2D2,
+  AcmgCriteriaCNV.Loss2D3,
+  AcmgCriteriaCNV.Loss2D4,
+  AcmgCriteriaCNV.Loss2E,
+  AcmgCriteriaCNV.Loss2F,
+  AcmgCriteriaCNV.Loss2G,
+  AcmgCriteriaCNV.Loss2H,
+  AcmgCriteriaCNV.Loss3A,
+  AcmgCriteriaCNV.Loss3B,
+  AcmgCriteriaCNV.Loss3C,
+  AcmgCriteriaCNV.Loss4A,
+  AcmgCriteriaCNV.Loss4B,
+  AcmgCriteriaCNV.Loss4C,
+  AcmgCriteriaCNV.Loss4D,
+  AcmgCriteriaCNV.Loss4E,
+  AcmgCriteriaCNV.Loss4F,
+  AcmgCriteriaCNV.Loss4G,
+  AcmgCriteriaCNV.Loss4H,
+  AcmgCriteriaCNV.Loss4I,
+  AcmgCriteriaCNV.Loss4J,
+  AcmgCriteriaCNV.Loss4K,
+  AcmgCriteriaCNV.Loss4L,
+  AcmgCriteriaCNV.Loss4M,
+  AcmgCriteriaCNV.Loss4N,
+  AcmgCriteriaCNV.Loss4O,
+  AcmgCriteriaCNV.Loss5A,
+  AcmgCriteriaCNV.Loss5B,
+  AcmgCriteriaCNV.Loss5C,
+  AcmgCriteriaCNV.Loss5D,
+  AcmgCriteriaCNV.Loss5E,
+  AcmgCriteriaCNV.Loss5F,
+  AcmgCriteriaCNV.Loss5G,
+  AcmgCriteriaCNV.Loss5H,
+  AcmgCriteriaCNV.Gain1A,
+  AcmgCriteriaCNV.Gain1B,
+  AcmgCriteriaCNV.Gain2A,
+  AcmgCriteriaCNV.Gain2B,
+  AcmgCriteriaCNV.Gain2D,
+  AcmgCriteriaCNV.Gain2E,
+  AcmgCriteriaCNV.Gain2F,
+  AcmgCriteriaCNV.Gain2G,
+  AcmgCriteriaCNV.Gain2H,
+  AcmgCriteriaCNV.Gain2I,
+  AcmgCriteriaCNV.Gain2J,
+  AcmgCriteriaCNV.Gain2K,
+  AcmgCriteriaCNV.Gain2L,
+  AcmgCriteriaCNV.Gain3A,
+  AcmgCriteriaCNV.Gain3B,
+  AcmgCriteriaCNV.Gain3C,
+  AcmgCriteriaCNV.Gain4A,
+  AcmgCriteriaCNV.Gain4B,
+  AcmgCriteriaCNV.Gain4C,
+  AcmgCriteriaCNV.Gain4D,
+  AcmgCriteriaCNV.Gain4E,
+  AcmgCriteriaCNV.Gain4F,
+  AcmgCriteriaCNV.Gain4G,
+  AcmgCriteriaCNV.Gain4H,
+  AcmgCriteriaCNV.Gain4I,
+  AcmgCriteriaCNV.Gain4J,
+  AcmgCriteriaCNV.Gain4K,
+  AcmgCriteriaCNV.Gain4L,
+  AcmgCriteriaCNV.Gain4M,
+  AcmgCriteriaCNV.Gain4N,
+  AcmgCriteriaCNV.Gain4O,
+  AcmgCriteriaCNV.Gain5A,
+  AcmgCriteriaCNV.Gain5B,
+  AcmgCriteriaCNV.Gain5C,
+  AcmgCriteriaCNV.Gain5D,
+  AcmgCriteriaCNV.Gain5E,
+  AcmgCriteriaCNV.Gain5F,
+  AcmgCriteriaCNV.Gain5G,
+  AcmgCriteriaCNV.Gain5H
 ]
 
-/** Detailed definition of one ACMG criteria such as PVS1. */
-interface CriteriaDefinition {
-  criteria: AcmgCriteria
+/** Detailed definition of one ACMG criteria. */
+interface CriteriaCNVDefinition {
+  criteria: AcmgCriteriaCNV
   defaultScore: Number | null
   maxScore: Number
   label: string
@@ -175,11 +175,11 @@ interface CriteriaDefinition {
   description: string
 }
 
-/** Predefined ACMG criteria. */
-const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
+/** Predefined ACMG criteria for CNVs. */
+const ACMG_CRITERIA_CNV_DEFS: Map<AcmgCriteriaCNV, CriteriaCNVDefinition> = new Map(
   [
     {
-      criteria: AcmgCriteria.Loss1A,
+      criteria: AcmgCriteriaCNV.Loss1A,
       defaultScore: 0,
       maxScore: 0,
       label: '1A',
@@ -187,7 +187,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Contains protein-coding or other known functionally important elements.`
     },
     {
-      criteria: AcmgCriteria.Loss1B,
+      criteria: AcmgCriteriaCNV.Loss1B,
       defaultScore: -0.6,
       maxScore: -0.6,
       label: '1B',
@@ -195,7 +195,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Does NOT contain protein-coding or any known functionally important elements.`
     },
     {
-      criteria: AcmgCriteria.Loss2A,
+      criteria: AcmgCriteriaCNV.Loss2A,
       defaultScore: 1,
       maxScore: 1,
       label: '2A',
@@ -203,7 +203,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Complete overlap of an established HI gene or genomic region.`
     },
     {
-      criteria: AcmgCriteria.Loss2B,
+      criteria: AcmgCriteriaCNV.Loss2B,
       defaultScore: 0,
       maxScore: 0,
       label: '2B',
@@ -216,7 +216,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       genomic region.`
     },
     {
-      criteria: AcmgCriteria.Loss2C1,
+      criteria: AcmgCriteriaCNV.Loss2C1,
       defaultScore: 0.9,
       maxScore: 1,
       label: '2C-1',
@@ -225,7 +225,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         involved) and coding sequence is involved.`
     },
     {
-      criteria: AcmgCriteria.Loss2C2,
+      criteria: AcmgCriteriaCNV.Loss2C2,
       defaultScore: 0,
       maxScore: 0.45,
       label: '2C-2',
@@ -234,7 +234,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         involved) and only the 5' UTR is involved.`
     },
     {
-      criteria: AcmgCriteria.Loss2D1,
+      criteria: AcmgCriteriaCNV.Loss2D1,
       defaultScore: 0,
       maxScore: 0,
       label: '2D-1',
@@ -243,7 +243,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         involved) and only 3' untransalted region is involved.`
     },
     {
-      criteria: AcmgCriteria.Loss2D2,
+      criteria: AcmgCriteriaCNV.Loss2D2,
       defaultScore: 0.9,
       maxScore: 0.9,
       label: '2D-2',
@@ -253,7 +253,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         been reported in this exon.`
     },
     {
-      criteria: AcmgCriteria.Loss2D3,
+      criteria: AcmgCriteriaCNV.Loss2D3,
       defaultScore: 0.3,
       maxScore: 0.45,
       label: '2D-3',
@@ -263,7 +263,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         been reported in this exon.`
     },
     {
-      criteria: AcmgCriteria.Loss2D4,
+      criteria: AcmgCriteriaCNV.Loss2D4,
       defaultScore: 0.9,
       maxScore: 1,
       label: '2D-4',
@@ -273,7 +273,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         decay is expected to occur.`
     },
     {
-      criteria: AcmgCriteria.Loss2E,
+      criteria: AcmgCriteriaCNV.Loss2E,
       defaultScore: 0,
       maxScore: 0.9,
       label: '2D-3',
@@ -316,7 +316,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         evaluation.`
     },
     {
-      criteria: AcmgCriteria.Loss2F,
+      criteria: AcmgCriteriaCNV.Loss2F,
       defaultScore: -1,
       maxScore: -1,
       label: '2F',
@@ -324,7 +324,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Completely contained within an established benign CNV region.`
     },
     {
-      criteria: AcmgCriteria.Loss2G,
+      criteria: AcmgCriteriaCNV.Loss2G,
       defaultScore: 0,
       maxScore: 0,
       label: '2G',
@@ -332,7 +332,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Overlaps an established benign CNV, but includes additional genomic material.`
     },
     {
-      criteria: AcmgCriteria.Loss2H,
+      criteria: AcmgCriteriaCNV.Loss2H,
       defaultScore: 0.15,
       maxScore: 0.15,
       label: '2H',
@@ -340,7 +340,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Two or more HI predictors suggest that AT LEAST ONE gene in the interval is HI.`
     },
     {
-      criteria: AcmgCriteria.Loss3A,
+      criteria: AcmgCriteriaCNV.Loss3A,
       defaultScore: 0,
       maxScore: 0,
       label: '3A',
@@ -348,7 +348,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `0-24 genes.`
     },
     {
-      criteria: AcmgCriteria.Loss3B,
+      criteria: AcmgCriteriaCNV.Loss3B,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '3B',
@@ -356,7 +356,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `25-34 genes.`
     },
     {
-      criteria: AcmgCriteria.Loss3C,
+      criteria: AcmgCriteriaCNV.Loss3C,
       defaultScore: 0.9,
       maxScore: 0.9,
       label: '3C',
@@ -364,7 +364,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `35+ genes.`
     },
     {
-      criteria: AcmgCriteria.Loss4A,
+      criteria: AcmgCriteriaCNV.Loss4A,
       defaultScore: 0.3,
       maxScore: 0.9,
       label: '4A',
@@ -377,7 +377,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       genomic region,`
     },
     {
-      criteria: AcmgCriteria.Loss4B,
+      criteria: AcmgCriteriaCNV.Loss4B,
       defaultScore: 0.3,
       maxScore: 0.9,
       label: '4B',
@@ -390,7 +390,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       specific, but not necessarily unique to the gene/genomic region.`
     },
     {
-      criteria: AcmgCriteria.Loss4C,
+      criteria: AcmgCriteriaCNV.Loss4C,
       defaultScore: 0.15,
       maxScore: 0.9,
       label: '4C',
@@ -403,7 +403,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       specific and/or with high genetic heterogeneity.`
     },
     {
-      criteria: AcmgCriteria.Loss4D,
+      criteria: AcmgCriteriaCNV.Loss4D,
       defaultScore: 0,
       maxScore: -0.3,
       label: '4D',
@@ -416,7 +416,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       genomic region or not consistent in general.`
     },
     {
-      criteria: AcmgCriteria.Loss4E,
+      criteria: AcmgCriteriaCNV.Loss4E,
       defaultScore: 0.1,
       maxScore: 0.3,
       label: '4E',
@@ -425,7 +425,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       region, but the inheritance of the variant is unknown.`
     },
     {
-      criteria: AcmgCriteria.Loss4F,
+      criteria: AcmgCriteriaCNV.Loss4F,
       defaultScore: 0.15,
       maxScore: 0.45,
       label: '4F',
@@ -433,7 +433,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `3-4 observed segregations.`
     },
     {
-      criteria: AcmgCriteria.Loss4G,
+      criteria: AcmgCriteriaCNV.Loss4G,
       defaultScore: 0.3,
       maxScore: 0.3,
       label: '4G',
@@ -441,7 +441,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `5-6 observed segregations.`
     },
     {
-      criteria: AcmgCriteria.Loss4H,
+      criteria: AcmgCriteriaCNV.Loss4H,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '4H',
@@ -449,7 +449,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `7+ observed segregations.`
     },
     {
-      criteria: AcmgCriteria.Loss4I,
+      criteria: AcmgCriteriaCNV.Loss4I,
       defaultScore: -0.45,
       maxScore: -0.9,
       label: '4I',
@@ -458,7 +458,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       consistent, specific, well-defined phenotype (no known phenocopies).`
     },
     {
-      criteria: AcmgCriteria.Loss4J,
+      criteria: AcmgCriteriaCNV.Loss4J,
       defaultScore: -0.3,
       maxScore: -0.9,
       label: '4J',
@@ -467,7 +467,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       specific, well-defined phenotype observed in the proband.`
     },
     {
-      criteria: AcmgCriteria.Loss4K,
+      criteria: AcmgCriteriaCNV.Loss4K,
       defaultScore: -0.15,
       maxScore: -0.3,
       label: '4K',
@@ -476,7 +476,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       nonspecific phenotype observed in the proband`
     },
     {
-      criteria: AcmgCriteria.Loss4L,
+      criteria: AcmgCriteriaCNV.Loss4L,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '4L',
@@ -485,7 +485,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         specific, well-defined phenotype) compared with controls.`
     },
     {
-      criteria: AcmgCriteria.Loss4M,
+      criteria: AcmgCriteriaCNV.Loss4M,
       defaultScore: 0.3,
       maxScore: 0.45,
       label: '4M',
@@ -495,7 +495,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         controls.`
     },
     {
-      criteria: AcmgCriteria.Loss4N,
+      criteria: AcmgCriteriaCNV.Loss4N,
       defaultScore: -0.9,
       maxScore: -0.9,
       label: '4N',
@@ -503,7 +503,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `No statistically significant difference between observations in cases and controls.`
     },
     {
-      criteria: AcmgCriteria.Loss4O,
+      criteria: AcmgCriteriaCNV.Loss4O,
       defaultScore: -1,
       maxScore: -1,
       label: '4O',
@@ -511,7 +511,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Overlap with common population variation.`
     },
     {
-      criteria: AcmgCriteria.Loss5A,
+      criteria: AcmgCriteriaCNV.Loss5A,
       defaultScore: 0,
       maxScore: 0.45,
       label: '5A',
@@ -520,7 +520,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Use appropriate category from de novo scoring section in section 4.`
     },
     {
-      criteria: AcmgCriteria.Loss5B,
+      criteria: AcmgCriteriaCNV.Loss5B,
       defaultScore: -0.3,
       maxScore: -0.45,
       label: '5B',
@@ -529,7 +529,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       inherited from an apparently unaffected parent.`
     },
     {
-      criteria: AcmgCriteria.Loss5C,
+      criteria: AcmgCriteriaCNV.Loss5C,
       defaultScore: -0.15,
       maxScore: -0.3,
       label: '5C',
@@ -538,7 +538,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       apparently unaffected parent.`
     },
     {
-      criteria: AcmgCriteria.Loss5D,
+      criteria: AcmgCriteriaCNV.Loss5D,
       defaultScore: 0,
       maxScore: 0.45,
       label: '5D',
@@ -546,7 +546,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `CNV segregates with a consistent phenotype observed in the patient's family.`
     },
     {
-      criteria: AcmgCriteria.Loss5E,
+      criteria: AcmgCriteriaCNV.Loss5E,
       defaultScore: 0,
       maxScore: -0.45,
       label: '5E',
@@ -555,7 +555,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Use appropriate category from nonsegregation section in section 4.`
     },
     {
-      criteria: AcmgCriteria.Loss5F,
+      criteria: AcmgCriteriaCNV.Loss5F,
       defaultScore: 0,
       maxScore: 0,
       label: '5F',
@@ -563,7 +563,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Inheritance information is unavailable or uninformative.`
     },
     {
-      criteria: AcmgCriteria.Loss5G,
+      criteria: AcmgCriteriaCNV.Loss5G,
       defaultScore: 0.1,
       maxScore: 0.15,
       label: '5G',
@@ -572,7 +572,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       nonspecific, but is consistent with what has been described in similar cases.`
     },
     {
-      criteria: AcmgCriteria.Loss5H,
+      criteria: AcmgCriteriaCNV.Loss5H,
       defaultScore: 0.3,
       maxScore: 0.3,
       label: '5H',
@@ -581,7 +581,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       highly specific and consistent with what has been described in similar cases.`
     },
     {
-      criteria: AcmgCriteria.Gain1A,
+      criteria: AcmgCriteriaCNV.Gain1A,
       defaultScore: 0,
       maxScore: 0,
       label: '1A',
@@ -589,7 +589,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Contains protein-coding or other known functionally important elements.`
     },
     {
-      criteria: AcmgCriteria.Gain1B,
+      criteria: AcmgCriteriaCNV.Gain1B,
       defaultScore: -0.6,
       maxScore: -0.6,
       label: '1B',
@@ -597,7 +597,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Does NOT contain protein-coding or any known functionally important elements.`
     },
     {
-      criteria: AcmgCriteria.Gain2A,
+      criteria: AcmgCriteriaCNV.Gain2A,
       defaultScore: 1,
       maxScore: 1,
       label: '2A',
@@ -606,7 +606,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       observed copy-number gain.`
     },
     {
-      criteria: AcmgCriteria.Gain2B,
+      criteria: AcmgCriteriaCNV.Gain2B,
       defaultScore: 0,
       maxScore: 0,
       label: '2B',
@@ -618,7 +618,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       • No specific causative gene or critical region has been established for this TS genomic region.`
     },
     {
-      criteria: AcmgCriteria.Gain2C,
+      criteria: AcmgCriteriaCNV.Gain2C,
       defaultScore: -1,
       maxScore: -1,
       label: '2C',
@@ -626,7 +626,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Identical in gene content to the established benign copy-number gain.`
     },
     {
-      criteria: AcmgCriteria.Gain2D,
+      criteria: AcmgCriteriaCNV.Gain2D,
       defaultScore: -1,
       maxScore: -1,
       label: '2D',
@@ -635,7 +635,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       protein-coding genes.`
     },
     {
-      criteria: AcmgCriteria.Gain2E,
+      criteria: AcmgCriteriaCNV.Gain2E,
       defaultScore: 0,
       maxScore: 0,
       label: '2E',
@@ -644,7 +644,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       protein-coding gene.`
     },
     {
-      criteria: AcmgCriteria.Gain2F,
+      criteria: AcmgCriteriaCNV.Gain2F,
       defaultScore: -1,
       maxScore: -1,
       label: '2F',
@@ -652,7 +652,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Larger than known benign copy-number gain, does not include additional proteincoding genes.`
     },
     {
-      criteria: AcmgCriteria.Gain2G,
+      criteria: AcmgCriteriaCNV.Gain2G,
       defaultScore: 0,
       maxScore: 0,
       label: '2G',
@@ -660,7 +660,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: ` Overlaps a benign copy-number gain but includes additional genomic material.`
     },
     {
-      criteria: AcmgCriteria.Gain2H,
+      criteria: AcmgCriteriaCNV.Gain2H,
       defaultScore: 0,
       maxScore: 0,
       label: '2H',
@@ -668,7 +668,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `HI gene fully contained within observed copy-number gain.`
     },
     {
-      criteria: AcmgCriteria.Gain2I,
+      criteria: AcmgCriteriaCNV.Gain2I,
       defaultScore: 0,
       maxScore: 0.9,
       label: '2I',
@@ -695,7 +695,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         = 0 (Continue evaluation).`
     },
     {
-      criteria: AcmgCriteria.Gain2J,
+      criteria: AcmgCriteriaCNV.Gain2J,
       defaultScore: 0,
       maxScore: 0,
       label: '2J',
@@ -704,7 +704,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       with what is expected for LOF of that gene OR unknown`
     },
     {
-      criteria: AcmgCriteria.Gain2K,
+      criteria: AcmgCriteriaCNV.Gain2K,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '2K',
@@ -713,7 +713,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       consistent with what is expected for LOF of that gene.`
     },
     {
-      criteria: AcmgCriteria.Gain2L,
+      criteria: AcmgCriteriaCNV.Gain2L,
       defaultScore: 0,
       maxScore: 0,
       label: '2L',
@@ -721,7 +721,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: ` One or both breakpoints are within gene(s) of no established clinical significance.`
     },
     {
-      criteria: AcmgCriteria.Gain3A,
+      criteria: AcmgCriteriaCNV.Gain3A,
       defaultScore: 0,
       maxScore: 0,
       label: '3A',
@@ -729,7 +729,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `0-34 genes.`
     },
     {
-      criteria: AcmgCriteria.Gain3B,
+      criteria: AcmgCriteriaCNV.Gain3B,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '3B',
@@ -737,7 +737,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `35-49 genes.`
     },
     {
-      criteria: AcmgCriteria.Gain3C,
+      criteria: AcmgCriteriaCNV.Gain3C,
       defaultScore: 0.9,
       maxScore: 0.9,
       label: '3C',
@@ -745,7 +745,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `50+ genes.`
     },
     {
-      criteria: AcmgCriteria.Gain4A,
+      criteria: AcmgCriteriaCNV.Gain4A,
       defaultScore: 0.3,
       maxScore: 0.9,
       label: '4A',
@@ -759,7 +759,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       region.`
     },
     {
-      criteria: AcmgCriteria.Gain4B,
+      criteria: AcmgCriteriaCNV.Gain4B,
       defaultScore: 0.15,
       maxScore: 0.9,
       label: '4B',
@@ -773,7 +773,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       but is not necessarily unique to the gene/genomic region.`
     },
     {
-      criteria: AcmgCriteria.Gain4C,
+      criteria: AcmgCriteriaCNV.Gain4C,
       defaultScore: 0.15,
       maxScore: 0.9,
       label: '4C',
@@ -787,7 +787,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       specific and/or with high genetic heterogeneity.`
     },
     {
-      criteria: AcmgCriteria.Gain4D,
+      criteria: AcmgCriteriaCNV.Gain4D,
       defaultScore: 0,
       maxScore: -0.3,
       label: '4D',
@@ -799,7 +799,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       consistent in general.`
     },
     {
-      criteria: AcmgCriteria.Gain4E,
+      criteria: AcmgCriteriaCNV.Gain4E,
       defaultScore: 0.1,
       maxScore: 0.3,
       label: '4A',
@@ -808,7 +808,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       region, but the inheritance of the variant is unknown.`
     },
     {
-      criteria: AcmgCriteria.Gain4F,
+      criteria: AcmgCriteriaCNV.Gain4F,
       defaultScore: 0.15,
       maxScore: 0.45,
       label: '4F',
@@ -816,7 +816,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `3-4 observed segregations.`
     },
     {
-      criteria: AcmgCriteria.Gain4G,
+      criteria: AcmgCriteriaCNV.Gain4G,
       defaultScore: 0.3,
       maxScore: 0.3,
       label: '4G',
@@ -824,7 +824,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `5-6 observed segregations.`
     },
     {
-      criteria: AcmgCriteria.Gain4H,
+      criteria: AcmgCriteriaCNV.Gain4H,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '4H',
@@ -832,7 +832,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `7+ observed segregations.`
     },
     {
-      criteria: AcmgCriteria.Gain4I,
+      criteria: AcmgCriteriaCNV.Gain4I,
       defaultScore: -0.45,
       maxScore: -0.9,
       label: '4I',
@@ -841,7 +841,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       consistent, specific, well-defined phenotype (no known phenocopies).`
     },
     {
-      criteria: AcmgCriteria.Gain4J,
+      criteria: AcmgCriteriaCNV.Gain4J,
       defaultScore: -0.3,
       maxScore: -0.9,
       label: '4J',
@@ -850,7 +850,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       specific, well-defined phenotype observed in the proband.`
     },
     {
-      criteria: AcmgCriteria.Gain4K,
+      criteria: AcmgCriteriaCNV.Gain4K,
       defaultScore: -0.15,
       maxScore: -0.3,
       label: '4K',
@@ -859,7 +859,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       nonspecific phenotype observed in the proband.`
     },
     {
-      criteria: AcmgCriteria.Gain4L,
+      criteria: AcmgCriteriaCNV.Gain4L,
       defaultScore: 0.45,
       maxScore: 0.45,
       label: '4L',
@@ -868,7 +868,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         well-defined phenotype) compared with controls.`
     },
     {
-      criteria: AcmgCriteria.Gain4M,
+      criteria: AcmgCriteriaCNV.Gain4M,
       defaultScore: 0.3,
       maxScore: 0.45,
       label: '4M',
@@ -877,7 +877,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         nonspecific phenotype or unknown phenotype) compared with controls.`
     },
     {
-      criteria: AcmgCriteria.Gain4N,
+      criteria: AcmgCriteriaCNV.Gain4N,
       defaultScore: -0.9,
       maxScore: -0.9,
       label: '4N',
@@ -885,7 +885,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `No statistically significant difference between observations in cases and controls.`
     },
     {
-      criteria: AcmgCriteria.Gain4O,
+      criteria: AcmgCriteriaCNV.Gain4O,
       defaultScore: -1,
       maxScore: -1,
       label: '4O',
@@ -893,7 +893,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Overlap with common population variation.`
     },
     {
-      criteria: AcmgCriteria.Gain5A,
+      criteria: AcmgCriteriaCNV.Gain5A,
       defaultScore: 0,
       maxScore: 0.45,
       label: '5A',
@@ -901,7 +901,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Use appropriate category from de novo scoring section in section 4.`
     },
     {
-      criteria: AcmgCriteria.Gain5B,
+      criteria: AcmgCriteriaCNV.Gain5B,
       defaultScore: -0.3,
       maxScore: -0.45,
       label: '5B',
@@ -910,7 +910,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       gain is inherited from an apparently unaffected parent.`
     },
     {
-      criteria: AcmgCriteria.Gain5C,
+      criteria: AcmgCriteriaCNV.Gain5C,
       defaultScore: -0.15,
       maxScore: -0.3,
       label: '5C',
@@ -919,7 +919,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       inherited from an apparently unaffected parent.`
     },
     {
-      criteria: AcmgCriteria.Gain5D,
+      criteria: AcmgCriteriaCNV.Gain5D,
       defaultScore: 0,
       maxScore: 0.45,
       label: '5D',
@@ -928,7 +928,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `CNV segregates with consistent phenotype observed in the patient's family.`
     },
     {
-      criteria: AcmgCriteria.Gain5E,
+      criteria: AcmgCriteriaCNV.Gain5E,
       defaultScore: 0,
       maxScore: -0.45,
       label: '5E',
@@ -937,7 +937,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Use appropriate category from nonsegregation section in section 4.`
     },
     {
-      criteria: AcmgCriteria.Gain5F,
+      criteria: AcmgCriteriaCNV.Gain5F,
       defaultScore: 0,
       maxScore: 0,
       label: '5F',
@@ -945,7 +945,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `Inheritance information is unavailable or uninformative.`
     },
     {
-      criteria: AcmgCriteria.Gain5G,
+      criteria: AcmgCriteriaCNV.Gain5G,
       defaultScore: 0.1,
       maxScore: 0.15,
       label: '5G',
@@ -954,7 +954,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       nonspecific, but is consistent with what has been described in similar cases.`
     },
     {
-      criteria: AcmgCriteria.Gain5H,
+      criteria: AcmgCriteriaCNV.Gain5H,
       defaultScore: 0.3,
       maxScore: 0.3,
       label: '5H',
@@ -962,7 +962,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       description: `. Inheritance information is unavailable or uninformative. The patient phenotype is highly
       specific and consistent with what has been described in similar cases.`
     }
-  ].map((def: CriteriaDefinition) => [def.criteria, def])
+  ].map((def: CriteriaCNVDefinition) => [def.criteria, def])
 )
 
 /** The state of a criteria.
@@ -970,10 +970,10 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
  * Could stem from the default definition (e.g., from the ACMG guidelines paper),
  * user input, or automated prediction tools.
  */
-interface CriteriaState {
+interface CriteriaCNVState {
   /** Criteria referred to. */
-  criteria: AcmgCriteria
-  /** Optionally, an evidence level
+  criteria: AcmgCriteriaCNV
+  /** The evidence score
    *
    * This is used by prediction tools to override the default and by the user
    * to override both default and prediction tools.
@@ -982,378 +982,378 @@ interface CriteriaState {
 }
 
 /** Define where a given selection state comes from. */
-enum StateSource {
+enum StateSourceCNV {
   Default = 'Default',
   User = 'User'
 }
 
 /** All state sources from lowest to highest priority. */
-const ALL_STATE_SOURCES = [StateSource.Default, StateSource.User]
+const ALL_STATE_SOURCES = [StateSourceCNV.Default, StateSourceCNV.User]
 
-/** Mapping from `AcmgCriteria` to `CriteriaState`. */
-type CriteriaToState = { [key in AcmgCriteria]: CriteriaState }
+/** Mapping from `AcmgCriteriaCNV` to `CriteriaCNVState`. */
+type CriteriaToState = { [key in AcmgCriteriaCNV]: CriteriaCNVState }
 
-/** Mapping from `StateSource` to `CriteriaState` */
-type SourceToCriteriaToState = { [key in StateSource]: CriteriaToState }
+/** Mapping from `StateSourceCNV` to `CriteriaCNVState` */
+type SourceToCriteriaToState = { [key in StateSourceCNV]: CriteriaToState }
 
 /**
  * Contains the ACMG selection states from different sources and handles the
  * logic of merging / overrides.
  */
-class MultiSourceAcmgCriteriaState {
-  criteriaStates: SourceToCriteriaToState
+class MultiSourceAcmgCriteriaCNVState {
+  CriteriaCNVStates: SourceToCriteriaToState
 
   constructor() {
-    this.criteriaStates = {
-      Default: this.createCriteriaStateMap(StateSource.Default),
-      User: this.createCriteriaStateMap(StateSource.User)
+    this.CriteriaCNVStates = {
+      Default: this.createCriteriaCNVStateMap(StateSourceCNV.Default),
+      User: this.createCriteriaCNVStateMap(StateSourceCNV.User)
     }
   }
 
   /** Creates a map of criteria states for a given source. */
-  protected createCriteriaStateMap(source: StateSource): CriteriaToState {
-    const isDefault = source === StateSource.Default
+  protected createCriteriaCNVStateMap(source: StateSourceCNV): CriteriaToState {
+    const isDefault = source === StateSourceCNV.Default
     return {
       L1A: {
-        criteria: AcmgCriteria.Loss1A,
+        criteria: AcmgCriteriaCNV.Loss1A,
         defaultScore: isDefault ? 0 : null
       },
       L1B: {
-        criteria: AcmgCriteria.Loss1B,
+        criteria: AcmgCriteriaCNV.Loss1B,
         defaultScore: isDefault ? -0.6 : null
       },
       L2A: {
-        criteria: AcmgCriteria.Loss2A,
+        criteria: AcmgCriteriaCNV.Loss2A,
         defaultScore: isDefault ? 1 : null
       },
       L2B: {
-        criteria: AcmgCriteria.Loss2B,
+        criteria: AcmgCriteriaCNV.Loss2B,
         defaultScore: isDefault ? 0 : null
       },
       'L2C-1': {
-        criteria: AcmgCriteria.Loss2C1,
+        criteria: AcmgCriteriaCNV.Loss2C1,
         defaultScore: isDefault ? 0.9 : null
       },
       'L2C-2': {
-        criteria: AcmgCriteria.Loss2C2,
+        criteria: AcmgCriteriaCNV.Loss2C2,
         defaultScore: isDefault ? 0 : null
       },
       'L2D-1': {
-        criteria: AcmgCriteria.Loss2D1,
+        criteria: AcmgCriteriaCNV.Loss2D1,
         defaultScore: isDefault ? 0 : null
       },
       'L2D-2': {
-        criteria: AcmgCriteria.Loss2D2,
+        criteria: AcmgCriteriaCNV.Loss2D2,
         defaultScore: isDefault ? 0.9 : null
       },
       'L2D-3': {
-        criteria: AcmgCriteria.Loss2D3,
+        criteria: AcmgCriteriaCNV.Loss2D3,
         defaultScore: isDefault ? 0.3 : null
       },
       'L2D-4': {
-        criteria: AcmgCriteria.Loss2D4,
+        criteria: AcmgCriteriaCNV.Loss2D4,
         defaultScore: isDefault ? 0.9 : null
       },
       L2E: {
-        criteria: AcmgCriteria.Loss2E,
+        criteria: AcmgCriteriaCNV.Loss2E,
         defaultScore: isDefault ? 0.9 : null
       },
       L2F: {
-        criteria: AcmgCriteria.Loss2F,
+        criteria: AcmgCriteriaCNV.Loss2F,
         defaultScore: isDefault ? -1 : null
       },
       L2G: {
-        criteria: AcmgCriteria.Loss2G,
+        criteria: AcmgCriteriaCNV.Loss2G,
         defaultScore: isDefault ? 0 : null
       },
       L2H: {
-        criteria: AcmgCriteria.Loss2H,
+        criteria: AcmgCriteriaCNV.Loss2H,
         defaultScore: isDefault ? 0.15 : null
       },
       L3A: {
-        criteria: AcmgCriteria.Loss3A,
+        criteria: AcmgCriteriaCNV.Loss3A,
         defaultScore: isDefault ? 0 : null
       },
       L3B: {
-        criteria: AcmgCriteria.Loss3B,
+        criteria: AcmgCriteriaCNV.Loss3B,
         defaultScore: isDefault ? 0.45 : null
       },
       L3C: {
-        criteria: AcmgCriteria.Loss3C,
+        criteria: AcmgCriteriaCNV.Loss3C,
         defaultScore: isDefault ? 0.9 : null
       },
       L4A: {
-        criteria: AcmgCriteria.Loss4A,
+        criteria: AcmgCriteriaCNV.Loss4A,
         defaultScore: isDefault ? 0.3 : null
       },
       L4B: {
-        criteria: AcmgCriteria.Loss4B,
+        criteria: AcmgCriteriaCNV.Loss4B,
         defaultScore: isDefault ? 0.3 : null
       },
       L4C: {
-        criteria: AcmgCriteria.Loss4C,
+        criteria: AcmgCriteriaCNV.Loss4C,
         defaultScore: isDefault ? 0.15 : null
       },
       L4D: {
-        criteria: AcmgCriteria.Loss4D,
+        criteria: AcmgCriteriaCNV.Loss4D,
         defaultScore: isDefault ? 0 : null
       },
       L4E: {
-        criteria: AcmgCriteria.Loss4E,
+        criteria: AcmgCriteriaCNV.Loss4E,
         defaultScore: isDefault ? 0.1 : null
       },
       L4F: {
-        criteria: AcmgCriteria.Loss4F,
+        criteria: AcmgCriteriaCNV.Loss4F,
         defaultScore: isDefault ? 0.15 : null
       },
       L4G: {
-        criteria: AcmgCriteria.Loss4G,
+        criteria: AcmgCriteriaCNV.Loss4G,
         defaultScore: isDefault ? 0.3 : null
       },
       L4H: {
-        criteria: AcmgCriteria.Loss4H,
+        criteria: AcmgCriteriaCNV.Loss4H,
         defaultScore: isDefault ? 0.45 : null
       },
       L4I: {
-        criteria: AcmgCriteria.Loss4I,
+        criteria: AcmgCriteriaCNV.Loss4I,
         defaultScore: isDefault ? -0.45 : null
       },
       L4J: {
-        criteria: AcmgCriteria.Loss4J,
+        criteria: AcmgCriteriaCNV.Loss4J,
         defaultScore: isDefault ? -0.3 : null
       },
       L4K: {
-        criteria: AcmgCriteria.Loss4K,
+        criteria: AcmgCriteriaCNV.Loss4K,
         defaultScore: isDefault ? -0.15 : null
       },
       L4L: {
-        criteria: AcmgCriteria.Loss4L,
+        criteria: AcmgCriteriaCNV.Loss4L,
         defaultScore: isDefault ? 0.45 : null
       },
       L4M: {
-        criteria: AcmgCriteria.Loss4M,
+        criteria: AcmgCriteriaCNV.Loss4M,
         defaultScore: isDefault ? 0.3 : null
       },
       L4N: {
-        criteria: AcmgCriteria.Loss4N,
+        criteria: AcmgCriteriaCNV.Loss4N,
         defaultScore: isDefault ? -0.9 : null
       },
       L4O: {
-        criteria: AcmgCriteria.Loss4O,
+        criteria: AcmgCriteriaCNV.Loss4O,
         defaultScore: isDefault ? -1 : null
       },
       L5A: {
-        criteria: AcmgCriteria.Loss5A,
+        criteria: AcmgCriteriaCNV.Loss5A,
         defaultScore: isDefault ? 0 : null
       },
       L5B: {
-        criteria: AcmgCriteria.Loss5B,
+        criteria: AcmgCriteriaCNV.Loss5B,
         defaultScore: isDefault ? -0.3 : null
       },
       L5C: {
-        criteria: AcmgCriteria.Loss5C,
+        criteria: AcmgCriteriaCNV.Loss5C,
         defaultScore: isDefault ? -0.15 : null
       },
       L5D: {
-        criteria: AcmgCriteria.Loss5D,
+        criteria: AcmgCriteriaCNV.Loss5D,
         defaultScore: isDefault ? 0 : null
       },
       L5E: {
-        criteria: AcmgCriteria.Loss5E,
+        criteria: AcmgCriteriaCNV.Loss5E,
         defaultScore: isDefault ? 0 : null
       },
       L5F: {
-        criteria: AcmgCriteria.Loss5F,
+        criteria: AcmgCriteriaCNV.Loss5F,
         defaultScore: isDefault ? 0 : null
       },
       L5G: {
-        criteria: AcmgCriteria.Loss5G,
+        criteria: AcmgCriteriaCNV.Loss5G,
         defaultScore: isDefault ? 0.1 : null
       },
       L5H: {
-        criteria: AcmgCriteria.Loss5H,
+        criteria: AcmgCriteriaCNV.Loss5H,
         defaultScore: isDefault ? 0.3 : null
       },
       G1A: {
-        criteria: AcmgCriteria.Gain1A,
+        criteria: AcmgCriteriaCNV.Gain1A,
         defaultScore: isDefault ? 0 : null
       },
       G1B: {
-        criteria: AcmgCriteria.Gain1B,
+        criteria: AcmgCriteriaCNV.Gain1B,
         defaultScore: isDefault ? -0.6 : null
       },
       G2A: {
-        criteria: AcmgCriteria.Gain2A,
+        criteria: AcmgCriteriaCNV.Gain2A,
         defaultScore: isDefault ? 1 : null
       },
       G2B: {
-        criteria: AcmgCriteria.Gain2B,
+        criteria: AcmgCriteriaCNV.Gain2B,
         defaultScore: isDefault ? 0 : null
       },
       G2C: {
-        criteria: AcmgCriteria.Gain2C,
+        criteria: AcmgCriteriaCNV.Gain2C,
         defaultScore: isDefault ? -1 : null
       },
       G2D: {
-        criteria: AcmgCriteria.Gain2D,
+        criteria: AcmgCriteriaCNV.Gain2D,
         defaultScore: isDefault ? -1 : null
       },
       G2E: {
-        criteria: AcmgCriteria.Gain2E,
+        criteria: AcmgCriteriaCNV.Gain2E,
         defaultScore: isDefault ? 0 : null
       },
       G2F: {
-        criteria: AcmgCriteria.Gain2F,
+        criteria: AcmgCriteriaCNV.Gain2F,
         defaultScore: isDefault ? -1 : null
       },
       G2G: {
-        criteria: AcmgCriteria.Gain2G,
+        criteria: AcmgCriteriaCNV.Gain2G,
         defaultScore: isDefault ? 0 : null
       },
       G2H: {
-        criteria: AcmgCriteria.Gain2H,
+        criteria: AcmgCriteriaCNV.Gain2H,
         defaultScore: isDefault ? 0 : null
       },
       G2I: {
-        criteria: AcmgCriteria.Gain2I,
+        criteria: AcmgCriteriaCNV.Gain2I,
         defaultScore: isDefault ? 0 : null
       },
       G2J: {
-        criteria: AcmgCriteria.Gain2J,
+        criteria: AcmgCriteriaCNV.Gain2J,
         defaultScore: isDefault ? 0 : null
       },
       G2K: {
-        criteria: AcmgCriteria.Gain2K,
+        criteria: AcmgCriteriaCNV.Gain2K,
         defaultScore: isDefault ? 0.45 : null
       },
       G2L: {
-        criteria: AcmgCriteria.Gain2L,
+        criteria: AcmgCriteriaCNV.Gain2L,
         defaultScore: isDefault ? 0 : null
       },
       G3A: {
-        criteria: AcmgCriteria.Gain3A,
+        criteria: AcmgCriteriaCNV.Gain3A,
         defaultScore: isDefault ? 0 : null
       },
       G3B: {
-        criteria: AcmgCriteria.Gain3B,
+        criteria: AcmgCriteriaCNV.Gain3B,
         defaultScore: isDefault ? 0.45 : null
       },
       G3C: {
-        criteria: AcmgCriteria.Gain3C,
+        criteria: AcmgCriteriaCNV.Gain3C,
         defaultScore: isDefault ? 0.9 : null
       },
       G4A: {
-        criteria: AcmgCriteria.Gain4A,
+        criteria: AcmgCriteriaCNV.Gain4A,
         defaultScore: isDefault ? 0.3 : null
       },
       G4B: {
-        criteria: AcmgCriteria.Gain4B,
+        criteria: AcmgCriteriaCNV.Gain4B,
         defaultScore: isDefault ? 0.15 : null
       },
       G4C: {
-        criteria: AcmgCriteria.Gain4C,
+        criteria: AcmgCriteriaCNV.Gain4C,
         defaultScore: isDefault ? 0.15 : null
       },
       G4D: {
-        criteria: AcmgCriteria.Gain4D,
+        criteria: AcmgCriteriaCNV.Gain4D,
         defaultScore: isDefault ? 0 : null
       },
       G4E: {
-        criteria: AcmgCriteria.Gain4E,
+        criteria: AcmgCriteriaCNV.Gain4E,
         defaultScore: isDefault ? 0.1 : null
       },
       G4F: {
-        criteria: AcmgCriteria.Gain4F,
+        criteria: AcmgCriteriaCNV.Gain4F,
         defaultScore: isDefault ? 0.15 : null
       },
       G4G: {
-        criteria: AcmgCriteria.Gain4G,
+        criteria: AcmgCriteriaCNV.Gain4G,
         defaultScore: isDefault ? 0.3 : null
       },
       G4H: {
-        criteria: AcmgCriteria.Gain4H,
+        criteria: AcmgCriteriaCNV.Gain4H,
         defaultScore: isDefault ? 0.45 : null
       },
       G4I: {
-        criteria: AcmgCriteria.Gain4I,
+        criteria: AcmgCriteriaCNV.Gain4I,
         defaultScore: isDefault ? -0.45 : null
       },
       G4J: {
-        criteria: AcmgCriteria.Gain4J,
+        criteria: AcmgCriteriaCNV.Gain4J,
         defaultScore: isDefault ? -0.3 : null
       },
       G4K: {
-        criteria: AcmgCriteria.Gain4K,
+        criteria: AcmgCriteriaCNV.Gain4K,
         defaultScore: isDefault ? -0.15 : null
       },
       G4L: {
-        criteria: AcmgCriteria.Gain4L,
+        criteria: AcmgCriteriaCNV.Gain4L,
         defaultScore: isDefault ? 0.45 : null
       },
       G4M: {
-        criteria: AcmgCriteria.Gain4M,
+        criteria: AcmgCriteriaCNV.Gain4M,
         defaultScore: isDefault ? 0.3 : null
       },
       G4N: {
-        criteria: AcmgCriteria.Gain4N,
+        criteria: AcmgCriteriaCNV.Gain4N,
         defaultScore: isDefault ? -0.9 : null
       },
       G4O: {
-        criteria: AcmgCriteria.Gain4O,
+        criteria: AcmgCriteriaCNV.Gain4O,
         defaultScore: isDefault ? -1 : null
       },
       G5A: {
-        criteria: AcmgCriteria.Gain5A,
+        criteria: AcmgCriteriaCNV.Gain5A,
         defaultScore: isDefault ? 0 : null
       },
       G5B: {
-        criteria: AcmgCriteria.Gain5B,
+        criteria: AcmgCriteriaCNV.Gain5B,
         defaultScore: isDefault ? -0.3 : null
       },
       G5C: {
-        criteria: AcmgCriteria.Gain5C,
+        criteria: AcmgCriteriaCNV.Gain5C,
         defaultScore: isDefault ? -0.15 : null
       },
       G5D: {
-        criteria: AcmgCriteria.Gain5D,
+        criteria: AcmgCriteriaCNV.Gain5D,
         defaultScore: isDefault ? 0 : null
       },
       G5E: {
-        criteria: AcmgCriteria.Gain5E,
+        criteria: AcmgCriteriaCNV.Gain5E,
         defaultScore: isDefault ? 0 : null
       },
       G5F: {
-        criteria: AcmgCriteria.Gain5F,
+        criteria: AcmgCriteriaCNV.Gain5F,
         defaultScore: isDefault ? 0 : null
       },
       G5G: {
-        criteria: AcmgCriteria.Gain5G,
+        criteria: AcmgCriteriaCNV.Gain5G,
         defaultScore: isDefault ? 0.1 : null
       },
       G5H: {
-        criteria: AcmgCriteria.Gain5H,
+        criteria: AcmgCriteriaCNV.Gain5H,
         defaultScore: isDefault ? 0.3 : null
       }
     }
   }
 
-  /** Gets the effective `CriteriaState` for an `AcmgCriteria`.*/
-  getCriteriaState(criteria: AcmgCriteria): CriteriaState {
+  /** Gets the effective `CriteriaCNVState` for an `AcmgCriteriaCNV`.*/
+  getCriteriaCNVState(criteria: AcmgCriteriaCNV): CriteriaCNVState {
     let defaultScore = null
 
-    for (const stateSource of ALL_STATE_SOURCES) {
-      if (!this.criteriaStates[stateSource]) {
+    for (const StateSourceCNV of ALL_STATE_SOURCES) {
+      if (!this.CriteriaCNVStates[StateSourceCNV]) {
         continue
       }
 
-      const criteriaState = this.criteriaStates[stateSource][criteria]
-      if (criteriaState) {
-        if (criteriaState.criteria !== criteria) {
+      const CriteriaCNVState = this.CriteriaCNVStates[StateSourceCNV][criteria]
+      if (CriteriaCNVState) {
+        if (CriteriaCNVState.criteria !== criteria) {
           throw new Error('criteria mismatch; should never happen')
         }
 
-        if (criteriaState.defaultScore !== null) {
-          defaultScore = criteriaState.defaultScore
+        if (CriteriaCNVState.defaultScore !== null) {
+          defaultScore = CriteriaCNVState.defaultScore
         }
       }
     }
@@ -1364,47 +1364,50 @@ class MultiSourceAcmgCriteriaState {
     }
   }
 
-  /** Get the `CriteriaState` for an explicit `StateSource`.
+  /** Get the `CriteriaCNVState` for an explicit `StateSourceCNV`.
    *
    * This will be the original object, do not modify it.
    */
-  getCriteriaStateFromSource(criteria: AcmgCriteria, source: StateSource): CriteriaState {
-    if (!this.criteriaStates[source] || !this.criteriaStates[source][criteria]) {
+  getCriteriaCNVStateFromSource(
+    criteria: AcmgCriteriaCNV,
+    source: StateSourceCNV
+  ): CriteriaCNVState {
+    if (!this.CriteriaCNVStates[source] || !this.CriteriaCNVStates[source][criteria]) {
       throw new Error(`Criteria ${criteria} not found for source ${source}`)
     } else {
-      return this.criteriaStates[source][criteria]
+      return this.CriteriaCNVStates[source][criteria]
     }
   }
 
-  /** Sets the `Score` of a `CriteriaState` for a given `StateSource` and `AcmgCriteria`. */
-  setScore(source: StateSource, criteria: AcmgCriteria, defaultScore: number | null) {
-    if (source === StateSource.Default) {
+  /** Sets the `Score` of a `CriteriaCNVState` for a given `StateSourceCNV` and `AcmgCriteriaCNV`. */
+  setScore(source: StateSourceCNV, criteria: AcmgCriteriaCNV, defaultScore: number | null) {
+    if (source === StateSourceCNV.Default) {
       throw new Error('Cannot set presence for default source')
     }
 
     if (
-      !this.criteriaStates[source] ||
-      !this.criteriaStates[source][criteria] ||
-      !this.criteriaStates[source][criteria].defaultScore
+      !this.CriteriaCNVStates[source] ||
+      !this.CriteriaCNVStates[source][criteria] ||
+      !this.CriteriaCNVStates[source][criteria].defaultScore
     ) {
       throw new Error(`Criteria ${criteria} not found for source ${source}`)
     } else {
-      this.criteriaStates[source][criteria].defaultScore = defaultScore
+      this.CriteriaCNVStates[source][criteria].defaultScore = defaultScore
     }
   }
 
   /** Returns the raw map of states, don't use to modify. */
   getStates() {
-    return this.criteriaStates
+    return this.CriteriaCNVStates
   }
 
   /** Returns the ACMG class for current criteria state. */
   getAcmgClass() {
     let score = 0
 
-    for (const criteria of ALL_ACMG_CRITERIA) {
-      const criteriaState = this.getCriteriaState(criteria)
-      score += criteriaState.defaultScore || 0
+    for (const criteria of ALL_ACMG_CRITERIA_CNV) {
+      const CriteriaCNVState = this.getCriteriaCNVState(criteria)
+      score += CriteriaCNVState.defaultScore || 0
     }
 
     const isPathogenic = score >= 0.99
@@ -1431,12 +1434,12 @@ class MultiSourceAcmgCriteriaState {
 }
 
 export {
-  ACMG_CRITERIA_DEFS,
-  ALL_ACMG_CRITERIA,
+  ACMG_CRITERIA_CNV_DEFS,
+  ALL_ACMG_CRITERIA_CNV,
   ALL_STATE_SOURCES,
-  type CriteriaDefinition,
-  type CriteriaState,
+  type CriteriaCNVDefinition,
+  type CriteriaCNVState,
   type CriteriaToState,
-  MultiSourceAcmgCriteriaState,
-  StateSource
+  MultiSourceAcmgCriteriaCNVState,
+  StateSourceCNV
 }
