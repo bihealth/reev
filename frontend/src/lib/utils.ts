@@ -120,6 +120,16 @@ export const search = (searchTerm: string, genomeRelease: string) => {
       })
     ],
     [
+      /^(?:DEL|DUP):chr\d+:\d+:\d+$/,
+      (): RouteLocationFragment => ({
+        name: 'cnv',
+        params: {
+          searchTerm: searchTerm,
+          genomeRelease: genomeRelease
+        }
+      })
+    ],
+    [
       /^.*$/,
       (): RouteLocationFragment => ({
         name: 'genes',
@@ -162,6 +172,39 @@ export const infoFromQuery = (query: string): any => {
   }
 }
 
+/**
+ * Return an object with the chromosome, start, end and sv_type
+ * values from the given query string.
+ *
+ * @param query Incoming query string
+ */
+export const infoFromCNVQuery = (query: string): any => {
+  const [sv_type, chromosome, start, end] = query.split(':')
+  return {
+    sv_type: sv_type,
+    chromosome: chromosome,
+    start: start,
+    end: end
+  }
+}
+
 export function copy(value: Object) {
   return JSON.parse(JSON.stringify(value))
+}
+
+/**
+ * Convert sample name to its display name.
+ *
+ * Basically, this is only needed for output of the SNAPPY Pipeline.
+ *
+ * @param name The sample name to format.
+ * @returns Sample name ready for display.
+ */
+export function displayName(name: string): string {
+  if (name) {
+    const re = /-N\d+-(DNA|RNA)\d+-(WES|WGS|Panel_seq)\d+$/
+    return name.replace(re, '')
+  } else {
+    return name
+  }
 }

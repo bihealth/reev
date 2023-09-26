@@ -1,3 +1,4 @@
+import { chunks } from '@reactgular/chunks'
 import { API_BASE_PREFIX_ANNONARS } from '@/api/common'
 
 const API_BASE_URL = `${API_BASE_PREFIX_ANNONARS}/`
@@ -53,5 +54,35 @@ export class AnnonarsClient {
       method: 'GET'
     })
     return await response.json()
+  }
+
+  /**
+   * Fetch gene informations via annonars REST API.
+   *
+   * @param hgncIds Array of HGNC IDs to use, e.g., `["HGNC:26467"]`.
+   * @param chunkSize How many IDs to send in one request.
+   * @returns Promise with an array of gene information objects.
+   */
+  async fetchGeneInfos(hgncIds: Array<string>, chunkSize?: number): Promise<Array<any>> {
+    const hgncIdChunks = chunks(hgncIds, chunkSize ?? 10)
+
+    const promises = hgncIdChunks.map((chunk: any) => {
+      const url = `${this.apiBaseUrl}genes/info?hgnc_id=${chunk.join(',')}`
+
+      return fetch(url, {
+        method: 'GET'
+      })
+    })
+
+    const responses = await Promise.all(promises)
+    const results = await Promise.all(responses.map((response: any) => response.json()))
+
+    const result: any = []
+    results.forEach((chunk: any) => {
+      for (const value of Object.values(chunk.genes)) {
+        result.push(value)
+      }
+    })
+    return result
   }
 }
