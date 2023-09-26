@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCNVInfoStore } from '@/stores/cnvInfo'
+import { useSvInfoStore } from '@/stores/svInfo'
 import { computed, type ComputedRef, type Ref, ref } from 'vue'
 import { roundIt } from '@/lib/utils'
 
@@ -88,7 +88,7 @@ const headers: Header[] = [
 ]
 
 /** The SV details store. */
-const cnvInfoStore = useCNVInfoStore()
+const svInfoStore = useSvInfoStore()
 
 /** Helper type for `resultsInfos`. */
 type ResultsInfo = {
@@ -102,7 +102,7 @@ type ResultsInfo = {
  */
 const resultsInfos: ComputedRef<Map<string, ResultsInfo>> = computed(() => {
   const result = new Map()
-  for (const txEffect of cnvInfoStore.currentCNVRecord?.payload?.tx_effects ?? []) {
+  for (const txEffect of svInfoStore.currentSvRecord?.payload?.tx_effects ?? []) {
     const value: ResultsInfo = {
       isDiseaseGene: txEffect.gene.is_disease_gene,
       txEffect: txEffect.transcript_effects[0]

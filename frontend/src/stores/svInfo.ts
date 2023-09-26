@@ -9,35 +9,35 @@ import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
 import { StoreState } from '@/stores/misc'
-import { infoFromCNVQuery } from '@/lib/utils'
+import { infoFromSvQuery } from '@/lib/utils'
 
 /** `SvRecord` is a type alias for easier future interface definition. */
-export type CNVRecord = any | null
+export type SvRecord = any | null
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any | null
 
-export const useCNVInfoStore = defineStore('cnvInfo', () => {
+export const useSvInfoStore = defineStore('svInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  /** The search query for the CNV. */
-  const cnvTerm = ref<string | null>(null)
+  /** The search query for the SV. */
+  const svTerm = ref<string | null>(null)
 
-  /** The current CNV record. */
-  const currentCNVRecord = ref<CNVRecord>(null)
+  /** The current SV record. */
+  const currentSvRecord = ref<SvRecord>(null)
 
   /** Infos on the variants of the record. */
   const genesInfos = ref<GeneInfo[]>([])
 
   function clearData() {
     storeState.value = StoreState.Initial
-    currentCNVRecord.value = null
+    currentSvRecord.value = null
     genesInfos.value = []
   }
 
   const loadData = async (variantQuery: string, genomeRelease: string) => {
     // Prevent fetching twice.
-    if (variantQuery === cnvTerm.value) {
+    if (variantQuery === svTerm.value) {
       return
     }
 
@@ -47,7 +47,7 @@ export const useCNVInfoStore = defineStore('cnvInfo', () => {
     // Load data via API
     storeState.value = StoreState.Loading
     try {
-      const { sv_type, chromosome, start, end } = infoFromCNVQuery(variantQuery)
+      const { sv_type, chromosome, start, end } = infoFromSvQuery(variantQuery)
       // Fetch new details
       const annonarsClient = new AnnonarsClient()
       const hgncIds = []
@@ -63,7 +63,7 @@ export const useCNVInfoStore = defineStore('cnvInfo', () => {
         genesInfos.value = await annonarsClient.fetchGeneInfos(hgncIds)
       }
 
-      currentCNVRecord.value = {
+      currentSvRecord.value = {
         sv_type: sv_type,
         chromosome: chromosome,
         start: start,
@@ -71,8 +71,9 @@ export const useCNVInfoStore = defineStore('cnvInfo', () => {
         release: genomeRelease
       }
       storeState.value = StoreState.Active
+      svTerm.value = variantQuery
     } catch (e) {
-      console.error('There was an error loading the CNV data.', e)
+      console.error('There was an error loading the SV data.', e)
       storeState.value = StoreState.Error
     }
   }
@@ -80,7 +81,7 @@ export const useCNVInfoStore = defineStore('cnvInfo', () => {
   return {
     storeState,
     genesInfos,
-    currentCNVRecord,
+    currentSvRecord,
     clearData,
     loadData
   }

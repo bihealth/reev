@@ -1,19 +1,15 @@
 <script setup lang="ts">
-/**
- * Detailed display of CNV information.
- */
-
 import { watch, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useCNVInfoStore } from '@/stores/cnvInfo'
+import { useSvInfoStore } from '@/stores/svInfo'
 import { StoreState } from '@/stores/misc'
 
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import { type CNVRecord } from '@/stores/cnvInfo'
-import CNVDetailsGenes from '@/components/CNVDetails/CNVGenes.vue'
-import CNVDetailsClinvar from '@/components/CNVDetails/CNVDetailsClinvar.vue'
-import CNVDetailsGenotypeCall from '@/components/CNVDetails/CNVDetailsGenotypeCall.vue'
+import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
+import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
+import SvDetailsGenotypeCall from '@/components/SvDetails/SvDetailsGenotypeCall.vue'
+import { type SvRecord } from '@/stores/svInfo'
 
 export interface Props {
   searchTerm?: string
@@ -28,7 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 const router = useRouter()
 const route = useRoute()
 
-const cnvInfoStore = useCNVInfoStore()
+const svInfoStore = useSvInfoStore()
 
 const scrollToSection = async () => {
   const sectionId = route.hash.slice(1)
@@ -37,12 +33,12 @@ const scrollToSection = async () => {
 }
 
 const loadDataToStore = async () => {
-  await cnvInfoStore.loadData(props.searchTerm, props.genomeRelease)
+  await svInfoStore.loadData(props.searchTerm, props.genomeRelease)
   await scrollToSection()
 }
 
 // Pretty display of coordinates.
-const cnvLocus = (record: CNVRecord): string | null => {
+const svLocus = (record: SvRecord): string | null => {
   if (!record) {
     return null
   }
@@ -72,10 +68,10 @@ watch(() => route.hash, scrollToSection)
 // If variantInfoStore.storeState is StoreState.Error then redirect to the
 // home page.
 watch(
-  () => cnvInfoStore.storeState,
+  () => svInfoStore.storeState,
   (storeState) => {
     if (storeState == StoreState.Error) {
-      cnvInfoStore.clearData()
+      svInfoStore.clearData()
       router.push({ name: 'home' })
     }
   }
@@ -97,7 +93,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
 <template>
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
-    <div v-if="cnvInfoStore.storeState == StoreState.Active" class="variant-info">
+    <div v-if="svInfoStore.storeState == StoreState.Active" class="variant-info">
       <v-list density="compact" nav>
         <v-list-item
           v-for="section in SECTIONS"
@@ -112,43 +108,43 @@ const genomeReleaseRef = ref(props.genomeRelease)
   </v-navigation-drawer>
   <v-layout>
     <v-main style="min-height: 300px">
-      <div v-if="cnvInfoStore.storeState == StoreState.Active" class="cnv-info">
-        <div id="gene" class="cnv-item">
+      <div v-if="svInfoStore.storeState == StoreState.Active" class="sv-info">
+        <div id="gene" class="sv-item">
           <h2>Genes</h2>
           <v-divider />
-          <CNVDetailsGenes :genes-infos="cnvInfoStore.genesInfos" />
+          <SvDetailsGenes :genes-infos="svInfoStore.genesInfos" />
         </div>
-        <div id="clinvar" class="cnv-item">
+        <div id="clinvar" class="sv-item">
           <h2>ClinVar</h2>
           <v-divider />
-          <CNVDetailsClinvar />
+          <SvDetailsClinvar />
         </div>
-        <div id="call-details" class="cnv-item">
+        <div id="call-details" class="sv-item">
           <h2>Genotype Call</h2>
           <v-divider />
           Precise coordinates:
-          <code> {{ cnvLocus(cnvInfoStore.currentCNVRecord) }} </code>
-          <CNVDetailsGenotypeCall :current-cnv-record="cnvInfoStore.currentCNVRecord" />
+          <code> {{ svLocus(svInfoStore.currentSvRecord) }} </code>
+          <SvDetailsGenotypeCall :current-sv-record="svInfoStore.currentSvRecord" />
         </div>
-        <div id="acmg" class="cnv-item">
+        <div id="acmg" class="sv-item">
           <h2>ACMG</h2>
           <v-divider />
           <!-- <CNVAcmgRating /> -->
         </div>
-        <div id="genome-browser" class="cnv-item">
+        <div id="genome-browser" class="sv-item">
           <h2>Genome Browser</h2>
           <v-divider />
           <!-- <GenomeBrowser
-                :case-uuid="cnvInfoStore.caseUuid"
+                :case-uuid="svInfoStore.caseUuid"
                 :genome="genomeRelease"
-                :locus="cnvLocus(cnvInfoStore.currentCNVRecord)"
+                :locus="svLocus(svInfoStore.currentCNVRecord)"
               /> -->
         </div>
       </div>
 
       <div v-else>
         <div class="d-flex align-center justify-center" style="min-height: 300px">
-          <h1>Loading CNV information</h1>
+          <h1>Loading SV information</h1>
           <v-progress-circular indeterminate></v-progress-circular>
         </div>
       </div>
@@ -157,12 +153,12 @@ const genomeReleaseRef = ref(props.genomeRelease)
 </template>
 
 <style scoped>
-.cnv-info {
+.sv-info {
   width: 95%;
   margin: 20px;
 }
 
-.cnv-item {
+.sv-item {
   margin-bottom: 20px;
   border: 2px solid rgb(229, 85, 64);
   border-radius: 10px;

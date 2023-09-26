@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useCNVInfoStore } from '@/stores/cnvInfo'
+import { useSvInfoStore } from '@/stores/svInfo'
 
-const cnvInfoStore = useCNVInfoStore()
+const svInfoStore = useSvInfoStore()
 
 const vcvUrl = (vcv: string): string => {
   const stripped = vcv.replace(/^VCV0+/, '')
@@ -11,14 +11,11 @@ const vcvUrl = (vcv: string): string => {
 
 <template>
   <div>
-    <template v-if="cnvInfoStore.currentCNVRecord?.payload?.clinvar_ovl_vcvs?.length">
+    <template v-if="svInfoStore.currentSvRecord?.payload?.clinvar_ovl_vcvs?.length">
       <p>The following overlapping SVs are flagged as (likely) pathogenic in ClinVar.</p>
 
       <ul>
-        <li
-          v-for="vcv in cnvInfoStore.currentCNVRecord?.payload?.clinvar_ovl_vcvs ?? []"
-          :key="vcv"
-        >
+        <li v-for="vcv in svInfoStore.currentSvRecord?.payload?.clinvar_ovl_vcvs ?? []" :key="vcv">
           <a :href="vcvUrl(vcv)">
             {{ vcv }}
           </a>

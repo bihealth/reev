@@ -12,6 +12,11 @@ export class AnnonarsClient {
     this.csrfToken = csrfToken ?? null
   }
 
+  /**
+   * Fetch gene information via annonars REST API.
+   *
+   * @param hgncId HGNC ID, e.g., `"HGNC:26467"`.
+   */
   async fetchGeneInfo(hgncId: string): Promise<any> {
     const response = await fetch(`${this.apiBaseUrl}genes/info?hgnc_id=${hgncId}`, {
       method: 'GET'
@@ -19,6 +24,15 @@ export class AnnonarsClient {
     return await response.json()
   }
 
+  /**
+   * Fetch variant information via annonars and mehari REST APIs.
+   *
+   * @param genomeRelease GRCh37 or GRCh38.
+   * @param chromosome Chromosome, e.g., `"chr1"`.
+   * @param pos Position of the variant.
+   * @param reference Reference nucleotide, e.g., `"A"`.
+   * @param alternative Alternative nucleotide, e.g., `"G"`.
+   */
   async fetchVariantInfo(
     genomeRelease: string,
     chromosome: string,

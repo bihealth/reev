@@ -4,7 +4,7 @@ import { computed, type ComputedRef } from 'vue'
 import { displayName } from '@/lib/utils'
 
 const props = defineProps({
-  currentCNVRecord: Object
+  currentSvRecord: Object
 })
 
 const GT_FIELDS = Object.freeze({
@@ -27,12 +27,12 @@ const GT_FIELDS = Object.freeze({
 const identity = (x: any) => x
 
 const allKeys: ComputedRef<any[]> = computed(() => {
-  if (!props.currentCNVRecord?.payload?.call_info) {
+  if (!props.currentSvRecord?.payload?.call_info) {
     return []
   }
 
   let tmp: any = []
-  for (let call_info of Object.values(props.currentCNVRecord.payload.call_info) as any) {
+  for (let call_info of Object.values(props.currentSvRecord.payload.call_info) as any) {
     tmp = tmp.concat(
       Object.entries(call_info)
         .filter(([, value]) => value !== null)
@@ -47,12 +47,12 @@ const allKeys: ComputedRef<any[]> = computed(() => {
 
 <template>
   <div class="card">
-    <table class="table table-striped table-hover" v-if="currentCNVRecord">
+    <table class="table table-striped table-hover" v-if="currentSvRecord">
       <thead>
         <tr>
           <th>Sample</th>
 
-          <template v-for="(_, sample) in currentCNVRecord.payload.call_info" :key="sample">
+          <template v-for="(_, sample) in currentSvRecord.payload.call_info" :key="sample">
             <th>
               {{ displayName(sample as any) }}
             </th>
@@ -62,7 +62,7 @@ const allKeys: ComputedRef<any[]> = computed(() => {
       <tbody>
         <tr v-for="key in allKeys" :key="key">
           <th>{{ GT_FIELDS[key as keyof typeof GT_FIELDS]?.label ?? key }}</th>
-          <td v-for="genotype in currentCNVRecord.payload.call_info" :key="genotype">
+          <td v-for="genotype in currentSvRecord.payload.call_info" :key="genotype">
             <div v-if="key === 'matched_gt_criteria'">
               {{ (GT_FIELDS.matched_gt_criteria?.fmt)(genotype[key]) }}
             </div>
