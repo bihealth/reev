@@ -52,9 +52,11 @@ const translateGenome = (value: any) => {
 watch(
   () => props.genome,
   () => {
-    igvBrowser.value?.loadGenome(translateGenome(props.genome)).then((browser: GenomeBrowser) => {
-      browser.search(props.locus)
-    })
+    ;(igvBrowser.value! as GenomeBrowser)
+      .loadGenome(translateGenome(props.genome))
+      .then((browser: GenomeBrowser) => {
+        browser.search(props.locus)
+      })
     // .then((browser: GenomeBrowser) => {
     // addTracks(browser)
     // })
@@ -66,7 +68,7 @@ watch(
   () => props.caseUuid,
   () => {
     if (igvBrowser.value) {
-      igvBrowser.value.removeTrackByName('Case SVs')
+      ;(igvBrowser.value! as GenomeBrowser).removeTrackByName('Case SVs')
       // addCaseTracks(igvBrowser.value)
     }
   }
@@ -77,7 +79,7 @@ watch(
   () => props.locus,
   () => {
     if (igvBrowser.value) {
-      igvBrowser.value.search(props.locus)
+      ;(igvBrowser.value! as GenomeBrowser).search(props.locus)
     }
   }
 )
@@ -93,7 +95,7 @@ onMounted(() => {
       igvBrowser.value = browser
       // addTracks(browser)
       if (props.locus) {
-        igvBrowser.value?.search(props.locus)
+        ;(igvBrowser.value! as GenomeBrowser).search(props.locus)
       }
     })
 })
