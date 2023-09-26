@@ -26,6 +26,8 @@ BACKEND_PREFIX_ANNONARS = env.get("REEV_BACKEND_PREFIX_ANNONARS", "http://annona
 BACKEND_PREFIX_MEHARI = env.get("REEV_BACKEND_PREFIX_MEHARI", "http://mehari:8080")
 #: Prefix for the backend of viguno service
 BACKEND_PREFIX_VIGUNO = env.get("REEV_BACKEND_PREFIX_VIGUNO", "http://viguno:8080")
+#: Prefix for the backend of nginx service
+BACKEND_PREFIX_NGINX = env.get("REEV_BACKEND_PREFIX_NGINX", "http://nginx:8080")
 #: Path to REEV version file.
 VERSION_FILE = env.get("REEV_VERSION_FILE", "/VERSION")
 #: The REEV version from the file (``None`` if to load dynamically from git)
@@ -97,6 +99,8 @@ async def reverse_proxy(request: Request) -> Response:
         backend_url = BACKEND_PREFIX_MEHARI + url.path.replace("/proxy/mehari", "")
     elif url.path.startswith("/proxy/viguno"):
         backend_url = BACKEND_PREFIX_VIGUNO + url.path.replace("/proxy/viguno", "")
+    elif url.path.startswith("/proxy/nginx"):
+        backend_url = BACKEND_PREFIX_NGINX + url.path.replace("/proxy/nginx", "")
 
     if backend_url:
         backend_url = backend_url + (f"?{url.query}" if url.query else "")

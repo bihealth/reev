@@ -52,7 +52,7 @@ const allKeys: ComputedRef<any[]> = computed(() => {
         <tr>
           <th>Sample</th>
 
-          <template v-for="(_, sample) in currentSvRecord.payload.call_info" :key="sample">
+          <template v-for="(_, sample) in currentSvRecord?.payload?.call_info" :key="sample">
             <th>
               {{ displayName(sample as any) }}
             </th>
@@ -62,7 +62,7 @@ const allKeys: ComputedRef<any[]> = computed(() => {
       <tbody>
         <tr v-for="key in allKeys" :key="key">
           <th>{{ GT_FIELDS[key as keyof typeof GT_FIELDS]?.label ?? key }}</th>
-          <td v-for="genotype in currentSvRecord.payload.call_info" :key="genotype">
+          <td v-for="genotype in currentSvRecord?.payload?.call_info" :key="genotype">
             <div v-if="key === 'matched_gt_criteria'">
               {{ (GT_FIELDS.matched_gt_criteria?.fmt)(genotype[key]) }}
             </div>

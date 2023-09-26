@@ -9,6 +9,7 @@ import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
 import SvDetailsGenotypeCall from '@/components/SvDetails/SvDetailsGenotypeCall.vue'
+import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import { type SvRecord } from '@/stores/svInfo'
 
 export interface Props {
@@ -38,9 +39,9 @@ const loadDataToStore = async () => {
 }
 
 // Pretty display of coordinates.
-const svLocus = (record: SvRecord): string | null => {
+const svLocus = (record: SvRecord): string | undefined => {
   if (!record) {
-    return null
+    return undefined
   }
 
   let locus: string
@@ -134,11 +135,11 @@ const genomeReleaseRef = ref(props.genomeRelease)
         <div id="genome-browser" class="sv-item">
           <h2>Genome Browser</h2>
           <v-divider />
-          <!-- <GenomeBrowser
-                :case-uuid="svInfoStore.caseUuid"
-                :genome="genomeRelease"
-                :locus="svLocus(svInfoStore.currentCNVRecord)"
-              /> -->
+          <GenomeBrowser
+            :case-uuid="'case-uuid'"
+            :genome="genomeRelease === 'grch37' ? 'hg19' : 'b38'"
+            :locus="svLocus(svInfoStore.currentSvRecord)"
+          />
         </div>
       </div>
 
