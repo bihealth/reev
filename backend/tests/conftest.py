@@ -2,6 +2,8 @@ from typing import Iterator
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
+from app import models  # noqa
+from app.api import deps
 from app.db import session
 from app.db.base import Base
 from app.main import app
@@ -30,8 +32,14 @@ def db(db_engine: Engine, monkeypatch: MonkeyPatch) -> Iterator:
     # create a session for testing
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
     try:
+        monkeypatch.setattr(session, "engine", db_engine)
         monkeypatch.setattr(session, "SessionLocal", TestingSessionLocal)
         db = TestingSessionLocal()
+
+        def override_get_db():
+            yield db
+
+        app.dependency_overrides[deps.get_db] = override_get_db
         yield db
     finally:
         db.close()

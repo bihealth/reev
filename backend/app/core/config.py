@@ -102,7 +102,7 @@ class Settings(BaseSettings):
     #: Postgres database name
     POSTGRES_DB: str | None = None
     #: SQLAlchemy Postgres DSN
-    SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
+    SQLALCHEMY_DATABASE_URI: PostgresDsn | str | None = None
 
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> Any:
