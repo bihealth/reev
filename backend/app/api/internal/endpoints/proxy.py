@@ -29,9 +29,7 @@ async def reverse_proxy(request: Request) -> Response:
             "/internal/proxy/viguno", ""
         )
     elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/nginx"):
-        backend_url = settings.BACKEND_PREFIX_NGINX + url.path.replace(
-            "/internal/proxy/nginx", ""
-        )
+        backend_url = settings.BACKEND_PREFIX_NGINX + url.path.replace("/internal/proxy/nginx", "")
 
     if backend_url:
         client = httpx.AsyncClient()
