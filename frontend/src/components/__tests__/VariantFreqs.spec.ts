@@ -13,6 +13,7 @@ import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
+import type { SmallVariant } from '@/stores/variantInfo'
 
 const vuetify = createVuetify({
   components,
@@ -45,7 +46,7 @@ const smallVariantInfoMitochondrial = {
   alternative: 'A',
   hgnc_id: 'HGNC:1100'
 }
-const makeWrapper = (variantInfo: Object) => {
+const makeWrapper = (variantInfo: SmallVariant) => {
   return mount(VariantFreqs, {
     props: {
       smallVar: variantInfo,

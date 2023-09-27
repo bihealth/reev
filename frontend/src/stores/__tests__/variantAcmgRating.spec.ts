@@ -6,6 +6,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { StoreState } from '../misc'
 import { useVariantAcmgRatingStore } from '../variantAcmgRating'
 import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
+import type { SmallVariant } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -133,7 +134,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
 
-    await store.setAcmgRating(store.smallVariant)
+    await store.setAcmgRating(store.smallVariant as SmallVariant)
 
     expect(fetchMocker.mock.calls.length).toBe(1)
   })

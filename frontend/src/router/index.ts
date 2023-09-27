@@ -9,6 +9,7 @@ import VariantDetailView from '@/views/VariantDetailView.vue'
 import GenesListView from '@/views/GenesListView.vue'
 import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
 import PathNotFound from '@/views/PathNotFound.vue'
+import SvDetailView from '@/views/SvDetailView.vue'
 
 const routes = [
   {
@@ -38,6 +39,14 @@ const routes = [
     path: '/variant/:searchTerm/:genomeRelease',
     name: 'variant',
     component: VariantDetailView,
+    props: (route: any) => {
+      return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
+    }
+  },
+  {
+    path: '/cnv/:searchTerm/:genomeRelease',
+    name: 'cnv',
+    component: SvDetailView,
     props: (route: any) => {
       return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
     }
