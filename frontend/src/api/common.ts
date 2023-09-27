@@ -5,3 +5,6 @@ export const API_BASE_PREFIX_ANNONARS =
 
 export const API_BASE_PREFIX_MEHARI =
   import.meta.env.MODE == 'development' ? '//localhost:8080/internal/proxy/mehari' : '/internal/proxy/mehari'
+
+export const API_BASE_PREFIX_NGINX =
+  import.meta.env.MODE == 'development' ? '//localhost:8080/internal/proxy/proxy/nginx' : '/internal/proxy/nginx'

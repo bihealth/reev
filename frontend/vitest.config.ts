@@ -21,5 +21,5 @@ export default mergeConfig(
         web: [/\.[jt]sx$/]
       }
     }
-  })
+  }) as typeof viteConfig
 )
