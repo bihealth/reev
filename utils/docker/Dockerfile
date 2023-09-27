@@ -64,6 +64,7 @@ ARG version_file=utils/docker/empty-file-dont-remove
 ENV REEV_SERVE_FRONTEND=/home/reev/ui
 
 COPY --from=backend-deps /.venv /.venv
+COPY --chmod=a+rx utils/docker/entrypoint.sh /entrypoint.sh
 
 ENV PATH="/.venv/bin:$PATH"
 
@@ -75,5 +76,5 @@ COPY ${version_file} /VERSION
 COPY backend/. .
 COPY --from=frontend-build /dist /home/reev/ui
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["/entrypoint.sh"]
 EXPOSE 8080

@@ -13,6 +13,11 @@ help:
 	@echo "  ci      Install dependencies, run lints and tests"
 	@echo "  docs    Generate the documentation"
 	@echo "  serve   Run the (development) server"
+	@echo "  migrate Create alembic versions and upgrade"
+	@echO ""
+	@echo "  alembic-check        Run alembic check"
+	@echo "  alembic-autogenerate Autogenerte alembic version"
+	@echo "  alembic-upgrade      Upgrade database to head"
 
 .PHONY: deps
 deps:
@@ -56,6 +61,7 @@ lint-mypy:
 
 .PHONY: test
 test:
+	pipenv run python -m app.tests_pre_start
 	pipenv run pytest \
 		--cov-report term-missing \
 		--cov-report lcov \
@@ -75,3 +81,15 @@ docs:
 .PHONY: serve
 serve:
 	pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+
+.PHONY: alembic-check
+alembic-check:
+	alembic check
+
+.PHONY: alembic-autogenerate
+alembic-autogenerate:
+	alembic revision --autogenerate
+
+.PHONY: alembic-upgrade
+alembic-upgrade:
+	alembic upgrade head

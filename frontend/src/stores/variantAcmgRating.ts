@@ -63,7 +63,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
       const ref = smallVar.reference
       const alt = smallVar.alternative
       const response = await fetch(
-        `${API_BASE_URL}acmg/?release=${release}&chromosome=${chromosome}` +
+        `${API_BASE_URL}internal/remote/acmg/?release=${release}&chromosome=${chromosome}` +
           `&position=${pos}&reference=${ref}&alternative=${alt}`,
         { method: 'GET' }
       )

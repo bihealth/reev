@@ -5,17 +5,27 @@ name = "pypi"
 
 [packages]
 fastapi = "*"
-pydantic = "*"
-uvicorn = "*"
-python-dotenv = "*"
 httpx = "*"
+install = "*"
+pip = "*"
+pydantic = {extras = ["email"], version = "*"}
+pydantic-settings = "*"
+python-dotenv = "*"
 requests-mock = "*"
+tenacity = "*"
+uvicorn = "*"
+jose = {extras = ["cryptography"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+psycopg2-binary = "*"
+python-dateutil = "*"
 
 [dev-packages]
 black = "*"
 flake8 = "*"
+install = "*"
 isort = "*"
 mypy = "*"
+pip = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-cov = "*"
@@ -24,6 +34,11 @@ pytest-subprocess = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 starlette = "*"
+types-python-jose = "*"
+types-passlib = "*"
+sqlalchemy-stubs = "*"
+faker = "*"
+pytest-faker = "*"
 
 [requires]
 python_version = "3.10"
