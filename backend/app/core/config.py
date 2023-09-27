@@ -76,6 +76,8 @@ class Settings(BaseSettings):
     BACKEND_PREFIX_MEHARI: str = "http://localhost:3002"
     #: Prefix for the backend of viguno service, default is for dev.
     BACKEND_PREFIX_VIGUNO: str = "http://localhost:3003"
+    #: Prefix for the backend of nginx service, default is for dev.
+    BACKEND_PREFIX_NGINX: str = "http://localhost:3004"
 
     # -- User-Related Configuration ---------------------------------------------
 
