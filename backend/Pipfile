@@ -18,6 +18,7 @@ jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 psycopg2-binary = "*"
 python-dateutil = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 black = "*"
