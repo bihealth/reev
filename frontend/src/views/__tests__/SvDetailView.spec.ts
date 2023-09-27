@@ -29,20 +29,20 @@ const router = createRouter({
 // Mock router push
 router.push = vi.fn()
 
-
-
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn() })
   const svInfoStore = useSvInfoStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (svTerm: string) => {
     svInfoStore.storeState = StoreState.Active
-    svInfoStore.currentSvRecord = JSON.parse(JSON.stringify({'sv': svTerm}))
+    svInfoStore.currentSvRecord = JSON.parse(JSON.stringify({ sv: svTerm }))
   })
   svInfoStore.loadData = mockLoadData
 
   // Initial load
   svInfoStore.storeState = StoreState.Active
-  svInfoStore.currentSvRecord = JSON.parse(JSON.stringify({'searchTerm': 'DEL:chr17:41176312:41277500'}))
+  svInfoStore.currentSvRecord = JSON.parse(
+    JSON.stringify({ searchTerm: 'DEL:chr17:41176312:41277500' })
+  )
   svInfoStore.genesInfos = JSON.parse(JSON.stringify([BRCA1GeneInfo]))
 
   return mount(
@@ -80,16 +80,16 @@ describe.concurrent('SvDetailView', async () => {
                 callback()
               }),
               removeEventListener: vi.fn(),
-              scrollLeft: 0,
+              scrollLeft: 0
             }
-          },
+          }
         },
         emits: ['row-click'],
         template: '<div></div>'
       }
     }))
   })
-  
+
   it('renders the header', async () => {
     const wrapper = makeWrapper()
     console.log(wrapper.html())
