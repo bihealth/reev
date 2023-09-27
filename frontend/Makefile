@@ -43,4 +43,4 @@ ci: \
 
 .PHONY: serve
 serve:
-	npm run dev
+	MODE=development npm run dev
