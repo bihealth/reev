@@ -88,31 +88,37 @@ class Settings(BaseSettings):
 
     # -- Database Configuration ----------------------------------------------
 
+    # Note that when os.environ["CI"] is "true" then we will use an in-memory
+    # sqlite database (test use only).
+
     #: Postgres hostname
-    POSTGRES_HOST: str
+    POSTGRES_HOST: str | None = None
     #: Postgres port
     POSTGRES_PORT: int = 5432
     #: Postgres user
-    POSTGRES_USER: str
+    POSTGRES_USER: str | None = None
     #: Postgres password
-    POSTGRES_PASSWORD: str
+    POSTGRES_PASSWORD: str | None = None
     #: Postgres database name
-    POSTGRES_DB: str
+    POSTGRES_DB: str | None = None
     #: SQLAlchemy Postgres DSN
     SQLALCHEMY_DATABASE_URI: PostgresDsn | None = None
 
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> Any:
-        if isinstance(v, str):  # pragma: no cover
+        if os.environ.get("CI") == "true":  # pragma: no cover
+            return "sqlite://"
+        elif isinstance(v, str):  # pragma: no cover
             return v
-        return PostgresDsn.build(
-            scheme="postgresql",
-            username=info.data.get("POSTGRES_USER"),
-            password=info.data.get("POSTGRES_PASSWORD"),
-            host=info.data.get("POSTGRES_HOST"),
-            port=info.data.get("POSTGRES_PORT"),
-            path=f"{info.data.get('POSTGRES_DB') or ''}",
-        )
+        else:
+            return PostgresDsn.build(
+                scheme="postgresql",
+                username=info.data.get("POSTGRES_USER"),
+                password=info.data.get("POSTGRES_PASSWORD"),
+                host=info.data.get("POSTGRES_HOST"),
+                port=info.data.get("POSTGRES_PORT"),
+                path=f"{info.data.get('POSTGRES_DB') or ''}",
+            )
 
     # -- Email Sending Configuration -----------------------------------------
 
