@@ -61,7 +61,6 @@ lint-mypy:
 
 .PHONY: test
 test:
-	pipenv run python -m app.tests_pre_start
 	pipenv run pytest \
 		--cov-report term-missing \
 		--cov-report lcov \
