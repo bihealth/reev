@@ -1,6 +1,6 @@
-import { API_BASE_PREFIX_MEHARI } from '@/api/common'
+import { API_INTERNALBASE_PREFIX_MEHARI } from '@/api/common'
 
-const API_BASE_URL = `${API_BASE_PREFIX_MEHARI}/`
+const API_BASE_URL = `${API_INTERNALBASE_PREFIX_MEHARI}/`
 
 export class MehariClient {
   private apiBaseUrl: string

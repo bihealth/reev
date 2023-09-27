@@ -1,8 +1,10 @@
 from typing import Any, Generic, Type, TypeVar
 
-from app.models.utils.helpers import ModelType, sa_model_to_dict
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+
+from app.models.utils.helpers import ModelType, sa_model_to_dict
 
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
 UpdateSchemaType = TypeVar("UpdateSchemaType", bound=BaseModel)
@@ -20,22 +22,29 @@ class CrudBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-    def get(self, db: Session, id: Any) -> ModelType | None:
-        return db.query(self.model).filter(self.model.id == id).first()
+    async def get(self, session: AsyncSession, id: Any) -> ModelType | None:
+        query = select(self.model).filter(self.model.id == id)
+        result = await session.execute(query)
+        return result.scalars().first()
 
-    def get_multi(self, db: Session, *, skip: int = 0, limit: int = 100) -> list[ModelType]:
-        return db.query(self.model).offset(skip).limit(limit).all()
+    async def get_multi(
+        self, session: AsyncSession, *, skip: int = 0, limit: int = 100
+    ) -> list[ModelType]:
+        query = select(self.model).offset(skip).limit(limit)
+        result = await session.execute(query)
+        all_scalars: list[ModelType] = result.scalars().all()  # type: ignore[assignment]
+        return all_scalars
 
-    def create(self, db: Session, *, obj_in: CreateSchemaType) -> ModelType:
+    async def create(self, session: AsyncSession, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = obj_in.model_dump()
-        db_obj = self.model(**obj_in_data)  # type: ignore
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
+        db_obj = self.model(**obj_in_data)
+        session.add(db_obj)
+        await session.commit()
+        await session.refresh(db_obj)
         return db_obj
 
-    def update(
-        self, db: Session, *, db_obj: ModelType, obj_in: UpdateSchemaType | dict[str, Any]
+    async def update(
+        self, session: AsyncSession, *, db_obj: ModelType, obj_in: UpdateSchemaType | dict[str, Any]
     ) -> ModelType:
         obj_data = sa_model_to_dict(db_obj)
         if isinstance(obj_in, dict):
@@ -45,14 +54,14 @@ class CrudBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         for field in obj_data:
             if field in update_data:
                 setattr(db_obj, field, update_data[field])
-        db.add(db_obj)
-        db.commit()
-        db.refresh(db_obj)
+        session.add(db_obj)
+        await session.commit()
+        await session.refresh(db_obj)
         return db_obj
 
-    def remove(self, db: Session, *, id: int) -> ModelType | None:
-        obj = db.query(self.model).get(id)
+    async def remove(self, session: AsyncSession, *, id: Any) -> ModelType | None:
+        obj = await session.get(self.model, id)
         if obj:
-            db.delete(obj)
-            db.commit()
+            await session.delete(obj)
+            await session.commit()
         return obj

@@ -2,6 +2,7 @@
 import { watch, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import UserProfileButton from '@/components/UserProfileButton.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import { search } from '@/lib/utils'
 
@@ -65,6 +66,7 @@ watch(() => props.searchTerm, updateTerms)
     <v-toolbar-items class="topbar-links">
       <v-btn id="about" to="/about"> About </v-btn>
       <v-btn id="contact" to="/contact"> Contact </v-btn>
+      <UserProfileButton />
     </v-toolbar-items>
   </v-app-bar>
 </template>

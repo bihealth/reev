@@ -1,0 +1,14 @@
+{
+    "python.analysis.packageIndexDepths": [
+			{
+				"name": "sqlalchemy",
+				"depth": 4,
+				"includeAllSymbols": true
+			},
+			{
+				"name": "fastapi",
+				"depth": 2,
+				"includeAllSymbols": true
+			}
+		]
+}

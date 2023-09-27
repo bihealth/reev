@@ -9,7 +9,7 @@ from alembic import op
 import sqlalchemy as sa
 ${imports if imports else ""}
 
-import app.models.guid  # noqa
+import fastapi_users_db_sqlalchemy.generics  # noqa
 
 # revision identifiers, used by Alembic.
 revision = ${repr(up_revision)}

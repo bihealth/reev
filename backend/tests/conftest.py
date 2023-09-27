@@ -1,50 +1,63 @@
-from typing import Iterator
+from typing import AsyncGenerator, Iterator
 
 import pytest
+import pytest_asyncio
 from _pytest.monkeypatch import MonkeyPatch
-from app import models  # noqa
+from fastapi.testclient import TestClient
+from sqlalchemy import StaticPool
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
+
 from app.api import deps
 from app.db import session
 from app.db.base import Base
 from app.main import app
-from fastapi.testclient import TestClient
-from sqlalchemy.engine import Engine, create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
 
 
 @pytest.fixture()
-def db_engine() -> Iterator[Engine]:
+def db_engine() -> Iterator[AsyncEngine]:
     # setup engine with in-memory sqlite for testing
-    engine = create_engine(
-        "sqlite://",
+    engine = create_async_engine(
+        "sqlite+aiosqlite://",
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
     yield engine
 
 
-@pytest.fixture()
-def db(db_engine: Engine, monkeypatch: MonkeyPatch) -> Iterator:
+@pytest_asyncio.fixture()
+async def db_session(
+    db_engine: AsyncEngine, monkeypatch: MonkeyPatch
+) -> AsyncGenerator[AsyncSession, None]:
     """Create in-memory sqlite database for testing."""
     # create all tables
-    Base.metadata.create_all(bind=db_engine)
-    # create a session for testing
-    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
-    try:
-        monkeypatch.setattr(session, "engine", db_engine)
-        monkeypatch.setattr(session, "SessionLocal", TestingSessionLocal)
-        db = TestingSessionLocal()
+    async with db_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
-        def override_get_db():
+        # create a session for testing
+        TestingSessionLocal = async_sessionmaker(
+            autocommit=False, autoflush=False, expire_on_commit=False, bind=db_engine
+        )
+        try:
+            monkeypatch.setattr(session, "engine", db_engine)
+            monkeypatch.setattr(session, "SessionLocal", TestingSessionLocal)
+            db = TestingSessionLocal()
+
+            def override_get_db():
+                yield db
+
+            app.dependency_overrides[deps.get_db] = override_get_db
             yield db
+        finally:
+            await db.close()
 
-        app.dependency_overrides[deps.get_db] = override_get_db
-        yield db
-    finally:
-        db.close()
     # drop all tables
-    Base.metadata.drop_all(bind=db_engine)
+    async with db_engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
 
 
 @pytest.fixture(scope="module")

@@ -4,24 +4,28 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+asyncpg = "*"
 fastapi = "*"
+fastapi-users = {extras = ["oauth", "sqlalchemy", "redis"], version = "*"}
 httpx = "*"
 install = "*"
+passlib = {extras = ["bcrypt"], version = "*"}
 pip = "*"
+psycopg2-binary = "*"
 pydantic = {extras = ["email"], version = "*"}
 pydantic-settings = "*"
+python-dateutil = "*"
 python-dotenv = "*"
 requests-mock = "*"
+sqlalchemy = "*"
 tenacity = "*"
 uvicorn = "*"
-jose = {extras = ["cryptography"], version = "*"}
-passlib = {extras = ["bcrypt"], version = "*"}
-psycopg2-binary = "*"
-python-dateutil = "*"
-sqlalchemy = "*"
+alembic = "*"
 
 [dev-packages]
+aiosqlite = "*"
 black = "*"
+faker = "*"
 flake8 = "*"
 install = "*"
 isort = "*"
@@ -30,16 +34,13 @@ pip = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-cov = "*"
+pytest-faker = "*"
 pytest-httpx = "*"
 pytest-subprocess = "*"
 sphinx = "*"
 sphinx-rtd-theme = "*"
 starlette = "*"
-types-python-jose = "*"
 types-passlib = "*"
-sqlalchemy-stubs = "*"
-faker = "*"
-pytest-faker = "*"
 
 [requires]
 python_version = "3.10"

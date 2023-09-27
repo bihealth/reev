@@ -1,11 +1,19 @@
-from typing import Iterator
+from typing import AsyncGenerator, AsyncIterator
 
-from app.db.session import SessionLocal
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
+from app.db.session import SessionLocal, engine
 
 
-def get_db() -> Iterator[SessionLocal]:  # type: ignore[valid-type]
-    try:
-        db = SessionLocal()
-        yield db
-    finally:
-        db.close()
+async def get_db() -> AsyncIterator[SessionLocal]:  # type: ignore[valid-type]
+    db = SessionLocal()
+    yield db
+    await db.close()
+
+
+async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+
+
+async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
+    async with async_session_maker() as session:
+        yield session

@@ -1,11 +1,16 @@
 """Models for admin messages."""
 
-import uuid
+import datetime
+import uuid as uuid_module
 from typing import TYPE_CHECKING
 
+from fastapi_users_db_sqlalchemy.generics import GUID  # noqa
+from sqlalchemy import Boolean, Column, DateTime, String, Text
+from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db.session import Base
-from app.models.utils.guid import GUID
-from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
+
+UUID_ID = uuid_module.UUID
 
 
 class AdminMessage(Base):
@@ -16,19 +21,24 @@ class AdminMessage(Base):
 
     __tablename__ = "adminmessages"
 
-    #: Primary key.
-    id = Column(Integer, primary_key=True, index=True)
-    #: UUID for external reference.
-    uuid = Column(
-        GUID(36), default=lambda: str(uuid.uuid4()), nullable=False, unique=True, index=True
-    )
-    #: Message title.
-    title = Column(String(255), nullable=False)
-    #: The message's text.
-    text = Column(Text, nullable=True)
-    #: When to start displaying the message.
-    active_start = Column(DateTime, nullable=False)
-    #: When to stop displaying the message.
-    active_stop = Column(DateTime, nullable=False)
-    #: Whether the message is enabled at all.
-    enabled = Column(Boolean, default=True, nullable=False)
+    if TYPE_CHECKING:  # pragma: no cover
+        id: UUID_ID
+        title: str
+        text: str
+        active_start: datetime.datetime
+        active_stop: datetime.datetime
+    else:
+        #: UUID of the message.
+        id: Mapped[UUID_ID] = mapped_column(
+            GUID, primary_key=True, index=True, default=uuid_module.uuid4
+        )
+        #: Message title.
+        title = Column(String(255), nullable=False)
+        #: The message's text.
+        text = Column(Text, nullable=True)
+        #: When to start displaying the message.
+        active_start = Column(DateTime, nullable=False)
+        #: When to stop displaying the message.
+        active_stop = Column(DateTime, nullable=False)
+        #: Whether the message is enabled at all.
+        enabled = Column(Boolean, default=True, nullable=False)

@@ -5,6 +5,8 @@ import HomeView from '@/views/HomeView.vue'
 import AboutView from '@/views/AboutView.vue'
 import ContactView from '@/views/ContactView.vue'
 import GeneDetailView from '@/views/GeneDetailView.vue'
+import LoginView from '@/views/LoginView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
 import GenesListView from '@/views/GenesListView.vue'
 import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
@@ -21,6 +23,16 @@ const routes = [
     path: '/about',
     name: 'about',
     component: AboutView
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: ProfileView
   },
   {
     path: '/contact',

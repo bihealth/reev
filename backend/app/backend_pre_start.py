@@ -1,8 +1,9 @@
 import logging
 
-from app.db.session import SessionLocal
 from sqlalchemy import text
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
+
+from app.db.session import SyncSessionLocal
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -19,7 +20,7 @@ wait_seconds = 1
 )
 def init() -> None:
     try:
-        db = SessionLocal()
+        db = SyncSessionLocal()
         # Try to create session to check if DB is awake
         db.execute(text("SELECT 1"))
     except Exception as e:

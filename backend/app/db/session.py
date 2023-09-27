@@ -1,8 +1,19 @@
-from app.core.config import settings
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker  # type: ignore[attr-defined]
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI), pool_pre_ping=True)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+from app.core.config import settings
+
+#: Async engine, to be used throughout the app.
+engine = create_async_engine(str(settings.SQLALCHEMY_DATABASE_URI), pool_pre_ping=True)
+# Local async session, to be used throughout the app.
+SessionLocal = async_sessionmaker(
+    autocommit=False, autoflush=False, expire_on_commit=False, bind=engine
+)
+
+#: Sync engine for Alembic migrations.
+sync_engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI), pool_pre_ping=True)
+# Sync session, to be used for Alembic migrations.
+SyncSessionLocal = sessionmaker(autocommit=False, expire_on_commit=False, bind=sync_engine)
 
 Base = declarative_base()

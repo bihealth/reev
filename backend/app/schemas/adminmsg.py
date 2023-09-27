@@ -1,7 +1,7 @@
 import datetime
 from uuid import UUID
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class AdminMessageBase(BaseModel):
@@ -21,14 +21,13 @@ class AdminMessageUpdate(AdminMessageBase):
 
 
 class AdminMessageInDbBase(AdminMessageBase):
+    model_config = ConfigDict(from_attributes=True)
+
     id: int
     uuid: UUID
 
-    class Config:
-        from_attributes = True
 
-
-class AdminMessage(AdminMessageInDbBase):
+class AdminMessageRead(AdminMessageInDbBase):
     pass
 
 

@@ -79,3 +79,12 @@ In case of weird issues, try to stop them with ``Ctrl-C`` and starting them agai
 
     $ make -C backend serve
     $ make -C frontend serve
+
+Now you can navigate to the frontend development server at http://localhost:8081.
+This server will transparently forward the API requests to the backend server at http://localhost:8081.
+
+-----
+Notes
+-----
+
+- A superuser will be created if you configured its email and password in environment variables ``FIRST_USER_EMAIL`` and ``FIRST_USER_PASSWORD``.
