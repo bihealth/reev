@@ -1,6 +1,11 @@
 import { describe, it, expect } from 'vitest'
 
-import { API_BASE_PREFIX, API_BASE_PREFIX_ANNONARS, API_BASE_PREFIX_MEHARI, API_BASE_PREFIX_NGINX } from '../common'
+import {
+  API_BASE_PREFIX,
+  API_BASE_PREFIX_ANNONARS,
+  API_BASE_PREFIX_MEHARI,
+  API_BASE_PREFIX_NGINX
+} from '../common'
 
 describe.concurrent('API_BASE_PREFIX constants', () => {
   it('returns the correct API base prefix in production mode', () => {
