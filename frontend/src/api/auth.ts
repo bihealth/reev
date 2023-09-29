@@ -1,5 +1,15 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
 
+export interface OAuth2Provider {
+  name: string
+  label: string
+  url: string
+}
+
+interface OAuth2LoginUrlResponse {
+  authorization_url: string
+}
+
 /** Access to the authentication-related part of the API.
  */
 export class AuthClient {
@@ -36,5 +46,22 @@ export class AuthClient {
       method: 'POST'
     })
     return await response.text()
+  }
+
+  async fetchOAuth2Providers(): Promise<OAuth2Provider[]> {
+    const response = await fetch(`${this.apiBaseUrl}auth/oauth2-providers`, {
+      method: 'GET'
+    })
+    return await response.json()
+  }
+
+  async fetchOAuth2LoginUrl(provider: OAuth2Provider, redirectTo?: string | null): Promise<string> {
+    let url = `${this.apiBaseUrl}/auth/external/cookie/${provider.name}/authorize`
+    if (redirectTo) {
+      url += `?redirect_to=${encodeURIComponent(redirectTo)}`
+    }
+    const response = await fetch(url, { method: 'GET' })
+    const response_json: OAuth2LoginUrlResponse = await response.json()
+    return response_json.authorization_url
   }
 }

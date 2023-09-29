@@ -1,7 +1,8 @@
 import uuid
+from typing import Any
 
 import redis.asyncio
-from fastapi import Depends, Request
+from fastapi import Depends, Request, Response
 from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
 from fastapi_users.authentication import (
     AuthenticationBackend,
@@ -43,7 +44,16 @@ async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db
 
 bearer_transport = BearerTransport(tokenUrl=f"{settings.API_V1_STR}/auth/login")
 
-cookie_transport = CookieTransport(cookie_max_age=settings.SESSION_EXPIRE_MINUTES * 60)
+
+class CookieRedirectTransport(CookieTransport):
+    async def get_login_response(self, token: str) -> Response:
+        response = await super().get_login_response(token)
+        response.status_code = 302
+        response.headers["Location"] = "/profile"
+        return response
+
+
+cookie_transport = CookieRedirectTransport(cookie_max_age=settings.SESSION_EXPIRE_MINUTES * 60)
 
 redis_obj = redis.asyncio.from_url(settings.REDIS_URL, decode_responses=True)
 

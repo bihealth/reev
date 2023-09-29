@@ -2,9 +2,11 @@ import os
 import secrets
 from typing import Any
 
-from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
+from pydantic import AnyHttpUrl, BaseModel, EmailStr, HttpUrl, PostgresDsn, field_validator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from app.schemas import OAuth2ProviderConfig
 
 
 class Settings(BaseSettings):
@@ -94,6 +96,9 @@ class Settings(BaseSettings):
     USERS_OPEN_REGISTRATION: bool = False
     #: Email of test users, ignored.
     EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore
+
+    #: OAuth2 providers
+    OAUTH2_PROVIDERS: list[OAuth2ProviderConfig] = []
 
     # -- Database Configuration ----------------------------------------------
 
