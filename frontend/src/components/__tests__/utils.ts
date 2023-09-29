@@ -1,7 +1,7 @@
 import { type TestingPinia, createTestingPinia } from '@pinia/testing'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
+import { type Router, createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
@@ -16,10 +16,12 @@ export interface MountedComponents {
   pinia: TestingPinia
   /** The `VueWrapper` instance */
   wrapper: VueWrapper
+  /** The router instance */
+  router: Router
 }
 
 /**
- * Creates the `VueWrapper` for the given component.
+ * Creates the `VueWrapper` for the given component with mounting as template.
  *
  * Having a shared utility wrapper helps us to reduce the code in the individual tests.
  *
@@ -32,8 +34,14 @@ export interface MountedComponents {
  * @returns
  */
 export const setupMountedComponents = (
-  component: any,
-  initialStoreState?: any
+  componentOptions: {
+    component: any
+    template: boolean
+  },
+  options?: {
+    initialStoreState?: any
+    props?: any
+  }
 ): MountedComponents => {
   // Create new vuetify instance.
   const vuetify = createVuetify({
@@ -49,21 +57,27 @@ export const setupMountedComponents = (
   router.push = vi.fn()
 
   // Create a testing pinia with the initial data.
-  const pinia = createTestingPinia({ createSpy: vi.fn, initialState: initialStoreState ?? {} })
+  const pinia = createTestingPinia({
+    createSpy: vi.fn,
+    initialState: options?.initialStoreState ?? {}
+  })
 
   // Setup the component mapping that is to be tested.
   const knownComponents: { [key: string]: any } = {}
-  knownComponents[component.__name] = component
+  knownComponents[componentOptions.component.__name] = componentOptions.component
 
-  const wrapper = mount(
-    { template: `<v-app><${component.__name} /></v-app>` },
-    {
-      global: {
-        plugins: [vuetify, router, pinia],
-        components: knownComponents
-      }
+  // Setup mounting option of component
+  const componentMount = componentOptions.template
+    ? { template: `<v-app><${componentOptions.component.__name} /></v-app>` }
+    : componentOptions.component
+
+  const wrapper = mount(componentMount, {
+    props: options?.props,
+    global: {
+      plugins: [vuetify, router, pinia],
+      components: knownComponents
     }
-  )
+  })
 
-  return { pinia, wrapper }
+  return { pinia, wrapper, router }
 }

@@ -1,27 +1,9 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import * as VariantValidatorInfo from '@/assets/__tests__/BRCA1VariantValidator.json'
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
-import { routes } from '@/router'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import { setupMountedComponents } from '@/components/__tests__/utils'
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -33,27 +15,20 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-const makeWrapper = () => {
-  return mount(VariantValidator, {
-    props: {
-      smallVariant: smallVariantInfo
-    },
-    global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-      components: {
-        VariantValidator
-      }
-    }
-  })
-}
-
 describe.concurrent('VariantValidator', async () => {
   it('renders the VariantValidator info', async () => {
     // Mock fetch
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve(VariantValidatorInfo) })
     )
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: VariantValidator, template: false },
+      {
+        props: {
+          smallVariant: smallVariantInfo
+        }
+      }
+    )
     expect(wrapper.text()).toContain('to submit the variant to VariantValidator.org.')
 
     const submitButton = wrapper.find('button')
@@ -71,7 +46,14 @@ describe.concurrent('VariantValidator', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
     )
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: VariantValidator, template: false },
+      {
+        props: {
+          smallVariant: smallVariantInfo
+        }
+      }
+    )
     expect(wrapper.text()).toContain('to submit the variant to VariantValidator.org.')
 
     const submitButton = wrapper.find('button')

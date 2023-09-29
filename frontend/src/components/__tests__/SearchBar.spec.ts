@@ -1,41 +1,21 @@
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/components/__tests__/utils'
 
 import SearchBar from '../SearchBar.vue'
 
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
-const makeWrapper = () => {
-  return mount(SearchBar, {
-    global: {
-      plugins: [vuetify, router],
-      components: {
-        SearchBar
-      }
-    }
-  })
-}
-
 describe.concurrent('SearchBar.vue', () => {
   it('renders the search bar with the correct default props', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: SearchBar, template: false },
+      {
+        props: {
+          searchTerm: 'BRCA1',
+          genomeRelease: 'grch37'
+        }
+      }
+    )
 
     const textField = wrapper.find('.v-text-field')
     const select = wrapper.find('.v-select')
@@ -52,7 +32,15 @@ describe.concurrent('SearchBar.vue', () => {
   })
 
   it('correctly inputs data', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: SearchBar, template: false },
+      {
+        props: {
+          searchTerm: 'BRCA1',
+          genomeRelease: 'grch37'
+        }
+      }
+    )
 
     const textField = wrapper.find('#search-term') as any
     expect(textField.exists()).toBe(true)
@@ -73,7 +61,15 @@ describe.concurrent('SearchBar.vue', () => {
   })
 
   it('correctly emits search', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: SearchBar, template: false },
+      {
+        props: {
+          searchTerm: 'BRCA1',
+          genomeRelease: 'grch37'
+        }
+      }
+    )
 
     // search bar values are updated
     const searchBar = wrapper.findComponent(SearchBar)

@@ -1,25 +1,7 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
 import ClinVar from '@/components/VariantDetails/ClinVar.vue'
-import { routes } from '@/router'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import { setupMountedComponents } from '@/components/__tests__/utils'
 
 const clinVarInfo = {
   release: 'GRCh37',
@@ -35,19 +17,16 @@ const clinVarInfo = {
   summary_paranoid_gold_stars: 0
 }
 
-const makeWrapper = (cvInfo: Object) => {
-  return mount(ClinVar, {
-    props: { clinvar: cvInfo },
-    global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-      components: { ClinVar }
-    }
-  })
-}
-
 describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info', async () => {
-    const wrapper = makeWrapper(clinVarInfo)
+    const { wrapper } = setupMountedComponents(
+      { component: ClinVar, template: false },
+      {
+        props: {
+          clinvar: clinVarInfo
+        }
+      }
+    )
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
     expect(wrapper.text()).toContain('VCV000041833')
     const starsOutline = wrapper.findAll('.mdi-star-outline')
@@ -57,7 +36,14 @@ describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
     clinVarInfoStars.summary_clinvar_gold_stars = 3
-    const wrapper = makeWrapper(clinVarInfoStars)
+    const { wrapper } = setupMountedComponents(
+      { component: ClinVar, template: false },
+      {
+        props: {
+          clinvar: clinVarInfoStars
+        }
+      }
+    )
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
     expect(wrapper.text()).toContain('VCV000041833')
     const stars = wrapper.findAll('.mdi-star-outline')
@@ -67,7 +53,14 @@ describe.concurrent('ClinVar', async () => {
   })
 
   it('renders the ClinVar info (not found)', async () => {
-    const wrapper = makeWrapper({})
+    const { wrapper } = setupMountedComponents(
+      { component: ClinVar, template: false },
+      {
+        props: {
+          clinvar: null
+        }
+      }
+    )
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
     expect(wrapper.text()).toContain('No ClinVar information available.')
   })

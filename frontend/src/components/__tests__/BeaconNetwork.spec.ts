@@ -1,25 +1,7 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
 import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
-import { routes } from '@/router'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import { setupMountedComponents } from '@/components/__tests__/utils'
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -31,23 +13,16 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-const makeWrapper = () => {
-  return mount(BeaconNetwork, {
-    props: {
-      smallVariant: smallVariantInfo
-    },
-    global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-      components: {
-        BeaconNetwork
-      }
-    }
-  })
-}
-
 describe.concurrent('BeaconNetwork', async () => {
   it('renders the BeaconNetwork info', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: BeaconNetwork, template: false },
+      {
+        props: {
+          smallVariant: smallVariantInfo
+        }
+      }
+    )
     expect(wrapper.text()).toContain('Query Beacon -----|>')
     const refreshButton = wrapper.find('.mdi-refresh')
     const info = wrapper.find('.text-muted')
@@ -56,7 +31,14 @@ describe.concurrent('BeaconNetwork', async () => {
   })
 
   it('correctly loads the BeaconNetwork info', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: BeaconNetwork, template: false },
+      {
+        props: {
+          smallVariant: smallVariantInfo
+        }
+      }
+    )
     const refreshButton = wrapper.find('button')
     await refreshButton.trigger('click')
   })

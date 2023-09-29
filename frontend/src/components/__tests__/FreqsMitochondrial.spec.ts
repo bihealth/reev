@@ -1,26 +1,7 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
 import FreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
-import { routes } from '@/router'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-
-// Mock router push
-router.push = vi.fn()
+import { setupMountedComponents } from '@/components/__tests__/utils'
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -50,24 +31,17 @@ const variantInfo = {
   }
 }
 
-const makeWrapper = (variantData: Object) => {
-  return mount(FreqsMitochondrial, {
-    props: {
-      smallVar: smallVariantInfo,
-      varAnnos: variantData
-    },
-    global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-      components: {
-        FreqsMitochondrial
-      }
-    }
-  })
-}
-
 describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
-    const wrapper = makeWrapper(variantInfo)
+    const { wrapper } = setupMountedComponents(
+      { component: FreqsMitochondrial, template: false },
+      {
+        props: {
+          smallVar: smallVariantInfo,
+          varAnnos: variantInfo
+        }
+      }
+    )
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
@@ -77,7 +51,15 @@ describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info with no helixmtdb', async () => {
     const variantInfoNoHelixmtdb: any = structuredClone(variantInfo)
     variantInfoNoHelixmtdb.helixmtdb = {}
-    const wrapper = makeWrapper(variantInfoNoHelixmtdb)
+    const { wrapper } = setupMountedComponents(
+      { component: FreqsMitochondrial, template: false },
+      {
+        props: {
+          smallVar: smallVariantInfo,
+          varAnnos: variantInfoNoHelixmtdb
+        }
+      }
+    )
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
@@ -87,7 +69,15 @@ describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info with no gnomad-mtdna', async () => {
     const variantInfoNoGnomad: any = structuredClone(variantInfo)
     variantInfoNoGnomad['gnomad-mtdna'] = {}
-    const wrapper = makeWrapper(variantInfoNoGnomad)
+    const { wrapper } = setupMountedComponents(
+      { component: FreqsMitochondrial, template: false },
+      {
+        props: {
+          smallVar: smallVariantInfo,
+          varAnnos: variantInfoNoGnomad
+        }
+      }
+    )
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
@@ -95,7 +85,15 @@ describe.concurrent('FreqsMitochondrial', async () => {
   })
 
   it.skip('renders the FreqsMitochondrial info with invalid data', async () => {
-    const wrapper = makeWrapper(smallVariantInfo)
+    const { wrapper } = setupMountedComponents(
+      { component: FreqsMitochondrial, template: false },
+      {
+        props: {
+          smallVar: smallVariantInfo,
+          varAnnos: {}
+        }
+      }
+    )
     console.log(wrapper.html())
     const alertIcon = wrapper.find('.mdi-alert-circle-outline')
     expect(alertIcon.exists()).toBe(true)
