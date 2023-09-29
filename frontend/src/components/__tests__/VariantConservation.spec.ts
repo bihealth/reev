@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import VariantConservation from '@/components/VariantDetails/VariantConservation.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('VariantConservation', async () => {
   it('renders the VariantConservation info', async () => {

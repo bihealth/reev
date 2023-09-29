@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 import SearchBar from '../SearchBar.vue'
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import ClinVarFreqPlot from '@/components/ClinVarFreqPlot.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ClinVarFreqPlot', async () => {
   it('renders the ClinVarFreqPlot info', async () => {

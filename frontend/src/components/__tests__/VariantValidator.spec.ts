@@ -3,7 +3,7 @@ import { nextTick } from 'vue'
 
 import * as VariantValidatorInfo from '@/assets/__tests__/BRCA1VariantValidator.json'
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
   release: 'grch37',

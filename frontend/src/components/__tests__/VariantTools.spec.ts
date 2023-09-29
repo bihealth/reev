@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import VariantTools from '@/components/VariantDetails/VariantTools.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
   release: 'grch37',

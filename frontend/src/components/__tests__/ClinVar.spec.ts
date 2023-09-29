@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import ClinVar from '@/components/VariantDetails/ClinVar.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const clinVarInfo = {
   release: 'GRCh37',

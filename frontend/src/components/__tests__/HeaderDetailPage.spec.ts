@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
 import SearchBar from '@/components/SearchBar.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 

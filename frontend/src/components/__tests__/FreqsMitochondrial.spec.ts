@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import FreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
   release: 'grch37',

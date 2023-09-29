@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
 import AcmgCriteriaCard from '@/components/AcmgCriteriaCard.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('AcmgCriteriaCard', async () => {
   it('renders the AcmgRating info', async () => {

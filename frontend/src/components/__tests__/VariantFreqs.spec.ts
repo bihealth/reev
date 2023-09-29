@@ -4,7 +4,7 @@ import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
 import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
   release: 'grch37',

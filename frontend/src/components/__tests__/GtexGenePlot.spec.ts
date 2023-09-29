@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { setupMountedComponents } from '@/components/__tests__/utils'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 import GtexGenePlotVue from '../GtexGenePlot.vue'
 

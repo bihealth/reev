@@ -5,7 +5,7 @@ import {
   API_INTERNAL_BASE_PREFIX,
   API_INTERNAL_BASE_PREFIX_ANNONARS,
   API_INTERNAL_BASE_PREFIX_NGINX
-} from '../common'
+} from '@/api/common'
 
 describe.concurrent('API_BASE_PREFIX constants', () => {
   it('returns the correct API base prefix in production mode', () => {

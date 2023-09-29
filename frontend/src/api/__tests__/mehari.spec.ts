@@ -1,9 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
+import { MehariClient } from '@/api/mehari'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
-
-import { MehariClient } from '../mehari'
 
 const fetchMocker = createFetchMock(vi)
 

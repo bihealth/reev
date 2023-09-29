@@ -2,7 +2,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { StoreState, useMiscStore } from '../misc'
+import { StoreState, useMiscStore } from '@/stores/misc'
 
 const fetchMocker = createFetchMock(vi)
 
