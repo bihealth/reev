@@ -1,28 +1,11 @@
 import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -51,17 +34,18 @@ const makeWrapper = () => {
   store.acmgRating = new MultiSourceAcmgCriteriaState()
   store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
 
-  return mount(AcmgRating, {
-    props: {
-      smallVariant: smallVariantInfo
+  return setupMountedComponents(
+    {
+      component: AcmgRating,
+      template: true
     },
-    global: {
-      plugins: [vuetify, router, pinia],
-      components: {
-        AcmgRating
-      }
+    {
+      props: {
+        smallVariant: smallVariantInfo
+      },
+      pinia: pinia
     }
-  })
+  ).wrapper
 }
 
 describe.concurrent('AcmgRating', async () => {

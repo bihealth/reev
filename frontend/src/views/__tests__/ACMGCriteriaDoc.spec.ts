@@ -1,57 +1,21 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 import ACMGCriteriaDocs from '../ACMGCriteriaDocs.vue'
 
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
-const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><ACMGCriteriaDocs /></v-app>'
-    },
-    {
-      global: {
-        plugins: [
-          vuetify,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn,
-            initialState: {
-              misc: {
-                appVersion: 'v0.0.0'
-              }
-            }
-          })
-        ],
-        components: {
-          ACMGCriteriaDocs
-        }
-      }
-    }
-  )
-}
-
 describe.concurrent('ACMGCriteriaDocs', async () => {
   it('renders the header', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: ACMGCriteriaDocs, template: true },
+      {
+        initialStoreState: {
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
 
     const logo = wrapper.find('#logo')
     const aboutLink = wrapper.find('#about')
@@ -62,7 +26,16 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
   })
 
   it('renders the main content', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: ACMGCriteriaDocs, template: true },
+      {
+        initialStoreState: {
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
 
     const mainContent = wrapper.find('.docs-view')
     expect(mainContent.exists()).toBe(true)

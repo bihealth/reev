@@ -35,12 +35,22 @@ export interface MountedComponents {
  */
 export const setupMountedComponents = (
   componentOptions: {
+    /** The component itself */
     component: any
+    /** Mode of mounting */
     template: boolean
   },
   options?: {
+    /** Initial Store instances */
     initialStoreState?: any
+    /** Props to pass to the component */
     props?: any
+    /** Query to pass to the router */
+    query?: any
+    /** A custom pinia instance to use. Use this option only if you need to mock a store getter
+     * or action.
+     */
+    pinia?: TestingPinia
   }
 ): MountedComponents => {
   // Create new vuetify instance.
@@ -72,9 +82,10 @@ export const setupMountedComponents = (
     : componentOptions.component
 
   const wrapper = mount(componentMount, {
+    query: options?.query,
     props: options?.props,
     global: {
-      plugins: [vuetify, router, pinia],
+      plugins: [vuetify, router, options?.pinia ?? pinia],
       components: knownComponents
     }
   })

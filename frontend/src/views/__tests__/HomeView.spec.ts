@@ -1,25 +1,14 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
-import { type Router, createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 import SearchBar from '../../components/SearchBar.vue'
 import HomeView from '../HomeView.vue'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
 
 const geneData = {
   storeState: 'active',
@@ -33,48 +22,23 @@ const geneData = {
   }
 }
 
-const makeWrapper = (router: Router) => {
-  return mount(
-    {
-      template: '<v-app><HomeView /></v-app>'
-    },
-    {
-      global: {
-        plugins: [
-          vuetify,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn,
-            initialState: {
-              geneInfo: {
-                storeState: StoreState.Active,
-                geneSymbol: geneData.geneSymbol,
-                geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
-              },
-              misc: {
-                appVersion: 'v0.0.0'
-              }
-            }
-          })
-        ],
-        components: {
-          HomeView
-        }
-      }
-    }
-  )
-}
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
 describe.concurrent('HomeView with mocked router', async () => {
   it('renders the header and the footer', () => {
-    const wrapper = makeWrapper(router)
+    const { wrapper } = setupMountedComponents(
+      { component: HomeView, template: true },
+      {
+        initialStoreState: {
+          geneInfo: {
+            storeState: StoreState.Active,
+            geneSymbol: geneData.geneSymbol,
+            geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
+          },
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
     const header = wrapper.findComponent(HeaderDefault)
     const footer = wrapper.findComponent(FooterDefault)
     expect(header.exists()).toBe(true)
@@ -89,7 +53,21 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('renders the search bar', () => {
-    const wrapper = makeWrapper(router)
+    const { wrapper } = setupMountedComponents(
+      { component: HomeView, template: true },
+      {
+        initialStoreState: {
+          geneInfo: {
+            storeState: StoreState.Active,
+            geneSymbol: geneData.geneSymbol,
+            geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
+          },
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
 
     const textField = wrapper.find('.v-text-field')
     const select = wrapper.find('.v-select')
@@ -100,7 +78,21 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('renders example search terms', () => {
-    const wrapper = makeWrapper(router)
+    const { wrapper } = setupMountedComponents(
+      { component: HomeView, template: true },
+      {
+        initialStoreState: {
+          geneInfo: {
+            storeState: StoreState.Active,
+            geneSymbol: geneData.geneSymbol,
+            geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
+          },
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
 
     const subtitle = wrapper.find('h2')
     const exampleTerms = wrapper.findAll('.example')
@@ -109,7 +101,21 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('uses example by click', async () => {
-    const wrapper = makeWrapper(router)
+    const { wrapper } = setupMountedComponents(
+      { component: HomeView, template: true },
+      {
+        initialStoreState: {
+          geneInfo: {
+            storeState: StoreState.Active,
+            geneSymbol: geneData.geneSymbol,
+            geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
+          },
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
     const store = useGeneInfoStore()
 
     const exampleTerm = wrapper.find('.example')
@@ -121,7 +127,21 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('correctly uses the router', async () => {
-    const wrapper = makeWrapper(router)
+    const { wrapper, router } = setupMountedComponents(
+      { component: HomeView, template: true },
+      {
+        initialStoreState: {
+          geneInfo: {
+            storeState: StoreState.Active,
+            geneSymbol: geneData.geneSymbol,
+            geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
+          },
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
