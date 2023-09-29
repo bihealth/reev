@@ -4,6 +4,7 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 
+import { AuthClient, type OAuth2Provider } from '@/api/auth'
 import { UnauthenticatedError, UsersClient } from '@/api/users'
 import { StoreState } from '@/stores/misc'
 
@@ -19,6 +20,9 @@ export const useUserStore = defineStore('user', () => {
   /* The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
+  /* The available OAuth2 providers. */
+  const oauth2Providers = ref<OAuth2Provider[]>([])
+
   /* The current user, null if none, undefined if not set already */
   const currentUser = ref<UserData | null | undefined>(undefined)
 
@@ -33,7 +37,12 @@ export const useUserStore = defineStore('user', () => {
       return // do not initialize twice
     }
 
-    await loadCurrentUser()
+    await Promise.all([loadOAuth2Endpoints(), loadCurrentUser()])
+  }
+
+  const loadOAuth2Endpoints = async () => {
+    const client = new AuthClient()
+    oauth2Providers.value = await client.fetchOAuth2Providers()
   }
 
   const loadCurrentUser = async () => {
@@ -57,6 +66,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     storeState,
+    oauth2Providers,
     currentUser,
     isAuthenticated,
     loadCurrentUser,

@@ -11,6 +11,9 @@ from app.api.internal.api import api_router as internal_router
 from app.core.config import settings
 from app.db.init_db import create_superuser
 
+if settings.DEBUG:
+    logging.basicConfig(level=logging.DEBUG)
+
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
