@@ -3,13 +3,12 @@
  *
  * This includes the data retrieved from the APIs.
  */
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
-import { StoreState } from '@/stores/misc'
 import { infoFromSvQuery } from '@/lib/utils'
+import { StoreState } from '@/stores/misc'
 
 /** `SvRecord` is a type alias for easier future interface definition. */
 export type SvRecord = any | null

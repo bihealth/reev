@@ -3,7 +3,6 @@
  *
  * This includes the data retrieved from the APIs.
  */
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 

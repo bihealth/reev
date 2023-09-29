@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { API_BASE_PREFIX } from '@/api/common'
+
+import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
 import { type SmallVariant } from '@/stores/variantInfo'
 
-const API_BASE_URL = API_BASE_PREFIX
+const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
 enum VariantValidatorStates {
   Initial = 0,

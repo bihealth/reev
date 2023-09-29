@@ -1,7 +1,6 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
-
-import { setActivePinia, createPinia } from 'pinia'
 
 import { StoreState, useMiscStore } from '../misc'
 

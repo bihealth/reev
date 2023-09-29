@@ -1,7 +1,8 @@
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
-from app.core.config import settings
 from fastapi.testclient import TestClient
+
+from app.core.config import settings
 
 
 @pytest.mark.asyncio

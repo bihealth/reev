@@ -1,9 +1,10 @@
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
-from app.api.internal.endpoints.remote import default_acmg_rating
-from app.core.config import settings
 from fastapi.testclient import TestClient
 from pytest_httpx._httpx_mock import HTTPXMock
+
+from app.api.internal.endpoints.remote import default_acmg_rating
+from app.core.config import settings
 
 #: Host name to use for the mocked backend.
 MOCKED_BACKEND_HOST = "mocked-backend"

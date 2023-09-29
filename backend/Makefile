@@ -1,4 +1,5 @@
-DIRS_PYTHON := app tests ../docs
+DIRS_PYTHON_NO_ALEMBIC := app tests ../docs
+DIRS_PYTHON := alembic $(DIRS_PYTHON_NO_ALEMBIC)
 
 .PHONY: help
 help:
@@ -57,7 +58,7 @@ flake8:
 
 .PHONY: lint-mypy
 lint-mypy:
-	pipenv run mypy $(DIRS_PYTHON)
+	pipenv run mypy $(DIRS_PYTHON_NO_ALEMBIC)
 
 .PHONY: test
 test:
@@ -79,7 +80,7 @@ docs:
 
 .PHONY: serve
 serve:
-	pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+	pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload --workers 8
 
 .PHONY: alembic-check
 alembic-check:

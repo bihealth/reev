@@ -4,12 +4,11 @@
  *
  * Implements the search bar for variants and genes.
  */
-
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import HeaderDefault from '@/components/HeaderDefault.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
+import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import { search } from '@/lib/utils'
 

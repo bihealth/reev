@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import SearchBar from '@/components/SearchBar.vue'
+import UserProfileButton from '@/components/UserProfileButton.vue'
 import { search } from '@/lib/utils'
 
 export interface Props {
@@ -65,6 +66,7 @@ watch(() => props.searchTerm, updateTerms)
     <v-toolbar-items class="topbar-links">
       <v-btn id="about" to="/about"> About </v-btn>
       <v-btn id="contact" to="/contact"> Contact </v-btn>
+      <UserProfileButton />
     </v-toolbar-items>
   </v-app-bar>
 </template>

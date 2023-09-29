@@ -1,6 +1,6 @@
-import { API_BASE_PREFIX_NGINX } from '@/api/common'
+import { API_INTERNAL_BASE_PREFIX_NGINX } from '@/api/common'
 
-const API_BASE_URL = `${API_BASE_PREFIX_NGINX}/`
+const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_NGINX}/`
 
 const visibilityWindow = 10000000
 

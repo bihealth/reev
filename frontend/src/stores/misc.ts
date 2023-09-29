@@ -1,7 +1,6 @@
 /**
  * Store for misc info such as the current version.
  */
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 

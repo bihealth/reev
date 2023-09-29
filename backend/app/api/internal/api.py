@@ -1,8 +1,9 @@
 import subprocess
 
+from fastapi import APIRouter, Response
+
 from app.api.internal.endpoints import proxy, remote
 from app.core.config import settings
-from fastapi import APIRouter, Response
 
 api_router = APIRouter()
 
@@ -11,6 +12,7 @@ api_router.include_router(remote.router, prefix="/remote", tags=["remote"])
 
 
 @api_router.get("/version")
+@api_router.post("/version")
 async def version():
     """Return REEV software version"""
     if settings.REEV_VERSION:

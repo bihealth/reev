@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt, isVariantMtHomopolymer } from '@/lib/utils'
+import { isVariantMtHomopolymer, roundIt } from '@/lib/utils'
 import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps<{

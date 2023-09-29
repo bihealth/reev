@@ -1,20 +1,19 @@
-import { nextTick } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-import { useGenesListStore } from '@/stores/genesList'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import GenesListView from '../GenesListView.vue'
-import { StoreState } from '@/stores/misc'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import { routes } from '@/router'
+import { useGenesListStore } from '@/stores/genesList'
+import { StoreState } from '@/stores/misc'
+
+import GenesListView from '../GenesListView.vue'
 
 const vuetify = createVuetify({
   components,
@@ -48,7 +47,7 @@ const exampleGenesList = {
 }
 
 const makeWrapper = () => {
-  const pinia = createTestingPinia({ createSpy: vi.fn() })
+  const pinia = createTestingPinia({ createSpy: vi.fn })
   const store = useGenesListStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
     store.storeState = StoreState.Active
@@ -135,7 +134,7 @@ describe.concurrent('GenesListView', async () => {
   })
 
   it('uses example by click', async () => {
-    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = useGenesListStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async () => {
       store.storeState = StoreState.Error
@@ -179,7 +178,7 @@ describe.concurrent('GenesListView', async () => {
   })
 
   it('renders info page if storeState is Loading', async () => {
-    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = useGenesListStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async () => {
       store.storeState = StoreState.Loading
@@ -220,7 +219,7 @@ describe.concurrent('GenesListView', async () => {
   })
 
   it.skip('redirects to gene info page if storeState is Redirect', async () => {
-    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = useGenesListStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async () => {
       store.storeState = StoreState.Redirect

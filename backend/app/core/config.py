@@ -48,7 +48,9 @@ class Settings(BaseSettings):
     # == security-related settings ==
 
     #: Secret key
-    SECRET_KEY: str = secrets.token_urlsafe(32)
+    SECRET_KEY: str = secrets.token_urlsafe(32)  # TODO: load from config
+    #: Expiration of cookies.
+    SESSION_EXPIRE_MINUTES: int = 60 * 24 * 8
     #: Expiry of access token (60 minutes * 24 hours * 8 days = 8 days)
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8
     #: Server hostname
@@ -68,23 +70,30 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    # == backend-related settings ==
+    # == backend-related settings (defaults for production) ==
 
-    #: Prefix for the backend of annonars service, default is for dev.
-    BACKEND_PREFIX_ANNONARS: str = "http://localhost:3001"
-    #: Prefix for the backend of mehari service, default is for dev.
-    BACKEND_PREFIX_MEHARI: str = "http://localhost:3002"
-    #: Prefix for the backend of viguno service, default is for dev.
-    BACKEND_PREFIX_VIGUNO: str = "http://localhost:3003"
-    #: Prefix for the backend of nginx service, default is for dev.
-    BACKEND_PREFIX_NGINX: str = "http://localhost:3004"
+    #: Prefix for the backend of annonars service.
+    BACKEND_PREFIX_ANNONARS: str = "http://annonars:8080"
+    #: Prefix for the backend of mehari service.
+    BACKEND_PREFIX_MEHARI: str = "http://mehari:8080"
+    #: Prefix for the backend of viguno service.
+    BACKEND_PREFIX_VIGUNO: str = "http://viguno:8080"
+    #: Prefix for the backend of nginx service.
+    BACKEND_PREFIX_NGINX: str = "http://nginx:80"
+
+    #: URL to REDIS service.
+    REDIS_URL: str = "redis://redis:5379"
 
     # -- User-Related Configuration ---------------------------------------------
 
-    # FIRST_SUPERUSER: EmailStr
-    # FIRST_SUPERUSER_PASSWORD: str
-    # USERS_OPEN_REGISTRATION: bool = False
-    # EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore
+    #: Superuser email, created on startup.
+    FIRST_SUPERUSER_EMAIL: EmailStr | None = None
+    #: Superuser password, created on startup.
+    FIRST_SUPERUSER_PASSWORD: str | None = None
+    #: Whether to allow open registration of new users.
+    USERS_OPEN_REGISTRATION: bool = False
+    #: Email of test users, ignored.
+    EMAIL_TEST_USER: EmailStr = "test@example.com"  # type: ignore
 
     # -- Database Configuration ----------------------------------------------
 
@@ -107,12 +116,12 @@ class Settings(BaseSettings):
     @field_validator("SQLALCHEMY_DATABASE_URI", mode="before")
     def assemble_db_connection(cls, v: str | None, info: ValidationInfo) -> Any:
         if os.environ.get("CI") == "true":  # pragma: no cover
-            return "sqlite://"
+            return "sqlite+aiosqlite://"
         elif isinstance(v, str):  # pragma: no cover
             return v
         else:
             return PostgresDsn.build(
-                scheme="postgresql",
+                scheme="postgresql+asyncpg",
                 username=info.data.get("POSTGRES_USER"),
                 password=info.data.get("POSTGRES_PASSWORD"),
                 host=info.data.get("POSTGRES_HOST"),

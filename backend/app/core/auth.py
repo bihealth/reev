@@ -1,0 +1,71 @@
+import uuid
+
+import redis.asyncio
+from fastapi import Depends, Request
+from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
+from fastapi_users.authentication import (
+    AuthenticationBackend,
+    BearerTransport,
+    CookieTransport,
+    RedisStrategy,
+)
+from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.api.deps import get_async_session, get_db
+from app.core.config import settings
+from app.models.user import OAuthAccount, User
+
+
+async def get_user_db(session: AsyncSession = Depends(get_async_session)):
+    yield SQLAlchemyUserDatabase(session, User, OAuthAccount)
+
+
+class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
+    reset_password_token_secret = settings.SECRET_KEY
+    verification_token_secret = settings.SECRET_KEY
+
+    async def on_after_register(self, user: User, request: Request | None = None):
+        print(f"User {user.id} has registered.")
+
+    async def on_after_forgot_password(
+        self, user: User, token: str, request: Request | None = None
+    ):
+        print(f"User {user.id} has forgot their password. Reset token: {token}")
+
+    async def on_after_request_verify(self, user: User, token: str, request: Request | None = None):
+        print(f"Verification requested for user {user.id}. Verification token: {token}")
+
+
+async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):
+    yield UserManager(user_db)
+
+
+bearer_transport = BearerTransport(tokenUrl=f"{settings.API_V1_STR}/auth/login")
+
+cookie_transport = CookieTransport(cookie_max_age=settings.SESSION_EXPIRE_MINUTES * 60)
+
+redis_obj = redis.asyncio.from_url(settings.REDIS_URL, decode_responses=True)
+
+
+def get_redis_strategy() -> RedisStrategy:
+    return RedisStrategy(redis_obj, lifetime_seconds=settings.ACCESS_TOKEN_EXPIRE_MINUTES * 60)
+
+
+auth_backend_bearer = AuthenticationBackend(
+    name="bearer",
+    transport=bearer_transport,
+    get_strategy=get_redis_strategy,
+)
+
+auth_backend_cookie = AuthenticationBackend(
+    name="cookie",
+    transport=cookie_transport,
+    get_strategy=get_redis_strategy,
+)
+
+fastapi_users = FastAPIUsers[User, uuid.UUID](
+    get_user_manager, [auth_backend_bearer, auth_backend_cookie]
+)
+
+# current_active_user = fastapi_users.current_user(active=True)

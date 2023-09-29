@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import UserProfileButton from '@/components/UserProfileButton.vue'
+</script>
+
 <template>
   <v-app-bar app class="top-bar">
     <v-toolbar-title>
@@ -7,7 +11,7 @@
           src="@/assets/reev-logo.svg"
           id="logo"
           alt="logo"
-          width="70"
+          width="50"
         />
         REEV: Explanation and Evaluation of Variants
       </router-link>
@@ -17,6 +21,7 @@
     <v-toolbar-items class="topbar-links">
       <v-btn id="about" to="/about"> About </v-btn>
       <v-btn id="contact" to="/contact"> Contact </v-btn>
+      <UserProfileButton />
     </v-toolbar-items>
   </v-app-bar>
 </template>

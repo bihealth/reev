@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { watch, onMounted, ref, computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { StoreState } from '@/stores/misc'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import ClinvarFreqPlot from '@/components/ClinVarFreqPlot.vue'
 import GtexGenePlot from '@/components/GtexGenePlot.vue'
+import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import { roundIt } from '@/lib/utils'
+import { useGeneInfoStore } from '@/stores/geneInfo'
+import { StoreState } from '@/stores/misc'
 
 export interface Props {
   searchTerm?: string

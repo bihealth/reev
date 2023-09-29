@@ -4,12 +4,13 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { StoreState } from '@/stores/misc'
-import { API_BASE_PREFIX } from '@/api/common'
-import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
+
 import { type SmallVariant } from './variantInfo'
 
-const API_BASE_URL = API_BASE_PREFIX
+const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
 export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => {
   /** The current store state. */

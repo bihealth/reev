@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watch, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+
 import { separateIt as sepIt } from '@/lib/utils'
 
 const props = defineProps<{

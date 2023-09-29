@@ -1,18 +1,16 @@
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
+import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
-import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
+import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
+import { routes } from '@/router'
 import type { SmallVariant } from '@/stores/variantInfo'
 
 const vuetify = createVuetify({
@@ -53,7 +51,7 @@ const makeWrapper = (variantInfo: SmallVariant) => {
       varAnnos: BRCA1VariantInfo
     },
     global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
       components: {
         VariantFreqs
       }

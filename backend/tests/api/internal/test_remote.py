@@ -1,7 +1,8 @@
 import pytest
-from app.api.internal.endpoints.remote import default_acmg_rating
 from fastapi.testclient import TestClient
 from pytest_httpx._httpx_mock import HTTPXMock
+
+from app.api.internal.endpoints.remote import default_acmg_rating
 
 #: Host name to use for the mocked backend.
 MOCKED_BACKEND_HOST = "mocked-backend"

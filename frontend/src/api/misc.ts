@@ -1,6 +1,6 @@
-import { API_BASE_PREFIX } from '@/api/common'
+import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
 
-const API_BASE_URL = API_BASE_PREFIX
+const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
 export class MiscClient {
   private apiBaseUrl: string

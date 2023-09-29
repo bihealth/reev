@@ -1,7 +1,8 @@
 import { chunks } from '@reactgular/chunks'
-import { API_BASE_PREFIX_ANNONARS } from '@/api/common'
 
-const API_BASE_URL = `${API_BASE_PREFIX_ANNONARS}/`
+import { API_INTERNAL_BASE_PREFIX_ANNONARS } from '@/api/common'
+
+const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_ANNONARS}/`
 
 export class AnnonarsClient {
   private apiBaseUrl: string

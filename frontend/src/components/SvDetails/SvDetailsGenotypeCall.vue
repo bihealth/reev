@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type ComputedRef } from 'vue'
+import { type ComputedRef, computed } from 'vue'
 
 import { displayName } from '@/lib/utils'
 

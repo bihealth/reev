@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { watch, onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import { StoreState } from '@/stores/misc'
 import { useGenesListStore } from '@/stores/genesList'
+import { StoreState } from '@/stores/misc'
 
 const router = useRouter()
 

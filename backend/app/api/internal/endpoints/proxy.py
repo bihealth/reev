@@ -1,10 +1,11 @@
 """Reverse proxies to internal services."""
 
 import httpx
-from app.core.config import settings
 from fastapi import APIRouter, BackgroundTasks, Request, Response
 from fastapi.responses import StreamingResponse
 from starlette.background import BackgroundTask
+
+from app.core.config import settings
 
 router = APIRouter()
 

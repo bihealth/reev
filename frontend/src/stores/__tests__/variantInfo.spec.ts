@@ -1,14 +1,14 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { setActivePinia, createPinia } from 'pinia'
-
-import { StoreState } from '@/stores/misc'
-import { useVariantInfoStore } from '../variantInfo'
-import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1Clinvar from '@/assets/__tests__/BRCA1ClinVar.json'
-import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
+import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
+import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
+import { StoreState } from '@/stores/misc'
+
+import { useVariantInfoStore } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
+
 import { useMiscStore } from '@/stores/misc'
 
 const miscStore = useMiscStore()

@@ -1,18 +1,16 @@
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import { StoreState } from '@/stores/misc'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { routes } from '@/router'
+import { StoreState } from '@/stores/misc'
+import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 
 const vuetify = createVuetify({
   components,
@@ -37,7 +35,7 @@ const smallVariantInfo = {
 }
 
 const makeWrapper = () => {
-  const pinia = createTestingPinia({ createSpy: vi.fn() })
+  const pinia = createTestingPinia({ createSpy: vi.fn })
   const store = useVariantAcmgRatingStore(pinia)
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
