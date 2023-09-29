@@ -13,6 +13,6 @@ set -euo pipefail
 HTTP_HOST=${HTTP_HOST-0.0.0.0}
 HTTP_PORT=${HTTP_PORT-8080}
 
-bash -x /home/reev/backend_pre_start.sh
+python /home/reev/app/backend_pre_start.py
 
 uvicorn app.main:app --host $HTTP_HOST --port $HTTP_PORT
