@@ -64,6 +64,17 @@ You can use the provided ``Makefile`` files to install the dependencies.
 
     $ make deps
 
+-----------------
+Setup Environment
+-----------------
+
+You need to create an ``.env`` file for the backend.
+The values in ``env-dev`` are suitable for development with the ``reev-docker-compose`` with ``docker-compose.override.yml-dev``.
+
+.. code-block:: bash
+
+    $ ln -sr backend/env-dev backend/.env
+
 -------------------
 Running the Servers
 -------------------

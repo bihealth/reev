@@ -70,19 +70,19 @@ class Settings(BaseSettings):
             return v
         raise ValueError(v)
 
-    # == backend-related settings ==
+    # == backend-related settings (defaults for production) ==
 
-    #: Prefix for the backend of annonars service, default is for dev.
-    BACKEND_PREFIX_ANNONARS: str = "http://localhost:3001"
-    #: Prefix for the backend of mehari service, default is for dev.
-    BACKEND_PREFIX_MEHARI: str = "http://localhost:3002"
-    #: Prefix for the backend of viguno service, default is for dev.
-    BACKEND_PREFIX_VIGUNO: str = "http://localhost:3003"
-    #: Prefix for the backend of nginx service, default is for dev.
-    BACKEND_PREFIX_NGINX: str = "http://localhost:3004"
+    #: Prefix for the backend of annonars service.
+    BACKEND_PREFIX_ANNONARS: str = "http://annonars:8080"
+    #: Prefix for the backend of mehari service.
+    BACKEND_PREFIX_MEHARI: str = "http://mehari:8080"
+    #: Prefix for the backend of viguno service.
+    BACKEND_PREFIX_VIGUNO: str = "http://viguno:8080"
+    #: Prefix for the backend of nginx service.
+    BACKEND_PREFIX_NGINX: str = "http://nginx:80"
 
-    #: URL to REDIS service, default is for dev.
-    REDIS_URL: str = "redis://localhost:3030"
+    #: URL to REDIS service.
+    REDIS_URL: str = "redis://redis:5379"
 
     # -- User-Related Configuration ---------------------------------------------
 
