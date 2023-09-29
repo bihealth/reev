@@ -76,6 +76,16 @@ The values in ``env-dev`` are suitable for development with the ``reev-docker-co
     $ ln -sr backend/env-dev backend/.env
 
 -------------------
+Database Migrations
+-------------------
+
+Next, you will need to run the database migrations.
+
+.. code-block:: bash
+
+    $ make -C backend alembic-upgrade
+
+-------------------
 Running the Servers
 -------------------
 
