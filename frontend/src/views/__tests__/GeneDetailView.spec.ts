@@ -1,32 +1,14 @@
 import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-
-import GeneDetailView from '../GeneDetailView.vue'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import GeneDetailView from '@/views/GeneDetailView.vue'
 
 const geneData = {
   storeState: 'active',
@@ -48,27 +30,23 @@ const makeWrapper = (geneDataExample: Object) => {
   store.geneSymbol = geneData.geneSymbol
   store.geneInfo = JSON.parse(JSON.stringify(geneDataExample))
 
-  return mount(
+  return setupMountedComponents(
     {
-      template: '<v-app><GeneDetailView /></v-app>'
+      component: GeneDetailView,
+      template: true
     },
     {
       props: {
         searchTerm: 'BRCA1'
       },
-      global: {
-        plugins: [vuetify, router, pinia],
-        components: {
-          GeneDetailView
-        }
-      }
+      pinia: pinia
     }
   )
 }
 
 describe.concurrent('GeneDetailView', async () => {
   it('renders the page with invalid data', async () => {
-    const wrapper = makeWrapper(geneData)
+    const { wrapper } = makeWrapper(geneData)
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -87,7 +65,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('renders the header', async () => {
-    const wrapper = makeWrapper(geneData.geneInfo)
+    const { wrapper } = makeWrapper(geneData.geneInfo)
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -103,7 +81,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('renders info-cards and navigation drawer', () => {
-    const wrapper = makeWrapper(geneData.geneInfo)
+    const { wrapper } = makeWrapper(geneData.geneInfo)
 
     const navigationDrawer = wrapper.find('.v-navigation-drawer')
     expect(navigationDrawer.exists()).toBe(true)
@@ -132,7 +110,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('emits update in header', async () => {
-    const wrapper = makeWrapper(geneData.geneInfo)
+    const { wrapper } = makeWrapper(geneData.geneInfo)
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
@@ -152,7 +130,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('emits scroll to section', async () => {
-    const wrapper = makeWrapper(geneData.geneInfo)
+    const { wrapper, router } = makeWrapper(geneData.geneInfo)
 
     const hgncLink = wrapper.find('#hgnc-nav')
     expect(hgncLink.exists()).toBe(true)
@@ -190,23 +168,21 @@ describe.concurrent('GeneDetailView', async () => {
     store.geneSymbol = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
-    mount(
+    const { router } = setupMountedComponents(
       {
-        template: '<v-app><GeneDetailView /></v-app>'
+        component: GeneDetailView,
+        template: true
       },
       {
         props: {
           searchTerm: 'BRCA1'
         },
-        global: {
-          plugins: [vuetify, router, pinia],
-          components: {
-            GeneDetailView
-          }
-        }
+        pinia: pinia
       }
     )
+
     await nextTick()
+    expect(router.push).toHaveBeenCalledOnce()
     expect(router.push).toHaveBeenCalledWith({ name: 'home' })
   })
 })

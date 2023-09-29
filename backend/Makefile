@@ -15,7 +15,7 @@ help:
 	@echo "  docs    Generate the documentation"
 	@echo "  serve   Run the (development) server"
 	@echo "  migrate Create alembic versions and upgrade"
-	@echO ""
+	@echo ""
 	@echo "  alembic-check        Run alembic check"
 	@echo "  alembic-autogenerate Autogenerte alembic version"
 	@echo "  alembic-upgrade      Upgrade database to head"
@@ -84,12 +84,12 @@ serve:
 
 .PHONY: alembic-check
 alembic-check:
-	alembic check
+	pipenv run alembic check
 
 .PHONY: alembic-autogenerate
 alembic-autogenerate:
-	alembic revision --autogenerate
+	pipenv run alembic revision --autogenerate
 
 .PHONY: alembic-upgrade
 alembic-upgrade:
-	alembic upgrade head
+	pipenv run alembic upgrade head

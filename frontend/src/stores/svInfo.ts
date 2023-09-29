@@ -30,6 +30,7 @@ export const useSvInfoStore = defineStore('svInfo', () => {
 
   function clearData() {
     storeState.value = StoreState.Initial
+    svTerm.value = null
     currentSvRecord.value = null
     genesInfos.value = []
   }
@@ -79,8 +80,9 @@ export const useSvInfoStore = defineStore('svInfo', () => {
 
   return {
     storeState,
-    genesInfos,
+    svTerm,
     currentSvRecord,
+    genesInfos,
     clearData,
     loadData
   }

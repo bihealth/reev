@@ -1,11 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
+import { AnnonarsClient } from '@/api/annonars'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as EMPSearchInfo from '@/assets/__tests__/EMPSearchInfo.json'
-
-import { AnnonarsClient } from '../annonars'
 
 const fetchMocker = createFetchMock(vi)
 

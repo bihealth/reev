@@ -1,56 +1,21 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 import AboutView from '../AboutView.vue'
 
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
-const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><AboutView /></v-app>'
-    },
-    {
-      global: {
-        plugins: [
-          vuetify,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn,
-            initialState: {
-              misc: {
-                appVersion: 'v0.0.0'
-              }
-            }
-          })
-        ],
-        components: {
-          AboutView
-        }
-      }
-    }
-  )
-}
 describe.concurrent('AboutView', async () => {
   it('renders the header', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: AboutView, template: true },
+      {
+        initialStoreState: {
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
 
     const logo = wrapper.find('#logo')
     const aboutLink = wrapper.find('#about')
@@ -61,7 +26,16 @@ describe.concurrent('AboutView', async () => {
   })
 
   it('renders the main content', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: AboutView, template: true },
+      {
+        initialStoreState: {
+          misc: {
+            appVersion: 'v0.0.0'
+          }
+        }
+      }
+    )
 
     const mainContent = wrapper.find('.about-view')
     expect(mainContent.exists()).toBe(true)

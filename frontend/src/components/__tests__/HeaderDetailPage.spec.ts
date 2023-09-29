@@ -1,44 +1,12 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import SearchBar from '@/components/SearchBar.vue'
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 import HeaderDetailPage from '../HeaderDetailPage.vue'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
-const makeWrapper = () => {
-  return mount(
-    { template: '<v-app><HeaderDetailPage /></v-app>' },
-    {
-      global: {
-        plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-        components: {
-          HeaderDetailPage
-        }
-      }
-    }
-  )
-}
 
 const geneData = {
   storeState: 'active',
@@ -54,7 +22,12 @@ const geneData = {
 
 describe.concurrent('HeaderDetailPage', async () => {
   it('renders the gene symbol and nav links', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: HeaderDetailPage, template: true },
+      {
+        initialStoreState: geneData
+      }
+    )
 
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
@@ -70,7 +43,12 @@ describe.concurrent('HeaderDetailPage', async () => {
   })
 
   it('renders the search bar', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: HeaderDetailPage, template: true },
+      {
+        initialStoreState: geneData
+      }
+    )
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol
@@ -82,7 +60,12 @@ describe.concurrent('HeaderDetailPage', async () => {
   })
 
   it('correctly emits search', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper, router } = setupMountedComponents(
+      { component: HeaderDetailPage, template: true },
+      {
+        initialStoreState: geneData
+      }
+    )
     const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.geneSymbol = geneData.geneSymbol

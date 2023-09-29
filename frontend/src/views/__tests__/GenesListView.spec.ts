@@ -1,31 +1,13 @@
 import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { useGenesListStore } from '@/stores/genesList'
 import { StoreState } from '@/stores/misc'
-
-import GenesListView from '../GenesListView.vue'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import GenesListView from '@/views/GenesListView.vue'
 
 const exampleGenesList = {
   genes: [
@@ -60,23 +42,19 @@ const makeWrapper = () => {
   store.query = 'q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
   store.genesList = JSON.parse(JSON.stringify(exampleGenesList.genes))
 
-  return mount(
+  return setupMountedComponents(
     {
-      template: '<v-app><GenesListView /></v-app>'
+      component: GenesListView,
+      template: true
     },
     {
       query: {
         q: 'EMP',
         fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
       },
-      global: {
-        plugins: [vuetify, router, pinia],
-        components: {
-          GenesListView
-        }
-      }
+      pinia: pinia
     }
-  )
+  ).wrapper
 }
 
 describe.concurrent('GenesListView', async () => {
@@ -148,24 +126,19 @@ describe.concurrent('GenesListView', async () => {
     store.clearData = mockClearData
 
     store.storeState = StoreState.Error
-    const wrapper = mount(
+    const { wrapper } = setupMountedComponents(
       {
-        template: '<v-app><GenesListView /></v-app>'
+        component: GenesListView,
+        template: true
       },
       {
-        props: {
-          q: 'EMP',
+        query: {
+          q: 'EMP1',
           fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
         },
-        global: {
-          plugins: [vuetify, router, pinia],
-          components: {
-            GenesListView
-          }
-        }
+        pinia: pinia
       }
     )
-    await nextTick()
 
     const exampleTerm = wrapper.find('.example')
     expect(exampleTerm.exists()).toBe(true)
@@ -196,29 +169,24 @@ describe.concurrent('GenesListView', async () => {
     store.storeState = StoreState.Loading
     store.query = 'q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
     store.redirectHgncId = 'HGNC:3333'
-    const wrapper = mount(
+    const { wrapper } = setupMountedComponents(
       {
-        template: '<v-app><GenesListView /></v-app>'
+        component: GenesListView,
+        template: true
       },
       {
         query: {
-          q: 'EMP1',
+          q: 'EMP',
           fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
         },
-        global: {
-          plugins: [vuetify, router, pinia],
-          components: {
-            GenesListView
-          }
-        }
+        pinia: pinia
       }
     )
-    await nextTick()
 
     expect(wrapper.html()).toContain('Searching for genes')
   })
 
-  it.skip('redirects to gene info page if storeState is Redirect', async () => {
+  it('redirects to gene info page if storeState is Redirect', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = useGenesListStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async () => {
@@ -227,35 +195,32 @@ describe.concurrent('GenesListView', async () => {
       store.redirectHgncId = 'HGNC:3333'
     })
     const mockClearData = vi.fn().mockImplementation(() => {
-      store.storeState = StoreState.Redirect
+      store.storeState = StoreState.Initial
       store.query = null
       store.redirectHgncId = null
     })
     store.loadData = mockLoadData
     store.clearData = mockClearData
 
-    store.storeState = StoreState.Redirect
+    store.storeState = StoreState.Active
     store.query = 'q=EMP1&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
-    store.redirectHgncId = 'HGNC:3333'
-    mount(
+    store.redirectHgncId = null
+    const { router } = setupMountedComponents(
       {
-        template: '<v-app><GenesListView /></v-app>'
+        component: GenesListView,
+        template: true
       },
       {
         query: {
           q: 'EMP1',
           fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
         },
-        global: {
-          plugins: [vuetify, router, pinia],
-          components: {
-            GenesListView
-          }
-        }
+        pinia: pinia
       }
     )
-    await nextTick()
 
+    await nextTick()
+    expect(router.push).toHaveBeenCalledOnce()
     expect(router.push).toHaveBeenCalledWith({
       name: 'gene',
       params: { searchTerm: 'HGNC:3333', genomeRelease: 'grch37' }

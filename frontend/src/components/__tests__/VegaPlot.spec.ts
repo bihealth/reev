@@ -1,25 +1,7 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, it } from 'vitest'
 
 import VegaPlot from '@/components/VegaPlot.vue'
-import { routes } from '@/router'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const vegaData = [
   {
@@ -68,32 +50,27 @@ const vegaLayer = [
   }
 ]
 
-const makeWrapper = () => {
-  return mount(VegaPlot, {
-    props: {
-      description: 'Example description',
-      dataValues: vegaData,
-      dataName: 'clinvar',
-      encoding: vegaEncoding,
-      layer: vegaLayer,
-      width: 500,
-      height: 500,
-      mark: true,
-      renderer: 'canvas',
-      transform: []
-    },
-    global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-      components: { VegaPlot }
-    }
-  })
-}
-
 describe.concurrent('VegaPlot', async () => {
   // Skipping tests due to error with vega-embed
   // DataCloneError: #<Object> could not be cloned.
   it.skip('renders the VegaPlot info', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: VegaPlot, template: false },
+      {
+        props: {
+          description: 'Example description',
+          dataValues: vegaData,
+          dataName: 'clinvar',
+          encoding: vegaEncoding,
+          layer: vegaLayer,
+          width: 500,
+          height: 500,
+          mark: true,
+          renderer: 'canvas',
+          transform: []
+        }
+      }
+    )
     console.log(wrapper.html())
   })
 })

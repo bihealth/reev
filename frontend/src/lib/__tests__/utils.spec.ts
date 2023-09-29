@@ -8,7 +8,7 @@ import {
   roundIt,
   search,
   separateIt
-} from '../utils'
+} from '@/lib/utils'
 
 describe.concurrent('roundIt method', () => {
   it('should round a positive value with default digits', () => {

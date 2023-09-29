@@ -1,57 +1,21 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 
 import HeaderDefault from '../HeaderDefault.vue'
 
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
-
-const makeWrapper = () => {
-  return mount(
-    {
-      template: '<v-app><HeaderDefault /></v-app>'
-    },
-    {
-      global: {
-        plugins: [
-          vuetify,
-          router,
-          createTestingPinia({
-            createSpy: vi.fn,
-            initialState: {
-              user: {
-                currentUser: null
-              }
-            }
-          })
-        ],
-        components: {
-          HeaderDefault
-        }
-      }
-    }
-  )
-}
-
 describe.concurrent('HeaderDefault.vue', () => {
   it('renders the logo and title', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: HeaderDefault, template: true },
+      {
+        initialStoreState: {
+          user: {
+            currentUser: null
+          }
+        }
+      }
+    )
 
     const logo = wrapper.find('#logo')
     const title = wrapper.find('a[href="/"]')
@@ -60,7 +24,16 @@ describe.concurrent('HeaderDefault.vue', () => {
   })
 
   it('renders the navigation links', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = setupMountedComponents(
+      { component: HeaderDefault, template: true },
+      {
+        initialStoreState: {
+          user: {
+            currentUser: null
+          }
+        }
+      }
+    )
 
     const aboutLink = wrapper.find('#about')
     const contactLink = wrapper.find('#contact')

@@ -1,11 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
@@ -21,24 +16,11 @@ import VariantGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
-import { routes } from '@/router'
+import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { useVariantInfoStore } from '@/stores/variantInfo'
-
-import VariantDetailView from '../VariantDetailView.vue'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import VariantDetailView from '@/views/VariantDetailView.vue'
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -96,28 +78,21 @@ const makeWrapper = () => {
   variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
   variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
-  return mount(
-    {
-      template: '<v-app><VariantDetailView /></v-app>'
-    },
+  return setupMountedComponents(
+    { component: VariantDetailView, template: true },
     {
       props: {
         searchTerm: 'chr17:43044295:G:A',
         genomeRelease: 'grch37'
       },
-      global: {
-        plugins: [vuetify, router, pinia],
-        components: {
-          VariantDetailView
-        }
-      }
+      pinia: pinia
     }
   )
 }
 
 describe.concurrent('VariantDetailView', async () => {
   it('renders the header', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -133,7 +108,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('emits update in header', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
@@ -153,7 +128,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('renders VariantDatails components', () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = makeWrapper()
 
     const variantInfo = wrapper.findComponent(VariantGene)
     const beaconNetwork = wrapper.findComponent(BeaconNetwork)
@@ -174,7 +149,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('emits scroll to section', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper, router } = makeWrapper()
 
     const geneLink = wrapper.find('#gene-nav')
     expect(geneLink.exists()).toBe(true)
@@ -234,21 +209,17 @@ describe.concurrent('VariantDetailView', async () => {
     variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
     variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
-    mount(
+    const { router } = setupMountedComponents(
       {
-        template: '<v-app><VariantDetailView /></v-app>'
+        component: VariantDetailView,
+        template: true
       },
       {
         props: {
           searchTerm: 'chr17:43044295:G:A',
           genomeRelease: 'grch37'
         },
-        global: {
-          plugins: [vuetify, router, pinia],
-          components: {
-            VariantDetailView
-          }
-        }
+        pinia: pinia
       }
     )
     await nextTick()

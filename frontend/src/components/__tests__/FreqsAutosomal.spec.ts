@@ -1,26 +1,8 @@
-import { createTestingPinia } from '@pinia/testing'
-import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createRouter, createWebHistory } from 'vue-router'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import FreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
-import { routes } from '@/router'
-
-const vuetify = createVuetify({
-  components,
-  directives
-})
-
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: routes
-})
-// Mock router push
-router.push = vi.fn()
+import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -32,32 +14,34 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
-const makeWrapper = (variantData: Object | null) => {
-  return mount(FreqsAutosomal, {
-    props: {
-      smallVar: smallVariantInfo,
-      varAnnos: variantData,
-      dataset: 'gnomad_genomes'
-    },
-    global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
-      components: {
-        FreqsAutosomal
-      }
-    }
-  })
-}
-
 describe.concurrent('FreqsAutosomal', async () => {
   it('renders the FreqsAutosomal info', async () => {
-    const wrapper = makeWrapper(BRCA1VariantInfo['result'])
+    const { wrapper } = setupMountedComponents(
+      { component: FreqsAutosomal, template: false },
+      {
+        props: {
+          smallVar: smallVariantInfo,
+          varAnnos: BRCA1VariantInfo['result'],
+          dataset: 'gnomad_genomes'
+        }
+      }
+    )
     expect(wrapper.text()).toContain('gnomAD Genomes')
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)
   })
 
   it('renders the FreqsAutosomal info with no data', async () => {
-    const wrapper = makeWrapper(null)
+    const { wrapper } = setupMountedComponents(
+      { component: FreqsAutosomal, template: false },
+      {
+        props: {
+          smallVar: smallVariantInfo,
+          varAnnos: null,
+          dataset: 'gnomad_genomes'
+        }
+      }
+    )
     expect(wrapper.text()).toContain('gnomAD Genomes')
     expect(wrapper.text()).toContain('No allele frequency information available in local database.')
   })
