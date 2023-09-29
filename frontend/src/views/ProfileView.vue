@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
-import HeaderDefault from '@/components/HeaderDefault.vue'
 import { AuthClient } from '@/api/auth'
+import HeaderDefault from '@/components/HeaderDefault.vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()

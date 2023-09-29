@@ -16,6 +16,8 @@ It supports them by providing aggregated information on genomic variants.
 
    dev_quickstart
    dev_makefiles
+   dev_frontend
+   dev_backend
    dev_ci
    dev_deployment
    dev_docs

@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import { watch, onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useVariantInfoStore } from '@/stores/variantInfo'
-import { StoreState } from '@/stores/misc'
-import { type SmallVariant } from '@/stores/variantInfo'
-
-import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
+import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
 import VariantDetailsClinvar from '@/components/VariantDetails/ClinVar.vue'
-import VariantDetailsFreqs from '@/components/VariantDetails/VariantFreqs.vue'
-import VariantDetailsVariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantDetailsTxCsq from '@/components/VariantDetails/TxCsq.vue'
 import VariantDetailsConservation from '@/components/VariantDetails/VariantConservation.vue'
+import VariantDetailsFreqs from '@/components/VariantDetails/VariantFreqs.vue'
+import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
+import VariantDetailsVariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantDetailsVariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import { StoreState } from '@/stores/misc'
+import { useVariantInfoStore } from '@/stores/variantInfo'
+import { type SmallVariant } from '@/stores/variantInfo'
 
 export interface Props {
   searchTerm?: string

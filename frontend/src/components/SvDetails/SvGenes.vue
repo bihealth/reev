@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { useSvInfoStore } from '@/stores/svInfo'
-import { computed, type ComputedRef, type Ref, ref } from 'vue'
-import { roundIt } from '@/lib/utils'
-
+import { type ComputedRef, type Ref, computed, ref } from 'vue'
 import EasyDataTable from 'vue3-easy-data-table'
 import type { ClickRowArgument, Header } from 'vue3-easy-data-table'
 import 'vue3-easy-data-table/dist/style.css'
 
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
+import { roundIt } from '@/lib/utils'
+import { useSvInfoStore } from '@/stores/svInfo'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any

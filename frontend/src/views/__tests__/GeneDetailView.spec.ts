@@ -1,21 +1,20 @@
-import { nextTick } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import GeneDetailView from '../GeneDetailView.vue'
-import { StoreState } from '@/stores/misc'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import { routes } from '@/router'
+import { useGeneInfoStore } from '@/stores/geneInfo'
+import { StoreState } from '@/stores/misc'
+
+import GeneDetailView from '../GeneDetailView.vue'
 
 const vuetify = createVuetify({
   components,
@@ -36,7 +35,7 @@ const geneData = {
 }
 
 const makeWrapper = (geneDataExample: Object) => {
-  const pinia = createTestingPinia({ createSpy: vi.fn() })
+  const pinia = createTestingPinia({ createSpy: vi.fn })
   const store = useGeneInfoStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
     store.storeState = StoreState.Active
@@ -172,7 +171,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('redirects if mounting with storeState Error', async () => {
-    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = useGeneInfoStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
       store.storeState = StoreState.Error

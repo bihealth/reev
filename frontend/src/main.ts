@@ -1,16 +1,16 @@
 import '@mdi/font/css/materialdesignicons.css'
-import 'vuetify/styles'
-import './assets/main.css'
-
-import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { createApp } from 'vue'
 import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import 'vuetify/styles'
 
 import App from '@/App.vue'
 import router from '@/router'
+
+import './assets/main.css'
 
 const app = createApp(App)
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
 import { type SmallVariant } from '@/stores/variantInfo'
 

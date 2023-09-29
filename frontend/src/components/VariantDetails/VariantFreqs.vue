@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { isVariantMt } from '@/lib/utils'
-
 import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
+import { isVariantMt } from '@/lib/utils'
 import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps<{

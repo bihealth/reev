@@ -1,14 +1,13 @@
 /**
  * Store for information regarding the current user.
  */
-
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { computed, ref } from 'vue'
 
+import { UnauthenticatedError, UsersClient } from '@/api/users'
 import { StoreState } from '@/stores/misc'
-import { UsersClient, UnauthenticatedError } from '@/api/users'
 
-export interface User {
+export interface UserData {
   id: string
   email: string
   is_active: boolean
@@ -21,7 +20,7 @@ export const useUserStore = defineStore('user', () => {
   const storeState = ref<StoreState>(StoreState.Initial)
 
   /* The current user, null if none, undefined if not set already */
-  const currentUser = ref<User | null | undefined>(undefined)
+  const currentUser = ref<UserData | null | undefined>(undefined)
 
   /* Whether the user is currently authenticated. */
   const isAuthenticated = computed<boolean>(() => {

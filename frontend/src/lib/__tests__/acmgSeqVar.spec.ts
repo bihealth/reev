@@ -1,10 +1,11 @@
-import { describe, it, expect } from 'vitest'
+import { describe, expect, it } from 'vitest'
+
 import {
-  MultiSourceAcmgCriteriaState,
-  StateSource,
-  Presence,
   AcmgCriteria,
-  AcmgEvidenceLevel
+  AcmgEvidenceLevel,
+  MultiSourceAcmgCriteriaState,
+  Presence,
+  StateSource
 } from '../acmgSeqVar'
 
 describe.concurrent('MultiSourceAcmgCriteriaState', () => {

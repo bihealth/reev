@@ -3,12 +3,11 @@
  *
  * This includes the data retrieved from the APIs.
  */
-
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import { StoreState } from '@/stores/misc'
 import { AnnonarsClient } from '@/api/annonars'
+import { StoreState } from '@/stores/misc'
 
 export const useGeneInfoStore = defineStore('geneInfo', () => {
   /** The current store state. */

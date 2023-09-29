@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import UserProfileButton from '@/components/UserProfileButton.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import UserProfileButton from '@/components/UserProfileButton.vue'
 import { search } from '@/lib/utils'
 
 export interface Props {

@@ -7,8 +7,8 @@ import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
+
 onMounted(() => {
-  console.error(userStore)
   userStore.initialize()
 })
 </script>

@@ -1,4 +1,5 @@
 import { chunks } from '@reactgular/chunks'
+
 import { API_INTERNAL_BASE_PREFIX_ANNONARS } from '@/api/common'
 
 const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_ANNONARS}/`

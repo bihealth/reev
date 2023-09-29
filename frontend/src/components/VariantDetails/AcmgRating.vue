@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
+import AcmgCriteriaCard from '@/components/AcmgCriteriaCard.vue'
+import {
+  ACMG_CRITERIA_DEFS,
+  ACMG_EVIDENCE_LEVELS_BENIGN,
+  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
+  ALL_ACMG_CRITERIA,
+  Presence
+} from '@/lib/acmgSeqVar'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { type SmallVariant } from '@/stores/variantInfo'
-import AcmgCriteriaCard from '@/components/AcmgCriteriaCard.vue'
-import {
-  Presence,
-  ALL_ACMG_CRITERIA,
-  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
-  ACMG_EVIDENCE_LEVELS_BENIGN,
-  ACMG_CRITERIA_DEFS
-} from '@/lib/acmgSeqVar'
 
 const props = defineProps({
   smallVariant: Object as () => SmallVariant | undefined

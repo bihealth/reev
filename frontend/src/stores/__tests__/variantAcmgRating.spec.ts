@@ -1,11 +1,11 @@
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { setActivePinia, createPinia } from 'pinia'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 
 import { StoreState } from '../misc'
 import { useVariantAcmgRatingStore } from '../variantAcmgRating'
-import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
 import type { SmallVariant } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)

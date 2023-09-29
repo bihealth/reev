@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
 import igv from 'igv'
+import { onMounted, ref, watch } from 'vue'
 
 // import { genCaseTrack, publicTracks } from '@/components/GenomeBrowser.tracks'
 

@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { watch, onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useSvInfoStore } from '@/stores/svInfo'
-import { StoreState } from '@/stores/misc'
-
+import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
 import SvDetailsGenotypeCall from '@/components/SvDetails/SvDetailsGenotypeCall.vue'
-import GenomeBrowser from '@/components/GenomeBrowser.vue'
+import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
+import { StoreState } from '@/stores/misc'
+import { useSvInfoStore } from '@/stores/svInfo'
 import { type SvRecord } from '@/stores/svInfo'
 
 export interface Props {

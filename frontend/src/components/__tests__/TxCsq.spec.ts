@@ -1,16 +1,14 @@
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import TxCsq from '@/components/VariantDetails/TxCsq.vue'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
+import TxCsq from '@/components/VariantDetails/TxCsq.vue'
+import { routes } from '@/router'
 
 const vuetify = createVuetify({
   components,
@@ -30,7 +28,7 @@ const makeWrapper = () => {
       txCsq: BRCA1TxInfo
     },
     global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
       components: {
         TxCsq
       }

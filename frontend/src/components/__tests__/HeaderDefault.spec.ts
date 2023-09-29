@@ -1,11 +1,12 @@
-import { describe, it, expect, vi } from 'vitest'
+import { createTestingPinia } from '@pinia/testing'
 import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
 import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+
+import { routes } from '@/router'
 
 import HeaderDefault from '../HeaderDefault.vue'
 
@@ -28,7 +29,18 @@ const makeWrapper = () => {
     },
     {
       global: {
-        plugins: [vuetify, router],
+        plugins: [
+          vuetify,
+          router,
+          createTestingPinia({
+            createSpy: vi.fn,
+            initialState: {
+              user: {
+                currentUser: null
+              }
+            }
+          })
+        ],
         components: {
           HeaderDefault
         }

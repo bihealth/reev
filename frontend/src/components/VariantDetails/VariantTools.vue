@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt } from '@/lib/utils'
-
 import ScoreDisplay from '@/components/VariantDetails/ScoreDisplay.vue'
+import { roundIt } from '@/lib/utils'
 import { type SmallVariant } from '@/stores/variantInfo'
 
 export interface Props {

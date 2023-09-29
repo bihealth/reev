@@ -1,33 +1,32 @@
-import { nextTick } from 'vue'
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-import { useVariantInfoStore } from '@/stores/variantInfo'
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import VariantDetailView from '../VariantDetailView.vue'
-import { StoreState } from '@/stores/misc'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
-import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
-import { MultiSourceAcmgCriteriaState, StateSource, AcmgCriteria, Presence } from '@/lib/acmgSeqVar'
+import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import VariantGene from '@/components/VariantDetails/VariantGene.vue'
 import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
 import ClinVar from '@/components/VariantDetails/ClinVar.vue'
-import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
+import TxCsq from '@/components/VariantDetails/TxCsq.vue'
 import VariantConservation from '@/components/VariantDetails/VariantConservation.vue'
+import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
+import VariantGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
-import TxCsq from '@/components/VariantDetails/TxCsq.vue'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { routes } from '@/router'
+import { StoreState } from '@/stores/misc'
+import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
+import { useVariantInfoStore } from '@/stores/variantInfo'
+
+import VariantDetailView from '../VariantDetailView.vue'
 
 const vuetify = createVuetify({
   components,
@@ -61,7 +60,7 @@ const variantData = {
 }
 
 const makeWrapper = () => {
-  const pinia = createTestingPinia({ createSpy: vi.fn() })
+  const pinia = createTestingPinia({ createSpy: vi.fn })
   const variantInfoStore = useVariantInfoStore(pinia)
   const variantAcmgStore = useVariantAcmgRatingStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (variantTerm: string) => {
@@ -194,7 +193,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('redirects if mounting with storeState Error', async () => {
-    const pinia = createTestingPinia({ createSpy: vi.fn() })
+    const pinia = createTestingPinia({ createSpy: vi.fn })
     const variantInfoStore = useVariantInfoStore(pinia)
     const variantAcmgStore = useVariantAcmgRatingStore(pinia)
 

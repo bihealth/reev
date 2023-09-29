@@ -1,14 +1,14 @@
 <script setup lang="ts">
 /** The component for the Acmg Criteria Card. */
 import {
-  Presence,
-  StateSource,
-  AcmgCriteria,
-  type CriteriaState,
-  AcmgEvidenceLevel,
   ACMG_CRITERIA_DEFS,
+  ACMG_EVIDENCE_LEVELS_BENIGN,
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
-  ACMG_EVIDENCE_LEVELS_BENIGN
+  AcmgCriteria,
+  AcmgEvidenceLevel,
+  type CriteriaState,
+  Presence,
+  StateSource
 } from '@/lib/acmgSeqVar'
 
 interface Props {

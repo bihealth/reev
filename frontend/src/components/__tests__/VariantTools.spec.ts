@@ -1,16 +1,14 @@
-import { describe, expect, it, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
-import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/router'
-
 import { createTestingPinia } from '@pinia/testing'
-
+import { mount } from '@vue/test-utils'
+import { describe, expect, it, vi } from 'vitest'
+import { createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
-import VariantTools from '@/components/VariantDetails/VariantTools.vue'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
+import VariantTools from '@/components/VariantDetails/VariantTools.vue'
+import { routes } from '@/router'
 
 const vuetify = createVuetify({
   components,
@@ -41,7 +39,7 @@ const makeWrapper = () => {
       varAnnos: BRCA1VariantInfo['result']
     },
     global: {
-      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn() })],
+      plugins: [vuetify, router, createTestingPinia({ createSpy: vi.fn })],
       components: {
         VariantTools
       }
