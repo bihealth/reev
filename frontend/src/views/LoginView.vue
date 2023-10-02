@@ -11,7 +11,7 @@ userStore.initialize()
 const failure = ref<boolean>(false)
 const message = ref<string>('')
 
-const showLoginForm = ref<boolean>(false)
+const showLoginForm = ref<boolean>(userStore.oauth2Providers.length === 0)
 
 const visible = ref<boolean>(false)
 const username = ref<string>('')
@@ -138,6 +138,7 @@ onMounted(async () => {
           <div class="text-subtitle-1 text-medium-emphasis">Account</div>
 
           <v-text-field
+            id="email"
             density="compact"
             placeholder="Email address"
             prepend-inner-icon="mdi-email-outline"
@@ -152,6 +153,7 @@ onMounted(async () => {
           </div>
 
           <v-text-field
+            id="password"
             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :type="visible ? 'text' : 'password'"
             density="compact"
