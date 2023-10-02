@@ -88,7 +88,7 @@ class Settings(BaseSettings):
     BACKEND_PREFIX_NGINX: str = "http://nginx:80"
 
     #: URL to REDIS service.
-    REDIS_URL: str = "redis://redis:5379"
+    REDIS_URL: str = "redis://redis:6379"
 
     # -- User-Related Configuration ---------------------------------------------
 

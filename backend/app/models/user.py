@@ -4,7 +4,7 @@ from fastapi_users_db_sqlalchemy import (
     SQLAlchemyBaseOAuthAccountTableUUID,
     SQLAlchemyBaseUserTableUUID,
 )
-from sqlalchemy import Integer, String
+from sqlalchemy import BigInteger, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -17,10 +17,12 @@ class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
     if TYPE_CHECKING:  # pragma: no cover
         access_token: str
         refresh_token: Optional[str]
+        expires_at: Optional[int]
     else:
         # We need to increase the token size for the OAuthAccount table.
         access_token: Mapped[str] = mapped_column(String(TOKEN_SIZE), nullable=False)
         refresh_token: Mapped[Optional[str]] = mapped_column(String(TOKEN_SIZE), nullable=True)
+        expires_at: Mapped[Optional[int]] = mapped_column(BigInteger, nullable=True)
 
 
 class User(SQLAlchemyBaseUserTableUUID, Base):
