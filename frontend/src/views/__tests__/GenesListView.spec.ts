@@ -7,7 +7,8 @@ import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { useGenesListStore } from '@/stores/genesList'
 import { StoreState } from '@/stores/misc'
-import GenesListView from '@/views/GenesListView.vue'
+
+import GenesListView from '../GenesListView.vue'
 
 const exampleGenesList = {
   genes: [

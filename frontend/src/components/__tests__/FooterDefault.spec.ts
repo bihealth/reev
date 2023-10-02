@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import FooterDefault from '@/components/FooterDefault.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
+
+import FooterDefault from '../FooterDefault.vue'
 
 describe.concurrent('FooterDefault.vue', () => {
   it('renders information', () => {

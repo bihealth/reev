@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 
 from sqlalchemy import text
 from tenacity import after_log, before_log, retry, stop_after_attempt, wait_fixed
@@ -26,6 +27,9 @@ async def init():
         # Try to create session to check if DB is awake
         await db.execute(text("SELECT 1"))
         # Ensure to run Alembic on startup
+        for key in ("DATABASE_URL", "SQLALCHEMY_DATABASE_URI"):
+            if key in os.environ:
+                os.environ[key] = os.environ[key].replace("+asyncpg", "")
         alembicArgs = ["--raiseerr", "upgrade", "head"]
         alembic.config.main(alembicArgs)
     except Exception as e:

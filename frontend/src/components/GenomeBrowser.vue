@@ -7,15 +7,17 @@ import { onMounted, ref, watch } from 'vue'
 /** Alias for Genome Browser type. */
 type GenomeBrowser = any
 
-// Define the props.
-const props = defineProps({
+export interface Props {
   // Case UUID
-  caseUuid: String,
+  caseUuid: string
   // Genome build, e.g., "hg19" or "b37"
-  genome: String,
+  genome: string
   // Locus to go to, e.g., "chr1:1,900,000-2,000,000"
-  locus: String
-})
+  locus: string
+}
+
+// Define the props.
+const props = defineProps<Props>()
 
 // The <div> to show the browser in.
 const genomeBrowserDivRef = ref(null)

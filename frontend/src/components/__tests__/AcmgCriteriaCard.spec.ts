@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
+import { VSwitch } from 'vuetify/components'
 
-import AcmgCriteriaCard from '@/components/AcmgCriteriaCard.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { setupMountedComponents } from '@/lib/test-utils'
+
+import AcmgCriteriaCard from '../AcmgCriteriaCard.vue'
 
 describe.concurrent('AcmgCriteriaCard', async () => {
   it('renders the AcmgRating info', async () => {
@@ -47,10 +50,18 @@ describe.concurrent('AcmgCriteriaCard', async () => {
         }
       }
     )
-    const switcher = wrapper.find('.v-switch')
-    await switcher.trigger('click')
+
+    const switchComponent = wrapper.findComponent(VSwitch)
+    // expect(switchComponent.props('value')).toBe(undefined)
+    expect(switchComponent.exists()).toBe(true)
+    await switchComponent.trigger('click')
+    await nextTick()
+    expect(switchComponent.emitted()).toHaveProperty('click')
+    expect(switchComponent.emitted('click')).toHaveProperty('length', 1)
 
     const selection = wrapper.find('.v-select')
     await selection.trigger('click')
+    await nextTick()
+    expect(wrapper.emitted()).toHaveProperty('click')
   })
 })

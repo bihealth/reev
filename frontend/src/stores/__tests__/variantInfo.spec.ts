@@ -6,8 +6,9 @@ import * as BRCA1Clinvar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
-import { StoreState } from '@/stores/misc'
-import { useVariantInfoStore } from '@/stores/variantInfo'
+
+import { StoreState } from '../misc'
+import { useVariantInfoStore } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)
 
