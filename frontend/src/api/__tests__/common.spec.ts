@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import {
-  API_INTERNAL_BASE_PREFIX_MEHARI,
   API_INTERNAL_BASE_PREFIX,
   API_INTERNAL_BASE_PREFIX_ANNONARS,
+  API_INTERNAL_BASE_PREFIX_MEHARI,
   API_INTERNAL_BASE_PREFIX_NGINX
 } from '@/api/common'
 
