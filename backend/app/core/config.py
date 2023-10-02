@@ -138,7 +138,7 @@ class Settings(BaseSettings):
                     password = inputf.read().strip()
             else:
                 password = None
-            dsn = PostgresDsn.build(
+            return PostgresDsn.build(
                 scheme="postgresql+asyncpg",
                 username=info.data.get("POSTGRES_USER"),
                 password=info.data.get("POSTGRES_PASSWORD", password),
@@ -146,8 +146,6 @@ class Settings(BaseSettings):
                 port=info.data.get("POSTGRES_PORT"),
                 path=f"{info.data.get('POSTGRES_DB') or ''}",
             )
-            logger.info(f"DNS={dsn} %s" % (password,))
-            return dsn
 
     # -- Email Sending Configuration -----------------------------------------
 

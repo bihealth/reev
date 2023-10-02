@@ -14,7 +14,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <template v-if="!userStore.currentUser">
+  <template v-if="!userStore.isAuthenticated">
     <v-btn prepend-icon="mdi-key-variant" id="login" to="/login"> Login </v-btn>
   </template>
   <template v-else>
