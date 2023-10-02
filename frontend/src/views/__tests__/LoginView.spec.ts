@@ -1,18 +1,16 @@
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
-import createFetchMock from 'vitest-fetch-mock'
 import { setupMountedComponents } from '@/lib/test-utils'
 
-import LoginView from '@/views/LoginView.vue'
-
-const fetchMocker = createFetchMock(vi)
+import LoginView from '../LoginView.vue'
 
 describe.concurrent('Login view', async () => {
   it('renders the main content', () => {
     const { wrapper } = setupMountedComponents({ component: LoginView, template: true }, {})
 
     expect(wrapper.html()).toMatch('REEV Explains and Evaluates Variants')
-    
+
     // Form fields
     expect(wrapper.html()).toMatch('Account')
     const emailField = wrapper.find('#email')
@@ -29,8 +27,10 @@ describe.concurrent('Login view', async () => {
   })
 
   it('emits login event when login button is clicked', async () => {
-    // fetchMocker.mockResponse(JSON.stringify({ status: 200 }))
-    fetchMocker.mockResponse(JSON.stringify({ detail: 'Unauthenticated' }), { status: 401 })
+    // Mock fetch
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve(JSON.stringify({ status: 200 })) })
+    )
     const { wrapper } = setupMountedComponents({ component: LoginView, template: true }, {})
 
     const emailField = wrapper.find('#email')
@@ -40,5 +40,29 @@ describe.concurrent('Login view', async () => {
     await emailField.setValue('example@mail.com')
     await passwordField.setValue('examplePassword')
     await loginButton.trigger('click')
+    await nextTick()
+
+    expect(wrapper.emitted('input')).toHaveLength(2)
+    expect(wrapper.emitted('click')).toHaveLength(1)
+  })
+
+  it('correctly handles error while logging in', async () => {
+    // Mock fetch
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
+    )
+    const { wrapper } = setupMountedComponents({ component: LoginView, template: true }, {})
+
+    const emailField = wrapper.find('#email')
+    const passwordField = wrapper.find('#password')
+    const loginButton = wrapper.find('button[type="button"]')
+
+    await emailField.setValue('invalid')
+    await passwordField.setValue('')
+    await loginButton.trigger('click')
+    await nextTick()
+
+    expect(wrapper.emitted('input')).toHaveLength(2)
+    expect(wrapper.emitted('click')).toHaveLength(1)
   })
 })

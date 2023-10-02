@@ -3,7 +3,8 @@ import { describe, expect, it } from 'vitest'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { type UserData } from '@/stores/user'
-import ProfileView from '@/views/ProfileView.vue'
+
+import ProfileView from '../ProfileView.vue'
 
 const adminUser: UserData = {
   id: '2c0a153e-5e8c-11ee-8c99-0242ac120002',

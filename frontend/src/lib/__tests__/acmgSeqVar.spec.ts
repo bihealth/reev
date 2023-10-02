@@ -6,7 +6,7 @@ import {
   MultiSourceAcmgCriteriaState,
   Presence,
   StateSource
-} from '@/lib/acmgSeqVar'
+} from '../acmgSeqVar'
 
 describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   it('should have correct default values', () => {

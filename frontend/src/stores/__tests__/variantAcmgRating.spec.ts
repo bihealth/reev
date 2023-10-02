@@ -3,9 +3,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
-import { StoreState } from '@/stores/misc'
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import type { SmallVariant } from '@/stores/variantInfo'
+
+import { StoreState } from '../misc'
+import { useVariantAcmgRatingStore } from '../variantAcmgRating'
+import type { SmallVariant } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)
 

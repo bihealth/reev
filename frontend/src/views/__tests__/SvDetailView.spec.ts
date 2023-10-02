@@ -11,7 +11,8 @@ import SvGenes from '@/components/SvDetails/SvGenes.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
-import VariantDetailView from '@/views/VariantDetailView.vue'
+
+import VariantDetailView from '../VariantDetailView.vue'
 
 const svRecord = {
   // Include necessary properties of SvRecord

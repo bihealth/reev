@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
+
+import GenomeBrowser from '../GenomeBrowser.vue'
 
 describe.concurrent('GenomeBrowser', async () => {
   it('renders the GenomeBrowser', async () => {

@@ -3,8 +3,9 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import * as geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
-import { StoreState } from '@/stores/misc'
-import { useSvInfoStore } from '@/stores/svInfo'
+
+import { StoreState } from '../misc'
+import { useSvInfoStore } from '../svInfo'
 
 const fetchMocker = createFetchMock(vi)
 

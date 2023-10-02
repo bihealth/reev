@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '../test-utils'
 
 const TestComponent = { template: '<template><div>Test</div></template>', __name: 'TestComponent' }
 
@@ -55,7 +55,6 @@ describe.concurrent('Test Utils - setupMountedComponents', () => {
       { component: TestComponent, template: false },
       { props: { message: 'Hello, Props!' } }
     )
-    console.log(wrapper.html())
     expect(wrapper.text()).toBe('Hello, Props!')
   })
 })

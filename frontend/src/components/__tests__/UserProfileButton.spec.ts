@@ -72,7 +72,7 @@ describe.concurrent('UserProfileButton', () => {
 
     const userStore = useUserStore()
     userStore.currentUser = adminUser
-    console.log(userStore.currentUser)
+    // console.log(userStore.currentUser)
 
     await nextTick()
 

@@ -1,7 +1,8 @@
 import { describe, it } from 'vitest'
 
-import VegaPlot from '@/components/VegaPlot.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
+
+import VegaPlot from '../VegaPlot.vue'
 
 const vegaData = [
   {

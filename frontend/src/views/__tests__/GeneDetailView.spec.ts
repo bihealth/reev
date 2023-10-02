@@ -8,7 +8,8 @@ import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import GeneDetailView from '@/views/GeneDetailView.vue'
+
+import GeneDetailView from '../GeneDetailView.vue'
 
 const geneData = {
   storeState: 'active',

@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import ClinVarFreqPlot from '@/components/ClinVarFreqPlot.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
+
+import ClinVarFreqPlot from '../ClinVarFreqPlot.vue'
+import VegaPlot from '../VegaPlot.vue'
 
 describe.concurrent('ClinVarFreqPlot', async () => {
   it('renders the ClinVarFreqPlot info', async () => {
@@ -18,5 +20,8 @@ describe.concurrent('ClinVarFreqPlot', async () => {
       }
     )
     expect(wrapper.text()).toContain('Population frequency of ClinVar variants')
+
+    const vegaPlot = wrapper.findComponent(VegaPlot)
+    expect(vegaPlot.exists()).toBe(true)
   })
 })

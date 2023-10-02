@@ -20,7 +20,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { useVariantInfoStore } from '@/stores/variantInfo'
-import VariantDetailView from '@/views/VariantDetailView.vue'
+
+import VariantDetailView from '../VariantDetailView.vue'
 
 const smallVariantInfo = {
   release: 'grch37',

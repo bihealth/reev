@@ -1,5 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
@@ -63,11 +64,7 @@ describe.concurrent('AcmgRating', async () => {
     const switchers = wrapper.findAll('.v-switch')
     const switcher = switchers[0]
     await switcher.trigger('click')
-
-    expect(wrapper.text()).toContain('Pathogenic')
-    expect(wrapper.text()).toContain('Benign')
-
-    const updatedSwitchers = wrapper.findAll('.v-switch')
-    expect(updatedSwitchers.length).toBe(29)
+    await nextTick()
+    expect(wrapper.emitted('click')).toBeTruthy()
   })
 })

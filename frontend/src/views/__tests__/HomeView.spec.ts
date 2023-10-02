@@ -3,11 +3,11 @@ import { nextTick } from 'vue'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
+import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
-import SearchBar from '../../components/SearchBar.vue'
 import HomeView from '../HomeView.vue'
 
 const geneData = {
