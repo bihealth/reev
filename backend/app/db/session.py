@@ -11,9 +11,4 @@ SessionLocal = async_sessionmaker(
     autocommit=False, autoflush=False, expire_on_commit=False, bind=engine
 )
 
-#: Sync engine for Alembic migrations.
-sync_engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI), pool_pre_ping=True)
-# Sync session, to be used for Alembic migrations.
-SyncSessionLocal = sessionmaker(autocommit=False, expire_on_commit=False, bind=sync_engine)
-
 Base = declarative_base()

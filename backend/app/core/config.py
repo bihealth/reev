@@ -1,3 +1,4 @@
+import logging
 import os
 import secrets
 from typing import Any
@@ -7,6 +8,9 @@ from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.schemas import OAuth2ProviderConfig
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -50,7 +54,7 @@ class Settings(BaseSettings):
     # == security-related settings ==
 
     #: Secret key
-    SECRET_KEY: str = secrets.token_urlsafe(32)  # TODO: load from config
+    SECRET_KEY: str = secrets.token_urlsafe(32)
     #: Expiration of cookies.
     SESSION_EXPIRE_MINUTES: int = 60 * 24 * 8
     #: Expiry of access token (60 minutes * 24 hours * 8 days = 8 days)
@@ -106,15 +110,17 @@ class Settings(BaseSettings):
     # sqlite database (test use only).
 
     #: Postgres hostname
-    POSTGRES_HOST: str | None = None
+    POSTGRES_HOST: str = "postgres"
     #: Postgres port
     POSTGRES_PORT: int = 5432
     #: Postgres user
-    POSTGRES_USER: str | None = None
+    POSTGRES_USER: str = "reev"
+    #: Postgres password file
+    POSTGRES_PASSWORD_FILE: str | None = None
     #: Postgres password
     POSTGRES_PASSWORD: str | None = None
     #: Postgres database name
-    POSTGRES_DB: str | None = None
+    POSTGRES_DB: str = "reev"
     #: SQLAlchemy Postgres DSN
     SQLALCHEMY_DATABASE_URI: PostgresDsn | str | None = None
 
@@ -125,14 +131,23 @@ class Settings(BaseSettings):
         elif isinstance(v, str):  # pragma: no cover
             return v
         else:
-            return PostgresDsn.build(
+            password_file = info.data.get("POSTGRES_PASSWORD_FILE")
+            if password_file:
+                logger.info(f"Reading password from {password_file}")
+                with open(password_file, "rt") as inputf:
+                    password = inputf.read().strip()
+            else:
+                password = None
+            dsn = PostgresDsn.build(
                 scheme="postgresql+asyncpg",
                 username=info.data.get("POSTGRES_USER"),
-                password=info.data.get("POSTGRES_PASSWORD"),
+                password=info.data.get("POSTGRES_PASSWORD", password),
                 host=info.data.get("POSTGRES_HOST"),
                 port=info.data.get("POSTGRES_PORT"),
                 path=f"{info.data.get('POSTGRES_DB') or ''}",
             )
+            logger.info(f"DNS={dsn} %s" % (password,))
+            return dsn
 
     # -- Email Sending Configuration -----------------------------------------
 
