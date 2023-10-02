@@ -2,14 +2,12 @@
 import igv from 'igv'
 import { onMounted, ref, watch } from 'vue'
 
-// import { genCaseTrack, publicTracks } from '@/components/GenomeBrowser.tracks'
+import { publicTracks } from '@/lib/genomeBrowserTracks'
 
 /** Alias for Genome Browser type. */
 type GenomeBrowser = any
 
 export interface Props {
-  // Case UUID
-  caseUuid: string
   // Genome build, e.g., "hg19" or "b37"
   genome: string
   // Locus to go to, e.g., "chr1:1,900,000-2,000,000"
@@ -19,36 +17,37 @@ export interface Props {
 // Define the props.
 const props = defineProps<Props>()
 
-// The <div> to show the browser in.
+/** The <div> to show the browser in. */
 const genomeBrowserDivRef = ref(null)
-// Set on IGV browser creation.
+/** Set on IGV browser creation. */
 const igvBrowser = ref(null)
 
+/**
+ * Translate genome build names from GRCh37/GRCh38 to hg19/hg38.
+ *
+ * @param value The genome build name.
+ * @returns The translated genome build name. (hg19/hg38)
+ */
 const translateGenome = (value: any) => {
   if (value === 'GRCh37') {
     return 'hg19'
   } else if (value === 'GRCh38') {
-    return 'b38'
+    return 'hg38'
   } else {
     return value
   }
 }
 
-// Conditionally add case tracks.
-// const addCaseTracks = (browser: GenomeBrowser) => {
-//   if (props.caseUuid) {
-//     console.log(genCaseTrack(props.caseUuid))
-//     browser.loadTrack(genCaseTrack(props.caseUuid))
-//   }
-// }
-
-// Add all tracks.
-// const addTracks = (browser: any) => {
-//   addCaseTracks(browser)
-//   for (const track of publicTracks) {
-//     browser.loadTrack(track)
-//   }
-// }
+/**
+ * Add public tracks.
+ *
+ * @param browser The IGV browser.
+ */
+const addTracks = (browser: any) => {
+  for (const track of publicTracks) {
+    browser.loadTrack(track)
+  }
+}
 
 // Watch changes to the genome (requires full reload).
 watch(
@@ -59,20 +58,9 @@ watch(
       .then((browser: GenomeBrowser) => {
         browser.search(props.locus)
       })
-    // .then((browser: GenomeBrowser) => {
-    // addTracks(browser)
-    // })
-  }
-)
-
-// Watch changes to the case (requires track reload).
-watch(
-  () => props.caseUuid,
-  () => {
-    if (igvBrowser.value) {
-      ;(igvBrowser.value! as GenomeBrowser).removeTrackByName('Case SVs')
-      // addCaseTracks(igvBrowser.value)
-    }
+      .then((browser: GenomeBrowser) => {
+        addTracks(browser)
+      })
   }
 )
 
@@ -95,7 +83,7 @@ onMounted(() => {
     })
     .then((browser: GenomeBrowser) => {
       igvBrowser.value = browser
-      // addTracks(browser)
+      addTracks(browser)
       if (props.locus) {
         ;(igvBrowser.value! as GenomeBrowser).search(props.locus)
       }
