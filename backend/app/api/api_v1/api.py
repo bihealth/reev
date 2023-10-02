@@ -49,6 +49,7 @@ for config in settings.OAUTH2_PROVIDERS:
         backend=auth_backend_cookie,
         state_secret=settings.SECRET_KEY,
         associate_by_email=True,
+        is_verified_by_default=True,
     )
     api_router.include_router(
         oauth_router,
