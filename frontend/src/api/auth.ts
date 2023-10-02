@@ -56,7 +56,7 @@ export class AuthClient {
   }
 
   async fetchOAuth2LoginUrl(provider: OAuth2Provider, redirectTo?: string | null): Promise<string> {
-    let url = `${this.apiBaseUrl}/auth/external/cookie/${provider.name}/authorize`
+    let url = `${this.apiBaseUrl}auth/external/cookie/${provider.name}/authorize`
     if (redirectTo) {
       url += `?redirect_to=${encodeURIComponent(redirectTo)}`
     }
