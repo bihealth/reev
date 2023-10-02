@@ -97,7 +97,7 @@ onMounted(async () => {
         <v-card class="mb-5 mt-5" variant="tonal" v-if="userStore.oauth2Providers.length > 0">
           <v-card-title> Login With </v-card-title>
           <v-card-text class="text-medium-emphasis text-caption mt-3">
-            <template v-for="provider in userStore.oauth2Providers">
+            <template v-for="provider in userStore.oauth2Providers" v-bind:key="provider.name">
               <v-btn
                 block
                 size="large"

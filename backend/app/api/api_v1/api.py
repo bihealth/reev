@@ -98,12 +98,19 @@ class OrcidOpenId(OpenID):
 
 # For now, we only provide oauth clients for cookie-based authentication.
 for config in settings.OAUTH2_PROVIDERS:
-    oauth_client = OrcidOpenId(
-        client_id=config.client_id,
-        client_secret=config.client_secret,
-        openid_configuration_endpoint=str(config.config_url),
-        base_scopes=["openid", "/read-limited"],
-    )
+    if config.name == "orcid":
+        oauth_client = OrcidOpenId(
+            client_id=config.client_id,
+            client_secret=config.client_secret,
+            openid_configuration_endpoint=str(config.config_url),
+            base_scopes=["openid", "/read-limited"],
+        )
+    else:
+        oauth_client = OpenID(
+            client_id=config.client_id,
+            client_secret=config.client_secret,
+            openid_configuration_endpoint=str(config.config_url),
+        )
     oauth_router = fastapi_users.get_oauth_router(
         oauth_client=oauth_client,
         backend=auth_backend_cookie,
