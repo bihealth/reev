@@ -39,7 +39,7 @@ def upgrade():
         sa.Column("user_id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
         sa.Column("oauth_name", sa.String(length=100), nullable=False),
         sa.Column("access_token", sa.String(length=TOKEN_SIZE), nullable=False),
-        sa.Column("expires_at", sa.Integer(), nullable=True),
+        sa.Column("expires_at", sa.BigInteger(), nullable=True),
         sa.Column("refresh_token", sa.String(length=TOKEN_SIZE), nullable=True),
         sa.Column("account_id", sa.String(length=320), nullable=False),
         sa.Column("account_email", sa.String(length=320), nullable=False),

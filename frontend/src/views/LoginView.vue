@@ -97,18 +97,30 @@ onMounted(async () => {
         <v-card class="mb-5 mt-5" variant="tonal" v-if="userStore.oauth2Providers.length > 0">
           <v-card-title> Login With </v-card-title>
           <v-card-text class="text-medium-emphasis text-caption mt-3">
-            <v-btn
-              block
-              size="large"
-              variant="tonal"
-              color="green"
-              class="mb-3"
-              @click="handleProviderLogin(provider)"
-              v-for="provider in userStore.oauth2Providers"
-              v-bind:key="provider.name"
-            >
-              {{ provider.label }}
-            </v-btn>
+            <template v-for="provider in userStore.oauth2Providers">
+              <v-btn
+                block
+                size="large"
+                variant="tonal"
+                color="green"
+                class="mb-3"
+                @click="handleProviderLogin(provider)"
+                v-if="provider.name === 'orcid'"
+              >
+                Login with ORCID
+              </v-btn>
+              <v-btn
+                block
+                size="large"
+                variant="tonal"
+                color="green"
+                class="mb-3"
+                @click="handleProviderLogin(provider)"
+                v-else
+              >
+                Login With {{ provider.label }}
+              </v-btn>
+            </template>
             <v-btn
               block
               prepend-icon="mdi-arrow-left"
