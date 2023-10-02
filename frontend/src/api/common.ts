@@ -6,7 +6,7 @@ export const API_INTERNAL_BASE_PREFIX_ANNONARS = '/internal/proxy/annonars'
 //   ? `//localhost:8080/internal/proxy/annonars`
 //   : '/internal/proxy/annonars'
 
-export const API_INTERNALBASE_PREFIX_MEHARI = '/internal/proxy/mehari'
+export const API_INTERNAL_BASE_PREFIX_MEHARI = '/internal/proxy/mehari'
 // import.meta.env.MODE == 'development'
 //   ? '//localhost:8080/internal/proxy/mehari'
 //   : '/internal/proxy/mehari'

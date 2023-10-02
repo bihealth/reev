@@ -64,7 +64,7 @@ describe.concurrent('geneInfo Store', () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
-      } else if (req.url.includes('tx/csq')) {
+      } else if (req.url.includes('seqvars/csq')) {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
@@ -110,7 +110,7 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(
           JSON.stringify({ result: { cadd: null, dbnsfp: null, dbscsnv: null } })
         )
-      } else if (req.url.includes('tx/csq')) {
+      } else if (req.url.includes('seqvars/csq')) {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
@@ -143,7 +143,7 @@ describe.concurrent('geneInfo Store', () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
-      } else if (req.url.includes('tx/csq')) {
+      } else if (req.url.includes('seqvars/csq')) {
         return Promise.resolve(JSON.stringify({ result: [] }))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))
@@ -176,7 +176,7 @@ describe.concurrent('geneInfo Store', () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
-      } else if (req.url.includes('tx/csq')) {
+      } else if (req.url.includes('seqvars/csq')) {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify({ genes: null }))
@@ -207,7 +207,7 @@ describe.concurrent('geneInfo Store', () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
-      } else if (req.url.includes('tx/csq')) {
+      } else if (req.url.includes('seqvars/csq')) {
         return Promise.resolve(JSON.stringify(BRCA1TxInfo))
       } else if (req.url.includes('genes/info')) {
         return Promise.resolve(JSON.stringify(BRCA1GeneInfo))

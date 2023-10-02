@@ -101,7 +101,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         txCsq.value = txCsqData.result
       }
 
-      const hgncId: string = txCsqData.result[0]['gene-id']
+      const hgncId: string = txCsqData.result[0]['gene_id']
       const geneData = await annonarsClient.fetchGeneInfo(hgncId)
       if (geneData?.genes === null) {
         throw new Error('No gene data found.')

@@ -1,6 +1,6 @@
-import { API_INTERNALBASE_PREFIX_MEHARI } from '@/api/common'
+import { API_INTERNAL_BASE_PREFIX_MEHARI } from '@/api/common'
 
-const API_BASE_URL = `${API_INTERNALBASE_PREFIX_MEHARI}/`
+const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_MEHARI}/`
 
 export class MehariClient {
   private apiBaseUrl: string
@@ -19,9 +19,9 @@ export class MehariClient {
     alternative: string,
     hgnc_id?: string
   ): Promise<any> {
-    const hgncSuffix = hgnc_id ? `&hgnc-id=${hgnc_id}` : ''
+    const hgncSuffix = hgnc_id ? `&hgnc_id=${hgnc_id}` : ''
     const url =
-      `${this.apiBaseUrl}tx/csq?genome-release=${genomeRelease}&` +
+      `${this.apiBaseUrl}seqvars/csq?genome_release=${genomeRelease}&` +
       `chromosome=${chromosome}&position=${pos}&reference=${reference}&` +
       `alternative=${alternative}${hgncSuffix}`
 
