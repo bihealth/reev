@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import {
-  API_INTERNALBASE_PREFIX_MEHARI,
+  API_INTERNAL_BASE_PREFIX_MEHARI,
   API_INTERNAL_BASE_PREFIX,
   API_INTERNAL_BASE_PREFIX_ANNONARS,
   API_INTERNAL_BASE_PREFIX_NGINX
@@ -22,7 +22,7 @@ describe.concurrent('API_BASE_PREFIX constants', () => {
 
   it('returns the correct API base prefix for mehari in production mode', () => {
     const originalMode = import.meta.env.MODE
-    expect(API_INTERNALBASE_PREFIX_MEHARI).toBe('/internal/proxy/mehari')
+    expect(API_INTERNAL_BASE_PREFIX_MEHARI).toBe('/internal/proxy/mehari')
     import.meta.env.MODE = originalMode
   })
 
