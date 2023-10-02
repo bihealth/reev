@@ -106,7 +106,7 @@ for config in settings.OAUTH2_PROVIDERS:
             base_scopes=["openid", "/read-limited"],
         )
     else:
-        oauth_client: OpenID = OpenID(
+        oauth_client = OpenID(
             client_id=config.client_id,
             client_secret=config.client_secret,
             openid_configuration_endpoint=str(config.config_url),
