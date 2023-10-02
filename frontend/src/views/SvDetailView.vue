@@ -137,7 +137,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <GenomeBrowser
             :case-uuid="'case-uuid'"
             :genome="genomeRelease === 'grch37' ? 'hg19' : 'b38'"
-            :locus="(svLocus(svInfoStore.currentSvRecord) as string)"
+            :locus="svLocus(svInfoStore.currentSvRecord) as string"
           />
         </div>
       </div>
