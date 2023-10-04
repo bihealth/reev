@@ -93,7 +93,7 @@ export const search = async (searchTerm: string, genomeRelease: string) => {
   // Remove leading/trailing whitespace.
   searchTerm = searchTerm.trim()
   if (!searchTerm) {
-    return // no query ;-)
+    return null // no query ;-)
   }
 
   // First, attempt to resolve using dotty.
@@ -105,7 +105,6 @@ export const search = async (searchTerm: string, genomeRelease: string) => {
     if (!searchTerm.startsWith('chr')) {
       searchTerm = `chr${searchTerm}`
     }
-    console.log(searchTerm)
     genomeRelease = spdi.assembly.toLowerCase()
   }
 

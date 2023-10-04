@@ -1,4 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+
+import { DottyClient } from '@/api/dotty'
 
 import {
   copy,
@@ -109,7 +111,15 @@ describe.concurrent('isVariantMtHomopolymer method', () => {
   })
 })
 
-describe.concurrent('search method', () => {
+describe.concurrent('search method', async () => {
+  beforeEach(() => {
+    // we make `DottyClient.toSpdi` return null / fail every time
+    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('should return "gene" route location for HGNC queries', async () => {
     const result = await search('HGNC:1100', 'ghcr37')
     expect(result).toEqual({
@@ -142,6 +152,22 @@ describe.concurrent('search method', () => {
       }
     })
   })
+
+  it('should return null if no entry', async () => {
+    const result = await search('', 'foo37')
+    expect(result).toBe(null)
+  })
+
+  it('should remove whitespace', async () => {
+    const result = await search(' HGNC:1100  ', 'ghcr37')
+    expect(result).toEqual({
+      name: 'gene',
+      params: {
+        searchTerm: 'HGNC:1100',
+        genomeRelease: 'ghcr37'
+      }
+    })
+  })
 })
 
 describe.concurrent('infoFromQuery method', () => {
@@ -164,22 +190,6 @@ describe.concurrent('infoFromQuery method', () => {
       reference: undefined,
       alternative: undefined,
       hgnc_id: undefined
-    })
-  })
-
-  it('should return null if no entry', () => {
-    const result = search('', 'foo37')
-    expect(result).toBe(null)
-  })
-
-  it('should remove whitespace', () => {
-    const result = search(' HGNC:1100  ', 'ghcr37')
-    expect(result).toEqual({
-      name: 'gene',
-      params: {
-        searchTerm: 'HGNC:1100',
-        genomeRelease: 'ghcr37'
-      }
     })
   })
 })

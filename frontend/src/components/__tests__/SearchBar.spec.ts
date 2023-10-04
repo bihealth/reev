@@ -1,11 +1,16 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
+import { DottyClient } from '@/api/dotty'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 import SearchBar from '../SearchBar.vue'
 
 describe.concurrent('SearchBar.vue', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('renders the search bar with the correct default props', () => {
     const { wrapper } = setupMountedComponents(
       { component: SearchBar, template: false },
@@ -61,6 +66,9 @@ describe.concurrent('SearchBar.vue', () => {
   })
 
   it('correctly emits search', async () => {
+    // we make `DottyClient.toSpdi` return null / fail
+    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+
     const { wrapper } = setupMountedComponents(
       { component: SearchBar, template: false },
       {

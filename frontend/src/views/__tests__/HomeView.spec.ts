@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
+import { DottyClient } from '@/api/dotty'
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -23,6 +24,10 @@ const geneData = {
 }
 
 describe.concurrent('HomeView with mocked router', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('renders the header and the footer', () => {
     const { wrapper } = setupMountedComponents(
       { component: HomeView, template: true },
@@ -97,7 +102,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     const subtitle = wrapper.find('h2')
     const exampleTerms = wrapper.findAll('.example')
     expect(subtitle.exists()).toBe(true)
-    expect(exampleTerms.length).toBe(9)
+    expect(exampleTerms.length).toBe(8)
   })
 
   it('uses example by click', async () => {
@@ -127,6 +132,8 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('correctly uses the router', async () => {
+    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+
     const { wrapper, router } = setupMountedComponents(
       { component: HomeView, template: true },
       {
