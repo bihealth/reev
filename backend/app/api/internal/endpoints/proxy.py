@@ -25,6 +25,7 @@ async def reverse_proxy(request: Request) -> Response:
         backend_url = settings.BACKEND_PREFIX_MEHARI + url.path.replace(
             "/internal/proxy/mehari", ""
         )
+        print(url.path, backend_url)
     elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/viguno"):
         backend_url = settings.BACKEND_PREFIX_VIGUNO + url.path.replace(
             "/internal/proxy/viguno", ""

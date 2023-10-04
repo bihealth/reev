@@ -12,6 +12,7 @@ import VariantDetailsFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantDetailsVariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantDetailsVariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import VariationLandscape from '@/components/VariantDetails/VariationLandscape.vue'
 import { StoreState } from '@/stores/misc'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 import { type SmallVariant } from '@/stores/variantInfo'
@@ -64,6 +65,7 @@ watch(
 
 const SECTIONS = [
   { id: 'gene', title: 'Gene' },
+  { id: 'variation-landscape', title: 'Variation Landscape' },
   { id: 'beacon-network', title: 'Beacon Network' },
   { id: 'clinvar', title: 'ClinVar' },
   { id: 'freqs', title: 'Population Frequencies' },
@@ -106,7 +108,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
               :to="{
                 name: 'gene',
                 params: {
-                  searchTerm: `HGNC:1100`,
+                  searchTerm: variantInfoStore.varAnnos?.cadd?.GeneName,
                   genomeRelease: genomeReleaseRef
                 }
               }"
@@ -116,6 +118,16 @@ const genomeReleaseRef = ref(props.genomeRelease)
           </h3>
           <v-divider />
           <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
+        </div>
+
+        <div id="variation-landscape" class="variant-item">
+          <h2>Gene-wide Variation landscape</h2>
+          <v-divider />
+          <VariationLandscape
+            :clinvar="variantInfoStore.geneClinvar"
+            :genome-release="genomeReleaseRef"
+            :gene-symbol="variantInfoStore.varAnnos?.cadd?.GeneName"
+          />
         </div>
 
         <div id="beacon-network" class="variant-item">
