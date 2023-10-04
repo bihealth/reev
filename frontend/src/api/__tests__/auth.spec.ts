@@ -5,7 +5,7 @@ import { AuthClient } from '@/api/auth'
 
 const fetchMocker = createFetchMock(vi)
 
-describe.concurrent('Auth Client', () => {
+describe.concurrent('AuthClient', () => {
   beforeEach(() => {
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()

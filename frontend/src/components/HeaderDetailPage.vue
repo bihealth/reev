@@ -28,7 +28,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
  * Otherwise log an error.
  */
 const performSearch = async () => {
-  const routeLocation: any = search(searchTermRef.value, genomeReleaseRef.value)
+  const routeLocation: any = await search(searchTermRef.value, genomeReleaseRef.value)
   if (routeLocation) {
     router.push(routeLocation)
   } else {

@@ -31,6 +31,8 @@ async def reverse_proxy(request: Request) -> Response:
         )
     elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/nginx"):
         backend_url = settings.BACKEND_PREFIX_NGINX + url.path.replace("/internal/proxy/nginx", "")
+    elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/dotty"):
+        backend_url = settings.BACKEND_PREFIX_DOTTY + url.path.replace("/internal/proxy/dotty", "")
 
     if backend_url:
         client = httpx.AsyncClient()
