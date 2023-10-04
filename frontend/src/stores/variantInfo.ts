@@ -109,7 +109,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
       geneInfo.value = geneData['genes'][hgncId]
 
       const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncId)
-      if (geneClinvarData?.result === null) {
+      if (geneClinvarData?.genes === null) {
         throw new Error('No gene clinvar data found.')
       }
       geneClinvar.value = geneClinvarData['genes'][hgncId]

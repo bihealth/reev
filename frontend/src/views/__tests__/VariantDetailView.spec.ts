@@ -2,6 +2,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
+import * as BRCA1ClinVar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
@@ -15,6 +16,7 @@ import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import VariationLandscape from '@/components/VariantDetails/VariationLandscape.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
@@ -39,6 +41,7 @@ const variantData = {
   smallVariant: smallVariantInfo,
   varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
   geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
+  clinvar: JSON.parse(JSON.stringify(BRCA1ClinVar)).genes['HGNC:1100'],
   txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result
 }
 
@@ -52,6 +55,7 @@ const makeWrapper = () => {
     variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
     variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
     variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+    variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
     variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
   })
   variantInfoStore.loadData = mockLoadData
@@ -74,6 +78,7 @@ const makeWrapper = () => {
   variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
   variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
   variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+  variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
   variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
   variantAcmgStore.storeState = StoreState.Active
   variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
@@ -91,7 +96,7 @@ const makeWrapper = () => {
   )
 }
 
-describe.concurrent('VariantDetailView', async () => {
+describe('VariantDetailView', async () => {
   it('renders the header', async () => {
     const { wrapper } = makeWrapper()
 
@@ -132,6 +137,7 @@ describe.concurrent('VariantDetailView', async () => {
     const { wrapper } = makeWrapper()
 
     const variantInfo = wrapper.findComponent(VariantGene)
+    const variationLandscape = wrapper.findComponent(VariationLandscape)
     const beaconNetwork = wrapper.findComponent(BeaconNetwork)
     const clinVar = wrapper.findComponent(ClinVar)
     const variantFreqs = wrapper.findComponent(VariantFreqs)
@@ -140,6 +146,7 @@ describe.concurrent('VariantDetailView', async () => {
     const variantValidator = wrapper.findComponent(VariantValidator)
     const txCsq = wrapper.findComponent(TxCsq)
     expect(variantInfo.exists()).toBe(true)
+    expect(variationLandscape.exists()).toBe(true)
     expect(beaconNetwork.exists()).toBe(true)
     expect(clinVar.exists()).toBe(true)
     expect(variantFreqs.exists()).toBe(true)
@@ -179,6 +186,7 @@ describe.concurrent('VariantDetailView', async () => {
       variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
       variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
       variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+      variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
       variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
     })
     const mockClearData = vi.fn().mockImplementation(() => {
@@ -187,6 +195,7 @@ describe.concurrent('VariantDetailView', async () => {
       variantInfoStore.smallVariant = null
       variantInfoStore.varAnnos = null
       variantInfoStore.geneInfo = null
+      variantInfoStore.geneClinvar = null
       variantInfoStore.txCsq = null
     })
     variantInfoStore.loadData = mockLoadData
@@ -205,6 +214,7 @@ describe.concurrent('VariantDetailView', async () => {
     variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
     variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
     variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
+    variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
     variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
     variantAcmgStore.storeState = StoreState.Active
     variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
