@@ -179,9 +179,7 @@ describe.concurrent('geneInfo Store', () => {
     })
     expect(store.varAnnos).toStrictEqual(BRCA1VariantInfo.result)
     expect(store.geneInfo).toEqual(null)
-    expect(store.txCsq).toStrictEqual({
-      result: []
-    })
+    expect(store.txCsq).toStrictEqual([])
   })
 
   it('should fail to load data with invalid fetchGeneInfo response', async () => {

@@ -178,7 +178,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <AcmgRating :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
-        <div v-if="variantInfoStore.txCsq.result.length !== 0" id="tx-csq" class="variant-item">
+        <div v-if="variantInfoStore.txCsq?.length !== 0" id="tx-csq" class="variant-item">
           <h2>Consequences</h2>
           <v-divider />
           <VariantDetailsTxCsq :tx-csq="variantInfoStore.txCsq" />
@@ -189,7 +189,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
         </div>
 
         <div
-          v-if="variantInfoStore.varAnnos.ucsc_conservation.length !== 0"
+          v-if="variantInfoStore.varAnnos?.ucsc_conservation?.length !== 0"
           id="conservation"
           class="variant-item"
         >

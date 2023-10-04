@@ -90,7 +90,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
       )
 
       if (txCsqData.result.length === 0) {
-        txCsq.value = txCsqData
+        txCsq.value = txCsqData.result
       } else {
         hgnc_id = txCsqData.result[0]['gene_id']
         const geneData = await annonarsClient.fetchGeneInfo(hgnc_id)
