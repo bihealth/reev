@@ -307,7 +307,7 @@ const vegaLayer = [
 <template>
   <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
     <figcaption class="figure-caption text-center">
-      Variation landscape of {{ props.geneSymbol }}
+      Variation Landscape of {{ props.geneSymbol }}
     </figcaption>
     <VegaPlot
       :data-values="vegaData"
