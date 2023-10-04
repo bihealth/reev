@@ -7,6 +7,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
+import { MehariClient } from '@/api/mehari'
 import { infoFromSvQuery } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 
@@ -48,28 +49,37 @@ export const useSvInfoStore = defineStore('svInfo', () => {
     storeState.value = StoreState.Loading
     try {
       const { sv_type, chromosome, start, end } = infoFromSvQuery(variantQuery)
-      // Fetch new details
       const annonarsClient = new AnnonarsClient()
-      const hgncIds = []
-      hgncIds.push('HGNC:1100')
-      hgncIds.push('HGNC:1101')
-      hgncIds.push('HGNC:1102')
-      // for (const txEffect of svRecord.payload.tx_effects) {
-      //   if (txEffect.gene.hgnc_id) {
-      //     hgncIds.push(txEffect.gene.hgnc_id)
-      //   }
-      // }
-      if (hgncIds.length) {
-        genesInfos.value = await annonarsClient.fetchGeneInfos(hgncIds)
-      }
+      const mehariClient = new MehariClient()
 
+      // Fetch SV record
+      const svRecord = await mehariClient.retrieveStrucvarsCsq(
+        genomeRelease,
+        chromosome,
+        start,
+        end,
+        sv_type
+      )
       currentSvRecord.value = {
         sv_type: sv_type,
         chromosome: chromosome,
         start: start,
         end: end,
-        release: genomeRelease
+        release: genomeRelease,
+        result: svRecord.result
       }
+
+      // Fetch gene infos
+      const hgncIds = []
+      for (const txEffect of svRecord.result) {
+        if (txEffect.hgnc_id) {
+          hgncIds.push(txEffect.hgnc_id)
+        }
+      }
+      if (hgncIds.length) {
+        genesInfos.value = await annonarsClient.fetchGeneInfos(hgncIds)
+      }
+
       storeState.value = StoreState.Active
       svTerm.value = variantQuery
     } catch (e) {

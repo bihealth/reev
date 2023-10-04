@@ -3,8 +3,10 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import { vi } from 'vitest'
 import { type Router, createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
+import { md3 } from 'vuetify/blueprints'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { VDataTable, VDataTableServer, VDataTableVirtual } from 'vuetify/labs/components'
 
 import { routes } from '@/router'
 
@@ -55,7 +57,13 @@ export const setupMountedComponents = (
 ): MountedComponents => {
   // Create new vuetify instance.
   const vuetify = createVuetify({
-    components,
+    blueprint: md3,
+    components: {
+      ...components,
+      VDataTable,
+      VDataTableServer,
+      VDataTableVirtual
+    },
     directives
   })
 

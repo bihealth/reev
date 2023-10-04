@@ -88,7 +88,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         varAnnos.value = variantData.result
       }
 
-      const txCsqData = await mehariClient.retrieveTxCsq(
+      const txCsqData = await mehariClient.retrieveSeqvarsCsq(
         genomeRelease,
         chromosome,
         pos,

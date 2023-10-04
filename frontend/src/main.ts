@@ -5,6 +5,7 @@ import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import { VDataTable, VDataTableServer, VDataTableVirtual } from 'vuetify/labs/components'
 import 'vuetify/styles'
 
 import App from '@/App.vue'
@@ -32,7 +33,12 @@ const LightTheme = {
 
 const vuetify = createVuetify({
   blueprint: md3,
-  components,
+  components: {
+    ...components,
+    VDataTable,
+    VDataTableServer,
+    VDataTableVirtual
+  },
   directives,
   theme: {
     defaultTheme: 'LightTheme',

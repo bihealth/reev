@@ -136,7 +136,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.txCsq).toBe(null)
   })
 
-  it('should fail to load data with invalid retrieveTxCsq response', async () => {
+  it('should fail to load data with invalid retrieveSeqvarsCsq response', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useVariantInfoStore()

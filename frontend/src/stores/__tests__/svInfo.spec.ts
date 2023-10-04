@@ -39,22 +39,51 @@ describe.concurrent('miscInfo Store', () => {
     expect(store.genesInfos).toStrictEqual(Array())
   })
 
-  it.skip('should load data', async () => {
+  it('should load data', async () => {
     const store = useSvInfoStore()
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('info')) {
-        return Promise.resolve(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
-      } else if (req.url.includes('clinvar')) {
-        return Promise.resolve(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
+      if (req.url.includes('csq')) {
+        return Promise.resolve(JSON.stringify({ result: [{ hgnc_id: 'HGNC:1100' }] }))
       } else {
-        return Promise.resolve(JSON.stringify({ status: 400 }))
+        return Promise.resolve(JSON.stringify(geneInfo))
       }
     })
     await store.loadData('HGNC:1100', 'grch37')
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.svTerm).toBe('HGNC:1100')
-    expect(store.currentSvRecord).toEqual({ gene: 'info' })
-    expect(store.genesInfos).toEqual([geneInfo['genes']['HGNC:1100']])
+    expect(store.currentSvRecord).toEqual({
+      chromosome: '1100',
+      end: undefined,
+      release: 'grch37',
+      result: [
+        {
+          hgnc_id: 'HGNC:1100'
+        }
+      ],
+      start: undefined,
+      sv_type: 'HGNC'
+    })
+    expect(store.genesInfos).toStrictEqual([geneInfo['genes']['HGNC:1100']])
+  })
+
+  it('should correctly handle errors', async () => {
+    // Disable console.error
+    const spy = vi.spyOn(console, 'error')
+    spy.mockImplementation(() => {})
+
+    const store = useSvInfoStore()
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('csq')) {
+        return Promise.resolve(JSON.stringify({ status: 400 }))
+      } else {
+        return Promise.resolve(JSON.stringify({ status: 400 }))
+      }
+    })
+    await store.loadData('HGNC:1100', 'grch37')
+
+    expect(store.storeState).toBe(StoreState.Error)
+    expect(store.svTerm).toBe(null)
+    expect(store.genesInfos).toStrictEqual(Array())
   })
 })
