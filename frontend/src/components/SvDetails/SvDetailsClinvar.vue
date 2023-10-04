@@ -11,7 +11,6 @@ const vcvUrl = (vcv: string): string => {
 
 <template>
   <div>
-    {{ svInfoStore.currentSvRecord }}
     <template v-if="svInfoStore.currentSvRecord?.payload?.clinvar_ovl_vcvs?.length">
       <p>The following overlapping SVs are flagged as (likely) pathogenic in ClinVar.</p>
 
