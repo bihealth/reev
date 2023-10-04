@@ -101,7 +101,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.txCsq).toBe(null)
   })
 
-  it('should fail to load data with invalid fetchVariantInfo response', async () => {
+  it('should handle loading data with invalid fetchVariantInfo response', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useVariantInfoStore()
@@ -123,20 +123,29 @@ describe.concurrent('geneInfo Store', () => {
 
     await store.loadData('chr17:43044295:G:A', 'grch37')
 
-    expect(console.error).toHaveBeenCalled()
-    expect(console.error).toHaveBeenCalledWith(
-      'There was an error loading the variant data.',
-      new Error('No variant data found.')
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.variantTerm).toBe('chr17:43044295:G:A')
+    expect(store.smallVariant).toStrictEqual({
+      alternative: 'A',
+      chromosome: 'chr17',
+      end: '43044295',
+      hgnc_id: 'HGNC:1100',
+      reference: 'G',
+      release: 'grch37',
+      start: '43044295'
+    })
+    expect(store.varAnnos).toStrictEqual({
+      cadd: null,
+      dbnsfp: null,
+      dbscsnv: null
+    })
+    expect(store.geneInfo).toStrictEqual(
+      JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100']
     )
-    expect(store.storeState).toBe(StoreState.Error)
-    expect(store.variantTerm).toBe(null)
-    expect(store.smallVariant).toBe(null)
-    expect(store.varAnnos).toBe(null)
-    expect(store.geneInfo).toBe(null)
-    expect(store.txCsq).toBe(null)
+    expect(store.txCsq).toStrictEqual(JSON.parse(JSON.stringify(BRCA1TxInfo)).result)
   })
 
-  it('should fail to load data with invalid retrieveSeqvarsCsq response', async () => {
+  it('should handle loading data with invalid retrieveSeqvarsCsq response', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
     const store = useVariantInfoStore()
@@ -156,17 +165,23 @@ describe.concurrent('geneInfo Store', () => {
 
     await store.loadData('chr17:43044295:G:A', 'grch37')
 
-    expect(console.error).toHaveBeenCalled()
-    expect(console.error).toHaveBeenCalledWith(
-      'There was an error loading the variant data.',
-      new Error('No transcript consequence data found.')
-    )
-    expect(store.storeState).toBe(StoreState.Error)
-    expect(store.variantTerm).toBe(null)
-    expect(store.smallVariant).toBe(null)
-    expect(store.varAnnos).toBe(null)
-    expect(store.geneInfo).toBe(null)
-    expect(store.txCsq).toBe(null)
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.variantTerm).toBe('chr17:43044295:G:A')
+
+    expect(store.smallVariant).toStrictEqual({
+      alternative: 'A',
+      chromosome: 'chr17',
+      end: '43044295',
+      hgnc_id: '',
+      reference: 'G',
+      release: 'grch37',
+      start: '43044295'
+    })
+    expect(store.varAnnos).toStrictEqual(BRCA1VariantInfo.result)
+    expect(store.geneInfo).toEqual(null)
+    expect(store.txCsq).toStrictEqual({
+      result: []
+    })
   })
 
   it('should fail to load data with invalid fetchGeneInfo response', async () => {

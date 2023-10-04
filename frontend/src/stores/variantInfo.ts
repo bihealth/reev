@@ -66,11 +66,11 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
     // Load data via API
     storeState.value = StoreState.Loading
     try {
-      let hgnc_id: string = ''
       const { chromosome, pos, reference, alternative } = infoFromQuery(variantQuery)
 
       const annonarsClient = new AnnonarsClient()
       const mehariClient = new MehariClient()
+      let hgnc_id = ''
 
       const variantData = await annonarsClient.fetchVariantInfo(
         genomeRelease,
