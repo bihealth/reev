@@ -70,6 +70,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
 
       const annonarsClient = new AnnonarsClient()
       const mehariClient = new MehariClient()
+      let hgnc_id = ''
 
       const variantData = await annonarsClient.fetchVariantInfo(
         genomeRelease,
@@ -78,15 +79,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
-      if (
-        variantData.result.cadd === null &&
-        variantData.result.dbnsfp === null &&
-        variantData.result.dbscsnv === null
-      ) {
-        throw new Error('No variant data found.')
-      } else {
-        varAnnos.value = variantData.result
-      }
+      varAnnos.value = variantData.result
 
       const txCsqData = await mehariClient.retrieveSeqvarsCsq(
         genomeRelease,
@@ -95,24 +88,24 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
+
       if (txCsqData.result.length === 0) {
-        throw new Error('No transcript consequence data found.')
+        txCsq.value = txCsqData.result
       } else {
+        hgnc_id = txCsqData.result[0]['gene_id']
+        const geneData = await annonarsClient.fetchGeneInfo(hgnc_id)
+        if (geneData?.genes === null) {
+          throw new Error('No gene data found.')
+        }
+        geneInfo.value = geneData['genes'][hgnc_id]
+
+        const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgnc_id)
+        if (geneClinvarData?.genes === null) {
+          throw new Error('No gene clinvar data found.')
+        }
+        geneClinvar.value = geneClinvarData['genes'][hgnc_id]
         txCsq.value = txCsqData.result
       }
-
-      const hgncId: string = txCsqData.result[0]['gene_id']
-      const geneData = await annonarsClient.fetchGeneInfo(hgncId)
-      if (geneData?.genes === null) {
-        throw new Error('No gene data found.')
-      }
-      geneInfo.value = geneData['genes'][hgncId]
-
-      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncId)
-      if (geneClinvarData?.genes === null) {
-        throw new Error('No gene clinvar data found.')
-      }
-      geneClinvar.value = geneClinvarData['genes'][hgncId]
 
       variantTerm.value = variantQuery
       smallVariant.value = {
@@ -122,7 +115,7 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         end: (Number(pos) + reference.length - 1).toString(),
         reference: reference,
         alternative: alternative,
-        hgnc_id: hgncId
+        hgnc_id: hgnc_id
       }
       storeState.value = StoreState.Active
     } catch (e) {

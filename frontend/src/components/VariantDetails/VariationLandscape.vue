@@ -46,6 +46,9 @@ const convertClinvarSignificance = (input: number): number => {
 }
 
 const vegaData = computed(() => {
+  if (!props.clinvar) {
+    return []
+  }
   let clinvarInfo = []
   for (const item of props.clinvar.variants ?? []) {
     if (item.genome_release.toLowerCase() == props.genomeRelease) {
