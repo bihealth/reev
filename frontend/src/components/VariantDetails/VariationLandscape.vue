@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
 
@@ -17,24 +17,6 @@ const props = withDefaults(defineProps<Props>(), {
   genomeRelease: 'grch37',
   geneSymbol: ''
 })
-
-const variantRef = ref()
-const vegaPlotStart = ref()
-const vegaPlotEnd = ref()
-
-watch(
-  () => variantRef,
-  () => {
-    // Assign the smallest value of variants.pos to vegaPlotStart
-    vegaPlotStart.value = Math.min(
-      ...props.clinvar.variants[0].variants.map((variant: ClinvarVariant) => parseInt(variant.pos))
-    )
-    // Assign the largest value of variants.pos to vegaPlotEnd
-    vegaPlotEnd.value = Math.max(
-      ...props.clinvar.variants[0].variants.map((variant: ClinvarVariant) => parseInt(variant.pos))
-    )
-  }
-)
 
 const clinvarSignificanceMapping: Record<number, number> = {
   0: 0,
