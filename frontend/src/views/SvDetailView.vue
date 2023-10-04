@@ -114,11 +114,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <v-divider />
           <SvDetailsGenes :genes-infos="svInfoStore.genesInfos" />
         </div>
+
         <div id="clinvar" class="sv-item">
           <h2>ClinVar</h2>
           <v-divider />
           <SvDetailsClinvar />
         </div>
+
         <div id="call-details" class="sv-item">
           <h2>Genotype Call</h2>
           <v-divider />
@@ -126,11 +128,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <code> {{ svLocus(svInfoStore.currentSvRecord) }} </code>
           <SvDetailsGenotypeCall :current-sv-record="svInfoStore.currentSvRecord" />
         </div>
-        <div id="acmg" class="sv-item">
-          <h2>ACMG</h2>
-          <v-divider />
-          <!-- <CNVAcmgRating /> -->
-        </div>
+
         <div id="genome-browser" class="sv-item">
           <h2>Genome Browser</h2>
           <v-divider />
@@ -138,6 +136,12 @@ const genomeReleaseRef = ref(props.genomeRelease)
             :genome="genomeRelease === 'grch37' ? 'hg19' : 'b38'"
             :locus="svLocus(svInfoStore.currentSvRecord) as string"
           />
+        </div>
+
+        <div id="acmg" class="sv-item">
+          <h2>ACMG</h2>
+          <v-divider />
+          <!-- <CNVAcmgRating /> -->
         </div>
       </div>
 

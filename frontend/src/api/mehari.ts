@@ -11,7 +11,7 @@ export class MehariClient {
     this.csrfToken = csrfToken ?? null
   }
 
-  async retrieveTxCsq(
+  async retrieveSeqvarsCsq(
     genomeRelease: string,
     chromosome: string,
     pos: number,
@@ -25,6 +25,22 @@ export class MehariClient {
       `chromosome=${chromosome}&position=${pos}&reference=${reference}&` +
       `alternative=${alternative}${hgncSuffix}`
 
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+    return await response.json()
+  }
+
+  async retrieveStrucvarsCsq(
+    genomeRelease: string,
+    chromosome: string,
+    start: number,
+    stop: number,
+    sv_type: string
+  ): Promise<any> {
+    const url =
+      `${this.apiBaseUrl}strucvars/csq?genome_release=${genomeRelease}&` +
+      `chromosome=${chromosome}&start=${start}&stop=${stop}&sv_type=${sv_type}`
     const response = await fetch(url, {
       method: 'GET'
     })

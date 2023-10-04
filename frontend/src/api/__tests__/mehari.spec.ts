@@ -16,7 +16,14 @@ describe.concurrent('Mehari Client', () => {
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1TxInfo))
 
     const client = new MehariClient()
-    const result = await client.retrieveTxCsq('grch37', 'chr17', 43044295, 'A', 'G', 'HGNC:1100')
+    const result = await client.retrieveSeqvarsCsq(
+      'grch37',
+      'chr17',
+      43044295,
+      'A',
+      'G',
+      'HGNC:1100'
+    )
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1TxInfo))
   })
 
@@ -24,7 +31,7 @@ describe.concurrent('Mehari Client', () => {
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1TxInfo))
 
     const client = new MehariClient()
-    const result = await client.retrieveTxCsq('grch37', 'chr17', 43044295, 'A', 'G')
+    const result = await client.retrieveSeqvarsCsq('grch37', 'chr17', 43044295, 'A', 'G')
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1TxInfo))
   })
 
@@ -37,7 +44,7 @@ describe.concurrent('Mehari Client', () => {
     })
 
     const client = new MehariClient()
-    const result = await client.retrieveTxCsq('grch37', 'chr17', 43044295, 'A', 'T')
+    const result = await client.retrieveSeqvarsCsq('grch37', 'chr17', 43044295, 'A', 'T')
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 })

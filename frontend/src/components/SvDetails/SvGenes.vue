@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { type ComputedRef, type Ref, computed, ref } from 'vue'
-import EasyDataTable from 'vue3-easy-data-table'
-import type { ClickRowArgument, Header } from 'vue3-easy-data-table'
-import 'vue3-easy-data-table/dist/style.css'
 
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import { roundIt } from '@/lib/utils'
-import { useSvInfoStore } from '@/stores/svInfo'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any
@@ -16,135 +12,76 @@ const props = defineProps<{
 }>()
 
 const currentGeneInfos: Ref<any> = ref(null)
+const itemsPerPage = ref(10)
 
-const headers: Header[] = [
+const headers = [
   {
-    text: 'symbol',
-    value: 'dbnsfp.gene_name',
+    title: 'symbol',
+    key: 'dbnsfp.gene_name',
     width: 150,
     sortable: true
   },
   {
-    text: 'name',
-    value: 'dbnsfp.gene_full_name',
+    title: 'name',
+    key: 'dbnsfp.gene_full_name',
     width: 200
   },
   {
-    text: 'OMIM',
-    value: 'omim',
+    title: 'OMIM',
+    key: 'omim',
     sortable: true
   },
   {
-    text: 'Orphanet',
-    value: 'orpha',
+    title: 'Orphanet',
+    key: 'orpha',
     sortable: true
   },
   {
-    text: 'pLI',
-    value: 'gnomad_constraints.pli',
+    title: 'pLI',
+    key: 'gnomad_constraints.pli',
     width: 50,
     sortable: true
   },
   {
-    text: 'o/e LoF (upper)',
-    value: 'gnomad_constraints.oe_lof_upper',
+    title: 'o/e LoF (upper)',
+    key: 'gnomad_constraints.oe_lof_upper',
     width: 100,
     sortable: true
   },
   {
-    text: 'P(HI)',
+    title: 'P(HI)',
     width: 50,
-    value: 'dbnsfp.haploinsufficiency'
+    key: 'dbnsfp.haploinsufficiency'
   },
   {
-    text: 'sHet',
+    title: 'sHet',
     width: 100,
-    value: 'shet.s_het',
+    key: 'shet.s_het',
     sortable: true
   },
   {
-    text: 'pHaplo',
+    title: 'pHaplo',
     width: 100,
-    value: 'rcnv.p_haplo',
+    key: 'rcnv.p_haplo',
     sortable: true
   },
   {
-    text: 'pTriplo',
+    title: 'pTriplo',
     width: 100,
-    value: 'rcnv.p_triplo',
+    key: 'rcnv.p_triplo',
     sortable: true
   },
   {
-    text: 'CG haploin.',
+    title: 'CG haploin.',
     width: 100,
-    value: 'clingen.haplo_summary'
+    key: 'clingen.haplo_summary'
   },
   {
-    text: 'CG triploin.',
+    title: 'CG triploin.',
     width: 100,
-    value: 'clingen.triplo_summary'
+    key: 'clingen.triplo_summary'
   }
 ]
-
-/** The SV details store. */
-const svInfoStore = useSvInfoStore()
-
-/** Helper type for `resultsInfos`. */
-type ResultsInfo = {
-  isDiseaseGene: boolean
-  txEffect?: string
-}
-
-/**
- * Compute mapping from HGNC gene ID to transcript effect and disease gene property
- * so we can display the same information as in the SV results table.
- */
-const resultsInfos: ComputedRef<Map<string, ResultsInfo>> = computed(() => {
-  const result = new Map()
-  for (const txEffect of svInfoStore.currentSvRecord?.payload?.tx_effects ?? []) {
-    const value: ResultsInfo = {
-      isDiseaseGene: txEffect.gene.is_disease_gene,
-      txEffect: txEffect.transcript_effects[0]
-    }
-    result.set(txEffect.gene.hgnc_id, value)
-  }
-  return result
-})
-
-/** Compute geneInfo's class. */
-const geneInfoClass = (geneInfo: any): string | null => {
-  let resultsInfo = resultsInfos.value.get(geneInfo.hgnc.hgnc_id)
-  if (resultsInfo?.isDiseaseGene) {
-    return 'text-danger'
-  } else {
-    return null
-  }
-}
-
-/** Compute geneInfo's badge HTML (if any). */
-const geneInfoBadge = (geneInfo: any): string | null => {
-  const badge = (color: string, title: string, text: string): string => {
-    return `<span class="badge badge-${color}" title="${title}">${text}</span>&nbsp;`
-  }
-
-  let resultsInfo = resultsInfos.value.get(geneInfo.hgnc.hgnc_id)
-  switch (resultsInfo?.txEffect) {
-    case 'transcript_variant':
-      return badge('danger', 'whole transcript is affected', 'tx')
-    case 'exon_variant':
-      return badge('danger', 'exonic for gene', 'ex')
-    case 'splice_region_variant':
-      return badge('danger', 'affects splice region for gene', 'sr')
-    case 'intron_variant':
-      return badge('warning', 'intronic for gene', 'in')
-    case 'upstream_variant':
-      return badge('secondary', 'upstream of gene', 'up')
-    case 'downstream_variant':
-      return badge('secondary', 'downstream of gene gene', 'dw')
-    default:
-      return ''
-  }
-}
 
 /** Compute list of gene infos to protect against empty `props.genesInfos`. */
 const items: ComputedRef<GeneInfo[]> = computed(() => {
@@ -188,7 +125,8 @@ const items: ComputedRef<GeneInfo[]> = computed(() => {
   }
 })
 
-const onRowClicked = (item: ClickRowArgument) => {
+/** Show gene info on click. */
+const onRowClicked = (event: Event, { item }: { item: GeneInfo }): void => {
   currentGeneInfos.value = item
 }
 </script>
@@ -196,24 +134,19 @@ const onRowClicked = (item: ClickRowArgument) => {
 <template>
   <div>
     <div>
-      <EasyDataTable
+      <v-data-table
+        v-model:items-per-page="itemsPerPage"
         :headers="headers"
         :items="items"
         :loading="!items"
         buttons-pagination
         show-index
-        @click-row="onRowClicked"
+        item-key="gene_name"
+        @click:row="onRowClicked"
       >
-        <template v-slot:[`item-dbnsfp.gene_name`]="geneInfo">
-          <span v-html="geneInfoBadge(geneInfo)" />
-          <span :class="geneInfoClass(geneInfo)">
-            {{ geneInfo.dbnsfp?.gene_name }}
-          </span>
-        </template>
-
-        <template v-slot:[`item-omim`]="{ omim }">
-          <template v-if="omim?.omim_diseases?.length">
-            <template v-for="(disease, idx) in omim?.omim_diseases" :key="idx">
+        <template v-slot:[`item.omim`]="{ value }">
+          <template v-if="value?.omim_diseases?.length">
+            <template v-for="(disease, idx) in value?.omim_diseases" :key="idx">
               <template v-if="idx > 0">, </template>
               <a
                 :href="`https://www.omim.org/entry/${disease.omim_id.replace('OMIM:', '')}`"
@@ -226,9 +159,9 @@ const onRowClicked = (item: ClickRowArgument) => {
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-orpha`]="{ orpha }">
-          <template v-if="orpha?.orpha_diseases?.length">
-            <template v-for="(disease, idx) in orpha?.orpha_diseases" :key="idx">
+        <template v-slot:[`item.orpha`]="{ value }">
+          <template v-if="value?.orpha_diseases?.length">
+            <template v-for="(disease, idx) in value?.orpha_diseases" :key="idx">
               <template v-if="idx > 0">, </template>
               <a
                 :href="`https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=${disease.orpha_id.replace(
@@ -244,62 +177,62 @@ const onRowClicked = (item: ClickRowArgument) => {
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-gnomad_constraints.pli`]="{ gnomad_constraints }">
-          <template v-if="gnomad_constraints">
-            <span v-html="roundIt(gnomad_constraints.pli, 3)" />
+        <template v-slot:[`item.gnomad_constraints.pli`]="{ value }">
+          <template v-if="value">
+            <span v-html="roundIt(value, 3)" />
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-gnomad_constraints.oe_lof_upper`]="{ gnomad_constraints }">
-          <template v-if="gnomad_constraints">
-            <span v-html="roundIt(gnomad_constraints.oe_lof_upper, 3)" />
+        <template v-slot:[`item.gnomad_constraints.oe_lof_upper`]="{ value }">
+          <template v-if="value">
+            <span v-html="roundIt(value, 3)" />
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-dbnsfp.haploinsufficiency`]="{ dbnsfp }">
-          <template v-if="dbnsfp?.haploinsufficiency">
-            <span v-html="roundIt(dbnsfp.haploinsufficiency, 3)" />
+        <template v-slot:[`item.dbnsfp.haploinsufficiency`]="{ value }">
+          <template v-if="value">
+            <span v-html="roundIt(value, 3)" />
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-shet.s_het`]="{ shet }">
-          <template v-if="shet?.s_het">
-            <span v-html="roundIt(shet.s_het, 3)" />
+        <template v-slot:[`item.shet.s_het`]="{ value }">
+          <template v-if="value">
+            <span v-html="roundIt(value, 3)" />
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-rcnv.p_haplo`]="{ rcnv }">
-          <template v-if="rcnv?.p_haplo">
-            <span v-html="roundIt(rcnv.p_haplo, 3)" />
+        <template v-slot:[`item.rcnv.p_haplo`]="{ value }">
+          <template v-if="value">
+            <span v-html="roundIt(value, 3)"></span>
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-rcnv.p_triplo`]="{ rcnv }">
-          <template v-if="rcnv?.p_triplo">
-            <span v-html="roundIt(rcnv.p_triplo, 3)" />
+        <template v-slot:[`item.rcnv.p_triplo`]="{ value }">
+          <template v-if="value">
+            <span v-html="roundIt(value, 3)" />
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-clingen.haplo_summary`]="{ clingen }">
-          <template v-if="clingen?.haplo_summary">
-            <abbr :title="clingen.haplo_label">{{ clingen.haplo_summary }}</abbr>
+        <template v-slot:[`item.clingen.haplo_summary`]="{ value }">
+          <template v-if="value">
+            <abbr :title="value">{{ value }}</abbr>
           </template>
           <template v-else> &mdash; </template>
         </template>
 
-        <template v-slot:[`item-clingen.triplo_summary`]="{ clingen }">
-          <template v-if="clingen?.triplo_summary">
-            <abbr :title="clingen.triplo_label">{{ clingen.triplo_summary }}</abbr>
+        <template v-slot:[`item.clingen.triplo_summary`]="{ value }">
+          <template v-if="value">
+            <abbr :title="value">{{ value }}</abbr>
           </template>
           <template v-else> &mdash; </template>
         </template>
-      </EasyDataTable>
+      </v-data-table>
     </div>
 
     <div v-if="currentGeneInfos">
