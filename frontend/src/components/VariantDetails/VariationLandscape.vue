@@ -47,10 +47,10 @@ const convertClinvarSignificance = (input: number): number => {
 
 const vegaData = computed(() => {
   let clinvarInfo = []
-  if (props.genomeRelease == 'grch37') {
-    clinvarInfo = props.clinvar.variants[0].variants
-  } else if (props.genomeRelease == 'grch38') {
-    clinvarInfo = props.clinvar.variants[1]
+  for (const item of props.clinvar.variants ?? []) {
+    if (item.genome_release.toLowerCase() == props.genomeRelease) {
+      clinvarInfo = item.variants
+    }
   }
 
   return clinvarInfo.map((variant: ClinvarVariant) => ({
@@ -291,13 +291,15 @@ const vegaLayer = [
     <figcaption class="figure-caption text-center">
       Variation Landscape of {{ props.geneSymbol }}
     </figcaption>
-    <VegaPlot
-      :data-values="vegaData"
-      :encoding="vegaEncoding"
-      :layer="vegaLayer"
-      :width="1300"
-      :height="300"
-      renderer="svg"
-    />
+    <div style="width: 1100px; height: 350px; overflow: none">
+      <VegaPlot
+        :data-values="vegaData"
+        :encoding="vegaEncoding"
+        :layer="vegaLayer"
+        :width="1000"
+        :height="300"
+        renderer="canvas"
+      />
+    </div>
   </figure>
 </template>

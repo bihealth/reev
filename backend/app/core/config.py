@@ -86,6 +86,8 @@ class Settings(BaseSettings):
     BACKEND_PREFIX_VIGUNO: str = "http://viguno:8080"
     #: Prefix for the backend of nginx service.
     BACKEND_PREFIX_NGINX: str = "http://nginx:80"
+    #: Prefix for the backend of dotty service.
+    BACKEND_PREFIX_DOTTY: str = "http://dotty:8080"
 
     #: URL to REDIS service.
     REDIS_URL: str = "redis://redis:6379"

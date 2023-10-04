@@ -21,8 +21,7 @@ const examples = [
   'BRCA1',
   'EMP',
   'TP53',
-  'HGNC:1100',
-  'HGNC:777',
+  'NM_007294.4(BRCA1):c.5123C>A',
   'chr17:41197708:T:G',
   'chr17:41197751:G:T',
   'DEL:chr17:41176312:41277500',
@@ -40,7 +39,7 @@ const useExample = (example: string) => {
  * Otherwise log an error.
  */
 const performSearch = async () => {
-  const routeLocation: any = search(searchTerm.value, genomeRelease.value)
+  const routeLocation: any = await search(searchTerm.value, genomeRelease.value)
   if (routeLocation) {
     router.push(routeLocation)
   } else {

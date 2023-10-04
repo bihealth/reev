@@ -110,8 +110,8 @@ describe.concurrent('isVariantMtHomopolymer method', () => {
 })
 
 describe.concurrent('search method', () => {
-  it('should return "gene" route location for HGNC queries', () => {
-    const result = search('HGNC:1100', 'ghcr37')
+  it('should return "gene" route location for HGNC queries', async () => {
+    const result = await search('HGNC:1100', 'ghcr37')
     expect(result).toEqual({
       name: 'gene',
       params: {
@@ -121,8 +121,8 @@ describe.concurrent('search method', () => {
     })
   })
 
-  it('should return "variant" route location for Variant queries', () => {
-    const result = search('chr37:12345:A:G', 'ghcr37')
+  it('should return "variant" route location for Variant queries', async () => {
+    const result = await search('chr37:12345:A:G', 'ghcr37')
     expect(result).toEqual({
       name: 'variant',
       params: {
@@ -132,8 +132,8 @@ describe.concurrent('search method', () => {
     })
   })
 
-  it('should return "genes" route location for general queries', () => {
-    const result = search('TP53', 'ghcr37')
+  it('should return "genes" route location for general queries', async () => {
+    const result = await search('TP53', 'ghcr37')
     expect(result).toEqual({
       name: 'genes',
       query: {
