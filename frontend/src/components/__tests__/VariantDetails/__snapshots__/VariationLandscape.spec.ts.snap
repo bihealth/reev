@@ -1,8 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`VariationLandscape > renders the VariationLandscape plot 1`] = `
-"<figure class=\\"figure border rounded pl-2 pt-2 mr-3 w-100 col\\">
-  <figcaption class=\\"figure-caption text-center\\"> Variation landscape of HGNC:1100</figcaption>
-  <div></div>
-</figure>"
-`;
