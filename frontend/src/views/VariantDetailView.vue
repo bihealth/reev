@@ -100,7 +100,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
   <v-layout>
     <v-main style="min-height: 300px">
       <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
-        <div id="gene" class="variant-item">
+        <div v-if="variantInfoStore.geneInfo !== null" id="gene" class="variant-item">
           <h2>Gene</h2>
           <h3>
             Link to
@@ -119,8 +119,16 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <v-divider />
           <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
         </div>
+        <div v-else id="gene" class="variant-item">
+          <h2>Gene</h2>
+          <h3>No gene information available</h3>
+        </div>
 
-        <div id="variation-landscape" class="variant-item">
+        <div
+          v-if="variantInfoStore.geneInfo !== null"
+          id="variation-landscape"
+          class="variant-item"
+        >
           <h2>Gene-wide Variation landscape</h2>
           <v-divider />
           <VariationLandscape
@@ -128,6 +136,10 @@ const genomeReleaseRef = ref(props.genomeRelease)
             :genome-release="genomeReleaseRef"
             :gene-symbol="variantInfoStore.varAnnos?.cadd?.GeneName"
           />
+        </div>
+        <div v-else id="variation-landscape" class="variant-item">
+          <h2>Gene-wide Variation landscape</h2>
+          <h3>No gene information available</h3>
         </div>
 
         <div id="beacon-network" class="variant-item">
@@ -166,16 +178,28 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <AcmgRating :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
-        <div id="tx-csq" class="variant-item">
+        <div v-if="variantInfoStore.txCsq.result.length !== 0" id="tx-csq" class="variant-item">
           <h2>Consequences</h2>
           <v-divider />
           <VariantDetailsTxCsq :tx-csq="variantInfoStore.txCsq" />
         </div>
+        <div v-else id="tx-csq" class="variant-item">
+          <h2>Consequences</h2>
+          <h3>No consequence information available</h3>
+        </div>
 
-        <div id="conservation" class="variant-item">
+        <div
+          v-if="variantInfoStore.varAnnos.ucsc_conservation.length !== 0"
+          id="conservation"
+          class="variant-item"
+        >
           <h2>Conservation</h2>
           <v-divider />
           <VariantDetailsConservation :var-annos="variantInfoStore.varAnnos" />
+        </div>
+        <div v-else id="conservation" class="variant-item">
+          <h2>Conservation</h2>
+          <h3>No conservation information available</h3>
         </div>
 
         <div id="variant-validator" class="variant-item">

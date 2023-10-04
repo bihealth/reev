@@ -110,7 +110,7 @@ export const search = (searchTerm: string, genomeRelease: string) => {
       })
     ],
     [
-      /^chr\d+:\d+:[A-Z]:[A-Z]$/,
+      /^chr\d+:\d+:[ACGT]{1,50}:[ACGT]{1,50}$/,
       (): RouteLocationFragment => ({
         name: 'variant',
         params: {
