@@ -1,3 +1,5 @@
+import { DottyClient } from '@/api/dotty'
+
 /**
  * Round `value` to `digits` and return an `<abbr>` tag that has the original value
  * as the `@title` and the rounded value as the inner text.  Optionally add a `label`
@@ -87,7 +89,25 @@ export const isVariantMtHomopolymer = (smallVar: any): boolean => {
  * @param searchTerm The search term to use.
  * @param genomeRelease The genome release to use.
  */
-export const search = (searchTerm: string, genomeRelease: string) => {
+export const search = async (searchTerm: string, genomeRelease: string) => {
+  // Remove leading/trailing whitespace.
+  searchTerm = searchTerm.trim()
+  if (!searchTerm) {
+    return null // no query ;-)
+  }
+
+  // First, attempt to resolve using dotty.
+  const dottyClient = new DottyClient()
+  const result = await dottyClient.toSpdi(searchTerm)
+  if (result) {
+    const spdi = result.spdi
+    searchTerm = `${spdi.contig}:${spdi.pos}:${spdi.reference_deleted}:${spdi.alternate_inserted}`
+    if (!searchTerm.startsWith('chr')) {
+      searchTerm = `chr${searchTerm}`
+    }
+    genomeRelease = spdi.assembly.toLowerCase()
+  }
+
   interface RouteLocationFragment {
     name: string
     params?: any
@@ -142,11 +162,6 @@ export const search = (searchTerm: string, genomeRelease: string) => {
   ]
 
   for (const [regexp, getRoute] of SEARCH_REGEXPS) {
-    // Remove trailing whitespace
-    searchTerm = searchTerm.trim()
-    if (!searchTerm) {
-      return null
-    }
     if (regexp.test(searchTerm)) {
       const routeLocation = getRoute()
       // console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)

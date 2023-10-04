@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
+import { DottyClient } from '@/api/dotty'
 import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
@@ -21,6 +22,10 @@ const geneData = {
 }
 
 describe.concurrent('HeaderDetailPage', async () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('renders the gene symbol and nav links', () => {
     const { wrapper } = setupMountedComponents(
       { component: HeaderDetailPage, template: true },
@@ -60,6 +65,9 @@ describe.concurrent('HeaderDetailPage', async () => {
   })
 
   it('correctly emits search', async () => {
+    // we make `DottyClient.toSpdi` return null / fail
+    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+
     const { wrapper, router } = setupMountedComponents(
       { component: HeaderDetailPage, template: true },
       {
