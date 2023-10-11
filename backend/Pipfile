@@ -21,6 +21,7 @@ sqlalchemy = "*"
 tenacity = "*"
 uvicorn = "*"
 alembic = "*"
+requests = "*"
 
 [dev-packages]
 aiosqlite = "*"

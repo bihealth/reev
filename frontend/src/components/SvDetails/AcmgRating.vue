@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
 import {
   ACMG_CRITERIA_CNV_DEFS,
@@ -67,6 +67,18 @@ const switchCriteria = (
   } else {
     acmgRatingStore.acmgRating.setPresence(StateSourceCNV.User, criteria, Presence.Present)
   }
+
+  // Unset conflicting criteria
+  const conflictingEvidence = ACMG_CRITERIA_CNV_DEFS.get(criteria)?.conflictingEvidence
+  if (conflictingEvidence) {
+    for (const conflictingCriteria of conflictingEvidence) {
+      acmgRatingStore.acmgRating.setPresence(
+        StateSourceCNV.User,
+        conflictingCriteria,
+        Presence.Absent
+      )
+    }
+  }
 }
 </script>
 
@@ -133,7 +145,6 @@ const switchCriteria = (
                   class="switch"
                 >
                 </v-switch>
-                {{ acmgRatingStore.acmgRating.getCriteriaCNVState(criteria) }}
                 <div v-if="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.slider">
                   <v-slider
                     :model-value="
@@ -143,7 +154,7 @@ const switchCriteria = (
                       acmgRatingStore.acmgRating.setScore(StateSourceCNV.User, criteria, $event)
                     "
                     :min="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.minScore ?? 0"
-                    :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 1"
+                    :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 0"
                     :step="0.05"
                     thumb-label
                     thumb-size="10"
@@ -201,7 +212,14 @@ const switchCriteria = (
                   />
                 </div>
               </td>
-              <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.description ?? '' }}</td>
+              <td>
+                {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.hint }}
+                <br />
+                {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.description ?? '' }}
+                <br />
+                Conflicting evidence:
+                {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.conflictingEvidence }}
+              </td>
               <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.defaultScore }}</td>
               <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore }}</td>
             </tr>

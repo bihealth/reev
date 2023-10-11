@@ -4,7 +4,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-// import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
+import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
 import {
   ACMG_CRITERIA_CNV_DEFS,
   ACMG_CRITERIA_CNV_GAIN,
@@ -18,7 +18,7 @@ import {
 import { StoreState } from '@/stores/misc'
 import { type SvRecord } from '@/stores/svInfo'
 
-// const API_BASE_URL = API_INTERNAL_BASE_PREFIX
+const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
 export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
   /** The current store state. */
@@ -74,47 +74,6 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
     // Load data from AutoCNV via API
     storeState.value = StoreState.Loading
     try {
-      // const chromosome = svRec.chromosome.replace('chr', '')
-      // const start = svRec.start
-      // const end = svRec.end
-      // const svType = svRec.svType === 'DUP' ? 'dup' : 'del'
-      // const response = await fetch(
-      //   `${API_BASE_URL}remote/cnv/acmg/?chromosome=${chromosome}&start=${start}&end=${end}&func=${svType}`,
-      //   { method: 'GET' }
-      // )
-      // if (!response.ok) {
-      //   throw new Error('There was an error loading the ACMG data.')
-      // }
-      // const acmgRatingAutoCNVData = await response.json()
-      // Go through the data and setPresense for each criteria
-      // for (const [criteriaId, value] of Object.entries(acmgRatingAutoCNVData)) {
-      //   const criteriaIdKey = capitalizeFirstLetter(criteriaId)
-      //   if (value === true) {
-      //     acmgRating.value.setPresence(
-      //       StateSourceCNV.AutoCNV,
-      //       svRec.svType === 'DUP'
-      //         ? AcmgCriteriaCNVGain[criteriaIdKey as keyof typeof AcmgCriteriaCNVGain]
-      //         : AcmgCriteriaCNVLoss[criteriaIdKey as keyof typeof AcmgCriteriaCNVLoss],
-      //       Presence.Present
-      //     )
-      //     acmgRating.value.setScore(
-      //       StateSourceCNV.AutoCNV,
-      //       svRec.svType === 'DUP'
-      //         ? AcmgCriteriaCNVGain[criteriaIdKey as keyof typeof AcmgCriteriaCNVGain]
-      //         : AcmgCriteriaCNVLoss[criteriaIdKey as keyof typeof AcmgCriteriaCNVLoss],
-      //       0
-      //     )
-      //   } else {
-      //     acmgRating.value.setPresence(
-      //       StateSourceCNV.AutoCNV,
-      //       svRec.svType === 'DUP'
-      //         ? AcmgCriteriaCNVGain[criteriaIdKey as keyof typeof AcmgCriteriaCNVGain]
-      //         : AcmgCriteriaCNVLoss[criteriaIdKey as keyof typeof AcmgCriteriaCNVLoss],
-      //       Presence.Absent
-      //     )
-      //   }
-      // }
-
       // Set presence for all criteria to absent and score to default
       if (svRec.svType === 'DUP') {
         for (const criteria of ACMG_CRITERIA_CNV_GAIN) {
@@ -154,6 +113,56 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
           )
         }
         acmgRating.value.setUserToAutoCNV()
+      }
+
+      // Retrieve ACMG rating from AutoCNV
+      const chromosome = svRec.chromosome.replace('chr', '')
+      const start = svRec.start
+      const end = svRec.end
+      const svType = svRec.svType === 'DUP' ? 'dup' : 'del'
+      const response = await fetch(
+        `${API_BASE_URL}remote/cnv/acmg/?chromosome=${chromosome}&start=${start}&end=${end}&func=${svType}`,
+        { method: 'GET' }
+      )
+      if (!response.ok) {
+        throw new Error('There was an error loading the ACMG data.')
+      }
+      const acmgRatingAutoCNVData = await response.json()
+
+      // Go through the data and set Presense and Score for each criteria
+      for (const [criteriaId, value] of Object.entries(
+        acmgRatingAutoCNVData.job.result.auto_evidence_score
+      )) {
+        const score: number = +(value as string)
+        if (svRec.svType === 'DUP') {
+          const criteria = 'G' + criteriaId
+          const criteriaKey = getEnumKeyByEnumValue(AcmgCriteriaCNVGain, criteria)
+          acmgRating.value.setPresence(
+            StateSourceCNV.AutoCNV,
+            AcmgCriteriaCNVGain[criteriaKey as keyof typeof AcmgCriteriaCNVGain],
+            Presence.Present
+          )
+          acmgRating.value.setScore(
+            StateSourceCNV.AutoCNV,
+            AcmgCriteriaCNVGain[criteriaKey as keyof typeof AcmgCriteriaCNVGain],
+            score as number
+          )
+          acmgRating.value.setUserToAutoCNV()
+        } else if (svRec.svType === 'DEL') {
+          const criteria = 'L' + criteriaId
+          const criteriaKey = getEnumKeyByEnumValue(AcmgCriteriaCNVLoss, criteria)
+          acmgRating.value.setPresence(
+            StateSourceCNV.AutoCNV,
+            AcmgCriteriaCNVLoss[criteriaKey as keyof typeof AcmgCriteriaCNVLoss],
+            Presence.Present
+          )
+          acmgRating.value.setScore(
+            StateSourceCNV.AutoCNV,
+            AcmgCriteriaCNVLoss[criteriaKey as keyof typeof AcmgCriteriaCNVLoss],
+            score as number
+          )
+          acmgRating.value.setUserToAutoCNV()
+        }
       }
 
       svRecord.value = svRec

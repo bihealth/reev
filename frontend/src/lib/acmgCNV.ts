@@ -199,7 +199,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '1A',
       hint: 'Copy number loss content',
       description: `Contains protein-coding or other known functionally important elements.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss1B],
       slider: false
     },
     {
@@ -209,7 +209,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '1B',
       hint: '',
       description: `Does NOT contain protein-coding or any known functionally important elements.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss1A],
       slider: false
     },
     {

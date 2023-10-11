@@ -9,7 +9,7 @@ import { useSvInfoStore } from '../svInfo'
 
 const fetchMocker = createFetchMock(vi)
 
-describe.concurrent('miscInfo Store', () => {
+describe.concurrent('svInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     fetchMocker.enableMocks()
@@ -48,21 +48,21 @@ describe.concurrent('miscInfo Store', () => {
         return Promise.resolve(JSON.stringify(geneInfo))
       }
     })
-    await store.loadData('HGNC:1100', 'grch37')
+    await store.loadData('DEL:chr17:41176312:41277500', 'grch37')
 
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.svTerm).toBe('HGNC:1100')
+    expect(store.svTerm).toBe('DEL:chr17:41176312:41277500')
     expect(store.currentSvRecord).toEqual({
-      chromosome: '1100',
-      end: undefined,
+      chromosome: 'chr17',
+      svType: 'DEL',
+      start: '41176312',
+      end: '41277500',
       release: 'grch37',
       result: [
         {
           hgnc_id: 'HGNC:1100'
         }
-      ],
-      start: undefined,
-      sv_type: 'HGNC'
+      ]
     })
     expect(store.genesInfos).toStrictEqual([geneInfo['genes']['HGNC:1100']])
   })
