@@ -124,7 +124,7 @@ const switchCriteria = (
               <th width="3%">Max score</th>
             </tr>
           </thead>
-          <tbody v-if="props.svRecord.svType === 'DEL'">
+          <tbody v-if="props.svRecord?.svType === 'DEL'">
             <tr v-for="criteria in ACMG_CRITERIA_CNV_LOSS" :key="criteria">
               <td>
                 <v-switch
@@ -174,7 +174,7 @@ const switchCriteria = (
               <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore }}</td>
             </tr>
           </tbody>
-          <tbody v-else-if="props.svRecord.svType === 'DUP'">
+          <tbody v-else-if="props.svRecord?.svType === 'DUP'">
             <tr v-for="criteria in ACMG_CRITERIA_CNV_GAIN" :key="criteria">
               <td>
                 <v-switch

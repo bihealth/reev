@@ -28,7 +28,7 @@ describe.concurrent('svInfo Store', () => {
   it('should clear state', () => {
     const store = useSvInfoStore()
     store.storeState = StoreState.Active
-    store.svTerm = 'chr1:12345:A:T'
+    store.svTerm = 'DEL:chr17:41176312:41277500'
     store.genesInfos = JSON.parse(JSON.stringify([geneInfo['genes']['HGNC:1100']]))
 
     store.clearData()
@@ -80,7 +80,7 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-    await store.loadData('HGNC:1100', 'grch37')
+    await store.loadData('DEL:chr17:41176312:41277500', 'grch37')
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.svTerm).toBe(null)

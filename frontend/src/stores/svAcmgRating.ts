@@ -168,6 +168,8 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
       svRecord.value = svRec
       storeState.value = StoreState.Active
     } catch (e) {
+      clearData()
+      storeState.value = StoreState.Error
       console.error('There was an error loading the ACMG data.', e)
     }
   }
