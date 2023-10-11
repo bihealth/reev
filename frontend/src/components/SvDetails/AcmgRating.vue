@@ -24,7 +24,7 @@ const resetAcmgRating = () => {
   if (!acmgRatingStore.acmgRating) {
     return
   }
-  acmgRatingStore.acmgRating.setUserPresenceAutoCNV()
+  acmgRatingStore.acmgRating.setUserToAutoCNV()
 }
 
 const calculateAcmgClass = computed((): string => {
@@ -66,7 +66,6 @@ const switchCriteria = (
     acmgRatingStore.acmgRating.setPresence(StateSourceCNV.User, criteria, Presence.Absent)
   } else {
     acmgRatingStore.acmgRating.setPresence(StateSourceCNV.User, criteria, Presence.Present)
-    console.log('setPresence, ', criteria, acmgRatingStore.acmgRating.getCriteriaCNVState(criteria))
   }
 }
 </script>
@@ -128,17 +127,24 @@ const switchCriteria = (
                       acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).presence
                     )
                   "
+                  color="primary"
                   hide-details="auto"
                   density="compact"
                   class="switch"
                 >
                 </v-switch>
+                {{ acmgRatingStore.acmgRating.getCriteriaCNVState(criteria) }}
                 <div v-if="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.slider">
                   <v-slider
-                    :v-model="acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score"
-                    :min="0"
-                    :max="1"
-                    :step="0.1"
+                    :model-value="
+                      acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score ?? 0
+                    "
+                    @update:model-value="
+                      acmgRatingStore.acmgRating.setScore(StateSourceCNV.User, criteria, $event)
+                    "
+                    :min="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.minScore ?? 0"
+                    :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 1"
+                    :step="0.05"
                     thumb-label
                     thumb-size="10"
                     class="slider"
@@ -172,6 +178,7 @@ const switchCriteria = (
                       acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).presence
                     )
                   "
+                  color="primary"
                   hide-details="auto"
                   density="compact"
                   class="switch"
@@ -179,10 +186,15 @@ const switchCriteria = (
                 </v-switch>
                 <div v-if="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.slider">
                   <v-slider
-                    :v-model="acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score"
-                    :min="0"
-                    :max="1"
-                    :step="0.1"
+                    :model-value="
+                      acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score ?? 0
+                    "
+                    @update:model-value="
+                      acmgRatingStore.acmgRating.setScore(StateSourceCNV.User, criteria, $event)
+                    "
+                    :min="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.minScore ?? 0"
+                    :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 1"
+                    :step="0.05"
                     thumb-label
                     thumb-size="10"
                     class="slider"

@@ -176,8 +176,9 @@ const ACMG_CRITERIA_CNV_GAIN = [
 /** Detailed definition of one ACMG criteria. */
 interface CriteriaCNVDefinition {
   criteria: AcmgCriteriaCNVLoss | AcmgCriteriaCNVGain
-  defaultScore: Number | null
-  maxScore: Number
+  defaultScore: number | null
+  minScore?: number
+  maxScore: number
   label: string
   hint: string
   description: string
@@ -214,6 +215,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2A,
       defaultScore: 1,
+      minScore: 0,
       maxScore: 1,
       label: '2A',
       hint: 'Overlap with ESTABLISHED HI genes or genomic regions and consideration of reason for referral',
@@ -239,6 +241,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2C1,
       defaultScore: 0.9,
+      minScore: 0.45,
       maxScore: 1,
       label: '2C-1',
       hint: 'range: 0.45 - 1.0',
@@ -250,6 +253,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2C2,
       defaultScore: 0,
+      minScore: 0,
       maxScore: 0.45,
       label: '2C-2',
       hint: 'range: 0.45 - 1.0',
@@ -272,6 +276,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2D2,
       defaultScore: 0.9,
+      minScore: 0.45,
       maxScore: 0.9,
       label: '2D-2',
       hint: 'range: 0.45 - 0.9',
@@ -284,6 +289,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2D3,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.45,
       label: '2D-3',
       hint: 'range: 0.3 - 0.45',
@@ -296,6 +302,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2D4,
       defaultScore: 0.9,
+      minScore: 0.45,
       maxScore: 1,
       label: '2D-4',
       hint: 'range: 0.45 - 1.0',
@@ -308,6 +315,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2E,
       defaultScore: 0,
+      minScore: 0,
       maxScore: 0.9,
       label: '2E',
       hint: `See ClinGen SVI working group
@@ -353,7 +361,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss2F,
       defaultScore: -1,
-      maxScore: -1,
+      minScore: -1,
+      maxScore: 0,
       label: '2F',
       hint: 'Overlap with ESTABLISHED benign genes or genomic regions',
       description: `Completely contained within an established benign CNV region.`,
@@ -388,11 +397,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: 'Number of protein-coding RefSeq genes wholly or partially included in the copy-number loss',
       description: `0-24 genes.`,
       conflictingEvidence: [],
-      slider: true
+      slider: false
     },
     {
       criteria: AcmgCriteriaCNVLoss.Loss3B,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '3B',
       hint: '',
@@ -403,6 +413,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss3C,
       defaultScore: 0.9,
+      minScore: 0.45,
       maxScore: 0.9,
       label: '3C',
       hint: '',
@@ -413,6 +424,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4A,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.9,
       label: '4A',
       hint: `Confirmed de novo: 0.45 points each Assumed de novo: 0.30 points each (range: 0.15 to 0.45)`,
@@ -428,6 +440,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4B,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.9,
       label: '4B',
       hint: `Confirmed de novo: 0.30 points each Assumed de novo: 0.15 point each (range: 0 to 0.45)`,
@@ -443,6 +456,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4C,
       defaultScore: 0.15,
+      minScore: 0,
       maxScore: 0.9,
       label: '4C',
       hint: `Confirmed de novo: 0.15 point each Assumed de novo: 0.10 point each (range: 0 to 0.30)`,
@@ -458,7 +472,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4D,
       defaultScore: 0,
-      maxScore: -0.3,
+      minScore: -0.3,
+      maxScore: 0,
       label: '4D',
       hint: 'Individual case evidence — inconsistent phenotype (range: 0 to -0.3)',
       description: `Reported proband (from literature, public databases, or internal lab data) has either:
@@ -473,6 +488,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4E,
       defaultScore: 0.1,
+      minScore: 0,
       maxScore: 0.3,
       label: '4E',
       hint: 'Individual case evidence — unknown inheritance (range: 0 to 0.15)',
@@ -484,7 +500,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4F,
       defaultScore: 0.15,
-      maxScore: 0.45,
+      minScore: 0,
+      maxScore: 0.15,
       label: '4F',
       hint: 'Individual case evidence — segregation among similarly affected family members',
       description: `3-4 observed segregations.`,
@@ -494,6 +511,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4G,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.3,
       label: '4G',
       hint: '',
@@ -504,6 +522,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4H,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '4H',
       hint: '',
@@ -514,7 +533,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4I,
       defaultScore: -0.45,
-      maxScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4I',
       hint: `Individual case evidence — nonsegregations -0.45 points per family (range: 0 to -0.45)`,
       description: `Variant is NOT found in another individual in the proband's family AFFECTED with a
@@ -525,7 +545,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4J,
       defaultScore: -0.3,
-      maxScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4J',
       hint: `-0.30 points per family (range: 0 to -0.30)`,
       description: `Variant IS found in another individual in the proband's family UNAFFECTED with the
@@ -536,7 +557,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4K,
       defaultScore: -0.15,
-      maxScore: -0.3,
+      minScore: -0.3,
+      maxScore: 0,
       label: '4K',
       hint: `-0.15 points per family (range: 0 to -0.15)`,
       description: `Variant IS found in another individual in the proband's family UNAFFECTED with the
@@ -547,6 +569,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4L,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '4L',
       hint: 'Case-control and population evidence. 0.45 per study (range: 0 to 0.45 per study)',
@@ -558,6 +581,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4M,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.45,
       label: '4M',
       hint: '0.30 per study (range: 0 to 0.30 per study',
@@ -570,7 +594,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss4N,
       defaultScore: -0.9,
-      maxScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4N',
       hint: '-0.90 (per study) (range: 0 to -0.90 per study',
       description: `No statistically significant difference between observations in cases and controls.`,
@@ -579,8 +604,9 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     },
     {
       criteria: AcmgCriteriaCNVLoss.Loss4O,
-      defaultScore: -1,
-      maxScore: -1,
+      defaultScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4O',
       hint: '(range: 0 to -1)',
       description: `Overlap with common population variation.`,
@@ -590,6 +616,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5A,
       defaultScore: 0,
+      minScore: 0,
       maxScore: 0.45,
       label: '5A',
       hint: `Observed copy-number loss is de novo. Use de novo scoring categories from section 4 
@@ -601,7 +628,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5B,
       defaultScore: -0.3,
-      maxScore: -0.45,
+      minScore: -0.45,
+      maxScore: 0,
       label: '5B',
       hint: `Observed copy-number loss is inherited. (range: 0 to -0.45)`,
       description: `Patient with specific, well-defined phenotype and no family history. CNV is
@@ -612,7 +640,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5C,
       defaultScore: -0.15,
-      maxScore: -0.3,
+      minScore: -0.3,
+      maxScore: 0,
       label: '5C',
       hint: `(range: 0 to -0.30)`,
       description: ` Patient with nonspecific phenotype and no family history. CNV is inherited from an
@@ -623,6 +652,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5D,
       defaultScore: 0,
+      minScore: 0,
       maxScore: 0.45,
       label: '5D',
       hint: `Use segregation scoring categories from section 4 (4F-4H) to determine score`,
@@ -633,7 +663,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5E,
       defaultScore: 0,
-      maxScore: -0.45,
+      minScore: -0.45,
+      maxScore: 0,
       label: '5E',
       hint: `Observed copy-number loss — nonsegregations. Use nonsegregation scoring categories
       from section 4 (4I-4K) to determine score`,
@@ -654,6 +685,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5G,
       defaultScore: 0.1,
+      minScore: 0,
       maxScore: 0.15,
       label: '5G',
       hint: '(range: 0 to 0.15)',
@@ -665,6 +697,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVLoss.Loss5H,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.3,
       label: '5H',
       hint: '(range: 0 to 0.30)',
@@ -696,6 +729,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain2A,
       defaultScore: 1,
+      minScore: 0,
       maxScore: 1,
       label: '2A',
       hint: `Overlap with ESTABLISHED TS genes or genomic regions`,
@@ -721,7 +755,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain2C,
       defaultScore: -1,
-      maxScore: -1,
+      minScore: -1,
+      maxScore: 0,
       label: '2C',
       hint: `Overlap with ESTABLISHED benign copy-number gain genes or genomic regions`,
       description: `Identical in gene content to the established benign copy-number gain.`,
@@ -731,7 +766,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain2D,
       defaultScore: -1,
-      maxScore: -1,
+      minScore: -1,
+      maxScore: 0,
       label: '2D',
       hint: '',
       description: `Smaller than established benign copy-number gain, breakpoint(s) does not interrupt
@@ -752,8 +788,9 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     },
     {
       criteria: AcmgCriteriaCNVGain.Gain2F,
-      defaultScore: -1,
-      maxScore: -1,
+      defaultScore: -0.9,
+      minScore: -1,
+      maxScore: 0,
       label: '2F',
       hint: '(range: 0 to -1)',
       description: `Larger than known benign copy-number gain, does not include additional proteincoding genes.`,
@@ -783,6 +820,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain2I,
       defaultScore: 0,
+      minScore: 0,
       maxScore: 0.9,
       label: '2I',
       hint: `Breakpoint(s) within ESTABLISHED HI genes. See ClinGen SVI working group
@@ -823,6 +861,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain2K,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '2K',
       hint: '',
@@ -849,11 +888,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Number of protein-coding RefSeq genes wholly or partially included in the copy-number gain`,
       description: `0-34 genes.`,
       conflictingEvidence: [],
-      slider: true
+      slider: false
     },
     {
       criteria: AcmgCriteriaCNVGain.Gain3B,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '3B',
       hint: '',
@@ -864,6 +904,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain3C,
       defaultScore: 0.9,
+      minScore: 0,
       maxScore: 0.9,
       label: '3C',
       hint: '',
@@ -874,6 +915,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4A,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.9,
       label: '4A',
       hint: `Confirmed de novo: 0.45 points each
@@ -890,6 +932,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4B,
       defaultScore: 0.15,
+      minScore: 0,
       maxScore: 0.9,
       label: '4B',
       hint: `Confirmed de novo: 0.30 points each
@@ -906,6 +949,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4C,
       defaultScore: 0.15,
+      minScore: 0,
       maxScore: 0.9,
       label: '4C',
       hint: `Confirmed de novo: 0.15 point each
@@ -922,7 +966,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4D,
       defaultScore: 0,
-      maxScore: -0.3,
+      minScore: -0.3,
+      maxScore: 0,
       label: '4D',
       hint: `Individual case evidence — inconsistent phenotype. 0 points each (range: 0 to -0.30)`,
       description: `Reported proband (from literature, public databases, or internal lab data) has either:
@@ -936,6 +981,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4E,
       defaultScore: 0.1,
+      minScore: 0,
       maxScore: 0.3,
       label: '4A',
       hint: `Individual case evidence — unknown inheritance. 0.10 points each (range: 0 to 0.15)`,
@@ -947,6 +993,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4F,
       defaultScore: 0.15,
+      minScore: 0,
       maxScore: 0.45,
       label: '4F',
       hint: `Individual case evidence — segregation among similarly affected family members`,
@@ -957,6 +1004,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4G,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.3,
       label: '4G',
       hint: '',
@@ -967,6 +1015,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4H,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '4H',
       hint: '',
@@ -977,7 +1026,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4I,
       defaultScore: -0.45,
-      maxScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4I',
       hint: `Individual case evidence — nonsegregations. -0.45 points per family (range: 0 to -0.45)`,
       description: `Variant is NOT found in another individual in the proband's family AFFECTED with a
@@ -999,7 +1049,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4K,
       defaultScore: -0.15,
-      maxScore: -0.3,
+      minScore: -0.3,
+      maxScore: 0,
       label: '4K',
       hint: `-0.15 points per family (range: 0 to -0.15)`,
       description: `Variant IS found in another individual in the proband's family UNAFFECTED with the
@@ -1010,6 +1061,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4L,
       defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '4L',
       hint: `Case-control and population evidence. 0.45 per study (range: 0 to 0.45 per study)`,
@@ -1021,6 +1073,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4M,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.45,
       label: '4M',
       hint: `0.30 per study (range: 0 to 0.30 per study)`,
@@ -1032,7 +1085,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain4N,
       defaultScore: -0.9,
-      maxScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4N',
       hint: `-0.90 (per study) (range: 0 to -0.90 per study)`,
       description: `No statistically significant difference between observations in cases and controls.`,
@@ -1041,8 +1095,9 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     },
     {
       criteria: AcmgCriteriaCNVGain.Gain4O,
-      defaultScore: -1,
-      maxScore: -1,
+      defaultScore: -0.9,
+      minScore: -0.9,
+      maxScore: 0,
       label: '4O',
       hint: `(range: 0 to -1)`,
       description: `Overlap with common population variation.`,
@@ -1052,6 +1107,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain5A,
       defaultScore: 0,
+      minScore: 0,
       maxScore: 0.45,
       label: '5A',
       hint: `Observed copy-number gain is de novo. Use de novo scoring categories from section 4 (4A-4D) to determine score`,
@@ -1062,7 +1118,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain5B,
       defaultScore: -0.3,
-      maxScore: -0.45,
+      minScore: -0.45,
+      maxScore: 0,
       label: '5B',
       hint: `Observed copy-number gain is inherited. (range: 0 to -0.45)`,
       description: `Patient with a specific, well-defined phenotype and no family history. Copy-number
@@ -1073,7 +1130,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain5C,
       defaultScore: -0.15,
-      maxScore: -0.3,
+      minScore: -0.3,
+      maxScore: 0,
       label: '5C',
       hint: `(range: 0 to -0.30)`,
       description: `Patient with nonspecific phenotype and no family history. Copy-number gain is
@@ -1083,7 +1141,8 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     },
     {
       criteria: AcmgCriteriaCNVGain.Gain5D,
-      defaultScore: 0,
+      defaultScore: 0.45,
+      minScore: 0,
       maxScore: 0.45,
       label: '5D',
       hint: `Use segregation scoring categories from in
@@ -1094,8 +1153,9 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     },
     {
       criteria: AcmgCriteriaCNVGain.Gain5E,
-      defaultScore: 0,
-      maxScore: -0.45,
+      defaultScore: -0.45,
+      minScore: -0.45,
+      maxScore: 0,
       label: '5E',
       hint: `Observed copy-number gain — nonsegregations. Use nonsegregation scoring categories from
       section 4 (4I-4K) to determine score`,
@@ -1116,6 +1176,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain5G,
       defaultScore: 0.1,
+      minScore: 0,
       maxScore: 0.15,
       label: '5G',
       hint: `(range: 0 to 0.15)`,
@@ -1127,6 +1188,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
     {
       criteria: AcmgCriteriaCNVGain.Gain5H,
       defaultScore: 0.3,
+      minScore: 0,
       maxScore: 0.3,
       label: '5H',
       hint: `(range: 0 to 0.30)`,
@@ -1204,202 +1266,202 @@ class MultiSourceAcmgCriteriaCNVState {
         L1A: {
           criteria: AcmgCriteriaCNVLoss.Loss1A,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss1A) : null
         },
         L1B: {
           criteria: AcmgCriteriaCNVLoss.Loss1B,
           presence: Presence.Unknown,
-          score: isDefault ? -0.6 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss1B) : null
         },
         L2A: {
           criteria: AcmgCriteriaCNVLoss.Loss2A,
           presence: Presence.Unknown,
-          score: isDefault ? 1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2A) : null
         },
         L2B: {
           criteria: AcmgCriteriaCNVLoss.Loss2B,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2B) : null
         },
         'L2C-1': {
           criteria: AcmgCriteriaCNVLoss.Loss2C1,
           presence: Presence.Unknown,
-          score: isDefault ? 0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2C1) : null
         },
         'L2C-2': {
           criteria: AcmgCriteriaCNVLoss.Loss2C2,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2C2) : null
         },
         'L2D-1': {
           criteria: AcmgCriteriaCNVLoss.Loss2D1,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2D1) : null
         },
         'L2D-2': {
           criteria: AcmgCriteriaCNVLoss.Loss2D2,
           presence: Presence.Unknown,
-          score: isDefault ? 0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2D2) : null
         },
         'L2D-3': {
           criteria: AcmgCriteriaCNVLoss.Loss2D3,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2D3) : null
         },
         'L2D-4': {
           criteria: AcmgCriteriaCNVLoss.Loss2D4,
           presence: Presence.Unknown,
-          score: isDefault ? 0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2D4) : null
         },
         L2E: {
           criteria: AcmgCriteriaCNVLoss.Loss2E,
           presence: Presence.Unknown,
-          score: isDefault ? 0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2E) : null
         },
         L2F: {
           criteria: AcmgCriteriaCNVLoss.Loss2F,
           presence: Presence.Unknown,
-          score: isDefault ? -1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2F) : null
         },
         L2G: {
           criteria: AcmgCriteriaCNVLoss.Loss2G,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2G) : null
         },
         L2H: {
           criteria: AcmgCriteriaCNVLoss.Loss2H,
           presence: Presence.Unknown,
-          score: isDefault ? 0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss2H) : null
         },
         L3A: {
           criteria: AcmgCriteriaCNVLoss.Loss3A,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss3A) : null
         },
         L3B: {
           criteria: AcmgCriteriaCNVLoss.Loss3B,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss3B) : null
         },
         L3C: {
           criteria: AcmgCriteriaCNVLoss.Loss3C,
           presence: Presence.Unknown,
-          score: isDefault ? 0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss3C) : null
         },
         L4A: {
           criteria: AcmgCriteriaCNVLoss.Loss4A,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4A) : null
         },
         L4B: {
           criteria: AcmgCriteriaCNVLoss.Loss4B,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4B) : null
         },
         L4C: {
           criteria: AcmgCriteriaCNVLoss.Loss4C,
           presence: Presence.Unknown,
-          score: isDefault ? 0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4C) : null
         },
         L4D: {
           criteria: AcmgCriteriaCNVLoss.Loss4D,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4D) : null
         },
         L4E: {
           criteria: AcmgCriteriaCNVLoss.Loss4E,
           presence: Presence.Unknown,
-          score: isDefault ? 0.1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4E) : null
         },
         L4F: {
           criteria: AcmgCriteriaCNVLoss.Loss4F,
           presence: Presence.Unknown,
-          score: isDefault ? 0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4F) : null
         },
         L4G: {
           criteria: AcmgCriteriaCNVLoss.Loss4G,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4G) : null
         },
         L4H: {
           criteria: AcmgCriteriaCNVLoss.Loss4H,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4H) : null
         },
         L4I: {
           criteria: AcmgCriteriaCNVLoss.Loss4I,
           presence: Presence.Unknown,
-          score: isDefault ? -0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4I) : null
         },
         L4J: {
           criteria: AcmgCriteriaCNVLoss.Loss4J,
           presence: Presence.Unknown,
-          score: isDefault ? -0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4J) : null
         },
         L4K: {
           criteria: AcmgCriteriaCNVLoss.Loss4K,
           presence: Presence.Unknown,
-          score: isDefault ? -0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4K) : null
         },
         L4L: {
           criteria: AcmgCriteriaCNVLoss.Loss4L,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4L) : null
         },
         L4M: {
           criteria: AcmgCriteriaCNVLoss.Loss4M,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4M) : null
         },
         L4N: {
           criteria: AcmgCriteriaCNVLoss.Loss4N,
           presence: Presence.Unknown,
-          score: isDefault ? -0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4N) : null
         },
         L4O: {
           criteria: AcmgCriteriaCNVLoss.Loss4O,
           presence: Presence.Unknown,
-          score: isDefault ? -1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss4O) : null
         },
         L5A: {
           criteria: AcmgCriteriaCNVLoss.Loss5A,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5A) : null
         },
         L5B: {
           criteria: AcmgCriteriaCNVLoss.Loss5B,
           presence: Presence.Unknown,
-          score: isDefault ? -0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5B) : null
         },
         L5C: {
           criteria: AcmgCriteriaCNVLoss.Loss5C,
           presence: Presence.Unknown,
-          score: isDefault ? -0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5C) : null
         },
         L5D: {
           criteria: AcmgCriteriaCNVLoss.Loss5D,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5D) : null
         },
         L5E: {
           criteria: AcmgCriteriaCNVLoss.Loss5E,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5E) : null
         },
         L5F: {
           criteria: AcmgCriteriaCNVLoss.Loss5F,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5F) : null
         },
         L5G: {
           criteria: AcmgCriteriaCNVLoss.Loss5G,
           presence: Presence.Unknown,
-          score: isDefault ? 0.1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5G) : null
         },
         L5H: {
           criteria: AcmgCriteriaCNVLoss.Loss5H,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVLoss.Loss5H) : null
         }
       }
     } else if (cnvType === 'DUP') {
@@ -1407,207 +1469,216 @@ class MultiSourceAcmgCriteriaCNVState {
         G1A: {
           criteria: AcmgCriteriaCNVGain.Gain1A,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain1A) : null
         },
         G1B: {
           criteria: AcmgCriteriaCNVGain.Gain1B,
           presence: Presence.Unknown,
-          score: isDefault ? -0.6 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain1B) : null
         },
         G2A: {
           criteria: AcmgCriteriaCNVGain.Gain2A,
           presence: Presence.Unknown,
-          score: isDefault ? 1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2A) : null
         },
         G2B: {
           criteria: AcmgCriteriaCNVGain.Gain2B,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2B) : null
         },
         G2C: {
           criteria: AcmgCriteriaCNVGain.Gain2C,
           presence: Presence.Unknown,
-          score: isDefault ? -1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2C) : null
         },
         G2D: {
           criteria: AcmgCriteriaCNVGain.Gain2D,
           presence: Presence.Unknown,
-          score: isDefault ? -1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2D) : null
         },
         G2E: {
           criteria: AcmgCriteriaCNVGain.Gain2E,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2E) : null
         },
         G2F: {
           criteria: AcmgCriteriaCNVGain.Gain2F,
           presence: Presence.Unknown,
-          score: isDefault ? -1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2F) : null
         },
         G2G: {
           criteria: AcmgCriteriaCNVGain.Gain2G,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2G) : null
         },
         G2H: {
           criteria: AcmgCriteriaCNVGain.Gain2H,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2H) : null
         },
         G2I: {
           criteria: AcmgCriteriaCNVGain.Gain2I,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2I) : null
         },
         G2J: {
           criteria: AcmgCriteriaCNVGain.Gain2J,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2J) : null
         },
         G2K: {
           criteria: AcmgCriteriaCNVGain.Gain2K,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2K) : null
         },
         G2L: {
           criteria: AcmgCriteriaCNVGain.Gain2L,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain2L) : null
         },
         G3A: {
           criteria: AcmgCriteriaCNVGain.Gain3A,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain3A) : null
         },
         G3B: {
           criteria: AcmgCriteriaCNVGain.Gain3B,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain3B) : null
         },
         G3C: {
           criteria: AcmgCriteriaCNVGain.Gain3C,
           presence: Presence.Unknown,
-          score: isDefault ? 0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain3C) : null
         },
         G4A: {
           criteria: AcmgCriteriaCNVGain.Gain4A,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4A) : null
         },
         G4B: {
           criteria: AcmgCriteriaCNVGain.Gain4B,
           presence: Presence.Unknown,
-          score: isDefault ? 0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4B) : null
         },
         G4C: {
           criteria: AcmgCriteriaCNVGain.Gain4C,
           presence: Presence.Unknown,
-          score: isDefault ? 0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4C) : null
         },
         G4D: {
           criteria: AcmgCriteriaCNVGain.Gain4D,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4D) : null
         },
         G4E: {
           criteria: AcmgCriteriaCNVGain.Gain4E,
           presence: Presence.Unknown,
-          score: isDefault ? 0.1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4E) : null
         },
         G4F: {
           criteria: AcmgCriteriaCNVGain.Gain4F,
           presence: Presence.Unknown,
-          score: isDefault ? 0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4F) : null
         },
         G4G: {
           criteria: AcmgCriteriaCNVGain.Gain4G,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4G) : null
         },
         G4H: {
           criteria: AcmgCriteriaCNVGain.Gain4H,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4H) : null
         },
         G4I: {
           criteria: AcmgCriteriaCNVGain.Gain4I,
           presence: Presence.Unknown,
-          score: isDefault ? -0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4I) : null
         },
         G4J: {
           criteria: AcmgCriteriaCNVGain.Gain4J,
           presence: Presence.Unknown,
-          score: isDefault ? -0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4J) : null
         },
         G4K: {
           criteria: AcmgCriteriaCNVGain.Gain4K,
           presence: Presence.Unknown,
-          score: isDefault ? -0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4K) : null
         },
         G4L: {
           criteria: AcmgCriteriaCNVGain.Gain4L,
           presence: Presence.Unknown,
-          score: isDefault ? 0.45 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4L) : null
         },
         G4M: {
           criteria: AcmgCriteriaCNVGain.Gain4M,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4M) : null
         },
         G4N: {
           criteria: AcmgCriteriaCNVGain.Gain4N,
           presence: Presence.Unknown,
-          score: isDefault ? -0.9 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4N) : null
         },
         G4O: {
           criteria: AcmgCriteriaCNVGain.Gain4O,
           presence: Presence.Unknown,
-          score: isDefault ? -1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain4O) : null
         },
         G5A: {
           criteria: AcmgCriteriaCNVGain.Gain5A,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5A) : null
         },
         G5B: {
           criteria: AcmgCriteriaCNVGain.Gain5B,
           presence: Presence.Unknown,
-          score: isDefault ? -0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5B) : null
         },
         G5C: {
           criteria: AcmgCriteriaCNVGain.Gain5C,
           presence: Presence.Unknown,
-          score: isDefault ? -0.15 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5C) : null
         },
         G5D: {
           criteria: AcmgCriteriaCNVGain.Gain5D,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5D) : null
         },
         G5E: {
           criteria: AcmgCriteriaCNVGain.Gain5E,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5E) : null
         },
         G5F: {
           criteria: AcmgCriteriaCNVGain.Gain5F,
           presence: Presence.Unknown,
-          score: isDefault ? 0 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5F) : null
         },
         G5G: {
           criteria: AcmgCriteriaCNVGain.Gain5G,
           presence: Presence.Unknown,
-          score: isDefault ? 0.1 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5G) : null
         },
         G5H: {
           criteria: AcmgCriteriaCNVGain.Gain5H,
           presence: Presence.Unknown,
-          score: isDefault ? 0.3 : null
+          score: isDefault ? this.getDefaultScore(AcmgCriteriaCNVGain.Gain5H) : null
         }
       }
     } else {
       throw new Error('Invalid CNV type')
     }
+  }
+
+  /** Get default score for given `AcmgCriteriaCNVLoss` or `AcmgCriteriaCNVGain`. */
+  getDefaultScore(criteria: AcmgCriteriaCNVLoss | AcmgCriteriaCNVGain): number | null {
+    const criteriaDef = ACMG_CRITERIA_CNV_DEFS.get(criteria)
+    if (!criteriaDef) {
+      throw new Error(`Criteria ${criteria} not found`)
+    }
+    return criteriaDef.defaultScore
   }
 
   /** Gets the effective `CriteriaCNVState` for an `AcmgCriteriaCNVLoss` or `AcmgCriteriaCNVGain`.*/
@@ -1670,14 +1741,17 @@ class MultiSourceAcmgCriteriaCNVState {
     if (source === StateSourceCNV.Default) {
       throw new Error('Cannot set presence for default source')
     }
+    const criteriaState = this.CriteriaCNVStates[source][criteria]
     if (
+      this.CriteriaCNVStates[source] === undefined ||
+      this.CriteriaCNVStates[source][criteria] === undefined ||
       !this.CriteriaCNVStates[source] ||
       !this.CriteriaCNVStates[source][criteria] ||
-      !this.CriteriaCNVStates[source][criteria].presence
+      criteriaState === undefined
     ) {
       throw new Error(`Criteria ${criteria} not found for source ${source}`)
     } else {
-      this.CriteriaCNVStates[source][criteria].presence = presence
+      criteriaState.presence = presence
     }
   }
 
@@ -1690,22 +1764,22 @@ class MultiSourceAcmgCriteriaCNVState {
     if (source === StateSourceCNV.Default) {
       throw new Error('Cannot set presence for default source')
     }
-
+    const criteriaState = this.CriteriaCNVStates[source][criteria]
     if (
       this.CriteriaCNVStates[source] === undefined ||
       this.CriteriaCNVStates[source][criteria] === undefined ||
       !this.CriteriaCNVStates[source] ||
       !this.CriteriaCNVStates[source][criteria] ||
-      !this.CriteriaCNVStates[source][criteria].score
+      criteriaState === undefined
     ) {
       throw new Error(`Criteria ${criteria} not found for source ${source}`)
     } else {
-      this.CriteriaCNVStates[source][criteria].score = score
+      criteriaState.score = score
     }
   }
 
   /** Resets the presence and score of all criteria for a `StateSource.User` to a presence of `StateSource.AutoCNV`. */
-  setUserPresenceAutoCNV() {
+  setUserToAutoCNV() {
     if (this.svType === 'DEL') {
       for (const criteria of ACMG_CRITERIA_CNV_LOSS) {
         const criteriaStateAutoCNV = this.getCriteriaCNVStateFromSource(
@@ -1765,7 +1839,9 @@ class MultiSourceAcmgCriteriaCNVState {
     } else if (this.svType === 'DUP') {
       for (const criteria of ACMG_CRITERIA_CNV_GAIN) {
         const CriteriaCNVState = this.getCriteriaCNVState(criteria)
-        score += CriteriaCNVState.score || 0
+        if (CriteriaCNVState.presence === Presence.Present) {
+          score += CriteriaCNVState.score || 0
+        }
       }
 
       const isPathogenic = score >= 0.99
