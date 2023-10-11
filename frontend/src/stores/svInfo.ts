@@ -48,7 +48,7 @@ export const useSvInfoStore = defineStore('svInfo', () => {
     // Load data via API
     storeState.value = StoreState.Loading
     try {
-      const { sv_type, chromosome, start, end } = infoFromSvQuery(variantQuery)
+      const { svType, chromosome, start, end } = infoFromSvQuery(variantQuery)
       const annonarsClient = new AnnonarsClient()
       const mehariClient = new MehariClient()
 
@@ -58,10 +58,10 @@ export const useSvInfoStore = defineStore('svInfo', () => {
         chromosome,
         start,
         end,
-        sv_type
+        svType
       )
       currentSvRecord.value = {
-        sv_type: sv_type,
+        svType: svType,
         chromosome: chromosome,
         start: start,
         end: end,

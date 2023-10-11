@@ -196,7 +196,7 @@ export const infoFromQuery = (query: string): any => {
 export const infoFromSvQuery = (query: string): any => {
   const [sv_type, chromosome, start, end] = query.split(':')
   return {
-    sv_type: sv_type,
+    svType: sv_type,
     chromosome: chromosome,
     start: start,
     end: end

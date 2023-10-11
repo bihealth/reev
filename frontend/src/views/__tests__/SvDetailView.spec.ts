@@ -6,6 +6,7 @@ import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
 import SvDetailsGenotypeCall from '@/components/SvDetails/SvDetailsGenotypeCall.vue'
 import SvGenes from '@/components/SvDetails/SvGenes.vue'
@@ -68,10 +69,12 @@ describe.concurrent('VariantDetailView', async () => {
     const svGenes = wrapper.findComponent(SvGenes)
     const svDetailsClinvar = wrapper.findComponent(SvDetailsClinvar)
     const svDetailsGenotypeCall = wrapper.findComponent(SvDetailsGenotypeCall)
+    const acmgRating = wrapper.findComponent(AcmgRating)
     const genomeBrowser = wrapper.findComponent(GenomeBrowser)
     expect(svGenes.exists()).toBe(true)
     expect(svDetailsClinvar.exists()).toBe(true)
     expect(svDetailsGenotypeCall.exists()).toBe(true)
+    expect(acmgRating.exists()).toBe(true)
     expect(genomeBrowser.exists()).toBe(true)
   })
 })

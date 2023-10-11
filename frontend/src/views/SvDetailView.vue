@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
 import SvDetailsGenotypeCall from '@/components/SvDetails/SvDetailsGenotypeCall.vue'
 import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
@@ -129,6 +130,12 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <SvDetailsGenotypeCall :current-sv-record="svInfoStore.currentSvRecord" />
         </div>
 
+        <div id="acmg" class="sv-item">
+          <h2>ACMG</h2>
+          <v-divider />
+          <AcmgRating :sv-record="svInfoStore.currentSvRecord" />
+        </div>
+
         <div id="genome-browser" class="sv-item">
           <h2>Genome Browser</h2>
           <v-divider />
@@ -136,12 +143,6 @@ const genomeReleaseRef = ref(props.genomeRelease)
             :genome="genomeRelease === 'grch37' ? 'hg19' : 'b38'"
             :locus="svLocus(svInfoStore.currentSvRecord) as string"
           />
-        </div>
-
-        <div id="acmg" class="sv-item">
-          <h2>ACMG</h2>
-          <v-divider />
-          <!-- <CNVAcmgRating /> -->
         </div>
       </div>
 
