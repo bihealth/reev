@@ -119,7 +119,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
       const chromosome = svRec.chromosome.replace('chr', '')
       const start = svRec.start
       const end = svRec.end
-      const svType = svRec.svType === 'DUP' ? 'dup' : 'del'
+      const svType = svRec.svType === 'DEL' ? 'del' : 'dup'
       const response = await fetch(
         `${API_BASE_URL}remote/cnv/acmg/?chromosome=${chromosome}&start=${start}&end=${end}&func=${svType}`,
         { method: 'GET' }
