@@ -12,7 +12,7 @@ import VariantDetailsFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantDetailsVariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantDetailsVariantValidator from '@/components/VariantDetails/VariantValidator.vue'
-import VariationLandscape from '@/components/VariantDetails/VariationLandscape.vue'
+import VariationLandscape from '@/components/VariationLandscape.vue'
 import { StoreState } from '@/stores/misc'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 import { type SmallVariant } from '@/stores/variantInfo'
@@ -65,7 +65,6 @@ watch(
 
 const SECTIONS = [
   { id: 'gene', title: 'Gene' },
-  { id: 'variation-landscape', title: 'Variation Landscape' },
   { id: 'beacon-network', title: 'Beacon Network' },
   { id: 'clinvar', title: 'ClinVar' },
   { id: 'freqs', title: 'Population Frequencies' },
@@ -121,24 +120,6 @@ const genomeReleaseRef = ref(props.genomeRelease)
         </div>
         <div v-else id="gene" class="variant-item">
           <h2>Gene</h2>
-          <h3>No gene information available</h3>
-        </div>
-
-        <div
-          v-if="variantInfoStore.geneInfo !== null"
-          id="variation-landscape"
-          class="variant-item"
-        >
-          <h2>Gene-wide Variation landscape</h2>
-          <v-divider />
-          <VariationLandscape
-            :clinvar="variantInfoStore.geneClinvar"
-            :genome-release="genomeReleaseRef"
-            :gene-symbol="variantInfoStore.varAnnos?.cadd?.GeneName"
-          />
-        </div>
-        <div v-else id="variation-landscape" class="variant-item">
-          <h2>Gene-wide Variation landscape</h2>
           <h3>No gene information available</h3>
         </div>
 

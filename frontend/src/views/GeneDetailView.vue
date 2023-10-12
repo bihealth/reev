@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import ClinvarFreqPlot from '@/components/ClinVarFreqPlot.vue'
 import GtexGenePlot from '@/components/GtexGenePlot.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import VariationLandscape from '@/components/VariationLandscape.vue'
 import { roundIt } from '@/lib/utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
@@ -59,6 +60,7 @@ watch(
 
 const SECTIONS = [
   { id: 'hgnc', title: 'HGNC' },
+  { id: 'variation-landscape', title: 'Variation Landscape' },
   { id: 'constraints-scores', title: 'Constraints / Scores' },
   { id: 'ncbi-summary', title: 'NCBI Summary' },
   { id: 'alternative-identifiers', title: 'Alternative Identifiers' },
@@ -169,6 +171,17 @@ const genomeReleaseRef = ref(props.genomeRelease)
               {{ geneInfoStore.geneInfo?.hgnc?.alias_symbol?.join(', ') }}
             </div>
           </div>
+        </div>
+
+        <div id="variation-landscape" class="gene-item">
+          <h2>Gene-wide Variation landscape</h2>
+          <v-divider></v-divider>
+          <VariationLandscape
+            :clinvar="geneInfoStore.geneClinvar"
+            :transcripts="geneInfoStore.transcripts"
+            :genome-release="genomeReleaseRef"
+            :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+          />
         </div>
 
         <div id="constraints-scores" class="gene-item">

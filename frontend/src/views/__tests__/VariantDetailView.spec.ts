@@ -16,7 +16,6 @@ import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
-import VariationLandscape from '@/components/VariantDetails/VariationLandscape.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
@@ -137,7 +136,6 @@ describe('VariantDetailView', async () => {
     const { wrapper } = makeWrapper()
 
     const variantInfo = wrapper.findComponent(VariantGene)
-    const variationLandscape = wrapper.findComponent(VariationLandscape)
     const beaconNetwork = wrapper.findComponent(BeaconNetwork)
     const clinVar = wrapper.findComponent(ClinVar)
     const variantFreqs = wrapper.findComponent(VariantFreqs)
@@ -146,7 +144,6 @@ describe('VariantDetailView', async () => {
     const variantValidator = wrapper.findComponent(VariantValidator)
     const txCsq = wrapper.findComponent(TxCsq)
     expect(variantInfo.exists()).toBe(true)
-    expect(variationLandscape.exists()).toBe(true)
     expect(beaconNetwork.exists()).toBe(true)
     expect(clinVar.exists()).toBe(true)
     expect(variantFreqs.exists()).toBe(true)

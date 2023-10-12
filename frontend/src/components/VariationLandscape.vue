@@ -6,16 +6,19 @@ import VegaPlot from '@/components/VegaPlot.vue'
 export interface Props {
   /** Gene information from annonars. */
   clinvar: any
+  /** Transctipts information. */
+  transcripts: any
   /** The genome release. */
   genomeRelease: string
-  /** The gene symbol. */
-  geneSymbol: string
+  /** The gene HGNC symbol. */
+  hgnc: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   clinvar: null,
+  transcripts: null,
   genomeRelease: 'grch37',
-  geneSymbol: ''
+  hgnc: ''
 })
 
 const clinvarSignificanceMapping: Record<number, number> = {
@@ -44,6 +47,44 @@ const convertClinvarSignificance = (input: number): number => {
     return -4
   }
 }
+
+const minMax = computed(() => {
+  if (!props.clinvar) {
+    return []
+  }
+  let min = null
+  let max = null
+  for (const item of props.clinvar.variants ?? []) {
+    if (item.genome_release.toLowerCase() == props.genomeRelease) {
+      // Go through all item.variants and find the min and max pos.
+      for (const variant of item.variants) {
+        if (variant.pos < min || min == null) {
+          min = variant.pos
+        }
+        if (variant.pos > max || max == null) {
+          max = variant.pos
+        }
+      }
+    }
+  }
+  return [min, max]
+})
+
+const exons = computed(() => {
+  if (!props.transcripts) {
+    return []
+  }
+  const exons = []
+  for (const transcript of props.transcripts.transcripts) {
+    for (const exon of transcript.exons) {
+      exons.push({
+        start: exon.start,
+        stop: exon.end
+      })
+    }
+  }
+  return exons
+})
 
 const vegaData = computed(() => {
   if (!props.clinvar) {
@@ -100,7 +141,7 @@ const vegaLayer = [
       x: {
         field: 'pos',
         type: 'quantitative',
-        scale: { domain: [41190000, 41282000] },
+        scale: { domain: minMax.value },
         axis: { grid: false, zindex: 1000 },
         title: null
       },
@@ -204,7 +245,7 @@ const vegaLayer = [
       x: {
         field: 'pos',
         type: 'quantitative',
-        scale: { domain: [41190000, 41282000] },
+        scale: { domain: minMax.value },
         axis: { grid: false },
         title: null
       },
@@ -252,7 +293,7 @@ const vegaLayer = [
       x: {
         field: 'pos',
         type: 'quantitative',
-        scale: { domain: [41190000, 41282000] },
+        scale: { domain: minMax.value },
         axis: { grid: false },
         title: null
       },
@@ -262,10 +303,7 @@ const vegaLayer = [
   {
     description: 'gene - exons',
     data: {
-      values: [
-        { start: 41196312, stop: 41197819 },
-        { start: 41199660, stop: 41199720 }
-      ]
+      values: exons.value
     },
     mark: {
       type: 'rect',
@@ -278,7 +316,7 @@ const vegaLayer = [
       x: {
         field: 'start',
         type: 'quantitative',
-        scale: { domain: [41190000, 41282000] },
+        scale: { domain: minMax.value },
         axis: { grid: false },
         title: null
       },
@@ -292,7 +330,7 @@ const vegaLayer = [
 <template>
   <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
     <figcaption class="figure-caption text-center">
-      Variation Landscape of {{ props.geneSymbol }}
+      Variation Landscape of {{ props.hgnc }}
     </figcaption>
     <div style="width: 1100px; height: 350px; overflow: none">
       <VegaPlot

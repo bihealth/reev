@@ -42,4 +42,20 @@ export class DottyClient {
       return null
     }
   }
+
+  async fetchTranscripts(
+    refseq_ids: Array<string>,
+    assembly: 'GRCh37' | 'GRCh38' = 'GRCh38'
+  ): Promise<any | null> {
+    const ids = refseq_ids.join(',')
+    const url = `${API_INTERNAL_BASE_PREFIX_DOTTY}/api/v1/find-transcripts?refseq_ids=${ids}&assembly=${assembly}`
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+    if (response.status == 200) {
+      return await response.json()
+    } else {
+      return null
+    }
+  }
 }
