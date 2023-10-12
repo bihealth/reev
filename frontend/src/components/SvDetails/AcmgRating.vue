@@ -94,7 +94,7 @@ const switchCriteria = (
           <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
             {{ calculateAcmgClass }} with score: {{ calculateAcmgScore }}
           </h1>
-          <router-link to="/acmg-docs" target="_blank">
+          <router-link to="/acmg-sv-docs" target="_blank">
             Further documentation <v-icon>mdi-open-in-new</v-icon>
           </router-link>
         </div>
