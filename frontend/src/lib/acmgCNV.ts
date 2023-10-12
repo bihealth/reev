@@ -209,7 +209,19 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '1B',
       hint: '',
       description: `Does NOT contain protein-coding or any known functionally important elements.`,
-      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss1A],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1A,
+        AcmgCriteriaCNVLoss.Loss2A,
+        AcmgCriteriaCNVLoss.Loss2B,
+        AcmgCriteriaCNVLoss.Loss2C1,
+        AcmgCriteriaCNVLoss.Loss2C2,
+        AcmgCriteriaCNVLoss.Loss2D1,
+        AcmgCriteriaCNVLoss.Loss2D2,
+        AcmgCriteriaCNVLoss.Loss2D3,
+        AcmgCriteriaCNVLoss.Loss2D4,
+        AcmgCriteriaCNVLoss.Loss3B,
+        AcmgCriteriaCNVLoss.Loss3C
+      ],
       slider: false
     },
     {
@@ -220,7 +232,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2A',
       hint: 'Overlap with ESTABLISHED HI genes or genomic regions and consideration of reason for referral',
       description: `Complete overlap of an established HI gene or genomic region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -235,7 +253,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • Unclear if known causative gene or critical region is affected OR
       • No specific causative gene or critical region has been established for this HI
       genomic region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: false
     },
     {
@@ -247,7 +271,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: 'range: 0.45 - 1.0',
       description: `Partial overlap with the 5' end of an established HI gene (3' end of the gene not
         involved) and coding sequence is involved.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -259,7 +289,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: 'range: 0.45 - 1.0',
       description: `Partial overlap with the 5' end of an established HI gene (3' end of the gene not
         involved) and only the 5' UTR is involved.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -270,7 +306,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: 'Continue evaluation',
       description: `Partial overlap with the 3' end of an established HI gene (5' end of the gene not
         involved) and only 3' untransalted region is involved.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: false
     },
     {
@@ -283,7 +325,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Partial overlap with the 3' end of an established HI gene (5' end of the gene not
         involved) and only the last exon is involved. Other established pathogenic variants have
         been reported in this exon.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -296,7 +344,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Partial overlap with the 3' end of an established HI gene (5' end of the gene not
         involved) and only the last exon is involved. No other established pathogenic variants have
         been reported in this exon.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -309,7 +363,13 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Partial overlap with the 3' end of an established HI gene (5' end of the gene not
         involved) and it includes other exons in addition to the last exon. Nonsense-mediated
         decay is expected to occur.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -355,7 +415,20 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
         • N/A
         = No points, but continue
         evaluation.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2A,
+        AcmgCriteriaCNVLoss.Loss2B,
+        AcmgCriteriaCNVLoss.Loss2C1,
+        AcmgCriteriaCNVLoss.Loss2C2,
+        AcmgCriteriaCNVLoss.Loss2D1,
+        AcmgCriteriaCNVLoss.Loss2D2,
+        AcmgCriteriaCNVLoss.Loss2D3,
+        AcmgCriteriaCNVLoss.Loss2D4,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -366,7 +439,19 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2F',
       hint: 'Overlap with ESTABLISHED benign genes or genomic regions',
       description: `Completely contained within an established benign CNV region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss2A,
+        AcmgCriteriaCNVLoss.Loss2B,
+        AcmgCriteriaCNVLoss.Loss2C1,
+        AcmgCriteriaCNVLoss.Loss2C2,
+        AcmgCriteriaCNVLoss.Loss2D1,
+        AcmgCriteriaCNVLoss.Loss2D2,
+        AcmgCriteriaCNVLoss.Loss2D3,
+        AcmgCriteriaCNVLoss.Loss2D4,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2G,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: true
     },
     {
@@ -376,7 +461,20 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2G',
       hint: 'Continue evaluation',
       description: `Overlaps an established benign CNV, but includes additional genomic material.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2A,
+        AcmgCriteriaCNVLoss.Loss2B,
+        AcmgCriteriaCNVLoss.Loss2C1,
+        AcmgCriteriaCNVLoss.Loss2C2,
+        AcmgCriteriaCNVLoss.Loss2D1,
+        AcmgCriteriaCNVLoss.Loss2D2,
+        AcmgCriteriaCNVLoss.Loss2D3,
+        AcmgCriteriaCNVLoss.Loss2D4,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2H
+      ],
       slider: false
     },
     {
@@ -386,7 +484,20 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2H',
       hint: 'Haploinsufficiency predictors',
       description: `Two or more HI predictors suggest that AT LEAST ONE gene in the interval is HI.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2A,
+        AcmgCriteriaCNVLoss.Loss2B,
+        AcmgCriteriaCNVLoss.Loss2C1,
+        AcmgCriteriaCNVLoss.Loss2C2,
+        AcmgCriteriaCNVLoss.Loss2D1,
+        AcmgCriteriaCNVLoss.Loss2D2,
+        AcmgCriteriaCNVLoss.Loss2D3,
+        AcmgCriteriaCNVLoss.Loss2D4,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss2F,
+        AcmgCriteriaCNVLoss.Loss2G
+      ],
       slider: true
     },
     {
@@ -396,7 +507,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '3A',
       hint: 'Number of protein-coding RefSeq genes wholly or partially included in the copy-number loss',
       description: `0-24 genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss3B, AcmgCriteriaCNVLoss.Loss3C],
       slider: false
     },
     {
@@ -407,7 +518,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '3B',
       hint: '',
       description: `25-34 genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss3A,
+        AcmgCriteriaCNVLoss.Loss3C
+      ],
       slider: true
     },
     {
@@ -418,7 +534,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '3C',
       hint: '',
       description: `35+ genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss1B,
+        AcmgCriteriaCNVLoss.Loss2E,
+        AcmgCriteriaCNVLoss.Loss3A,
+        AcmgCriteriaCNVLoss.Loss3B
+      ],
       slider: true
     },
     {
@@ -434,7 +555,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
       the reported phenotype is highly specific and relatively unique to the gene or
       genomic region,`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss4B, AcmgCriteriaCNVLoss.Loss4C],
       slider: true
     },
     {
@@ -450,7 +571,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
       the reported phenotype is consistent with the gene/genomic region, is highly
       specific, but not necessarily unique to the gene/genomic region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss4A, AcmgCriteriaCNVLoss.Loss4C],
       slider: true
     },
     {
@@ -466,7 +587,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
       the reported phenotype is consistent with the gene/genomic region, but not highly
       specific and/or with high genetic heterogeneity.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVLoss.Loss4A, AcmgCriteriaCNVLoss.Loss4B],
       slider: true
     },
     {
@@ -622,7 +743,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Observed copy-number loss is de novo. Use de novo scoring categories from section 4 
       (4A-4D) to determine score`,
       description: `Use appropriate category from de novo scoring section in section 4.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5G,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: true
     },
     {
@@ -634,7 +763,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Observed copy-number loss is inherited. (range: 0 to -0.45)`,
       description: `Patient with specific, well-defined phenotype and no family history. CNV is
       inherited from an apparently unaffected parent.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5G,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: true
     },
     {
@@ -646,7 +783,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `(range: 0 to -0.30)`,
       description: ` Patient with nonspecific phenotype and no family history. CNV is inherited from an
       apparently unaffected parent.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5G,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: true
     },
     {
@@ -657,7 +802,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '5D',
       hint: `Use segregation scoring categories from section 4 (4F-4H) to determine score`,
       description: `CNV segregates with a consistent phenotype observed in the patient's family.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5G,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: true
     },
     {
@@ -669,7 +822,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Observed copy-number loss — nonsegregations. Use nonsegregation scoring categories
       from section 4 (4I-4K) to determine score`,
       description: `Use appropriate category from nonsegregation section in section 4.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5G,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: true
     },
     {
@@ -679,7 +840,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '5F',
       hint: `Other`,
       description: `Inheritance information is unavailable or uninformative.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5G,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: false
     },
     {
@@ -691,7 +860,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: '(range: 0 to 0.15)',
       description: `Inheritance information is unavailable or uninformative. The patient phenotype is
       nonspecific, but is consistent with what has been described in similar cases.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5H
+      ],
       slider: true
     },
     {
@@ -703,7 +880,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: '(range: 0 to 0.30)',
       description: `Inheritance information is unavailable or uninformative. The patient phenotype is
       highly specific and consistent with what has been described in similar cases.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVLoss.Loss5A,
+        AcmgCriteriaCNVLoss.Loss5B,
+        AcmgCriteriaCNVLoss.Loss5C,
+        AcmgCriteriaCNVLoss.Loss5D,
+        AcmgCriteriaCNVLoss.Loss5E,
+        AcmgCriteriaCNVLoss.Loss5F,
+        AcmgCriteriaCNVLoss.Loss5G
+      ],
       slider: true
     },
     {
@@ -713,7 +898,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '1A',
       hint: `Copy number gain content (Continue evaluation)`,
       description: `Contains protein-coding or other known functionally important elements.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B],
       slider: false
     },
     {
@@ -723,7 +908,20 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '1B',
       hint: '',
       description: `Does NOT contain protein-coding or any known functionally important elements.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain1A,
+        AcmgCriteriaCNVGain.Gain2A,
+        AcmgCriteriaCNVGain.Gain2B,
+        AcmgCriteriaCNVGain.Gain2E,
+        AcmgCriteriaCNVGain.Gain2G,
+        AcmgCriteriaCNVGain.Gain2H,
+        AcmgCriteriaCNVGain.Gain2I,
+        AcmgCriteriaCNVGain.Gain2J,
+        AcmgCriteriaCNVGain.Gain2K,
+        AcmgCriteriaCNVGain.Gain2L,
+        AcmgCriteriaCNVGain.Gain3B,
+        AcmgCriteriaCNVGain.Gain3C
+      ],
       slider: false
     },
     {
@@ -735,7 +933,14 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Overlap with ESTABLISHED TS genes or genomic regions`,
       description: `Complete overlap; the TS gene or minimal critical region is fully contained within the
       observed copy-number gain.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain1B,
+        AcmgCriteriaCNVGain.Gain2C,
+        AcmgCriteriaCNVGain.Gain2D,
+        AcmgCriteriaCNVGain.Gain2E,
+        AcmgCriteriaCNVGain.Gain2F,
+        AcmgCriteriaCNVGain.Gain2I
+      ],
       slider: true
     },
     {
@@ -749,7 +954,11 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       established TS genomic region OR
       • Unclear if the known causative gene or critical region is affected OR
       • No specific causative gene or critical region has been established for this TS genomic region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain1B,
+        AcmgCriteriaCNVGain.Gain2C,
+        AcmgCriteriaCNVGain.Gain2D
+      ],
       slider: false
     },
     {
@@ -760,7 +969,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2C',
       hint: `Overlap with ESTABLISHED benign copy-number gain genes or genomic regions`,
       description: `Identical in gene content to the established benign copy-number gain.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain2A, AcmgCriteriaCNVGain.Gain2B],
       slider: true
     },
     {
@@ -772,7 +981,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: '',
       description: `Smaller than established benign copy-number gain, breakpoint(s) does not interrupt
       protein-coding genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain2A, AcmgCriteriaCNVGain.Gain2B],
       slider: true
     },
     {
@@ -783,7 +992,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: 'Continue evaluation',
       description: ` Smaller than established benign copy-number gain, breakpoint(s) potentially interrupts
       protein-coding gene.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B, AcmgCriteriaCNVGain.Gain2A],
       slider: false
     },
     {
@@ -794,7 +1003,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2F',
       hint: '(range: 0 to -1)',
       description: `Larger than known benign copy-number gain, does not include additional proteincoding genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain2A],
       slider: true
     },
     {
@@ -804,7 +1013,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2G',
       hint: 'Continue evaluation',
       description: ` Overlaps a benign copy-number gain but includes additional genomic material.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B],
       slider: false
     },
     {
@@ -814,7 +1023,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2H',
       hint: `Overlap with ESTABLISHED HI gene(s). Continue evaluation`,
       description: `HI gene fully contained within observed copy-number gain.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B, AcmgCriteriaCNVGain.Gain2I],
       slider: false
     },
     {
@@ -844,7 +1053,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
         (Range: 0.30 to 0.90)
         • N/A
         = 0 (Continue evaluation).`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain1B,
+        AcmgCriteriaCNVGain.Gain2H,
+        AcmgCriteriaCNVGain.Gain2J,
+        AcmgCriteriaCNVGain.Gain2K
+      ],
       slider: true
     },
     {
@@ -855,7 +1069,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: 'Continue evaluation',
       description: `One breakpoint is within an established HI gene, patient's phenotype is either inconsistent
       with what is expected for LOF of that gene OR unknown`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B, AcmgCriteriaCNVGain.Gain2I],
       slider: false
     },
     {
@@ -867,7 +1081,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: '',
       description: `One breakpoint is within an established HI gene, patient's phenotype is highly specific and
       consistent with what is expected for LOF of that gene.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B, AcmgCriteriaCNVGain.Gain2I],
       slider: true
     },
     {
@@ -877,7 +1091,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '2L',
       hint: 'Breakpoints within other gene(s). Continue evaluation',
       description: ` One or both breakpoints are within gene(s) of no established clinical significance.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain1B],
       slider: false
     },
     {
@@ -887,7 +1101,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '3A',
       hint: `Number of protein-coding RefSeq genes wholly or partially included in the copy-number gain`,
       description: `0-34 genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain3B, AcmgCriteriaCNVGain.Gain3C],
       slider: false
     },
     {
@@ -898,7 +1112,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '3B',
       hint: '',
       description: `35-49 genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain1B,
+        AcmgCriteriaCNVGain.Gain2I,
+        AcmgCriteriaCNVGain.Gain3A,
+        AcmgCriteriaCNVGain.Gain3C
+      ],
       slider: true
     },
     {
@@ -909,7 +1128,12 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '3C',
       hint: '',
       description: `50+ genes.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain1B,
+        AcmgCriteriaCNVGain.Gain2I,
+        AcmgCriteriaCNVGain.Gain3A,
+        AcmgCriteriaCNVGain.Gain3B
+      ],
       slider: true
     },
     {
@@ -926,7 +1150,11 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • an overlapping copy-number gain similar in genomic content to the observed copy-number
       gain AND the reported phenotype is highly specific and relatively unique to the gene or genomic
       region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain4B,
+        AcmgCriteriaCNVGain.Gain4C,
+        AcmgCriteriaCNVGain.Gain4D
+      ],
       slider: true
     },
     {
@@ -943,7 +1171,11 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • an overlapping copy-number gain similar in genomic content to the observed copy-number
       gain AND the reported phenotype is consistent with the gene/genomic region, is highly specific,
       but is not necessarily unique to the gene/genomic region.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain4A,
+        AcmgCriteriaCNVGain.Gain4C,
+        AcmgCriteriaCNVGain.Gain4D
+      ],
       slider: true
     },
     {
@@ -960,7 +1192,11 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • an overlapping copy-number gain similar in genomic content to the observed copy-number
       gain AND the reported phenotype is consistent with the gene/genomic region, but not highly
       specific and/or with high genetic heterogeneity.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain4A,
+        AcmgCriteriaCNVGain.Gain4B,
+        AcmgCriteriaCNVGain.Gain4D
+      ],
       slider: true
     },
     {
@@ -975,7 +1211,11 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       • an overlapping copy-number gain similar in genomic content to the observed copy-number
       gain AND the reported phenotype is NOT consistent with the gene/genomic region or not
       consistent in general.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain4A,
+        AcmgCriteriaCNVGain.Gain4B,
+        AcmgCriteriaCNVGain.Gain4C
+      ],
       slider: true
     },
     {
@@ -998,7 +1238,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '4F',
       hint: `Individual case evidence — segregation among similarly affected family members`,
       description: `3-4 observed segregations.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4G, AcmgCriteriaCNVGain.Gain4H],
       slider: true
     },
     {
@@ -1009,7 +1249,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '4G',
       hint: '',
       description: `5-6 observed segregations.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4F, AcmgCriteriaCNVGain.Gain4H],
       slider: true
     },
     {
@@ -1020,7 +1260,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '4H',
       hint: '',
       description: `7+ observed segregations.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4F, AcmgCriteriaCNVGain.Gain4G],
       slider: true
     },
     {
@@ -1032,7 +1272,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Individual case evidence — nonsegregations. -0.45 points per family (range: 0 to -0.45)`,
       description: `Variant is NOT found in another individual in the proband's family AFFECTED with a
       consistent, specific, well-defined phenotype (no known phenocopies).`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4K],
       slider: true
     },
     {
@@ -1043,7 +1283,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `-0.30 points per family (range: 0 to -0.30)`,
       description: ` Variant IS found in another individual in the proband's family UNAFFECTED with the
       specific, well-defined phenotype observed in the proband.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4K],
       slider: true
     },
     {
@@ -1055,7 +1295,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `-0.15 points per family (range: 0 to -0.15)`,
       description: `Variant IS found in another individual in the proband's family UNAFFECTED with the
       nonspecific phenotype observed in the proband.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4I, AcmgCriteriaCNVGain.Gain4J],
       slider: true
     },
     {
@@ -1067,7 +1307,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Case-control and population evidence. 0.45 per study (range: 0 to 0.45 per study)`,
       description: `Statistically significant increase among observations in cases (with a consistent, specific,
         well-defined phenotype) compared with controls.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4M],
       slider: true
     },
     {
@@ -1079,7 +1319,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `0.30 per study (range: 0 to 0.30 per study)`,
       description: `Statistically significant increase among observations in cases (with a consistent,
         nonspecific phenotype or unknown phenotype) compared with controls.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [AcmgCriteriaCNVGain.Gain4L],
       slider: true
     },
     {
@@ -1112,7 +1352,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '5A',
       hint: `Observed copy-number gain is de novo. Use de novo scoring categories from section 4 (4A-4D) to determine score`,
       description: `Use appropriate category from de novo scoring section in section 4.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5G,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: true
     },
     {
@@ -1124,7 +1372,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Observed copy-number gain is inherited. (range: 0 to -0.45)`,
       description: `Patient with a specific, well-defined phenotype and no family history. Copy-number
       gain is inherited from an apparently unaffected parent.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5G,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: true
     },
     {
@@ -1136,7 +1392,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `(range: 0 to -0.30)`,
       description: `Patient with nonspecific phenotype and no family history. Copy-number gain is
       inherited from an apparently unaffected parent.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5G,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: true
     },
     {
@@ -1148,7 +1412,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Use segregation scoring categories from in
       section 4 (4F-4H) to determine score`,
       description: `CNV segregates with consistent phenotype observed in the patient's family.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5G,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: true
     },
     {
@@ -1160,7 +1432,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `Observed copy-number gain — nonsegregations. Use nonsegregation scoring categories from
       section 4 (4I-4K) to determine score`,
       description: `Use appropriate category from nonsegregation section in section 4.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5G,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: true
     },
     {
@@ -1170,7 +1450,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       label: '5F',
       hint: ``,
       description: `Inheritance information is unavailable or uninformative.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5G,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: false
     },
     {
@@ -1182,7 +1470,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `(range: 0 to 0.15)`,
       description: `Inheritance information is unavailable or uninformative. The patient phenotype is
       nonspecific, but is consistent with what has been described in similar cases.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5H
+      ],
       slider: true
     },
     {
@@ -1194,7 +1490,15 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       hint: `(range: 0 to 0.30)`,
       description: `. Inheritance information is unavailable or uninformative. The patient phenotype is highly
       specific and consistent with what has been described in similar cases.`,
-      conflictingEvidence: [],
+      conflictingEvidence: [
+        AcmgCriteriaCNVGain.Gain5A,
+        AcmgCriteriaCNVGain.Gain5B,
+        AcmgCriteriaCNVGain.Gain5C,
+        AcmgCriteriaCNVGain.Gain5D,
+        AcmgCriteriaCNVGain.Gain5E,
+        AcmgCriteriaCNVGain.Gain5F,
+        AcmgCriteriaCNVGain.Gain5G
+      ],
       slider: true
     }
   ].map((def: CriteriaCNVDefinition) => [def.criteria, def])

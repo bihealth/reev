@@ -2,6 +2,7 @@ import { nextTick } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
+import ACMGSVDocs from '@/views/ACMGSVDocs.vue'
 import AboutView from '@/views/AboutView.vue'
 import ContactView from '@/views/ContactView.vue'
 import GeneDetailView from '@/views/GeneDetailView.vue'
@@ -72,6 +73,11 @@ const routes = [
     path: '/acmg-docs',
     name: 'acmg-docs',
     component: ACMGCriteriaDocs
+  },
+  {
+    path: '/acmg-sv-docs',
+    name: 'acmg-sv-docs',
+    component: ACMGSVDocs
   },
   {
     path: '/:pathMatch(.*)*',
