@@ -99,8 +99,8 @@ export const search = async (searchTerm: string, genomeRelease: string) => {
   // First, attempt to resolve using dotty.
   const dottyClient = new DottyClient()
   const result = await dottyClient.toSpdi(searchTerm)
-  if (result) {
-    const spdi = result.spdi
+  if (result && result?.success) {
+    const spdi = result.value
     searchTerm = `${spdi.contig}:${spdi.pos}:${spdi.reference_deleted}:${spdi.alternate_inserted}`
     if (!searchTerm.startsWith('chr')) {
       searchTerm = `chr${searchTerm}`

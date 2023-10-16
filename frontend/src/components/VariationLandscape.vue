@@ -22,12 +22,12 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const clinvarSignificanceMapping: Record<number, number> = {
-  0: 0,
-  1: -3,
-  2: -2,
-  3: -1,
-  4: 1,
-  5: 2
+  0: 2, // Pathogenic
+  1: 1, // Likely pathogenic
+  2: 0, // Uncertain significance
+  3: -1, // Likely benign
+  4: -2, // Benign
+  5: -3 // Other
 }
 
 interface ClinvarVariant {

@@ -13,7 +13,8 @@ describe.concurrent('DottyClient', () => {
 
   it('should resolve to SPDI successfully', async () => {
     const mockData: DottyResponse = {
-      spdi: {
+      success: true,
+      value: {
         assembly: 'GRCh38',
         contig: '13',
         pos: 32319283,
