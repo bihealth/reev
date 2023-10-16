@@ -17,14 +17,14 @@ const props = defineProps<{ txCsq: any }>()
       </thead>
       <tbody>
         <tr v-for="txCsq in props.txCsq" :key="txCsq">
-          <td>{{ txCsq['gene-symbol'] }}</td>
+          <td>{{ txCsq['gene_symbol'] }}</td>
           <td>
-            {{ txCsq['feature-id'] }}
-            ({{ txCsq['feature-biotype'] }})
+            {{ txCsq['feature_id'] }}
+            ({{ txCsq['feature_biotype'] }})
           </td>
           <td>{{ (txCsq['consequences'] ?? []).join(', ') }}</td>
-          <td>{{ txCsq['hgvs-t'] }}</td>
-          <td>{{ txCsq['hgvs-p'] }}</td>
+          <td>{{ txCsq['hgvs_t'] }}</td>
+          <td>{{ txCsq['hgvs_p'] }}</td>
           <td>{{ txCsq['rank']?.ord }} / {{ txCsq['rank']?.total }}</td>
         </tr>
       </tbody>
