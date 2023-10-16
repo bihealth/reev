@@ -25,7 +25,7 @@ const queryVariantValidatorApi = async () => {
   variantValidatorState.value = VariantValidatorStates.Running
   const url =
     API_BASE_URL +
-    `/internal/remote/variantvalidator/${props.smallVariant?.release}/` +
+    `remote/variantvalidator/${props.smallVariant?.release}/` +
     `${props.smallVariant?.chromosome}-${props.smallVariant?.start}-` +
     `${props.smallVariant?.reference}-${props.smallVariant?.alternative}` +
     `/all?content-type=application%2Fjson`
