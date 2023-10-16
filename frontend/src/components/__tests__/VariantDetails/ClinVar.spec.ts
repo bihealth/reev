@@ -4,17 +4,15 @@ import ClinVar from '@/components/VariantDetails/ClinVar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const clinVarInfo = {
-  release: 'GRCh37',
+  release: 'GRCh38',
   chromosome: '17',
-  start: 41197708,
-  end: 41197708,
-  reference: 'T',
-  alternative: 'G',
-  vcv: 'VCV000041833',
-  summary_clinvar_pathogenicity: [4],
-  summary_clinvar_gold_stars: 0,
-  summary_paranoid_pathogenicity: [4],
-  summary_paranoid_gold_stars: 0
+  start: 43063903,
+  stop: 43063903,
+  reference: 'G',
+  alternative: 'T',
+  rcv: 'RCV003149709',
+  clinical_significance: 0,
+  review_status: 3
 }
 
 describe.concurrent('ClinVar', async () => {
@@ -28,14 +26,14 @@ describe.concurrent('ClinVar', async () => {
       }
     )
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
-    expect(wrapper.text()).toContain('VCV000041833')
+    expect(wrapper.text()).toContain('RCV003149709')
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(5)
+    expect(starsOutline.length).toBe(2)
   })
 
   it('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
-    clinVarInfoStars.summary_clinvar_gold_stars = 3
+    clinVarInfoStars.clinical_significance = 3
     const { wrapper } = setupMountedComponents(
       { component: ClinVar, template: false },
       {
@@ -45,7 +43,7 @@ describe.concurrent('ClinVar', async () => {
       }
     )
     expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
-    expect(wrapper.text()).toContain('VCV000041833')
+    expect(wrapper.text()).toContain('RCV003149709')
     const stars = wrapper.findAll('.mdi-star-outline')
     expect(stars.length).toBe(2)
     const starsOutline = wrapper.findAll('.mdi-star-outline')
