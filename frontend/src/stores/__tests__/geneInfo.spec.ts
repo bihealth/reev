@@ -20,6 +20,8 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.geneSymbol).toBe(null)
     expect(store.geneInfo).toBe(null)
+    expect(store.geneClinvar).toBe(null)
+    expect(store.transcripts).toBe(null)
   })
 
   it('should clear state', () => {
@@ -33,6 +35,8 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.geneSymbol).toBe(null)
     expect(store.geneInfo).toBe(null)
+    expect(store.geneClinvar).toBe(null)
+    expect(store.transcripts).toBe(null)
   })
 
   it('should load data', async () => {
@@ -42,16 +46,19 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
       } else if (req.url.includes('clinvar')) {
         return Promise.resolve(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
+      } else if (req.url.includes('find-transcripts')) {
+        return Promise.resolve(JSON.stringify({ transcripts: { 'HGNC:1100': { gene: 'info' } } }))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-    await store.loadData('HGNC:1100')
+    await store.loadData('HGNC:1100', 'GRCh37')
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.geneSymbol).toBe('HGNC:1100')
     expect(store.geneInfo).toEqual({ gene: 'info' })
     expect(store.geneClinvar).toEqual({ gene: 'info' })
+    expect(store.transcripts).toEqual({ transcripts: { 'HGNC:1100': { gene: 'info' } } })
   })
 
   it('should fail to load data with invalid request to gene info', async () => {
@@ -63,16 +70,19 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ foo: 'bar' }))
       } else if (req.url.includes('clinvar')) {
         return Promise.resolve(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
+      } else if (req.url.includes('find-transcripts')) {
+        return Promise.resolve(JSON.stringify({ transcripts: { 'HGNC:1100': { gene: 'info' } } }))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-    await store.loadData('invalid')
+    await store.loadData('invalid', 'invalid')
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.geneSymbol).toBe(null)
     expect(store.geneInfo).toBe(null)
     expect(store.geneClinvar).toBe(null)
+    expect(store.transcripts).toBe(null)
   })
 
   it('should fail to load data with invalid request to clinvar info', async () => {
@@ -84,23 +94,26 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
       } else if (req.url.includes('clinvar')) {
         return Promise.resolve(JSON.stringify({ foo: 'bar' }))
+      } else if (req.url.includes('find-transcripts')) {
+        return Promise.resolve(JSON.stringify({ transcripts: { 'HGNC:1100': { gene: 'info' } } }))
       } else {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-    await store.loadData('invalid')
+    await store.loadData('invalid', 'invalid')
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.geneSymbol).toBe(null)
     expect(store.geneInfo).toBe(null)
     expect(store.geneClinvar).toBe(null)
+    expect(store.transcripts).toBe(null)
   })
 
   it('should not load data if gene symbol is the same', async () => {
     const store = useGeneInfoStore()
     fetchMocker.mockResponse(JSON.stringify({ genes: { 'HGNC:1100': { gene: 'info' } } }))
 
-    await store.loadData('HGNC:1100')
+    await store.loadData('HGNC:1100', 'GRCh37')
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.geneSymbol).toBe('HGNC:1100')
@@ -108,7 +121,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.geneClinvar).toEqual({ gene: 'info' })
     expect(store.geneSymbol).toBe('HGNC:1100')
 
-    await store.loadData('HGNC:1100')
+    await store.loadData('HGNC:1100', 'GRCh37')
 
     expect(fetchMocker.mock.calls.length).toBe(3)
   })
