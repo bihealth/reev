@@ -11,7 +11,7 @@ import { DottyClient } from '@/api/dotty'
  */
 export const roundIt = (value: number, digits: number = 2, label?: string): string => {
   if (!value) {
-    return `<abbr title='${value}'>NaN</abbr>`
+    return `<abbr title='${value}'>0</abbr>`
   }
   const roundedValue = value.toFixed(digits)
   const useLabel = label ? `${label}: ` : ''

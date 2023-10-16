@@ -25,12 +25,12 @@ describe.concurrent('roundIt method', () => {
 
   it('should handle zero value', () => {
     const result = roundIt(0)
-    expect(result).toBe("<abbr title='0'>NaN</abbr>")
+    expect(result).toBe("<abbr title='0'>0</abbr>")
   })
 
   it('should handle NaN value', () => {
     const result = roundIt(NaN)
-    expect(result).toBe("<abbr title='NaN'>NaN</abbr>")
+    expect(result).toBe("<abbr title='NaN'>0</abbr>")
   })
 
   it('should add label to title if provided', () => {
