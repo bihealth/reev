@@ -18,8 +18,10 @@ export interface Spdi {
 
 /** Response of a dotto query */
 export interface DottyResponse {
+  /** Whether the query was successful. */
+  success: boolean
   /** SPDI returned by dotty. */
-  spdi: Spdi
+  value: Spdi
 }
 
 export class DottyClient {
