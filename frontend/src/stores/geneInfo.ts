@@ -7,6 +7,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
+import { DottyClient } from '@/api/dotty'
 import { StoreState } from '@/stores/misc'
 
 export const useGeneInfoStore = defineStore('geneInfo', () => {
@@ -22,14 +23,18 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
   /** ClinVar gene-related information from annoars. */
   const geneClinvar = ref<any | null>(null)
 
+  /** Transcript information from dotty. */
+  const transcripts = ref<any | null>(null)
+
   function clearData() {
     storeState.value = StoreState.Initial
     geneSymbol.value = null
     geneInfo.value = null
     geneClinvar.value = null
+    transcripts.value = null
   }
 
-  const loadData = async (geneSymbolQuery: string) => {
+  const loadData = async (geneSymbolQuery: string, genomeRelease: string) => {
     // Do not re-load data if the gene symbol is the same
     if (geneSymbolQuery === geneSymbol.value) {
       return
@@ -55,6 +60,13 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
       }
       geneClinvar.value = geneClinvarData['genes'][hgncId]
 
+      const dottyClient = new DottyClient()
+      const transcriptsData = await dottyClient.fetchTranscripts(
+        hgncId,
+        genomeRelease === 'grch37' ? 'GRCh37' : 'GRCh38'
+      )
+      transcripts.value = transcriptsData
+
       geneSymbol.value = geneSymbolQuery
       storeState.value = StoreState.Active
     } catch (e) {
@@ -69,6 +81,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     geneSymbol,
     geneInfo,
     geneClinvar,
+    transcripts,
     loadData,
     clearData
   }

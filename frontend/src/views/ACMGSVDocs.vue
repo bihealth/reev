@@ -50,7 +50,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 1</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2B -->
@@ -61,7 +60,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: false</p>
             </li>
             <!-- Criteria 2C-1 -->
             <li>
@@ -75,7 +73,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0.45</p>
               <p>Max Score: 1</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2C-2 -->
@@ -90,7 +87,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2D-1 -->
@@ -104,7 +100,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2D-2 -->
@@ -120,7 +115,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0.45</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2D-3 -->
@@ -136,7 +130,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2D-4 -->
@@ -152,7 +145,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0.45</p>
               <p>Max Score: 1.0</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss2F, Loss2G, Loss2H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2E -->
@@ -170,7 +162,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
                 Conflicting Evidence: Loss1B, Loss2A, Loss2B, Loss2C1, Loss2C2, Loss2D1, Loss2D2,
                 Loss2D3, Loss2D4, Loss2F, Loss2G, Loss2H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2F -->
@@ -185,7 +176,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
                 Conflicting Evidence: Loss2A, Loss2B, Loss2C1, Loss2C2, Loss2D1, Loss2D2, Loss2D3,
                 Loss2D4, Loss2E, Loss2G, Loss2H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2G -->
@@ -202,7 +192,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
                 Conflicting Evidence: Loss1B, Loss2A, Loss2B, Loss2C1, Loss2C2, Loss2D1, Loss2D2,
                 Loss2D3, Loss2D4, Loss2E, Loss2F, Loss2H
               </p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2H -->
@@ -219,7 +208,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
                 Conflicting Evidence: Loss1B, Loss2A, Loss2B, Loss2C1, Loss2C2, Loss2D1, Loss2D2,
                 Loss2D3, Loss2D4, Loss2E, Loss2F, Loss2G
               </p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 3A -->
             <li>
@@ -232,7 +220,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Loss3B, Loss3C</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 3B -->
@@ -244,7 +231,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss3A, Loss3C</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 3C -->
@@ -256,7 +242,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0.45</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Loss1B, Loss2E, Loss3A, Loss3B</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4A -->
@@ -277,7 +262,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Loss4B, Loss4C</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4B -->
@@ -298,7 +282,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Loss4A, Loss4C</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4C -->
@@ -319,7 +302,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Loss4A, Loss4B</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4D -->
@@ -337,7 +319,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.3</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4E -->
@@ -352,7 +333,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.3</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4F -->
@@ -366,7 +346,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.15</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4G -->
@@ -378,7 +357,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.3</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4H -->
@@ -390,7 +368,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4I -->
@@ -408,7 +385,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4J -->
@@ -423,7 +399,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 4K -->
             <li>
@@ -437,7 +412,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.3</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4L -->
@@ -455,7 +429,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4M -->
@@ -471,7 +444,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4N -->
@@ -486,7 +458,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4O -->
@@ -498,7 +469,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 5A -->
             <li>
@@ -516,7 +486,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5B, Loss 5C, Loss 5D, Loss 5E, Loss 5F, Loss 5G, Loss 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5B -->
@@ -533,7 +502,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5C, Loss 5D, Loss 5E, Loss 5F, Loss 5G, Loss 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5C -->
@@ -550,7 +518,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5B, Loss 5D, Loss 5E, Loss 5F, Loss 5G, Loss 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5D -->
@@ -569,7 +536,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5B, Loss 5C, Loss 5E, Loss 5F, Loss 5G, Loss 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5E -->
@@ -586,7 +552,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5B, Loss 5C, Loss 5D, Loss 5F, Loss 5G, Loss 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5F -->
@@ -599,7 +564,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5B, Loss 5C, Loss 5D, Loss 5E, Loss 5G, Loss 5H
               </p>
-              <p>Slider: false</p>
             </li>
             <!-- Criteria 5G -->
             <li>
@@ -616,7 +580,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5B, Loss 5C, Loss 5D, Loss 5E, Loss 5F, Loss 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5H -->
@@ -634,7 +597,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Loss 5A, Loss 5B, Loss 5C, Loss 5D, Loss 5E, Loss 5F, Loss 5G
               </p>
-              <p>Slider: true</p>
             </li>
           </ul>
         </div>
@@ -653,7 +615,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 1B -->
@@ -670,7 +631,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
                 Conflicting Evidence: Gain 1A, Gain 2A, Gain 2B, Gain 2E, Gain 2G, Gain 2H, Gain 2I,
                 Gain 2J, Gain 2K, Gain 2L, Gain 3B, Gain 3C
               </p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2A -->
@@ -685,7 +645,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 1</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2C, Gain 2D, Gain 2E, Gain 2F, Gain 2I</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 2B -->
             <li>
@@ -701,7 +660,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2C, Gain 2D</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2C -->
@@ -715,7 +673,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -1</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 2A, Gain 2B</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2D -->
@@ -730,7 +687,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -1</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 2A, Gain 2B</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2E -->
@@ -744,7 +700,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2A</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2F -->
@@ -759,7 +714,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -1</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 2A</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 2G -->
             <li>
@@ -772,7 +726,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2H -->
@@ -783,7 +736,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2I</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 2I -->
@@ -802,7 +754,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2H, Gain 2J, Gain 2K</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2J -->
@@ -816,7 +767,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2I</p>
-              <p>Slider: false</p>
             </li>
             <!-- Criteria 2K -->
             <li>
@@ -830,7 +780,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2I</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 2L -->
@@ -844,7 +793,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 1B</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 3A -->
@@ -858,7 +806,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: 0</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 3B, Gain 3C</p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 3B -->
@@ -870,7 +817,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2I, Gain 3A, Gain 3C</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 3C -->
@@ -882,7 +828,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Gain 1B, Gain 2I, Gain 3A, Gain 3B</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 4A -->
             <li>
@@ -901,7 +846,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Gain 4B, Gain 4C, Gain 4D</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4B -->
@@ -922,7 +866,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Gain 4A, Gain 4C, Gain 4D</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4C -->
@@ -943,7 +886,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.9</p>
               <p>Conflicting Evidence: Gain 4A, Gain 4B, Gain 4D</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4D -->
@@ -963,7 +905,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.3</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 4A, Gain 4B, Gain 4C</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 4E -->
             <li>
@@ -980,7 +921,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.3</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4F -->
@@ -994,7 +934,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Gain 4G, Gain 4H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4G -->
@@ -1006,7 +945,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.3</p>
               <p>Conflicting Evidence: Gain 4F, Gain 4H</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4H -->
@@ -1018,7 +956,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Gain 4F, Gain 4G</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4I -->
@@ -1036,7 +973,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 4K</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4J -->
@@ -1050,7 +986,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Default Score: -0.3</p>
               <p>Max Score: -0.9</p>
               <p>Conflicting Evidence: Gain 4K</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 4K -->
             <li>
@@ -1064,7 +999,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.3</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: Gain 4I, Gain 4J</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4L -->
@@ -1082,7 +1016,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Gain 4M</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4M -->
@@ -1097,7 +1030,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: 0</p>
               <p>Max Score: 0.45</p>
               <p>Conflicting Evidence: Gain 4L</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4N -->
@@ -1112,7 +1044,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 4O -->
@@ -1124,7 +1055,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>Min Score: -0.9</p>
               <p>Max Score: 0</p>
               <p>Conflicting Evidence: None</p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 5A -->
             <li>
@@ -1142,7 +1072,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5B, Gain 5C, Gain 5D, Gain 5E, Gain 5F, Gain 5G, Gain 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5B -->
@@ -1159,7 +1088,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5C, Gain 5D, Gain 5E, Gain 5F, Gain 5G, Gain 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5C -->
@@ -1176,7 +1104,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5B, Gain 5D, Gain 5E, Gain 5F, Gain 5G, Gain 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5D -->
@@ -1196,7 +1123,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5B, Gain 5C, Gain 5E, Gain 5F, Gain 5G, Gain 5H
               </p>
-              <p>Slider: true</p>
             </li>
             <!-- Criteria 5E -->
             <li>
@@ -1212,7 +1138,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5B, Gain 5C, Gain 5D, Gain 5F, Gain 5G, Gain 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5F -->
@@ -1225,7 +1150,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5B, Gain 5C, Gain 5D, Gain 5E, Gain 5G, Gain 5H
               </p>
-              <p>Slider: false</p>
             </li>
 
             <!-- Criteria 5G -->
@@ -1243,7 +1167,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5B, Gain 5C, Gain 5D, Gain 5E, Gain 5F, Gain 5H
               </p>
-              <p>Slider: true</p>
             </li>
 
             <!-- Criteria 5H -->
@@ -1261,7 +1184,6 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
               <p>
                 Conflicting Evidence: Gain 5A, Gain 5B, Gain 5C, Gain 5D, Gain 5E, Gain 5F, Gain 5G
               </p>
-              <p>Slider: true</p>
             </li>
           </ul>
         </div>

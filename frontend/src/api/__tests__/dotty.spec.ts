@@ -28,4 +28,20 @@ describe.concurrent('DottyClient', () => {
 
     expect(result).toEqual(mockData)
   })
+
+  it('should load transcripts successfully', async () => {
+    const mockData = {
+      transcripts: {
+        'HGNC:1100': {
+          gene: 'info'
+        }
+      }
+    }
+    fetchMocker.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
+
+    const client = new DottyClient()
+    const result = await client.fetchTranscripts('HGNC:1100', 'GRCh37')
+
+    expect(result).toEqual(mockData)
+  })
 })
