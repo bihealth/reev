@@ -180,7 +180,6 @@ const vegaLayer = [
       :encoding="vegaEncoding"
       :layer="vegaLayer"
       :mark="false"
-      :width="1000"
       :height="300"
       renderer="svg"
     />

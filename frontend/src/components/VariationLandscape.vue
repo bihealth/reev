@@ -342,12 +342,11 @@ const vegaLayer = [
     <figcaption class="figure-caption text-center">
       Variation Landscape of {{ props.hgnc }}
     </figcaption>
-    <div style="width: 1100px; height: 350px; overflow: none">
+    <div style="height: 350px; overflow: none">
       <VegaPlot
         :data-values="vegaData"
         :encoding="vegaEncoding"
         :layer="vegaLayer"
-        :width="1000"
         :height="300"
         renderer="canvas"
       />
