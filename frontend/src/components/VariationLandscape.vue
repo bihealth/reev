@@ -67,6 +67,14 @@ const minMax = computed(() => {
       }
     }
   }
+  for (const exon of exons.value) {
+    if (exon.start < min || min == null) {
+      min = exon.start
+    }
+    if (exon.stop > max || max == null) {
+      max = exon.stop
+    }
+  }
   return [min, max]
 })
 
@@ -76,11 +84,13 @@ const exons = computed(() => {
   }
   const exons = []
   for (const transcript of props.transcripts.transcripts) {
-    for (const exon of transcript.exons) {
-      exons.push({
-        start: exon.start,
-        stop: exon.end
-      })
+    for (const alignment of transcript.alignments) {
+      for (const exon of alignment.exons) {
+        exons.push({
+          start: exon.ref_start,
+          stop: exon.ref_end
+        })
+      }
     }
   }
   return exons
@@ -287,7 +297,7 @@ const vegaLayer = [
   },
   {
     description: 'gene - line',
-    data: { values: [{ pos: 41196312 }, { pos: 41277381 }] },
+    data: { values: [{ pos: minMax.value[0] }, { pos: minMax.value[1] }] },
     mark: { type: 'line', stroke: 'black', size: 1, opacity: 0.5 },
     encoding: {
       x: {

@@ -44,11 +44,10 @@ export class DottyClient {
   }
 
   async fetchTranscripts(
-    refseq_ids: Array<string>,
+    hgnc_id: string,
     assembly: 'GRCh37' | 'GRCh38' = 'GRCh38'
   ): Promise<any | null> {
-    const ids = refseq_ids.join(',')
-    const url = `${API_INTERNAL_BASE_PREFIX_DOTTY}/api/v1/find-transcripts?refseq_ids=${ids}&assembly=${assembly}`
+    const url = `${API_INTERNAL_BASE_PREFIX_DOTTY}/api/v1/find-transcripts?hgnc_id=${hgnc_id}&assembly=${assembly}`
     const response = await fetch(url, {
       method: 'GET'
     })

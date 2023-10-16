@@ -34,7 +34,7 @@ const scrollToSection = async () => {
 }
 
 const loadDataToStore = async () => {
-  await geneInfoStore.loadData(props.searchTerm)
+  await geneInfoStore.loadData(props.searchTerm, props.genomeRelease)
   await scrollToSection()
 }
 
