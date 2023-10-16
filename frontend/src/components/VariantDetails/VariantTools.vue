@@ -111,10 +111,9 @@ const ucscLinkout = computed((): string => {
     return '#'
   }
   const db = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-  const prefix = db == 'hg19' ? 'chr' : ''
   return (
     `https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=${db}&position=` +
-    `${prefix}${props.smallVar.chromosome}:${props.smallVar.start}-` +
+    `${props.smallVar.chromosome}:${props.smallVar.start}-` +
     `${props.smallVar.end}`
   )
 })
