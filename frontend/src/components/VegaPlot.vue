@@ -7,6 +7,15 @@ import * as vega from 'vega'
 import vegaEmbed from 'vega-embed'
 import { type Ref, computed, onMounted, ref, watch } from 'vue'
 
+const widthPlot = computed(() => {
+  const windowWidth = window.innerWidth
+  if (windowWidth < 1264) {
+    return windowWidth - 210
+  } else {
+    return windowWidth - 600
+  }
+})
+
 /** Define the props. */
 const props = defineProps({
   description: String,
@@ -23,11 +32,11 @@ const props = defineProps({
   layer: Object,
   width: {
     type: [Number, String],
-    default: 300
+    default: null
   },
   height: {
     type: [Number, String],
-    default: 300
+    default: null
   },
   mark: {
     type: [Boolean, Object],
@@ -49,7 +58,7 @@ const vegaViewRef = ref(null)
 const vegaLiteSpec = computed(() => {
   const res = {
     $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
-    width: props.width,
+    width: props.width === null ? widthPlot.value : props.width,
     height: props.height,
     description: props.description,
     params: props.params,

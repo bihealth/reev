@@ -128,7 +128,6 @@ const vegaEncoding = {
       :encoding="vegaEncoding"
       :mark="false"
       :layer="vegaLayer"
-      :width="800"
       :height="300"
       renderer="svg"
     />

@@ -133,7 +133,7 @@ const onRowClicked = (event: Event, { item }: { item: GeneInfo }): void => {
 
 <template>
   <div>
-    <div style="max-width: 1300px">
+    <div>
       <v-data-table
         v-model:items-per-page="itemsPerPage"
         :headers="headers"
