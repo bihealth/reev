@@ -173,14 +173,13 @@ const getColorByName = (name: string): string => {
       return getColorByValue(0.88)
     case 'pathogenicVeryStrong':
       return getColorByValue(1)
+    default:
+      return 'white'
   }
-  return 'white'
 }
 
 const circleFill = computed((): string => {
-  if (props.value === null) {
-    return 'white'
-  } else if (props.benignVeryStrongUpper !== null && props.value < props.benignVeryStrongUpper) {
+  if (props.benignVeryStrongUpper !== null && props.value < props.benignVeryStrongUpper) {
     return getColorByName('benignVeryStrong')
   } else if (props.benignStrongUpper !== null && props.value < props.benignStrongUpper) {
     return getColorByName('benignStrong')
