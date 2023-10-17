@@ -6,7 +6,6 @@ import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
-import SvDetailsGenotypeCall from '@/components/SvDetails/SvDetailsGenotypeCall.vue'
 import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
@@ -81,7 +80,6 @@ watch(
 const SECTIONS = [
   { id: 'gene', title: 'Gene' },
   { id: 'clinvar', title: 'ClinVar' },
-  { id: 'call-details', title: 'Genotype Call' },
   { id: 'acmg', title: 'ACMG' },
   { id: 'genome-browser', title: 'Genome Browser' }
 ]
@@ -120,14 +118,6 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <h2>ClinVar</h2>
           <v-divider />
           <SvDetailsClinvar />
-        </div>
-
-        <div id="call-details" class="sv-item">
-          <h2>Genotype Call</h2>
-          <v-divider />
-          Precise coordinates:
-          <code> {{ svLocus(svInfoStore.currentSvRecord) }} </code>
-          <SvDetailsGenotypeCall :current-sv-record="svInfoStore.currentSvRecord" />
         </div>
 
         <div id="acmg" class="sv-item">
