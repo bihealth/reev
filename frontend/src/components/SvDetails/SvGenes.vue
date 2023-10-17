@@ -2,7 +2,8 @@
 import { type ComputedRef, type Ref, computed, ref } from 'vue'
 
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
-import { roundIt } from '@/lib/utils'
+import { roundIt, search } from '@/lib/utils'
+import router from '@/router'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any
@@ -129,6 +130,23 @@ const items: ComputedRef<GeneInfo[]> = computed(() => {
 const onRowClicked = (event: Event, { item }: { item: GeneInfo }): void => {
   currentGeneInfos.value = item
 }
+
+/**
+ * Perform a search based on the input gene symbol and current genome release.
+ *
+ * If a route is found for the search term then redirect to that route.
+ * Otherwise log an error.
+ *
+ * @param geneSymbol Gene symbol to search for
+ */
+const performSearch = async (geneSymbol: string) => {
+  const routeLocation: any = await search(geneSymbol, 'grch37')
+  if (routeLocation) {
+    router.push(routeLocation)
+  } else {
+    console.error(`no route found for ${geneSymbol}`)
+  }
+}
 </script>
 
 <template>
@@ -144,6 +162,11 @@ const onRowClicked = (event: Event, { item }: { item: GeneInfo }): void => {
         item-key="gene_name"
         @click:row="onRowClicked"
       >
+        <template v-slot:[`item.dbnsfp.gene_name`]="{ item }">
+          {{ item.dbnsfp.gene_name }}
+          <v-btn prepend-icon="mdi-open-in-new" @click="performSearch(item.dbnsfp.gene_name)" />
+        </template>
+
         <template v-slot:[`item.omim`]="{ value }">
           <template v-if="value?.omim_diseases?.length">
             <template v-for="(disease, idx) in value?.omim_diseases" :key="idx">

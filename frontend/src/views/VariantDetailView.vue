@@ -92,7 +92,7 @@ const performSearch = async (geneSymbol: string) => {
   if (routeLocation) {
     router.push(routeLocation)
   } else {
-    console.error(`no route found for ${searchTermRef.value}`)
+    console.error(`no route found for ${geneSymbol}`)
   }
 }
 </script>
