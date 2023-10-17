@@ -23,6 +23,7 @@ uvicorn = "*"
 alembic = "*"
 requests = "*"
 types-requests = "*"
+greenlet = "*"
 
 [dev-packages]
 aiosqlite = "*"
