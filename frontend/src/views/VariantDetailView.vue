@@ -12,6 +12,7 @@ import VariantDetailsFreqs from '@/components/VariantDetails/VariantFreqs.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import VariantDetailsVariantTools from '@/components/VariantDetails/VariantTools.vue'
 import VariantDetailsVariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import { search } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 import { type SmallVariant } from '@/stores/variantInfo'
@@ -77,6 +78,23 @@ const SECTIONS = [
 // We need to use refs here because of props mutations in the parent
 const searchTermRef = ref(props.searchTerm)
 const genomeReleaseRef = ref(props.genomeRelease)
+
+/**
+ * Perform a search based on the input gene symbol and current genome release.
+ *
+ * If a route is found for the search term then redirect to that route.
+ * Otherwise log an error.
+ *
+ * @param geneSymbol Gene symbol to search for
+ */
+const performSearch = async (geneSymbol: string) => {
+  const routeLocation: any = await search(geneSymbol, genomeReleaseRef.value)
+  if (routeLocation) {
+    router.push(routeLocation)
+  } else {
+    console.error(`no route found for ${searchTermRef.value}`)
+  }
+}
 </script>
 
 <template>
@@ -102,17 +120,9 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <h2>Gene</h2>
           <h3>
             Link to
-            <router-link
-              :to="{
-                name: 'gene',
-                params: {
-                  searchTerm: variantInfoStore.varAnnos?.cadd?.GeneName,
-                  genomeRelease: genomeReleaseRef
-                }
-              }"
-              >{{ variantInfoStore.varAnnos?.cadd?.GeneName }}
-              <v-icon>mdi-open-in-new</v-icon>
-            </router-link>
+            <v-btn @click="performSearch(variantInfoStore.varAnnos?.cadd?.GeneName)">{{
+              variantInfoStore.varAnnos?.cadd?.GeneName
+            }}</v-btn>
           </h3>
           <v-divider />
           <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
