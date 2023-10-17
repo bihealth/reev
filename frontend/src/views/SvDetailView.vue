@@ -46,9 +46,9 @@ const svLocus = (record: SvRecord): string | undefined => {
 
   let locus: string
   if (record.sv_type === 'BND' || record.sv_type === 'INS') {
-    locus = `${record.chromosome}:${record.start - 1000}-${record.start + 1000}`
+    locus = `${record.chromosome}:${parseInt(record.start) - 1000}-${parseInt(record.start) + 1000}`
   } else {
-    locus = `${record.chromosome}:${record.start - 1000}-${record.end + 1000}`
+    locus = `${record.chromosome}:${parseInt(record.start) - 1000}-${parseInt(record.end) + 1000}`
   }
   if (!locus.startsWith('chr') && record.release === 'GRCh38') {
     locus = `chr${locus}`
