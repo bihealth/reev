@@ -98,7 +98,10 @@ export const search = async (searchTerm: string, genomeRelease: string) => {
 
   // First, attempt to resolve using dotty.
   const dottyClient = new DottyClient()
-  const result = await dottyClient.toSpdi(searchTerm)
+  const result = await dottyClient.toSpdi(
+    searchTerm,
+    genomeRelease === 'grch37' ? 'GRCh37' : 'GRCh38'
+  )
   if (result && result?.success) {
     const spdi = result.value
     searchTerm = `${spdi.contig}:${spdi.pos}:${spdi.reference_deleted}:${spdi.alternate_inserted}`
