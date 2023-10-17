@@ -28,6 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
       single-line
       :model-value="props.searchTerm"
       @input="$emit('update:searchTerm', $event.target.value)"
+      @keydown.enter="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
       label="Enter search term"
       id="search-term"
     ></v-text-field>
