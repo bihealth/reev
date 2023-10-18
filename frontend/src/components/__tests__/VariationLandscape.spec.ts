@@ -18,7 +18,6 @@ describe.concurrent('VariationLandscape', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Variation Landscape')
-    expect(wrapper.html()).toContain('figure')
+    expect(wrapper.text()).toContain('ClinVar Variation')
   })
 })

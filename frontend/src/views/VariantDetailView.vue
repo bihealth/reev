@@ -138,13 +138,9 @@ const performSearch = async (geneSymbol: string) => {
           <BeaconNetwork :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
-        <div id="clinvar" class="variant-item">
-          <h2>ClinVar</h2>
-          <v-divider />
-          <VariantDetailsClinvar :clinvar="variantInfoStore.varAnnos.clinvar" />
-        </div>
+        <VariantDetailsClinvar :clinvar="variantInfoStore.varAnnos.clinvar" />
 
-        <div id="freqs" class="variant-item">
+        <div id="freqs" class="variant-item mt-6">
           <h2>Population Frequencies</h2>
           <v-divider />
           <VariantDetailsFreqs

@@ -30,14 +30,20 @@ const clinvarSignificanceMapping: Record<number, number> = {
   5: -3 // Other
 }
 
+interface ClinvarReferenceAssertions {
+  rcv: string
+  clinical_significance: number
+  review_status: number
+  title: string
+}
+
 interface ClinvarVariant {
   chrom: string
   pos: string
   reference: string
   alternative: string
-  rcv: string
-  clinsig: number
-  review_status: number
+  vcv: string
+  reference_assertions: ClinvarReferenceAssertions[]
 }
 
 const convertClinvarSignificance = (input: number): number => {
@@ -75,7 +81,16 @@ const minMax = computed(() => {
       max = exon.stop
     }
   }
-  return [min, max]
+  const totalLength = max - min
+  const padding = Math.round(totalLength * 0.05)
+  return [min - padding, max + padding]
+})
+
+const paddedMinMax = computed(() => {
+  let [min, max] = minMax.value
+  const totalLength = max - min
+  const padding = Math.round(totalLength * 0.05)
+  return [min - padding, max + padding]
 })
 
 const exons = computed(() => {
@@ -109,7 +124,7 @@ const vegaData = computed(() => {
 
   return clinvarInfo.map((variant: ClinvarVariant) => ({
     pos: variant.pos,
-    clinsig: convertClinvarSignificance(variant.clinsig)
+    clinsig: convertClinvarSignificance(variant.reference_assertions[0].clinical_significance)
   }))
 })
 
@@ -151,7 +166,7 @@ const vegaLayer = [
       x: {
         field: 'pos',
         type: 'quantitative',
-        scale: { domain: minMax.value },
+        scale: { domain: paddedMinMax.value },
         axis: { grid: false, zindex: 1000 },
         title: null
       },
@@ -255,7 +270,7 @@ const vegaLayer = [
       x: {
         field: 'pos',
         type: 'quantitative',
-        scale: { domain: minMax.value },
+        scale: { domain: paddedMinMax.value },
         axis: { grid: false },
         title: null
       },
@@ -303,7 +318,7 @@ const vegaLayer = [
       x: {
         field: 'pos',
         type: 'quantitative',
-        scale: { domain: minMax.value },
+        scale: { domain: paddedMinMax.value },
         axis: { grid: false },
         title: null
       },
@@ -326,7 +341,7 @@ const vegaLayer = [
       x: {
         field: 'start',
         type: 'quantitative',
-        scale: { domain: minMax.value },
+        scale: { domain: paddedMinMax.value },
         axis: { grid: false },
         title: null
       },
@@ -338,10 +353,8 @@ const vegaLayer = [
 </script>
 
 <template>
-  <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-    <figcaption class="figure-caption text-center">
-      Variation Landscape of {{ props.hgnc }}
-    </figcaption>
+  <v-card variant="elevated" id="variation-landscape">
+    <v-card-title> ClinVar Variation </v-card-title>
     <div style="height: 350px; overflow: none">
       <VegaPlot
         :data-values="vegaData"
@@ -351,5 +364,5 @@ const vegaLayer = [
         renderer="canvas"
       />
     </div>
-  </figure>
+  </v-card>
 </template>
