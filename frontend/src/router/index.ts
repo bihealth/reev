@@ -10,8 +10,10 @@ import GenesListView from '@/views/GenesListView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PathNotFound from '@/views/PathNotFound.vue'
+import PrivacyView from '@/views/PrivacyView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import SvDetailView from '@/views/SvDetailView.vue'
+import TermsView from '@/views/TermsView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
 
 const routes = [
@@ -29,6 +31,16 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: PrivacyView
+  },
+  {
+    path: '/terms',
+    name: 'terms',
+    component: TermsView
   },
   {
     path: '/profile',
