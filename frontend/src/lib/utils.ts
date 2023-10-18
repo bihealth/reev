@@ -83,6 +83,17 @@ export const isVariantMtHomopolymer = (smallVar: any): boolean => {
 }
 
 /**
+ * Removes commas from numbers within a string without affecting words.
+ * For example, it'll convert "chr17:41,197,708:T:G" to "chr17:41197708:T:G".
+ *
+ * @param str Input string possibly containing numbers with commas.
+ * @returns Sanitized string with commas removed from numbers.
+ */
+export function removeCommasFromNumbers(str: string): string {
+  return str.replace(/(\d),(?=\d)/g, '$1')
+}
+
+/**
  * Take a `searchTerm` and return a route location that can be used to navigate to
  * the correct page.
  *
@@ -164,6 +175,7 @@ export const search = async (searchTerm: string, genomeRelease: string) => {
     ]
   ]
 
+  searchTerm = removeCommasFromNumbers(searchTerm)
   for (const [regexp, getRoute] of SEARCH_REGEXPS) {
     if (regexp.test(searchTerm)) {
       const routeLocation = getRoute()
