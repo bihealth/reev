@@ -27,7 +27,7 @@ const Acknowledgements = {
       <v-col cols="12">
         <h2 class="title">About REEV</h2>
         <p class="description">
-          REEV (REEV: Explanation and Evaluation of Variants) is a web-based tool designed to assist
+          REEV (REEV Explains and Evaluates Variants) is a web-based tool designed to assist
           clinicians and researchers in the field of rare disease genetics. This tool empowers users
           by providing comprehensive and aggregated information on genomic variants.
         </p>

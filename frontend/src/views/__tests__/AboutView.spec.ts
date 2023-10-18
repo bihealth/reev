@@ -38,7 +38,7 @@ describe.concurrent('AboutView', async () => {
 
     const mainContent = wrapper.find('.about-view')
     expect(mainContent.exists()).toBe(true)
-    expect(mainContent.html()).toMatch('REEV: Explanation and Evaluation of Variants')
+    expect(mainContent.html()).toMatch('REEV Explains and Evaluates Variants')
     // Acknowledgements
     expect(mainContent.html()).toMatch('ClinVar is a freely accessible, public archive')
     expect(mainContent.html()).toMatch('Coral emoji from OpenMoji')
