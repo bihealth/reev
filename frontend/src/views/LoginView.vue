@@ -68,7 +68,7 @@ onMounted(async () => {
       <v-card
         class="mx-auto pa-12 pb-8 mt-12"
         elevation="8"
-        max-width="448"
+        max-width="600"
         rounded="lg"
         @dblclick="showLoginForm = !showLoginForm"
       >
@@ -95,20 +95,58 @@ onMounted(async () => {
         </v-card>
 
         <v-card class="mb-5 mt-5" variant="tonal" v-if="userStore.oauth2Providers.length > 0">
-          <v-card-title> Login With </v-card-title>
+          <v-card-title> Login with... </v-card-title>
           <v-card-text class="text-medium-emphasis text-caption mt-3">
             <template v-for="provider in userStore.oauth2Providers" v-bind:key="provider.name">
-              <v-btn
-                block
-                size="large"
-                variant="tonal"
-                color="green"
-                class="mb-3"
-                @click="handleProviderLogin(provider)"
-                v-if="provider.name === 'orcid'"
+              <v-hover
+                v-slot="{ isHovering, props }"
+                v-if="provider.name.startsWith('lifescience_ri')"
               >
-                Login with ORCID
-              </v-btn>
+                <v-card
+                  block
+                  rounded="xs"
+                  size="large"
+                  class="text-center mb-6"
+                  :variant="isHovering ? 'flat' : 'tonal'"
+                  :class="{ 'on-hover': isHovering }"
+                  v-bind="props"
+                  @click="handleProviderLogin(provider)"
+                >
+                  <v-card-title class="mt-3"> LifeSciene Research Infrastructure </v-card-title>
+                  <v-card-text>
+                    <div class="mb-3">
+                      Members of European Union Academia can login with their organizational
+                      account...
+                    </div>
+                    <div>
+                      <img
+                        style="vertical-align: middle; width: 150px"
+                        src="@/assets/lifescience-ri-login.svg"
+                      />
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-hover>
+              <v-hover v-slot="{ isHovering, props }" v-else-if="provider.name.startsWith('orcid')">
+                <v-card
+                  block
+                  rounded="xs"
+                  size="large"
+                  class="text-center mb-6"
+                  :variant="isHovering ? 'flat' : 'tonal'"
+                  :class="{ 'on-hover': isHovering }"
+                  v-bind="props"
+                  @click="handleProviderLogin(provider)"
+                >
+                  <v-card-title class="mt-3"> OrcID </v-card-title>
+                  <v-card-text>
+                    <div class="mb-3">Sign in with your OrcID account...</div>
+                    <div>
+                      <img style="vertical-align: middle; width: 50px" src="@/assets/orcid.svg" />
+                    </div>
+                  </v-card-text>
+                </v-card>
+              </v-hover>
               <v-btn
                 block
                 size="large"
