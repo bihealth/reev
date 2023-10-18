@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { VMenu } from 'vuetify/components'
 
 import { DottyClient } from '@/api/dotty'
 import SearchBar from '@/components/SearchBar.vue'
@@ -40,11 +41,9 @@ describe.concurrent('HeaderDetailPage', async () => {
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const logo = wrapper.find('#logo')
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
+    const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
+    expect(menu.exists()).toBe(true)
   })
 
   it('renders the search bar', async () => {

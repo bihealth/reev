@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { nextTick } from 'vue'
+import { VMenu } from 'vuetify/components'
 
 import { setupMountedComponents } from '@/lib/test-utils'
 
@@ -23,7 +25,7 @@ describe.concurrent('HeaderDefault.vue', () => {
     expect(title.text()).toBe('REEV: Explanation and Evaluation of Variants')
   })
 
-  it('renders the navigation links', () => {
+  it('renders the navigation links', async () => {
     const { wrapper } = setupMountedComponents(
       { component: HeaderDefault, template: true },
       {
@@ -35,9 +37,9 @@ describe.concurrent('HeaderDefault.vue', () => {
       }
     )
 
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
+    const menu = wrapper.findComponent(VMenu)
+    expect(menu.exists()).toBe(true)
+    await menu.trigger('click')
+    await nextTick()
   })
 })

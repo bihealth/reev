@@ -64,9 +64,27 @@ watch(() => props.searchTerm, updateTerms)
     />
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
-      <v-btn id="about" to="/about"> About </v-btn>
-      <v-btn id="contact" to="/contact"> Contact </v-btn>
       <UserProfileButton />
+      <v-menu id="menu">
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item to="/about" id="about">
+            <v-list-item-title> About </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/contact" id="contact">
+            <v-list-item-title> Contact </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/privacy" id="privacy">
+            <v-list-item-title> Privacy Policy </v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/terms" id="terms">
+            <v-list-item-title> Terms of Use </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-toolbar-items>
   </v-app-bar>
 </template>

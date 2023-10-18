@@ -20,22 +20,22 @@ import UserProfileButton from '@/components/UserProfileButton.vue'
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
       <UserProfileButton />
-      <v-menu>
+      <v-menu id="menu">
         <template v-slot:activator="{ props }">
           <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
         </template>
 
         <v-list>
-          <v-list-item to="/about">
+          <v-list-item to="/about" id="about">
             <v-list-item-title> About </v-list-item-title>
           </v-list-item>
-          <v-list-item to="/contact">
+          <v-list-item to="/contact" id="contact">
             <v-list-item-title> Contact </v-list-item-title>
           </v-list-item>
-          <v-list-item to="/privacy">
+          <v-list-item to="/privacy" id="privacy">
             <v-list-item-title> Privacy Policy </v-list-item-title>
           </v-list-item>
-          <v-list-item to="/terms">
+          <v-list-item to="/terms" id="terms">
             <v-list-item-title> Terms of Use </v-list-item-title>
           </v-list-item>
         </v-list>

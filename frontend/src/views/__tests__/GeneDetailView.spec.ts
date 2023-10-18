@@ -1,6 +1,7 @@
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { VMenu } from 'vuetify/components'
 
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
@@ -55,11 +56,9 @@ describe.concurrent('GeneDetailView', async () => {
     expect(searchBar.exists()).toBe(true)
 
     const logo = wrapper.find('#logo')
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
+    const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
+    expect(menu.exists()).toBe(true)
 
     const launchImage = wrapper.findAll('.mdi-launch')
     expect(launchImage.length).toBe(14)
@@ -74,11 +73,9 @@ describe.concurrent('GeneDetailView', async () => {
     expect(searchBar.exists()).toBe(true)
 
     const logo = wrapper.find('#logo')
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
+    const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
+    expect(menu.exists()).toBe(true)
   })
 
   it('renders info-cards and navigation drawer', () => {
