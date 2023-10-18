@@ -13,9 +13,8 @@ import UserProfileButton from '@/components/UserProfileButton.vue'
           alt="logo"
           width="50"
         />
-        REEV: Explanation and Evaluation of Variants
+        REEV Explains and Evaluates Variants
       </router-link>
-      <strong style="font-size: 130%; color: indigo">EXPERIMENTAL</strong>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">

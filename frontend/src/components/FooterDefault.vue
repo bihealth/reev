@@ -16,7 +16,7 @@ onMounted(() => {
   <v-footer app>
     <small>
       Developed by BIH CUBI. For support and feedback, please contact cubi-helpdesk@bihealth.de.
-      REEV: Explanation and Evaluation of Variants {{ miscStore?.appVersion }}
+      REEV Explains and Evaluates Variants {{ miscStore?.appVersion }}
     </small>
   </v-footer>
 </template>
