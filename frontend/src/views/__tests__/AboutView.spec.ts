@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { VMenu } from 'vuetify/components'
 
 import { setupMountedComponents } from '@/lib/test-utils'
 
@@ -18,7 +19,7 @@ describe.concurrent('AboutView', async () => {
     )
 
     const logo = wrapper.find('#logo')
-    const menu = wrapper.find('#menu')
+    const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
     expect(menu.exists()).toBe(true)
   })
