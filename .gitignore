@@ -1,3 +1,6 @@
+# Root Pipfile
+/Pipfile
+
 # Coverage information.
 .coverage
 coverage.lcov
