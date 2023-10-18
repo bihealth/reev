@@ -30,7 +30,7 @@ watch(
   () => genesListStore.storeState,
   (storeState) => {
     if (storeState == StoreState.Redirect) {
-      router.push({
+      router.replace({
         name: 'gene',
         params: { searchTerm: genesListStore.redirectHgncId, genomeRelease: genomeReleaseRef.value }
       })

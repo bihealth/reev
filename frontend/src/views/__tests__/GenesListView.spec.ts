@@ -220,8 +220,8 @@ describe.concurrent('GenesListView', async () => {
     )
 
     await nextTick()
-    expect(router.push).toHaveBeenCalledOnce()
-    expect(router.push).toHaveBeenCalledWith({
+    expect(router.replace).toHaveBeenCalledOnce()
+    expect(router.replace).toHaveBeenCalledWith({
       name: 'gene',
       params: { searchTerm: 'HGNC:3333', genomeRelease: 'grch37' }
     })
