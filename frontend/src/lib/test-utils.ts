@@ -73,6 +73,7 @@ export const setupMountedComponents = (
     routes: routes
   })
   router.push = vi.fn()
+  router.replace = vi.fn()
 
   // Create a testing pinia with the initial data.
   const pinia = createTestingPinia({
