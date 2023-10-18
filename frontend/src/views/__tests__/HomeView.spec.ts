@@ -50,11 +50,9 @@ describe.concurrent('HomeView with mocked router', async () => {
     expect(footer.exists()).toBe(true)
 
     const logo = wrapper.find('#logo')
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
+    const menu = wrapper.find('#menu')
     expect(logo.exists()).toBe(true)
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
+    expect(menu.exists()).toBe(true)
   })
 
   it('renders the search bar', () => {

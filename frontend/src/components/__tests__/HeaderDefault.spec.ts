@@ -35,9 +35,7 @@ describe.concurrent('HeaderDefault.vue', () => {
       }
     )
 
-    const aboutLink = wrapper.find('#about')
-    const contactLink = wrapper.find('#contact')
-    expect(aboutLink.exists()).toBe(true)
-    expect(contactLink.exists()).toBe(true)
+    const menu = wrapper.find('#menu')
+    expect(menu.exists()).toBe(true)
   })
 })
