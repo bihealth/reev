@@ -9,6 +9,7 @@ import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
 import SvGenes from '@/components/SvDetails/SvGenes.vue'
+import SvTools from '@/components/SvDetails/SvTools.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
@@ -66,10 +67,12 @@ describe.concurrent('VariantDetailView', async () => {
     const { wrapper } = makeWrapper()
 
     const svGenes = wrapper.findComponent(SvGenes)
+    const svTools = wrapper.findComponent(SvTools)
     const svDetailsClinvar = wrapper.findComponent(SvDetailsClinvar)
     const acmgRating = wrapper.findComponent(AcmgRating)
     const genomeBrowser = wrapper.findComponent(GenomeBrowser)
     expect(svGenes.exists()).toBe(true)
+    expect(svTools.exists()).toBe(true)
     expect(svDetailsClinvar.exists()).toBe(true)
     expect(acmgRating.exists()).toBe(true)
     expect(genomeBrowser.exists()).toBe(true)

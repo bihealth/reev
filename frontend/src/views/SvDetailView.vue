@@ -7,6 +7,7 @@ import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
 import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
 import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
+import SvTools from '@/components/SvDetails/SvTools.vue'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
 import { type SvRecord } from '@/stores/svInfo'
@@ -80,6 +81,7 @@ watch(
 const SECTIONS = [
   { id: 'gene', title: 'Gene' },
   { id: 'clinvar', title: 'ClinVar' },
+  { id: 'sv-tools', title: 'SV Tools' },
   { id: 'acmg', title: 'ACMG' },
   { id: 'genome-browser', title: 'Genome Browser' }
 ]
@@ -118,6 +120,12 @@ const genomeReleaseRef = ref(props.genomeRelease)
           <h2>ClinVar</h2>
           <v-divider />
           <SvDetailsClinvar />
+        </div>
+
+        <div id="sv-tools" class="sv-item">
+          <h2>SV Tools</h2>
+          <v-divider />
+          <SvTools :sv-record="svInfoStore.currentSvRecord" />
         </div>
 
         <div id="acmg" class="sv-item">
