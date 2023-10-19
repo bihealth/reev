@@ -41,7 +41,7 @@ const variantData = {
   smallVariant: smallVariantInfo,
   varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
   geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
-  clinvar: JSON.parse(JSON.stringify(BRCA1ClinVar)).genes['HGNC:1100'],
+  clinvar: JSON.parse(JSON.stringify(BRCA1ClinVar)).genes['HGNC:1100'], //.variants[0].variants[0],
   txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result
 }
 

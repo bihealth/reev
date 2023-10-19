@@ -4,15 +4,20 @@ import ClinVar from '@/components/VariantDetails/ClinVar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const clinVarInfo = {
-  release: 'GRCh38',
-  chromosome: '17',
-  start: 43063903,
-  stop: 43063903,
+  chrom: '17',
+  pos: 41215920,
   reference: 'G',
   alternative: 'T',
-  rcv: 'RCV003149709',
-  clinical_significance: 0,
-  review_status: 3
+  vcv: 'VCV000055407',
+  reference_assertions: [
+    {
+      rcv: 'RCV000077599',
+      title:
+        'NM_007294.4(BRCA1):c.5123C>A (p.Ala1708Glu) AND Breast-ovarian cancer, familial, susceptibility to, 1',
+      clinical_significance: 0,
+      review_status: 1
+    }
+  ]
 }
 
 describe.concurrent('ClinVar', async () => {
@@ -25,15 +30,14 @@ describe.concurrent('ClinVar', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
-    expect(wrapper.text()).toContain('RCV003149709')
+    expect(wrapper.text()).toContain('VCV000055407')
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(2)
+    expect(starsOutline.length).toBe(4)
   })
 
   it('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
-    clinVarInfoStars.clinical_significance = 3
+    clinVarInfoStars.reference_assertions[0].clinical_significance = 3
     const { wrapper } = setupMountedComponents(
       { component: ClinVar, template: false },
       {
@@ -42,12 +46,11 @@ describe.concurrent('ClinVar', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
-    expect(wrapper.text()).toContain('RCV003149709')
+    expect(wrapper.text()).toContain('VCV000055407')
     const stars = wrapper.findAll('.mdi-star-outline')
-    expect(stars.length).toBe(2)
+    expect(stars.length).toBe(4)
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(2)
+    expect(starsOutline.length).toBe(4)
   })
 
   it('renders the ClinVar info (not found)', async () => {
@@ -59,7 +62,6 @@ describe.concurrent('ClinVar', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Note that REEV is using a local copy of Clinvar')
     expect(wrapper.text()).toContain('No ClinVar information available.')
   })
 })

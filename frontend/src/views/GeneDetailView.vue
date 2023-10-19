@@ -173,18 +173,14 @@ const genomeReleaseRef = ref(props.genomeRelease)
           </div>
         </div>
 
-        <div id="variation-landscape" class="gene-item">
-          <h2>Gene-wide Variation landscape</h2>
-          <v-divider></v-divider>
-          <VariationLandscape
-            :clinvar="geneInfoStore.geneClinvar"
-            :transcripts="geneInfoStore.transcripts"
-            :genome-release="genomeReleaseRef"
-            :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
-          />
-        </div>
+        <VariationLandscape
+          :clinvar="geneInfoStore.geneClinvar"
+          :transcripts="geneInfoStore.transcripts"
+          :genome-release="genomeReleaseRef"
+          :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+        />
 
-        <div id="constraints-scores" class="gene-item">
+        <div id="constraints-scores" class="gene-item mt-6">
           <h2>Constraints/Scores</h2>
           <h3>gnomAD</h3>
           <v-divider></v-divider>
