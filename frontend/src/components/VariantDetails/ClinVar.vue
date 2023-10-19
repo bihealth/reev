@@ -104,7 +104,10 @@ const expand = ref<boolean>(false)
               </tr>
             </thead>
             <tbody>
-              <tr v-for="assertion of props.clinvar.reference_assertions">
+              <tr
+                v-for="assertion of props.clinvar.reference_assertions"
+                v-bind:key="assertion.rcv"
+              >
                 <td>
                   {{ assertion.title.split('AND')[1] }}
                 </td>
