@@ -1,12 +1,21 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import ClinvarFreqPlot from '@/components/ClinVarFreqPlot.vue'
-import GtexGenePlot from '@/components/GtexGenePlot.vue'
+import AlternativeIdentifiers from '@/components/GeneDetails/AlternativeIdentifiers.vue'
+import ClinvarFreqPlot from '@/components/GeneDetails/ClinVarFreqPlot.vue'
+import ClinvarImpact from '@/components/GeneDetails/ClinvarImpact.vue'
+import ConstraintsCard from '@/components/GeneDetails/ConstraintsCard.vue'
+import DiseaseAnnotation from '@/components/GeneDetails/DiseaseAnnotation.vue'
+import ExternalResouces from '@/components/GeneDetails/ExternalResources.vue'
+import GeneRifs from '@/components/GeneDetails/GeneRifs.vue'
+import GtexGenePlot from '@/components/GeneDetails/GtexGenePlot.vue'
+import HgncCard from '@/components/GeneDetails/HgncCard.vue'
+import LocusDatabases from '@/components/GeneDetails/LocusDatabases.vue'
+import NcbiSummary from '@/components/GeneDetails/NcbiSummary.vue'
+import SupplementaryList from '@/components/GeneDetails/SupplementaryList.vue'
+import VariationLandscape from '@/components/GeneDetails/VariationLandscape.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import VariationLandscape from '@/components/VariationLandscape.vue'
-import { roundIt } from '@/lib/utils'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
@@ -74,54 +83,6 @@ const SECTIONS = [
   { id: 'gtex', title: 'GTEx Expression' }
 ]
 
-const variantImpactLabels = [
-  "3' UTR",
-  "5' UTR",
-  'downstream',
-  'frameshift',
-  'inframe indel',
-  'start lost',
-  'intron',
-  'missense',
-  'non-coding',
-  'stop gained',
-  'no alteration',
-  'splice acceptor',
-  'splice donor',
-  'stop lost',
-  'synonymous',
-  'upstream gene'
-]
-
-const clinsigLabels = [
-  'benign', // 0
-  'likely benign', // 1
-  'uncertain signifiance', // 2
-  'likely pathogenic', // 3
-  'pathogenic' // 4
-]
-
-const clinsigColor = ['#5d9936', '#a3f56c', '#f5c964', '#f59f9f', '#b05454']
-
-const perImpactCounts = computed(() => {
-  const result = []
-  const sum = {
-    impact: variantImpactLabels.length - 1,
-    counts: [0, 0, 0, 0, 0]
-  }
-
-  if (geneInfoStore.geneClinvar?.per_impact_counts) {
-    for (const perImpactCount of geneInfoStore.geneClinvar.per_impact_counts) {
-      result.push(perImpactCount)
-      for (let i = 0; i < sum.counts.length; ++i) {
-        sum.counts[i] += perImpactCount.counts[i]
-      }
-    }
-    result.push(sum)
-  }
-  return result
-})
-
 // We need to use refs here because of props mutations in the parent
 const searchTermRef = ref(props.searchTerm)
 const genomeReleaseRef = ref(props.genomeRelease)
@@ -146,552 +107,71 @@ const genomeReleaseRef = ref(props.genomeRelease)
   <v-layout>
     <v-main style="min-height: 300px">
       <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
-        <v-card variant="elevated" id="hgnc" class="gene-item">
-          <v-card-title>HGNC</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div>
-              <div>
-                <strong>symbol:</strong>
-                {{ geneInfoStore.geneInfo?.hgnc?.symbol }}
-              </div>
-              <div>
-                <strong>name:</strong>
-                {{ geneInfoStore.geneInfo?.hgnc?.name }}
-              </div>
-              <div>
-                <strong>cytoband:</strong>
-                {{ geneInfoStore.geneInfo?.hgnc?.location }}
-              </div>
-              <div>
-                <strong>aliases:</strong>
-                {{ geneInfoStore.geneInfo?.hgnc?.alias_name?.join(', ') }}
-              </div>
-              <div>
-                <strong>synonyms:</strong>
-                {{ geneInfoStore.geneInfo?.hgnc?.alias_symbol?.join(', ') }}
-              </div>
-            </div>
-          </v-card-text>
-        </v-card>
+        <div id="hgnc" class="gene-item">
+          <HgncCard :hgnc="geneInfoStore.geneInfo?.hgnc" />
+        </div>
 
-        <v-card variant="elevated" id="variation-landscape" class="gene-item">
-          <v-card-title> ClinVar Variation </v-card-title>
-          <v-divider />
-          <v-card-text>
-            <VariationLandscape
-              :clinvar="geneInfoStore.geneClinvar"
-              :transcripts="geneInfoStore.transcripts"
-              :genome-release="genomeReleaseRef"
-              :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
-          /></v-card-text>
-        </v-card>
+        <div id="variation-landscape" class="gene-item">
+          <VariationLandscape
+            :clinvar="geneInfoStore.geneClinvar"
+            :transcripts="geneInfoStore.transcripts"
+            :genome-release="genomeReleaseRef"
+            :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+          />
+        </div>
 
-        <v-card id="constraints-scores" class="gene-item">
-          <v-card-title>Constraints/Scores</v-card-title>
-          <v-card-subtitle>gnomAD</v-card-subtitle>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-table style="width: 100%">
-              <thead>
-                <tr>
-                  <th>Category</th>
-                  <th>SNVs exp.</th>
-                  <th>SNVs obs.</th>
-                  <th>Constraint metrics</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Synonymous</td>
-                  <td v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.exp_syn, 1)"></td>
-                  <td v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.obs_syn, 1)"></td>
-                  <td>
-                    Z =
-                    <span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.syn_z)"
-                    /><br />
-                    o/e =
-                    <span v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_syn)" />
-                    (<span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_syn_lower)"
-                    />
-                    -
-                    <span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_syn_upper)"
-                    />)
-                  </td>
-                </tr>
-                <tr>
-                  <td>Missense</td>
-                  <td v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.exp_mis, 1)"></td>
-                  <td v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.obs_mis, 1)"></td>
-                  <td>
-                    Z =
-                    <span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.mis_z)"
-                    /><br />
-                    o/e =
-                    <span v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_mis)" />
-                    (<span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_mis_lower)"
-                    />
-                    -
-                    <span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_mis_upper)"
-                    />)
-                  </td>
-                </tr>
-                <tr>
-                  <td>pLoF</td>
-                  <td v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.exp_lof, 1)"></td>
-                  <td v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.obs_lof, 1)"></td>
-                  <td>
-                    pLI =
-                    <span v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.pli)" /><br />
-                    o/e =
-                    <span v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_lof)" />
-                    (<span
-                      v-html="roundIt(geneInfoStore.geneInfo?.gnomad_constraints?.oe_lof_lower)"
-                    />
-                    -
-                    <mark
-                      v-html="
-                        roundIt(
-                          geneInfoStore.geneInfo?.gnomad_constraints?.oe_lof_upper,
-                          2,
-                          'LOEUF'
-                        )
-                      "
-                    />)
-                  </td>
-                </tr>
-              </tbody>
-            </v-table>
-          </v-card-text>
-        </v-card>
+        <div id="constraints-scores" class="gene-item">
+          <ConstraintsCard :gnomad-constraints="geneInfoStore.geneInfo?.gnomad_constraints" />
+        </div>
 
-        <v-card id="ncbi-summary" class="gene-item">
-          <v-card-title>NCBI Summary</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div class="overflow-auto" style="max-height: 250px; font-size: 90%">
-              {{ geneInfoStore.geneInfo?.ncbi?.summary }}
-              <a :href="`https://www.ncbi.nlm.nih.gov/gene/672`" target="_blank">
-                <v-icon>mdi-launch</v-icon>
-                source
-              </a>
-            </div>
-          </v-card-text>
-        </v-card>
+        <div id="ncbi-summary" class="gene-item">
+          <NcbiSummary
+            :ncbi-summary="geneInfoStore.geneInfo?.ncbi?.summary"
+            :gene-id="geneInfoStore.geneInfo?.ncbi?.gene_id"
+          />
+        </div>
 
-        <v-card id="alternative-identifiers" class="gene-item">
-          <v-card-title>Alternative Identifiers</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div>
-              <strong> ENSEMBL: </strong>
-              <a
-                :href="`https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneInfoStore.geneInfo?.hgnc?.ensembl_gene_id}`"
-                target="_blank"
-              >
-                <v-icon>mdi-launch</v-icon>
-                {{ geneInfoStore.geneInfo?.hgnc?.ensembl_gene_id }}
-              </a>
-            </div>
-            <div>
-              <strong> HGNC: </strong>
-              <a
-                :href="`https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/${geneInfoStore.geneInfo?.hgnc?.hgnc_id}`"
-                target="_blank"
-              >
-                <v-icon>mdi-launch</v-icon>
-                {{ geneInfoStore.geneInfo?.hgnc?.hgnc_id }}
-              </a>
-            </div>
-            <div v-if="geneInfoStore.geneInfo?.hgnc?.mgd_id?.length">
-              <strong>MGI: </strong>
-              <template v-for="(mgd_id, index) in geneInfoStore.geneInfo.hgnc.mgd_id" :key="mgd_id">
-                <template v-if="index > 0">, </template>
-                <a :href="`https://www.informatics.jax.org/marker/${mgd_id}`" target="_blank">
-                  <v-icon>mdi-launch</v-icon>
-                  {{ mgd_id }}
-                </a>
-              </template>
-            </div>
-            <span v-else> No MGI </span>
-            <div v-if="geneInfoStore.geneInfo?.hgnc?.pubmed_id?.length">
-              <strong>Primary PMID: </strong>
-              <template v-for="(pmid, index) in geneInfoStore.geneInfo.hgnc.pubmed_id" :key="pmid">
-                <template v-if="index > 0">, </template>
-                <a :href="`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`" target="_blank">
-                  <v-icon>mdi-launch</v-icon>
-                  {{ pmid }}
-                </a>
-              </template>
-            </div>
-            <div v-else>No primary PMID</div>
-            <div v-if="geneInfoStore.geneInfo?.hgnc?.refseq_accession?.length">
-              <strong> RefSeq: </strong>
-              <template
-                v-for="(accession, index) in geneInfoStore.geneInfo.hgnc.refseq_accession"
-                :key="index"
-              >
-                <template v-if="index > 0">, </template>
-                <a
-                  :href="`https://www.ncbi.nlm.nih.gov/nuccore/?term=${accession}+AND+srcdb_refseq[PROP]`"
-                  target="_blank"
-                >
-                  <v-icon>mdi-launch</v-icon>
-                  {{ accession }}
-                </a>
-              </template>
-            </div>
-            <div v-else>No RefSeq</div>
-            <div v-if="geneInfoStore.geneInfo?.hgnc?.uniprot_ids?.length">
-              <strong> UniProt: </strong>
-              <template
-                v-for="(uniprotid, index) in geneInfoStore.geneInfo.hgnc.uniprot_ids"
-                :key="index"
-              >
-                <template v-if="index > 0">, </template>
-                <a :href="`https://www.uniprot.org/uniprotkb/${uniprotid}/entry`" target="_blank">
-                  <v-icon>mdi-launch</v-icon>
-                  {{ uniprotid }}
-                </a>
-              </template>
-            </div>
-            <div v-else>No UniProt</div>
-          </v-card-text>
-        </v-card>
+        <div id="alternative-identifiers" class="gene-item">
+          <AlternativeIdentifiers :hgnc="geneInfoStore.geneInfo?.hgnc" />
+        </div>
 
-        <v-card id="external-resources" class="gene-item">
-          <v-card-title>External Resources</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-row>
-              <v-col cols="12" md="6">
-                <div>
-                  <a
-                    :href="`https://cancer.sanger.ac.uk/cosmic/gene/analysis?ln=${geneInfoStore.geneInfo?.hgnc?.cosmic}`"
-                    target="_blank"
-                    v-if="geneInfoStore.geneInfo?.hgnc?.cosmic"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    COSMIC
-                  </a>
-                  <span v-else> <v-icon>mdi-launch</v-icon> COSMIC</span>
-                </div>
+        <div id="external-resources" class="gene-item">
+          <ExternalResouces :hgnc="geneInfoStore.geneInfo?.hgnc" />
+        </div>
 
-                <div>
-                  <a
-                    :href="`https://www.deciphergenomics.org/gene/${geneInfoStore.geneInfo?.hgnc?.symbol}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    DECIPHER
-                  </a>
-                </div>
-                <div>
-                  <a
-                    :href="`https://search.thegencc.org/genes/${geneInfoStore.geneInfo?.hgnc?.hgnc_id}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    GenCC
-                  </a>
-                </div>
-                <div>
-                  <a
-                    :href="`https://www.kegg.jp/kegg-bin/search_pathway_text?map=map&keyword=${geneInfoStore.geneInfo?.hgnc?.symbol}&mode=1&viewImage=true`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    KEGG
-                  </a>
-                </div>
-                <div>
-                  <a
-                    :href="`https://medlineplus.gov/genetics/gene/${geneInfoStore.geneInfo?.hgnc?.symbol}/`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    MedLinePlus
-                  </a>
-                </div>
-                <div>
-                  <a
-                    :href="`https://www.omim.org/entry/${geneInfoStore.geneInfo?.hgnc?.omim_id[0]}`"
-                    target="_blank"
-                    v-if="geneInfoStore.geneInfo?.hgnc?.omim_id.length"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    OMIM
-                  </a>
-                  <span v-else> <v-icon>mdi-launch</v-icon> OMIM</span>
-                </div>
-              </v-col>
-              <v-col cols="12" md="6">
-                <div>
-                  <a
-                    :href="`https://pubmed.ncbi.nlm.nih.gov/?term=${geneInfoStore.geneInfo?.hgnc?.symbol}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    PubMed
-                  </a>
-                </div>
+        <div id="disease-annotation" class="gene-item">
+          <DiseaseAnnotation :dbnsfp="geneInfoStore.geneInfo.dbnsfp" />
+        </div>
 
-                <div>
-                  <a
-                    :href="`https://www.malacards.org/search/results?query=+[GE]+${geneInfoStore.geneInfo?.hgnc?.symbol}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    MalaCards
-                  </a>
-                </div>
-                <div>
-                  <a
-                    :href="`https://mastermind.genomenon.com/detail?gene=${geneInfoStore.geneInfo?.hgnc?.symbol}&disease=all%20diseases`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    MASTERMIND
-                  </a>
-                </div>
+        <div id="acmg-list" class="gene-item">
+          <SupplementaryList :acmg-sf="geneInfoStore.geneInfo?.acmg_sf" />
+        </div>
 
-                <div>
-                  <template v-if="geneInfoStore.geneInfo?.hgnc?.uniprot_ids?.length">
-                    <template
-                      v-for="(uniprotid, index) in geneInfoStore.geneInfo.hgnc.uniprot_ids"
-                      :key="index"
-                    >
-                      <template v-if="index > 0">, </template>
-                      <a
-                        :href="`http://missense3d.bc.ic.ac.uk:8080/search_direct?uniprot=${uniprotid}`"
-                        target="_blank"
-                      >
-                        <v-icon>mdi-launch</v-icon>
-                        {{ uniprotid }}
-                      </a>
-                      (Missense3D)
-                    </template>
-                  </template>
-                  <span v-else> <v-icon>mdi-launch</v-icon> Missense3D </span>
-                </div>
-                <div>
-                  <a
-                    :href="`https://varsome.com/gene/hg19/${geneInfoStore.geneInfo?.hgnc?.hgnc_id}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    VarSome
-                  </a>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card-text>
-        </v-card>
+        <div id="gene-rifs" class="gene-item">
+          <GeneRifs :ncbi="geneInfoStore.geneInfo?.ncbi" />
+        </div>
 
-        <v-card id="disease-annotation" class="gene-item">
-          <v-card-title>Disease Annotation</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-table>
-              <thead>
-                <tr>
-                  <th>Orphanet Disorders</th>
-                  <th>OMIM Diseases</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>
-                    <div v-if="geneInfoStore.geneInfo?.dbnsfp?.orphanet_disorder?.length">
-                      {{ geneInfoStore.geneInfo.dbnsfp.orphanet_disorder.join(', ') }}
-                    </div>
-                    <div v-else>No Orphanet disorders annotated in dbNSFP.</div>
-                  </th>
-                  <th>
-                    <div v-if="geneInfoStore.geneInfo.dbnsfp?.mim_disease?.length">
-                      {{ geneInfoStore.geneInfo.dbnsfp.mim_disease.join(', ') }}
-                    </div>
-                    <div v-else>No OMIM diseases annotated in dbNSFP.</div>
-                  </th>
-                </tr>
-              </tbody>
-            </v-table></v-card-text
-          >
-        </v-card>
+        <div id="locus-specific-databases" class="gene-item">
+          <LocusDatabases :hgnc="geneInfoStore.geneInfo?.hgnc" />
+        </div>
 
-        <v-card id="acmg-list" class="gene-item">
-          <v-card-title>ACMG Supplementary Findings List</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div v-if="geneInfoStore.geneInfo?.acmg_sf">
-              <div>
-                <strong>since ACMG SF:</strong>
-                v{{ geneInfoStore.geneInfo.acmg_sf.sf_list_version }}
-              </div>
-              <div>
-                <strong>inheritance:</strong> {{ geneInfoStore.geneInfo.acmg_sf.inheritance }}
-              </div>
-              <div>
-                <strong>phenotype:</strong>
-                {{ geneInfoStore.geneInfo.acmg_sf.phenotype_category }} /
-                {{ geneInfoStore.geneInfo.acmg_sf.disease_phenotype }}
-              </div>
-            </div>
-            <div v-else>Gene is not on ACMG SF list.</div>
-          </v-card-text>
-        </v-card>
+        <div id="clinvar-impact" class="gene-item">
+          <ClinvarImpact :gene-clinvar="geneInfoStore.geneClinvar" />
+        </div>
 
-        <v-card id="gene-rifs" class="gene-item">
-          <v-card-title>GeneRIFs</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <ul
-              class="overflow-auto"
-              style="max-height: 200px; font-size: 90%"
-              v-if="geneInfoStore.geneInfo?.ncbi?.rif_entries?.length"
-            >
-              <template v-for="entry in geneInfoStore.geneInfo.ncbi.rif_entries" :key="entry">
-                <li v-if="entry?.text?.length">
-                  {{ entry.text }}
-                  <a
-                    :href="'https://www.ncbi.nlm.nih.gov/pubmed/?term=' + entry.pmids.join('+')"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    PubMed
-                  </a>
-                </li>
-              </template>
-            </ul>
-            <div v-else>No GeneRIFs available for gene.</div>
-          </v-card-text>
-        </v-card>
+        <div id="clinvar-frequency" class="gene-item">
+          <ClinvarFreqPlot
+            :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+            :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
+          />
+        </div>
 
-        <v-card id="locus-specific-databases" class="gene-item">
-          <v-card-title>Locus-Specific Databases</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>
-            <div v-if="geneInfoStore.geneInfo?.hgnc?.lsdb?.length">
-              <div v-for="{ name, url } in geneInfoStore.geneInfo.hgnc.lsdb" :key="name">
-                <a :href="name" target="_blank">
-                  <v-icon>mdi-launch</v-icon>
-                  {{ url }}
-                </a>
-              </div>
-              <div>
-                <a
-                  :href="`https://www.kegg.jp/kegg-bin/search_pathway_text?map=map&keyword=${geneInfoStore.geneInfo?.hgnc?.symbol}&mode=1&viewImage=true`"
-                  target="_blank"
-                >
-                  <v-icon>mdi-launch</v-icon>
-                  KEGG
-                </a>
-              </div>
-            </div>
-            <div v-else>No locus-specific database available for gene.</div>
-          </v-card-text>
-        </v-card>
-
-        <v-card id="clinvar-impact" class="gene-item">
-          <v-card-title>ClinVar By Impact</v-card-title>
-          <v-divider />
-          <v-card-text v-if="geneInfoStore.geneClinvar?.per_impact_counts?.length">
-            <table>
-              <tr>
-                <thead>
-                  <th>impact</th>
-                  <th v-for="i in [0, 1, 2, 3, 4]" :key="i">
-                    {{ clinsigLabels[i] }}
-                  </th>
-                  <th>total</th>
-                </thead>
-                <tbody>
-                  <tr v-for="row in perImpactCounts" :key="row">
-                    <td
-                      :class="{
-                        'font-weight-bolder': variantImpactLabels[row.impact] == 'overall'
-                      }"
-                    >
-                      {{ variantImpactLabels[row.impact] }}
-                    </td>
-                    <td
-                      class="text-right"
-                      :class="{
-                        'font-weight-bolder': variantImpactLabels[row.impact] == 'overall'
-                      }"
-                      v-for="(count, idx) in row.counts"
-                      :style="`background-color: ${clinsigColor[idx]}`"
-                      :key="idx"
-                    >
-                      {{ count }}
-                    </td>
-                    <td
-                      class="text-right"
-                      :class="{
-                        'font-weight-bolder': variantImpactLabels[row.impact] == 'overall'
-                      }"
-                    >
-                      {{ row.counts.reduce((a: any, b: any) => a + b, 0) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </tr>
-            </table>
-          </v-card-text>
-          <v-card-text v-else class="text-center font-italic"
-            >No ClinVar data for gene.</v-card-text
-          >
-        </v-card>
-
-        <v-card id="clinvar-frequency" class="gene-item">
-          <v-card-title>ClinVar By Frequency</v-card-title>
-          <v-card-text v-if="geneInfoStore.geneClinvar?.per_freq_counts?.length">
-            <ClinvarFreqPlot
-              :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
-              :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
-            />
-          </v-card-text>
-          <v-card-text v-else class="text-muted text-center font-italic"
-            >No ClinVar data for gene.</v-card-text
-          >
-        </v-card>
-
-        <v-card id="gtex" class="gene-item">
-          <v-card-title>
-            GTEx Expression
-            <small>
-              <a
-                :href="`https://gtexportal.org/home/gene/${geneInfoStore.geneInfo?.gtex.ensembl_gene_id}`"
-                target="_blank"
-                v-if="geneInfoStore.geneInfo.gtex"
-              >
-                <v-icon>mdi-launch</v-icon>
-                GTEx Portal
-              </a>
-            </small>
-          </v-card-title>
-          <v-card-text v-if="geneInfoStore.geneInfo.gtex">
-            <GtexGenePlot
-              :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
-              :expression-records="geneInfoStore.geneInfo.gtex.records"
-            />
-          </v-card-text>
-          <v-card-text v-else class="text-muted text-center font-italic">
-            No GTEx data available for gene.
-          </v-card-text>
-        </v-card>
-      </div>
-
-      <div v-else>
-        <div class="d-flex align-center justify-center" style="min-height: 300px">
-          <h1>Loading gene information</h1>
-          <v-progress-circular indeterminate></v-progress-circular>
+        <div id="gtex" class="gene-item">
+          <GtexGenePlot
+            :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+            :expression-records="geneInfoStore.geneInfo.gtex.records"
+            :ensembl-gene-id="geneInfoStore.geneInfo.gtex.ensembl_gene_id"
+          />
         </div>
       </div>
     </v-main>

@@ -17,6 +17,8 @@ export interface Props {
   geneSymbol: string
   /** Expression records */
   expressionRecords: ExpressionRecord[]
+  /** Ensembl gene ID */
+  ensemblGeneId: string
 }
 
 const props = withDefaults(defineProps<Props>(), {})
@@ -171,17 +173,37 @@ const vegaLayer = [
 </script>
 
 <template>
-  <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-    <figcaption class="figure-caption text-center">
-      Bulk tissue gene expression for gene {{ props.geneSymbol }}
-    </figcaption>
-    <VegaPlot
-      :data-values="vegaData"
-      :encoding="vegaEncoding"
-      :layer="vegaLayer"
-      :mark="false"
-      :height="300"
-      renderer="svg"
-    />
-  </figure>
+  <v-card v-if="props.ensemblGeneId">
+    <v-card-title>
+      GTEx Expression
+      <small>
+        <a
+          :href="`https://gtexportal.org/home/gene/${props.ensemblGeneId}`"
+          target="_blank"
+          v-if="props.ensemblGeneId"
+        >
+          <v-icon>mdi-launch</v-icon>
+          GTEx Portal
+        </a>
+      </small>
+    </v-card-title>
+    <v-divider />
+    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
+      <figcaption class="figure-caption text-center">
+        Bulk tissue gene expression for gene {{ props.geneSymbol }}
+      </figcaption>
+      <VegaPlot
+        :data-values="vegaData"
+        :encoding="vegaEncoding"
+        :layer="vegaLayer"
+        :mark="false"
+        :height="300"
+        renderer="svg"
+      />
+    </figure>
+  </v-card>
+  <v-card v-else>
+    <v-card-title>Loading gene information</v-card-title>
+    <v-progress-circular indeterminate></v-progress-circular>
+  </v-card>
 </template>

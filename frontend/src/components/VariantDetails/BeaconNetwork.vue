@@ -30,14 +30,9 @@ const loadBeacon = () => {
 <template>
   <v-card>
     <v-card-title>Beacon Network</v-card-title>
-    <v-card-subtitle>
-      Query Beacon -----|>
-      <v-btn prepend-icon="mdi-refresh" style="float: right" @click="loadBeacon()"> Load </v-btn>
-    </v-card-subtitle>
     <v-divider />
-    <v-card-text>
+    <v-card-text v-if="beaconAddress">
       <iframe
-        v-if="beaconAddress"
         ref="beaconFrame"
         :src="beaconAddress"
         style="width: 100%; height: 300px; overflow: auto; border: 0"
@@ -45,16 +40,13 @@ const loadBeacon = () => {
         hspace="0"
       >
       </iframe>
-      <p v-else class="text-muted text-center">
-        <i>Click</i>&nbsp;
-        <span>
-          <v-icon>mdi-refresh</v-icon>
-          Load
-        </span>
-        <i>
-          button to submit the variant to the GA4GH Beacon network. The results will appear here.
-        </i>
-      </p>
-    </v-card-text></v-card
-  >
+    </v-card-text>
+    <v-card-actions v-else>
+      <v-card-title>
+        <v-btn prepend-icon="mdi-refresh" style="float: right" @click="loadBeacon()">
+          Query Beacon
+        </v-btn>
+      </v-card-title>
+    </v-card-actions>
+  </v-card>
 </template>

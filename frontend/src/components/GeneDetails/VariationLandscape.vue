@@ -353,16 +353,20 @@ const vegaLayer = [
 </script>
 
 <template>
-  <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-    <figcaption class="figure-caption text-center">
-      Variantion landscape for gene {{ props.hgnc }}
-    </figcaption>
-    <VegaPlot
-      :data-values="vegaData"
-      :encoding="vegaEncoding"
-      :layer="vegaLayer"
-      :height="300"
-      renderer="canvas"
-    />
-  </figure>
+  <v-card>
+    <v-card-title> ClinVar Variation </v-card-title>
+    <v-divider />
+    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
+      <figcaption class="figure-caption text-center">
+        Variantion landscape for gene {{ props.hgnc }}
+      </figcaption>
+      <VegaPlot
+        :data-values="vegaData"
+        :encoding="vegaEncoding"
+        :layer="vegaLayer"
+        :height="300"
+        renderer="canvas"
+      />
+    </figure>
+  </v-card>
 </template>
