@@ -7,11 +7,13 @@ defineComponent({
 </script>
 
 <template>
-  <div class="not-found">
-    <h1>404 - Page Not Found</h1>
-    <p>Oops! The page you are looking for does not exist.</p>
-    <router-link to="/">Go back to the home page</router-link>
-  </div>
+  <v-card class="not-found">
+    <v-card-title>404 - Page Not Found</v-card-title>
+    <v-card-text>
+      <p>Oops! The page you are looking for does not exist.</p>
+      <router-link to="/">Go back to the home page</router-link></v-card-text
+    >
+  </v-card>
 </template>
 
 <style scoped>

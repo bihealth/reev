@@ -27,7 +27,7 @@ const gnomadMtDna = computed(() => {
 </script>
 
 <template>
-  <div>
+  <v-card-text>
     <div v-if="!isVariantMtHomopolymer(props.smallVar)">
       <small>
         <v-icon>mdi-alert-circle-outline</v-icon>
@@ -75,5 +75,5 @@ const gnomadMtDna = computed(() => {
         </tr>
       </tbody>
     </v-table>
-  </div>
+  </v-card-text>
 </template>

@@ -92,5 +92,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div ref="genomeBrowserDivRef"></div>
+  <v-card>
+    <v-card-title>Genome Browser</v-card-title>
+    <v-divider />
+    <div style="margin: 5px" ref="genomeBrowserDivRef"></div>
+  </v-card>
 </template>

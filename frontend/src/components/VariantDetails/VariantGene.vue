@@ -10,10 +10,10 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div id="hgnc" class="gene-item">
-    <h3>HGNC</h3>
-    <v-divider></v-divider>
-    <div>
+  <v-card id="hgnc" class="gene-item">
+    <v-card-title>HGNC</v-card-title>
+    <v-divider />
+    <v-card-text>
       <div>
         <strong>symbol:</strong>
         {{ $props.gene?.hgnc?.symbol }}
@@ -34,16 +34,16 @@ withDefaults(defineProps<Props>(), {
         <strong>synonyms:</strong>
         {{ $props.gene?.hgnc?.alias_symbol?.join(', ') }}
       </div>
-    </div>
-  </div>
+    </v-card-text>
+  </v-card>
 
   <v-divider></v-divider>
   <v-divider></v-divider>
 
-  <div id="ncbi-summary" class="gene-item">
-    <h3>NCBI Summary</h3>
+  <v-card id="ncbi-summary" class="gene-item">
+    <v-card-title>NCBI Summary</v-card-title>
     <v-divider></v-divider>
-    <div>
+    <v-card-text>
       <div class="overflow-auto" style="max-height: 250px; font-size: 90%">
         {{ $props.gene?.ncbi?.summary }}
         <a :href="`https://www.ncbi.nlm.nih.gov/gene/672`" target="_blank">
@@ -51,8 +51,8 @@ withDefaults(defineProps<Props>(), {
           source
         </a>
       </div>
-    </div>
-  </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <style scoped="true">

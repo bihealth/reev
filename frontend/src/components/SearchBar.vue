@@ -61,6 +61,8 @@ const props = withDefaults(defineProps<Props>(), {
 <style scoped>
 #search-bar {
   background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
   padding: 0 10px;
 }
 

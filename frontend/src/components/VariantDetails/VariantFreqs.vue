@@ -14,7 +14,9 @@ const gnomadGenomes = 'gnomad_genomes'
 </script>
 
 <template>
-  <div>
+  <v-card>
+    <v-card-title>Population Frequencies</v-card-title>
+    <v-divider />
     <VariantDetailsFreqsMitochondrial
       :small-var="props.smallVar"
       :var-annos="props.varAnnos"
@@ -33,5 +35,5 @@ const gnomadGenomes = 'gnomad_genomes'
         :dataset="gnomadGenomes"
       />
     </div>
-  </div>
+  </v-card>
 </template>

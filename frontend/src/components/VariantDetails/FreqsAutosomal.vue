@@ -60,7 +60,7 @@ const sexExpanded: any = ref({})
 </script>
 
 <template>
-  <div>
+  <v-card-text>
     <div>
       <span style="font-size: 120%">
         <template v-if="props.dataset === 'gnomad_exomes'"> gnomAD Exomes </template>
@@ -198,5 +198,5 @@ const sexExpanded: any = ref({})
         gnomAD
       </a>
     </div>
-  </div>
+  </v-card-text>
 </template>

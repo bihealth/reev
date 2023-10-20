@@ -62,23 +62,26 @@ onMounted(initSelectedTranscript)
 </script>
 
 <template>
-  <div>
-    {{}}
-    <div v-if="ucscConservation">
-      <div class="float-right">
-        <select v-model="selectedTranscript">
-          <option v-for="transcript in transcriptIds" :value="transcript" :key="transcript">
-            {{ transcript }}
-          </option>
-        </select>
-      </div>
-      <p>The following shows UCSC 100 vertebrate conservation.</p>
-      <pre><b><u>  chr  start      end          |  alignment                                                                                           </u></b>
+  <v-card>
+    <v-card-title>Conservation</v-card-title>
+    <v-divider />
+    <v-card-text>
+      {{}}
+      <div v-if="ucscConservation">
+        <div class="float-right">
+          <select v-model="selectedTranscript">
+            <option v-for="transcript in transcriptIds" :value="transcript" :key="transcript">
+              {{ transcript }}
+            </option>
+          </select>
+        </div>
+        <p>The following shows UCSC 100 vertebrate conservation.</p>
+        <pre><b><u>  chr  start      end          |  alignment                                                                                           </u></b>
 <template v-for="row in consInfo[selectedTranscript]">{{ row.chromosome.padStart(5) }} {{ sepIt(row.start, ',').padStart(11) }}-{{ sepIt(row.stop, ',').padEnd(11) }}  |  {{ row.alignment }}
 </template></pre>
-    </div>
-    <div v-else class="text-muted text-center font-italic"></div>
-  </div>
+      </div>
+      <div v-else class="text-muted text-center font-italic"></div> </v-card-text
+  ></v-card>
   <!-- <div class="card">
     <div class="card-header">
       <h4 class="card-title">UCSC 100 Vertebrate Conservation</h4>

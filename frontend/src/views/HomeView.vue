@@ -28,8 +28,10 @@ const examples = [
   'NC_000017.10:g.41197728G>T'
 ]
 
-const useExample = (example: string) => {
+const performExampleSearch = (example: string) => {
   searchTerm.value = example
+  genomeRelease.value = 'grch38'
+  performSearch()
 }
 
 /**
@@ -58,36 +60,36 @@ const performSearch = async () => {
     />
 
     <v-row>
-      <v-col>
-        <h2>Example Queries:</h2>
-        <div class="examples">
-          <div
-            class="example"
-            v-for="example in examples"
-            :key="example"
-            @click="useExample(example)"
-          >
-            {{ example }}
+      <v-card id="examples">
+        <v-card-title>Example Queries:</v-card-title>
+        <v-card-text class="examples">
+          <div v-for="example in examples" :key="example">
+            <v-btn class="example" @click="performExampleSearch(example)">{{ example }}</v-btn>
           </div>
-        </div>
-      </v-col>
+        </v-card-text>
+      </v-card>
     </v-row>
   </v-container>
   <FooterDefault />
 </template>
 
 <style scoped>
+#examples {
+  margin-top: 30px;
+  padding: 10px;
+}
+
 .examples {
   display: flex;
   flex-direction: column;
 }
 
 .example {
-  width: 250px;
+  width: 300px;
   margin-top: 10px;
   cursor: pointer;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
+  /* border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>

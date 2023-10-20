@@ -111,32 +111,22 @@ const genomeReleaseRef = ref(props.genomeRelease)
     <v-main style="min-height: 300px">
       <div v-if="svInfoStore.storeState == StoreState.Active" class="sv-info">
         <div id="gene" class="sv-item">
-          <h2>Genes</h2>
-          <v-divider />
           <SvDetailsGenes :genes-infos="svInfoStore.genesInfos" />
         </div>
 
         <div id="clinvar" class="sv-item">
-          <h2>ClinVar</h2>
-          <v-divider />
           <SvDetailsClinvar />
         </div>
 
         <div id="sv-tools" class="sv-item">
-          <h2>SV Tools</h2>
-          <v-divider />
           <SvTools :sv-record="svInfoStore.currentSvRecord" />
         </div>
 
         <div id="acmg" class="sv-item">
-          <h2>ACMG</h2>
-          <v-divider />
           <AcmgRating :sv-record="svInfoStore.currentSvRecord" />
         </div>
 
         <div id="genome-browser" class="sv-item">
-          <h2>Genome Browser</h2>
-          <v-divider />
           <GenomeBrowser
             :genome="genomeRelease === 'grch37' ? 'hg19' : 'b38'"
             :locus="svLocus(svInfoStore.currentSvRecord) as string"
@@ -145,10 +135,11 @@ const genomeReleaseRef = ref(props.genomeRelease)
       </div>
 
       <div v-else>
-        <div class="d-flex align-center justify-center" style="min-height: 300px">
-          <h1>Loading SV information</h1>
+        <v-card class="d-flex align-center justify-center" style="min-height: 300px">
+          <v-card-title>Loading SV information</v-card-title>
+          <v-divider />
           <v-progress-circular indeterminate></v-progress-circular>
-        </div>
+        </v-card>
       </div>
     </v-main>
   </v-layout>
@@ -162,8 +153,8 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
 .sv-item {
   margin-bottom: 20px;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
+  /* border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>

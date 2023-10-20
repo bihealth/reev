@@ -146,45 +146,52 @@ const genomeReleaseRef = ref(props.genomeRelease)
   <v-layout>
     <v-main style="min-height: 300px">
       <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
-        <div id="hgnc" class="gene-item">
-          <h2>HGNC</h2>
+        <v-card variant="elevated" id="hgnc" class="gene-item">
+          <v-card-title>HGNC</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <div>
-              <strong>symbol:</strong>
-              {{ geneInfoStore.geneInfo?.hgnc?.symbol }}
+              <div>
+                <strong>symbol:</strong>
+                {{ geneInfoStore.geneInfo?.hgnc?.symbol }}
+              </div>
+              <div>
+                <strong>name:</strong>
+                {{ geneInfoStore.geneInfo?.hgnc?.name }}
+              </div>
+              <div>
+                <strong>cytoband:</strong>
+                {{ geneInfoStore.geneInfo?.hgnc?.location }}
+              </div>
+              <div>
+                <strong>aliases:</strong>
+                {{ geneInfoStore.geneInfo?.hgnc?.alias_name?.join(', ') }}
+              </div>
+              <div>
+                <strong>synonyms:</strong>
+                {{ geneInfoStore.geneInfo?.hgnc?.alias_symbol?.join(', ') }}
+              </div>
             </div>
-            <div>
-              <strong>name:</strong>
-              {{ geneInfoStore.geneInfo?.hgnc?.name }}
-            </div>
-            <div>
-              <strong>cytoband:</strong>
-              {{ geneInfoStore.geneInfo?.hgnc?.location }}
-            </div>
-            <div>
-              <strong>aliases:</strong>
-              {{ geneInfoStore.geneInfo?.hgnc?.alias_name?.join(', ') }}
-            </div>
-            <div>
-              <strong>synonyms:</strong>
-              {{ geneInfoStore.geneInfo?.hgnc?.alias_symbol?.join(', ') }}
-            </div>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <VariationLandscape
-          :clinvar="geneInfoStore.geneClinvar"
-          :transcripts="geneInfoStore.transcripts"
-          :genome-release="genomeReleaseRef"
-          :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
-        />
+        <v-card variant="elevated" id="variation-landscape" class="gene-item">
+          <v-card-title> ClinVar Variation </v-card-title>
+          <v-divider />
+          <v-card-text>
+            <VariationLandscape
+              :clinvar="geneInfoStore.geneClinvar"
+              :transcripts="geneInfoStore.transcripts"
+              :genome-release="genomeReleaseRef"
+              :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+          /></v-card-text>
+        </v-card>
 
-        <div id="constraints-scores" class="gene-item mt-6">
-          <h2>Constraints/Scores</h2>
-          <h3>gnomAD</h3>
+        <v-card id="constraints-scores" class="gene-item">
+          <v-card-title>Constraints/Scores</v-card-title>
+          <v-card-subtitle>gnomAD</v-card-subtitle>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <v-table style="width: 100%">
               <thead>
                 <tr>
@@ -261,13 +268,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
                 </tr>
               </tbody>
             </v-table>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="ncbi-summary" class="gene-item">
-          <h2>NCBI Summary</h2>
+        <v-card id="ncbi-summary" class="gene-item">
+          <v-card-title>NCBI Summary</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <div class="overflow-auto" style="max-height: 250px; font-size: 90%">
               {{ geneInfoStore.geneInfo?.ncbi?.summary }}
               <a :href="`https://www.ncbi.nlm.nih.gov/gene/672`" target="_blank">
@@ -275,13 +282,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
                 source
               </a>
             </div>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="alternative-identifiers" class="gene-item">
-          <h2>Alternative Identifiers</h2>
+        <v-card id="alternative-identifiers" class="gene-item">
+          <v-card-title>Alternative Identifiers</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <div>
               <strong> ENSEMBL: </strong>
               <a
@@ -355,13 +362,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
               </template>
             </div>
             <div v-else>No UniProt</div>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="external-resources" class="gene-item">
-          <h2>External Resources</h2>
+        <v-card id="external-resources" class="gene-item">
+          <v-card-title>External Resources</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <v-row>
               <v-col cols="12" md="6">
                 <div>
@@ -484,33 +491,44 @@ const genomeReleaseRef = ref(props.genomeRelease)
                 </div>
               </v-col>
             </v-row>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="disease-annotation" class="gene-item">
-          <h2>Disease Annotation</h2>
+        <v-card id="disease-annotation" class="gene-item">
+          <v-card-title>Disease Annotation</v-card-title>
           <v-divider></v-divider>
-          <div>
-            <div>
-              <div v-if="geneInfoStore.geneInfo?.dbnsfp?.orphanet_disorder?.length">
-                <strong>Orphanet Disorders:</strong>
-                {{ geneInfoStore.geneInfo.dbnsfp.orphanet_disorder.join(', ') }}
-              </div>
-              <div v-else>No Orphanet disorders annotated in dbNSFP.</div>
+          <v-card-text>
+            <v-table>
+              <thead>
+                <tr>
+                  <th>Orphanet Disorders</th>
+                  <th>OMIM Diseases</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th>
+                    <div v-if="geneInfoStore.geneInfo?.dbnsfp?.orphanet_disorder?.length">
+                      {{ geneInfoStore.geneInfo.dbnsfp.orphanet_disorder.join(', ') }}
+                    </div>
+                    <div v-else>No Orphanet disorders annotated in dbNSFP.</div>
+                  </th>
+                  <th>
+                    <div v-if="geneInfoStore.geneInfo.dbnsfp?.mim_disease?.length">
+                      {{ geneInfoStore.geneInfo.dbnsfp.mim_disease.join(', ') }}
+                    </div>
+                    <div v-else>No OMIM diseases annotated in dbNSFP.</div>
+                  </th>
+                </tr>
+              </tbody>
+            </v-table></v-card-text
+          >
+        </v-card>
 
-              <div v-if="geneInfoStore.geneInfo.dbnsfp?.mim_disease?.length">
-                <strong>OMIM Diseases:</strong>
-                {{ geneInfoStore.geneInfo.dbnsfp.mim_disease.join(', ') }}
-              </div>
-              <div v-else>No OMIM diseases annotated in dbNSFP.</div>
-            </div>
-          </div>
-        </div>
-
-        <div id="acmg-list" class="gene-item">
-          <h2>ACMG Supplementary Findings List</h2>
+        <v-card id="acmg-list" class="gene-item">
+          <v-card-title>ACMG Supplementary Findings List</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <div v-if="geneInfoStore.geneInfo?.acmg_sf">
               <div>
                 <strong>since ACMG SF:</strong>
@@ -526,13 +544,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
               </div>
             </div>
             <div v-else>Gene is not on ACMG SF list.</div>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="gene-rifs" class="gene-item">
-          <h2>GeneRIFs</h2>
+        <v-card id="gene-rifs" class="gene-item">
+          <v-card-title>GeneRIFs</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <ul
               class="overflow-auto"
               style="max-height: 200px; font-size: 90%"
@@ -552,13 +570,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
               </template>
             </ul>
             <div v-else>No GeneRIFs available for gene.</div>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="locus-specific-databases" class="gene-item">
-          <h2>Locus-Specific Databases</h2>
+        <v-card id="locus-specific-databases" class="gene-item">
+          <v-card-title>Locus-Specific Databases</v-card-title>
           <v-divider></v-divider>
-          <div>
+          <v-card-text>
             <div v-if="geneInfoStore.geneInfo?.hgnc?.lsdb?.length">
               <div v-for="{ name, url } in geneInfoStore.geneInfo.hgnc.lsdb" :key="name">
                 <a :href="name" target="_blank">
@@ -577,14 +595,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
               </div>
             </div>
             <div v-else>No locus-specific database available for gene.</div>
-          </div>
-        </div>
+          </v-card-text>
+        </v-card>
 
-        <div id="clinvar-impact" class="gene-item">
-          <div>
-            <span class="font-weight-bolder" style="font-size: 120%"> ClinVar By Impact </span>
-          </div>
-          <div v-if="geneInfoStore.geneClinvar?.per_impact_counts?.length">
+        <v-card id="clinvar-impact" class="gene-item">
+          <v-card-title>ClinVar By Impact</v-card-title>
+          <v-divider />
+          <v-card-text v-if="geneInfoStore.geneClinvar?.per_impact_counts?.length">
             <table>
               <tr>
                 <thead>
@@ -626,51 +643,49 @@ const genomeReleaseRef = ref(props.genomeRelease)
                 </tbody>
               </tr>
             </table>
-          </div>
-          <div v-else class="text-center font-italic">No ClinVar data for gene.</div>
-        </div>
+          </v-card-text>
+          <v-card-text v-else class="text-center font-italic"
+            >No ClinVar data for gene.</v-card-text
+          >
+        </v-card>
 
-        <div id="clinvar-frequency" class="gene-item">
-          <div>
-            <div>
-              <span class="font-weight-bolder" style="font-size: 120%"> ClinVar By Frequency </span>
-            </div>
-            <div v-if="geneInfoStore.geneClinvar?.per_freq_counts?.length">
-              <ClinvarFreqPlot
-                :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
-                :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
-              />
-            </div>
-            <div v-else class="text-muted text-center font-italic">No ClinVar data for gene.</div>
-          </div>
-        </div>
+        <v-card id="clinvar-frequency" class="gene-item">
+          <v-card-title>ClinVar By Frequency</v-card-title>
+          <v-card-text v-if="geneInfoStore.geneClinvar?.per_freq_counts?.length">
+            <ClinvarFreqPlot
+              :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+              :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
+            />
+          </v-card-text>
+          <v-card-text v-else class="text-muted text-center font-italic"
+            >No ClinVar data for gene.</v-card-text
+          >
+        </v-card>
 
-        <div id="gtex" class="gene-item">
-          <div>
-            <div>
-              <span class="font-weight-bolder" style="font-size: 120%"> GTEx Expression </span>
-              <small>
-                <a
-                  :href="`https://gtexportal.org/home/gene/${geneInfoStore.geneInfo?.gtex.ensembl_gene_id}`"
-                  target="_blank"
-                  v-if="geneInfoStore.geneInfo.gtex"
-                >
-                  <v-icon>mdi-launch</v-icon>
-                  GTEx Portal
-                </a>
-              </small>
-            </div>
-            <div v-if="geneInfoStore.geneInfo.gtex">
-              <GtexGenePlot
-                :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
-                :expression-records="geneInfoStore.geneInfo.gtex.records"
-              />
-            </div>
-            <div v-else class="text-muted text-center font-italic">
-              No GTEx data available for gene.
-            </div>
-          </div>
-        </div>
+        <v-card id="gtex" class="gene-item">
+          <v-card-title>
+            GTEx Expression
+            <small>
+              <a
+                :href="`https://gtexportal.org/home/gene/${geneInfoStore.geneInfo?.gtex.ensembl_gene_id}`"
+                target="_blank"
+                v-if="geneInfoStore.geneInfo.gtex"
+              >
+                <v-icon>mdi-launch</v-icon>
+                GTEx Portal
+              </a>
+            </small>
+          </v-card-title>
+          <v-card-text v-if="geneInfoStore.geneInfo.gtex">
+            <GtexGenePlot
+              :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+              :expression-records="geneInfoStore.geneInfo.gtex.records"
+            />
+          </v-card-text>
+          <v-card-text v-else class="text-muted text-center font-italic">
+            No GTEx data available for gene.
+          </v-card-text>
+        </v-card>
       </div>
 
       <div v-else>
@@ -691,8 +706,8 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
 .gene-item {
   margin-bottom: 20px;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
+  /* border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>
