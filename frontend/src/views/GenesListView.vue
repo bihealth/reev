@@ -49,14 +49,14 @@ const useExample = (example: string) => {
 <template>
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-container class="about-view">
-    <div v-if="genesListStore.storeState == StoreState.Active">
-      <h2>Search results for:</h2>
-      <h3>
+    <v-card v-if="genesListStore.storeState == StoreState.Active">
+      <v-card-title>Search results for:</v-card-title>
+      <v-card-text>
         Search term: <strong>{{ $router.currentRoute.value.query.q }}</strong>
-      </h3>
+      </v-card-text>
 
-      <div v-for="gene in genesListStore.genesList" :key="gene.data.hgnc_id">
-        <v-card class="gene-item">
+      <v-card-item v-for="gene in genesListStore.genesList" :key="gene.data.hgnc_id">
+        <v-card variant="outlined" class="gene-item">
           <v-card-title>
             <h2>{{ gene.data.symbol }}</h2>
             <router-link
@@ -79,37 +79,32 @@ const useExample = (example: string) => {
             <div><strong>NCBI id:</strong> {{ gene.data?.ncbi_gene_id }}</div>
           </v-card-text>
         </v-card>
-      </div>
-    </div>
+      </v-card-item>
+    </v-card>
 
-    <div v-else-if="genesListStore.storeState == StoreState.Loading">
+    <v-card v-else-if="genesListStore.storeState == StoreState.Loading">
       <div class="d-flex align-center justify-center" style="min-height: 300px">
-        <h1>Searching for genes</h1>
+        <v-card-title>Searching for genes</v-card-title>
         <v-progress-circular indeterminate></v-progress-circular>
       </div>
-    </div>
+    </v-card>
 
-    <div v-else-if="genesListStore.storeState == StoreState.Error">
-      <h2>
+    <v-card v-else-if="genesListStore.storeState == StoreState.Error">
+      <v-card-title>
         <v-icon color="red">mdi-alert-circle</v-icon>
         There was an error while searching for
         <strong>{{ $router.currentRoute.value.query.q }}</strong>
-      </h2>
+      </v-card-title>
       <v-divider />
-      <div>
-        <h2>Try this examples:</h2>
-        <div class="examples">
-          <div
-            class="example"
-            v-for="example in examples"
-            :key="example"
-            @click="useExample(example)"
-          >
-            {{ example }}
+      <v-card-text>
+        <v-card-title>Try this examples:</v-card-title>
+        <v-card-text class="examples">
+          <div v-for="example in examples" :key="example">
+            <v-btn class="example" @click="useExample(example)">{{ example }}</v-btn>
           </div>
-        </div>
-      </div>
-    </div>
+        </v-card-text>
+      </v-card-text>
+    </v-card>
   </v-container>
 </template>
 
@@ -123,15 +118,15 @@ const useExample = (example: string) => {
   width: 150px;
   margin-top: 10px;
   cursor: pointer;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
+  /* border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px; */
   padding: 5px 10px;
 }
 
 .gene-item {
   margin-top: 20px;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
+  /* border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>
