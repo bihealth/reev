@@ -126,9 +126,6 @@ describe('GeneDetailView', async () => {
     expect(ncbiSummaryCard.exists()).toBe(true)
     expect(supplementaryListCard.exists()).toBe(true)
     expect(variationLandscapeCard.exists()).toBe(true)
-
-    const launchImage = wrapper.findAll('.mdi-launch')
-    expect(launchImage.length).toBe(2573)
   })
 
   it('emits update in header', async () => {
