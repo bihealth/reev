@@ -358,7 +358,7 @@ const vegaLayer = [
     <v-divider />
     <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
       <figcaption class="figure-caption text-center">
-        Variantion landscape for gene {{ props.hgnc }}
+        Variantion landscape for gene {{ props?.hgnc }}
       </figcaption>
       <VegaPlot
         :data-values="vegaData"

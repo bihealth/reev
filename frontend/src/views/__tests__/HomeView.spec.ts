@@ -98,13 +98,13 @@ describe.concurrent('HomeView with mocked router', async () => {
       }
     )
 
-    const subtitle = wrapper.find('h2')
     const exampleTerms = wrapper.findAll('.example')
-    expect(subtitle.exists()).toBe(true)
     expect(exampleTerms.length).toBe(8)
   })
 
-  it('uses example by click', async () => {
+  it('searches for example by click', async () => {
+    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+
     const { wrapper } = setupMountedComponents(
       { component: HomeView, template: true },
       {

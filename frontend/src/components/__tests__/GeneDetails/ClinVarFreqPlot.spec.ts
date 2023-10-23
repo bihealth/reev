@@ -1,9 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
+import ClinVarFreqPlot from '@/components/GeneDetails/ClinVarFreqPlot.vue'
+import VegaPlot from '@/components/VegaPlot.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
-
-import ClinVarFreqPlot from '../ClinVarFreqPlot.vue'
-import VegaPlot from '../VegaPlot.vue'
 
 describe.concurrent('ClinVarFreqPlot', async () => {
   it('renders the ClinVarFreqPlot info', async () => {

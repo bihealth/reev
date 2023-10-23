@@ -119,7 +119,7 @@ const vegaEncoding = {
 </script>
 
 <template>
-  <v-card v-if="props.perFreqCounts.length">
+  <v-card v-if="props.perFreqCounts?.length">
     <v-card-title>ClinVar By Frequency</v-card-title>
     <v-divider />
     <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">

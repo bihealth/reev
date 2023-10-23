@@ -161,16 +161,16 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
         <div id="clinvar-frequency" class="gene-item">
           <ClinvarFreqPlot
-            :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
+            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
             :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
           />
         </div>
 
         <div id="gtex" class="gene-item">
           <GtexGenePlot
-            :gene-symbol="geneInfoStore.geneInfo.hgnc.hgnc_id"
-            :expression-records="geneInfoStore.geneInfo.gtex.records"
-            :ensembl-gene-id="geneInfoStore.geneInfo.gtex.ensembl_gene_id"
+            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+            :expression-records="geneInfoStore.geneInfo?.gtex?.records"
+            :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensembl_gene_id"
           />
         </div>
       </div>
