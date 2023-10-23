@@ -29,7 +29,7 @@ class Bookmark(Base):
             GUID, primary_key=True, index=True, default=uuid_module.uuid4
         )
         #: User who created the bookmark.
-        user = Column(String(255), ForeignKey("users.id"), nullable=False)
+        user = Column(String(255), ForeignKey("user.id"), nullable=False)
         #: Type of the bookmarked object.
         obj_type = Column(String(255), nullable=False)
         #: ID of the bookmarked object.
