@@ -119,17 +119,24 @@ const vegaEncoding = {
 </script>
 
 <template>
-  <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-    <figcaption class="figure-caption text-center">
-      Population frequency of ClinVar variants
-    </figcaption>
-    <VegaPlot
-      :data-values="vegaData as any"
-      :encoding="vegaEncoding"
-      :mark="false"
-      :layer="vegaLayer"
-      :height="300"
-      renderer="svg"
-    />
-  </figure>
+  <v-card v-if="props.perFreqCounts?.length">
+    <v-card-title>ClinVar By Frequency</v-card-title>
+    <v-divider />
+    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
+      <figcaption class="figure-caption text-center">
+        Population frequency of ClinVar variants
+      </figcaption>
+      <VegaPlot
+        :data-values="vegaData as any"
+        :encoding="vegaEncoding"
+        :mark="false"
+        :layer="vegaLayer"
+        :height="300"
+        renderer="svg"
+      />
+    </figure>
+  </v-card>
+  <v-card v-else>
+    <v-card-text class="text-muted text-center font-italic">No ClinVar data for gene.</v-card-text>
+  </v-card>
 </template>

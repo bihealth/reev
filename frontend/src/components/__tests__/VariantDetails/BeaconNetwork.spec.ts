@@ -23,11 +23,9 @@ describe.concurrent('BeaconNetwork', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Query Beacon -----|>')
+    expect(wrapper.text()).toContain('Query Beacon')
     const refreshButton = wrapper.find('.mdi-refresh')
-    const info = wrapper.find('.text-muted')
     expect(refreshButton.exists()).toBe(true)
-    expect(info.exists()).toBe(true)
   })
 
   it('correctly loads the BeaconNetwork info', async () => {

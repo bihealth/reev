@@ -44,7 +44,7 @@ const expand = ref<boolean>(false)
 </script>
 
 <template>
-  <v-card variant="elevated" v-if="props.clinvar?.vcv">
+  <v-card v-if="props.clinvar?.vcv">
     <v-card-title> ClinVar </v-card-title>
     <v-card-text>
       <v-row no-gutters class="flex-nowrap">

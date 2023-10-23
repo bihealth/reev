@@ -150,125 +150,129 @@ const performSearch = async (geneSymbol: string) => {
 </script>
 
 <template>
-  <div>
-    <div>
-      <v-data-table
-        v-model:items-per-page="itemsPerPage"
-        :headers="headers"
-        :items="items"
-        :loading="!items"
-        buttons-pagination
-        show-index
-        item-key="gene_name"
-        @click:row="onRowClicked"
-      >
-        <template v-slot:[`item.dbnsfp.gene_name`]="{ item }">
-          {{ item.dbnsfp.gene_name }}
-          <v-btn prepend-icon="mdi-open-in-new" @click="performSearch(item.dbnsfp.gene_name)" />
-        </template>
+  <v-card>
+    <v-card-title>Genes</v-card-title>
+    <v-divider />
+    <v-card-text>
+      <div>
+        <v-data-table
+          v-model:items-per-page="itemsPerPage"
+          :headers="headers"
+          :items="items"
+          :loading="!items"
+          buttons-pagination
+          show-index
+          item-key="gene_name"
+          @click:row="onRowClicked"
+        >
+          <template v-slot:[`item.dbnsfp.gene_name`]="{ item }">
+            {{ item.dbnsfp.gene_name }}
+            <v-btn prepend-icon="mdi-open-in-new" @click="performSearch(item.dbnsfp.gene_name)" />
+          </template>
 
-        <template v-slot:[`item.omim`]="{ value }">
-          <template v-if="value?.omim_diseases?.length">
-            <template v-for="(disease, idx) in value?.omim_diseases" :key="idx">
-              <template v-if="idx > 0">, </template>
-              <a
-                :href="`https://www.omim.org/entry/${disease.omim_id.replace('OMIM:', '')}`"
-                target="_blank"
-              >
-                {{ disease.label }}
-              </a>
+          <template v-slot:[`item.omim`]="{ value }">
+            <template v-if="value?.omim_diseases?.length">
+              <template v-for="(disease, idx) in value?.omim_diseases" :key="idx">
+                <template v-if="idx > 0">, </template>
+                <a
+                  :href="`https://www.omim.org/entry/${disease.omim_id.replace('OMIM:', '')}`"
+                  target="_blank"
+                >
+                  {{ disease.label }}
+                </a>
+              </template>
             </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.orpha`]="{ value }">
-          <template v-if="value?.orpha_diseases?.length">
-            <template v-for="(disease, idx) in value?.orpha_diseases" :key="idx">
-              <template v-if="idx > 0">, </template>
-              <a
-                :href="`https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=${disease.orpha_id.replace(
-                  'ORPHA:',
-                  ''
-                )}`"
-                target="_blank"
-              >
-                {{ disease.label }}
-              </a>
+          <template v-slot:[`item.orpha`]="{ value }">
+            <template v-if="value?.orpha_diseases?.length">
+              <template v-for="(disease, idx) in value?.orpha_diseases" :key="idx">
+                <template v-if="idx > 0">, </template>
+                <a
+                  :href="`https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=${disease.orpha_id.replace(
+                    'ORPHA:',
+                    ''
+                  )}`"
+                  target="_blank"
+                >
+                  {{ disease.label }}
+                </a>
+              </template>
             </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.gnomad_constraints.pli`]="{ value }">
-          <template v-if="value">
-            <span v-html="roundIt(value, 3)" />
+          <template v-slot:[`item.gnomad_constraints.pli`]="{ value }">
+            <template v-if="value">
+              <span v-html="roundIt(value, 3)" />
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.gnomad_constraints.oe_lof_upper`]="{ value }">
-          <template v-if="value">
-            <span v-html="roundIt(value, 3)" />
+          <template v-slot:[`item.gnomad_constraints.oe_lof_upper`]="{ value }">
+            <template v-if="value">
+              <span v-html="roundIt(value, 3)" />
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.dbnsfp.haploinsufficiency`]="{ value }">
-          <template v-if="value">
-            <span v-html="roundIt(value, 3)" />
+          <template v-slot:[`item.dbnsfp.haploinsufficiency`]="{ value }">
+            <template v-if="value">
+              <span v-html="roundIt(value, 3)" />
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.shet.s_het`]="{ value }">
-          <template v-if="value">
-            <span v-html="roundIt(value, 3)" />
+          <template v-slot:[`item.shet.s_het`]="{ value }">
+            <template v-if="value">
+              <span v-html="roundIt(value, 3)" />
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.rcnv.p_haplo`]="{ value }">
-          <template v-if="value">
-            <span v-html="roundIt(value, 3)"></span>
+          <template v-slot:[`item.rcnv.p_haplo`]="{ value }">
+            <template v-if="value">
+              <span v-html="roundIt(value, 3)"></span>
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.rcnv.p_triplo`]="{ value }">
-          <template v-if="value">
-            <span v-html="roundIt(value, 3)" />
+          <template v-slot:[`item.rcnv.p_triplo`]="{ value }">
+            <template v-if="value">
+              <span v-html="roundIt(value, 3)" />
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.clingen.haplo_summary`]="{ value }">
-          <template v-if="value">
-            <abbr :title="value">{{ value }}</abbr>
+          <template v-slot:[`item.clingen.haplo_summary`]="{ value }">
+            <template v-if="value">
+              <abbr :title="value">{{ value }}</abbr>
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
 
-        <template v-slot:[`item.clingen.triplo_summary`]="{ value }">
-          <template v-if="value">
-            <abbr :title="value">{{ value }}</abbr>
+          <template v-slot:[`item.clingen.triplo_summary`]="{ value }">
+            <template v-if="value">
+              <abbr :title="value">{{ value }}</abbr>
+            </template>
+            <template v-else> &mdash; </template>
           </template>
-          <template v-else> &mdash; </template>
-        </template>
-      </v-data-table>
-    </div>
-
-    <div v-if="currentGeneInfos">
-      <div
-        class="ml-2 mr-2"
-        style="font-weight: bolder; font-size: 120%; border-bottom: 1px solid #aaaaaa"
-      >
-        Gene Details: {{ currentGeneInfos.hgnc.symbol }}
+        </v-data-table>
       </div>
-      <VariantDetailsGene :gene="currentGeneInfos" />
-    </div>
-    <div v-else class="text-muted text-center font-italic pt-2">
-      Select gene in table above to see details.
-    </div>
-  </div>
+
+      <div v-if="currentGeneInfos">
+        <div
+          class="ml-2 mr-2"
+          style="font-weight: bolder; font-size: 120%; border-bottom: 1px solid #aaaaaa"
+        >
+          Gene Details: {{ currentGeneInfos.hgnc.symbol }}
+        </div>
+        <VariantDetailsGene :gene="currentGeneInfos" />
+      </div>
+      <div v-else class="text-muted text-center font-italic pt-2">
+        Select gene in table above to see details.
+      </div>
+    </v-card-text></v-card
+  >
 </template>

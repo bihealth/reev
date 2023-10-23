@@ -353,9 +353,13 @@ const vegaLayer = [
 </script>
 
 <template>
-  <v-card variant="elevated" id="variation-landscape">
+  <v-card>
     <v-card-title> ClinVar Variation </v-card-title>
-    <div style="height: 350px; overflow: none">
+    <v-divider />
+    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
+      <figcaption class="figure-caption text-center">
+        Variantion landscape for gene {{ props?.hgnc }}
+      </figcaption>
       <VegaPlot
         :data-values="vegaData"
         :encoding="vegaEncoding"
@@ -363,6 +367,6 @@ const vegaLayer = [
         :height="300"
         renderer="canvas"
       />
-    </div>
+    </figure>
   </v-card>
 </template>

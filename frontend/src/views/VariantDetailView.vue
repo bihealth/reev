@@ -116,33 +116,33 @@ const performSearch = async (geneSymbol: string) => {
   <v-layout>
     <v-main style="min-height: 300px">
       <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
-        <div v-if="variantInfoStore.geneInfo !== null" id="gene" class="variant-item">
-          <h2>Gene</h2>
-          <h3>
-            Link to
-            <v-btn @click="performSearch(variantInfoStore.varAnnos?.cadd?.GeneName)">{{
-              variantInfoStore.varAnnos?.cadd?.GeneName
-            }}</v-btn>
-          </h3>
-          <v-divider />
-          <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
-        </div>
-        <div v-else id="gene" class="variant-item">
-          <h2>Gene</h2>
-          <h3>No gene information available</h3>
+        <div class="variant-item">
+          <v-card id="gene" v-if="variantInfoStore.geneInfo !== null">
+            <v-card-title>Gene</v-card-title>
+            <v-card-subtitle>
+              Link to
+              <v-btn @click="performSearch(variantInfoStore.varAnnos?.cadd?.GeneName)">{{
+                variantInfoStore.varAnnos?.cadd?.GeneName
+              }}</v-btn>
+            </v-card-subtitle>
+            <v-divider />
+            <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
+          </v-card>
+          <v-card v-else id="gene" class="variant-item">
+            <v-card-title>Gene</v-card-title>
+            <v-card-subtitle>No gene information available</v-card-subtitle>
+          </v-card>
         </div>
 
         <div id="beacon-network" class="variant-item">
-          <h2>Beacon Network</h2>
-          <v-divider />
           <BeaconNetwork :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
-        <VariantDetailsClinvar :clinvar="variantInfoStore.varAnnos.clinvar" />
+        <div id="clinvar" class="variant-item">
+          <VariantDetailsClinvar :clinvar="variantInfoStore.varAnnos.clinvar" />
+        </div>
 
-        <div id="freqs" class="variant-item mt-6">
-          <h2>Population Frequencies</h2>
-          <v-divider />
+        <div id="freqs" class="variant-item">
           <VariantDetailsFreqs
             :small-var="variantInfoStore.smallVariant as SmallVariant"
             :var-annos="variantInfoStore.varAnnos"
@@ -150,8 +150,6 @@ const performSearch = async (geneSymbol: string) => {
         </div>
 
         <div id="variant-tools" class="variant-item">
-          <h2>Variant Tools</h2>
-          <v-divider />
           <VariantDetailsVariantTools
             :small-var="variantInfoStore.smallVariant"
             :var-annos="variantInfoStore.varAnnos"
@@ -159,19 +157,17 @@ const performSearch = async (geneSymbol: string) => {
         </div>
 
         <div id="acmg-rating" class="variant-item">
-          <h2>ACMG Rating</h2>
-          <v-divider />
           <AcmgRating :small-variant="variantInfoStore.smallVariant || undefined" />
         </div>
 
         <div v-if="variantInfoStore.txCsq?.length !== 0" id="tx-csq" class="variant-item">
-          <h2>Consequences</h2>
-          <v-divider />
           <VariantDetailsTxCsq :tx-csq="variantInfoStore.txCsq" />
         </div>
         <div v-else id="tx-csq" class="variant-item">
-          <h2>Consequences</h2>
-          <h3>No consequence information available</h3>
+          <v-card>
+            <v-card-title>Consequence</v-card-title>
+            <v-card-subtitle>No consequence information available.</v-card-subtitle>
+          </v-card>
         </div>
 
         <div
@@ -179,18 +175,16 @@ const performSearch = async (geneSymbol: string) => {
           id="conservation"
           class="variant-item"
         >
-          <h2>Conservation</h2>
-          <v-divider />
           <VariantDetailsConservation :var-annos="variantInfoStore.varAnnos" />
         </div>
         <div v-else id="conservation" class="variant-item">
-          <h2>Conservation</h2>
-          <h3>No conservation information available</h3>
+          <v-card>
+            <v-card-title>Conservation</v-card-title>
+            <v-card-subtitle>No conservation information available.</v-card-subtitle>
+          </v-card>
         </div>
 
         <div id="variant-validator" class="variant-item">
-          <h2>Variant Validator</h2>
-          <v-divider />
           <VariantDetailsVariantValidator
             :small-variant="variantInfoStore.smallVariant || undefined"
           />
@@ -215,8 +209,8 @@ const performSearch = async (geneSymbol: string) => {
 
 .variant-item {
   margin-bottom: 20px;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
+  /* border: 2px solid rgb(229, 85, 64);
+  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>

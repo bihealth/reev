@@ -84,53 +84,59 @@ const jumpToLocus = async () => {
 </script>
 
 <template>
-  <div>
-    <h2>External Resources</h2>
-    <div class="external-resource-item">
-      <a :href="dgvLinkout" target="_blank">
-        <v-icon>mdi-launch</v-icon>
-        DGV
-      </a>
-    </div>
-    <div class="external-resource-item">
-      <a :href="ensemblLinkout" target="_blank">
-        <v-icon>mdi-launch</v-icon>
-        ENSEBML
-      </a>
-    </div>
-    <div class="external-resource-item">
-      <a :href="gnomadLinkout" target="_blank">
-        <v-icon>mdi-launch</v-icon>
-        gnomAD
-      </a>
-    </div>
-    <div class="external-resource-item">
-      <a :href="ucscLinkout" target="_blank">
-        <v-icon>mdi-launch</v-icon>
-        UCSC Genome Browser
-      </a>
-    </div>
-    <div class="external-resource-item">
-      <a :href="varsomeLinkout" target="_blank">
-        <v-icon>mdi-launch</v-icon>
-        varsome
-      </a>
-    </div>
-  </div>
+  <v-card>
+    <v-card-title>SV Tools</v-card-title>
+    <v-divider />
+    <v-card-text>
+      <v-card-item>
+        <h3>External Resources</h3>
+        <div class="external-resource-item">
+          <a :href="dgvLinkout" target="_blank">
+            <v-icon>mdi-launch</v-icon>
+            DGV
+          </a>
+        </div>
+        <div class="external-resource-item">
+          <a :href="ensemblLinkout" target="_blank">
+            <v-icon>mdi-launch</v-icon>
+            ENSEBML
+          </a>
+        </div>
+        <div class="external-resource-item">
+          <a :href="gnomadLinkout" target="_blank">
+            <v-icon>mdi-launch</v-icon>
+            gnomAD
+          </a>
+        </div>
+        <div class="external-resource-item">
+          <a :href="ucscLinkout" target="_blank">
+            <v-icon>mdi-launch</v-icon>
+            UCSC Genome Browser
+          </a>
+        </div>
+        <div class="external-resource-item">
+          <a :href="varsomeLinkout" target="_blank">
+            <v-icon>mdi-launch</v-icon>
+            varsome
+          </a>
+        </div>
+      </v-card-item>
 
-  <v-divider />
+      <v-divider />
 
-  <div>
-    <h2>IGV</h2>
-    <div>
-      <div>
-        <a href="#" target="_blank" @click.prevent="jumpToLocus()">
-          <v-icon>mdi-launch</v-icon>
-          Jump to Location in IGV
-        </a>
-      </div>
-    </div>
-  </div>
+      <v-card-item>
+        <h3>IGV</h3>
+        <div>
+          <div>
+            <a href="#" target="_blank" @click.prevent="jumpToLocus()">
+              <v-icon>mdi-launch</v-icon>
+              Jump to Location in IGV
+            </a>
+          </div>
+        </div>
+      </v-card-item>
+    </v-card-text>
+  </v-card>
 </template>
 
 <style scoped>
