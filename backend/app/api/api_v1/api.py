@@ -5,13 +5,14 @@ from httpx_oauth.clients.openid import OpenID
 from httpx_oauth.errors import GetIdEmailError
 from httpx_oauth.oauth2 import BaseOAuth2, OAuth2Error
 
-from app.api.api_v1.endpoints import adminmsgs, auth
+from app.api.api_v1.endpoints import adminmsgs, auth, bookmarks
 from app.core.auth import auth_backend_bearer, auth_backend_cookie, fastapi_users
 from app.core.config import settings
 from app.schemas.user import UserRead, UserUpdate
 
 api_router = APIRouter()
 api_router.include_router(adminmsgs.router, prefix="/adminmsgs", tags=["adminmsgs"])
+api_router.include_router(bookmarks.router, prefix="/bookmarks", tags=["bookmarks"])
 
 api_router.include_router(
     fastapi_users.get_auth_router(auth_backend_bearer), prefix="/auth/bearer", tags=["auth"]
