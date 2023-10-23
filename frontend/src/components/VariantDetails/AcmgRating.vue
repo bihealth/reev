@@ -198,15 +198,13 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-#acmg-class-info {
+#acmg-rating {
   margin: 10px;
-  width: 300px;
-  grid-auto-flow: column;
 }
 
 .section {
   margin: 10px;
-  border: 2px solid rgb(229, 85, 64);
+  border: 2px solid #757ce8;
   border-radius: 10px;
   padding: 5px 10px;
 }

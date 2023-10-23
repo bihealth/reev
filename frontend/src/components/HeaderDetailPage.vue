@@ -92,7 +92,7 @@ watch(() => props.searchTerm, updateTerms)
 <style scoped>
 .top-bar {
   background-color: white;
-  border-bottom: 2px solid rgb(229, 85, 64);
+  border-bottom: 2px solid #455a64;
 }
 
 .top-search-bar {

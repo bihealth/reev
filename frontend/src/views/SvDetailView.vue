@@ -128,7 +128,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
         <div id="genome-browser" class="sv-item">
           <GenomeBrowser
-            :genome="genomeRelease === 'grch37' ? 'hg19' : 'b38'"
+            :genome="genomeRelease === 'grch37' ? 'hg19' : 'hg38'"
             :locus="svLocus(svInfoStore.currentSvRecord) as string"
           />
         </div>
