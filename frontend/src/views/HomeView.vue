@@ -17,15 +17,20 @@ const router = useRouter()
 const searchTerm = ref('')
 const genomeRelease = ref('grch37')
 
+interface Example {
+  query: string
+  label?: string
+}
+
 const examples = [
-  'BRCA1',
-  'EMP',
-  'TP53',
-  'NM_007294.4(BRCA1):c.5123C>A',
-  'chr17:41197708:T:G',
-  'chr17:41197751:G:T',
-  'DEL:chr17:41176312:41277500',
-  'NC_000017.10:g.41197728G>T'
+  {query: 'BRCA1', label: "gene symbols BRCA1, TP53, ..."},
+  {query: 'TP53'},
+  {query: 'EMP', label: "partial gene symbol EMP, query for similar gene"},
+  {query: 'NM_007294.4(BRCA1):c.5123C>A', label: "HGVS position on transcript"},
+  {query: 'NC_000017.10:g.41197728G>T', label: "HGVS genomic variant"},
+  {query: 'chr17:41197708:T:G', label: "SPDI (sequence, position, deleted, inserted) genomic variants"},
+  {query: 'chr17:41197751:G:T'},
+  {query: 'DEL:chr17:41176312:41277500', label: "genomic specification of a deletion"},
 ]
 
 const performExampleSearch = (example: string) => {
@@ -64,7 +69,8 @@ const performSearch = async () => {
         <v-card-title>Example Queries:</v-card-title>
         <v-card-text class="examples">
           <div v-for="example in examples" :key="example">
-            <v-btn class="example" @click="performExampleSearch(example)">{{ example }}</v-btn>
+            <div v-if="example.label?.length" class="text-caption mt-3">{{ example.label }}</div>
+            <v-btn class="example mt-1" @click="performExampleSearch(example.query)">{{ example.query }}</v-btn>
           </div>
         </v-card-text>
       </v-card>
@@ -86,10 +92,9 @@ const performSearch = async () => {
 
 .example {
   width: 300px;
-  margin-top: 10px;
   cursor: pointer;
   /* border: 2px solid rgb(229, 85, 64);
   border-radius: 10px; */
-  padding: 5px 10px;
+  /* padding: 5px 10px; */
 }
 </style>

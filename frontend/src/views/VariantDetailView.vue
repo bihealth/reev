@@ -116,8 +116,8 @@ const performSearch = async (geneSymbol: string) => {
   <v-layout>
     <v-main style="min-height: 300px">
       <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
-        <div id="gene" class="variant-item">
-          <v-card v-if="variantInfoStore.geneInfo !== null">
+        <div class="variant-item">
+          <v-card id="gene"  v-if="variantInfoStore.geneInfo !== null">
             <v-card-title>Gene</v-card-title>
             <v-card-subtitle>
               Link to
