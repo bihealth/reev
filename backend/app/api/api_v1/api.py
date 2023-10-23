@@ -3,7 +3,6 @@ from typing import Any, Dict, Optional, Tuple
 from fastapi import APIRouter
 from httpx_oauth.clients.openid import OpenID
 from httpx_oauth.errors import GetIdEmailError
-from httpx_oauth.oauth2 import BaseOAuth2, OAuth2Error
 
 from app.api.api_v1.endpoints import adminmsgs, auth, bookmarks
 from app.core.auth import auth_backend_bearer, auth_backend_cookie, fastapi_users

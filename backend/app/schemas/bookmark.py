@@ -11,7 +11,7 @@ class BookmarkTypes(Enum):
 
 
 class BookmarkBase(BaseModel):
-    user: str | None = None
+    user: UUID | None = None
     obj_type: BookmarkTypes | None = None
     obj_id: str | None = None
 

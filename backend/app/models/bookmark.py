@@ -4,7 +4,7 @@ import uuid as uuid_module
 from typing import TYPE_CHECKING
 
 from fastapi_users_db_sqlalchemy.generics import GUID  # noqa
-from sqlalchemy import Column, ForeignKey, String
+from sqlalchemy import Column, Enum, ForeignKey, String, UniqueConstraint, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
@@ -18,9 +18,11 @@ class Bookmark(Base):
 
     __tablename__ = "bookmarks"
 
+    __table_args__ = (UniqueConstraint("user", "obj_type", "obj_id", name="uq_bookmark"),)
+
     if TYPE_CHECKING:  # pragma: no cover
         id: UUID_ID
-        user: str
+        user: UUID_ID
         obj_type: BookmarkTypes
         obj_id: str
     else:
@@ -29,8 +31,8 @@ class Bookmark(Base):
             GUID, primary_key=True, index=True, default=uuid_module.uuid4
         )
         #: User who created the bookmark.
-        user = Column(String(255), ForeignKey("user.id"), nullable=False)
+        user = Column(Uuid, ForeignKey("user.id"), nullable=False)
         #: Type of the bookmarked object.
-        obj_type = Column(String(255), nullable=False)
+        obj_type = Column(Enum(BookmarkTypes), nullable=False)
         #: ID of the bookmarked object.
         obj_id = Column(String(255), nullable=False)
