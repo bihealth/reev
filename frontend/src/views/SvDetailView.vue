@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import BookmarkButton from '@/components/BookmarkButton.vue'
 import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
@@ -94,7 +95,9 @@ const genomeReleaseRef = ref(props.genomeRelease)
 <template>
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
-    <div v-if="svInfoStore.storeState == StoreState.Active" class="variant-info">
+    <div v-if="svInfoStore.storeState == StoreState.Active" class="sv-info">
+      <BookmarkButton :type="'strucvar'" :id="searchTermRef" />
+      Sections:
       <v-list density="compact" nav>
         <v-list-item
           v-for="section in SECTIONS"
