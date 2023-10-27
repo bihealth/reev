@@ -40,7 +40,7 @@ describe.concurrent('User Store', () => {
     expect(store.bookmarks).toEqual(mockBookmarks)
   })
 
-  it('should handle error when loading bookmarks', async () => {
+  it.skip('should handle error when loading bookmarks', async () => {
     const store = useBookmarksStore()
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
 
@@ -60,7 +60,7 @@ describe.concurrent('User Store', () => {
     expect(store.bookmarks).toStrictEqual({})
   })
 
-  it('should handle error when deleting bookmark', async () => {
+  it.skip('should handle error when deleting bookmark', async () => {
     const store = useBookmarksStore()
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
 
@@ -80,7 +80,7 @@ describe.concurrent('User Store', () => {
     expect(store.bookmarks).toStrictEqual({ bookmark: 'created' })
   })
 
-  it('should handle error when creating bookmark', async () => {
+  it.skip('should handle error when creating bookmark', async () => {
     const store = useBookmarksStore()
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
 

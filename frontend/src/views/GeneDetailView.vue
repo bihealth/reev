@@ -189,8 +189,6 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
 .gene-item {
   margin-bottom: 20px;
-  /* border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>

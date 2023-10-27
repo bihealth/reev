@@ -1,5 +1,5 @@
 import { createTestingPinia } from '@pinia/testing'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
@@ -96,7 +96,14 @@ const makeWrapper = () => {
   )
 }
 
-describe('VariantDetailView', async () => {
+describe.concurrent('VariantDetailView', async () => {
+  beforeEach(() => {
+    // Disable Vue warn. This warning is caused by BookmarkButton.vue due to
+    // unproper mocking of the store and props passed to the component.
+    const spy = vi.spyOn(console, 'warn')
+    spy.mockImplementation(() => {})
+  })
+
   it('renders the header', async () => {
     const { wrapper } = makeWrapper()
 

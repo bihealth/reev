@@ -52,22 +52,22 @@ describe.concurrent('Bookmarks Client', () => {
     expect(result).toEqual({ status: 500 })
   })
 
-  it('deletes bookmark correctly', async () => {
-    fetchMocker.mockResponse(JSON.stringify({}))
+  it('fetches bookmark correctly', async () => {
+    fetchMocker.mockResponse(JSON.stringify(mockBookmarks[0]))
 
     const client = new BookmarksClient()
-    const result = await client.deleteBookmark('seqvar', 'HGNC:1100')
+    const result = await client.fetchBookmark('seqvar', 'HGNC:1100')
 
-    expect(result).toEqual({})
+    expect(result).toEqual(mockBookmarks[0])
   })
 
-  it.skip('fails to delete bookmark', async () => {
+  it('fails to fetch bookmark', async () => {
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
 
     const client = new BookmarksClient()
-    const result = await client.deleteBookmark('seqvar', 'HGNC:1100')
+    const result = await client.fetchBookmark('seqvar', 'HGNC:1100')
 
-    expect(result).toEqual({})
+    expect(result).toEqual({ detail: 'Internal Server Error' })
   })
 
   it('creates bookmark correctly', async () => {
@@ -79,12 +79,30 @@ describe.concurrent('Bookmarks Client', () => {
     expect(result).toEqual({})
   })
 
-  it.skip('fails to create bookmark', async () => {
+  it('fails to create bookmark', async () => {
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
 
     const client = new BookmarksClient()
     const result = await client.createBookmark('seqvar', 'HGNC:1100')
 
+    expect(result).toEqual({ detail: 'Internal Server Error' })
+  })
+
+  it('deletes bookmark correctly', async () => {
+    fetchMocker.mockResponse(JSON.stringify({}))
+
+    const client = new BookmarksClient()
+    const result = await client.deleteBookmark('seqvar', 'HGNC:1100')
+
     expect(result).toEqual({})
+  })
+
+  it('fails to delete bookmark', async () => {
+    fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
+
+    const client = new BookmarksClient()
+    const result = await client.deleteBookmark('seqvar', 'HGNC:1100')
+
+    expect(result).toEqual({ detail: 'Internal Server Error' })
   })
 })
