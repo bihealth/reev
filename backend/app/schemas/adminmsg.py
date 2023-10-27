@@ -23,8 +23,7 @@ class AdminMessageUpdate(AdminMessageBase):
 class AdminMessageInDbBase(AdminMessageBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    uuid: UUID
+    id: UUID
 
 
 class AdminMessageRead(AdminMessageInDbBase):

@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import BookmarkButton from '@/components/BookmarkButton.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
 import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
@@ -101,6 +102,8 @@ const performSearch = async (geneSymbol: string) => {
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
     <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
+      <BookmarkButton :type="'seqvar'" :id="searchTermRef" />
+      Sections:
       <v-list density="compact" nav>
         <v-list-item
           v-for="section in SECTIONS"

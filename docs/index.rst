@@ -23,3 +23,12 @@ It supports them by providing aggregated information on genomic variants.
    dev_docs
    dev_tests
    dev_tf
+
+.. toctree::
+   :hidden:
+   :maxdepth: 1
+   :caption: API Documentation
+
+   api_models
+   api_api_v1
+   api_internal

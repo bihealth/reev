@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import BookmarkButton from '@/components/BookmarkButton.vue'
 import AlternativeIdentifiers from '@/components/GeneDetails/AlternativeIdentifiers.vue'
 import ClinvarFreqPlot from '@/components/GeneDetails/ClinVarFreqPlot.vue'
 import ClinvarImpact from '@/components/GeneDetails/ClinvarImpact.vue'
@@ -92,6 +93,8 @@ const genomeReleaseRef = ref(props.genomeRelease)
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
     <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
+      <BookmarkButton :type="'gene'" :id="searchTermRef" />
+      Sections:
       <v-list density="compact" nav>
         <v-list-item
           v-for="section in SECTIONS"
@@ -186,8 +189,6 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
 .gene-item {
   margin-bottom: 20px;
-  /* border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px; */
   padding: 5px 10px;
 }
 </style>

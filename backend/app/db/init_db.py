@@ -6,7 +6,6 @@ from fastapi_users.exceptions import UserAlreadyExists
 from app.api.deps import get_async_session
 from app.core.auth import get_user_db, get_user_manager
 from app.core.config import settings
-from app.db.session import SessionLocal
 from app.schemas import UserCreate
 
 logging.basicConfig(level=logging.INFO)

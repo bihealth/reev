@@ -3,7 +3,7 @@ import os
 import secrets
 from typing import Any
 
-from pydantic import AnyHttpUrl, BaseModel, EmailStr, HttpUrl, PostgresDsn, field_validator
+from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
