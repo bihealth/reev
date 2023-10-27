@@ -28,7 +28,7 @@ onMounted(async () => {
   loadDataToStore()
   bookmarksStore
     .fetchBookmark(props.type, props.id)
-    .then((bookmark) => {
+    ?.then((bookmark) => {
       if (bookmark) {
         isBookmarked.value = true
       } else {
