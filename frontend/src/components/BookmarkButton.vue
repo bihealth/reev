@@ -26,6 +26,13 @@ const loadDataToStore = async () => {
 // Fetch existing bookmark for the given type and id on mount
 onMounted(async () => {
   loadDataToStore()
+  bookmarksStore.fetchBookmark(props.type, props.id).then((bookmark) => {
+    if (bookmark) {
+      isBookmarked.value = true
+    } else {
+      isBookmarked.value = false
+    }
+  })
 })
 
 // Function to toggle bookmark

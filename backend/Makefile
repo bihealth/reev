@@ -76,7 +76,7 @@ ci: \
 
 .PHONY: docs
 docs:
-	pipenv run -- make -C ../docs clean html
+	PYTHONPATH=$(PWD) pipenv run -- make -C ../docs clean html
 
 .PHONY: serve
 serve:

@@ -1,5 +1,4 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
-import { UsersClient } from '@/api/users'
 
 /**
  * Access to the bookmarks part of the API.
@@ -16,23 +15,12 @@ export class BookmarksClient {
   }
 
   /**
-   * Obtains the currently logged in user's information.
-   */
-  async fetchCurrentUser(): Promise<any> {
-    const userClient = new UsersClient()
-    const response = await userClient.fetchCurrentUserProfile()
-    this.currentUserId = response.id
-  }
-
-  /**
    * Obtains the currently logged in user's bookmarks.
    *
    * @returns bookmarks list for the current user
    */
   async fetchBookmarks(): Promise<any> {
-    // Obtain the current user's information
-    await this.fetchCurrentUser()
-    const url = `${this.apiBaseUrl}bookmarks/list?user_id=${this.currentUserId}`
+    const url = `${this.apiBaseUrl}bookmarks/list`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -49,9 +37,7 @@ export class BookmarksClient {
    * @returns bookmark for the current user
    */
   async fetchBookmark(obj_type: string, obj_id: string): Promise<any> {
-    // Obtain the current user's information
-    await this.fetchCurrentUser()
-    const url = `${this.apiBaseUrl}bookmarks/get?user_id=${this.currentUserId}&obj_type=${obj_type}&obj_id=${obj_id}`
+    const url = `${this.apiBaseUrl}bookmarks/get?obj_type=${obj_type}&obj_id=${obj_id}`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -68,11 +54,6 @@ export class BookmarksClient {
    * @returns created bookmark
    */
   async createBookmark(obj_type: string, obj_id: string): Promise<any> {
-    // Obtain the current user's information
-    await this.fetchCurrentUser()
-    if (this.currentUserId === null) {
-      throw new Error('User ID is null.')
-    }
     const response = await fetch(`${this.apiBaseUrl}bookmarks/create`, {
       method: 'POST',
       mode: 'cors',
@@ -81,7 +62,7 @@ export class BookmarksClient {
         accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: `{"user": "${this.currentUserId}", "obj_type": "${obj_type}", "obj_id": "${obj_id}"}`
+      body: `{"obj_type": "${obj_type}", "obj_id": "${obj_id}"}`
     })
     return await response.json()
   }
@@ -94,9 +75,7 @@ export class BookmarksClient {
    * @returns deleted bookmark
    */
   async deleteBookmark(obj_type: string, obj_id: string): Promise<any> {
-    // Obtain the current user's information
-    await this.fetchCurrentUser()
-    const url = `${this.apiBaseUrl}bookmarks/delete?user_id=${this.currentUserId}&obj_type=${obj_type}&obj_id=${obj_id}`
+    const url = `${this.apiBaseUrl}bookmarks/delete?obj_type=${obj_type}&obj_id=${obj_id}`
     const response = await fetch(url, {
       method: 'DELETE',
       mode: 'cors',
