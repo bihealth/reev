@@ -1,8 +1,8 @@
-"""empty message
+"""init bookmarks
 
-Revision ID: 435a8e31682e
+Revision ID: 27c3977494f7
 Revises: 8ccd31a4f116
-Create Date: 2023-10-23 18:44:22.900953+02:00
+Create Date: 2023-10-27 09:40:49.740067+02:00
 
 """
 import fastapi_users_db_sqlalchemy.generics  # noqa
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "435a8e31682e"
+revision = "27c3977494f7"
 down_revision = "8ccd31a4f116"
 branch_labels = None
 depends_on = None
@@ -27,10 +27,7 @@ def upgrade():
             "obj_type", sa.Enum("seqvar", "strucvar", "gene", name="bookmarktypes"), nullable=False
         ),
         sa.Column("obj_id", sa.String(length=255), nullable=False),
-        sa.ForeignKeyConstraint(
-            ["user"],
-            ["user.id"],
-        ),
+        sa.ForeignKeyConstraint(["user"], ["user.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
         sa.UniqueConstraint("user", "obj_type", "obj_id", name="uq_bookmark"),
     )

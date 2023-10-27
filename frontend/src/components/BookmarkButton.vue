@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { BookmarksClient } from '@/api/bookmarks'
+import { useBookmarksStore } from '@/stores/bookmarks'
 
 // Import the BookmarksClient
 
@@ -15,33 +15,30 @@ const props = withDefaults(defineProps<Props>(), {
   id: ''
 })
 
+const bookmarksStore = useBookmarksStore()
+
 const isBookmarked = ref(false)
-const client = new BookmarksClient()
+
+const loadDataToStore = async () => {
+  await bookmarksStore.loadBookmarks()
+}
 
 // Fetch existing bookmark for the given type and id on mount
 onMounted(async () => {
-  try {
-    const bookmark = await client.fetchBookmark(props.type, props.id)
-    if (bookmark) {
-      isBookmarked.value = true
-    }
-  } catch (e) {
-    console.error(e)
-    isBookmarked.value = false
-  }
+  loadDataToStore()
 })
 
 // Function to toggle bookmark
 const toggleBookmark = async () => {
   if (isBookmarked.value) {
-    await client.deleteBookmark(props.type, props.id)
+    await bookmarksStore.deleteBookmark(props.type, props.id)
   } else {
-    await client.createBookmark(props.type, props.id)
+    await bookmarksStore.createBookmark(props.type, props.id)
   }
-  try {
-    await client.fetchBookmark(props.type, props.id)
+  const retrievedBookmark = await bookmarksStore.fetchBookmark(props.type, props.id)
+  if (retrievedBookmark) {
     isBookmarked.value = true
-  } catch (e) {
+  } else {
     isBookmarked.value = false
   }
 }
@@ -51,7 +48,7 @@ const toggleBookmark = async () => {
   <div class="ml=2">
     <span v-if="!isBookmarked">Bookmark this</span>
     <span v-else>Delete bookmark</span>
-    <v-btn class="ml-2" :icon="!isBookmarked" @click="toggleBookmark">
+    <v-btn class="ml-2" :icon="!isBookmarked" @click="toggleBookmark()">
       <v-icon>
         {{ isBookmarked ? 'mdi-star' : 'mdi-star-outline' }}
       </v-icon>

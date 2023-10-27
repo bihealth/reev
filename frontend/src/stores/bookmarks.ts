@@ -32,14 +32,34 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     }
   }
 
-  const deleteBookmark = async (bookmark: BookmarkData) => {
+  const deleteBookmark = async (obj_type: string, obj_id: string) => {
     storeState.value = StoreState.Loading
     try {
       const client = new BookmarksClient()
-      await client.deleteBookmark(bookmark.obj_type, bookmark.obj_id)
+      await client.deleteBookmark(obj_type, obj_id)
       await loadBookmarks()
     } catch (e) {
       storeState.value = StoreState.Error
+    }
+  }
+
+  const createBookmark = async (obj_type: string, obj_id: string) => {
+    storeState.value = StoreState.Loading
+    try {
+      const client = new BookmarksClient()
+      await client.createBookmark(obj_type, obj_id)
+      await loadBookmarks()
+    } catch (e) {
+      storeState.value = StoreState.Error
+    }
+  }
+
+  const fetchBookmark = async (obj_type: string, obj_id: string) => {
+    try {
+      const client = new BookmarksClient()
+      return await client.fetchBookmark(obj_type, obj_id)
+    } catch (e) {
+      return null
     }
   }
 
@@ -47,6 +67,8 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
     storeState,
     bookmarks,
     loadBookmarks,
+    createBookmark,
+    fetchBookmark,
     deleteBookmark
   }
 })

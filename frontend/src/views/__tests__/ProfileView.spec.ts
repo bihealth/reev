@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
+import type { BookmarkData } from '@/stores/bookmarks'
 import { type UserData } from '@/stores/user'
 
 import ProfileView from '../ProfileView.vue'
@@ -12,6 +13,13 @@ const adminUser: UserData = {
   is_active: true,
   is_superuser: true,
   is_verified: true
+}
+
+const exampleBookmark: BookmarkData = {
+  user: '2c0a153e-5e8c-11ee-8c99-0242ac120002',
+  obj_type: 'seqvar',
+  obj_id: 'HGNC:1100',
+  id: '2c0a153e-5e8c-11ee-8c99-0242ac120001'
 }
 
 describe.concurrent('Profile view', async () => {
@@ -29,6 +37,9 @@ describe.concurrent('Profile view', async () => {
         initialStoreState: {
           user: {
             currentUser: adminUser
+          },
+          bookmarks: {
+            bookmarks: [exampleBookmark]
           }
         }
       }
@@ -36,6 +47,7 @@ describe.concurrent('Profile view', async () => {
 
     expect(wrapper.html()).toMatch('User Profile')
     expect(wrapper.text()).toMatch('You are currently logged in...')
+    expect(wrapper.text()).toMatch('Your bookmarks:')
   })
 
   it('renders the main content if not logged in', () => {

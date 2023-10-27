@@ -31,7 +31,7 @@ class Bookmark(Base):
             GUID, primary_key=True, index=True, default=uuid_module.uuid4
         )
         #: User who created the bookmark.
-        user = Column(Uuid, ForeignKey("user.id"), nullable=False)
+        user = Column(Uuid, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
         #: Type of the bookmarked object.
         obj_type = Column(Enum(BookmarkTypes), nullable=False)
         #: ID of the bookmarked object.

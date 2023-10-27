@@ -28,14 +28,14 @@ const logout = async () => {
  * If a route is found for the search term then redirect to that route.
  * Otherwise log an error.
  *
- * @param geneSymbol Gene symbol to search for
+ * @param query Query to search for
  */
-const performSearch = async (geneSymbol: string) => {
-  const routeLocation: any = await search(geneSymbol, 'grch37')
+const performSearch = async (query: string) => {
+  const routeLocation: any = await search(query, 'grch37')
   if (routeLocation) {
     router.push(routeLocation)
   } else {
-    console.error(`no route found for ${geneSymbol}`)
+    console.error(`no route found for ${query}`)
   }
 }
 
@@ -102,7 +102,11 @@ onMounted(() => {
               <v-list-item v-for="bookmark in bookmarksStore.bookmarks" :key="bookmark.id">
                 <v-card-text>
                   <v-btn @click="performSearch(bookmark.obj_id)">{{ bookmark.obj_id }}</v-btn>
-                  <v-btn class="ma-2" icon @click="bookmarksStore.deleteBookmark(bookmark)">
+                  <v-btn
+                    class="ma-2"
+                    icon
+                    @click="bookmarksStore.deleteBookmark(bookmark.obj_type, bookmark.obj_id)"
+                  >
                     <v-icon>mdi-delete</v-icon>
                   </v-btn>
                 </v-card-text>
