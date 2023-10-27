@@ -10,12 +10,14 @@ import { useRouter } from 'vue-router'
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import CaseInformationCard from '@/components/CaseInformationCard.vue'
 import { search } from '@/lib/utils'
 
 const router = useRouter()
 
 const searchTerm = ref('')
 const genomeRelease = ref('grch37')
+const showCaseInformation = ref(false)
 
 interface Example {
   query: string
@@ -59,7 +61,7 @@ const performSearch = async () => {
 </script>
 
 <template>
-  <HeaderDefault />
+  <HeaderDefault v-model:case-information="showCaseInformation"/>
   <v-container class="home-view">
     <SearchBar
       v-model:search-term="searchTerm"
@@ -79,6 +81,8 @@ const performSearch = async () => {
           </div>
         </v-card-text>
       </v-card>
+
+      <CaseInformationCard class="ml-16 mt-8" v-if="showCaseInformation" />
     </v-row>
   </v-container>
   <FooterDefault />

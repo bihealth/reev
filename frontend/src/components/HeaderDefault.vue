@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import UserProfileButton from '@/components/UserProfileButton.vue'
+
+export interface Props {
+  caseInformation: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  caseInformation: false
+})
 </script>
 
 <template>
@@ -18,6 +26,15 @@ import UserProfileButton from '@/components/UserProfileButton.vue'
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
+      <v-btn
+        class="mr-4"
+        prepend-icon="mdi-information-outline"
+        :model-value="props.caseInformation"
+        @click="$emit('update:caseInformation', !props.caseInformation)"
+      >
+        {{ props.caseInformation ? 'Hide' : 'Show' }} Case Information
+      </v-btn>
+      
       <UserProfileButton />
       <v-menu id="menu">
         <template v-slot:activator="{ props }">
