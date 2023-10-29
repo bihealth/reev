@@ -91,7 +91,7 @@ class OrcidOpenId(OpenID):
             if data_record_emails:
                 email = data_record_emails[0].get("email", None)
             else:
-                email = None
+                email = f"needs-update-{data_user['sub']}@orcid.example.org"
 
             return str(data_user["sub"]), email
 
@@ -115,8 +115,6 @@ for config in settings.OAUTH2_PROVIDERS:
         oauth_client=oauth_client,
         backend=auth_backend_cookie,
         state_secret=settings.SECRET_KEY,
-        associate_by_email=True,
-        is_verified_by_default=True,
     )
     api_router.include_router(
         oauth_router,
