@@ -1,5 +1,6 @@
 # Root Pipfile
 /Pipfile
+/Pipfile.lock
 
 # Coverage information.
 .coverage
