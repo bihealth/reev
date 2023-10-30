@@ -7,6 +7,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+import CaseInformationCard from '@/components/CaseInformationCard.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -16,6 +17,7 @@ const router = useRouter()
 
 const searchTerm = ref('')
 const genomeRelease = ref('grch37')
+const showCaseInformation = ref(false)
 
 interface Example {
   query: string
@@ -59,7 +61,7 @@ const performSearch = async () => {
 </script>
 
 <template>
-  <HeaderDefault />
+  <HeaderDefault v-model:case-information="showCaseInformation" />
   <v-container class="home-view">
     <SearchBar
       v-model:search-term="searchTerm"
@@ -68,17 +70,23 @@ const performSearch = async () => {
     />
 
     <v-row>
-      <v-card id="examples">
-        <v-card-title>Example Queries:</v-card-title>
-        <v-card-text class="examples">
-          <div v-for="example in examples" :key="example.label">
-            <div v-if="example.label?.length" class="text-caption mt-3">{{ example.label }}</div>
-            <v-btn class="example mt-1" @click="performExampleSearch(example.query)">{{
-              example.query
-            }}</v-btn>
-          </div>
-        </v-card-text>
-      </v-card>
+      <v-col cols="12" md="4">
+        <v-card id="examples">
+          <v-card-title>Example Queries:</v-card-title>
+          <v-card-text class="examples">
+            <div v-for="example in examples" :key="example.label">
+              <div v-if="example.label?.length" class="text-caption mt-3">{{ example.label }}</div>
+              <v-btn class="example mt-1" @click="performExampleSearch(example.query)">{{
+                example.query
+              }}</v-btn>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="12" md="6">
+        <CaseInformationCard class="ml-16 mt-8" v-if="showCaseInformation" />
+      </v-col>
     </v-row>
   </v-container>
   <FooterDefault />
