@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 
 import { useBookmarksStore } from '@/stores/bookmarks'
+import { StoreState } from '@/stores/misc'
 
 // Import the BookmarksClient
 
@@ -29,7 +30,7 @@ onMounted(async () => {
   bookmarksStore
     .fetchBookmark(props.type, props.id)
     ?.then((bookmark) => {
-      if (bookmark) {
+      if (bookmark.id) {
         isBookmarked.value = true
       } else {
         isBookmarked.value = false
@@ -58,7 +59,7 @@ const toggleBookmark = async () => {
 </script>
 
 <template>
-  <div class="ml=2">
+  <div v-if="bookmarksStore.storeState === StoreState.Active" class="ml=2">
     <span v-if="!isBookmarked">Bookmark this</span>
     <span v-else>Delete bookmark</span>
     <v-btn class="ml-2" :icon="!isBookmarked" @click="toggleBookmark()">
@@ -66,5 +67,8 @@ const toggleBookmark = async () => {
         {{ isBookmarked ? 'mdi-star' : 'mdi-star-outline' }}
       </v-icon>
     </v-btn>
+  </div>
+  <div v-else>
+    <v-progress-circular indeterminate size="24"></v-progress-circular>
   </div>
 </template>

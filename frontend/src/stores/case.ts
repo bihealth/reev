@@ -6,38 +6,68 @@ import { ref } from 'vue'
 
 import { StoreState } from '@/stores/misc'
 
+export enum Inheritance {
+  AutosomalDominant = 'NCIT:C94245',
+  AutosomalRecessive = 'NCIT:C94246',
+  Cosegregation = 'NCIT:C94599',
+  GeneticAnticipation = 'NCIT:C93189',
+  GeneticLinkage = 'NCIT:C94542',
+  XLinkedRecessive = 'NCIT:C94247',
+  Unknown = 'reev:unknown_inheritance'
+}
+
 export enum Sex {
-  Male = 'male',
-  Female = 'female'
+  Male = 'PATO:0000384',
+  Female = 'PATO:0000383',
+  Unknown = 'reev:unknown_sex'
+}
+
+export enum Ethnicity {
+  AfricanAmerican = 'NCIT:C128937',
+  AshkenaziJewish = 'NCIT:C17950',
+  EastAsian = 'NCIT:C161419',
+  Finnish = 'NCIT:C43865',
+  European = 'NCIT:C43851',
+  Latino = 'NCIT:C17459',
+  MiddleEastern = 'NCIT:C43866',
+  SouthAsian = 'NCIT:C41263',
+  Other = 'NCIT:C104495',
+  Unknown = 'reev:unknown_ethnicity'
 }
 
 export enum Zygosity {
-  Heterozygous = 'heterozygous',
-  Homozygous = 'homozygous',
-  CompoundHeterozygous = 'compound heterozygous'
+  Heterozygous = 'GENO:0000135',
+  Homozygous = 'NCIT:C45826',
+  CompoundHeterozygous = 'NCIT:C198518',
+  Unknown = 'reev:unknown_zygosity'
+}
+
+export interface OntologyTerm {
+  term_id: string
+  name: string
 }
 
 export interface Case {
   /* The case pseudonym. */
   pseudonym: string
   /* Orphanet / OMIM disease(s). */
-  diseases: string[]
+  diseases: OntologyTerm[]
   /* HPO terms. */
-  hpoTerms: string[]
+  hpoTerms: OntologyTerm[]
   /* Inheritance. */
-  inheritance: string
+  inheritance: Inheritance
   /* Affected family members. */
-  affectedFamilyMembers: string[]
+  affectedFamilyMembers: boolean | null
   /* Sex. */
-  sex: Sex | undefined
-  /* Age of onset. */
-  ageOfOnset: string
+  sex: Sex
+  /* Age of onset in month. */
+  ageOfOnsetMonths: number | null
   /* Ethnicity. */
-  ethnicity: string
+  ethnicity: Ethnicity
   /* Zygosity. */
-  zygosity: Zygosity | undefined
+  zygosity: Zygosity
   /* Family segregation. */
-  familySegregation: string
+  familySegregation: boolean | null
 }
 
 export const useCaseStore = defineStore('case', () => {
@@ -49,13 +79,13 @@ export const useCaseStore = defineStore('case', () => {
     pseudonym: '',
     diseases: [],
     hpoTerms: [],
-    inheritance: '',
-    affectedFamilyMembers: [],
-    sex: undefined,
-    ageOfOnset: '',
-    ethnicity: '',
-    zygosity: undefined,
-    familySegregation: ''
+    inheritance: Inheritance.Unknown,
+    affectedFamilyMembers: null,
+    sex: Sex.Unknown,
+    ageOfOnsetMonths: null,
+    ethnicity: Ethnicity.Unknown,
+    zygosity: Zygosity.Unknown,
+    familySegregation: null
   })
 
   function clearData() {
@@ -63,13 +93,13 @@ export const useCaseStore = defineStore('case', () => {
       pseudonym: '',
       diseases: [],
       hpoTerms: [],
-      inheritance: '',
-      affectedFamilyMembers: [],
-      sex: undefined,
-      ageOfOnset: '',
-      ethnicity: '',
-      zygosity: undefined,
-      familySegregation: ''
+      inheritance: Inheritance.Unknown,
+      affectedFamilyMembers: null,
+      sex: Sex.Unknown,
+      ageOfOnsetMonths: null,
+      ethnicity: Ethnicity.Unknown,
+      zygosity: Zygosity.Unknown,
+      familySegregation: null
     }
   }
 

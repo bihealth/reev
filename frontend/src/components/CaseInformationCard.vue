@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { useCaseStore } from '@/stores/case'
+import { Ethnicity, Inheritance, Sex, Zygosity, useCaseStore } from '@/stores/case'
 import { StoreState } from '@/stores/misc'
 
 const caseStore = useCaseStore()
@@ -16,7 +16,6 @@ const saveChanges = () => {
   if (!form.value) {
     return
   }
-  console.log('form', form.value)
   if ((form.value as any).validate()) {
     caseStore.updateCase(caseStore.caseInfo)
   }
@@ -35,6 +34,7 @@ onMounted(async () => {
         <v-form ref="form">
           <v-text-field label="Pseudonym" v-model="caseStore.caseInfo.pseudonym"></v-text-field>
 
+          <!-- Diseases -->
           <v-text-field
             v-for="(disease, index) in caseStore.caseInfo.diseases"
             :key="index"
@@ -42,6 +42,7 @@ onMounted(async () => {
             v-model="caseStore.caseInfo.diseases[index]"
           ></v-text-field>
 
+          <!-- HPO Terms -->
           <v-text-field
             v-for="(term, index) in caseStore.caseInfo.hpoTerms"
             :key="index"
@@ -49,36 +50,55 @@ onMounted(async () => {
             v-model="caseStore.caseInfo.hpoTerms[index]"
           ></v-text-field>
 
-          <v-text-field label="Inheritance" v-model="caseStore.caseInfo.inheritance"></v-text-field>
+          <!-- Inheritance -->
+          <v-select
+            label="Inheritance"
+            :items="Object.values(Inheritance)"
+            v-model="caseStore.caseInfo.inheritance"
+          ></v-select>
 
-          <v-text-field
-            v-for="(member, index) in caseStore.caseInfo.affectedFamilyMembers"
-            :key="index"
-            label="Affected Family Member"
-            v-model="caseStore.caseInfo.affectedFamilyMembers[index]"
-          ></v-text-field>
+          <!-- Affected Family Members -->
+          <v-switch
+            label="Affected Family Members"
+            v-model="caseStore.caseInfo.affectedFamilyMembers"
+            color="primary"
+          ></v-switch>
 
+          <!-- Sex -->
           <v-select
             label="Sex"
-            :items="['Male', 'Female']"
+            :items="Object.values(Sex)"
             v-model="caseStore.caseInfo.sex"
           ></v-select>
 
-          <v-text-field label="Age of Onset" v-model="caseStore.caseInfo.ageOfOnset"></v-text-field>
+          <!-- Age of Onset -->
+          <v-text-field
+            label="Age of Onset"
+            v-model.number="caseStore.caseInfo.ageOfOnsetMonths"
+          ></v-text-field>
 
-          <v-text-field label="Ethnicity" v-model="caseStore.caseInfo.ethnicity"></v-text-field>
+          <!-- Ethnicity -->
+          <v-select
+            label="Ethnicity"
+            :items="Object.values(Ethnicity)"
+            v-model="caseStore.caseInfo.ethnicity"
+          ></v-select>
 
+          <!-- Zygosity -->
           <v-select
             label="Zygosity"
-            :items="['Heterozygous', 'Homozygous', 'Compound Heterozygous']"
+            :items="Object.values(Zygosity)"
             v-model="caseStore.caseInfo.zygosity"
           ></v-select>
 
-          <v-text-field
+          <!-- Family Segregation -->
+          <v-switch
             label="Family Segregation"
             v-model="caseStore.caseInfo.familySegregation"
-          ></v-text-field>
+            color="primary"
+          ></v-switch>
 
+          <!-- Buttons -->
           <v-btn class="ml-2" @click="saveChanges">Save Changes</v-btn>
           <v-btn class="ml-2" @click="caseStore.clearData">Clear Data</v-btn>
         </v-form>

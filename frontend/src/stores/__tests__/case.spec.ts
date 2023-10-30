@@ -1,20 +1,20 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 
-import { useCaseStore } from '../case'
-import { StoreState } from '../misc'
+import { Ethnicity, Inheritance, Sex, Zygosity, useCaseStore } from '@/stores/case'
+import { StoreState } from '@/stores/misc'
 
 const CaseInfo = {
   pseudonym: '',
   diseases: [],
   hpoTerms: [],
-  inheritance: '',
-  affectedFamilyMembers: [],
-  sex: undefined,
-  ageOfOnset: '',
-  ethnicity: '',
-  zygosity: undefined,
-  familySegregation: ''
+  inheritance: Inheritance.Unknown,
+  affectedFamilyMembers: null,
+  sex: Sex.Unknown,
+  ageOfOnsetMonths: null,
+  ethnicity: Ethnicity.Unknown,
+  zygosity: Zygosity.Unknown,
+  familySegregation: null
 }
 
 describe.concurrent('Case Store', () => {
