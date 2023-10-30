@@ -7,49 +7,71 @@ import { ref } from 'vue'
 import { StoreState } from '@/stores/misc'
 
 export enum Sex {
-  Male = "male",
-  Female = "female",
+  Male = 'male',
+  Female = 'female'
 }
 
 export enum Zygosity {
-  Heterozygous = "heterozygous",
-  Homozygous = "homozygous",
-  CompoundHeterozygous = "compound heterozygous",
+  Heterozygous = 'heterozygous',
+  Homozygous = 'homozygous',
+  CompoundHeterozygous = 'compound heterozygous'
+}
+
+export interface Case {
+  /* The case pseudonym. */
+  pseudonym: string
+  /* Orphanet / OMIM disease(s). */
+  diseases: string[]
+  /* HPO terms. */
+  hpoTerms: string[]
+  /* Inheritance. */
+  inheritance: string
+  /* Affected family members. */
+  affectedFamilyMembers: string[]
+  /* Sex. */
+  sex: Sex | undefined
+  /* Age of onset. */
+  ageOfOnset: string
+  /* Ethnicity. */
+  ethnicity: string
+  /* Zygosity. */
+  zygosity: Zygosity | undefined
+  /* Family segregation. */
+  familySegregation: string
 }
 
 export const useCaseStore = defineStore('case', () => {
   /* The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  /* The case pseudonym. */
-  const pseudonym = ref<string>('')
+  /* The case information. */
+  const caseInfo = ref<Case>({
+    pseudonym: '',
+    diseases: [],
+    hpoTerms: [],
+    inheritance: '',
+    affectedFamilyMembers: [],
+    sex: undefined,
+    ageOfOnset: '',
+    ethnicity: '',
+    zygosity: undefined,
+    familySegregation: ''
+  })
 
-  /* Orphanet / OMIM disease(s). */
-  const diseases = ref<string[]>([])
-
-  /* HPO terms. */
-  const hpoTerms = ref<string[]>([])
-
-  /* Inheritance. */
-  const inheritance = ref<string>('')
-
-  /* Affected family members. */
-  const affectedFamilyMembers = ref<string[]>([])
-
-  /* Sex. */
-  const sex = ref<Sex | undefined>(undefined)
-
-  /* Age of onset. */
-  const ageOfOnset = ref<string>('')
-
-  /* Ethnicity. */
-  const ethnicity = ref<string>('')
-
-  /* Zygosity. */
-  const zygosity = ref<Zygosity | undefined>(undefined)
-
-  /* Family segregation. */
-  const familySegregation = ref<string>('')
+  function clearData() {
+    caseInfo.value = {
+      pseudonym: '',
+      diseases: [],
+      hpoTerms: [],
+      inheritance: '',
+      affectedFamilyMembers: [],
+      sex: undefined,
+      ageOfOnset: '',
+      ethnicity: '',
+      zygosity: undefined,
+      familySegregation: ''
+    }
+  }
 
   const loadCase = async () => {
     storeState.value = StoreState.Loading
@@ -62,33 +84,15 @@ export const useCaseStore = defineStore('case', () => {
     }
   }
 
-  const updateCaseField = async (field: string, value: string) => {
-    if (field === 'pseudonym') {
-      pseudonym.value = value
-    } else if (field === 'diseases') {
-      diseases.value = value.split(',').map((disease) => disease.trim())
-    } else if (field === 'hpoTerms') {
-      hpoTerms.value = value.split(',').map((hpoTerm) => hpoTerm.trim())
-    } else if (field === 'inheritance') {
-      inheritance.value = value
-    } else if (field === 'affectedFamilyMembers') {
-      affectedFamilyMembers.value = value.split(',').map((member) => member.trim())
-    } 
+  const updateCase = async (caseUpdate: Case) => {
+    caseInfo.value = { ...caseUpdate }
   }
 
   return {
     storeState,
-    pseudonym,
-    diseases,
-    hpoTerms,
-    inheritance,
-    affectedFamilyMembers,
-    sex,
-    ageOfOnset,
-    ethnicity,
-    zygosity,
-    familySegregation,
+    caseInfo,
+    clearData,
     loadCase,
-    updateCaseField,
+    updateCase
   }
 })

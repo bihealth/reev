@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<Props>(), {
       >
         {{ props.caseInformation ? 'Hide' : 'Show' }} Case Information
       </v-btn>
-      
+
       <UserProfileButton />
       <v-menu id="menu">
         <template v-slot:activator="{ props }">
