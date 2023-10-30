@@ -4,6 +4,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import { CaseInfoClient } from '@/api/caseinfo'
 import { StoreState } from '@/stores/misc'
 
 export enum Inheritance {
@@ -48,6 +49,7 @@ export interface OntologyTerm {
 }
 
 export interface Case {
+  [key: string]: any
   /* The case pseudonym. */
   pseudonym: string
   /* Orphanet / OMIM disease(s). */
@@ -68,6 +70,42 @@ export interface Case {
   zygosity: Zygosity
   /* Family segregation. */
   familySegregation: boolean | null
+}
+
+export interface APIResponse {
+  affected_family_members: boolean
+  age_of_onset_month: number
+  diseases: any[] // Replace with the actual type from your API
+  ethinicity: string
+  family_segregation: boolean
+  hpo_terms: any[] // Replace with the actual type from your API
+  id: string
+  inheritance: string
+  pseudonym: string
+  sex: string
+  user: string
+  zygosity: string
+}
+
+const apiResponseToFrontendCase = (apiResponse: APIResponse): Case => {
+  return {
+    pseudonym: apiResponse.pseudonym,
+    diseases: apiResponse.diseases.map((item) => {
+      // Do any conversion required from the API object to OntologyTerm
+      return item as OntologyTerm
+    }),
+    hpoTerms: apiResponse.hpo_terms.map((item) => {
+      // Do any conversion required from the API object to OntologyTerm
+      return item as OntologyTerm
+    }),
+    inheritance: apiResponse.inheritance as Inheritance, // Assuming enums can directly map
+    affectedFamilyMembers: apiResponse.affected_family_members,
+    sex: apiResponse.sex as Sex, // Assuming enums can directly map
+    ageOfOnsetMonths: apiResponse.age_of_onset_month,
+    ethnicity: apiResponse.ethinicity as Ethnicity, // Assuming enums can directly map
+    zygosity: apiResponse.zygosity as Zygosity, // Assuming enums can directly map
+    familySegregation: apiResponse.family_segregation
+  }
 }
 
 export const useCaseStore = defineStore('case', () => {
@@ -106,8 +144,9 @@ export const useCaseStore = defineStore('case', () => {
   const loadCase = async () => {
     storeState.value = StoreState.Loading
     try {
-      // const client = new BookmarksClient()
-      // bookmarks.value = await client.fetchBookmarks()
+      const client = new CaseInfoClient()
+      const result: APIResponse = await client.fetchCaseInfo()
+      caseInfo.value = apiResponseToFrontendCase(result)
       storeState.value = StoreState.Active
     } catch (e) {
       storeState.value = StoreState.Error
