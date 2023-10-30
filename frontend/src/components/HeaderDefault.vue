@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import UserProfileButton from '@/components/UserProfileButton.vue'
 
+import CaseInformationCard from './CaseInformationCard.vue'
+
 export interface Props {
   caseInformation?: boolean
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  caseInformation: false
-})
 </script>
 
 <template>
@@ -19,21 +17,21 @@ const props = withDefaults(defineProps<Props>(), {
           src="@/assets/reev-logo.svg"
           id="logo"
           alt="logo"
-          width="50"
+          width="70"
         />
-        REEV Explains and Evaluates Variants
       </router-link>
+      <router-link to="/"> REEV Explains and Evaluates Variants </router-link>
     </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
-      <v-btn
-        class="mr-4"
-        prepend-icon="mdi-information-outline"
-        :model-value="props.caseInformation"
-        @click="$emit('update:caseInformation', !props.caseInformation)"
-      >
-        {{ props.caseInformation ? 'Hide' : 'Show' }} Case Information
-      </v-btn>
+      <v-dialog max-width="600">
+        <template v-slot:activator="{ props }">
+          <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="props">
+            Show Case Information
+          </v-btn>
+        </template>
+        <CaseInformationCard />
+      </v-dialog>
 
       <UserProfileButton />
       <v-menu id="menu">

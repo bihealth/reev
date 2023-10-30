@@ -7,7 +7,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import CaseInformationCard from '@/components/CaseInformationCard.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -82,10 +81,6 @@ const performSearch = async () => {
             </div>
           </v-card-text>
         </v-card>
-      </v-col>
-
-      <v-col cols="12" md="6">
-        <CaseInformationCard class="ml-16 mt-8" v-if="showCaseInformation" />
       </v-col>
     </v-row>
   </v-container>

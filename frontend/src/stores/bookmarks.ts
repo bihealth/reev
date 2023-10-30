@@ -57,8 +57,14 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
   const fetchBookmark = async (obj_type: string, obj_id: string) => {
     try {
       const client = new BookmarksClient()
-      return await client.fetchBookmark(obj_type, obj_id)
+      const response = await client.fetchBookmark(obj_type, obj_id)
+      if (response.detail === 'Unauthorized') {
+        storeState.value = StoreState.Error
+        return null
+      }
+      return response
     } catch (e) {
+      console.log(e)
       return null
     }
   }
