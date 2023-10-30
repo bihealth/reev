@@ -15,6 +15,9 @@ describe.concurrent('HeaderDefault.vue', () => {
           user: {
             currentUser: null
           }
+        },
+        props: {
+          caseInformation: true
         }
       }
     )
@@ -33,6 +36,9 @@ describe.concurrent('HeaderDefault.vue', () => {
           user: {
             currentUser: null
           }
+        },
+        props: {
+          caseInformation: true
         }
       }
     )

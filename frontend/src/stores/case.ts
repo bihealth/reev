@@ -86,6 +86,7 @@ export const useCaseStore = defineStore('case', () => {
 
   const updateCase = async (caseUpdate: Case) => {
     caseInfo.value = { ...caseUpdate }
+    storeState.value = StoreState.Active
   }
 
   return {

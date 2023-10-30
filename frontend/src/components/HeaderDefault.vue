@@ -2,7 +2,7 @@
 import UserProfileButton from '@/components/UserProfileButton.vue'
 
 export interface Props {
-  caseInformation: boolean
+  caseInformation?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
