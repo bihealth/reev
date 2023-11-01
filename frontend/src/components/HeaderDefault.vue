@@ -2,10 +2,6 @@
 import UserProfileButton from '@/components/UserProfileButton.vue'
 
 import CaseInformationCard from './CaseInformationCard.vue'
-
-export interface Props {
-  caseInformation?: boolean
-}
 </script>
 
 <template>

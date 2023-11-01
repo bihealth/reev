@@ -73,11 +73,11 @@ export interface Case {
 }
 
 export interface APIResponse {
-  affected_family_members: boolean
-  age_of_onset_month: number
+  affected_family_members: boolean | null
+  age_of_onset_month: number | null
   diseases: any[] // Replace with the actual type from your API
   ethinicity: string
-  family_segregation: boolean
+  family_segregation: boolean | null
   hpo_terms: any[] // Replace with the actual type from your API
   id: string
   inheritance: string
@@ -163,8 +163,8 @@ export const useCaseStore = defineStore('case', () => {
       } else if (result.detail === 'Case Information not found') {
         await client.createCaseInfo(caseData)
       } else {
-        await client.updateCaseInfo(caseData)
-        caseInfo.value = apiResponseToFrontendCase(result as APIResponse)
+        const updatedCase = await client.updateCaseInfo(caseData)
+        caseInfo.value = apiResponseToFrontendCase(updatedCase as APIResponse)
       }
       storeState.value = StoreState.Active
     } catch (e) {
