@@ -4,7 +4,7 @@ import uuid as uuid_module
 from typing import TYPE_CHECKING
 
 from fastapi_users_db_sqlalchemy.generics import GUID  # noqa
-from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String, Uuid
+from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String, Uuid, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
@@ -17,6 +17,8 @@ class CaseInfo(Base):
     """Case information."""
 
     __tablename__ = "caseinfo"
+
+    __table_args__ = (UniqueConstraint("user", "pseudonym", name="uq_caseinfo"),)
 
     if TYPE_CHECKING:  # pragma: no cover
         id: UUID_ID
@@ -39,7 +41,7 @@ class CaseInfo(Base):
         #: User who created the case information.
         user = Column(Uuid, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
         #: Pseudonym of the patient.
-        pseudonym = Column(String(255), nullable=True)
+        pseudonym = Column(String(255), nullable=False)
         #: Diseases of the patient.
         diseases = Column(JSON, nullable=True)
         #: HPO terms of the patient.
