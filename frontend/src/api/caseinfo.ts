@@ -1,4 +1,5 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
+import type { Case } from '@/stores/case'
 
 /**
  * Access to the caseinfo part of the API.
@@ -30,37 +31,82 @@ export class CaseInfoClient {
   }
 
   /**
-   * Updates the case information.
+   * Creates the case information.
    *
    * @param caseInfo case information
-   * @returns updated case information
+   * @returns created case information
    */
-  async updateCaseInfo(caseInfo: any): Promise<any> {
-    const response = await fetch(`${this.apiBaseUrl}caseinfo/update`, {
+  async createCaseInfo(caseInfo: Case): Promise<any> {
+    const postData = `{
+      "pseudonym": "${caseInfo.pseudonym}", 
+      "diseases": ${JSON.stringify(caseInfo.diseases)}, 
+      "hpo_terms": ${JSON.stringify(caseInfo.hpoTerms)}, 
+      "inheritance": "${caseInfo.inheritance}", 
+      "affected_family_members": ${caseInfo.affectedFamilyMembers}, 
+      "sex": "${caseInfo.sex}", 
+      "age_of_onset_month": ${caseInfo.ageOfOnsetMonths}, 
+      "ethincity": "${caseInfo.ethnicity}", 
+      "zygosity": "${caseInfo.zygosity}", 
+      "family_segregation": ${caseInfo.familySegregation}
+    }`
+    const response = await fetch(`${this.apiBaseUrl}caseinfo/create`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': this.csrfToken ?? ''
+        accept: 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(caseInfo)
+      body: postData
     })
     return await response.json()
   }
 
   /**
-   * Clears the case information.
+   * Updates the case information.
    *
-   * @returns cleared case information
+   * @param caseInfo case information
+   * @returns updated case information
    */
-  async clearCaseInfo(): Promise<any> {
-    const response = await fetch(`${this.apiBaseUrl}caseinfo/clear`, {
-      method: 'POST',
+  async updateCaseInfo(caseInfo: Case): Promise<any> {
+    const postData = `{
+      "pseudonym": "${caseInfo.pseudonym}", 
+      "diseases": ${JSON.stringify(caseInfo.diseases)}, 
+      "hpo_terms": ${JSON.stringify(caseInfo.hpoTerms)}, 
+      "inheritance": "${caseInfo.inheritance}", 
+      "affected_family_members": ${caseInfo.affectedFamilyMembers}, 
+      "sex": "${caseInfo.sex}", 
+      "age_of_onset_month": ${caseInfo.ageOfOnsetMonths}, 
+      "ethincity": "${caseInfo.ethnicity}", 
+      "zygosity": "${caseInfo.zygosity}", 
+      "family_segregation": ${caseInfo.familySegregation}
+    }`
+    const response = await fetch(`${this.apiBaseUrl}caseinfo/update`, {
+      method: 'PATCH',
       mode: 'cors',
       credentials: 'include',
       headers: {
-        'X-CSRFToken': this.csrfToken ?? ''
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: postData
+    })
+    return await response.json()
+  }
+
+  /**
+   * Deletes the case information.
+   *
+   * @returns deleted case information
+   */
+  async deleteCaseInfo(): Promise<any> {
+    const response = await fetch(`${this.apiBaseUrl}caseinfo/delete`, {
+      method: 'DELETE',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
       }
     })
     return await response.json()

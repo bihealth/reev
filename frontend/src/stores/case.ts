@@ -91,19 +91,17 @@ const apiResponseToFrontendCase = (apiResponse: APIResponse): Case => {
   return {
     pseudonym: apiResponse.pseudonym,
     diseases: apiResponse.diseases.map((item) => {
-      // Do any conversion required from the API object to OntologyTerm
       return item as OntologyTerm
     }),
     hpoTerms: apiResponse.hpo_terms.map((item) => {
-      // Do any conversion required from the API object to OntologyTerm
       return item as OntologyTerm
     }),
-    inheritance: apiResponse.inheritance as Inheritance, // Assuming enums can directly map
+    inheritance: apiResponse.inheritance as Inheritance,
     affectedFamilyMembers: apiResponse.affected_family_members,
-    sex: apiResponse.sex as Sex, // Assuming enums can directly map
+    sex: apiResponse.sex as Sex,
     ageOfOnsetMonths: apiResponse.age_of_onset_month,
-    ethnicity: apiResponse.ethinicity as Ethnicity, // Assuming enums can directly map
-    zygosity: apiResponse.zygosity as Zygosity, // Assuming enums can directly map
+    ethnicity: apiResponse.ethinicity as Ethnicity,
+    zygosity: apiResponse.zygosity as Zygosity,
     familySegregation: apiResponse.family_segregation
   }
 }
@@ -145,17 +143,49 @@ export const useCaseStore = defineStore('case', () => {
     storeState.value = StoreState.Loading
     try {
       const client = new CaseInfoClient()
-      const result: APIResponse = await client.fetchCaseInfo()
-      caseInfo.value = apiResponseToFrontendCase(result)
+      const result: any = await client.fetchCaseInfo()
+      caseInfo.value = apiResponseToFrontendCase(result as APIResponse)
+      storeState.value = StoreState.Active
+    } catch (e) {
+      clearData()
+      storeState.value = StoreState.Active
+    }
+  }
+
+  const updateCase = async (caseData: Case) => {
+    storeState.value = StoreState.Loading
+    try {
+      const client = new CaseInfoClient()
+      const result: any = await client.fetchCaseInfo()
+      if (result.detail === 'Unauthorized') {
+        storeState.value = StoreState.Error
+        return
+      } else if (result.detail === 'Case Information not found') {
+        await client.createCaseInfo(caseData)
+      } else {
+        await client.updateCaseInfo(caseData)
+        caseInfo.value = apiResponseToFrontendCase(result as APIResponse)
+      }
       storeState.value = StoreState.Active
     } catch (e) {
       storeState.value = StoreState.Error
     }
   }
 
-  const updateCase = async (caseUpdate: Case) => {
-    caseInfo.value = { ...caseUpdate }
-    storeState.value = StoreState.Active
+  const deleteCase = async () => {
+    storeState.value = StoreState.Loading
+    try {
+      const client = new CaseInfoClient()
+      const result = await client.deleteCaseInfo()
+      if (result.detail === 'Unauthorized') {
+        storeState.value = StoreState.Error
+        return
+      }
+      clearData()
+      storeState.value = StoreState.Active
+    } catch (e) {
+      storeState.value = StoreState.Error
+    }
   }
 
   return {
@@ -163,6 +193,7 @@ export const useCaseStore = defineStore('case', () => {
     caseInfo,
     clearData,
     loadCase,
-    updateCase
+    updateCase,
+    deleteCase
   }
 })

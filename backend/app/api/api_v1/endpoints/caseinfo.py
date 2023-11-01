@@ -94,6 +94,7 @@ async def get_caseinfo_for_user(
 
 
 @router.put("/update", response_model=schemas.CaseInfoRead)
+@router.patch("/update", response_model=schemas.CaseInfoRead)
 async def update_caseinfo_for_user(
     caseinfoupdate: schemas.CaseInfoUpdate,
     db: AsyncSession = Depends(deps.get_db),
@@ -106,7 +107,23 @@ async def update_caseinfo_for_user(
     :type caseinfo: dict or :class:`.schemas.CaseInfoUpdate`
     :return: Case Information
     """
-    caseinfo = await crud.caseinfo.update_by_user(db, user_id=user.id, obj_in=caseinfoupdate)
+    caseinfoupdate.user = user.id
+    caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
     if not caseinfo:
         raise HTTPException(status_code=404, detail="Case Information not found")
-    return caseinfo
+    return await crud.caseinfo.update(db, db_obj=caseinfo, obj_in=caseinfoupdate)
+
+
+@router.delete("/delete", response_model=schemas.CaseInfoRead)
+async def delete_caseinfo_for_user(
+    db: AsyncSession = Depends(deps.get_db), user: User = Depends(current_active_user)
+):
+    """
+    Delete a Case Information for a current user.
+
+    :return: Case Information
+    """
+    caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
+    if not caseinfo:
+        raise HTTPException(status_code=404, detail="Case Information not found")
+    return await crud.caseinfo.remove(db, id=caseinfo.id)

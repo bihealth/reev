@@ -13,17 +13,3 @@ class CrudCaseInfo(CrudBase[CaseInfo, CaseInfoCreate, CaseInfoUpdate]):
         query = select(self.model).filter(self.model.user == user_id)
         result = await session.execute(query)
         return result.scalars().first()
-
-    async def update_by_user(
-        self, session: AsyncSession, *, user_id: Any, obj_in: CaseInfoUpdate
-    ) -> CaseInfo | None:
-        query = select(self.model).filter(self.model.user == user_id)
-        result = await session.execute(query)
-        caseinfo = result.scalars().first()
-        if caseinfo:
-            for field in obj_in.__fields__:
-                setattr(caseinfo, field, getattr(obj_in, field))
-            await session.commit()
-            await session.refresh(caseinfo)
-            return caseinfo
-        return None

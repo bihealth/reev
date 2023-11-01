@@ -21,6 +21,10 @@ const saveChanges = () => {
   }
 }
 
+const deleteCaseInformation = () => {
+  caseStore.deleteCase()
+}
+
 onMounted(async () => {
   loadDataToStore()
 })
@@ -100,7 +104,9 @@ onMounted(async () => {
 
           <!-- Buttons -->
           <v-btn class="ml-2" @click="saveChanges">Save Changes</v-btn>
-          <v-btn class="ml-2" @click="caseStore.clearData">Clear Data</v-btn>
+          <v-btn class="ml-2" color="secondary" @click="deleteCaseInformation"
+            >Delete Case info</v-btn
+          >
         </v-form>
       </v-card-text>
     </v-card>
