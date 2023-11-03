@@ -17,11 +17,27 @@ export enum Inheritance {
   Unknown = 'reev:unknown_inheritance'
 }
 
+export const InheritanceLabels = new Map<Inheritance, string>([
+  [Inheritance.AutosomalDominant, 'Autosomal dominant'],
+  [Inheritance.AutosomalRecessive, 'Autosomal recessive'],
+  [Inheritance.Cosegregation, 'Cosegregation'],
+  [Inheritance.GeneticAnticipation, 'Genetic anticipation'],
+  [Inheritance.GeneticLinkage, 'Genetic linkage'],
+  [Inheritance.XLinkedRecessive, 'X-linked recessive'],
+  [Inheritance.Unknown, 'Unknown']
+])
+
 export enum Sex {
   Male = 'PATO:0000384',
   Female = 'PATO:0000383',
   Unknown = 'reev:unknown_sex'
 }
+
+export const SexLabels = new Map<Sex, string>([
+  [Sex.Unknown, 'Unknown'],
+  [Sex.Female, 'Female'],
+  [Sex.Male, 'Male']
+])
 
 export enum Ethnicity {
   AfricanAmerican = 'NCIT:C128937',
@@ -36,6 +52,19 @@ export enum Ethnicity {
   Unknown = 'reev:unknown_ethnicity'
 }
 
+export const ethinicityLabels = new Map<Ethnicity, string>([
+  [Ethnicity.AfricanAmerican, 'African American'],
+  [Ethnicity.AshkenaziJewish, 'Ashkenazi Jewish'],
+  [Ethnicity.EastAsian, 'East Asian'],
+  [Ethnicity.Finnish, 'Finnish'],
+  [Ethnicity.European, 'European'],
+  [Ethnicity.Latino, 'Latino'],
+  [Ethnicity.MiddleEastern, 'Middle Eastern'],
+  [Ethnicity.SouthAsian, 'South Asian'],
+  [Ethnicity.Other, 'Other'],
+  [Ethnicity.Unknown, 'Unknown']
+])
+
 export enum Zygosity {
   Heterozygous = 'GENO:0000135',
   Homozygous = 'NCIT:C45826',
@@ -43,8 +72,20 @@ export enum Zygosity {
   Unknown = 'reev:unknown_zygosity'
 }
 
-export interface OntologyTerm {
+export const ZygosityLabels = new Map<Zygosity, string>([
+  [Zygosity.Heterozygous, 'Heterozygous'],
+  [Zygosity.Homozygous, 'Homozygous'],
+  [Zygosity.CompoundHeterozygous, 'Compound heterozygous'],
+  [Zygosity.Unknown, 'Unknown']
+])
+
+export interface HpoTerm {
   term_id: string
+  name: string
+}
+
+export interface OmimTerm {
+  omim_id: string
   name: string
 }
 
@@ -53,9 +94,9 @@ export interface Case {
   /* The case pseudonym. */
   pseudonym: string
   /* Orphanet / OMIM disease(s). */
-  diseases: OntologyTerm[]
+  diseases: OmimTerm[]
   /* HPO terms. */
-  hpoTerms: OntologyTerm[]
+  hpoTerms: HpoTerm[]
   /* Inheritance. */
   inheritance: Inheritance
   /* Affected family members. */
@@ -91,10 +132,10 @@ const apiResponseToFrontendCase = (apiResponse: APIResponse): Case => {
   return {
     pseudonym: apiResponse.pseudonym,
     diseases: apiResponse.diseases.map((item) => {
-      return item as OntologyTerm
+      return item as OmimTerm
     }),
     hpoTerms: apiResponse.hpo_terms.map((item) => {
-      return item as OntologyTerm
+      return item as HpoTerm
     }),
     inheritance: apiResponse.inheritance as Inheritance,
     affectedFamilyMembers: apiResponse.affected_family_members,
@@ -163,6 +204,7 @@ export const useCaseStore = defineStore('case', () => {
       } else if (result.detail === 'Case Information not found') {
         await client.createCaseInfo(caseData)
       } else {
+        console.log(caseData)
         const updatedCase = await client.updateCaseInfo(caseData)
         caseInfo.value = apiResponseToFrontendCase(updatedCase as APIResponse)
       }

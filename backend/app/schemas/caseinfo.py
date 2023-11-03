@@ -40,23 +40,20 @@ class Zygosity(Enum):
     Unknown = "reev:unknown_zygosity"
 
 
-class OntologyTerm(BaseModel):
+class DiseaseTerm(BaseModel):
+    # len(term_id) <= 64
+    omim_id: str
+    # len(name) <= 512
+    name: str
+    # term_id.startswith("OMIM:") or term_id.startswith("Orphanet:") or term_id.startswith("MONDO:")
+
+
+class HpoTerm(BaseModel):
     # len(term_id) <= 64
     term_id: str
     # len(name) <= 512
     name: str
-
-
-class DiseaseTerm(OntologyTerm):
-    pass
-    # term_id.startswith("OMIM:") or term_id.startswith("Orphanet:") or term_id.startswith("MONDO:")
-
-
-class HpoTerm(OntologyTerm):
-    pass
-
-
-# term_id ~= /^HP:\d{7}$/
+    # term_id ~= /^HP:\d{7}$/
 
 
 class CaseInfoBase(BaseModel):

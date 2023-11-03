@@ -11,7 +11,7 @@ export class VigunoClient {
     this.csrfToken = csrfToken ?? null
   }
 
-  async queryOmimById(id: string): Promise<any> {
+  async resolveOmimTermById(id: string): Promise<any> {
     const url = `${this.apiBaseUrl}hpo/omims?omim_id=${id}`
     const response = await fetch(url, {
       method: 'GET'
@@ -19,7 +19,7 @@ export class VigunoClient {
     return await response.json()
   }
 
-  async queryOmimByName(query: string, matchType: string = 'contains'): Promise<any> {
+  async queryOmimTermsByName(query: string, matchType: string = 'contains'): Promise<any> {
     const url = `${this.apiBaseUrl}hpo/omims?name=${query}&match=${matchType}`
     const response = await fetch(url, {
       method: 'GET'
@@ -35,7 +35,7 @@ export class VigunoClient {
     return await response.json()
   }
 
-  async resolveHpoTermByName(query: string, matchType: string = 'contains'): Promise<any> {
+  async queryHpoTermsByName(query: string, matchType: string = 'contains'): Promise<any> {
     const url = `${this.apiBaseUrl}hpo/terms?name=${query}&match=${matchType}`
     const response = await fetch(url, {
       method: 'GET'

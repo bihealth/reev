@@ -1,15 +1,61 @@
 <script setup lang="ts">
 import _ from 'lodash'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
-import { Ethnicity, Inheritance, Sex, Zygosity, useCaseStore } from '@/stores/case'
-import { useHpoTermsStore } from '@/stores/hpoTerms'
+import {
+  Ethnicity,
+  Inheritance,
+  InheritanceLabels,
+  Sex,
+  SexLabels,
+  Zygosity,
+  ZygosityLabels,
+  ethinicityLabels,
+  useCaseStore
+} from '@/stores/case'
 import { StoreState } from '@/stores/misc'
+import { useTermsStore } from '@/stores/terms'
 
 const caseStore = useCaseStore()
-const hpoTermsStore = useHpoTermsStore()
+const termsStore = useTermsStore()
 
 const form = ref(null)
+
+const inheritanceOptions = computed(() => {
+  return Object.values(Inheritance).map((value) => {
+    return {
+      text: InheritanceLabels.get(value),
+      value: value
+    }
+  })
+})
+
+const ethnicityOptions = computed(() => {
+  return Object.values(Ethnicity).map((value) => {
+    return {
+      text: ethinicityLabels.get(value),
+      value: value
+    }
+  })
+})
+
+const sexOptions = computed(() => {
+  return Object.values(Sex).map((value) => {
+    return {
+      text: SexLabels.get(value),
+      value: value
+    }
+  })
+})
+
+const zygosityOptions = computed(() => {
+  return Object.values(Zygosity).map((value) => {
+    return {
+      text: ZygosityLabels.get(value),
+      value: value
+    }
+  })
+})
 
 const loadDataToStore = async () => {
   await caseStore.loadCase()
@@ -28,17 +74,29 @@ const deleteCaseInformation = () => {
   caseStore.deleteCase()
 }
 
-const isLoading = ref(false)
-const searchQuery = ref()
+const hpoIsLoading = ref(false)
+const omimIsLoading = ref(false)
+const hpoSearchQuery = ref()
+const omimSearchQuery = ref()
 
-// Debounced fetchTerms function
-const debouncedFetchTerms = _.debounce(async (query: string) => {
+// Debounced fetchTerms functions
+const debouncedHpoFetchTerms = _.debounce(async (query: string) => {
   if (!query) return
-  isLoading.value = true
+  hpoIsLoading.value = true
   try {
-    await hpoTermsStore.fetchHpoTerms(query)
+    await termsStore.fetchHpoTerms(query)
   } finally {
-    isLoading.value = false
+    hpoIsLoading.value = false
+  }
+}, 250)
+
+const debouncedOmimFetchTerms = _.debounce(async (query: string) => {
+  if (!query) return
+  omimIsLoading.value = true
+  try {
+    await termsStore.fetchOmimTerms(query)
+  } finally {
+    omimIsLoading.value = false
   }
 }, 250)
 
@@ -58,10 +116,10 @@ onMounted(async () => {
           <!-- Diseases -->
           <v-autocomplete
             v-model="caseStore.caseInfo.diseases"
-            v-model:search="searchQuery"
-            :items="hpoTermsStore.hpoTerms"
-            :loading="isLoading"
-            @update:search="debouncedFetchTerms"
+            v-model:search="omimSearchQuery"
+            :items="termsStore.omimTerms"
+            :loading="omimIsLoading"
+            @update:search="debouncedOmimFetchTerms"
             label="Disease"
             item-title="name"
             :item-value="(item) => item"
@@ -78,10 +136,10 @@ onMounted(async () => {
           <!-- HPO Terms -->
           <v-autocomplete
             v-model="caseStore.caseInfo.hpoTerms"
-            v-model:search="searchQuery"
-            :items="hpoTermsStore.hpoTerms"
-            :loading="isLoading"
-            @update:search="debouncedFetchTerms"
+            v-model:search="hpoSearchQuery"
+            :items="termsStore.hpoTerms"
+            :loading="hpoIsLoading"
+            @update:search="debouncedHpoFetchTerms"
             label="HPO Terms"
             item-title="name"
             :item-value="(item) => item"
@@ -98,7 +156,9 @@ onMounted(async () => {
           <!-- Inheritance -->
           <v-select
             label="Inheritance"
-            :items="Object.values(Inheritance)"
+            :items="inheritanceOptions"
+            item-title="text"
+            item-value="value"
             v-model="caseStore.caseInfo.inheritance"
           ></v-select>
 
@@ -112,7 +172,9 @@ onMounted(async () => {
           <!-- Sex -->
           <v-select
             label="Sex"
-            :items="Object.values(Sex)"
+            :items="sexOptions"
+            item-title="text"
+            item-value="value"
             v-model="caseStore.caseInfo.sex"
           ></v-select>
 
@@ -125,14 +187,18 @@ onMounted(async () => {
           <!-- Ethnicity -->
           <v-select
             label="Ethnicity"
-            :items="Object.values(Ethnicity)"
+            :items="ethnicityOptions"
+            item-title="text"
+            item-value="value"
             v-model="caseStore.caseInfo.ethnicity"
           ></v-select>
 
           <!-- Zygosity -->
           <v-select
             label="Zygosity"
-            :items="Object.values(Zygosity)"
+            :items="zygosityOptions"
+            item-title="text"
+            item-value="value"
             v-model="caseStore.caseInfo.zygosity"
           ></v-select>
 
