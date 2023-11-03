@@ -78,6 +78,20 @@ async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
     return await crud.caseinfo.remove(db, id=id)
 
 
+@router.get("/list", response_model=list[schemas.CaseInfoRead])
+async def list_caseinfos_for_user(
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    List all Case Information for a current user.
+
+    :return: list of Case Information
+    :rtype: list
+    """
+    return await crud.caseinfo.get_multi_by_user(db, user_id=user.id)
+
+
 @router.get("/get", response_model=schemas.CaseInfoRead)
 async def get_caseinfo_for_user(
     db: AsyncSession = Depends(deps.get_db), user: User = Depends(current_active_user)

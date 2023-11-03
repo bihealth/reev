@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import _ from 'lodash'
 import { onMounted, ref } from 'vue'
 
 import { Ethnicity, Inheritance, Sex, Zygosity, useCaseStore } from '@/stores/case'
+import { useHpoTermsStore } from '@/stores/hpoTerms'
 import { StoreState } from '@/stores/misc'
 
 const caseStore = useCaseStore()
+const hpoTermsStore = useHpoTermsStore()
 
 const form = ref(null)
 
@@ -25,6 +28,20 @@ const deleteCaseInformation = () => {
   caseStore.deleteCase()
 }
 
+const isLoading = ref(false)
+const searchQuery = ref()
+
+// Debounced fetchTerms function
+const debouncedFetchTerms = _.debounce(async (query: string) => {
+  if (!query) return
+  isLoading.value = true
+  try {
+    await hpoTermsStore.fetchHpoTerms(query)
+  } finally {
+    isLoading.value = false
+  }
+}, 250)
+
 onMounted(async () => {
   loadDataToStore()
 })
@@ -39,20 +56,44 @@ onMounted(async () => {
           <v-text-field label="Pseudonym" v-model="caseStore.caseInfo.pseudonym"></v-text-field>
 
           <!-- Diseases -->
-          <v-text-field
-            v-for="(disease, index) in caseStore.caseInfo.diseases"
-            :key="index"
+          <v-autocomplete
+            v-model="caseStore.caseInfo.diseases"
+            v-model:search="searchQuery"
+            :items="hpoTermsStore.hpoTerms"
+            :loading="isLoading"
+            @update:search="debouncedFetchTerms"
             label="Disease"
-            v-model="caseStore.caseInfo.diseases[index]"
-          ></v-text-field>
+            item-title="name"
+            :item-value="(item) => item"
+            multiple
+            chips
+            clearable
+            deletable-chips
+            auto-select-first
+            prepend-icon="mdi-database-search"
+            hint="Select one or more diseases"
+          >
+          </v-autocomplete>
 
           <!-- HPO Terms -->
-          <v-text-field
-            v-for="(term, index) in caseStore.caseInfo.hpoTerms"
-            :key="index"
-            label="HPO Term"
-            v-model="caseStore.caseInfo.hpoTerms[index]"
-          ></v-text-field>
+          <v-autocomplete
+            v-model="caseStore.caseInfo.hpoTerms"
+            v-model:search="searchQuery"
+            :items="hpoTermsStore.hpoTerms"
+            :loading="isLoading"
+            @update:search="debouncedFetchTerms"
+            label="HPO Terms"
+            item-title="name"
+            :item-value="(item) => item"
+            multiple
+            chips
+            clearable
+            deletable-chips
+            auto-select-first
+            prepend-icon="mdi-database-search"
+            hint="Select one or more HPO terms"
+          >
+          </v-autocomplete>
 
           <!-- Inheritance -->
           <v-select

@@ -4,7 +4,17 @@ import uuid as uuid_module
 from typing import TYPE_CHECKING
 
 from fastapi_users_db_sqlalchemy.generics import GUID  # noqa
-from sqlalchemy import JSON, Boolean, Column, Enum, ForeignKey, Integer, String, Uuid, UniqueConstraint
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    Enum,
+    ForeignKey,
+    Integer,
+    String,
+    UniqueConstraint,
+    Uuid,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
