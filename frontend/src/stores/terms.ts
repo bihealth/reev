@@ -36,7 +36,6 @@ export const useTermsStore = defineStore('terms', () => {
         // Extract only the digits part if "HPO:" is present
         const hpoId = query.replace(/^HP:/, '')
         const response = await vigunoClient.resolveHpoTermById(hpoId)
-        console.log(response)
         hpoTerms.value = [response.result as HpoTerm]
       } else {
         const response = await vigunoClient.queryHpoTermsByName(query)
@@ -68,11 +67,9 @@ export const useTermsStore = defineStore('terms', () => {
         // Extract only the digits part if "OMIM:" is present
         const omimId = query.replace(/^OMIM:/, '')
         const response = await vigunoClient.resolveOmimTermById(omimId)
-        console.log(response)
         omimTerms.value = [response.result as OmimTerm]
       } else {
         const response = await vigunoClient.queryOmimTermsByName(query)
-        console.log(response)
         omimTerms.value = response.result.map((item: any) => item as OmimTerm)
       }
       storeState.value = StoreState.Active

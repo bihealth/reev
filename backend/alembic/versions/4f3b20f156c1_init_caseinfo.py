@@ -1,8 +1,8 @@
 """init caseinfo
 
-Revision ID: 8ffab153e735
+Revision ID: 4f3b20f156c1
 Revises: 27c3977494f7
-Create Date: 2023-11-01 11:33:46.054517+01:00
+Create Date: 2023-11-03 17:43:45.776515+01:00
 
 """
 import fastapi_users_db_sqlalchemy.generics  # noqa
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "8ffab153e735"
+revision = "4f3b20f156c1"
 down_revision = "27c3977494f7"
 branch_labels = None
 depends_on = None

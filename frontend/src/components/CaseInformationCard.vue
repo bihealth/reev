@@ -74,6 +74,11 @@ const deleteCaseInformation = () => {
   caseStore.deleteCase()
 }
 
+const validateAgeOfOnset = (value: string) => {
+  const pattern = /^[0-9]*$/
+  return pattern.test(value) || 'Age of onset must be a number'
+}
+
 const hpoIsLoading = ref(false)
 const omimIsLoading = ref(false)
 const hpoSearchQuery = ref()
@@ -111,7 +116,11 @@ onMounted(async () => {
       <v-card-title>Case Information</v-card-title>
       <v-card-text>
         <v-form ref="form">
-          <v-text-field label="Pseudonym" v-model="caseStore.caseInfo.pseudonym"></v-text-field>
+          <v-text-field
+            variant="outlined"
+            label="Pseudonym"
+            v-model="caseStore.caseInfo.pseudonym"
+          ></v-text-field>
 
           <!-- Diseases -->
           <v-autocomplete
@@ -125,9 +134,9 @@ onMounted(async () => {
             :item-value="(item) => item"
             multiple
             chips
-            clearable
+            closable-chips
             deletable-chips
-            auto-select-first
+            variant="outlined"
             prepend-icon="mdi-database-search"
             hint="Select one or more diseases"
           >
@@ -145,9 +154,9 @@ onMounted(async () => {
             :item-value="(item) => item"
             multiple
             chips
-            clearable
+            closable-chips
             deletable-chips
-            auto-select-first
+            variant="outlined"
             prepend-icon="mdi-database-search"
             hint="Select one or more HPO terms"
           >
@@ -155,6 +164,7 @@ onMounted(async () => {
 
           <!-- Inheritance -->
           <v-select
+            variant="outlined"
             label="Inheritance"
             :items="inheritanceOptions"
             item-title="text"
@@ -164,6 +174,7 @@ onMounted(async () => {
 
           <!-- Affected Family Members -->
           <v-switch
+            variant="outlined"
             label="Affected Family Members"
             v-model="caseStore.caseInfo.affectedFamilyMembers"
             color="primary"
@@ -171,6 +182,7 @@ onMounted(async () => {
 
           <!-- Sex -->
           <v-select
+            variant="outlined"
             label="Sex"
             :items="sexOptions"
             item-title="text"
@@ -180,12 +192,15 @@ onMounted(async () => {
 
           <!-- Age of Onset -->
           <v-text-field
+            variant="outlined"
             label="Age of Onset"
             v-model.number="caseStore.caseInfo.ageOfOnsetMonths"
+            :rules="[validateAgeOfOnset]"
           ></v-text-field>
 
           <!-- Ethnicity -->
           <v-select
+            variant="outlined"
             label="Ethnicity"
             :items="ethnicityOptions"
             item-title="text"
@@ -195,6 +210,7 @@ onMounted(async () => {
 
           <!-- Zygosity -->
           <v-select
+            variant="outlined"
             label="Zygosity"
             :items="zygosityOptions"
             item-title="text"
