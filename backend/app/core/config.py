@@ -44,6 +44,11 @@ class Settings(BaseSettings):
         else:
             return None
 
+    #: Matomo host
+    MATOMO_HOST: str | None = None
+    #: Matomo site ID
+    MATOMO_SITE_ID: int | None = None
+
     # == API-related settings ==
 
     #: URL prefix for internal API

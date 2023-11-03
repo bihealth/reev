@@ -1,6 +1,7 @@
 import subprocess
 
 from fastapi import APIRouter, Response
+from fastapi.responses import JSONResponse
 
 from app.api.internal.endpoints import proxy, remote
 from app.core.config import settings
@@ -20,3 +21,14 @@ async def version():
     else:
         version = subprocess.check_output(["git", "describe", "--tags", "--dirty"]).strip()
     return Response(content=version)
+
+
+@api_router.get("/frontend-settings")
+@api_router.post("/frontend-settings")
+async def matomo():
+    """Return Frontend settings"""
+    frontend_settings = {
+        "matomo_host": settings.MATOMO_HOST,
+        "matomo_site_id": settings.MATOMO_SITE_ID,
+    }
+    return JSONResponse(content=frontend_settings)
