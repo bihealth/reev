@@ -33,3 +33,23 @@ async def test_favicon(client: TestClient):
     response = client.get("/favicon.ico")
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/vnd.microsoft.icon"
+
+
+@pytest.mark.asyncio
+async def test_frontend_settings(monkeypatch: MonkeyPatch, client: TestClient):
+    """Test frontend settings endpoint."""
+    monkeypatch.setattr(settings, "MATOMO_HOST", "matomo.example.com")
+    monkeypatch.setattr(settings, "MATOMO_SITE_ID", 42)
+    response = client.get("/internal/frontend-settings")
+    assert response.status_code == 200
+    assert response.json() == {"matomo_host": "matomo.example.com", "matomo_site_id": 42}
+
+
+@pytest.mark.asyncio
+async def test_frontend_settings_no_matomo(monkeypatch: MonkeyPatch, client: TestClient):
+    """Test frontend settings endpoint with no matomo."""
+    monkeypatch.setattr(settings, "MATOMO_HOST", None)
+    monkeypatch.setattr(settings, "MATOMO_SITE_ID", None)
+    response = client.get("/internal/frontend-settings")
+    assert response.status_code == 200
+    assert response.json() == {"matomo_host": None, "matomo_site_id": None}

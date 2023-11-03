@@ -21,6 +21,7 @@
     "vega": "^5.25.0",
     "vega-embed": "^6.22.2",
     "vue": "^3.3.4",
+    "vue-matomo": "^4.2.0",
     "vue-router": "^4.2.5",
     "vue3-easy-data-table": "^1.5.47",
     "vuetify": "^3.3.19"
