@@ -2,6 +2,7 @@ import logging
 import os
 import secrets
 from typing import Any
+import typing
 
 from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
 from pydantic_core.core_schema import ValidationInfo
@@ -156,31 +157,17 @@ class Settings(BaseSettings):
 
     # -- Email Sending Configuration -----------------------------------------
 
-    # SMTP_TLS: bool = True
-    # SMTP_PORT: int | None = None
-    # SMTP_HOST: str | None = None
-    # SMTP_USER: str | None = None
-    # SMTP_PASSWORD: str | None = None
-    # EMAILS_FROM_EMAIL: EmailStr | None = None
-    # EMAILS_FROM_NAME: str | None = None
+    SMTP_TLS: bool = False
+    SMTP_PORT: int | None = None
+    SMTP_HOST: str | None = None
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    EMAILS_FROM_EMAIL: EmailStr | None = None
+    EMAILS_FROM_NAME: str | None = None
 
-    # @validator("EMAILS_FROM_NAME")
-    # def get_project_name(cls, v: str | None, values: Dict[str, Any]) -> str:
-    #     if not v:
-    #         return values["PROJECT_NAME"]
-    #     return v
-
-    # EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
-    # EMAIL_TEMPLATES_DIR: str = "/app/app/email-templates/build"
-    # EMAILS_ENABLED: bool = False
-
-    # @validator("EMAILS_ENABLED", pre=True)
-    # def get_emails_enabled(cls, v: bool, values: Dict[str, Any]) -> bool:
-    #     return bool(
-    #         values.get("SMTP_HOST")
-    #         and values.get("SMTP_PORT")
-    #         and values.get("EMAILS_FROM_EMAIL")
-    #     )
+    EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
+    EMAIL_TEMPLATES_DIR: str = "/app/app/email-templates/build"
+    EMAILS_ENABLED: bool = False
 
     # -- Sentry Configuration ------------------------------------------------
 
