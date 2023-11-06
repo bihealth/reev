@@ -5,8 +5,6 @@ import { useRouter } from 'vue-router'
 import { AuthClient } from '@/api/auth'
 import { UsersClient } from '@/api/users'
 import { UtilsClient } from '@/api/utils'
-import CaseInformationCard from '@/components/CaseInformationCard.vue'
-import HeaderDefault from '@/components/HeaderDefault.vue'
 import { search } from '@/lib/utils'
 import { useBookmarksStore } from '@/stores/bookmarks'
 import { useCaseStore } from '@/stores/case'
@@ -233,6 +231,7 @@ onMounted(async () => {
       <v-row class="align-center fill-height" justify="center">
         <CaseInformationCard class="mx-auto pa-4 pb-8 mt-12" elevation="8" rounded="lg" />
       </v-row>
+    </div>
 
     <div v-else>
       <v-row>
