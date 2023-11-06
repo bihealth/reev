@@ -22,6 +22,7 @@ It is based on the following publications, also `listed on the ClinGen Website <
   Genet Med. 2018 Dec;20(12):1687-1688. doi: 10.1038/gim.2018.42. PMID: 29543229; PMCID: PMC6709533.
 - ClinGen Sequence Variant Interpretation Work Group.
   *Recommendations for ACMG/AMP guideline criteria code modifications nomenclature.*
+  November 10, 2017.
 - Ghosh R, Harrison SM, Rehm HL, Plon SE, Biesecker LG; ClinGen Sequence Variant Interpretation Working Group.
   *Updated recommendation for the benign stand-alone ACMG/AMP criterion.*
   Hum Mutat. 2018 Nov;39(11):1525-1530. doi: 10.1002/humu.23642. PMID: 30311383; PMCID: PMC6188666.
@@ -40,12 +41,16 @@ It is based on the following publications, also `listed on the ClinGen Website <
   *SVI Recommendation for Absence/Rarity (PM2) - Version 1.0*
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for in trans Criterion (PM3) - Version 1.0*
+  2019.
 - Pejaver V, Byrne AB, Feng BJ, Pagel KA, Mooney SD, Karchin R, O'Donnell-Luria A, Harrison SM, Tavtigian SV, Greenblatt MS, Biesecker LG, Radivojac P, Brenner SE; ClinGen Sequence Variant Interpretation Working Group.
   *Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria.*
   Am J Hum Genet. 2022 Dec 1;109(12):2163-2177. doi: 10.1016/j.ajhg.2022.10.013. Epub 2022 Nov 21. PMID: 36413997; PMCID: PMC9748256.
 - Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group.
   *The ACMG/AMP reputable source criteria for the interpretation of sequence variants.*
   Genet Med. 2018 Dec;20(12):1687-1688. doi: 10.1038/gim.2018.42. PMID: 29543229; PMCID: PMC6709533.
+- Strande NT, Riggs ER, Buchanan AH, Ceyhan-Birsoy O, DiStefano M, Dwight SS, Goldstein J, Ghosh R, Seifert BA, Sneddon TP, Wright MW, Milko LV, Cherry JM, Giovanni MA, Murray MF, O'Daniel JM, Ramos EM, Santani AB, Scott AF, Plon SE, Rehm HL, Martin CL, Berg JS.
+  *Evaluating the Clinical Validity of Gene-Disease Associations: An Evidence-Based Framework Developed by the Clinical Genome Resource.*
+  Am J Hum Genet. 2017 Jun 1;100(6):895-906. doi: 10.1016/j.ajhg.2017.04.015. Epub 2017 May 25. PMID: 28552198; PMCID: PMC5473734.
 
 Further references:
 
@@ -69,7 +74,7 @@ Pathogenic Very Strong
 PVS1 (null variant)
 -------------------
 
-- variant is a null variant (sequence ontology: ``stop_gained``, ``frameshift_variant``, ``splice_acceptor_variant``, ``splice_donor_variant``, ``start_lost``, ``exon_loss_variant``)
+- variant is a null variant (sequence ontology: ``stop_gained``, ``frameshift_variant``, ``splice_acceptor_variant``, ``splice_donor_variant``, ``start_lost``, ``exon_loss_variant``, ``transcript_variant``)
 - loss of function is a known disease mechanism for the affected
 
 **Caveats**
@@ -78,6 +83,132 @@ PVS1 (null variant)
 - caution when interpreting LOF at the extreme 3' and of gene
 - caution with splice variants predicted to lead to exon skipping but leave the remainder of the protein intact
 - caution in the presence of multiple transcripts
+
+PVS1 Update 2018
+~~~~~~~~~~~~~~~~
+
+**Decision Tree**
+
+In Tayoun et al. (2018), the following decision tree is defined.
+It is based on the assumption that the gene-disease association is at a moderate, strong, or definitive clinical level according to Strande et al. (2017).
+
+1. ``stop_gained`` or ``frameshift_variant``
+    1. predicted to undergo NMD
+        1. exon is present in biologically-relevant transcripts
+            - result: ``PVS1``
+        2. exon is absent from biologically-relevant transcripts
+            - result: N/A
+    2. not predicted to undergo NMD
+        1. truncated / altered region is critical to protein function
+            - result: ``PVS_Strong``
+        2. role of region in protein function is unknown
+            1. LoF variants in this exon are frequent in the general population and/or exon is absent from biologically-relevant transcripts
+                - result: N/A
+            2. LoF variants in this exon are not frequent in the general population and exon is present in biologically-relevant transcripts
+                1. variant removes >=10% of the protein
+                    - result: ``PVS_Strong``
+                2. variant removes <10% of the protein
+                    - result: ``PVS1_Moderate``
+2. ``splice_acceptor_variant`` or ``splice_donor_variant``
+    1. exon skipping or use of a cryptic splice site disrupts reading frame and is predicted to undergo NMD
+        1. exon is present in biologically-relevant transcripts
+            - result: ``PVS1``
+        2. exon is absent from biologically-relevant transcripts
+            - result: N/A
+    2. exon skipping or use of a cryptic splice site disrupts reading frame and is **NOT** predicted to undergo NMD
+        1. truncated / altered region is critical to protein function
+            - result: ``PVS_Strong``
+        2. role of region in protein function is unknown
+            1. LoF variants in this exon are frequent in the general population and/or exon is absent from biologically-relevant transcripts
+                - result: N/A
+            2. LoF variants in this exon are not frequent in the general population and exon is present in biologically-relevant transcripts
+                1. variant removes >=10% of the protein
+                    - result: ``PVS_Strong``
+                2. variant removes <10% of the protein
+                    - result: ``PVS1_Moderate``
+    3. exon skipping or use of a cryptic splice site rpeserves reading frame
+        1. role of region in protein is unknown
+            1. LoF variants in this exon are frequent in the general population and/or exon is absent from biologically-relevant transcripts
+                - result: N/A
+            2. LoF variants in this exon are not frequent in the general population and exon is present in biologically-relevant transcripts
+                1. variant removes >=10% of the protein
+                    - result: ``PVS_Strong``
+                2. variant removes <10% of the protein
+                    - result: ``PVS1_Moderate``
+        2. truncated / altered region is critical to protein function
+            - result: ``PVS_Strong``
+3. ``exon_loss_variant`` or ``transcript_variant`` (single exon or whole transcript deletion)
+    1. full gene deletion
+        - result: ``PVS1``
+    2. single to multi exon deletion - disrupts reading frame and is predicted to undergo NMD
+        1. exon is present in biologically-relevant transcripts
+            - result: ``PVS1``
+        2. exon is absent from biologically-relevant transcripts
+            - result: N/A
+    3. single to multi exon deletion - disrupts reading frame and is **NOT** predicted to undergo NMD
+        1. truncated/altered region is critical to protein function
+            - result: ``PVS_Strong``
+        2. role of region in protein function is unknown
+            1. LoF variants in this exon are frequent in the general population and/or exon is absent from biologically-relevant transcripts
+                - result: N/A
+            2. LoF variants in this exon are not frequent in the general population and exon is present in biologically-relevant transcripts
+                1. variant removes >=10% of the eprotein
+                    - result: ``PVS_Strong``
+                2. variant removes <10% of the protein
+                    - result: ``PVS1_Moderate``
+    4. single to multi exon deletion - preserves reading frame
+        1. role of region in protein function is unknown -- see 3.3.2
+        2. truncated / altered region is critical to protein function
+            - result: ``PVS_Strong``
+4. duplication (>=1 exon in size and must be contained within gene)
+    1. proven in tandem
+        1. reading frame disrupted and NMD predicted to occur
+            - result: ``PVS1``
+        2. no or unknown impact on reading frame and NMD
+            - result: N/!
+    2. presumed in tandem
+        1. reading frame presumed disrupted and NMD predicted to occur
+            - result: ``PVS1``
+        2. no or unknown impact on reading frame and NMD
+            - result: N/A
+    3. proven not in tandem
+        - result: N/A
+5. ``start_lost``
+    1. no known alternative start codon in other transcripts
+        1. >=1 pathogenic variant(s) upstream of closest potential in-frame start codon
+            - result: ``PVS1_Moderate``
+        2. no pathogenic variant(s) upstream of closest potential in-frame start codon
+            - result: ``PVS1_Supp``
+    2. different functional transcript uses alternative start codon
+        - result: N/A
+
+And here is the tree as an image:
+
+.. image:: img/Tayoun-2018.png
+    :alt: Figure 1 from Tayoun et al. (2018)
+
+**Notes**
+
+- criterion (2) ``splice_acceptor_variant`` or ``splice_donor_variant`` is mutually exclusive to splice site prediction
+- "Generally, NMD is not predicted to occur if the premature termination codon occurs in the 3' most exon or within the 3' most 50 nucleotides of the penultimate exon" -- from Tayoun et al. (2018)
+
+**Criteria for LoF Disease Mechanism**
+
+Further, Tayoun et al. (2018) define the following criteria for a loss-of-function disease mechanism.
+
+1. Follow PVS1 decision tree if:
+    - clinical validaity classification of gene is strong or definite AND
+    - >=3 LoF functions are Pathogenic without PVS1 AND
+    - >10% of variants associated with the phenotype are LoF (must be across more than 1 exon - except for single-exon genes)
+2. Decrease final strenght by **one** level (IOW: to ``PVS1_Strong``) if:
+    - clinical validity classification of gene is at least moderate AND
+    - >=2 LoF variants have previously associated with the phenotype (must be across more than one exon - except for single-exon genes) AND
+    - null mouse model recapitulates disease phenotype
+3. Decrease final strength by **two** levels (IOW: to ``PVS1_Moderate``) if:
+    - clinical validity classification of gene is at least moderate AND EITHER
+        - >=2 LoF variants have been previously associated with the phenotype (must be across more than one exon - except for single-exon genes) OR
+        - null mouse model recapitulates disease phenotype
+4. If there is no evidence that LoF variants cause disease, PVS1 should not be applied at any strength level.
 
 Pathogenic Strong
 =================
@@ -140,7 +271,37 @@ PM2 (absent from controls)
 PM3 (recessive and in trans)
 ----------------------------
 
-- for recessive disorders, detected in trans with a pathogenic variant
+- for recessive disorders, detected in trans with a pathogenic or likely pathogenic variant in an affected patient
+
+According to ClinGen Sequence Variant Interpretation Work Group (2019), there are points awarded per in *trans* proband (all variants should be sufficiently rare, thus meet PM specifiacation, P-Pathogenic or LP-Likely pathogenic):
+
+.. list-table:: Points per proband
+
+    * - Classification / zygosity of other variant
+      - Points per confirmed in *trans*
+      - Points if phase unknown
+    * - Pathogenic or Likely pathogenic variant
+      - 1.0
+      - 0.5(P) or 0.25(LP)
+    * - Homozygous occurence (max point 1.0)
+      - 0.5
+      - N/A
+    * - Uncertain significance variant
+      - 0.25
+      - 0.0
+
+The resulting point rating gives the following evidence strength for PM3:
+
+- 0.5-1.0: PM3_Supporting
+- 1.0-2.0: PM3
+- 2.0-4.0: PM3_Strong
+- >=4.0: PM3_VeryStrong
+
+**Notes**
+
+- ClinGen Sequence Variant Interpretation Work Group (2019) changes this from "for recessive disorders, detected in trans with a pathogenic" to "for recessive disorders, detected in trans with a pathogenic or likely pathogenic variant in an affected patient"
+- Further, this document introduces the point-based system from above.
+- There are further considerations in ClinGen Sequence Variant Interpretation Work Group (2019) that are not considered here.
 
 PM4 (protein length)
 --------------------
@@ -206,6 +367,19 @@ BA1 (5% frequency)
 ------------------
 
 - allele frequency is >5% in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium
+
+In accordance with Ghosh et al. (2018), there is a list of exceptions from this rule with high MAF but **some** evidence for pathogenicity.
+Updates to this list are available at `ClinGen <https://clinicalgenome.org/working-groups/sequence-variant-interpretation/>`__ and shall be monitored regularly.
+
+- ``NM_014049.4(ACAD):c.-44_-41dupTAAG``
+- ``NM_004004.5(GJB2):c.109G>A (p.Val37Ile)``
+- ``NM_000410.3(HFE):c.187C>G (p.His63Asp)``
+- ``NM_000410.3(HFE):c.845G>A (p.Cys282Tyr)``
+- ``NM_000243.2(MEFV):c.1105C>T (p.Pro369Ser)``
+- ``NM_000243.2(MEFV):c.1223G>A (p.Arg408Gln)``
+- ``NM_006346.2(PIBF1):c.1214G>A (p.Arg405Gln)``
+- ``NM_000017.3(ACADS):c.511C>T (p.Arg171Trp)``
+- ``NM_000060.4(BTD):c.1330G>C (p.Asp444His)``
 
 Benign Strong
 =============
@@ -333,3 +507,9 @@ If if one of the following criteria 1-2 are fulfilled.
 1. Other criteria shown above are not met
 2. the criteria for benign and pathogenic are contradictory
 
+------------------------------
+Code Modification Nomenclature
+------------------------------
+
+In accordance with ClinGen Sequence Variant Interpretation Work Group (2017), modification codes are used.
+That is, for a criterion ``${CRIT}``, the modification codes ``${CRIT}_Supporting``, ``${CRIT}_Moderate``, ``${CRIT}_Strong``, ``${CRIT}_VeryStrong``.
