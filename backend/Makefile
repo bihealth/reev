@@ -1,4 +1,4 @@
-DIRS_PYTHON_NO_ALEMBIC := app tests ../docs
+DIRS_PYTHON_NO_ALEMBIC := app tests ../docs stubs
 DIRS_PYTHON := alembic $(DIRS_PYTHON_NO_ALEMBIC)
 
 .PHONY: help
@@ -58,7 +58,7 @@ flake8:
 
 .PHONY: lint-mypy
 lint-mypy:
-	pipenv run mypy $(DIRS_PYTHON_NO_ALEMBIC)
+	MYPYPATH=$(PWD)/stubs pipenv run mypy $(DIRS_PYTHON_NO_ALEMBIC)
 
 .PHONY: test
 test:

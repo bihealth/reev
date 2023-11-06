@@ -15,6 +15,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import SvDetailView from '@/views/SvDetailView.vue'
 import TermsView from '@/views/TermsView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
+import VerifyEmailView from '@/views/VerifyEmailView.vue'
 
 const routes = [
   {
@@ -46,6 +47,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfileView
+  },
+  {
+    path: '/verify-email',
+    name: 'verify-email',
+    component: VerifyEmailView
   },
   {
     path: '/contact',

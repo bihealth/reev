@@ -16,6 +16,7 @@ from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_async_session
+from app.app import utils
 from app.core.config import settings
 from app.models.user import OAuthAccount, User
 
@@ -30,7 +31,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
     def __init__(
         self,
-        user_db: BaseUserDatabase[models.UP, models.ID],
+        user_db: BaseUserDatabase[User, uuid.UUID],
         password_helper: Optional[PasswordHelperProtocol] = None,
     ):
         super().__init__(user_db, password_helper)
@@ -45,7 +46,7 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
 
     async def on_after_request_verify(self, user: User, token: str, request: Request | None = None):
         """Callback after requesting verification."""
-        self.email.send_user_validation(user.email, token, request and request.headers)
+        utils.send_user_verify_email(user.email, token, request)
 
 
 async def get_user_manager(user_db: SQLAlchemyUserDatabase = Depends(get_user_db)):

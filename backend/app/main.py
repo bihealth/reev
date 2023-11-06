@@ -48,19 +48,3 @@ async def create_superuser_on_startup():
 async def favicon():
     """Serve favicon"""
     return FileResponse(pathlib.Path(__file__).parent / "assets/favicon.ico")
-
-
-if settings.SERVE_FRONTEND:  # pragma: no cover
-    logging.info(f"serving front-end from {settings.SERVE_FRONTEND}")
-    app.mount("/assets", StaticFiles(directory=f"{settings.SERVE_FRONTEND}/assets"), name="ui")
-
-    @app.get("/")
-    async def index():
-        """Render the index.html page at the root URL"""
-        return FileResponse(f"{settings.SERVE_FRONTEND}/index.html")
-
-    @app.api_route("/{path_name:path}", methods=["GET"])
-    async def catch_all(request: Request, path_name: str):
-        """Catch-all route forwarding to frontend."""
-        _, _ = request, path_name
-        return FileResponse(f"{settings.SERVE_FRONTEND}/index.html")

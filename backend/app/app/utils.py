@@ -5,6 +5,7 @@ from typing import Any, Dict, Optional
 
 import emails
 from emails.template import JinjaTemplate
+from starlette.requests import Request
 
 from app.core.config import settings
 
@@ -33,8 +34,9 @@ def send_email(
 
 
 def send_test_email(email_to: str) -> None:
+    """Send out test email to ``email_to``"""
     project_name = settings.PROJECT_NAME
-    subject = f"{project_name} - Test email"
+    subject = f"{project_name} - Test Email"
     with open(Path(settings.EMAIL_TEMPLATES_DIR) / "test_email.html") as f:
         template_str = f.read()
     send_email(
@@ -42,4 +44,27 @@ def send_test_email(email_to: str) -> None:
         subject_template=subject,
         html_template=template_str,
         environment={"project_name": settings.PROJECT_NAME, "email": email_to},
+    )
+
+
+def send_user_verify_email(email_to: str, token: str, request: Request | None = None) -> None:
+    """Send out user verification email"""
+    if request:
+        base_url = f"{request.url.components.scheme}://{request.url.components.netloc}"
+    else:
+        base_url = str(settings.SERVER_HOST)
+    project_name = settings.PROJECT_NAME
+    subject = f"{project_name} - Verify Your Email"
+    with open(Path(settings.EMAIL_TEMPLATES_DIR) / "verify_email.html") as f:
+        template_str = f.read()
+    send_email(
+        email_to=email_to,
+        subject_template=subject,
+        html_template=template_str,
+        environment={
+            "project_name": settings.PROJECT_NAME,
+            "email": email_to,
+            "token": token,
+            "base_url": base_url,
+        },
     )

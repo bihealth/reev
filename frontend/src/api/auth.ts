@@ -64,4 +64,38 @@ export class AuthClient {
     const response_json: OAuth2LoginUrlResponse = await response.json()
     return response_json.authorization_url
   }
+
+  /**
+   * Request verification token from the given email address.
+   *
+   * @param email
+   */
+  async requestVerifyToken(email: string): Promise<any> {
+    return await fetch(`${this.apiBaseUrl}auth/request-verify-token`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email })
+    })
+  }
+
+  /**
+   * Send a verification request with the given token.
+   */
+  async sendVerifyRequest(token: string): Promise<any> {
+    return await fetch(`${this.apiBaseUrl}auth/verify`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token })
+    })
+  }
 }

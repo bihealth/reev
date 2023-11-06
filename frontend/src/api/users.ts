@@ -1,10 +1,16 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
+import type { UserData } from '@/stores/user'
 
 export class UnauthenticatedError extends Error {
   constructor(message?: string) {
     super(message)
     this.name = 'UnauthenticatedError'
   }
+}
+
+/** The values from `UserData` that can be updated, all optional */
+export interface PartialUserData {
+  email?: string
 }
 
 /** Access to the users part of the API.
@@ -21,21 +27,41 @@ export class UsersClient {
   /**
    * Obtains the currently logged in user's information.
    *
-   * @returns `UserClient` if authenticated
+   * @returns `UserData` if authenticated
    * @throws `UnauthenticatedError` if not authenticated
    */
-  async fetchCurrentUserProfile(): Promise<any> {
+  async fetchCurrentUserProfile(): Promise<UserData> {
     const response = await fetch(`${this.apiBaseUrl}users/me`, {
       method: 'GET',
       mode: 'cors',
       credentials: 'include'
-      //   headers: {
-      //     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-      //   },
-      //   body: `username=${encodeURIComponent(username)}&` + `password=${encodeURIComponent(password)}`
     })
     if (response.status !== 200) {
       throw new UnauthenticatedError("There was an error fetching the current user's profile.")
+    } else {
+      return await response.json()
+    }
+  }
+
+  /**
+   * Updates the current user's profile.
+   *
+   * @param userData the values to use for the update
+   * @returns `UserData` if authenticated
+   */
+  async updateUserProfile(userData: PartialUserData): Promise<UserData> {
+    const response = await fetch(`${this.apiBaseUrl}users/me`, {
+      method: 'PATCH',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(userData)
+    })
+    if (response.status !== 200) {
+      throw new UnauthenticatedError("There was an error updating the current user's profile.")
     } else {
       return await response.json()
     }

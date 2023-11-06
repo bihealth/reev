@@ -89,6 +89,8 @@ class OrcidOpenId(OpenID):
                 raise GetIdEmailError(response_user.json())
             data_record: Dict[str, Any] = response_record.json()
 
+            # Try to get email from person if "trusted parties" are allowed
+            # to do so.  Otherwise, put a placeholder email.
             data_record_emails = data_record.get("person", {}).get("emails", {}).get("email", [])
             if data_record_emails:
                 email = data_record_emails[0].get("email", None)
