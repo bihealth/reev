@@ -165,22 +165,28 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-TODO
+- If the variant is not a missense variant then this rule is skipped.
 
 Implemented Rule
 ----------------
 
-TODO
+- Consider all equivalent missense variants in ClinVar.
+- If at least one of the variant then this rule is triggered.
+    - If the variant has zero stars in ClinVar then we report PS1_Supporting only
+    - If the variant has only one star in ClinVar then we report PS1_Moderate only
+    - If the variant has two stars in ClinVar then we report PS1
+    - If the variant has three stars or above in ClinVar then we report PS1_VeryStrong
 
 Literature
 ----------
 
-TODO
+N/A
 
 Caveats
 -------
 
-TODO
+- The wording of "established pathogenic" variant is not clear so we use any reported ClinVar variant and report the ClinVar accessions for further confirmation by the user.
+- Note that this also depends on disease match which the user must confirm manually.
 
 .. _acmg_seqvars_rules-ps2:
 
@@ -189,12 +195,31 @@ PS2 (confirmed *de novo*)
 
 No automation has been implemented.
 
+Original Definition
+-------------------
+
+    De novo (both maternity and paternity confirmed) in a patient with the disease and no family history
+
+    Note: Confirmation of paternity only is insufficient.
+    Egg donation, surrogate motherhood, errors in embryo transfer, etc. can contribute to non-maternity.
+
+    -- Richards et al. (2015); Table 4
+
 .. _acmg_seqvars_rules-ps3:
 
 PS3 (functional studies)
 ========================
 
 No automation has been implemented.
+
+Original Definition
+-------------------
+
+    Well-established in vitro or in vivo functional studies supportive of a damaging effect on the gene or gene product.
+
+    Note: Functional studies that have been validated and shown to be reproducible and robust in a clinical diagnostic laboratory setting are considered the most well-established.
+
+    -- Richards et al. (2015); Table 4
 
 .. _acmg_seqvars_rules-ps4:
 
@@ -203,10 +228,26 @@ PS4 (prevalence)
 
 No automation has been implemented.
 
+Original Definition
+-------------------
+
+    The prevalence of the variant in affected individuals is significantly increased compared to the prevalence in controls
+
+    Note 1: Relative risk (RR) or odds ratio (OR), as obtained from case-control studies, is >5.0 and the confidence interval around the estimate of RR or OR does not include 1.0. See manuscript for detailed guidance.
+
+	Note 2: In instances of very rare variants where case-control studies may not reach statistical significance, the prior observation of the variant in multiple unrelated patients with the same phenotype, and its absence in controls, may be used as moderate level of evidence.
+
+    -- Richards et al. (2015); Table 4
+
 .. _acmg_seqvars_rules-pm1:
 
 PM1 (hotspot)
 =============
+
+.. note::
+
+    - We currently do not have proper UniProt annotations.
+    - Can / should we upgrade to strong?
 
 Original Definition
 -------------------
@@ -218,22 +259,23 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-TODO
+- If the variant is on chrMT then this rule is skipped according to McCormick et al. (2020).
 
 Implemented Rule
 ----------------
 
-TODO
+- If the variant is within a hotspot (at least 4 pathogenic missense/in-frame variants within 25bp radius) then this rule is triggered.
+- If the variant is within an annotated UniProt domain and the domain contains at least 2 pathogenic variants then this rule is triggered.
 
 Literature
 ----------
 
-TODO
+- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
 
 Caveats
 -------
 
-TODO
+- We currently use the threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
 
 .. _acmg_seqvars_rules-pm3:
 
@@ -242,11 +284,19 @@ PM3 (recessive in *trans*)
 
 No automation has been implemented.
 
+Original Definition
+-------------------
+
+    For recessive disorders, detected in trans with a pathogenic variant.
+
+	Note: This requires testing of parents (or offspring) to determine phase.
+
+    -- Richards et al. (2015); Table 4
+
 .. _acmg_seqvars_rules-pm4:
 
 PM4 (protein length)
 ====================
-
 
 Original Definition
 -------------------
@@ -258,22 +308,28 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-TODO
+- If PVS1 was triggered then this rule is skipped to avoid double counting.
+- If the variant is not an in-frame indel and not a stop-loss variant then this rule is skipped.
 
 Implemented Rule
 ----------------
 
-TODO
+- If the variant is an in-frame indel
+    - If the variant is inside a repeat masked region then it is skipped
+    - If the variant is inside a repeat as annotated by UniProt then it is skipped
+    - Otherwise, this rule is triggered.
+- If the variant is a stop-loss variant then this rule is triggered.
 
 Literature
 ----------
 
-TODO
+N/A
 
 Caveats
 -------
 
-TODO
+- Richards et al. (2015) state that the size of the indel and amount of change in amino acids should influence the classification.
+  We currently do not have this implemented.
 
 .. _acmg_seqvars_rules-pm5:
 
