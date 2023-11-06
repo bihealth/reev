@@ -9,7 +9,9 @@ It supports them by providing aggregated information on genomic variants.
    :maxdepth: 1
    :caption: Contents:
 
-   acmg_seqvars
+   acmg_seqvars_literature
+   acmg_seqvars_data
+   acmg_seqvars_rules
 
 .. toctree::
    :hidden:

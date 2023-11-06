@@ -1,8 +1,8 @@
-.. _acmg_seqvars:
+.. _acmg_seqvars_literature:
 
-===============================
-Sequence Variant Classification
-===============================
+================================
+AMCG Sequence Variant Literature
+================================
 
 This section describes the ACMG classification for sequence variants.
 
@@ -20,6 +20,9 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - ClinGen Sequence Variant Interpretation Work Group.
   *Recommendations for ACMG/AMP guideline criteria code modifications nomenclature.*
   November 10, 2017.
+- Whiffin N, Minikel E, Walsh R, O'Donnell-Luria AH, Karczewski K, Ing AY, Barton PJR, Funke B, Cook SA, MacArthur D, Ware JS.
+  *Using high-resolution variant frequencies to empower clinical genome interpretation.*
+  Genet Med. 2017 Oct;19(10):1151-1158. doi: 10.1038/gim.2017.26. Epub 2017 May 18. PMID: 28518168; PMCID: PMC5563454.
 - Abou Tayoun AN, Pesaran T, DiStefano MT, Oza A, Rehm HL, Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group (ClinGen SVI).
   *Recommendations for interpreting the loss of function PVS1 ACMG/AMP variant criterion.*
   Hum Mutat. 2018 Nov;39(11):1517-1524. doi: 10.1002/humu.23626. Epub 2018 Sep 7. PMID: 30192042; PMCID: PMC6185798.
@@ -44,12 +47,18 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - Ellard S, Baple EL, Callaway A, Berry I, Forrester N, Turnbull C, Owens M, Eccles DM, Abbs S, Scott R, Deans ZC, Lester T, Campbell J, Newman WG, Ramsden S, McMullan DJ.
   *ACGS Best Practice Guidelines for Variant Classification in Rare Disease 2020.*
   2020.
+- McCormick EM, Lott MT, Dulik MC, Shen L, Attimonelli M, Vitale O, Karaa A, Bai R, Pineda-Alvarez DE, Singh LN, Stanley CM, Wong S, Bhardwaj A, Merkurjev D, Mao R, Sondheimer N, Zhang S, Procaccio V, Wallace DC, Gai X, Falk MJ.
+  *Specifications of the ACMG/AMP standards and guidelines for mitochondrial DNA variant interpretation.*
+  Hum Mutat. 2020 Dec;41(12):2028-2057. doi: 10.1002/humu.24107. Epub 2020 Nov 10. PMID: 32906214; PMCID: PMC7717623.
 - Tavtigian SV, Harrison SM, Boucher KM, Biesecker LG.
   *Fitting a naturally scaled point system to the ACMG/AMP variant classification guidelines.*
   Hum Mutat. 2020 Oct;41(10):1734-1737. doi: 10.1002/humu.24088. Epub 2020 Aug 30. PMID: 32720330; PMCID: PMC8011844.
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for De Novo Criteria (PS2 & PM6) - Version 1.1*
   2021.
+- Gudmundsson S, Singer-Berk M, Watts NA, Phu W, Goodrich JK, Solomonson M; Genome Aggregation Database Consortium; Rehm HL, MacArthur DG, O'Donnell-Luria A.
+  *Variant interpretation using population databases: Lessons from gnomAD.*
+  Hum Mutat. 2022 Aug;43(8):1012-1030. doi: 10.1002/humu.24309. Epub 2021 Dec 16. PMID: 34859531; PMCID: PMC9160216.
 - Pejaver V, Byrne AB, Feng BJ, Pagel KA, Mooney SD, Karchin R, O'Donnell-Luria A, Harrison SM, Tavtigian SV, Greenblatt MS, Biesecker LG, Radivojac P, Brenner SE; ClinGen Sequence Variant Interpretation Working Group.
   *Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria.*
   Am J Hum Genet. 2022 Dec 1;109(12):2163-2177. doi: 10.1016/j.ajhg.2022.10.013. Epub 2022 Nov 21. PMID: 36413997; PMCID: PMC9748256.
@@ -262,14 +271,14 @@ PS1 (same amino acid change)
         - with P comparison variant: VUA is PS1_Moderate
         - with LP comparison variant: VUA is PS1_Supporting
 
-.. image:: img/Walker-2023-Table-2-1.png
-    :alt: Table 2 (part 1) from Walker et al. (2023)
+.. image:: img/Walker-2023-Table-3-1.png
+    :alt: Table 3 (part 1) from Walker et al. (2023)
 
-.. image:: img/Walker-2023-Table-2-1.png
-    :alt: Table 2 (part 2) from Walker et al. (2023)
+.. image:: img/Walker-2023-Table-3-2.png
+    :alt: Table 3 (part 2) from Walker et al. (2023)
 
-.. image:: img/Walker-2023-Table-3.png
-    :alt: Table 3 from Walker et al. (2023)
+.. image:: img/Walker-2023-Table-2.png
+    :alt: Table 2 from Walker et al. (2023)
 
 **Caveats**
 
@@ -473,8 +482,8 @@ This category does not exist in Richards et al. (2015) but is implicitely introd
 Benign Strong
 =============
 
-BS1 (expecte frequency)
------------------------
+BS1 (expected frequency)
+------------------------
 
 - allele frequency is greater than expected for disorder
 
@@ -697,6 +706,31 @@ The point-based variant classification categories are then given in Table 3
       - -1 to -6
     * - benign
       - <= -7
+
+VUS Heat
+========
+
+Ellard et al. (2020) describe a "heat range" for VUS.
+
+1. hot - one of
+    a. 1 strong + 1 supporting
+    b. 2 moderate + 1 supporting
+    c. 1 moderate + 3 supporting
+2. warm, one of
+    a. 1 strong
+    b. 2 moderate
+    c. 1 moderate + 2 supporting
+    d. 4 supporting
+3. tepid, one of
+    a. 1 moderate + 1 supporting
+    b. 3 supporting
+4. cool, one of
+    a. 1 moderate
+    b. 2 supporting
+5. cold
+    a. 1 supporting
+6. ice cold -- otherwise
+
 
 ------------------------------
 Code Modification Nomenclature
