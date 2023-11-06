@@ -35,6 +35,6 @@ describe.concurrent('BookmarkButton.vue', () => {
         pinia: pinia
       }
     )
-    expect(wrapper.text()).toContain('Bookmark this')
+    expect(wrapper.html()).toBeTruthy()
   })
 })

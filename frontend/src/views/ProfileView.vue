@@ -3,12 +3,15 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { AuthClient } from '@/api/auth'
+import CaseInformationCard from '@/components/CaseInformationCard.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import { search } from '@/lib/utils'
 import { useBookmarksStore } from '@/stores/bookmarks'
+import { useCaseStore } from '@/stores/case'
 import { useUserStore } from '@/stores/user'
 
 const bookmarksStore = useBookmarksStore()
+const caseStore = useCaseStore()
 const userStore = useUserStore()
 
 const router = useRouter()
@@ -41,6 +44,7 @@ const performSearch = async (query: string) => {
 
 const loadDataToStore = async () => {
   await bookmarksStore.loadBookmarks()
+  await caseStore.loadCase()
 }
 
 onMounted(() => {
@@ -52,93 +56,103 @@ onMounted(() => {
 <template>
   <HeaderDefault />
   <v-container fill-height fluid>
-    <v-row class="align-center fill-height" justify="center" v-if="userStore.currentUser">
-      <v-card
-        class="mx-auto pa-4 pb-8 mt-12"
-        elevation="8"
-        min-width="400"
-        max-width="448"
-        rounded="lg"
-      >
-        <v-card-item>
-          <v-card-title>User Profile</v-card-title>
+    <div v-if="userStore.currentUser">
+      <v-row class="align-center fill-height" justify="center">
+        <v-card
+          class="mx-auto pa-4 pb-8 mt-12"
+          elevation="8"
+          min-width="400"
+          max-width="448"
+          rounded="lg"
+        >
+          <v-card-item>
+            <v-card-title>User Profile</v-card-title>
 
-          <v-card-subtitle> You are currently logged in... </v-card-subtitle>
-        </v-card-item>
+            <v-card-subtitle> You are currently logged in... </v-card-subtitle>
+          </v-card-item>
 
-        <v-card-text>
-          <v-form class="mt-3">
-            <v-text-field v-model="userStore.currentUser.email" label="Email" readonly />
-            <v-checkbox
-              label="is superuser"
-              readonly
-              v-model="userStore.currentUser.is_superuser"
-              v-if="userStore.currentUser.is_superuser"
-            />
-            <v-checkbox
-              label="verified email"
-              readonly
-              v-model="userStore.currentUser.is_verified"
-            />
-            <v-checkbox label="active user" readonly v-model="userStore.currentUser.is_active" />
-          </v-form>
-
-          <v-row class="pt-6" justify="center">
-            <v-btn prepend-icon="mdi-key-variant" id="login" @click="logout"> Logout </v-btn>
-          </v-row>
-        </v-card-text>
-      </v-card>
-      <v-card
-        class="mx-auto pa-4 pb-8 mt-12"
-        elevation="8"
-        min-width="400"
-        max-width="800"
-        rounded="lg"
-      >
-        <v-card-item>
-          <v-card-title>Your bookmarks:</v-card-title>
           <v-card-text>
-            <v-list>
-              <v-list-item v-for="bookmark in bookmarksStore.bookmarks" :key="bookmark.id">
-                <v-card-text>
-                  <v-btn @click="performSearch(bookmark.obj_id)">{{ bookmark.obj_id }}</v-btn>
-                  <v-btn
-                    class="ma-2"
-                    icon
-                    @click="bookmarksStore.deleteBookmark(bookmark.obj_type, bookmark.obj_id)"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </v-card-text>
-              </v-list-item>
-            </v-list>
+            <v-form class="mt-3">
+              <v-text-field v-model="userStore.currentUser.email" label="Email" readonly />
+              <v-checkbox
+                label="is superuser"
+                readonly
+                v-model="userStore.currentUser.is_superuser"
+                v-if="userStore.currentUser.is_superuser"
+              />
+              <v-checkbox
+                label="verified email"
+                readonly
+                v-model="userStore.currentUser.is_verified"
+              />
+              <v-checkbox label="active user" readonly v-model="userStore.currentUser.is_active" />
+            </v-form>
+
+            <v-row class="pt-6" justify="center">
+              <v-btn prepend-icon="mdi-key-variant" id="login" @click="logout"> Logout </v-btn>
+            </v-row>
           </v-card-text>
-        </v-card-item>
-      </v-card>
-    </v-row>
+        </v-card>
 
-    <v-row v-else>
-      <v-card
-        class="mx-auto pa-4 pb-8 mt-12"
-        elevation="8"
-        min-width="400"
-        max-width="448"
-        rounded="lg"
-      >
-        <v-card-item>
-          <v-card-title>User Profile</v-card-title>
+        <v-card
+          class="mx-auto pa-4 pb-8 mt-12"
+          elevation="8"
+          min-width="200"
+          max-width="600"
+          rounded="lg"
+        >
+          <v-card-item>
+            <v-card-title>Your bookmarks:</v-card-title>
+            <v-card-text>
+              <v-list v-if="bookmarksStore.bookmarks.length">
+                <v-list-item v-for="bookmark in bookmarksStore.bookmarks" :key="bookmark.id">
+                  <v-card-text>
+                    <v-btn @click="performSearch(bookmark.obj_id)">{{ bookmark.obj_id }}</v-btn>
+                    <v-btn
+                      class="ma-2"
+                      icon
+                      @click="bookmarksStore.deleteBookmark(bookmark.obj_type, bookmark.obj_id)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </v-card-text>
+                </v-list-item>
+              </v-list>
+              <v-card-item v-else> You have no bookmarks yet. </v-card-item>
+            </v-card-text>
+          </v-card-item>
+        </v-card>
+      </v-row>
 
-          <v-card-subtitle>You are not logged in</v-card-subtitle>
-        </v-card-item>
+      <v-row class="align-center fill-height" justify="center">
+        <CaseInformationCard class="mx-auto pa-4 pb-8 mt-12" elevation="8" rounded="lg" />
+      </v-row>
+    </div>
 
-        <v-card-text>
-          <v-row class="pt-6" justify="center">
-            <v-btn prepend-icon="mdi-key-variant" id="login" color="success" to="/login">
-              Login
-            </v-btn>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-row>
+    <div v-else>
+      <v-row>
+        <v-card
+          class="mx-auto pa-4 pb-8 mt-12"
+          elevation="8"
+          min-width="400"
+          max-width="448"
+          rounded="lg"
+        >
+          <v-card-item>
+            <v-card-title>User Profile</v-card-title>
+
+            <v-card-subtitle>You are not logged in</v-card-subtitle>
+          </v-card-item>
+
+          <v-card-text>
+            <v-row class="pt-6" justify="center">
+              <v-btn prepend-icon="mdi-key-variant" id="login" color="success" to="/login">
+                Login
+              </v-btn>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-row>
+    </div>
   </v-container>
 </template>

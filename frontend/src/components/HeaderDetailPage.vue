@@ -6,6 +6,8 @@ import SearchBar from '@/components/SearchBar.vue'
 import UserProfileButton from '@/components/UserProfileButton.vue'
 import { search } from '@/lib/utils'
 
+import CaseInformationCard from './CaseInformationCard.vue'
+
 export interface Props {
   searchTerm?: string
   genomeRelease?: string
@@ -64,6 +66,15 @@ watch(() => props.searchTerm, updateTerms)
     />
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
+      <v-dialog max-width="600">
+        <template v-slot:activator="{ props }">
+          <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="props">
+            Show Case Information
+          </v-btn>
+        </template>
+        <CaseInformationCard />
+      </v-dialog>
+
       <UserProfileButton />
       <v-menu id="menu">
         <template v-slot:activator="{ props }">

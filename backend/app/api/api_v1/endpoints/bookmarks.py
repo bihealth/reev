@@ -21,10 +21,8 @@ async def create_bookmark(
     """
     Create a new bookmark.
 
-    :param obj_type: type of object to bookmark
-    :type obj_type: str (enum) - "gene", "seqvar", "strucvar"
-    :param obj_id: id of object to bookmark
-    :type obj_id: uuid
+    :param bookmark: bookmark to create
+    :type bookmark: dict or :class:`.schemas.BookmarkCreate`
     :return: bookmark
     :rtype: dict
     """

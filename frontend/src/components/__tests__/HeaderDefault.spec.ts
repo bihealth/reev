@@ -2,9 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
+import HeaderDefault from '@/components/HeaderDefault.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
-
-import HeaderDefault from '../HeaderDefault.vue'
 
 describe.concurrent('HeaderDefault.vue', () => {
   it('renders the logo and title', () => {
@@ -25,7 +24,8 @@ describe.concurrent('HeaderDefault.vue', () => {
     const logo = wrapper.find('#logo')
     const title = wrapper.find('a[href="/"]')
     expect(logo.exists()).toBe(true)
-    expect(title.text()).toBe('REEV Explains and Evaluates Variants')
+    expect(title.exists()).toBe(true)
+    expect(wrapper.text()).toContain('REEV Explains and Evaluates Variants')
   })
 
   it('renders the navigation links', async () => {
