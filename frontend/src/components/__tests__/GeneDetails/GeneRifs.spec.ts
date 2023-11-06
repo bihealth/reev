@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('GeneRifs', async () => {
   it('renders the GeneRifs information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: GeneRifs, template: false },
       {
         props: {

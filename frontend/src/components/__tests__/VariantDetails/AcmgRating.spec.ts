@@ -46,12 +46,12 @@ const makeWrapper = () => {
       },
       pinia: pinia
     }
-  ).wrapper
+  )
 }
 
 describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Pathogenic')
     expect(wrapper.text()).toContain('Benign')
 
@@ -60,7 +60,7 @@ describe.concurrent('AcmgRating', async () => {
   })
 
   it('should correctly update the AcmgRating info', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = await makeWrapper()
     const switchers = wrapper.findAll('.v-switch')
     const switcher = switchers[0]
     await switcher.trigger('click')

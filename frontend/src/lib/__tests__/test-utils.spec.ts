@@ -4,9 +4,9 @@ import { setupMountedComponents } from '../test-utils'
 
 const TestComponent = { template: '<template><div>Test</div></template>', __name: 'TestComponent' }
 
-describe.concurrent('Test Utils - setupMountedComponents', () => {
-  it('should mount component with template', () => {
-    const { wrapper } = setupMountedComponents(
+describe.concurrent('Test Utils - setupMountedComponents', async () => {
+  it('should mount component with template', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: TestComponent, template: true },
       { initialStoreState: { state: { count: 42 } } }
     )
@@ -14,8 +14,8 @@ describe.concurrent('Test Utils - setupMountedComponents', () => {
     expect(wrapper.exists()).toBe(true)
   })
 
-  it('should mount component without template', () => {
-    const { wrapper } = setupMountedComponents(
+  it('should mount component without template', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: TestComponent, template: false },
       { initialStoreState: { count: 42 } }
     )
@@ -23,8 +23,8 @@ describe.concurrent('Test Utils - setupMountedComponents', () => {
     expect(wrapper.exists()).toBe(true)
   })
 
-  it('should mock router push method', () => {
-    const { router } = setupMountedComponents(
+  it('should mock router push method', async () => {
+    const { router } = await setupMountedComponents(
       { component: TestComponent, template: true },
       { initialStoreState: { count: 42 } }
     )
@@ -33,8 +33,8 @@ describe.concurrent('Test Utils - setupMountedComponents', () => {
     expect(router.push).toHaveBeenCalledWith('/new-route')
   })
 
-  it('should create vuetify, router, and pinia instances', () => {
-    const { wrapper, router, pinia } = setupMountedComponents(
+  it('should create vuetify, router, and pinia instances', async () => {
+    const { wrapper, router, pinia } = await setupMountedComponents(
       { component: TestComponent, template: true },
       { initialStoreState: { count: 42 } }
     )
@@ -44,14 +44,14 @@ describe.concurrent('Test Utils - setupMountedComponents', () => {
     expect(pinia).toBeDefined()
   })
 
-  it('should set props when rendering without template', () => {
+  it('should set props when rendering without template', async () => {
     const TestComponent = {
       props: ['message'],
       template: '<div>{{ message }}</div>',
       __name: 'TestComponent'
     }
 
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: TestComponent, template: false },
       { props: { message: 'Hello, Props!' } }
     )

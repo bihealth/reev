@@ -73,7 +73,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('renders the header', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -86,8 +86,8 @@ describe.concurrent('GeneDetailView', async () => {
     expect(menu.exists()).toBe(true)
   })
 
-  it('renders info-cards and navigation drawer', () => {
-    const { wrapper } = makeWrapper()
+  it('renders info-cards and navigation drawer', async () => {
+    const { wrapper } = await makeWrapper()
 
     const navigationDrawer = wrapper.find('.v-navigation-drawer')
     expect(navigationDrawer.exists()).toBe(true)
@@ -135,7 +135,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('emits update in header', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
@@ -155,7 +155,7 @@ describe.concurrent('GeneDetailView', async () => {
   })
 
   it('emits scroll to section', async () => {
-    const { wrapper, router } = makeWrapper()
+    const { wrapper, router } = await makeWrapper()
 
     const hgncLink = wrapper.find('#hgnc-nav')
     expect(hgncLink.exists()).toBe(true)
@@ -199,7 +199,7 @@ describe.concurrent('GeneDetailView', async () => {
     store.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
     store.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))
 
-    const { router } = setupMountedComponents(
+    const { router } = await setupMountedComponents(
       {
         component: GeneDetailView,
         template: true

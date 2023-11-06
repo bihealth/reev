@@ -84,12 +84,12 @@ const makeWrapper = () => {
       },
       pinia: pinia
     }
-  ).wrapper
+  )
 }
 
 describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Uncertain significance')
     expect(wrapper.text()).toContain('Select all fulfilled criteria')
   })

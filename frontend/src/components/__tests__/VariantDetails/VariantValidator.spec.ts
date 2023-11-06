@@ -21,7 +21,7 @@ describe.concurrent('VariantValidator', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve(VariantValidatorInfo) })
     )
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: VariantValidator, template: false },
       {
         props: {
@@ -46,7 +46,7 @@ describe.concurrent('VariantValidator', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
     )
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: VariantValidator, template: false },
       {
         props: {

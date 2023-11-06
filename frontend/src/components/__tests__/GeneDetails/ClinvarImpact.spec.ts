@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ClinvarImpact', async () => {
   it('renders the ClinvarImpact information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: ClinvarImpact, template: false },
       {
         props: {

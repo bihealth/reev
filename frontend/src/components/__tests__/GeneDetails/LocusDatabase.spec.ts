@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('LocusDatabases', async () => {
   it('renders the LocusDatabases information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: LocusDatabases, template: false },
       {
         props: {

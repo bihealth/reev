@@ -33,7 +33,7 @@ const variantInfo = {
 
 describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial, template: false },
       {
         props: {
@@ -51,7 +51,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info with no helixmtdb', async () => {
     const variantInfoNoHelixmtdb: any = structuredClone(variantInfo)
     variantInfoNoHelixmtdb.helixmtdb = {}
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial, template: false },
       {
         props: {
@@ -69,7 +69,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info with no gnomad-mtdna', async () => {
     const variantInfoNoGnomad: any = structuredClone(variantInfo)
     variantInfoNoGnomad['gnomad-mtdna'] = {}
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial, template: false },
       {
         props: {
@@ -85,7 +85,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   })
 
   it.skip('renders the FreqsMitochondrial info with invalid data', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial, template: false },
       {
         props: {

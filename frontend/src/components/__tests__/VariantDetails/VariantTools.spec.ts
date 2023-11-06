@@ -15,8 +15,8 @@ const smallVariantInfo = {
 }
 
 describe.concurrent('VariantTools', async () => {
-  it('renders the VariantTools info', async () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the Varia ntTools info', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: VariantTools, template: false },
       {
         props: {

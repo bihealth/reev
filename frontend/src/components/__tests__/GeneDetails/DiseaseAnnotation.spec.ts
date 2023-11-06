@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('DiseaseAnnotation', async () => {
   it('renders the DiseaseAnnotation information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: DiseaseAnnotation, template: false },
       {
         props: {

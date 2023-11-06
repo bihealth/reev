@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { defineAsyncComponent, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import SearchBar from '@/components/SearchBar.vue'
-import UserProfileButton from '@/components/UserProfileButton.vue'
 import { search } from '@/lib/utils'
 
-import CaseInformationCard from './CaseInformationCard.vue'
+// Components
+const SearchBar = defineAsyncComponent(() => import('@/components/SearchBar.vue'))
+const UserProfileButton = defineAsyncComponent(() => import('@/components/UserProfileButton.vue'))
+const CaseInformationCard = defineAsyncComponent(
+  () => import('@/components/CaseInformationCard.vue')
+)
 
 export interface Props {
   searchTerm?: string

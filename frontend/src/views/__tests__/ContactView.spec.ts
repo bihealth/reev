@@ -6,8 +6,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import ContactView from '../ContactView.vue'
 
 describe.concurrent('ContactView', async () => {
-  it('renders the header', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the header', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ContactView, template: true },
       {
         initialStoreState: {
@@ -24,8 +24,8 @@ describe.concurrent('ContactView', async () => {
     expect(menu.exists()).toBe(true)
   })
 
-  it('renders the main content', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the main content', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ContactView, template: true },
       {
         initialStoreState: {

@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('SvGenes', async () => {
   it('renders the SvGenes table', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: SvGenes, template: false },
       {
         props: {
@@ -22,7 +22,7 @@ describe.concurrent('SvGenes', async () => {
   })
 
   it('shows the gene info on row click', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: SvGenes, template: false },
       {
         props: {

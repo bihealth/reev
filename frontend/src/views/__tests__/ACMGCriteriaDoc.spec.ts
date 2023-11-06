@@ -6,8 +6,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import ACMGCriteriaDocs from '../ACMGCriteriaDocs.vue'
 
 describe.concurrent('ACMGCriteriaDocs', async () => {
-  it('renders the header', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the header', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ACMGCriteriaDocs, template: true },
       {
         initialStoreState: {
@@ -24,8 +24,8 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
     expect(menu.exists()).toBe(true)
   })
 
-  it('renders the main content', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the main content', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ACMGCriteriaDocs, template: true },
       {
         initialStoreState: {

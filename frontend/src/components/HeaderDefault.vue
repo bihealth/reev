@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import CaseInformationCard from '@/components/CaseInformationCard.vue'
-import UserProfileButton from '@/components/UserProfileButton.vue'
+import { defineAsyncComponent } from 'vue'
+
+const CaseInformationCard = defineAsyncComponent(
+  () => import('@/components/CaseInformationCard.vue')
+)
+const UserProfileButton = defineAsyncComponent(() => import('@/components/UserProfileButton.vue'))
 </script>
 
 <template>

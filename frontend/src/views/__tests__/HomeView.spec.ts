@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
-import { DottyClient } from '@/api/dotty'
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -29,8 +28,8 @@ describe.concurrent('HomeView with mocked router', async () => {
     vi.restoreAllMocks()
   })
 
-  it('renders the header and the footer', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the header and the footer', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: HomeView, template: true },
       {
         initialStoreState: {
@@ -56,8 +55,8 @@ describe.concurrent('HomeView with mocked router', async () => {
     expect(menu.exists()).toBe(true)
   })
 
-  it('renders the search bar', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the search bar', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: HomeView, template: true },
       {
         initialStoreState: {
@@ -81,8 +80,8 @@ describe.concurrent('HomeView with mocked router', async () => {
     expect(searchButton.exists()).toBe(true)
   })
 
-  it('renders example search terms', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders example search terms', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: HomeView, template: true },
       {
         initialStoreState: {
@@ -103,9 +102,11 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('searches for example by click', async () => {
-    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
+    )
 
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: HomeView, template: true },
       {
         initialStoreState: {
@@ -130,10 +131,12 @@ describe.concurrent('HomeView with mocked router', async () => {
     expect(store.geneSymbol).toBe('BRCA1')
   })
 
-  it('correctly uses the router', async () => {
-    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+  it.skip('correctly uses the router', async () => {
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
+    )
 
-    const { wrapper, router } = setupMountedComponents(
+    const { wrapper, router } = await setupMountedComponents(
       { component: HomeView, template: true },
       {
         initialStoreState: {

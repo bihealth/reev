@@ -22,7 +22,7 @@ const clinVarInfo = {
 
 describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: ClinVar, template: false },
       {
         props: {
@@ -38,7 +38,7 @@ describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
     clinVarInfoStars.reference_assertions[0].clinical_significance = 3
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: ClinVar, template: false },
       {
         props: {
@@ -54,7 +54,7 @@ describe.concurrent('ClinVar', async () => {
   })
 
   it('renders the ClinVar info (not found)', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: ClinVar, template: false },
       {
         props: {

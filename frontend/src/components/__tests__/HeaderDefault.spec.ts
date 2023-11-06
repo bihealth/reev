@@ -6,8 +6,8 @@ import HeaderDefault from '@/components/HeaderDefault.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('HeaderDefault.vue', () => {
-  it('renders the logo and title', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the logo and title', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: HeaderDefault, template: true },
       {
         initialStoreState: {
@@ -29,7 +29,7 @@ describe.concurrent('HeaderDefault.vue', () => {
   })
 
   it('renders the navigation links', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: HeaderDefault, template: true },
       {
         initialStoreState: {

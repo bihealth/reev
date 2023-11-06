@@ -1,24 +1,44 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import BookmarkButton from '@/components/BookmarkButton.vue'
-import AlternativeIdentifiers from '@/components/GeneDetails/AlternativeIdentifiers.vue'
-import ClinvarFreqPlot from '@/components/GeneDetails/ClinVarFreqPlot.vue'
-import ClinvarImpact from '@/components/GeneDetails/ClinvarImpact.vue'
-import ConstraintsCard from '@/components/GeneDetails/ConstraintsCard.vue'
-import DiseaseAnnotation from '@/components/GeneDetails/DiseaseAnnotation.vue'
-import ExternalResouces from '@/components/GeneDetails/ExternalResources.vue'
-import GeneRifs from '@/components/GeneDetails/GeneRifs.vue'
-import GtexGenePlot from '@/components/GeneDetails/GtexGenePlot.vue'
-import HgncCard from '@/components/GeneDetails/HgncCard.vue'
-import LocusDatabases from '@/components/GeneDetails/LocusDatabases.vue'
-import NcbiSummary from '@/components/GeneDetails/NcbiSummary.vue'
-import SupplementaryList from '@/components/GeneDetails/SupplementaryList.vue'
-import VariationLandscape from '@/components/GeneDetails/VariationLandscape.vue'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
+
+// Components
+const BookmarkButton = defineAsyncComponent(() => import('@/components/BookmarkButton.vue'))
+const AlternativeIdentifiers = defineAsyncComponent(
+  () => import('@/components/GeneDetails/AlternativeIdentifiers.vue')
+)
+const ClinvarFreqPlot = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ClinVarFreqPlot.vue')
+)
+const ClinvarImpact = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ClinvarImpact.vue')
+)
+const ConstraintsCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ConstraintsCard.vue')
+)
+const DiseaseAnnotation = defineAsyncComponent(
+  () => import('@/components/GeneDetails/DiseaseAnnotation.vue')
+)
+const ExternalResouces = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ExternalResources.vue')
+)
+const GeneRifs = defineAsyncComponent(() => import('@/components/GeneDetails/GeneRifs.vue'))
+const GtexGenePlot = defineAsyncComponent(() => import('@/components/GeneDetails/GtexGenePlot.vue'))
+const HgncCard = defineAsyncComponent(() => import('@/components/GeneDetails/HgncCard.vue'))
+const LocusDatabases = defineAsyncComponent(
+  () => import('@/components/GeneDetails/LocusDatabases.vue')
+)
+const NcbiSummary = defineAsyncComponent(() => import('@/components/GeneDetails/NcbiSummary.vue'))
+const SupplementaryList = defineAsyncComponent(
+  () => import('@/components/GeneDetails/SupplementaryList.vue')
+)
+const VariationLandscape = defineAsyncComponent(
+  () => import('@/components/GeneDetails/VariationLandscape.vue')
+)
+const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
 
 export interface Props {
   searchTerm?: string
