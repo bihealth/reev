@@ -12,6 +12,12 @@ import { registerPlugins } from '@/plugins'
 
 import App from './App.vue'
 
+declare global {
+  interface Window {
+    _paq: any[]
+  }
+}
+
 async function bootstrap() {
   const app = createApp(App)
 
