@@ -1,22 +1,40 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import BookmarkButton from '@/components/BookmarkButton.vue'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
-import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
-import VariantDetailsClinvar from '@/components/VariantDetails/ClinVar.vue'
-import VariantDetailsTxCsq from '@/components/VariantDetails/TxCsq.vue'
-import VariantDetailsConservation from '@/components/VariantDetails/VariantConservation.vue'
-import VariantDetailsFreqs from '@/components/VariantDetails/VariantFreqs.vue'
-import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
-import VariantDetailsVariantTools from '@/components/VariantDetails/VariantTools.vue'
-import VariantDetailsVariantValidator from '@/components/VariantDetails/VariantValidator.vue'
 import { search } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 import { type SmallVariant } from '@/stores/variantInfo'
+
+// Components
+const BookmarkButton = defineAsyncComponent(() => import('@/components/BookmarkButton.vue'))
+const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+const AcmgRating = defineAsyncComponent(() => import('@/components/VariantDetails/AcmgRating.vue'))
+const BeaconNetwork = defineAsyncComponent(
+  () => import('@/components/VariantDetails/BeaconNetwork.vue')
+)
+const VariantDetailsClinvar = defineAsyncComponent(
+  () => import('@/components/VariantDetails/ClinVar.vue')
+)
+const VariantDetailsTxCsq = defineAsyncComponent(
+  () => import('@/components/VariantDetails/TxCsq.vue')
+)
+const VariantDetailsConservation = defineAsyncComponent(
+  () => import('@/components/VariantDetails/VariantConservation.vue')
+)
+const VariantDetailsFreqs = defineAsyncComponent(
+  () => import('@/components/VariantDetails/VariantFreqs.vue')
+)
+const VariantDetailsGene = defineAsyncComponent(
+  () => import('@/components/VariantDetails/VariantGene.vue')
+)
+const VariantDetailsVariantTools = defineAsyncComponent(
+  () => import('@/components/VariantDetails/VariantTools.vue')
+)
+const VariantDetailsVariantValidator = defineAsyncComponent(
+  () => import('@/components/VariantDetails/VariantValidator.vue')
+)
 
 export interface Props {
   searchTerm?: string

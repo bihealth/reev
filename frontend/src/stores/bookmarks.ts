@@ -64,7 +64,6 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       }
       return response
     } catch (e) {
-      console.log(e)
       return null
     }
   }

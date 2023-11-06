@@ -4,13 +4,15 @@
  *
  * Implements the search bar for variants and genes.
  */
-import { ref } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import FooterDefault from '@/components/FooterDefault.vue'
-import HeaderDefault from '@/components/HeaderDefault.vue'
-import SearchBar from '@/components/SearchBar.vue'
 import { search } from '@/lib/utils'
+
+// Components
+const FooterDefault = defineAsyncComponent(() => import('@/components/FooterDefault.vue'))
+const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
+const SearchBar = defineAsyncComponent(() => import('@/components/SearchBar.vue'))
 
 const router = useRouter()
 

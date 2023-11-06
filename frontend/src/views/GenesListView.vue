@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import { useGenesListStore } from '@/stores/genesList'
 import { StoreState } from '@/stores/misc'
 
+// Components
+const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
 const router = useRouter()
 
 const genesListStore = useGenesListStore()

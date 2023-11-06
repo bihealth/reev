@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import BookmarkButton from '@/components/BookmarkButton.vue'
-import GenomeBrowser from '@/components/GenomeBrowser.vue'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
-import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
-import SvDetailsGenes from '@/components/SvDetails/SvGenes.vue'
-import SvTools from '@/components/SvDetails/SvTools.vue'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
 import { type SvRecord } from '@/stores/svInfo'
+
+// Components
+const BookmarkButton = defineAsyncComponent(() => import('@/components/BookmarkButton.vue'))
+const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
+const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+const AcmgRating = defineAsyncComponent(() => import('@/components/SvDetails/AcmgRating.vue'))
+const SvDetailsClinvar = defineAsyncComponent(
+  () => import('@/components/SvDetails/SvDetailsClinvar.vue')
+)
+const SvDetailsGenes = defineAsyncComponent(() => import('@/components/SvDetails/SvGenes.vue'))
+const SvTools = defineAsyncComponent(() => import('@/components/SvDetails/SvTools.vue'))
 
 export interface Props {
   searchTerm?: string

@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { defineAsyncComponent, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { AuthClient } from '@/api/auth'
-import CaseInformationCard from '@/components/CaseInformationCard.vue'
-import HeaderDefault from '@/components/HeaderDefault.vue'
 import { search } from '@/lib/utils'
 import { useBookmarksStore } from '@/stores/bookmarks'
 import { useCaseStore } from '@/stores/case'
 import { useUserStore } from '@/stores/user'
+
+// Components
+const CaseInformationCard = defineAsyncComponent(
+  () => import('@/components/CaseInformationCard.vue')
+)
+const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
 
 const bookmarksStore = useBookmarksStore()
 const caseStore = useCaseStore()

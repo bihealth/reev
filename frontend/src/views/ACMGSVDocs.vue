@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import HeaderDefault from '@/components/HeaderDefault.vue'
+import { defineAsyncComponent } from 'vue'
+
+// Components
+const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
 </script>
 
 <template>
