@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
-import { DottyClient } from '@/api/dotty'
 import FooterDefault from '@/components/FooterDefault.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -103,7 +102,9 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('searches for example by click', async () => {
-    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
+    )
 
     const { wrapper } = await setupMountedComponents(
       { component: HomeView, template: true },
