@@ -17,46 +17,49 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - Richards S, Aziz N, Bale S, Bick D, Das S, Gastier-Foster J, Grody WW, Hegde M, Lyon E, Spector E, Voelkerding K, Rehm HL; ACMG Laboratory Quality Assurance Committee.
   *Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology.*
   Genet Med. 2015 May;17(5):405-24. doi: 10.1038/gim.2015.30. Epub 2015 Mar 5. PMID: 25741868; PMCID: PMC4544753.
-- Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group.
-  *The ACMG/AMP reputable source criteria for the interpretation of sequence variants.*
-  Genet Med. 2018 Dec;20(12):1687-1688. doi: 10.1038/gim.2018.42. PMID: 29543229; PMCID: PMC6709533.
 - ClinGen Sequence Variant Interpretation Work Group.
   *Recommendations for ACMG/AMP guideline criteria code modifications nomenclature.*
   November 10, 2017.
-- Ghosh R, Harrison SM, Rehm HL, Plon SE, Biesecker LG; ClinGen Sequence Variant Interpretation Working Group.
-  *Updated recommendation for the benign stand-alone ACMG/AMP criterion.*
-  Hum Mutat. 2018 Nov;39(11):1525-1530. doi: 10.1002/humu.23642. PMID: 30311383; PMCID: PMC6188666.
 - Abou Tayoun AN, Pesaran T, DiStefano MT, Oza A, Rehm HL, Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group (ClinGen SVI).
   *Recommendations for interpreting the loss of function PVS1 ACMG/AMP variant criterion.*
   Hum Mutat. 2018 Nov;39(11):1517-1524. doi: 10.1002/humu.23626. Epub 2018 Sep 7. PMID: 30192042; PMCID: PMC6185798.
-- Walker LC, Hoya M, Wiggins GAR, Lindy A, Vincent LM, Parsons MT, Canson DM, Bis-Brewer D, Cass A, Tchourbanov A, Zimmermann H, Byrne AB, Pesaran T, Karam R, Harrison SM, Spurdle AB; ClinGen Sequence Variant Interpretation Working Group.
-  *Using the ACMG/AMP framework to capture evidence related to predicted and observed impact on splicing: Recommendations from the ClinGen SVI Splicing Subgroup.*
-  Am J Hum Genet. 2023 Jul 6;110(7):1046-1067. doi: 10.1016/j.ajhg.2023.06.002. Epub 2023 Jun 22. PMID: 37352859; PMCID: PMC10357475.
+- Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group.
+  *The ACMG/AMP reputable source criteria for the interpretation of sequence variants.*
+  Genet Med. 2018 Dec;20(12):1687-1688. doi: 10.1038/gim.2018.42. PMID: 29543229; PMCID: PMC6709533.
+- Ghosh R, Harrison SM, Rehm HL, Plon SE, Biesecker LG; ClinGen Sequence Variant Interpretation Working Group.
+  *Updated recommendation for the benign stand-alone ACMG/AMP criterion.*
+  Hum Mutat. 2018 Nov;39(11):1525-1530. doi: 10.1002/humu.23642. PMID: 30311383; PMCID: PMC6188666.
 - ClinGen Sequence Variant Interpretation Work Group.
-  *SVI Recommendation for De Novo Criteria (PS2 & PM6) - Version 1.1*
+  *SVI Recommendation for in trans Criterion (PM3) - Version 1.0*
+  2019.
 - Brnich SE, Abou Tayoun AN, Couch FJ, Cutting GR, Greenblatt MS, Heinen CD, Kanavy DM, Luo X, McNulty SM, Starita LM, Tavtigian SV, Wright MW, Harrison SM, Biesecker LG, Berg JS; Clinical Genome Resource Sequence Variant Interpretation Working Group.
   *Recommendations for application of the functional evidence PS3/BS3 criterion using the ACMG/AMP sequence variant interpretation framework.*
   Genome Med. 2019 Dec 31;12(1):3. doi: 10.1186/s13073-019-0690-2. PMID: 31892348; PMCID: PMC6938631.
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for Absence/Rarity (PM2) - Version 1.0*
+  2020.
 - ClinGen Sequence Variant Interpretation Work Group.
-  *SVI Recommendation for in trans Criterion (PM3) - Version 1.0*
-  2019.
+  *SVI Recommendation for De Novo Criteria (PS2 & PM6) - Version 1.1*
+  2021.
 - Pejaver V, Byrne AB, Feng BJ, Pagel KA, Mooney SD, Karchin R, O'Donnell-Luria A, Harrison SM, Tavtigian SV, Greenblatt MS, Biesecker LG, Radivojac P, Brenner SE; ClinGen Sequence Variant Interpretation Working Group.
   *Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria.*
   Am J Hum Genet. 2022 Dec 1;109(12):2163-2177. doi: 10.1016/j.ajhg.2022.10.013. Epub 2022 Nov 21. PMID: 36413997; PMCID: PMC9748256.
-- Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group.
-  *The ACMG/AMP reputable source criteria for the interpretation of sequence variants.*
-  Genet Med. 2018 Dec;20(12):1687-1688. doi: 10.1038/gim.2018.42. PMID: 29543229; PMCID: PMC6709533.
-- Strande NT, Riggs ER, Buchanan AH, Ceyhan-Birsoy O, DiStefano M, Dwight SS, Goldstein J, Ghosh R, Seifert BA, Sneddon TP, Wright MW, Milko LV, Cherry JM, Giovanni MA, Murray MF, O'Daniel JM, Ramos EM, Santani AB, Scott AF, Plon SE, Rehm HL, Martin CL, Berg JS.
-  *Evaluating the Clinical Validity of Gene-Disease Associations: An Evidence-Based Framework Developed by the Clinical Genome Resource.*
-  Am J Hum Genet. 2017 Jun 1;100(6):895-906. doi: 10.1016/j.ajhg.2017.04.015. Epub 2017 May 25. PMID: 28552198; PMCID: PMC5473734.
+- Walker LC, Hoya M, Wiggins GAR, Lindy A, Vincent LM, Parsons MT, Canson DM, Bis-Brewer D, Cass A, Tchourbanov A, Zimmermann H, Byrne AB, Pesaran T, Karam R, Harrison SM, Spurdle AB; ClinGen Sequence Variant Interpretation Working Group.
+  *Using the ACMG/AMP framework to capture evidence related to predicted and observed impact on splicing: Recommendations from the ClinGen SVI Splicing Subgroup.*
+  Am J Hum Genet. 2023 Jul 6;110(7):1046-1067. doi: 10.1016/j.ajhg.2023.06.002. Epub 2023 Jun 22. PMID: 37352859; PMCID: PMC10357475.
 
 Further references:
 
 - Eilbeck K, Lewis SE, Mungall CJ, Yandell M, Stein L, Durbin R, Ashburner M.
   The Sequence Ontology: a tool for the unification of genome annotations.
   Genome Biol. 2005;6(5):R44. doi: 10.1186/gb-2005-6-5-r44. Epub 2005 Apr 29. PMID: 15892872; PMCID: PMC1175956.
+
+We currently exclude the following resources (we plan to later incorporate them):
+
+- Variant Curation Expert Panel (VCEP) Criteria Specifications approved by the SVI VCEP Review Committee
+- Strande NT, Riggs ER, Buchanan AH, Ceyhan-Birsoy O, DiStefano M, Dwight SS, Goldstein J, Ghosh R, Seifert BA, Sneddon TP, Wright MW, Milko LV, Cherry JM, Giovanni MA, Murray MF, O'Daniel JM, Ramos EM, Santani AB, Scott AF, Plon SE, Rehm HL, Martin CL, Berg JS.
+  *Evaluating the Clinical Validity of Gene-Disease Associations: An Evidence-Based Framework Developed by the Clinical Genome Resource.*
+  Am J Hum Genet. 2017 Jun 1;100(6):895-906. doi: 10.1016/j.ajhg.2017.04.015. Epub 2017 May 25. PMID: 28552198; PMCID: PMC5473734.
 
 .. _acmg_seqvars-criteria:
 
@@ -76,6 +79,7 @@ PVS1 (null variant)
 
 - variant is a null variant (sequence ontology: ``stop_gained``, ``frameshift_variant``, ``splice_acceptor_variant``, ``splice_donor_variant``, ``start_lost``, ``exon_loss_variant``, ``transcript_variant``)
 - loss of function is a known disease mechanism for the affected
+- incorporate figures 4-5 from Walker et al. (2023)
 
 **Caveats**
 
@@ -84,6 +88,7 @@ PVS1 (null variant)
 - caution with splice variants predicted to lead to exon skipping but leave the remainder of the protein intact
 - caution in the presence of multiple transcripts
 
+
 PVS1 Update 2018
 ~~~~~~~~~~~~~~~~
 
@@ -91,6 +96,7 @@ PVS1 Update 2018
 
 In Tayoun et al. (2018), the following decision tree is defined.
 It is based on the assumption that the gene-disease association is at a moderate, strong, or definitive clinical level according to Strande et al. (2017).
+Note that we do not incorporate the matching by Strande et al. (2017) for now.
 
 1. ``stop_gained`` or ``frameshift_variant``
     1. predicted to undergo NMD
@@ -184,7 +190,7 @@ It is based on the assumption that the gene-disease association is at a moderate
 
 And here is the tree as an image:
 
-.. image:: img/Tayoun-2018.png
+.. image:: img/Tayoun-2018-Figure-1.png
     :alt: Figure 1 from Tayoun et al. (2018)
 
 **Notes**
@@ -217,10 +223,52 @@ PS1 (same amino acid change)
 ----------------------------
 
 - same amino acid change has previoulsy been established as pathogenic, regardless of nucleotide change
+- for splicing variants, Tables 2-3 from Walker et al. (2023) shall be used
+
+**Table 2 Rules** from Walker et al. (2023) of Variant under assessment (VUA)
+
+- VUA located outside splice donor / acceptor +/- 1/2 dinucleotide positions
+    - baseline computational code: PP3
+        - position of comparison variant relative to VUA: same nucleotide
+            - with P comparison variant: PS1
+            - with LP comparison variant: PS1_Moderate
+        - position of comparison variant relative to VUA: within same splice donor / acceptor motif (including +/- 1/2 position)
+            - with P comparison variant: PS1_Moderate
+            - with LP comparison variant: PS1_Supporting
+- VUA located at splice donor / acceptor +/- 1/2 dinucleotide positions
+    - baseline computational code: PVS1
+        - position of comparison variant relative to VUA: within same splice donor / acceptor +/- 1/2 dinicleotide
+        - with P comparison variant: VUA is PS1_Supporting
+        - with LP comparison variant: N/A
+    - baseline computational code: PVS1
+        - position of comparison variant relative to VUA: within same splice donor / acceptor region but outside +/- 1/2 dinicleotide
+        - with P comparison variant: VUA is PS1_Supporting
+        - with LP comparison variant: VUA is PS1_Supporting
+    - baseline computational code: PVS1_Strong, PVS1_Moderate, PVS1_Supporting
+        - position of comparison variant relative to VUA: within same splice donor / acceptor +/- 1/2 dinicleotide
+        - with P comparison variant: VUA is PS1
+        - with LP comparison variant: VUA is N/A
+    - baseline computational code: PVS1_Strong, PVS1_Moderate, PVS1_Supporting
+        - position of comparison variant relative to VUA: within same splice donor / acceptor motify but outside +/- 1/2 dinicleotide
+        - with P comparison variant: VUA is PS1_Moderate
+        - with LP comparison variant: VUA is PS1_Supporting
+
+.. image:: img/Walker-2023-Table-2-1.png
+    :alt: Table 2 (part 1) from Walker et al. (2023)
+
+.. image:: img/Walker-2023-Table-2-1.png
+    :alt: Table 2 (part 2) from Walker et al. (2023)
+
+.. image:: img/Walker-2023-Table-3.png
+    :alt: Table 3 from Walker et al. (2023)
 
 **Caveats**
 
 - beware of changes that impact splicing rather than amino acid or protein level
+
+**Notes**
+
+- incorporation of splicing here is based on the recommendation by Walker et al. (2023)
 
 PS2 (confirmed *de novo*)
 -------------------------
@@ -231,6 +279,11 @@ PS2 (confirmed *de novo*)
 
 - confirmation of paternity only is insufficient (egg donation, surrogate motherhood, errors in embryo transfer, ... can contribute to nonmaternity)
 
+**Notes**
+
+- ClinGen Sequence Variant Interpretation Work Group (2021) describe a point-scale for PS2 and PM6.
+  However, this is hard to apply automatically as it requires an assessment of whether the phenotype is highly specific or consistent with the gene.
+
 PS3 (functional studies)
 ------------------------
 
@@ -239,6 +292,12 @@ PS3 (functional studies)
 **Caveats**
 
 - functional studies that have been validated and shown to be reproducible and robust in a clinical diagnostic laboratory setting are considered the most well established
+
+**Notes**
+
+- There is further guidance in Brnich et al. (2020) on how to apply PS3 and BS3 when interpreting "well-established" functional assays.
+- However, as this process is manual, it is not further considered here.
+- Walker et al. (2023) is not considered here as the authors recommend to capture experimental evidence with PVS1 and is not suitable for automatic classification.
 
 PS4 (prevalence)
 ----------------
@@ -259,14 +318,9 @@ PM1 (hotspot)
 
 - located in a mutational hot spot and/or critical and well-established functional domain (e.g., active site of an enzyme) without benign variation
 
-PM2 (absent from controls)
---------------------------
+**Caveats**
 
-- absent from controls (or at extremely low frequency if recessive) in gnomAD
-
-**Notes**
-
-- population indel data is of high quality by now
+- Pejaver et al. (2022) suggest to limit combined evidence from P1 and PP3 to strong
 
 PM3 (recessive and in trans)
 ----------------------------
@@ -326,6 +380,16 @@ PM6 (assumed *de novo*)
 Pathogenic Supporting
 =====================
 
+PM2_Supporting (absent from controls)
+-------------------------------------
+
+- absent from controls (or at extremely low frequency if recessive) in gnomAD
+
+**Notes**
+
+- population indel data is of high quality by now
+- ClinGen Sequence Variant Interpretation Work Group (2020) has downgraded this to PM2_Supporting by default.
+
 PP1 (cosegregaton)
 ------------------
 
@@ -344,11 +408,22 @@ PP3 (*in silico* predictions)
 -----------------------------
 
 - multiple lines of computational evidence support a deleterious effect on the gene or gene product (conservation, evolutionary, splicing impact, etc.)
+- incorporate figures 4-5 from Walker et al. (2023)
+
+.. image:: img/Walker-2023-Figure-5.png
+    :alt: Figure 5 from Walker et al. (2023)
 
 **Caveats**
 
-- because many in silico algorithms use the same or very similar input for their predictions, each algorithm should not be counted as an independent criterion. PP3 can be used only once in any evaluation of a variant.
+- because many in silico algorithms use the same or very similar input for their predictions, each algorithm should not be counted as an independent criterion.
+  PP3 can be used only once in any evaluation of a variant.
+- Pejaver et al. (2022) suggest to limit combined evidence from P1 and PP3 to strong.
 
+**Notes**
+
+- The resulting class is updated according to the Pejaver et al. (2022).
+  Note that it would be very useful to run the original code by Pejaver with more scores.
+  The code from Pejaver `can be found here on GitHub <https://github.com/vpejaver/clingen-svi-comp_calibration>`__.
 
 PP4 (monogenetic)
 -----------------
@@ -399,6 +474,12 @@ BS3 (functional studies)
 
 - well-established in vitro or in vivo functional studies show no damaging effect on protein function or splicing
 
+**Notes**
+
+- There is further guidance in Brnich et al. (2020) on how to apply PS3 and BS3 when interpreting "well-established" functional assays.
+  However, as this process is manual, it is not further considered here.
+- Walker et al. (2023) is not considered here as the authors recommend to capture experimental evidence with PVS1 and is not suitable for automatic classification.
+
 BS4 (lack of segregation)
 -------------------------
 
@@ -431,10 +512,17 @@ BP4 (*in silico* predictions)
 -----------------------------
 
 - multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary, splicing impact, etc.)
+- incorporate figures 4-5 from Walker et al. (2023)
 
 **Caveats**
 
 - because many in silico algorithms use the same or very similar input for their predictions, each algorithm cannot be counted as an independent criterion. BP4 can be used only once in any evaluation of a variant.
+
+**Notes**
+
+- The resulting class is updated according to the Pejaver et al. (2022).
+  Note that it would be very useful to run the original code by Pejaver with more scores.
+  The code from Pejaver `can be found here on GitHub <https://github.com/vpejaver/clingen-svi-comp_calibration>`__.
 
 BP5 (found in solved)
 ---------------------
@@ -450,6 +538,7 @@ BP7 (synonymous)
 ----------------
 
 - synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensus sequence nor the creation of a new splice site AND the nucleotide is not highly conserved
+- incorporate figures 4-5 from Walker et al. (2023)
 
 -----
 Rules
