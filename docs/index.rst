@@ -9,6 +9,8 @@ It supports them by providing aggregated information on genomic variants.
    :maxdepth: 1
    :caption: Contents:
 
+   acmg_seqvars
+
 .. toctree::
    :hidden:
    :maxdepth: 1
