@@ -12,6 +12,9 @@ async function setupMatomo(app: App, router: any) {
   try {
     const client = new SettingsClient()
     const response = await client.fetchFrontendSettings()
+    if (!response['matomo_host'] || !response['matomo_site_id']) {
+      throw new Error('Matomo host and site ID must be set')
+    }
 
     app.use(VueMatomo, {
       host: response['matomo_host'],
