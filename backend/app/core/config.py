@@ -1,8 +1,8 @@
 import logging
 import os
 import secrets
-from typing import Any
 import typing
+from typing import Any
 
 from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
 from pydantic_core.core_schema import ValidationInfo
@@ -166,7 +166,7 @@ class Settings(BaseSettings):
     EMAILS_FROM_NAME: str | None = None
 
     EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
-    EMAIL_TEMPLATES_DIR: str = "/app/app/email-templates/build"
+    EMAIL_TEMPLATES_DIR: str = f"{os.path.dirname(__file__)}/../app/email-templates/build"
     EMAILS_ENABLED: bool = False
 
     # -- Sentry Configuration ------------------------------------------------

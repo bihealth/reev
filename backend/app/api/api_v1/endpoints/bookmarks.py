@@ -9,7 +9,7 @@ from app.models.user import User
 router = APIRouter()
 
 current_active_user = auth.fastapi_users.current_user(active=True)
-current_superuser = auth.fastapi_users.current_user(active=True, superuser=True)
+current_active_superuser = auth.fastapi_users.current_user(active=True, superuser=True)
 
 
 @router.post("/create", response_model=schemas.BookmarkCreate)
@@ -32,7 +32,7 @@ async def create_bookmark(
 
 @router.get(
     "/list-all",
-    dependencies=[Depends(current_superuser)],
+    dependencies=[Depends(current_active_superuser)],
     response_model=list[schemas.BookmarkRead],
 )
 async def list_bookmarks(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(deps.get_db)):
@@ -50,7 +50,9 @@ async def list_bookmarks(skip: int = 0, limit: int = 100, db: AsyncSession = Dep
 
 
 @router.get(
-    "/get-by-id", dependencies=[Depends(current_superuser)], response_model=schemas.BookmarkRead
+    "/get-by-id",
+    dependencies=[Depends(current_active_superuser)],
+    response_model=schemas.BookmarkRead,
 )
 async def get_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
     """
@@ -69,7 +71,9 @@ async def get_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
 
 
 @router.delete(
-    "/delete-by-id", response_model=schemas.BookmarkRead, dependencies=[Depends(current_superuser)]
+    "/delete-by-id",
+    response_model=schemas.BookmarkRead,
+    dependencies=[Depends(current_active_superuser)],
 )
 async def delete_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
     """

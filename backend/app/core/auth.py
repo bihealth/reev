@@ -3,17 +3,16 @@ from typing import Any, Optional
 
 import redis.asyncio
 from fastapi import Depends, Request, Response
-from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
+from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin, models
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,
     CookieTransport,
     RedisStrategy,
 )
-from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
-from fastapi_users import models
 from fastapi_users.db import BaseUserDatabase
 from fastapi_users.password import PasswordHelperProtocol
+from fastapi_users_db_sqlalchemy import SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_async_session
@@ -29,10 +28,12 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
     reset_password_token_secret = settings.SECRET_KEY
     verification_token_secret = settings.SECRET_KEY
 
-    def __init__(self,         user_db: BaseUserDatabase[models.UP, models.ID],
+    def __init__(
+        self,
+        user_db: BaseUserDatabase[models.UP, models.ID],
         password_helper: Optional[PasswordHelperProtocol] = None,
     ):
-        super().__init__(self, user_db, password_helper)
+        super().__init__(user_db, password_helper)
 
     async def on_after_register(self, user: User, request: Request | None = None):
         print(f"User {user.id} has registered.")
