@@ -5,7 +5,7 @@
  */
 // Components
 // Composables
-import { createApp } from 'vue'
+import { createApp, nextTick } from 'vue'
 
 // Plugins
 import { registerPlugins } from '@/plugins'
@@ -18,6 +18,9 @@ async function bootstrap() {
   await registerPlugins(app)
 
   app.mount('#app')
+
+  await nextTick()
+  window._paq.push(['trackPageView'])
 }
 
 bootstrap()

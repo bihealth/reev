@@ -12,17 +12,17 @@ async function setupMatomo(app: App, router: any) {
   try {
     const client = new SettingsClient()
     const response = await client.fetchFrontendSettings()
-    if (!response['matomo_host'] || !response['matomo_site_id']) {
-      throw new Error('Matomo host and site ID must be set')
+    if (response['matomo_host'] && response['matomo_site_id']) {
+      app.use(VueMatomo, {
+        host: response['matomo_host'],
+        siteId: response['matomo_site_id'],
+        router: router,
+        enableLinkTracking: true,
+        trackInitialView: true,
+        requireConsent: true,
+        disableCookies: true
+      })
     }
-
-    app.use(VueMatomo, {
-      host: response['matomo_host'],
-      siteId: response['matomo_site_id'],
-      router: router,
-      requireConsent: true,
-      disableCookies: true
-    })
   } catch (error) {
     console.error('Failed to initialize Matomo:', error)
   }
