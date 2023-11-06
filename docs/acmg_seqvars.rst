@@ -35,8 +35,14 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - Brnich SE, Abou Tayoun AN, Couch FJ, Cutting GR, Greenblatt MS, Heinen CD, Kanavy DM, Luo X, McNulty SM, Starita LM, Tavtigian SV, Wright MW, Harrison SM, Biesecker LG, Berg JS; Clinical Genome Resource Sequence Variant Interpretation Working Group.
   *Recommendations for application of the functional evidence PS3/BS3 criterion using the ACMG/AMP sequence variant interpretation framework.*
   Genome Med. 2019 Dec 31;12(1):3. doi: 10.1186/s13073-019-0690-2. PMID: 31892348; PMCID: PMC6938631.
+- Ellard S, Baple EL, Berry I, Forrester N, Turnbull C, Owens M, Eccles D, Abbs S, Scott R, Deans Z.
+  *ACGS best practice guidelines for variant classification 2019.*
+  2019.
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for Absence/Rarity (PM2) - Version 1.0*
+  2020.
+- Ellard S, Baple EL, Callaway A, Berry I, Forrester N, Turnbull C, Owens M, Eccles DM, Abbs S, Scott R, Deans ZC, Lester T, Campbell J, Newman WG, Ramsden S, McMullan DJ.
+  *ACGS Best Practice Guidelines for Variant Classification in Rare Disease 2020.*
   2020.
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for De Novo Criteria (PS2 & PM6) - Version 1.1*
@@ -544,8 +550,13 @@ BP7 (synonymous)
 Rules
 -----
 
+ACMG 2015 Rules
+===============
+
+The following rules have been defined in Richards et al. (2015).
+
 Pathogenic
-==========
+----------
 
 If one of the following criteria 1-3 are fulfilled.
 
@@ -561,7 +572,7 @@ If one of the following criteria 1-3 are fulfilled.
     c. 1 moderate (PM1-PM6) AND >=4 supporting (PP1-PP5)
 
 Likely Pathogenic
-=================
+-----------------
 
 If one of the following criteria 1-7 are fulfilled.
 
@@ -573,7 +584,7 @@ If one of the following criteria 1-7 are fulfilled.
 6. 1 moderate (PM1-PM6) AND >=4 supporting (PP1-PP5)
 
 Benign
-======
+------
 
 If one of the following criteria 1-2 are fulfilled.
 
@@ -581,7 +592,7 @@ If one of the following criteria 1-2 are fulfilled.
 2. >=2 strong (BS1-BS4)
 
 Likely Benign
-=============
+-------------
 
 If one of the following criteria 1-2 are fulfilled.
 
@@ -589,12 +600,45 @@ If one of the following criteria 1-2 are fulfilled.
 2. >=2 supporting (BP1-BP7)
 
 Uncertain Significance
-======================
+----------------------
 
 If if one of the following criteria 1-2 are fulfilled.
 
 1. Other criteria shown above are not met
 2. the criteria for benign and pathogenic are contradictory
+
+ACGS 2020 Rules
+---------------
+
+The following is a refinement of the rules above set by the Ellard et al. (2020).
+
+Pathogenic
+----------
+
+1. 1 very strong (PVS) AND one of the following
+    a. >=1 strong
+    b. >=1 moderate
+    c. >=2 supporting
+2. >=3 strong
+3. 2 strong AND one of the following
+    a. >=1 moderate
+    b. >=2 supporting
+4. 1 strong AND one of the following
+    a. >=3 moderate
+    b. >=2 moderate AND >=2 supporting
+    c. >=1 moderate AND >=4 supporting
+
+Likely Pathogenic
+-----------------
+
+
+1. >=2 strong
+2. 1 strong AND one of teh following
+    a. 1-2 moderate OR
+    b. >=2 supporting
+3. >=3 moderate OR
+    a. 2 moderate AND >=2 supporting
+    b. 1 modereate AND >=4 supporting
 
 ------------------------------
 Code Modification Nomenclature
