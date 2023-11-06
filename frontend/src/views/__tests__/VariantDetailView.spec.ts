@@ -105,7 +105,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('renders the header', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -119,7 +119,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('emits update in header', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
@@ -138,8 +138,8 @@ describe.concurrent('VariantDetailView', async () => {
     expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch37' })
   })
 
-  it('renders VariantDatails components', () => {
-    const { wrapper } = makeWrapper()
+  it('renders VariantDatails components', async () => {
+    const { wrapper } = await makeWrapper()
 
     const variantInfo = wrapper.findComponent(VariantGene)
     const beaconNetwork = wrapper.findComponent(BeaconNetwork)
@@ -160,7 +160,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it('emits scroll to section', async () => {
-    const { wrapper, router } = makeWrapper()
+    const { wrapper, router } = await makeWrapper()
 
     const geneLink = wrapper.find('#gene-nav')
     expect(geneLink.exists()).toBe(true)
@@ -223,7 +223,7 @@ describe.concurrent('VariantDetailView', async () => {
     variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
     variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
-    const { router } = setupMountedComponents(
+    const { router } = await setupMountedComponents(
       {
         component: VariantDetailView,
         template: true

@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ConstraintsCard', async () => {
   it('renders the ConstraintsCard information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: ConstraintsCard, template: false },
       {
         props: {

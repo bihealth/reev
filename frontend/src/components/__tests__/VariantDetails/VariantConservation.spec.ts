@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('VariantConservation', async () => {
   it('renders the VariantConservation info', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: VariantConservation, template: false },
       {
         props: {

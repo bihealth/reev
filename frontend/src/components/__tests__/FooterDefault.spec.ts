@@ -5,8 +5,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import FooterDefault from '../FooterDefault.vue'
 
 describe.concurrent('FooterDefault.vue', () => {
-  it('renders information', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders information', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: FooterDefault, template: true },
       {
         initialStoreState: {

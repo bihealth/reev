@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('SupplementaryList', async () => {
   it('renders the SupplementaryList information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: SupplementaryList, template: false },
       {
         props: {

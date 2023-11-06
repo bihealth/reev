@@ -5,7 +5,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ScoreDisplay', async () => {
   it('renders the ScoreDisplay with default props', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: ScoreDisplay, template: false },
       {
         props: {

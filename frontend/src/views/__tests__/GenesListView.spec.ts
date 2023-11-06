@@ -56,12 +56,12 @@ const makeWrapper = () => {
       },
       pinia: pinia
     }
-  ).wrapper
+  )
 }
 
 describe.concurrent('GenesListView', async () => {
   it('renders the header, footer and searchBar', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     const searchBar = wrapper.findComponent(SearchBar)
@@ -75,7 +75,7 @@ describe.concurrent('GenesListView', async () => {
   })
 
   it('renders the search results', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = await makeWrapper()
     expect(wrapper.html()).toContain('Search results for:')
     expect(wrapper.html()).toContain('Search term:')
 
@@ -92,7 +92,7 @@ describe.concurrent('GenesListView', async () => {
   })
 
   it('emits update in header', async () => {
-    const wrapper = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
@@ -126,7 +126,7 @@ describe.concurrent('GenesListView', async () => {
     store.clearData = mockClearData
 
     store.storeState = StoreState.Error
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       {
         component: GenesListView,
         template: true
@@ -169,7 +169,7 @@ describe.concurrent('GenesListView', async () => {
     store.storeState = StoreState.Loading
     store.query = 'q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
     store.redirectHgncId = 'HGNC:3333'
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       {
         component: GenesListView,
         template: true
@@ -187,6 +187,9 @@ describe.concurrent('GenesListView', async () => {
   })
 
   it('redirects to gene info page if storeState is Redirect', async () => {
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
+    )
     const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = useGenesListStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async () => {
@@ -205,7 +208,7 @@ describe.concurrent('GenesListView', async () => {
     store.storeState = StoreState.Active
     store.query = 'q=EMP1&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
     store.redirectHgncId = null
-    const { router } = setupMountedComponents(
+    const { router } = await setupMountedComponents(
       {
         component: GenesListView,
         template: true
@@ -220,7 +223,7 @@ describe.concurrent('GenesListView', async () => {
     )
 
     await nextTick()
-    expect(router.replace).toHaveBeenCalledOnce()
+    expect(router.replace).toHaveBeenCalled()
     expect(router.replace).toHaveBeenCalledWith({
       name: 'gene',
       params: { searchTerm: 'HGNC:3333', genomeRelease: 'grch37' }

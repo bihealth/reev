@@ -46,7 +46,7 @@ const svRecord: SvRecord = {
 
 describe.concurrent('SvTools', async () => {
   it('renders the SvTools content', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: SvTools, template: false },
       {
         props: {

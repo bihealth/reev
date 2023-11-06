@@ -15,7 +15,7 @@ const smallVariantInfo = {
 
 describe.concurrent('BeaconNetwork', async () => {
   it('renders the BeaconNetwork info', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: BeaconNetwork, template: false },
       {
         props: {
@@ -29,7 +29,7 @@ describe.concurrent('BeaconNetwork', async () => {
   })
 
   it('correctly loads the BeaconNetwork info', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: BeaconNetwork, template: false },
       {
         props: {

@@ -28,7 +28,7 @@ const smallVariantInfoMitochondrial = {
 
 describe.concurrent('VariantFreqs', async () => {
   it('renders the VariantFreqs info', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: VariantFreqs, template: false },
       {
         props: {
@@ -42,7 +42,7 @@ describe.concurrent('VariantFreqs', async () => {
   })
 
   it('renders the VariantFreqs info for Mitochondrial Variants', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: VariantFreqs, template: false },
       {
         props: {

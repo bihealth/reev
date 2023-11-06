@@ -23,15 +23,15 @@ const exampleBookmark: BookmarkData = {
 }
 
 describe.concurrent('Profile view', async () => {
-  it('renders the header', () => {
-    const { wrapper } = setupMountedComponents({ component: ProfileView, template: true }, {})
+  it('renders the header', async () => {
+    const { wrapper } = await setupMountedComponents({ component: ProfileView, template: true }, {})
 
     const header = wrapper.findComponent(HeaderDefault)
     expect(header.exists()).toBe(true)
   })
 
-  it('renders the main content if logged in', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the main content if logged in', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ProfileView, template: true },
       {
         initialStoreState: {
@@ -50,8 +50,8 @@ describe.concurrent('Profile view', async () => {
     expect(wrapper.text()).toMatch('Your bookmarks:')
   })
 
-  it('renders the main content if not logged in', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the main content if not logged in', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ProfileView, template: true },
       {
         initialStoreState: {

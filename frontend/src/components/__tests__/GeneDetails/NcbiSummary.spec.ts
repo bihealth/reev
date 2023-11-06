@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('NcbiSummary', async () => {
   it('renders the NcbiSummary information.', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: NcbiSummary, template: false },
       {
         props: {

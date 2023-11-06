@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('VariationLandscape', async () => {
   it('renders the VariationLandscape plot', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: VariationLandscape, template: false },
       {
         props: {

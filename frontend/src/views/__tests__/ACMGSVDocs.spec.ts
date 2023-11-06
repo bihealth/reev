@@ -6,8 +6,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import ACMGSVDocs from '../ACMGSVDocs.vue'
 
 describe.concurrent('ACMGSVDocs', async () => {
-  it('renders the header', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the header', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ACMGSVDocs, template: true },
       {
         initialStoreState: {
@@ -24,8 +24,8 @@ describe.concurrent('ACMGSVDocs', async () => {
     expect(menu.exists()).toBe(true)
   })
 
-  it('renders the main content', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the main content', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: ACMGSVDocs, template: true },
       {
         initialStoreState: {

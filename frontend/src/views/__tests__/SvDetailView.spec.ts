@@ -47,14 +47,14 @@ const makeWrapper = () => {
 
 describe.concurrent('VariantDetailView', async () => {
   it('renders the header', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
   })
 
   it('renders the loading state', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const svInfoStore = useSvInfoStore()
     svInfoStore.storeState = StoreState.Loading
@@ -64,7 +64,7 @@ describe.concurrent('VariantDetailView', async () => {
   })
 
   it.skip('renders SvDetails info', async () => {
-    const { wrapper } = makeWrapper()
+    const { wrapper } = await makeWrapper()
 
     const svGenes = wrapper.findComponent(SvGenes)
     const svTools = wrapper.findComponent(SvTools)

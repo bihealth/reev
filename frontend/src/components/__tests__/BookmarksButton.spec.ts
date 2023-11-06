@@ -13,14 +13,14 @@ const exampleBookmark: BookmarkData = {
 }
 
 describe.concurrent('BookmarkButton.vue', () => {
-  it('renders information', () => {
+  it('renders information', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
     const bookmarkStore = useBookmarksStore(pinia)
     const mockFetchBookmark = vi.fn().mockImplementation(async () => {
       bookmarkStore.bookmarks = [exampleBookmark]
     })
     bookmarkStore.fetchBookmark = mockFetchBookmark
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: BookmarkButton, template: false },
       {
         initialStoreState: {

@@ -14,7 +14,7 @@ describe.concurrent('AcmgCriteriaCard', async () => {
     const criteria = AcmgCriteria.Pvs1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: AcmgCriteriaCard, template: false },
       {
         props: {
@@ -40,7 +40,7 @@ describe.concurrent('AcmgCriteriaCard', async () => {
     const criteria = AcmgCriteria.Pvs1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: AcmgCriteriaCard, template: false },
       {
         props: {

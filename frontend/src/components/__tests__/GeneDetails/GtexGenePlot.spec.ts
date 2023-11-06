@@ -8,7 +8,7 @@ describe.concurrent('GtexGenePlotVue', async () => {
   it('renders the GtexGenePlotVue info', async () => {
     // Disable warinings, because of invalid test data
     console.warn = vi.fn()
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: GtexGenePlotVue, template: false },
       {
         props: {

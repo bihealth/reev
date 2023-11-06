@@ -5,7 +5,10 @@ import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('SvDetailsClinvar', async () => {
   it('renders the SvDetailsClinvar info', async () => {
-    const { wrapper } = setupMountedComponents({ component: SvDetailsClinvar, template: false }, {})
+    const { wrapper } = await setupMountedComponents(
+      { component: SvDetailsClinvar, template: false },
+      {}
+    )
     expect(wrapper.exists()).toBe(true)
   })
 })

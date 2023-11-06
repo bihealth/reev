@@ -11,8 +11,8 @@ describe.concurrent('SearchBar.vue', () => {
     vi.restoreAllMocks()
   })
 
-  it('renders the search bar with the correct default props', () => {
-    const { wrapper } = setupMountedComponents(
+  it('renders the search bar with the correct default props', async () => {
+    const { wrapper } = await setupMountedComponents(
       { component: SearchBar, template: false },
       {
         props: {
@@ -37,7 +37,7 @@ describe.concurrent('SearchBar.vue', () => {
   })
 
   it('correctly inputs data', async () => {
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: SearchBar, template: false },
       {
         props: {
@@ -69,7 +69,7 @@ describe.concurrent('SearchBar.vue', () => {
     // we make `DottyClient.toSpdi` return null / fail
     vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
 
-    const { wrapper } = setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       { component: SearchBar, template: false },
       {
         props: {

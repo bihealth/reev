@@ -6,8 +6,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import LoginView from '../LoginView.vue'
 
 describe.concurrent('Login view', async () => {
-  it('renders the main content', () => {
-    const { wrapper } = setupMountedComponents({ component: LoginView, template: true }, {})
+  it('renders the main content', async () => {
+    const { wrapper } = await setupMountedComponents({ component: LoginView, template: true }, {})
 
     expect(wrapper.html()).toMatch('REEV Explains and Evaluates Variants')
 
@@ -31,7 +31,7 @@ describe.concurrent('Login view', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve(JSON.stringify({ status: 200 })) })
     )
-    const { wrapper } = setupMountedComponents({ component: LoginView, template: true }, {})
+    const { wrapper } = await setupMountedComponents({ component: LoginView, template: true }, {})
 
     const emailField = wrapper.find('#email')
     const passwordField = wrapper.find('#password')
@@ -51,7 +51,7 @@ describe.concurrent('Login view', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
     )
-    const { wrapper } = setupMountedComponents({ component: LoginView, template: true }, {})
+    const { wrapper } = await setupMountedComponents({ component: LoginView, template: true }, {})
 
     const emailField = wrapper.find('#email')
     const passwordField = wrapper.find('#password')
