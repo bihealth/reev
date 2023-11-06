@@ -4,7 +4,7 @@ from fastapi import APIRouter
 from httpx_oauth.clients.openid import OpenID
 from httpx_oauth.errors import GetIdEmailError
 
-from app.api.api_v1.endpoints import adminmsgs, auth, bookmarks, utils, caseinfo
+from app.api.api_v1.endpoints import adminmsgs, auth, bookmarks, caseinfo, utils
 from app.core.auth import auth_backend_bearer, auth_backend_cookie, fastapi_users
 from app.core.config import settings
 from app.schemas.user import UserRead, UserUpdate

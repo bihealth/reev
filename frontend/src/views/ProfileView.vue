@@ -3,9 +3,9 @@ import { defineAsyncComponent, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { AuthClient } from '@/api/auth'
-import CaseInformationCard from '@/components/CaseInformationCard.vue'
 import { UsersClient } from '@/api/users'
 import { UtilsClient } from '@/api/utils'
+import CaseInformationCard from '@/components/CaseInformationCard.vue'
 import HeaderDefault from '@/components/HeaderDefault.vue'
 import { search } from '@/lib/utils'
 import { useBookmarksStore } from '@/stores/bookmarks'
@@ -172,42 +172,41 @@ onMounted(async () => {
               <v-checkbox label="active user" readonly v-model="userStore.currentUser.is_active" />
             </v-form>
 
-              <v-row class="pt-6" justify="center">
-                <v-btn prepend-icon="mdi-key-variant" id="login" @click="logout"> Logout </v-btn>
-              </v-row>
-            </v-card-text>
-          </v-card>
+            <v-row class="pt-6" justify="center">
+              <v-btn prepend-icon="mdi-key-variant" id="login" @click="logout"> Logout </v-btn>
+            </v-row>
+          </v-card-text>
+        </v-card>
 
-  
         <v-card
-            class="mx-auto pa-4 pb-8 mt-12"
-            elevation="8"
-            min-width="200"
-            max-width="600"
-            rounded="lg"
-          >
-            <v-card-item>
-              <v-card-title>Your bookmarks:</v-card-title>
-              <v-card-text>
-                <v-list v-if="bookmarksStore.bookmarks.length">
-                  <v-list-item v-for="bookmark in bookmarksStore.bookmarks" :key="bookmark.id">
-                    <v-card-text>
-                      <v-btn @click="performSearch(bookmark.obj_id)">{{ bookmark.obj_id }}</v-btn>
-                      <v-btn
-                        class="ma-2"
-                        icon
-                        @click="bookmarksStore.deleteBookmark(bookmark.obj_type, bookmark.obj_id)"
-                      >
-                        <v-icon>mdi-delete</v-icon>
-                      </v-btn>
-                    </v-card-text>
-                  </v-list-item>
-                </v-list>
+          class="mx-auto pa-4 pb-8 mt-12"
+          elevation="8"
+          min-width="200"
+          max-width="600"
+          rounded="lg"
+        >
+          <v-card-item>
+            <v-card-title>Your bookmarks:</v-card-title>
+            <v-card-text>
+              <v-list v-if="bookmarksStore.bookmarks.length">
+                <v-list-item v-for="bookmark in bookmarksStore.bookmarks" :key="bookmark.id">
+                  <v-card-text>
+                    <v-btn @click="performSearch(bookmark.obj_id)">{{ bookmark.obj_id }}</v-btn>
+                    <v-btn
+                      class="ma-2"
+                      icon
+                      @click="bookmarksStore.deleteBookmark(bookmark.obj_type, bookmark.obj_id)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </v-card-text>
+                </v-list-item>
+              </v-list>
               <v-card-item v-else> You have no bookmarks yet. </v-card-item>
-              </v-card-text>
-            </v-card-item>
-          </v-card>
-        </v-row>
+            </v-card-text>
+          </v-card-item>
+        </v-card>
+      </v-row>
       <v-row class="align-center fill-height" justify="center">
         <v-card
           class="mx-auto pa-4 pb-8 mt-12"
@@ -230,7 +229,6 @@ onMounted(async () => {
           </v-card-item>
         </v-card>
       </v-row>
-    </div>
 
       <v-row class="align-center fill-height" justify="center">
         <CaseInformationCard class="mx-auto pa-4 pb-8 mt-12" elevation="8" rounded="lg" />
