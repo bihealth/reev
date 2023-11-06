@@ -44,6 +44,9 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - Ellard S, Baple EL, Callaway A, Berry I, Forrester N, Turnbull C, Owens M, Eccles DM, Abbs S, Scott R, Deans ZC, Lester T, Campbell J, Newman WG, Ramsden S, McMullan DJ.
   *ACGS Best Practice Guidelines for Variant Classification in Rare Disease 2020.*
   2020.
+- Tavtigian SV, Harrison SM, Boucher KM, Biesecker LG.
+  *Fitting a naturally scaled point system to the ACMG/AMP variant classification guidelines.*
+  Hum Mutat. 2020 Oct;41(10):1734-1737. doi: 10.1002/humu.24088. Epub 2020 Aug 30. PMID: 32720330; PMCID: PMC8011844.
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for De Novo Criteria (PS2 & PM6) - Version 1.1*
   2021.
@@ -462,6 +465,11 @@ Updates to this list are available at `ClinGen <https://clinicalgenome.org/worki
 - ``NM_000017.3(ACADS):c.511C>T (p.Arg171Trp)``
 - ``NM_000060.4(BTD):c.1330G>C (p.Asp444His)``
 
+Benign Very Strong
+==================
+
+This category does not exist in Richards et al. (2015) but is implicitely introduced by Tavtigian et al. (2020).
+
 Benign Strong
 =============
 
@@ -495,6 +503,11 @@ BS4 (lack of segregation)
 
 - presence of phenocopies for common phenotypes (i.e., cancer, epilepsy) can mimic lack of segregation among affected individuals
 - families may have more than one pathogenic variant contributing to an autosomal dominant disorder, further confounding an apparent lack of segregation
+
+Benign Moderate
+===============
+
+This category does not exist in Richards et al. (2015) but is implicitely introduced by Tavtigian et al. (2020).
 
 Benign Supporting
 =================
@@ -608,7 +621,7 @@ If if one of the following criteria 1-2 are fulfilled.
 2. the criteria for benign and pathogenic are contradictory
 
 ACGS 2020 Rules
----------------
+===============
 
 The following is a refinement of the rules above set by the Ellard et al. (2020).
 
@@ -639,6 +652,51 @@ Likely Pathogenic
 3. >=3 moderate OR
     a. 2 moderate AND >=2 supporting
     b. 1 modereate AND >=4 supporting
+
+Tavtigian et al. 2020 Rules
+===========================
+
+Alternatively, Tavtigian et al. (2020) formulated the rules as an integer point system.
+
+Table 2 from this manuscript gives point values
+
+.. list-table:: Points per proband
+
+    * - evidence strength
+      - points pathogenic
+      - points benign
+    * - indeterminate
+      - 0
+      - 0
+    * - supporting
+      - 1
+      - -1
+    * - moderate
+      - 2
+      - -2
+    * - strong
+      - 4
+      - -4
+    * - very strong
+      - 8
+      - -8
+
+The point-based variant classification categories are then given in Table 3
+
+.. list-table:: Categories and point ranges
+
+    * - category
+      - point ranges
+    * - pathogenic
+      - >= 10
+    * - likely pathogenic
+      - 6 to 9
+    * - uncertain significance
+      - 0 to 5
+    * - likely benign
+      - -1 to -6
+    * - benign
+      - <= -7
 
 ------------------------------
 Code Modification Nomenclature
