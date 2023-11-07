@@ -76,7 +76,7 @@ The Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern 
 Calibration
 -----------
 
-We currently do not have our calibration yet.
+We currently do not have our own calibration yet.
 
 --------------------
 Transcript Selection
@@ -117,12 +117,12 @@ PVS1 (null variant)
 Original Definition
 -------------------
 
-    Null variant (nonsense, frameshift, canonical +/−1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where loss of function (LOF) is a known mechanism of disease.
+    Null variant (nonsense, frameshift, canonical +/-1 or 2 splice sites, initiation codon, single or multi-exon deletion) in a gene where loss of function (LOF) is a known mechanism of disease.
 
     Caveats:
 
     - Beware of genes where LOF is not a known disease mechanism (e.g. GFAP, MYH7)
-    - Use caution interpreting LOF variants at the extreme 3’ end of a gene
+    - Use caution interpreting LOF variants at the extreme 3' end of a gene
     - Use caution with splice variants that are predicted to lead to exon skipping but leave the remainder of the protein intact
     - Use caution in the presence of multiple transcripts
 
@@ -131,22 +131,45 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-TODO
+- The rule establishes whether LoF is a known mechanism of disease:
+    - If at least 2 LoF variants are reported in ClinVar with two or more stars then this rule is triggered.
+    - If the gnomAD LOF Observed/Expected is less than 0.7555 then this rule is triggered.
+- Rule rule establishes whether a stop_gain variant introduced nonsense mediated decay (NMD) consistent with Abou Youn et al. (2018) and the VEP NMD plugin.
+    - If the variant is on chrMT then it cannot be NMD.
+    - If the variant is not_stop gain then then it cannot be NMD, else:
+    - If the variant is in the last exon of the transcript then it is predicted to escape NMD.
+    - If the variant falls 50bp upstream of the penuultimate (second to the last) exon then it is predicted to escape NMD.
+    - If the variant falls int the first 100 coding bases in teh transcript then it is predicted to escape NMD.
+    - If the variant is in an intronless transcript, meaning only one exon exists in the transcript, then it is predicted to escape NMD.
+    - Else, the variant is predicted to be NMD.
+- The MANE and MANE+Clinical transcripts are used for "biologically relevant transcripts" in this rule.
 
 Implemented Rule
 ----------------
 
-TODO
+TODO: full specification
 
 Literature
 ----------
 
-TODO
+- Richards et al. (2015) describes the original rule.
+- Abou Tayoun et al. (2018) describe refined rules for PVS1.
+- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- The following are from the VEP NMD plugin:
+    - Identifying Genes Whose Mutant Transcripts Cause Dominant Disease Traits by Potential Gain-of-Function Alleles (Coban-Akdemir, 2018)
+    - The rules and impact of nonsense-mediated mRNA decay in human cancers (Lindeboom, 2016)
+
 
 Caveats
 -------
 
-TODO
+- This is currently not implementing the full rule set from Abou Tayoun et al. (2018).
+- We currently use the threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
+
+Notes
+-----
+
+- If this rule is triggered then PP3 and PM4 will be disabled.
 
 .. _acmg_seqvars_rules-ps1:
 
@@ -348,27 +371,36 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-TODO
+- If the variant is on a nuclear chromosome
+    - If it is not a missense variant then this rule is skipped.
+- If the variant is on chrMT and not missense and not on a tRNA gene then this rule is skipped.
 
 Implemented Rule
 ----------------
 
-TODO
+- If the variant is on a nuclear chromosome:
+    - If the variant is at the same position as a pathogenic missense variant then this rule is triggered.
+- If the variant is on chrMT:
+    - If the variant is a missense variant and at the same position as a pathogenic one then the rule is triggered.
+    - If the variant is on a tRNA gene and at the same position as a pathogenic one then the rule is triggered as PM5_Supporting.
 
 Literature
 ----------
 
-TODO
+- Richards et al. (2018) describes the rule for nuclear chromosomes.
+- McCormick et al. (2020) describes the rule for chrMT.
 
 Caveats
 -------
 
-TODO
+N/A
 
 .. _acmg_seqvars_rules-pm6:
 
 PM6 (assumed *de novo*)
 =======================
+
+No automation has been implemented.
 
 Original Definition
 -------------------
@@ -376,26 +408,6 @@ Original Definition
     Assumed de novo, but without confirmation of paternity and maternity.
 
     -- Richards et al. (2015); Table 4
-
-Preconditions / Precomputations
--------------------------------
-
-TODO
-
-Implemented Rule
-----------------
-
-TODO
-
-Literature
-----------
-
-TODO
-
-Caveats
--------
-
-TODO
 
 .. _acmg_seqvars_rules-pm2:
 
@@ -412,21 +424,33 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-TODO
+- Determine :ref:`acmg_seqvars_rules-inheritance` for the gene.
+- Determine :ref:`acmg_seqvars_rules-frequency`.
+- If the allele frequency is invalid then this rule is skipped.
 
 Implemented Rule
 ----------------
 
-TODO
+- If the variant is on a nuclear chromosome:
+    - If the gene is marked as recessive or X-linked:
+        - If the variant allele count is <=4 then this rule is triggered.
+    - If the gene is marked as dominant:
+        - If the homozygous allele count is <=1 then this rule is triggered.
+        - If the allele frequency is less than 0.0001 then this rule is triggered.
+- If the variant is on chrMT:
+    If the variant frequency is below 0.00002=0.002%=1/50,000 then this rule is triggered.
 
 Literature
 ----------
 
-TODO
+- Richards et al. (2015) describes the original rule.
+- ClinGen Sequence Variant Interpretation Work Group (2020): SVI Recommendation for Absence/Rarity (PM2) - Version 1.0 describes the downgrade to supporting.
+- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
 
 Caveats
 -------
 
+- We currently use the threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
 - This rule has been downgraded by default to supporting from strong in accordance to ClinGen Sequence Variant Interpretation Work Group (2020): *SVI Recommendation for Absence/Rarity (PM2) - Version 1.0*
 
 .. _acmg_seqvars_rules-pp1:
@@ -492,6 +516,7 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
+- If the rule PVS1 was triggered then this rule is skipped.
 - If the variant is on chrMT then it is skipped, as we don't have calibration for chrMT yet.
 - If the variant is not found in dbNSFP or CADD precomputed scores then it is skipped as we don't have calibration for chrMT yet.
 
@@ -576,19 +601,10 @@ Caveats
 
 - The exception *"However, there must be no additional conflicting evidence to support pathogenicity, such as a novel occurrence in a certain haplogroup" from McCormick et al. (2020)* is not implemented yet.
 
-Data Sources
-------------
-
-- gnomAD (GRCh37: v2, GRCh38: v3)
-
 .. _acmg_seqvars_rules-bs1:
 
 BS1 (expected frequency)
 ========================
-
-No automation has been implemented (yet).
-
-This would require the user to give a maximal credible disease frequency.
 
 Original Definition
 -------------------
@@ -596,6 +612,27 @@ Original Definition
     Allele frequency greater than expected for disorder.
 
     -- Richards et al. (2015); Table 4
+
+Preconditions / Precomputations
+-------------------------------
+
+- Determine :ref:`acmg_seqvars_rules-frequency`.
+- If the allele frequency is invalid then this rule is skipped.
+
+Implemented Rule
+----------------
+
+- If the variant is on a nuclear chromosome and the user provided a maximal credible population frequency:
+    - If the FAF from gnomAD is above the maximal credible population frequency then this rule is triggered.
+- If the variant is on chrMT:
+    - If the population frequency is above 0.5% then this rule is triggered in accordance to McCormick et al. (2020).
+
+Literature
+----------
+
+- Richards et al. (2015) describes the original rule without thresholds.
+- Gudmundsson et al. (2022) describe the FAF threshold provided by gnomAD.
+- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
 
 .. _acmg_seqvars_rules-bs2:
 
@@ -615,7 +652,7 @@ Preconditions / Precomputations
 - If the rule BA1 triggered then this rule is skipped.
 - Determine :ref:`acmg_seqvars_rules-inheritance` for the gene.
 - Determine :ref:`acmg_seqvars_rules-frequency`.
-- If the allele frequencyis invalid then this rule is skipped.
+- If the allele frequency is invalid then this rule is skipped.
 - If the rule BA1 was triggered then this rule is skipped.
 
 Implemented Rule

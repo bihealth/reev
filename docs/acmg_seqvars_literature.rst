@@ -383,7 +383,7 @@ PM4 (protein length)
 PM5 (overlapping missense)
 --------------------------
 
-- n ovel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before
+- novel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before
 
 **Caveats**
 

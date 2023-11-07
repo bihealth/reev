@@ -6,22 +6,17 @@ AMCG Sequence Variant Data
 
 This section describes the data that supports the classification of variants.
 
-**DONE**
-
-- variant effect prediction from Mehari
-- population frequencies from gnomAD
-    - global frequency
-    - frequency in same population as proband
-- clingen disease validity, gene2phenotype, gencc, panelapp
-
-**TODO: Research+Doing**
-
-- UniProt clinical evidence
-- domino https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5630195/
-
-**TODO: Doing**
-
-- MANE / MANE+Clinical tx annotation in Mehari
-- Mitomap
+- Mehari
+    - MANE / MANE+Clinical tx annotation in Mehari
+    - NMD
+- chrMT databases / tools
+    - mitomap
+    - MitoTip
+    - mitimpact
+    - mtsnpscore
 - CGD https://research.nhgri.nih.gov/CGD/download/
+- gene2phenotype
+- panelapp
 - gnomAD variant coverage
+- domino https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5630195/
+- uniprot via UCSC
