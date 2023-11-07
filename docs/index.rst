@@ -11,6 +11,8 @@ It supports them by providing aggregated information on genomic variants.
 
    acmg_seqvars_criteria
    acmg_seqvars_details
+   acmg_cnvs_criteria
+   acmg_cnvs_details
 
 .. toctree::
    :hidden:
