@@ -1,18 +1,50 @@
-.. _acmg_seqvars:
+.. _acmg_seqvars_details:
 
-===============================
-Sequence Variant Classification
-===============================
+=============================
+AMCG Sequence Variant Details
+=============================
 
-This section describes the ACMG classification for sequence variants.
+This section describes additional details on our implementation of ACMG classification for sequence variants.
 
-.. _acmg_seqvars-references:
+.. _acmg_seqvars_details-Datas:
+
+----
+Data
+----
+
+The following datasources are used in the classification of sequence variants.
+
+.. list-table:: Tools and datasources used
+
+    * - Data
+      - Tool / Datasource
+      - Original Datasource
+    * - Transcripts
+      - `Mehari <https://github.com/bihealth/mehari>`__ / `cdot <https://github.com/SACGF/cdot>`__
+      - RefSeq / ENSEMBL
+    * - Variant Effect Predictions
+      - `Mehari <https://github.com/bihealth/mehari>`__
+      - N/A
+    * - Variant Frequencies
+      - annonars
+      - gnomAD exomes, genomes, mtDNA
+    * - chrMT scores, annotations
+      - annonars
+      - MITOMAP, MitoTip, MitImpact, MtSNPscore
+    * - gene annotations
+      - annonars
+      - ClinGen, GCD, gene2phenotype, GenCC, PanelApp, DOMINO
+    * - protein annotations: domains, repeats, mutations
+      - UCSC genome browser
+      - UniProt
+
+.. _acmg_seqvars_details-references:
 
 ----------
 References
 ----------
 
-It is based on the following publications, also `listed on the ClinGen Website <https://clinicalgenome.org/working-groups/sequence-variant-interpretation/>`__.
+Literature with direct ACMG / ACGS / ClinGen relationship
 
 - Richards S, Aziz N, Bale S, Bick D, Das S, Gastier-Foster J, Grody WW, Hegde M, Lyon E, Spector E, Voelkerding K, Rehm HL; ACMG Laboratory Quality Assurance Committee.
   *Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology.*
@@ -20,6 +52,9 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - ClinGen Sequence Variant Interpretation Work Group.
   *Recommendations for ACMG/AMP guideline criteria code modifications nomenclature.*
   November 10, 2017.
+- Whiffin N, Minikel E, Walsh R, O'Donnell-Luria AH, Karczewski K, Ing AY, Barton PJR, Funke B, Cook SA, MacArthur D, Ware JS.
+  *Using high-resolution variant frequencies to empower clinical genome interpretation.*
+  Genet Med. 2017 Oct;19(10):1151-1158. doi: 10.1038/gim.2017.26. Epub 2017 May 18. PMID: 28518168; PMCID: PMC5563454.
 - Abou Tayoun AN, Pesaran T, DiStefano MT, Oza A, Rehm HL, Biesecker LG, Harrison SM; ClinGen Sequence Variant Interpretation Working Group (ClinGen SVI).
   *Recommendations for interpreting the loss of function PVS1 ACMG/AMP variant criterion.*
   Hum Mutat. 2018 Nov;39(11):1517-1524. doi: 10.1002/humu.23626. Epub 2018 Sep 7. PMID: 30192042; PMCID: PMC6185798.
@@ -44,24 +79,24 @@ It is based on the following publications, also `listed on the ClinGen Website <
 - Ellard S, Baple EL, Callaway A, Berry I, Forrester N, Turnbull C, Owens M, Eccles DM, Abbs S, Scott R, Deans ZC, Lester T, Campbell J, Newman WG, Ramsden S, McMullan DJ.
   *ACGS Best Practice Guidelines for Variant Classification in Rare Disease 2020.*
   2020.
+- McCormick EM, Lott MT, Dulik MC, Shen L, Attimonelli M, Vitale O, Karaa A, Bai R, Pineda-Alvarez DE, Singh LN, Stanley CM, Wong S, Bhardwaj A, Merkurjev D, Mao R, Sondheimer N, Zhang S, Procaccio V, Wallace DC, Gai X, Falk MJ.
+  *Specifications of the ACMG/AMP standards and guidelines for mitochondrial DNA variant interpretation.*
+  Hum Mutat. 2020 Dec;41(12):2028-2057. doi: 10.1002/humu.24107. Epub 2020 Nov 10. PMID: 32906214; PMCID: PMC7717623.
 - Tavtigian SV, Harrison SM, Boucher KM, Biesecker LG.
   *Fitting a naturally scaled point system to the ACMG/AMP variant classification guidelines.*
   Hum Mutat. 2020 Oct;41(10):1734-1737. doi: 10.1002/humu.24088. Epub 2020 Aug 30. PMID: 32720330; PMCID: PMC8011844.
 - ClinGen Sequence Variant Interpretation Work Group.
   *SVI Recommendation for De Novo Criteria (PS2 & PM6) - Version 1.1*
   2021.
+- DiStefano MT, Goehringer S, Babb L, Alkuraya FS, Amberger J, Amin M, Austin-Tse C, Balzotti M, Berg JS, Birney E, Bocchini C.
+  *The gene curation coalition: a global effort to harmonize gene-disease evidence resources.*
+  Genetics in Medicine. 2022 Aug 1;24(8):1732-42.
 - Pejaver V, Byrne AB, Feng BJ, Pagel KA, Mooney SD, Karchin R, O'Donnell-Luria A, Harrison SM, Tavtigian SV, Greenblatt MS, Biesecker LG, Radivojac P, Brenner SE; ClinGen Sequence Variant Interpretation Working Group.
   *Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria.*
   Am J Hum Genet. 2022 Dec 1;109(12):2163-2177. doi: 10.1016/j.ajhg.2022.10.013. Epub 2022 Nov 21. PMID: 36413997; PMCID: PMC9748256.
 - Walker LC, Hoya M, Wiggins GAR, Lindy A, Vincent LM, Parsons MT, Canson DM, Bis-Brewer D, Cass A, Tchourbanov A, Zimmermann H, Byrne AB, Pesaran T, Karam R, Harrison SM, Spurdle AB; ClinGen Sequence Variant Interpretation Working Group.
   *Using the ACMG/AMP framework to capture evidence related to predicted and observed impact on splicing: Recommendations from the ClinGen SVI Splicing Subgroup.*
   Am J Hum Genet. 2023 Jul 6;110(7):1046-1067. doi: 10.1016/j.ajhg.2023.06.002. Epub 2023 Jun 22. PMID: 37352859; PMCID: PMC10357475.
-
-Further references:
-
-- Eilbeck K, Lewis SE, Mungall CJ, Yandell M, Stein L, Durbin R, Ashburner M.
-  The Sequence Ontology: a tool for the unification of genome annotations.
-  Genome Biol. 2005;6(5):R44. doi: 10.1186/gb-2005-6-5-r44. Epub 2005 Apr 29. PMID: 15892872; PMCID: PMC1175956.
 
 We currently exclude the following resources (we plan to later incorporate them):
 
@@ -70,15 +105,36 @@ We currently exclude the following resources (we plan to later incorporate them)
   *Evaluating the Clinical Validity of Gene-Disease Associations: An Evidence-Based Framework Developed by the Clinical Genome Resource.*
   Am J Hum Genet. 2017 Jun 1;100(6):895-906. doi: 10.1016/j.ajhg.2017.04.015. Epub 2017 May 25. PMID: 28552198; PMCID: PMC5473734.
 
-.. _acmg_seqvars-criteria:
+Further Supporting Literature
+
+- Eilbeck K, Lewis SE, Mungall CJ, Yandell M, Stein L, Durbin R, Ashburner M.
+  The Sequence Ontology: a tool for the unification of genome annotations.
+  Genome Biol. 2005;6(5):R44. doi: 10.1186/gb-2005-6-5-r44. Epub 2005 Apr 29. PMID: 15892872; PMCID: PMC1175956.
+- Quinodoz M, Royer-Bertrand B, Cisarova K, Di Gioia SA, Superti-Furga A, Rivolta C.
+  *DOMINO: using machine learning to predict genes associated with dominant disorders.*
+  The American Journal of Human Genetics. 2017 Oct 5;101(4):623-9.
+- Kopanos C, Tsiolkas V, Kouris A, Chapple CE, Aguilera MA, Meyer R, Massouras A.
+  *VarSome: the human genomic variant search engine.*
+  Bioinformatics. 2019 Jun 6;35(11):1978.
+- Martin AR, Williams E, Foulger RE, Leigh S, Daugherty LC, Niblock O, Leong IU, Smith KR, Gerasimenko O, Haraldsdottir E, Thomas E.
+  *PanelApp crowdsources expert knowledge to establish consensus diagnostic gene panels.*
+  Nature genetics. 2019 Nov;51(11):1560-5.
+- Thormann A, Halachev M, McLaren W, Moore DJ, Svinti V, Campbell A, Kerr SM, Tischkowitz M, Hunt SE, Dunlop MG, Hurles ME.
+  *Flexible and scalable diagnostic filtering of genomic variants using G2P with Ensembl VEP. Nature communications.*
+  2019 May 30;10(1):2373.
+- Gudmundsson S, Singer-Berk M, Watts NA, Phu W, Goodrich JK, Solomonson M; Genome Aggregation Database Consortium; Rehm HL, MacArthur DG, O'Donnell-Luria A.
+  *Variant interpretation using population databases: Lessons from gnomAD.*
+  Hum Mutat. 2022 Aug;43(8):1012-1030. doi: 10.1002/humu.24309. Epub 2021 Dec 16. PMID: 34859531; PMCID: PMC9160216.
+
+.. _acmg_seqvars_details-criteria:
 
 --------
 Criteria
 --------
 
-The text in the following section is based on the one by Richards et al. (2015) and the updates listed in :ref:`acmg_seqvars-references`.
+The text in the following section is based on the one by Richards et al. (2015) and the updates listed in :ref:`acmg_seqvars_details-references`.
 
-.. _acmg_seqvars-criteria-pvs:
+.. _acmg_seqvars_details-criteria-pvs:
 
 Pathogenic Very Strong
 ======================
@@ -262,14 +318,14 @@ PS1 (same amino acid change)
         - with P comparison variant: VUA is PS1_Moderate
         - with LP comparison variant: VUA is PS1_Supporting
 
-.. image:: img/Walker-2023-Table-2-1.png
-    :alt: Table 2 (part 1) from Walker et al. (2023)
+.. image:: img/Walker-2023-Table-3-1.png
+    :alt: Table 3 (part 1) from Walker et al. (2023)
 
-.. image:: img/Walker-2023-Table-2-1.png
-    :alt: Table 2 (part 2) from Walker et al. (2023)
+.. image:: img/Walker-2023-Table-3-2.png
+    :alt: Table 3 (part 2) from Walker et al. (2023)
 
-.. image:: img/Walker-2023-Table-3.png
-    :alt: Table 3 from Walker et al. (2023)
+.. image:: img/Walker-2023-Table-2.png
+    :alt: Table 2 from Walker et al. (2023)
 
 **Caveats**
 
@@ -374,7 +430,7 @@ PM4 (protein length)
 PM5 (overlapping missense)
 --------------------------
 
-- n ovel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before
+- novel missense change at an amino acid residue where a different missense change determined to be pathogenic has been seen before
 
 **Caveats**
 
@@ -473,8 +529,8 @@ This category does not exist in Richards et al. (2015) but is implicitely introd
 Benign Strong
 =============
 
-BS1 (expecte frequency)
------------------------
+BS1 (expected frequency)
+------------------------
 
 - allele frequency is greater than expected for disorder
 
@@ -558,149 +614,3 @@ BP7 (synonymous)
 
 - synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensus sequence nor the creation of a new splice site AND the nucleotide is not highly conserved
 - incorporate figures 4-5 from Walker et al. (2023)
-
------
-Rules
------
-
-ACMG 2015 Rules
-===============
-
-The following rules have been defined in Richards et al. (2015).
-
-Pathogenic
-----------
-
-If one of the following criteria 1-3 are fulfilled.
-
-1. 1 very strong (PVS1) AND one of the following
-    a. >=1 strong (PS1-PS4)
-    b. >=2 moderate (PM1-PM6)
-    c. >=1 moderate (PM1-PM6) AND >=1 supporting (PP1-PP5)
-    d. >=2 supporting (PP1-PP5)
-2. >=2 strong (PS1-PS4)
-3. 1 strong (PS1-PS4) AND
-    a. >=3 moderate (PM1-PM6)
-    b. 2 modreate (PM1-PM6) AND >=2 supporting (PP1-PP5)
-    c. 1 moderate (PM1-PM6) AND >=4 supporting (PP1-PP5)
-
-Likely Pathogenic
------------------
-
-If one of the following criteria 1-7 are fulfilled.
-
-1. 1 very strong (PVS1) AND 1 moderate (PM1-PM6)
-2. 1 strong (Ps1-PS4) AND 1-2 moderate (PM1-PM6)
-3. 1 strong (PS1-PS4) AND >=2 supporting (PP1-PP5)
-4. >=3 moderate (PM1-PM6)
-5. 2 moderate (PM1-PM6) AND >=2 supporting (PP1-PP5)
-6. 1 moderate (PM1-PM6) AND >=4 supporting (PP1-PP5)
-
-Benign
-------
-
-If one of the following criteria 1-2 are fulfilled.
-
-1. 1 standalone (BA1)
-2. >=2 strong (BS1-BS4)
-
-Likely Benign
--------------
-
-If one of the following criteria 1-2 are fulfilled.
-
-1. 1 strong (BS1-BS4) AND 1 supporting (BP1-BP7)
-2. >=2 supporting (BP1-BP7)
-
-Uncertain Significance
-----------------------
-
-If if one of the following criteria 1-2 are fulfilled.
-
-1. Other criteria shown above are not met
-2. the criteria for benign and pathogenic are contradictory
-
-ACGS 2020 Rules
-===============
-
-The following is a refinement of the rules above set by the Ellard et al. (2020).
-
-Pathogenic
-----------
-
-1. 1 very strong (PVS) AND one of the following
-    a. >=1 strong
-    b. >=1 moderate
-    c. >=2 supporting
-2. >=3 strong
-3. 2 strong AND one of the following
-    a. >=1 moderate
-    b. >=2 supporting
-4. 1 strong AND one of the following
-    a. >=3 moderate
-    b. >=2 moderate AND >=2 supporting
-    c. >=1 moderate AND >=4 supporting
-
-Likely Pathogenic
------------------
-
-
-1. >=2 strong
-2. 1 strong AND one of teh following
-    a. 1-2 moderate OR
-    b. >=2 supporting
-3. >=3 moderate OR
-    a. 2 moderate AND >=2 supporting
-    b. 1 modereate AND >=4 supporting
-
-Tavtigian et al. 2020 Rules
-===========================
-
-Alternatively, Tavtigian et al. (2020) formulated the rules as an integer point system.
-
-Table 2 from this manuscript gives point values
-
-.. list-table:: Points per proband
-
-    * - evidence strength
-      - points pathogenic
-      - points benign
-    * - indeterminate
-      - 0
-      - 0
-    * - supporting
-      - 1
-      - -1
-    * - moderate
-      - 2
-      - -2
-    * - strong
-      - 4
-      - -4
-    * - very strong
-      - 8
-      - -8
-
-The point-based variant classification categories are then given in Table 3
-
-.. list-table:: Categories and point ranges
-
-    * - category
-      - point ranges
-    * - pathogenic
-      - >= 10
-    * - likely pathogenic
-      - 6 to 9
-    * - uncertain significance
-      - 0 to 5
-    * - likely benign
-      - -1 to -6
-    * - benign
-      - <= -7
-
-------------------------------
-Code Modification Nomenclature
-------------------------------
-
-In accordance with ClinGen Sequence Variant Interpretation Work Group (2017), modification codes are used.
-That is, for a criterion ``${CRIT}``, the modification codes ``${CRIT}_Supporting``, ``${CRIT}_Moderate``, ``${CRIT}_Strong``, ``${CRIT}_VeryStrong``.
