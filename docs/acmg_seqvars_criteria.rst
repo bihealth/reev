@@ -1,12 +1,16 @@
-.. _acmg_seqvars_rules:
+.. _acmg_seqvars_criteria:
 
-===========================
-ACMG Sequence Variant Rules
-===========================
+==============================
+ACMG Sequence Variant Criteria
+==============================
 
-This section describes the rules implemented for the automated classification of ACMG sequence variants.
+This section describes the criteria as implemented for the automated classification of ACMG sequence variants.
 
-.. _acmg_seqvars_rules-inheritance:
+A large focus is given towards the transparency to the user.
+The user is always given a report of the evidence for and against a given criterion.
+Even if not further described, the reason for skipping a criterion is always reported (e.g., BA1 disables all other benign criteria, or if a criterion is only valid for missense variants).
+
+.. _acmg_seqvars_criteria-inheritance:
 
 -------------------
 Mode of Inheritance
@@ -28,67 +32,49 @@ The sources are iterated in the order given below and the first one with a match
    - recessive: if score <= 0.3422
    - dominant/recessive: if score is between 0.3422 and 0.5934
 
-.. _acmg_seqvars_rules-inheritance-literature:
+.. _acmg_seqvars_criteria-inheritance-literature:
 
 Literature
 ==========
 
-- DiStefano MT, Goehringer S, Babb L, Alkuraya FS, Amberger J, Amin M, Austin-Tse C, Balzotti M, Berg JS, Birney E, Bocchini C.
-  *The gene curation coalition: a global effort to harmonize gene-disease evidence resources.*
-  Genetics in Medicine. 2022 Aug 1;24(8):1732-42.
-- Thormann A, Halachev M, McLaren W, Moore DJ, Svinti V, Campbell A, Kerr SM, Tischkowitz M, Hunt SE, Dunlop MG, Hurles ME.
-  *Flexible and scalable diagnostic filtering of genomic variants using G2P with Ensembl VEP. Nature communications.*
-  2019 May 30;10(1):2373.
-- Martin AR, Williams E, Foulger RE, Leigh S, Daugherty LC, Niblock O, Leong IU, Smith KR, Gerasimenko O, Haraldsdottir E, Thomas E.
-  *PanelApp crowdsources expert knowledge to establish consensus diagnostic gene panels.*
-  Nature genetics. 2019 Nov;51(11):1560-5.
-- Quinodoz M, Royer-Bertrand B, Cisarova K, Di Gioia SA, Superti-Furga A, Rivolta C.
-  *DOMINO: using machine learning to predict genes associated with dominant disorders.*
-  The American Journal of Human Genetics. 2017 Oct 5;101(4):623-9.
-- Kopanos C, Tsiolkas V, Kouris A, Chapple CE, Aguilera MA, Meyer R, Massouras A.
-  *VarSome: the human genomic variant search engine.*
-  Bioinformatics. 2019 Jun 6;35(11):1978.
 
-.. _acmg_seqvars_rules-frequency:
+.. _acmg_seqvars_criteria-frequency:
 
 ----------------
 Allele Frequency
 ----------------
 
-.. note::
-
-    We are still lacking coverage data.
-
 The databases gnomAD exomes and genomes will be used to derived allele frequencies.
-Both coverage and frequency data are used for quality control of this data.
-Frequencies are considered valid if (the thresholds from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__):
+We trust the gnomAD quality control pipeline and filter solely above the gnomAD variant annotation.
+Frequencies are considered valid if:
 
-- coverage is >=20
 - allele number is >=2000
 - gnomAD quality filter is PASS
 
-The rules BA1 and BS1 will consider non-bottlenecked populations and consider whether variants are common in these populations.
-The Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and "Remaining Individuals (rmi) groups" are not considered.
+The criteria BA1 and BS1 will ignore the following "bottlenecked" populations:
+Amish (ami), Ashkenazi Jewish (asj), European Finnish (fin), Middle Eastern (mid), and "Remaining Individuals (rmi) groups".
 
-.. _acmg_seqvars_rules-calibration:
+.. _acmg_seqvars_criteria-calibration:
 
 -----------
 Calibration
 -----------
 
 We currently do not have our own calibration yet.
+This is a big TODO once we have all the data.
 
 --------------------
 Transcript Selection
 --------------------
 
-TODO:
+We use the MANE Plus Clinical set of transcripts for the genes that have such information.
+Otherwise, we use the longest transcript as the MANE transcript and consider all alternate RefSeq transcripts.
 
-- where available, use MANE+Clinical
-- describe projection from GRCh37 to GRCh38
-- otherwise, use worst case scenario
+MANE annotation is not available for GRCh37 and will not be provided by ENSEMBL/NCBI.
+We thus map the MANE (and MANE Plus Clinical) transcripts from GRCh38 by using the latest version of the transcript with the same identifier.
+If mapping either MANE or any of the MANE Plus Clinical transcripts fails then we fall back to the longest transcript rule.
 
-.. _acmg_seqvars_rules-patho-predictions:
+.. _acmg_seqvars_criteria-patho-predictions:
 
 -------------------------
 Pathogenicity Predictions
@@ -96,20 +82,169 @@ Pathogenicity Predictions
 
 We currently use the thresholds from Pejaver et al. (2022) only.
 
-Literature
-==========
+Once we have our own calibration, we can extend our predictions to novel tools such as AlphaMissense.
 
-- Pejaver V, Byrne AB, Feng BJ, Pagel KA, Mooney SD, Karchin R, O'Donnell-Luria A, Harrison SM, Tavtigian SV, Greenblatt MS, Biesecker LG, Radivojac P, Brenner SE; ClinGen Sequence Variant Interpretation Working Group.
-  *Calibration of computational tools for missense variant pathogenicity classification and ClinGen recommendations for PP3/BP4 criteria.*
-  Am J Hum Genet. 2022 Dec 1;109(12):2163-2177. doi: 10.1016/j.ajhg.2022.10.013. Epub 2022 Nov 21. PMID: 36413997; PMCID: PMC9748256.
+.. _acmg_seqvars_mods:
 
-.. _acmg_seqvars_rules-rules:
+------------------------------
+Code Modification Nomenclature
+------------------------------
 
------
-Rules
------
+In accordance with ClinGen Sequence Variant Interpretation Work Group (2017), modification codes are used.
+That is, for a criterion ``${CRIT}``, the modification codes ``${CRIT}_Supporting``, ``${CRIT}_Moderate``, ``${CRIT}_Strong``, ``${CRIT}_VeryStrong``.
 
-.. _acmg_seqvars_rules-pvs1:
+.. _acmg_seqvars_criteria-rules:
+
+--------------------
+Rules / Point System
+--------------------
+
+We consider three rule systems:
+
+- The original ACMG 2015 rules
+- The ACGS 2020 rules
+- The 2020 Point system described by Tavtigian et al. (2020)
+
+ACMG 2015 Rules
+===============
+
+The following rules have been defined in Richards et al. (2015).
+
+Pathogenic
+----------
+
+If one of the following criteria 1-3 are fulfilled.
+
+1. 1 very strong (PVS1) AND one of the following
+    a. >=1 strong (PS1-PS4)
+    b. >=2 moderate (PM1-PM6)
+    c. >=1 moderate (PM1-PM6) AND >=1 supporting (PP1-PP5)
+    d. >=2 supporting (PP1-PP5)
+2. >=2 strong (PS1-PS4)
+3. 1 strong (PS1-PS4) AND
+    a. >=3 moderate (PM1-PM6)
+    b. 2 moderate (PM1-PM6) AND >=2 supporting (PP1-PP5)
+    c. 1 moderate (PM1-PM6) AND >=4 supporting (PP1-PP5)
+
+Likely Pathogenic
+-----------------
+
+If one of the following criteria 1-7 are fulfilled.
+
+1. 1 very strong (PVS1) AND 1 moderate (PM1-PM6)
+2. 1 strong (Ps1-PS4) AND 1-2 moderate (PM1-PM6)
+3. 1 strong (PS1-PS4) AND >=2 supporting (PP1-PP5)
+4. >=3 moderate (PM1-PM6)
+5. 2 moderate (PM1-PM6) AND >=2 supporting (PP1-PP5)
+6. 1 moderate (PM1-PM6) AND >=4 supporting (PP1-PP5)
+
+Benign
+------
+
+If one of the following criteria 1-2 are fulfilled.
+
+1. 1 standalone (BA1)
+2. >=2 strong (BS1-BS4)
+
+Likely Benign
+-------------
+
+If one of the following criteria 1-2 are fulfilled.
+
+1. 1 strong (BS1-BS4) AND 1 supporting (BP1-BP7)
+2. >=2 supporting (BP1-BP7)
+
+Uncertain Significance
+----------------------
+
+If if one of the following criteria 1-2 are fulfilled.
+
+1. Other criteria shown above are not met
+2. the criteria for benign and pathogenic are contradictory
+
+ACGS 2020 Rules
+===============
+
+The following is a refinement of the rules above set by the Ellard et al. (2020).
+
+Pathogenic
+----------
+
+1. 1 very strong (PVS) AND one of the following
+    a. >=1 strong
+    b. >=1 moderate
+    c. >=2 supporting
+2. >=3 strong
+3. 2 strong AND one of the following
+    a. >=1 moderate
+    b. >=2 supporting
+4. 1 strong AND one of the following
+    a. >=3 moderate
+    b. >=2 moderate AND >=2 supporting
+    c. >=1 moderate AND >=4 supporting
+
+Likely Pathogenic
+-----------------
+
+
+1. >=2 strong
+2. 1 strong AND one of teh following
+    a. 1-2 moderate OR
+    b. >=2 supporting
+3. >=3 moderate OR
+    a. 2 moderate AND >=2 supporting
+    b. 1 modereate AND >=4 supporting
+
+Tavtigian et al. (2020) Rules
+=============================
+
+Alternatively, Tavtigian et al. (2020) formulated the rules as an integer point system.
+
+Table 2 from this manuscript gives point values:
+
+.. list-table:: Points per proband
+
+    * - evidence strength
+      - points pathogenic
+      - points benign
+    * - indeterminate
+      - 0
+      - 0
+    * - supporting
+      - 1
+      - -1
+    * - moderate
+      - 2
+      - -2
+    * - strong
+      - 4
+      - -4
+    * - very strong
+      - 8
+      - -8
+
+The point-based variant classification categories are then given in their Table 3:
+
+.. list-table:: Categories and point ranges
+
+    * - category
+      - point ranges
+    * - pathogenic
+      - >= 10
+    * - likely pathogenic
+      - 6 to 9
+    * - uncertain significance
+      - 0 to 5
+    * - likely benign
+      - -1 to -6
+    * - benign
+      - <= -7
+
+--------
+Criteria
+--------
+
+.. _acmg_seqvars_criteria-pvs1:
 
 PVS1 (null variant)
 ===================
@@ -131,10 +266,10 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- The rule establishes whether LoF is a known mechanism of disease:
-    - If at least 2 LoF variants are reported in ClinVar with two or more stars then this rule is triggered.
-    - If the gnomAD LOF Observed/Expected is less than 0.7555 then this rule is triggered.
-- Rule rule establishes whether a stop_gain variant introduced nonsense mediated decay (NMD) consistent with Abou Youn et al. (2018) and the VEP NMD plugin.
+- Criterion establishes whether LoF is a known mechanism of disease:
+    - If at least 2 LoF variants are reported in ClinVar with two or more stars then this criterion is triggered.
+    - If the gnomAD LOF Observed/Expected is less than 0.7555 then this criterion is triggered.
+- Criterion establishes whether a stop_gain variant introduced nonsense mediated decay (NMD) consistent with Abou Youn et al. (2018) and the VEP NMD plugin.
     - If the variant is on chrMT then it cannot be NMD.
     - If the variant is not_stop gain then then it cannot be NMD, else:
     - If the variant is in the last exon of the transcript then it is predicted to escape NMD.
@@ -142,36 +277,48 @@ Preconditions / Precomputations
     - If the variant falls int the first 100 coding bases in teh transcript then it is predicted to escape NMD.
     - If the variant is in an intronless transcript, meaning only one exon exists in the transcript, then it is predicted to escape NMD.
     - Else, the variant is predicted to be NMD.
-- The MANE and MANE+Clinical transcripts are used for "biologically relevant transcripts" in this rule.
+- The MANE Plus Clinical transcripts are used for "biologically relevant transcripts" in this criterion.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
+
+While the original description is somewhat vague, the specification in Abou Tayoun et al. (2018) is more precise but complex to implement.
+We plan to implement it as closely as possible.
 
 TODO: full specification
 
 Literature
 ----------
 
-- Richards et al. (2015) describes the original rule.
-- Abou Tayoun et al. (2018) describe refined rules for PVS1.
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- Richards et al. (2015) describes the original criterion.
+- Abou Tayoun et al. (2018) describe refined criteria for PVS1.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 - The following are from the VEP NMD plugin:
     - Identifying Genes Whose Mutant Transcripts Cause Dominant Disease Traits by Potential Gain-of-Function Alleles (Coban-Akdemir, 2018)
-    - The rules and impact of nonsense-mediated mRNA decay in human cancers (Lindeboom, 2016)
+    - The criteria and impact of nonsense-mediated mRNA decay in human cancers (Lindeboom, 2016)
 
+User Report
+-----------
+
+The following information is reported to the user:
+
+- The evidence for / against LoF as disease mechanism.
+- Whether NMD and NMD escape is predicted for this variant and the reason.
+- The use of MANE Plus Clinical or alternate transcripts for locating alternate start codons.
+- Further information of interest from the Abou Tayoun et al. (2018) decision tree.
 
 Caveats
 -------
 
-- This is currently not implementing the full rule set from Abou Tayoun et al. (2018).
-- We currently use the threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
+- We use the thresholds from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ but should reconsider, e.g., switching to LOEUF here with our own thresholds.
+- This is currently not implementing the full criteria set from Abou Tayoun et al. (2018).
 
 Notes
 -----
 
-- If this rule is triggered then PP3 and PM4 will be disabled.
+- If this criterion is triggered then PP3 and PM4 will be disabled.
 
-.. _acmg_seqvars_rules-ps1:
+.. _acmg_seqvars_criteria-ps1:
 
 PS1 (same amino acid)
 =====================
@@ -188,17 +335,23 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the variant is not a missense variant then this rule is skipped.
+- If the variant is not a missense variant then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - Consider all equivalent missense variants in ClinVar.
-- If at least one of the variant then this rule is triggered.
+- If at least one of the variant then this criterion is triggered.
     - If the variant has zero stars in ClinVar then we report PS1_Supporting only
     - If the variant has only one star in ClinVar then we report PS1_Moderate only
     - If the variant has two stars in ClinVar then we report PS1
     - If the variant has three stars or above in ClinVar then we report PS1_VeryStrong
+
+User Report
+-----------
+
+- The selected variant in ClinVar and with assessment its star status with accession.
+- All alternate variants in Clinvar with assessments and star status with accessions.
 
 Literature
 ----------
@@ -208,10 +361,10 @@ N/A
 Caveats
 -------
 
-- The wording of "established pathogenic" variant is not clear so we use any reported ClinVar variant and report the ClinVar accessions for further confirmation by the user.
+- The wording of "established pathogenic" variant is not clear so we use the steps from above.
 - Note that this also depends on disease match which the user must confirm manually.
 
-.. _acmg_seqvars_rules-ps2:
+.. _acmg_seqvars_criteria-ps2:
 
 PS2 (confirmed *de novo*)
 =========================
@@ -228,7 +381,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-ps3:
+.. _acmg_seqvars_criteria-ps3:
 
 PS3 (functional studies)
 ========================
@@ -244,7 +397,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-ps4:
+.. _acmg_seqvars_criteria-ps4:
 
 PS4 (prevalence)
 ================
@@ -262,15 +415,10 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-pm1:
+.. _acmg_seqvars_criteria-pm1:
 
 PM1 (hotspot)
 =============
-
-.. note::
-
-    - We currently do not have proper UniProt annotations.
-    - Can / should we upgrade to strong?
 
 Original Definition
 -------------------
@@ -282,25 +430,30 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the variant is on chrMT then this rule is skipped according to McCormick et al. (2020).
+- If the variant is on chrMT then this criterion is skipped according to McCormick et al. (2020).
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
-- If the variant is within a hotspot (at least 4 pathogenic missense/in-frame variants within 25bp radius) then this rule is triggered.
-- If the variant is within an annotated UniProt domain and the domain contains at least 2 pathogenic variants then this rule is triggered.
+- If the variant is within a hotspot (at least 4 pathogenic missense/in-frame variants within 25bp radius) then this criterion is triggered.
+- If the variant is within an annotated UniProt domain and the domain contains at least 2 pathogenic variants then this criterion is triggered.
+
+User Report
+-----------
+
+- The hotspot region definition and the number of pathogenic variants in the region.
 
 Literature
 ----------
 
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
 Caveats
 -------
 
 - We currently use the threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
 
-.. _acmg_seqvars_rules-pm3:
+.. _acmg_seqvars_criteria-pm3:
 
 PM3 (recessive in *trans*)
 ==========================
@@ -316,7 +469,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-pm4:
+.. _acmg_seqvars_criteria-pm4:
 
 PM4 (protein length)
 ====================
@@ -331,17 +484,23 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If PVS1 was triggered then this rule is skipped to avoid double counting.
-- If the variant is not an in-frame indel and not a stop-loss variant then this rule is skipped.
+- If PVS1 was triggered then this criterion is skipped to avoid double counting.
+- If the variant is not an in-frame indel and not a stop-loss variant then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - If the variant is an in-frame indel
     - If the variant is inside a repeat masked region then it is skipped
     - If the variant is inside a repeat as annotated by UniProt then it is skipped
-    - Otherwise, this rule is triggered.
-- If the variant is a stop-loss variant then this rule is triggered.
+    - Otherwise, this criterion is triggered.
+- If the variant is a stop-loss variant then this criterion is triggered.
+
+User Report
+-----------
+
+- Any reasons for skipping in repeat regions.
+- The transcript identifier.
 
 Literature
 ----------
@@ -354,7 +513,7 @@ Caveats
 - Richards et al. (2015) state that the size of the indel and amount of change in amino acids should influence the classification.
   We currently do not have this implemented.
 
-.. _acmg_seqvars_rules-pm5:
+.. _acmg_seqvars_criteria-pm5:
 
 PM5 (overlapping missense)
 ==========================
@@ -372,30 +531,36 @@ Preconditions / Precomputations
 -------------------------------
 
 - If the variant is on a nuclear chromosome
-    - If it is not a missense variant then this rule is skipped.
-- If the variant is on chrMT and not missense and not on a tRNA gene then this rule is skipped.
+    - If it is not a missense variant then this criterion is skipped.
+- If the variant is on chrMT and not missense and not on a tRNA gene then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - If the variant is on a nuclear chromosome:
-    - If the variant is at the same position as a pathogenic missense variant then this rule is triggered.
+    - If the variant is at the same position as a pathogenic missense variant then this criterion is triggered.
 - If the variant is on chrMT:
-    - If the variant is a missense variant and at the same position as a pathogenic one then the rule is triggered.
-    - If the variant is on a tRNA gene and at the same position as a pathogenic one then the rule is triggered as PM5_Supporting.
+    - If the variant is a missense variant and at the same position as a pathogenic one then the criterion is triggered.
+    - If the variant is on a tRNA gene and at the same position as a pathogenic one then the criterion is triggered as PM5_Supporting.
+
+User Report
+-----------
+
+- The overlapping variant used for criterion.
+- Any alternative overlapping variants not chosen.
 
 Literature
 ----------
 
-- Richards et al. (2018) describes the rule for nuclear chromosomes.
-- McCormick et al. (2020) describes the rule for chrMT.
+- Richards et al. (2018) describes the criterion for nuclear chromosomes.
+- McCormick et al. (2020) describes the criterion for chrMT.
 
 Caveats
 -------
 
 N/A
 
-.. _acmg_seqvars_rules-pm6:
+.. _acmg_seqvars_criteria-pm6:
 
 PM6 (assumed *de novo*)
 =======================
@@ -409,7 +574,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-pm2:
+.. _acmg_seqvars_criteria-pm2:
 
 PM2_Supporting (absent from controls)
 =====================================
@@ -424,41 +589,48 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- Determine :ref:`acmg_seqvars_rules-inheritance` for the gene.
-- Determine :ref:`acmg_seqvars_rules-frequency`.
-- If the allele frequency is invalid then this rule is skipped.
+- Determine :ref:`acmg_seqvars_criteria-inheritance` for the gene.
+- Determine :ref:`acmg_seqvars_criteria-frequency`.
+- If the allele frequency is invalid then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - If the variant is on a nuclear chromosome:
     - If the gene is marked as recessive or X-linked:
-        - If the variant allele count is <=4 then this rule is triggered.
+        - If the variant allele count is <=4 then this criterion is triggered.
     - If the gene is marked as dominant:
-        - If the homozygous allele count is <=1 then this rule is triggered.
-        - If the allele frequency is less than 0.0001 then this rule is triggered.
+        - If the homozygous allele count is <=1 then this criterion is triggered.
+        - If the allele frequency is less than 0.0001 then this criterion is triggered.
 - If the variant is on chrMT:
-    If the variant frequency is below 0.00002=0.002%=1/50,000 then this rule is triggered.
+    If the variant frequency is below 0.00002=0.002%=1/50,000 then this criterion is triggered.
+
+User Report
+-----------
+
+- The values and thresholds used by the criterion even if failed.
 
 Literature
 ----------
 
-- Richards et al. (2015) describes the original rule.
+- Richards et al. (2015) describes the original criterion.
 - ClinGen Sequence Variant Interpretation Work Group (2020): SVI Recommendation for Absence/Rarity (PM2) - Version 1.0 describes the downgrade to supporting.
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
 Caveats
 -------
 
 - We currently use the threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
-- This rule has been downgraded by default to supporting from strong in accordance to ClinGen Sequence Variant Interpretation Work Group (2020): *SVI Recommendation for Absence/Rarity (PM2) - Version 1.0*
+- This criterion has been downgraded by default to supporting from strong in accordance to ClinGen Sequence Variant Interpretation Work Group (2020): *SVI Recommendation for Absence/Rarity (PM2) - Version 1.0*
 
-.. _acmg_seqvars_rules-pp1:
+.. _acmg_seqvars_criteria-pp1:
 
 PP1 (cosegregation)
 ===================
 
 No automation has been implemented.
+
+.. _acmg_seqvars_criteria-pp2:
 
 PP2 (missense)
 ==============
@@ -473,18 +645,23 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the variant is on chrMT then this rule is skipped according to McCormick et al. (2020).
-- If the variant is not a missense variant then this rule is skipped.
+- If the variant is on chrMT then this criterion is skipped according to McCormick et al. (2020).
+- If the variant is not a missense variant then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
-- If the ratio of pathogenic missense variants over all non-VUS missense variants is greater than 0.808 then this rule is triggered.
+- If the ratio of pathogenic missense variants over all non-VUS missense variants is greater than 0.808 then this criterion is triggered.
+
+User Report
+-----------
+
+- Report the ratio of pathogenic missense variants over all non-VUS missense variants.
 
 Literature
 ----------
 
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
 Caveats
 -------
@@ -494,9 +671,9 @@ Caveats
 Notes
 -----
 
-- This rule is similar to :ref:`acmg_seqvars_rules-bp1`
+- This criterion is similar to :ref:`acmg_seqvars_criteria-bp1`
 
-.. _acmg_seqvars_rules-pp3:
+.. _acmg_seqvars_criteria-pp3:
 
 PP3 (*in silico* predictions)
 =============================
@@ -516,12 +693,12 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the rule PVS1 was triggered then this rule is skipped.
+- If the criterion PVS1 was triggered then this criterion is skipped.
 - If the variant is on chrMT then it is skipped, as we don't have calibration for chrMT yet.
 - If the variant is not found in dbNSFP or CADD precomputed scores then it is skipped as we don't have calibration for chrMT yet.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 An initial prediction is fist done using the general purpose pathogenicity predictors.
 
@@ -536,6 +713,10 @@ Then, for splicing the following is done.
 
 The highest-scoring variant is used for the final prediction.
 
+User Report
+-----------
+
+- The scores and predictions from the predictors.
 
 Literature
 ----------
@@ -546,7 +727,7 @@ Literature
 Caveats
 -------
 
-- As described in :ref:`acmg_seqvars_rules-patho-predictions`, we are currently limited to the precomputed threshold from the literature.
+- As described in :ref:`acmg_seqvars_criteria-patho-predictions`, we are currently limited to the precomputed threshold from the literature.
   This hinders us in adopting AlphaMissense effectively, for example.
 - We need to compute accuracy to rank the implemented methods.
 - We need our own calibration for chrMT.
@@ -554,16 +735,16 @@ Caveats
 Notes
 -----
 
-- This rule is similar to :ref:`acmg_seqvars_rules-bp4`
+- This criterion is similar to :ref:`acmg_seqvars_criteria-bp4`
 
-.. _acmg_seqvars_rules-pp4:
+.. _acmg_seqvars_criteria-pp4:
 
 PP4 (monogenetic)
 =================
 
 No automation has been implemented.
 
-.. _acmg_seqvars_rules-ba1:
+.. _acmg_seqvars_criteria-ba1:
 
 BA1 (5% frequency)
 ==================
@@ -579,15 +760,20 @@ Preconditions / Precomputations
 -------------------------------
 
 - The variant is absent from the exception list from Ghosh et al. (2018).
-  If the variant is present on this list, then this rule is skipped.
+  If the variant is present on this list, then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - If the variant is nuclear (not on chrMT)
-    - If the allele frequency is above 0.05 in gnomAD global population then this rule is triggered.
+    - If the allele frequency is above 0.05 in gnomAD global population then this criterion is triggered.
 - else (the variant is on chrMT)
-    - If the allele frequency is above 0.01 in gnomAD-mtDNA global population then this rule is triggered.
+    - If the allele frequency is above 0.01 in gnomAD-mtDNA global population then this criterion is triggered.
+
+User Report
+-----------
+
+- The variant frequency.
 
 Literature
 ----------
@@ -601,7 +787,7 @@ Caveats
 
 - The exception *"However, there must be no additional conflicting evidence to support pathogenicity, such as a novel occurrence in a certain haplogroup" from McCormick et al. (2020)* is not implemented yet.
 
-.. _acmg_seqvars_rules-bs1:
+.. _acmg_seqvars_criteria-bs1:
 
 BS1 (expected frequency)
 ========================
@@ -616,25 +802,31 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- Determine :ref:`acmg_seqvars_rules-frequency`.
-- If the allele frequency is invalid then this rule is skipped.
+- Determine :ref:`acmg_seqvars_criteria-frequency`.
+- If the allele frequency is invalid then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - If the variant is on a nuclear chromosome and the user provided a maximal credible population frequency:
-    - If the FAF from gnomAD is above the maximal credible population frequency then this rule is triggered.
+    - If the FAF from gnomAD is above the maximal credible population frequency then this criterion is triggered.
 - If the variant is on chrMT:
-    - If the population frequency is above 0.5% then this rule is triggered in accordance to McCormick et al. (2020).
+    - If the population frequency is above 0.5% then this criterion is triggered in accordance to McCormick et al. (2020).
+
+User Report
+-----------
+
+- The variant frequency and again the user specified maximal credible population frequency for nuclear variants.
+- The variant frequency and the 0.5% threshold for chrMT variants.
 
 Literature
 ----------
 
-- Richards et al. (2015) describes the original rule without thresholds.
+- Richards et al. (2015) describes the original criterion without thresholds.
 - Gudmundsson et al. (2022) describe the FAF threshold provided by gnomAD.
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
-.. _acmg_seqvars_rules-bs2:
+.. _acmg_seqvars_criteria-bs2:
 
 BS2 (healthy adult)
 ===================
@@ -649,25 +841,30 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the rule BA1 triggered then this rule is skipped.
-- Determine :ref:`acmg_seqvars_rules-inheritance` for the gene.
-- Determine :ref:`acmg_seqvars_rules-frequency`.
-- If the allele frequency is invalid then this rule is skipped.
-- If the rule BA1 was triggered then this rule is skipped.
+- If the criterion BA1 triggered then this criterion is skipped.
+- Determine :ref:`acmg_seqvars_criteria-inheritance` for the gene.
+- Determine :ref:`acmg_seqvars_criteria-frequency`.
+- If the allele frequency is invalid then this criterion is skipped.
+- If the criterion BA1 was triggered then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
 - If the gene is marked as recessive or X-linked:
-    - If the variant allele count is above 2 then this rule is triggered.
+    - If the variant allele count is above 2 then this criterion is triggered.
 - If the gene is marked as dominant:
-    - If the variant allele count is above 5 then this rule is triggered.
+    - If the variant allele count is above 5 then this criterion is triggered.
+
+User Report
+-----------
+
+- The variant frequency and the threshold used.
 
 Literature
 ----------
 
 - Chen et al. (2022), Karczewski et al. (2020), etc. describe gnomAD.
-- The modes of inheritance for the genes are taken from different sources as described in :ref:`acmg_seqvars_rules-inheritance`.
+- The modes of inheritance for the genes are taken from different sources as described in :ref:`acmg_seqvars_criteria-inheritance`.
 
 Caveats
 -------
@@ -680,7 +877,7 @@ Notes
 - Genes can be marked as both recessive and dominant.
 - We use the thresholds from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__.
 
-.. _acmg_seqvars_rules-bs3:
+.. _acmg_seqvars_criteria-bs3:
 
 BS3 (functional studies)
 ========================
@@ -694,7 +891,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-bs4:
+.. _acmg_seqvars_criteria-bs4:
 
 BS4 (lack of segregation)
 =========================
@@ -713,7 +910,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-bp1:
+.. _acmg_seqvars_criteria-bp1:
 
 BP1 (missense)
 ==============
@@ -728,19 +925,24 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the rule BA1 triggered then this rule is skipped.
-- If the variant is on chrMT then this rule is skipped according to McCormick et al. (2020).
-- If the variant is not a missense variant then this rule is skipped.
+- If the criterion BA1 triggered then this criterion is skipped.
+- If the variant is on chrMT then this criterion is skipped according to McCormick et al. (2020).
+- If the variant is not a missense variant then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
-- If the ratio of benign missense variants over all non-VUS missense variants is greater than 0.569 then this rule is triggered.
+- If the ratio of benign missense variants over all non-VUS missense variants is greater than 0.569 then this criterion is triggered.
+
+User Report
+-----------
+
+- Report the ratio of benign missense variants over all non-VUS missense variants together with threshold.
 
 Literature
 ----------
 
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
 Caveats
 -------
@@ -750,9 +952,9 @@ Caveats
 Notes
 -----
 
-- This rule is similar to :ref:`acmg_seqvars_rules-pp2`
+- This criterion is similar to :ref:`acmg_seqvars_criteria-pp2`
 
-.. _acmg_seqvars_rules-bp2:
+.. _acmg_seqvars_criteria-bp2:
 
 BP2 (recessive in *trans*)
 ==========================
@@ -766,7 +968,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-bp3:
+.. _acmg_seqvars_criteria-bp3:
 
 BP3 (in-frame repetitive)
 =========================
@@ -787,21 +989,26 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the rule BA1 triggered then this rule is skipped.
-- If the variant is on chrMT then this rule is skipped.
+- If the criterion BA1 triggered then this criterion is skipped.
+- If the variant is on chrMT then this criterion is skipped.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
-- If the variant is in a known functional domain according to UniProt then this rule is skipped.
-- If the variant is in a repeat region according to UniProt repeat annotation genome repeat masker then this rule is skipped.
-- If the variant is in a region of low conservation (PhyloP100Way less than 3.58, same as `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__) then this rule is skipped.
-- If all conditions above fail then this rule is triggered.
+- If the variant is in a known functional domain according to UniProt then this criterion is skipped.
+- If the variant is in a repeat region according to UniProt repeat annotation genome repeat masker then this criterion is skipped.
+- If the variant is in a region of low conservation (PhyloP100Way less than 3.58, same as `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__) then this criterion is skipped.
+- If all conditions above fail then this criterion is triggered.
+
+User Report
+-----------
+
+- The variant position and the reason for triggering or skipping.
 
 Literature
 ----------
 
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
 Caveats
 -------
@@ -809,7 +1016,7 @@ Caveats
 - We currently use the conservation threshold from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__ and are lacking our own calibration.
 - Different from `PMID:30376034 <https://pubmed.ncbi.nlm.nih.gov/30376034/>`__, we do not check whether there are known pathogenic variants in the region.
 
-.. _acmg_seqvars_rules-bp4:
+.. _acmg_seqvars_criteria-bp4:
 
 BP4 (*in silico* predictions)
 =============================
@@ -833,31 +1040,36 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the rule BA1 triggered then this rule is skipped.
+- If the criterion BA1 triggered then this criterion is skipped.
 - If the variant is on chrMT then it is skipped, as we don't have calibration for chrMT yet.
 - If the variant is not found in dbNSFP or CADD precomputed scores then it is skipped as we don't have calibration for chrMT yet.
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
-See :ref:`acmg_seqvars_rules-pp3` for details.
+See :ref:`acmg_seqvars_criteria-pp3` for details.
+
+User Report
+-----------
+
+See :ref:`acmg_seqvars_criteria-pp3` for details.
 
 Literature
 ----------
 
-See :ref:`acmg_seqvars_rules-pp3` for details.
+See :ref:`acmg_seqvars_criteria-pp3` for details.
 
 Caveats
 -------
 
-See :ref:`acmg_seqvars_rules-pp3` for details.
+See :ref:`acmg_seqvars_criteria-pp3` for details.
 
 Notes
 -----
 
-- This rule is similar to :ref:`acmg_seqvars_rules-pp3`
+- This criterion is similar to :ref:`acmg_seqvars_criteria-pp3`
 
-.. _acmg_seqvars_rules-bp5:
+.. _acmg_seqvars_criteria-bp5:
 
 BP5 (found in solved)
 =====================
@@ -871,7 +1083,7 @@ Original Definition
 
     -- Richards et al. (2015); Table 4
 
-.. _acmg_seqvars_rules-bp7:
+.. _acmg_seqvars_criteria-bp7:
 
 BP7 (synonymous)
 ================
@@ -886,19 +1098,24 @@ Original Definition
 Preconditions / Precomputations
 -------------------------------
 
-- If the variant is on chrMT then this rule is skipped according to McCormick et al. (2020).
+- If the variant is on chrMT then this criterion is skipped according to McCormick et al. (2020).
 
-Implemented Rule
-----------------
+Implemented Criterion
+---------------------
 
-- If there is a pathogenic variant +/- 2bp of the position in ClinVar then the rule is skipped.
-- If the variant is closer than 2bp to a splice site then the rule is skipped.
-- If the variant is not predicted to alter the splice site using SpliceAI then the rule is triggered.
+- If there is a pathogenic variant +/- 2bp of the position in ClinVar then the criterion is skipped.
+- If the variant is closer than 2bp to a splice site then the criterion is skipped.
+- If the variant is not predicted to alter the splice site using SpliceAI then the criterion is triggered.
+
+User Report
+-----------
+
+- The variant position and the reason for triggering or skipping.
 
 Literature
 ----------
 
-- McCormick et al. (2020) describe the ACMG rules for chrMT variants.
+- McCormick et al. (2020) describe the ACMG criteria for chrMT variants.
 
 Caveats
 -------
