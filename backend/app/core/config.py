@@ -1,6 +1,7 @@
 import logging
 import os
 import secrets
+import typing
 from typing import Any
 
 from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
@@ -26,8 +27,6 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     #: Project name
     PROJECT_NAME: str = "REEV"
-    #: Path to frontend build, if any.
-    SERVE_FRONTEND: str | None = ""
     #: Path to REEV version file.
     VERSION_FILE: str = "/VERSION"
     #: The REEV version from the file (``None`` if to load dynamically from git)
@@ -67,7 +66,7 @@ class Settings(BaseSettings):
     #: Server hostname
     SERVER_NAME: str = "localhost"
     #: HTTP to server
-    SERVER_HOST: AnyHttpUrl | str = "http://localhost:8080"
+    SERVER_HOST: AnyHttpUrl | str = "http://localhost:8081"
     #: BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     #: e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     #: "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
@@ -156,31 +155,17 @@ class Settings(BaseSettings):
 
     # -- Email Sending Configuration -----------------------------------------
 
-    # SMTP_TLS: bool = True
-    # SMTP_PORT: int | None = None
-    # SMTP_HOST: str | None = None
-    # SMTP_USER: str | None = None
-    # SMTP_PASSWORD: str | None = None
-    # EMAILS_FROM_EMAIL: EmailStr | None = None
-    # EMAILS_FROM_NAME: str | None = None
+    SMTP_TLS: bool = False
+    SMTP_PORT: int | None = None
+    SMTP_HOST: str | None = None
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    EMAILS_FROM_EMAIL: EmailStr | None = None
+    EMAILS_FROM_NAME: str | None = None
 
-    # @validator("EMAILS_FROM_NAME")
-    # def get_project_name(cls, v: str | None, values: Dict[str, Any]) -> str:
-    #     if not v:
-    #         return values["PROJECT_NAME"]
-    #     return v
-
-    # EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
-    # EMAIL_TEMPLATES_DIR: str = "/app/app/email-templates/build"
-    # EMAILS_ENABLED: bool = False
-
-    # @validator("EMAILS_ENABLED", pre=True)
-    # def get_emails_enabled(cls, v: bool, values: Dict[str, Any]) -> bool:
-    #     return bool(
-    #         values.get("SMTP_HOST")
-    #         and values.get("SMTP_PORT")
-    #         and values.get("EMAILS_FROM_EMAIL")
-    #     )
+    EMAIL_RESET_TOKEN_EXPIRE_HOURS: int = 48
+    EMAIL_TEMPLATES_DIR: str = f"{os.path.dirname(__file__)}/../app/email-templates/build"
+    EMAILS_ENABLED: bool = False
 
     # -- Sentry Configuration ------------------------------------------------
 

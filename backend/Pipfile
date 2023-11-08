@@ -24,6 +24,7 @@ alembic = "*"
 requests = "*"
 types-requests = "*"
 greenlet = "*"
+emails = "*"
 
 [dev-packages]
 aiosqlite = "*"
