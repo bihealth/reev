@@ -27,6 +27,91 @@ describe.concurrent('Case Store', () => {
     fetchMocker.resetMocks()
   })
 
+  it('should clear data', () => {
+    const store = useCaseStore()
+    // Set a non-initial state to check if clearData works properly
+    store.caseInfo = { ...CaseInfo, pseudonym: 'TestPseudonym' }
+
+    store.clearData()
+
+    expect(store.caseInfo).toStrictEqual(CaseInfo)
+  })
+
+  it('should handle unauthorized access when loading case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Unauthorized' }), { status: 401 })
+
+    await store.loadCase()
+
+    expect(store.storeState).toBe(StoreState.Active)
+  })
+
+  it('should handle not found when loading case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Case Information not found' }), {
+      status: 404
+    })
+
+    await store.loadCase()
+
+    expect(store.storeState).toBe(StoreState.Active)
+  })
+
+  it('should handle server error when loading case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockReject(new Error('Internal Server Error'))
+
+    await store.loadCase()
+
+    expect(store.storeState).toBe(StoreState.Active)
+  })
+
+  it('should handle unauthorized access when updating case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Unauthorized' }), { status: 401 })
+
+    await store.updateCase(CaseInfo)
+
+    expect(store.storeState).toBe(StoreState.Error)
+  })
+
+  it('should handle server error when updating case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockReject(new Error('Internal Server Error'))
+
+    await store.updateCase(CaseInfo)
+
+    expect(store.storeState).toBe(StoreState.Error)
+  })
+
+  it('should delete case information', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({}))
+
+    await store.deleteCase()
+
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toStrictEqual(CaseInfo) // assuming clearData is called in deleteCase
+  })
+
+  it('should handle unauthorized access when deleting case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Unauthorized' }), { status: 401 })
+
+    await store.deleteCase()
+
+    expect(store.storeState).toBe(StoreState.Error)
+  })
+
+  it('should handle server error when deleting case', async () => {
+    const store = useCaseStore()
+    fetchMocker.mockReject(new Error('Internal Server Error'))
+
+    await store.deleteCase()
+
+    expect(store.storeState).toBe(StoreState.Error)
+  })
+
   it('should have initial state', () => {
     const store = useCaseStore()
 
