@@ -28,6 +28,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       bookmarks.value = await client.fetchBookmarks()
       storeState.value = StoreState.Active
     } catch (e) {
+      console.log(e)
       storeState.value = StoreState.Error
     }
   }
@@ -39,6 +40,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       await client.deleteBookmark(obj_type, obj_id)
       await loadBookmarks()
     } catch (e) {
+      console.log(e)
       storeState.value = StoreState.Error
     }
   }
@@ -50,6 +52,7 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       await client.createBookmark(obj_type, obj_id)
       await loadBookmarks()
     } catch (e) {
+      console.log(e)
       storeState.value = StoreState.Error
     }
   }
@@ -61,9 +64,13 @@ export const useBookmarksStore = defineStore('bookmarks', () => {
       if (response.detail === 'Unauthorized') {
         storeState.value = StoreState.Error
         return null
+      } else if (response.detail === 'Bookmark not found') {
+        return null
       }
       return response
     } catch (e) {
+      storeState.value = StoreState.Error
+      console.log(e)
       return null
     }
   }

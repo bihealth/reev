@@ -3,13 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
 from app.api import deps
-from app.core import auth
+from app.api.deps import current_active_superuser, current_active_user
 from app.models.user import User
 
 router = APIRouter()
-
-current_active_user = auth.fastapi_users.current_user(active=True)
-current_superuser = auth.fastapi_users.current_user(active=True, superuser=True)
 
 
 @router.post("/create", response_model=schemas.CaseInfoCreate)
@@ -31,7 +28,7 @@ async def create_caseinfo(
 
 @router.get(
     "/list-all",
-    dependencies=[Depends(current_superuser)],
+    dependencies=[Depends(current_active_superuser)],
     response_model=list[schemas.CaseInfoRead],
 )
 async def list_caseinfos(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(deps.get_db)):
@@ -49,7 +46,9 @@ async def list_caseinfos(skip: int = 0, limit: int = 100, db: AsyncSession = Dep
 
 
 @router.get(
-    "/get-by-id", dependencies=[Depends(current_superuser)], response_model=schemas.CaseInfoRead
+    "/get-by-id",
+    dependencies=[Depends(current_active_superuser)],
+    response_model=schemas.CaseInfoRead,
 )
 async def get_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
     """
@@ -59,12 +58,16 @@ async def get_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
     :type id: uuid
     :return: Case Information
     """
-    return await crud.caseinfo.get(db, id=id)
+    response = await crud.caseinfo.get(db, id=id)
+    if not response:
+        raise HTTPException(status_code=404, detail="Case Information not found")
+    else:
+        return response
 
 
 @router.delete(
     "/delete-by-id",
-    dependencies=[Depends(current_superuser)],
+    dependencies=[Depends(current_active_superuser)],
     response_model=schemas.CaseInfoRead,
 )
 async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
@@ -75,7 +78,11 @@ async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
     :type id: uuid
     :return: Case Information
     """
-    return await crud.caseinfo.remove(db, id=id)
+    response = await crud.caseinfo.remove(db, id=id)
+    if not response:
+        raise HTTPException(status_code=404, detail="Case Information not found")
+    else:
+        return response
 
 
 @router.get("/list", response_model=list[schemas.CaseInfoRead])

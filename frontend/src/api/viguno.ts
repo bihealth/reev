@@ -16,6 +16,12 @@ export class VigunoClient {
     const response = await fetch(url, {
       method: 'GET'
     })
+
+    if (!response.ok) {
+      const errorBody = await response.json()
+      throw new Error(errorBody.msg || response.statusText)
+    }
+
     return await response.json()
   }
 
@@ -24,6 +30,12 @@ export class VigunoClient {
     const response = await fetch(url, {
       method: 'GET'
     })
+
+    if (!response.ok) {
+      const errorBody = await response.json()
+      throw new Error(errorBody.msg || response.statusText)
+    }
+
     return await response.json()
   }
 
@@ -32,6 +44,12 @@ export class VigunoClient {
     const response = await fetch(url, {
       method: 'GET'
     })
+
+    if (!response.ok) {
+      const errorBody = await response.json()
+      throw new Error(errorBody.msg || response.statusText)
+    }
+
     return await response.json()
   }
 
@@ -40,6 +58,12 @@ export class VigunoClient {
     const response = await fetch(url, {
       method: 'GET'
     })
+
+    if (!response.ok) {
+      const errorBody = await response.json()
+      throw new Error(errorBody.msg || response.statusText)
+    }
+
     return await response.json()
   }
 }

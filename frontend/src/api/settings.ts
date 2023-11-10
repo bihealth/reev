@@ -15,6 +15,12 @@ export class SettingsClient {
     const response = await fetch(`${this.apiBaseUrl}frontend-settings`, {
       method: 'GET'
     })
+
+    if (!response.ok) {
+      // This will throw an error with the response's status text
+      throw new Error(response.statusText)
+    }
+
     return await response.json()
   }
 }

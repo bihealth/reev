@@ -1,7 +1,6 @@
 import logging
 import os
 import secrets
-import typing
 from typing import Any
 
 from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
