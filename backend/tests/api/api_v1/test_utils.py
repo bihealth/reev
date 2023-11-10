@@ -1,10 +1,7 @@
-import uuid
-
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.app.utils import send_test_email
 from app.core.config import settings
 from app.models.user import User
 

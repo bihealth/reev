@@ -1,9 +1,9 @@
 import uuid
-from typing import Any, Optional
+from typing import Optional
 
 import redis.asyncio
 from fastapi import Depends, Request, Response
-from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin, models
+from fastapi_users import BaseUserManager, FastAPIUsers, UUIDIDMixin
 from fastapi_users.authentication import (
     AuthenticationBackend,
     BearerTransport,

@@ -1,6 +1,4 @@
-from typing import AsyncGenerator, AsyncIterator
-
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+from typing import AsyncIterator
 
 from app.core import auth
 from app.db.session import SessionLocal, engine
