@@ -81,6 +81,13 @@ def non_mocked_hosts(client: TestClient) -> list[str]:
 
 @pytest.fixture()
 def test_user(db_session: AsyncSession, request) -> User | None:
+    """Create a test user and return it.
+
+    Special handling for ``request.param``:
+    If ``request.param`` is ``None``, return ``None``.
+    If ``request.param`` is ``True``, return a superuser.
+    If ``request.param`` is ``False``, return a regular user.
+    """
     if hasattr(request, "param") and request.param is None:
         # Return None for anonymous user tests
         return None
@@ -103,6 +110,13 @@ def test_user(db_session: AsyncSession, request) -> User | None:
 
 @pytest.fixture()
 def client_user(test_user, request):
+    """Create a test client with a test user.
+
+    Special handling for ``request.param``:
+    If ``request.param`` is ``None``, return a client with no user.
+    If ``request.param`` is ``True``, return a client with a superuser.
+    If ``request.param`` is ``False``, return a client with a regular user.
+    """
     superuser: bool = request.param if hasattr(request, "param") else False
 
     old_current_active_user = app.dependency_overrides.get(current_active_user)

@@ -9,6 +9,7 @@ from app.schemas.bookmark import BookmarkCreate, BookmarkTypes
 
 @pytest.fixture
 def bookmark_create() -> BookmarkCreate:
+    """Fixture for creating a bookmark."""
     return BookmarkCreate(
         obj_type=BookmarkTypes.gene,
         obj_id=str(uuid.uuid4()),
@@ -18,6 +19,7 @@ def bookmark_create() -> BookmarkCreate:
 
 @pytest.mark.asyncio
 async def test_create_get_bookmark(db_session: AsyncSession, bookmark_create: BookmarkCreate):
+    """Test creating and retrieving a bookmark."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
     stored_item = await crud.bookmark.get(session=db_session, id=bookmark_postcreate.id)
     assert stored_item
@@ -28,12 +30,14 @@ async def test_create_get_bookmark(db_session: AsyncSession, bookmark_create: Bo
 
 @pytest.mark.asyncio
 async def test_delete_bookmark(db_session: AsyncSession, bookmark_create: BookmarkCreate):
+    """Test deleting a bookmark."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
     await crud.bookmark.remove(session=db_session, id=bookmark_postcreate.id)
 
 
 @pytest.mark.asyncio
 async def test_get_multi_by_user(db_session: AsyncSession, bookmark_create: BookmarkCreate):
+    """Test retrieving multiple bookmarks by user."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
     stored_items = await crud.bookmark.get_multi_by_user(
         session=db_session, user_id=bookmark_postcreate.user
@@ -47,6 +51,7 @@ async def test_get_multi_by_user(db_session: AsyncSession, bookmark_create: Book
 
 @pytest.mark.asyncio
 async def test_get_by_user_and_obj(db_session: AsyncSession, bookmark_create: BookmarkCreate):
+    """Test retrieving a bookmark by user and object."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
     stored_item = await crud.bookmark.get_by_user_and_obj(
         session=db_session,

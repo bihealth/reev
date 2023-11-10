@@ -19,6 +19,7 @@ async def test_create_caseinfo(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test creating a caseinfo as regular user."""
     _ = db_session
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -56,6 +57,7 @@ async def test_create_caseinfo_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test creating a caseinfo as superuser."""
     _ = db_session
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -69,6 +71,7 @@ async def test_create_caseinfo_superuser(
 
 @pytest.mark.asyncio
 async def test_create_caseinfo_anon(db_session: AsyncSession, client: TestClient):
+    """Test creating a caseinfo as anonymous user."""
     _ = db_session
     response = client.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -85,6 +88,7 @@ async def test_create_caseinfo_invalid_data(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test creating a caseinfo with invalid data."""
     _ = db_session
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -100,6 +104,7 @@ async def test_create_caseinfo_invalid_enums(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test creating a caseinfo with invalid enums."""
     _ = db_session
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -115,6 +120,7 @@ async def test_create_caseinfo_invalid_terms(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test creating a caseinfo with invalid terms."""
     _ = db_session
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -135,6 +141,7 @@ async def test_list_all_caseinfos(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test listing all caseinfos as regular user."""
     _ = db_session
     # Create caseinfo
     response = client_user.post(
@@ -155,6 +162,7 @@ async def test_list_all_caseinfos_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test listing all caseinfos as superuser."""
     _ = db_session
     # Create caseifo
     response = client_user.post(
@@ -172,6 +180,7 @@ async def test_list_all_caseinfos_superuser(
 
 @pytest.mark.asyncio
 async def test_list_all_caseinfos_anon(db_session: AsyncSession, client: TestClient):
+    """Test listing all caseinfos as anonymous user."""
     _ = db_session
     response = client.get(f"{settings.API_V1_STR}/caseinfo/list-all/")
     assert response.status_code == 401
@@ -185,6 +194,7 @@ async def test_list_all_no_caseinfos(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test listing all caseinfos with no caseinfos."""
     _ = db_session
     response = client_user.get(f"{settings.API_V1_STR}/caseinfo/list-all/")
     assert response.status_code == 200
@@ -203,6 +213,7 @@ async def test_get_caseinfo_by_id(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test getting a caseinfo by id as regular user."""
     caseinfo_id = uuid.uuid4()
     response = client_user.get(f"{settings.API_V1_STR}/caseinfo/get-by-id?id={caseinfo_id}")
     assert response.status_code == 401  # Forbidden access should be 403
@@ -215,6 +226,7 @@ async def test_get_caseinfo_by_id_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test getting a caseinfo by id as superuser."""
     _ = db_session
     # Create caseifo
     response = client_user.post(
@@ -233,6 +245,7 @@ async def test_get_caseinfo_by_id_superuser(
 
 @pytest.mark.asyncio
 async def test_get_caseinfo_by_id_anon(db_session: AsyncSession, client: TestClient):
+    """Test getting a caseinfo by id as anonymous user."""
     _ = db_session
     caseinfo_id = uuid.uuid4()
     response = client.get(f"{settings.API_V1_STR}/caseinfo/get-by-id?id={caseinfo_id}/")
@@ -247,6 +260,7 @@ async def test_get_caseinfo_by_invalid_id(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test getting a caseinfo by invalid id."""
     caseinfo_id = uuid.uuid4()  # Invalid id
     response = client_user.get(f"{settings.API_V1_STR}/caseinfo/get-by-id?id={caseinfo_id}")
     assert response.status_code == 404
@@ -265,6 +279,7 @@ async def test_delete_caseinfo_by_id(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test deleting a caseinfo by id as regular user."""
     # Create a caseinfo
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -292,6 +307,7 @@ async def test_delete_caseinfo_by_id_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test deleting a caseinfo by id as superuser."""
     # Create a caseinfo
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
@@ -313,6 +329,7 @@ async def test_delete_caseinfo_by_id_superuser(
 
 @pytest.mark.asyncio
 async def test_delete_caseinfo_by_id_anon(db_session: AsyncSession, client: TestClient):
+    """Test deleting a caseinfo by id as anonymous user."""
     _ = db_session
     caseinfo_id = uuid.uuid4()
     response = client.delete(f"{settings.API_V1_STR}/caseinfo/delete-by-id?id={caseinfo_id}/")
@@ -327,6 +344,7 @@ async def test_delete_caseinfo_by_invalid_id(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test deleting a caseinfo by invalid id."""
     caseinfo_id = uuid.uuid4()
 
     response = client_user.delete(f"{settings.API_V1_STR}/caseinfo/delete-by-id?id={caseinfo_id}")
@@ -346,6 +364,7 @@ async def test_list_caseinfo(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test listing caseinfos as regular user."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -368,6 +387,7 @@ async def test_list_caseinfo_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test listing caseinfos as superuser."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -385,6 +405,7 @@ async def test_list_caseinfo_superuser(
 
 @pytest.mark.asyncio
 async def test_list_caseinfo_anon(db_session: AsyncSession, client: TestClient):
+    """Test listing caseinfos as anonymous user."""
     _ = db_session
     response = client.get(f"{settings.API_V1_STR}/caseinfo/list/")
     assert response.status_code == 401
@@ -397,6 +418,7 @@ async def test_list_no_caseinfo(
     db_session: AsyncSession,
     client_user: TestClient,
 ):
+    """Test listing caseinfos with no caseinfos."""
     _ = db_session
     response = client_user.get(f"{settings.API_V1_STR}/caseinfo/list/")
     assert response.status_code == 200
@@ -415,6 +437,7 @@ async def test_get_caseinfo(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test getting a caseinfo as regular user."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -437,6 +460,7 @@ async def test_get_caseinfo_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test getting a caseinfo as superuser."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -454,6 +478,7 @@ async def test_get_caseinfo_superuser(
 
 @pytest.mark.asyncio
 async def test_get_caseinfo_anon(db_session: AsyncSession, client: TestClient):
+    """Test getting a caseinfo as anonymous user."""
     _ = db_session
     response = client.get(f"{settings.API_V1_STR}/caseinfo/get")
     assert response.status_code == 401
@@ -466,6 +491,7 @@ async def test_get_no_caseinfo(
     db_session: AsyncSession,
     client_user: TestClient,
 ):
+    """Test getting a caseinfo with no caseinfos."""
     _ = db_session
     response = client_user.get(f"{settings.API_V1_STR}/caseinfo/get")
     assert response.status_code == 404
@@ -484,6 +510,7 @@ async def test_update_caseinfo(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test updating a caseinfo as regular user."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -509,6 +536,7 @@ async def test_update_caseinfo_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test updating a caseinfo as superuser."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -529,6 +557,7 @@ async def test_update_caseinfo_superuser(
 
 @pytest.mark.asyncio
 async def test_update_caseinfo_anon(db_session: AsyncSession, client: TestClient):
+    """Test updating a caseinfo as anonymous user."""
     _ = db_session
     response = client.put(
         f"{settings.API_V1_STR}/caseinfo/update",
@@ -545,6 +574,7 @@ async def test_update_caseinfo_patch(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test updating a caseinfo with patch as superuser."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -569,6 +599,7 @@ async def test_update_no_caseinfo(
     db_session: AsyncSession,
     client_user: TestClient,
 ):
+    """Test updating a caseinfo with no caseinfos."""
     _ = db_session
     response = client_user.put(
         f"{settings.API_V1_STR}/caseinfo/update",
@@ -585,6 +616,7 @@ async def test_update_caseinfo_invalid_enum(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test updating a caseinfo with invalid enums."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -607,6 +639,7 @@ async def test_update_caseinfo_invalid_terms(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test updating a caseinfo with invalid terms."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -638,6 +671,7 @@ async def test_delete_caseinfo(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test deleting a caseinfo as regular user."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -662,6 +696,7 @@ async def test_delete_caseinfo_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test deleting a caseinfo as superuser."""
     _ = db_session
     # Create a caseinfo
     response = client_user.post(
@@ -681,6 +716,7 @@ async def test_delete_caseinfo_superuser(
 
 @pytest.mark.asyncio
 async def test_delete_caseinfo_anon(db_session: AsyncSession, client: TestClient):
+    """Test deleting a caseinfo as anonymous user."""
     _ = db_session
     response = client.delete(f"{settings.API_V1_STR}/caseinfo/delete")
     assert response.status_code == 401
@@ -693,6 +729,7 @@ async def test_delete_no_caseinfo(
     db_session: AsyncSession,
     client_user: TestClient,
 ):
+    """Test deleting a caseinfo with no caseinfos."""
     _ = db_session
     response = client_user.delete(f"{settings.API_V1_STR}/caseinfo/delete")
     assert response.status_code == 404

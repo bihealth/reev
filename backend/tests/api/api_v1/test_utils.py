@@ -15,6 +15,7 @@ async def test_test_email(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test sending an email as regular user."""
     _ = db_session
     email_to = "test1@example.com"
     response = client_user.post(
@@ -31,6 +32,7 @@ async def test_test_email_superuser(
     client_user: TestClient,
     test_user: User,
 ):
+    """Test sending an email as superuser."""
     _ = db_session
     email_to = "test1@example.com"
     response = client_user.post(
@@ -42,6 +44,7 @@ async def test_test_email_superuser(
 
 @pytest.mark.asyncio
 async def test_test_email_anon(db_session: AsyncSession, client: TestClient):
+    """Test sending an email as anonymous user."""
     _ = db_session
     email_to = "test1@example.com"
     response = client.post(
