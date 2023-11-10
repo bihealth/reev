@@ -204,7 +204,6 @@ export const useCaseStore = defineStore('case', () => {
       } else if (result.detail === 'Case Information not found') {
         await client.createCaseInfo(caseData)
       } else {
-        console.log(caseData)
         const updatedCase = await client.updateCaseInfo(caseData)
         caseInfo.value = apiResponseToFrontendCase(updatedCase as APIResponse)
       }

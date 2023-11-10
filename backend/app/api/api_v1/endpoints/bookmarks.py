@@ -3,13 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
 from app.api import deps
+from app.api.deps import current_active_superuser, current_active_user
 from app.core import auth
 from app.models.user import User
 
 router = APIRouter()
-
-current_active_user = auth.fastapi_users.current_user(active=True)
-current_active_superuser = auth.fastapi_users.current_user(active=True, superuser=True)
 
 
 @router.post("/create", response_model=schemas.BookmarkCreate)
@@ -63,11 +61,11 @@ async def get_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
     :return: bookmark
     :rtype: dict
     """
-    user = auth.fastapi_users.current_user(active=True, superuser=True)
-    if user:
-        return await crud.bookmark.get(db, id=id)
+    response = await crud.bookmark.get(db, id=id)
+    if not response:
+        raise HTTPException(status_code=404, detail="Bookmark not found")
     else:
-        raise HTTPException(status_code=403, detail="Not enough permissions")
+        return response
 
 
 @router.delete(
@@ -84,7 +82,11 @@ async def delete_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
     :return: bookmark which was deleted
     :rtype: dict
     """
-    return await crud.bookmark.remove(db, id=id)
+    response = await crud.bookmark.remove(db, id=id)
+    if not response:
+        raise HTTPException(status_code=404, detail="Bookmark not found")
+    else:
+        return response
 
 
 @router.get("/list", response_model=list[schemas.BookmarkRead])
@@ -124,9 +126,13 @@ async def get_bookmark_for_user(
     :return: bookmark
     :rtype: dict
     """
-    return await crud.bookmark.get_by_user_and_obj(
+    response = await crud.bookmark.get_by_user_and_obj(
         db, user_id=user.id, obj_type=obj_type, obj_id=obj_id
     )
+    if not response:
+        raise HTTPException(status_code=404, detail="Bookmark not found")
+    else:
+        return response
 
 
 @router.delete("/delete", response_model=schemas.BookmarkRead)
