@@ -36,7 +36,7 @@ async def test_test_email_superuser(
 ):
     """Test sending an email as superuser."""
     # Mock the send_test_email function
-    monkeypatch.setattr(send_test_email, lambda email_to: None)
+    monkeypatch.setattr("app.api.endpoints.utils.send_test_email", lambda email_to: None)
     _ = db_session
     email_to = "test1@example.com"
     response = client_user.post(
