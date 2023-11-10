@@ -21,7 +21,7 @@ export const useMiscStore = defineStore('misc', () => {
   /* The app version. */
   const appVersion = ref<string | null>(null)
 
-  // Initialize store, load version
+  // Initialize store, load version info.
   const initialize = async () => {
     storeState.value = StoreState.Loading
     try {
