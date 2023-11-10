@@ -3,7 +3,7 @@ from unittest.mock import MagicMock, mock_open
 import pytest
 from starlette.requests import Request
 
-from app.app.utils import send_email, send_test_email, send_user_verify_email
+from app.etc.utils import send_email, send_test_email, send_user_verify_email
 
 
 @pytest.fixture

@@ -35,3 +35,24 @@ app.api.api_v1.endpoints.bookmarks
     :undoc-members:
     :show-inheritance:
     :private-members:
+
+---------------------------------
+app.api.api_v1.endpoints.caseinfo
+---------------------------------
+
+.. automodule:: app.api.api_v1.endpoints.caseinfo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+
+------------------------------
+app.api.api_v1.endpoints.utils
+------------------------------
+
+.. automodule:: app.api.api_v1.endpoints.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+    

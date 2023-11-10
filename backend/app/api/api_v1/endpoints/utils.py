@@ -5,7 +5,7 @@ from pydantic.networks import EmailStr
 
 from app import schemas
 from app.api.deps import current_active_superuser
-from app.app.utils import send_test_email
+from app.etc.utils import send_test_email
 
 router = APIRouter()
 
