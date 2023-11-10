@@ -38,7 +38,7 @@ export class AuthClient {
       },
       body: `username=${encodeURIComponent(username)}&` + `password=${encodeURIComponent(password)}`
     })
-    return response.status === 204
+    return response.status === 204 || response.status === 200
   }
 
   async logout(): Promise<string> {
