@@ -26,3 +26,10 @@ app.models.user
 
 .. automodule:: app.models.user
     :members:
+
+-------------------
+app.models.caseinfo
+-------------------
+
+.. automodule:: app.models.caseinfo
+    :members:
