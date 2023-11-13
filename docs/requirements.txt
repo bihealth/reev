@@ -31,8 +31,8 @@ flake8==6.1.0
 greenlet==3.0.1
 h11==0.14.0
 httpcore==0.17.3
-httpx==0.24.1
-httpx-oauth==0.13.0
+httpx
+httpx-oauth
 idna==3.4
 imagesize==1.4.1
 iniconfig==2.0.0
@@ -65,7 +65,7 @@ pytest==7.4.3
 pytest-asyncio==0.21.1
 pytest-cov==4.1.0
 pytest-faker==2.0.0
-pytest-httpx==0.26.0
+pytest-httpx
 pytest-subprocess==1.5.0
 python-dateutil==2.8.2
 python-dotenv==1.0.0
