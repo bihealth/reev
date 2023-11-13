@@ -1,35 +1,35 @@
 .. _api_models:
 
 ==========
-app.models
+backend.app.models
 ==========
 
 .. contents::
 
 -------------------
-app.models.adminmsg
+backend.app.models.adminmsg
 -------------------
 
-.. automodule:: app.models.adminmsg
+.. automodule:: backend.app.models.adminmsg
     :members:
 
 -------------------
-app.models.bookmark
+backend.app.models.bookmark
 -------------------
 
-.. automodule:: app.models.bookmark
+.. automodule:: backend.app.models.bookmark
     :members:
 
 ---------------
-app.models.user
+backend.app.models.user
 ---------------
 
-.. automodule:: app.models.user
+.. automodule:: backend.app.models.user
     :members:
 
 -------------------
-app.models.caseinfo
+backend.app.models.caseinfo
 -------------------
 
-.. automodule:: app.models.caseinfo
+.. automodule:: backend.app.models.caseinfo
     :members:
