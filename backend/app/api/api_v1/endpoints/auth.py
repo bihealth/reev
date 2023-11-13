@@ -10,7 +10,7 @@ router = APIRouter()
 async def list_oauth2_providers() -> list[schemas.OAuth2ProviderPublic]:
     """
     Retrieve all admin messages.
-    
+
     :return: list of admin messages
     :rtype: list
     """

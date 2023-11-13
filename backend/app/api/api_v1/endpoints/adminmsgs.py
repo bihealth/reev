@@ -15,7 +15,7 @@ async def read_adminmsgs(
 ) -> list[schemas.AdminMessageRead]:
     """
     Retrieve all admin messages.
-    
+
     :return: list of admin messages
     :rtype: list
     """
