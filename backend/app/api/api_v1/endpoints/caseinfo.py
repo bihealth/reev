@@ -21,6 +21,7 @@ async def create_caseinfo(
     :param caseinfo: Case Information to create
     :type caseinfo: dict or :class:`.schemas.CaseInfoCreate`
     :return: Case Information
+    :rtype: dict
     """
     caseinfo.user = user.id
     return await crud.caseinfo.create(db, obj_in=caseinfo)
@@ -57,6 +58,7 @@ async def get_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
     :param id: Case Information id
     :type id: uuid
     :return: Case Information
+    :rtype: dict
     """
     response = await crud.caseinfo.get(db, id=id)
     if not response:
@@ -77,6 +79,7 @@ async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
     :param id: Case Information id
     :type id: uuid
     :return: Case Information
+    :rtype: dict
     """
     response = await crud.caseinfo.remove(db, id=id)
     if not response:
@@ -107,6 +110,7 @@ async def get_caseinfo_for_user(
     Get a Case Information for a current user.
 
     :return: Case Information
+    :rtype: dict
     """
     caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
     if not caseinfo:
@@ -127,6 +131,7 @@ async def update_caseinfo_for_user(
     :param caseinfo: Case Information to update
     :type caseinfo: dict or :class:`.schemas.CaseInfoUpdate`
     :return: Case Information
+    :rtype: dict
     """
     caseinfoupdate.user = user.id
     caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
@@ -143,6 +148,7 @@ async def delete_caseinfo_for_user(
     Delete a Case Information for a current user.
 
     :return: Case Information
+    :rtype: dict
     """
     caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
     if not caseinfo:

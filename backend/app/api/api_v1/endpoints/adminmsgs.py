@@ -13,7 +13,12 @@ async def read_adminmsgs(
     skip: int = 0,
     limit: int = 100,
 ) -> list[schemas.AdminMessageRead]:
-    """Retrieve all admin messages"""
+    """
+    Retrieve all admin messages.
+    
+    :return: list of admin messages
+    :rtype: list
+    """
     users = [
         schemas.AdminMessageRead.model_validate(db_obj)
         for db_obj in await crud.adminmessage.get_multi(db, skip=skip, limit=limit)
