@@ -5,8 +5,7 @@ build:
   tools:
     python: "3.10"
   commands:
-    - pip install --user pipenv
-    - pipev run pip install -r docs/requirements.txt
+    - pip install -r docs/requirements.txt
     - mkdir _readthedocs
     - pipenv run sphinx-build -b html docs/ _readthedocs/html
 
