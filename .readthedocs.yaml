@@ -7,13 +7,8 @@ build:
   commands:
     - pip install --user pipenv
     - pipev run pip install -r docs/requirements.txt
-    - ls -a
-    - pwd
-    - cd backend
-    - pwd
-    - ls -a
-    - make -C docs clean html
-    - ls -a
+    - mkdir _readthedocs
+    - pipenv run sphinx-build -b html docs/ _readthedocs/html
 
 # Build documentation in the "docs/" directory with Sphinx
 sphinx:
