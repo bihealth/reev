@@ -1,44 +1,49 @@
 sphinx
 sphinx-rtd-theme
-asyncpg = "*"
-fastapi = "*"
-fastapi-users = {extras = ["oauth", "sqlalchemy", "redis"], version = "*"}
-httpx = "*"
-install = "*"
-passlib = {extras = ["bcrypt"], version = "*"}
-pip = "*"
-psycopg2-binary = "*"
-pydantic = {extras = ["email"], version = "*"}
-pydantic-settings = "*"
-python-dateutil = "*"
-python-dotenv = "*"
-requests-mock = "*"
-sqlalchemy = "*"
-tenacity = "*"
-uvicorn = "*"
-alembic = "*"
-requests = "*"
-types-requests = "*"
-greenlet = "*"
-emails = "*"
-jinja2 = "*"
-aiosqlite = "*"
-black = "*"
-faker = "*"
-flake8 = "*"
-install = "*"
-isort = "*"
-mypy = "*"
-pip = "*"
-pytest = "*"
-pytest-asyncio = "*"
-pytest-cov = "*"
-pytest-faker = "*"
-pytest-httpx = "*"
-pytest-subprocess = "*"
-sphinx = "*"
-sphinx-rtd-theme = "*"
-starlette = "*"
-types-passlib = "*"
-sphinx-serve = "*"
+asyncpg
+fastapi
+fastapi-users
+SQLAlchemy
+python-oauth2
+redis
+httpx
+install
+passlib
+bcrypt
+pip
+psycopg2-binary
+pydantic
+email
+pydantic-settings
+python-dateutil
+python-dotenv
+requests-mock
+sqlalchemy
+tenacity
+uvicorn
+alembic
+requests
+types-requests
+greenlet
+emails
+jinja2
+aiosqlite
+black
+faker
+flake8
+install
+isort
+mypy
+pip
+pytest
+pytest-asyncio
+pytest-cov
+pytest-faker
+pytest-httpx
+pytest-subprocess
+sphinx
+sphinx-rtd-theme
+starlette
+types-passlib
+sphinx-serve
 
