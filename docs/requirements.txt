@@ -13,7 +13,6 @@ bcrypt
 pip
 psycopg2-binary
 pydantic
-email
 pydantic-settings
 python-dateutil
 python-dotenv
