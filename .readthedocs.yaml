@@ -5,7 +5,8 @@ build:
   tools:
     python: "3.10"
   commands:
-    - pip install -r docs/requirements.txt
+    - pip install --user pipenv
+    - pipev run pip install -r docs/requirements.txt
     - ls -a
     - pwd
     - cd backend
