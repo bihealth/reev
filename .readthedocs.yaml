@@ -11,7 +11,7 @@ build:
     - cd backend
     - pwd
     - ls -a
-    - make -C ./docs clean html
+    - make -C docs clean html
     - ls -a
 
 # Build documentation in the "docs/" directory with Sphinx
