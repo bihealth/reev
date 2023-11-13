@@ -17,6 +17,13 @@ router = APIRouter()
     dependencies=[Depends(current_active_superuser)],
 )
 def test_email(email_to: EmailStr) -> Any:
-    """Send out a test email."""
+    """
+    Send out a test email.
+
+    :param email_to: email address to send the test email to
+    :type email_to: str
+    :return: message
+    :rtype: dict
+    """
     send_test_email(email_to=email_to)
     return {"msg": "Test email sent"}
