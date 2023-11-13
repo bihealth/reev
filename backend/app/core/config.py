@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     #: Project name
     PROJECT_NAME: str = "REEV"
+    #: Path to frontend build, if any.
+    SERVE_FRONTEND: str | None = ""
     #: Path to REEV version file.
     VERSION_FILE: str = "/VERSION"
     #: The REEV version from the file (``None`` if to load dynamically from git)

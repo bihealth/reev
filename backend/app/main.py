@@ -1,7 +1,9 @@
 import logging
 import pathlib
+from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import FileResponse
 
@@ -38,12 +40,29 @@ app.include_router(internal_router, prefix=settings.INTERNAL_STR, include_in_sch
 app.include_router(api_v1_router, prefix=settings.API_V1_STR)
 
 
-@app.on_event("startup")
+@asynccontextmanager
 async def create_superuser_on_startup():
     await create_superuser()
+    yield
 
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
     """Serve favicon"""
     return FileResponse(pathlib.Path(__file__).parent / "assets/favicon.ico")
+
+
+if settings.SERVE_FRONTEND:  # pragma: no cover
+    logging.info(f"serving front-end from {settings.SERVE_FRONTEND}")
+    app.mount("/assets", StaticFiles(directory=f"{settings.SERVE_FRONTEND}/assets"), name="ui")
+
+    @app.get("/")
+    async def index():
+        """Render the index.html page at the root URL"""
+        return FileResponse(f"{settings.SERVE_FRONTEND}/index.html")
+
+    @app.api_route("/{path_name:path}", methods=["GET"])
+    async def catch_all(request: Request, path_name: str):
+        """Catch-all route forwarding to frontend."""
+        _, _ = request, path_name
+        return FileResponse(f"{settings.SERVE_FRONTEND}/index.html")
