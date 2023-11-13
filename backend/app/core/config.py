@@ -26,6 +26,8 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     #: Project name
     PROJECT_NAME: str = "REEV"
+    #: Path to frontend build, if any.
+    SERVE_FRONTEND: str | None = ""
     #: Path to REEV version file.
     VERSION_FILE: str = "/VERSION"
     #: The REEV version from the file (``None`` if to load dynamically from git)
@@ -65,7 +67,7 @@ class Settings(BaseSettings):
     #: Server hostname
     SERVER_NAME: str = "localhost"
     #: HTTP to server
-    SERVER_HOST: AnyHttpUrl | str = "http://localhost:8081"
+    SERVER_HOST: AnyHttpUrl | str = "http://localhost:8080"
     #: BACKEND_CORS_ORIGINS is a JSON-formatted list of origins
     #: e.g: '["http://localhost", "http://localhost:4200", "http://localhost:3000", \
     #: "http://localhost:8080", "http://local.dockertoolbox.tiangolo.com"]'
