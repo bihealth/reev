@@ -25,6 +25,7 @@ requests = "*"
 types-requests = "*"
 greenlet = "*"
 emails = "*"
+jinja2 = "*"
 
 [dev-packages]
 aiosqlite = "*"
