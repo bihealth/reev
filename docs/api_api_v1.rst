@@ -1,13 +1,13 @@
 .. _api_api_v1:
 
 ==============
-backend.app.api.api_v1
+app.api.api_v1
 ==============
 
 .. contents::
 
 ----------------------------------
-backend.app.api.api_v1.endpoints.adminmsgs
+app.api.api_v1.endpoints.adminmsgs
 ----------------------------------
 
 .. automodule:: backend.app.api.api_v1.endpoints.adminmsgs
@@ -17,7 +17,7 @@ backend.app.api.api_v1.endpoints.adminmsgs
     :private-members:
 
 -----------------------------
-backend.app.api.api_v1.endpoints.auth
+app.api.api_v1.endpoints.auth
 -----------------------------
 
 .. automodule:: backend.app.api.api_v1.endpoints.auth
@@ -27,7 +27,7 @@ backend.app.api.api_v1.endpoints.auth
     :private-members:
 
 ----------------------------------
-backend.app.api.api_v1.endpoints.bookmarks
+app.api.api_v1.endpoints.bookmarks
 ----------------------------------
 
 .. automodule:: backend.app.api.api_v1.endpoints.bookmarks
@@ -37,7 +37,7 @@ backend.app.api.api_v1.endpoints.bookmarks
     :private-members:
 
 ---------------------------------
-backend.app.api.api_v1.endpoints.caseinfo
+app.api.api_v1.endpoints.caseinfo
 ---------------------------------
 
 .. automodule:: backend.app.api.api_v1.endpoints.caseinfo
@@ -47,7 +47,7 @@ backend.app.api.api_v1.endpoints.caseinfo
     :private-members:
 
 ------------------------------
-backend.app.api.api_v1.endpoints.utils
+app.api.api_v1.endpoints.utils
 ------------------------------
 
 .. automodule:: backend.app.api.api_v1.endpoints.utils

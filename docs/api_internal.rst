@@ -1,13 +1,13 @@
 .. _api_internal:
 
 ================
-backend.app.api.internal
+app.api.internal
 ================
 
 .. contents::
 
 ---------------------------------
-backend.app.api.internal.endpoints.remote
+app.api.internal.endpoints.remote
 ---------------------------------
 
 .. automodule:: backend.app.api.internal.endpoints.remote
