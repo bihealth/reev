@@ -30,6 +30,7 @@ async def init():
             for key in ("DATABASE_URL", "SQLALCHEMY_DATABASE_URI"):
                 if key in os.environ:
                     os.environ[key] = os.environ[key].replace("+asyncpg", "")
+
             alembicArgs = ["--raiseerr", "upgrade", "head"]
             alembic.config.main(alembicArgs)
     except Exception as e:
