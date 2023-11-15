@@ -23,15 +23,15 @@ wait_seconds = 1
 )
 async def init():
     try:
-        db = SessionLocal()
-        # Try to create session to check if DB is awake
-        await db.execute(text("SELECT 1"))
-        # Ensure to run Alembic on startup
-        for key in ("DATABASE_URL", "SQLALCHEMY_DATABASE_URI"):
-            if key in os.environ:
-                os.environ[key] = os.environ[key].replace("+asyncpg", "")
-        alembicArgs = ["--raiseerr", "upgrade", "head"]
-        alembic.config.main(alembicArgs)
+        with SessionLocal() as db:
+            # Try to create session to check if DB is awake
+            await db.execute(text("SELECT 1"))
+            # Ensure to run Alembic on startup
+            for key in ("DATABASE_URL", "SQLALCHEMY_DATABASE_URI"):
+                if key in os.environ:
+                    os.environ[key] = os.environ[key].replace("+asyncpg", "")
+            alembicArgs = ["--raiseerr", "upgrade", "head"]
+            alembic.config.main(alembicArgs)
     except Exception as e:
         logger.error(e)
         raise e
