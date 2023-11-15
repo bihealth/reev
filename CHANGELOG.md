@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.2.0](https://github.com/bihealth/reev/compare/v0.1.0...v0.2.0) (2023-11-15)
+
+
+### Features
+
+* Allow user to store case information with their account ([#94](https://github.com/bihealth/reev/issues/94), [#179](https://github.com/bihealth/reev/issues/179)) ([#178](https://github.com/bihealth/reev/issues/178)) ([3301d74](https://github.com/bihealth/reev/commit/3301d74c1e92e64fd652a41b2946d50027749bcf))
+* Allow users to bookmark variants and genes ([#95](https://github.com/bihealth/reev/issues/95)) ([#173](https://github.com/bihealth/reev/issues/173)) ([162ae13](https://github.com/bihealth/reev/commit/162ae1399726e74474d16181d7b709d2bba64bc6))
+* Case specific data functionality ([#93](https://github.com/bihealth/reev/issues/93)) ([#175](https://github.com/bihealth/reev/issues/175)) ([247d9b1](https://github.com/bihealth/reev/commit/247d9b16cb2892cc806b32e034868f6c4e370f19))
+* implement user email verification workflow ([#177](https://github.com/bihealth/reev/issues/177)) ([#184](https://github.com/bihealth/reev/issues/184)) ([27c7d98](https://github.com/bihealth/reev/commit/27c7d98eec7dccf3af114e593469001cba02da4a))
+* Integration of Matomo ([#43](https://github.com/bihealth/reev/issues/43)) ([#180](https://github.com/bihealth/reev/issues/180)) ([0bf5869](https://github.com/bihealth/reev/commit/0bf5869dc72670869f183d860aed8512ff3a05bf))
+* Switch to vuetify cards for ui ([#165](https://github.com/bihealth/reev/issues/165)) ([#171](https://github.com/bihealth/reev/issues/171)) ([a7e2853](https://github.com/bihealth/reev/commit/a7e285314bf0e9d9a1195c37527e9501d6628155))
+* towards complete integration of OrcID setup ([#96](https://github.com/bihealth/reev/issues/96)) ([#176](https://github.com/bihealth/reev/issues/176)) ([3bef5e9](https://github.com/bihealth/reev/commit/3bef5e9622dab2f363d016dbc1ccb526e77b9ff5))
+* Update Info in About ([#209](https://github.com/bihealth/reev/issues/209)) ([#210](https://github.com/bihealth/reev/issues/210)) ([0ff3d21](https://github.com/bihealth/reev/commit/0ff3d212c95dfbd5ee35cbcf7c13fd6100a59fea))
+
+
+### Bug Fixes
+
+* Allow dynamically load components ([#181](https://github.com/bihealth/reev/issues/181)) ([#192](https://github.com/bihealth/reev/issues/192)) ([15c6007](https://github.com/bihealth/reev/commit/15c60077e70a1e83070d85251ec1d026d1bfd894))
+* Close db connection on startup ([#205](https://github.com/bihealth/reev/issues/205)) ([#211](https://github.com/bihealth/reev/issues/211)) ([e8ed6be](https://github.com/bihealth/reev/commit/e8ed6be667379ae95d948d25845a9a28ecb5ec05))
+* Close db connection on startup ([#205](https://github.com/bihealth/reev/issues/205)) ([#212](https://github.com/bihealth/reev/issues/212)) ([1c2b913](https://github.com/bihealth/reev/commit/1c2b913313ab413fb521462a3aa1b529b59112da))
+* Docker build ([#191](https://github.com/bihealth/reev/issues/191)) ([2d8a218](https://github.com/bihealth/reev/commit/2d8a218b0f5bdc830ee210fc14c852bef7f4415b))
+* Docs are rendered properly ([#201](https://github.com/bihealth/reev/issues/201)) ([#202](https://github.com/bihealth/reev/issues/202)) ([2119aa6](https://github.com/bihealth/reev/commit/2119aa65b09e92b5760f96309ddcfe8fc77a8e8a))
+* Documentation of APIs ([#201](https://github.com/bihealth/reev/issues/201)) ([#206](https://github.com/bihealth/reev/issues/206)) ([fe56f4a](https://github.com/bihealth/reev/commit/fe56f4a00941aed2eb1c10cf618cc66dfe939771))
+* Fix documentation in production ([#201](https://github.com/bihealth/reev/issues/201)) ([#207](https://github.com/bihealth/reev/issues/207)) ([6973d0e](https://github.com/bihealth/reev/commit/6973d0ecf474031c8abe058bd0ca58c9dcc7d377))
+* Jinja2 in PIpfile ([#204](https://github.com/bihealth/reev/issues/204)) ([e97a151](https://github.com/bihealth/reev/commit/e97a151a38c8d908f4de717e0f199f0d52a033d7))
+* Matomo records  ([#187](https://github.com/bihealth/reev/issues/187)) ([69ca50c](https://github.com/bihealth/reev/commit/69ca50c705964fd614332bc912202bb25f12dc4d))
+* Path in docs ([#208](https://github.com/bihealth/reev/issues/208)) ([c12088c](https://github.com/bihealth/reev/commit/c12088c3b9cebe5b6d018a9c3f912e512552f9d7))
+* Proper matomo url ([#183](https://github.com/bihealth/reev/issues/183)) ([#186](https://github.com/bihealth/reev/issues/186)) ([9de2ffd](https://github.com/bihealth/reev/commit/9de2ffd477a4a1caa48a00fe1f0916a4fe157515))
+* Rebuild docker container ([#198](https://github.com/bihealth/reev/issues/198)) ([6003f45](https://github.com/bihealth/reev/commit/6003f45f5d61cdbff610cf85a32e8c9518d9ca10))
+* vue-matomo module declaration ([#182](https://github.com/bihealth/reev/issues/182)) ([21f292f](https://github.com/bihealth/reev/commit/21f292fe5d135bc86023814ad19fab1b92c2da96))
+
+
+### Documentation
+
+* Add documentation for caseinfo and utils ([#199](https://github.com/bihealth/reev/issues/199)) ([#200](https://github.com/bihealth/reev/issues/200)) ([187cba8](https://github.com/bihealth/reev/commit/187cba8e82e1435993029fee4555bd6ba840fdd2))
+* collect information for seqvar assessment in manual ([#188](https://github.com/bihealth/reev/issues/188)) ([#189](https://github.com/bihealth/reev/issues/189)) ([4db354a](https://github.com/bihealth/reev/commit/4db354a8d7202f67ed0ebec1d2c1a52c10ed4a19))
+* document database and rule sets for ACMG prediction ([#190](https://github.com/bihealth/reev/issues/190)) ([#193](https://github.com/bihealth/reev/issues/193)) ([cae06de](https://github.com/bihealth/reev/commit/cae06de441b3de4eb32d334eb20cb007751c5dde))
+* explaining implementation of ACMG 2020 CNV assessment ([#195](https://github.com/bihealth/reev/issues/195)) ([#196](https://github.com/bihealth/reev/issues/196)) ([a8f2f21](https://github.com/bihealth/reev/commit/a8f2f216b95d0f8eb363b1f828a1a2839a59f91d))
+
 ## [0.1.0](https://github.com/bihealth/reev/compare/v0.0.0...v0.1.0) (2023-10-19)
 
 
