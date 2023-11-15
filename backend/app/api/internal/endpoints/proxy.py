@@ -13,7 +13,20 @@ router = APIRouter()
 @router.get("/{path:path}")
 @router.post("/{path:path}")
 async def reverse_proxy(request: Request) -> Response:
-    """Implement reverse proxy for internal backend services."""
+    """
+    Reverse proxy to internal services.
+    Supported services:
+    - AnnoNARS
+    - MeHARI
+    - Viguno
+    - NGINX
+    - Dotty
+
+    :param request: request
+    :type request: :class:`fastapi.Request`
+    :return: response
+    :rtype: :class:`fastapi.Response`
+    """
     url = request.url
     backend_url = None
 

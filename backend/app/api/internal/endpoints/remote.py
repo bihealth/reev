@@ -72,7 +72,17 @@ router = APIRouter()
 
 @router.get("/variantvalidator/{path:path}")
 async def variantvalidator(request: Request, path: str):
-    """Implement reverse proxy for variantvalidator.org."""
+    """
+    Implement VariantValidator API. Proxy requests to the
+    `VariantValidator <https://rest.variantvalidator.org/>`_ backend.
+
+    :param request: request
+    :type request: :class:`fastapi.Request`
+    :param path: path to append to the backend URL
+    :type path: str
+    :return: response
+    :rtype: :class:`fastapi.responses.StreamingResponse`
+    """
     url = request.url
 
     # change grch to GRCh and strip "chr" prefixes
@@ -97,7 +107,15 @@ async def variantvalidator(request: Request, path: str):
 
 @router.get("/acmg/{path:path}")
 async def acmg(request: Request):
-    """Implement searching for ACMG classification."""
+    """
+    Implement searching for ACMG classification for SNVs and indels.
+    Proxy requests to the `WinterVar <http://wintervar.wglab.org/>`_ backend.
+
+    :param request: request
+    :type request: :class:`fastapi.Request`
+    :return: ACMG classification
+    :rtype: dict
+    """
     query_params = request.query_params
     chromosome = query_params.get("chromosome")
     position = query_params.get("position")
@@ -128,7 +146,15 @@ async def acmg(request: Request):
 
 @router.get("/cnv/acmg/{path:path}")
 async def cnv_acmg(request: Request):
-    """Implement searching for ACMG classification for CNVs."""
+    """
+    Implement searching for ACMG classification for CNVs.
+    Proxy requests to the `WinterVar <http://wintervar.wglab.org/>`_ backend.
+
+    :param request: request
+    :type request: :class:`fastapi.Request`
+    :return: ACMG classification
+    :rtype: dict
+    """
     query_params = request.query_params
     chromosome = query_params.get("chromosome")
     start = query_params.get("start")

@@ -48,9 +48,20 @@ BASE_SCOPES = ["openid", "/read-limited"]
 
 
 class OrcidOpenId(OpenID):
-    """Custom OrcID OpenID client that fetches the user's email from the OrcID API.
-
+    """
+    Custom OrcID OpenID client that fetches the user's email from the OrcID API.
     Note that users must have given access to their email address for "trusted parties".
+
+    :param client_id: client ID
+    :type client_id: str
+    :param client_secret: client secret
+    :type client_secret: str
+    :param openid_configuration_endpoint: OpenID configuration endpoint
+    :type openid_configuration_endpoint: str
+    :param name: name of the provider
+    :type name: str
+    :param base_scopes: base scopes
+    :type base_scopes: list, optional
     """
 
     def __init__(
