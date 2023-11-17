@@ -69,13 +69,15 @@ watch(() => props.searchTerm, updateTerms)
     />
     <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
-      <v-dialog max-width="600">
+      <v-dialog scrollable width="auto" location="top">
         <template v-slot:activator="{ props }">
           <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="props">
             Show Case Information
           </v-btn>
         </template>
-        <CaseInformationCard />
+        <v-card>
+          <CaseInformationCard />
+        </v-card>
       </v-dialog>
 
       <UserProfileButton />

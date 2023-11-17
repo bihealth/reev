@@ -68,10 +68,8 @@ const zygosityOptions = computed(() => {
 
 const loadDataToStore = async () => {
   await caseStore.loadCase()
-  console.log(caseStore.caseInfo)
   if (caseStore.caseInfo.hpoTerms.length > 0) {
     const hpoTermsList: string[] = caseStore.caseInfo.hpoTerms.map((term) => term.term_id)
-    console.log(hpoTermsList)
     await cadaPrioStore.loadData(hpoTermsList)
   }
 }
