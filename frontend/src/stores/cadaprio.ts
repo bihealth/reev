@@ -1,6 +1,6 @@
 /**
  * Store for genes ranking from cada-prio.
- * 
+ *
  * This includes the data retrieved from the APIs.
  */
 import { defineStore } from 'pinia'
@@ -10,11 +10,11 @@ import { CadaPrioClient } from '@/api/cadaprio'
 import { StoreState } from '@/stores/misc'
 
 export interface GeneRank {
-  "rank": number,
-  "score": number,
-  "gene_symbol": string,
-  "ncbi_gene_id": number,
-  "hgnc_id": number,
+  rank: number
+  score: number
+  gene_symbol: string
+  ncbi_gene_id: number
+  hgnc_id: number
 }
 
 export const useCadaPrioStore = defineStore('cadaPrio', () => {
@@ -56,4 +56,3 @@ export const useCadaPrioStore = defineStore('cadaPrio', () => {
     loadData
   }
 })
-
