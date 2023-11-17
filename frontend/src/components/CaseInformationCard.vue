@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import _ from 'lodash'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import {
   Ethnicity,
@@ -13,11 +13,14 @@ import {
   ethinicityLabels,
   useCaseStore
 } from '@/stores/case'
+import { useCadaPrioStore } from '@/stores/cadaprio'
 import { StoreState } from '@/stores/misc'
 import { useTermsStore } from '@/stores/terms'
 
 const caseStore = useCaseStore()
 const termsStore = useTermsStore()
+const cadaPrioStore = useCadaPrioStore()
+const cadaPrioRankingFields = ["Rank", "Score", "Gene Symbol", "NCBI gene id", "HGNC id"]
 
 const form = ref(null)
 
@@ -59,6 +62,10 @@ const zygosityOptions = computed(() => {
 
 const loadDataToStore = async () => {
   await caseStore.loadCase()
+  if (caseStore.caseInfo.hpoTerms.length > 0) {
+    const hpoTermsList: string[] = caseStore.caseInfo.hpoTerms.map(term => term.term_id);
+    await cadaPrioStore.loadData(hpoTermsList)
+  }
 }
 
 const saveChanges = () => {
@@ -108,11 +115,22 @@ const debouncedOmimFetchTerms = _.debounce(async (query: string) => {
 onMounted(async () => {
   loadDataToStore()
 })
+
+watch(() => caseStore.caseInfo.hpoTerms,
+  async () => {
+    if (caseStore.caseInfo.hpoTerms.length > 0) {
+      const hpoTermsList: string[] = caseStore.caseInfo.hpoTerms.map(term => term.term_id);
+      await cadaPrioStore.loadData(hpoTermsList)
+    }
+  }
+)
 </script>
 
 <template>
   <div v-if="caseStore.storeState === StoreState.Active">
     <v-card class="case-card">
+      <v-row no-gutters>
+        <v-col>
       <v-card-title>Case Information</v-card-title>
       <v-card-text>
         <v-form ref="form">
@@ -232,6 +250,21 @@ onMounted(async () => {
           >
         </v-form>
       </v-card-text>
+      </v-col>
+
+      <v-col v-if="cadaPrioStore.geneRanking">
+        <v-card-title>Cada-prio gene Ranking:</v-card-title>
+        <v-card-text>
+          <!-- Gene Ranking -->
+          <v-data-table
+            :headers="cadaPrioRankingFields as any"
+            :items="cadaPrioStore.geneRanking"
+            :items-per-page="10"
+            class="elevation-1"
+          />
+        </v-card-text>
+      </v-col>
+    </v-row>
     </v-card>
   </div>
   <div v-else-if="caseStore.storeState === StoreState.Loading">
