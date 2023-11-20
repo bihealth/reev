@@ -100,7 +100,7 @@ async def test_proxy_cada_prio(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, 
     response = client.get(f"/internal/proxy/cada-prio/{MOCKED_URL_TOKEN}")
     assert response.status_code == 200
     assert response.text == "Mocked response"
-    
+
 
 @pytest.mark.asyncio
 async def test_invalid_proxy_route(client: TestClient):
