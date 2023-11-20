@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest'
 import {
   API_INTERNAL_BASE_PREFIX,
   API_INTERNAL_BASE_PREFIX_ANNONARS,
+  API_INTERNAL_BASE_PREFIX_CADA_PRIO,
   API_INTERNAL_BASE_PREFIX_MEHARI,
   API_INTERNAL_BASE_PREFIX_NGINX
 } from '@/api/common'
@@ -29,6 +30,12 @@ describe.concurrent('API_BASE_PREFIX constants', () => {
   it('returns the correct API base prefix for nginx in production mode', () => {
     const originalMode = import.meta.env.MODE
     expect(API_INTERNAL_BASE_PREFIX_NGINX).toBe('/internal/proxy/nginx')
+    import.meta.env.MODE = originalMode
+  })
+
+  it('returns the correct API base prefix for cada-prio in production mode', () => {
+    const originalMode = import.meta.env.MODE
+    expect(API_INTERNAL_BASE_PREFIX_CADA_PRIO).toBe('/internal/proxy/cada-prio')
     import.meta.env.MODE = originalMode
   })
 })
