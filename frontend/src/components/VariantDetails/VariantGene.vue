@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+
+const CadaPrioRanking = defineAsyncComponent(
+  () => import('@/components/GeneDetails/CadaPrioRanking.vue')
+)
 export interface Props {
   /** Gene information from annonars. */
   gene: any
@@ -53,6 +58,8 @@ withDefaults(defineProps<Props>(), {
       </div>
     </v-card-text>
   </v-card>
+
+  <CadaPrioRanking />
 </template>
 
 <style scoped="true">

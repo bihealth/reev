@@ -2,6 +2,7 @@
 import _ from 'lodash'
 import { computed, onMounted, ref, watch } from 'vue'
 
+import { roundIt } from '@/lib/utils'
 import { useCadaPrioStore } from '@/stores/cadaprio'
 import {
   Ethnicity,
@@ -21,11 +22,9 @@ const caseStore = useCaseStore()
 const termsStore = useTermsStore()
 const cadaPrioStore = useCadaPrioStore()
 const cadaPrioRankingFields = ref([
-  { title: 'Rank', key: 'rank' },
-  { title: 'Score', key: 'score' },
+  { title: '#', key: 'rank' },
   { title: 'Gene Symbol', key: 'gene_symbol' },
-  { title: 'NCBI Gene ID', key: 'ncbi_gene_id' },
-  { title: 'HGNC ID', key: 'hgnc_id' }
+  { title: 'Score', key: 'score' }
 ])
 
 const form = ref(null)
@@ -266,7 +265,24 @@ watch(
               :headers="cadaPrioRankingFields as any"
               :items="cadaPrioStore.geneRanking"
               :items-per-page="10"
-            />
+              density="compact"
+            >
+              <template v-slot:[`item.gene_symbol`]="{ item }">
+                <router-link
+                  :to="{
+                    name: 'gene',
+                    params: { searchTerm: item.hgnc_id, genomeRelease: 'grch38' }
+                  }"
+                  target="_blank"
+                >
+                  {{ item.gene_symbol }}
+                </router-link>
+              </template>
+
+              <template v-slot:[`item.score`]="{ item }">
+                <span v-html="roundIt(item.score, 2)" />
+              </template>
+            </v-data-table>
           </v-card-text>
         </v-col>
       </v-row>
