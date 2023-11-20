@@ -13,6 +13,12 @@ describe.concurrent('CaseInformationCard.vue', () => {
         initialStoreState: {
           case: {
             storeState: StoreState.Active
+          },
+          terms: {
+            storeState: StoreState.Active
+          },
+          cadaPrio: {
+            storeState: StoreState.Active
           }
         }
       }

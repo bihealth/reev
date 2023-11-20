@@ -40,9 +40,12 @@ describe.concurrent('User Store', () => {
     expect(store.bookmarks).toEqual(mockBookmarks)
   })
 
-  it.skip('should handle error when loading bookmarks', async () => {
+  it('should handle error when loading bookmarks', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
     const store = useBookmarksStore()
-    fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
+    fetchMocker.mockReject(new Error('Internal Server Error'))
 
     await store.loadBookmarks()
 
@@ -60,9 +63,12 @@ describe.concurrent('User Store', () => {
     expect(store.bookmarks).toStrictEqual({})
   })
 
-  it.skip('should handle error when deleting bookmark', async () => {
+  it('should handle error when deleting bookmark', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
     const store = useBookmarksStore()
-    fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
+    fetchMocker.mockReject(new Error('Internal Server Error'))
 
     await store.deleteBookmark('seqvar', 'HGNC:1100')
 
@@ -80,9 +86,12 @@ describe.concurrent('User Store', () => {
     expect(store.bookmarks).toStrictEqual({ bookmark: 'created' })
   })
 
-  it.skip('should handle error when creating bookmark', async () => {
+  it('should handle error when creating bookmark', async () => {
+    // Disable error logging
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+
     const store = useBookmarksStore()
-    fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
+    fetchMocker.mockReject(new Error('Internal Server Error'))
 
     await store.createBookmark('seqvar', 'HGNC:1100')
 

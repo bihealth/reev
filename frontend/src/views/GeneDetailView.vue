@@ -22,6 +22,9 @@ const ConstraintsCard = defineAsyncComponent(
 const DiseaseAnnotation = defineAsyncComponent(
   () => import('@/components/GeneDetails/DiseaseAnnotation.vue')
 )
+const CadaPrioRanking = defineAsyncComponent(
+  () => import('@/components/GeneDetails/CadaPrioRanking.vue')
+)
 const ExternalResouces = defineAsyncComponent(
   () => import('@/components/GeneDetails/ExternalResources.vue')
 )
@@ -96,6 +99,7 @@ const SECTIONS = [
   { id: 'alternative-identifiers', title: 'Alternative Identifiers' },
   { id: 'external-resources', title: 'External Resources' },
   { id: 'disease-annotation', title: 'Disease Annotation' },
+  { id: 'gene-ranking', title: 'Gene Ranking for current Phenotype' },
   { id: 'acmg-list', title: 'ACMG Supplementary Findings List' },
   { id: 'gene-rifs', title: 'Gene RIFs' },
   { id: 'locus-specific-databases', title: 'Locus-Specific Databases' },
@@ -164,6 +168,10 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
         <div id="disease-annotation" class="gene-item">
           <DiseaseAnnotation :dbnsfp="geneInfoStore.geneInfo.dbnsfp" />
+        </div>
+
+        <div id="gene-ranking" class="gene-item">
+          <CadaPrioRanking />
         </div>
 
         <div id="acmg-list" class="gene-item">

@@ -88,6 +88,21 @@ async def test_proxy_dotty(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, clie
 
 
 @pytest.mark.asyncio
+async def test_proxy_cada_prio(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
+    """Test proxying to cada-prio backend."""
+    monkeypatch.setattr(settings, "BACKEND_PREFIX_CADA_PRIO", f"http://{MOCKED_BACKEND_HOST}")
+    httpx_mock.add_response(
+        url=f"http://{MOCKED_BACKEND_HOST}/{MOCKED_URL_TOKEN}",
+        method="GET",
+        text="Mocked response",
+    )
+
+    response = client.get(f"/internal/proxy/cada-prio/{MOCKED_URL_TOKEN}")
+    assert response.status_code == 200
+    assert response.text == "Mocked response"
+
+
+@pytest.mark.asyncio
 async def test_invalid_proxy_route(client: TestClient):
     """Test invalid proxy route."""
     response = client.get("/internal/proxy/some-other-path")
