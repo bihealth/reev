@@ -109,7 +109,7 @@ def test_user(db_session: AsyncSession, request) -> User | None:
 
 
 @pytest.fixture()
-def client_user(test_user, request):
+def client_user(test_user: User, request):
     """Create a test client with a test user.
 
     Special handling for ``request.param``:

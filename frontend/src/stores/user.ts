@@ -8,12 +8,20 @@ import { AuthClient, type OAuth2Provider } from '@/api/auth'
 import { UnauthenticatedError, UsersClient } from '@/api/users'
 import { StoreState } from '@/stores/misc'
 
+export interface OAuthAccount {
+  id: string
+  oauth_name: string
+  account_id: string
+  account_email: string
+}
+
 export interface UserData {
   id: string
   email: string
   is_active: boolean
   is_superuser: boolean
   is_verified: boolean
+  oauth_accounts: OAuthAccount[]
 }
 
 export const useUserStore = defineStore('user', () => {

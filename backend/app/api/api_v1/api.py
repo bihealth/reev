@@ -126,6 +126,7 @@ for config in settings.OAUTH2_PROVIDERS:
             client_secret=config.client_secret,
             openid_configuration_endpoint=str(config.config_url),
         )
+    # Add route for authentication via OAuth2 endpoint.
     oauth_router = fastapi_users.get_oauth_router(
         oauth_client=oauth_client,
         backend=auth_backend_cookie,
@@ -134,5 +135,16 @@ for config in settings.OAUTH2_PROVIDERS:
     api_router.include_router(
         oauth_router,
         prefix=f"/auth/external/cookie/{config.name}",
+        tags=["auth"],
+    )
+    # Add route for associating OAuth2 account with existing user.
+    oauth_associate_router = fastapi_users.get_oauth_associate_router(
+        oauth_client=oauth_client,
+        user_schema=UserRead,
+        state_secret=settings.SECRET_KEY,
+    )
+    api_router.include_router(
+        oauth_associate_router,
+        prefix=f"/auth/external/associate/cookie/{config.name}",
         tags=["auth"],
     )
