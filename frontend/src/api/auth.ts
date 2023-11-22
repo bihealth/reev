@@ -65,6 +65,19 @@ export class AuthClient {
     return response_json.authorization_url
   }
 
+  async fetchOAuth2AssociateUrl(
+    provider: OAuth2Provider,
+    redirectTo?: string | null
+  ): Promise<string> {
+    let url = `${this.apiBaseUrl}auth/external/associate/cookie/${provider.name}/authorize`
+    if (redirectTo) {
+      url += `?redirect_to=${encodeURIComponent(redirectTo)}`
+    }
+    const response = await fetch(url, { method: 'GET' })
+    const response_json: OAuth2LoginUrlResponse = await response.json()
+    return response_json.authorization_url
+  }
+
   /**
    * Request verification token from the given email address.
    *
