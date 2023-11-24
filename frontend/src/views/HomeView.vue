@@ -51,8 +51,8 @@ const examples: Example[] = [
     label: 'genomic specification of a deletion',
     genomeRelease: 'grch37'
   },
-  { query: 'chrMT:8993:T:G', label: 'mitochondrial variants', genomeRelease: 'grch38' },
-  { query: 'chrMT:15172:G:A', genomeRelease: 'grch38' }
+  { query: 'chrMT:8993:T:G', label: 'mitochondrial variants', genomeRelease: 'grch37' },
+  { query: 'chrMT:15172:G:A', genomeRelease: 'grch37' }
 ]
 
 const performExampleSearch = (example: Example) => {

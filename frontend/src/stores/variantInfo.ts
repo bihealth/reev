@@ -79,7 +79,6 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
         reference,
         alternative
       )
-      console.log('variantData', variantData)
       varAnnos.value = variantData.result
 
       const txCsqData = await mehariClient.retrieveSeqvarsCsq(
