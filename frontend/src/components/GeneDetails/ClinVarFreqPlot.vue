@@ -3,10 +3,10 @@ import { computed } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
 
-const coarseClinsigLabels: {[key: string]: string} = {
+const coarseClinsigLabels: { [key: string]: string } = {
   COARSE_CLINICAL_SIGNIFICANCE_BENIGN: 'benign',
   COARSE_CLINICAL_SIGNIFICANCE_UNCERTAIN: 'uncertain',
-  COARSE_CLINICAL_SIGNIFICANCE_PATHOGENIC: 'pathogenic',
+  COARSE_CLINICAL_SIGNIFICANCE_PATHOGENIC: 'pathogenic'
 }
 
 const bucketLabels = [

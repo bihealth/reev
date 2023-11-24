@@ -85,7 +85,10 @@ const routes = [
   {
     path: '/genes/search',
     name: 'genes',
-    component: GenesListView
+    component: GenesListView,
+    props: (route: any) => {
+      return { genomeRelease: route.params.genomeRelease }
+    }
   },
   {
     path: '/acmg-docs',

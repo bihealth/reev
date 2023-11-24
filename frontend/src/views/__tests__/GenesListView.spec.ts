@@ -97,18 +97,18 @@ describe.concurrent('GenesListView', async () => {
     const header = wrapper.findComponent(HeaderDetailPage)
     expect(header.exists()).toBe(true)
     await header.setValue('HGNC:1100', 'searchTermRef')
-    await header.setValue('grch37', 'genomeReleaseRef')
+    await header.setValue('grch38', 'genomeReleaseRef')
     expect(header.emitted()).toHaveProperty('update:searchTermRef')
     expect(header.emitted()).toHaveProperty('update:genomeReleaseRef')
-    expect(header.vm.$props).toStrictEqual({ searchTerm: 'undefined', genomeRelease: 'grch37' })
+    expect(header.vm.$props).toStrictEqual({ searchTerm: 'undefined', genomeRelease: 'grch38' })
 
     const searchBar = wrapper.findComponent(SearchBar)
     expect(searchBar.exists()).toBe(true)
     await searchBar.setValue('HGNC:1100', 'searchTerm')
-    await searchBar.setValue('grch37', 'genomeRelease')
+    await searchBar.setValue('grch38', 'genomeRelease')
     expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
     expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
-    expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch37' })
+    expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch38' })
   })
 
   it('uses example by click', async () => {
@@ -226,7 +226,7 @@ describe.concurrent('GenesListView', async () => {
     expect(router.replace).toHaveBeenCalled()
     expect(router.replace).toHaveBeenCalledWith({
       name: 'gene',
-      params: { searchTerm: 'HGNC:3333', genomeRelease: 'grch37' }
+      params: { searchTerm: 'HGNC:3333', genomeRelease: 'grch38' }
     })
   })
 })

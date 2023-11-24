@@ -54,9 +54,8 @@ const tissueLabels: { [key: string]: string } = {
   GTEX_TISSUE_TESTIS: 'Testis',
   GTEX_TISSUE_THYROID: 'Thyroid',
   GTEX_TISSUE_UTERUS: 'Uterus',
-  GTEX_TISSUE_VAGINA: 'Vagina',
+  GTEX_TISSUE_VAGINA: 'Vagina'
 }
-
 
 const tissueDetailedLabels: { [key: string]: string } = {
   GTEX_TISSUE_DETAILED_UNKNOWN: 'Unknown',
@@ -68,36 +67,27 @@ const tissueDetailedLabels: { [key: string]: string } = {
   GTEX_TISSUE_DETAILED_ARTERY_TIBIAL: 'Artery - Tibial',
   GTEX_TISSUE_DETAILED_BLADDER: 'Bladder',
   GTEX_TISSUE_DETAILED_BRAIN_AMYGDALA: 'Brain - Amygdala',
-  GTEX_TISSUE_DETAILED_BRAIN_ANTERIOR_CINGULATE_CORTEX:
-    'Brain - Anterior cingulate cortex (BA24)',
-  GTEX_TISSUE_DETAILED_BRAIN_CAUDATE_BASAL_GANGLIA:
-    'Brain - Caudate (basal ganglia)',
-  GTEX_TISSUE_DETAILED_BRAIN_CEREBELLAR_HEMISPHERE:
-    'Brain - Cerebellar Hemisphere',
+  GTEX_TISSUE_DETAILED_BRAIN_ANTERIOR_CINGULATE_CORTEX: 'Brain - Anterior cingulate cortex (BA24)',
+  GTEX_TISSUE_DETAILED_BRAIN_CAUDATE_BASAL_GANGLIA: 'Brain - Caudate (basal ganglia)',
+  GTEX_TISSUE_DETAILED_BRAIN_CEREBELLAR_HEMISPHERE: 'Brain - Cerebellar Hemisphere',
   GTEX_TISSUE_DETAILED_BRAIN_CEREBELLUM: 'Brain - Cerebellum',
   GTEX_TISSUE_DETAILED_BRAIN_CORTEX: 'Brain - Cortex',
   GTEX_TISSUE_DETAILED_BRAIN_FRONTAL_CORTEX: 'Brain - Frontal Cortex (BA9)',
   GTEX_TISSUE_DETAILED_BRAIN_HIPPOCAMPUS: 'Brain - Hippocampus',
   GTEX_TISSUE_DETAILED_BRAIN_HYPOTHALAMUS: 'Brain - Hypothalamus',
-  GTEX_TISSUE_DETAILED_BRAIN_NUCLEUS_ACCUMBENS:
-    'Brain - Nucleus accumbens (basal ganglia)',
-  GTEX_TISSUE_DETAILED_BRAIN_PUTAMEN_BASAL_GANGLIA:
-    'Brain - Putamen (basal ganglia)',
+  GTEX_TISSUE_DETAILED_BRAIN_NUCLEUS_ACCUMBENS: 'Brain - Nucleus accumbens (basal ganglia)',
+  GTEX_TISSUE_DETAILED_BRAIN_PUTAMEN_BASAL_GANGLIA: 'Brain - Putamen (basal ganglia)',
   GTEX_TISSUE_DETAILED_BRAIN_SPINAL_CORD: 'Brain - Spinal cord (cervical c-1)',
   GTEX_TISSUE_DETAILED_BRAIN_SUBSTANTIA_NIGRA: 'Brain - Substantia nigra',
   GTEX_TISSUE_DETAILED_BREAST_MAMMARY_TISSUE: 'Breast - Mammary Tissue',
-  GTEX_TISSUE_DETAILED_CELLS_CULTURED_FIBROBLASTS:
-    'Cells - Cultured fibroblasts',
-  GTEX_TISSUE_DETAILED_CELLS_EBV_TRANSFORMED_LYMPHOCYTES:
-    'Cells - EBV-transformed lymphocytes',
-  GTEX_TISSUE_DETAILED_CELLS_LEUKEMIA_CELL_LINE:
-    'Cells - Leukemia cell line (CML)',
+  GTEX_TISSUE_DETAILED_CELLS_CULTURED_FIBROBLASTS: 'Cells - Cultured fibroblasts',
+  GTEX_TISSUE_DETAILED_CELLS_EBV_TRANSFORMED_LYMPHOCYTES: 'Cells - EBV-transformed lymphocytes',
+  GTEX_TISSUE_DETAILED_CELLS_LEUKEMIA_CELL_LINE: 'Cells - Leukemia cell line (CML)',
   GTEX_TISSUE_DETAILED_CERVIX_ECTOCERVIX: 'Cervix - Ectocervix',
   GTEX_TISSUE_DETAILED_CERVIX_ENDOCERVIX: 'Cervix - Endocervix',
   GTEX_TISSUE_DETAILED_COLON_SIGMOID: 'Colon - Sigmoid',
   GTEX_TISSUE_DETAILED_COLON_TRANSVERSE: 'Colon - Transverse',
-  GTEX_TISSUE_DETAILED_ESOPHAGUS_GASTROESOPHAGEAL_JUNCTION:
-    'Esophagus - Gastroesophageal Junction',
+  GTEX_TISSUE_DETAILED_ESOPHAGUS_GASTROESOPHAGEAL_JUNCTION: 'Esophagus - Gastroesophageal Junction',
   GTEX_TISSUE_DETAILED_ESOPHAGUS_MUCOSA: 'Esophagus - Mucosa',
   GTEX_TISSUE_DETAILED_ESOPHAGUS_MUSCULARIS: 'Esophagus - Muscularis',
   GTEX_TISSUE_DETAILED_FALLOPIAN_TUBE: 'Fallopian Tube',
@@ -115,19 +105,16 @@ const tissueDetailedLabels: { [key: string]: string } = {
   GTEX_TISSUE_DETAILED_PITUITARY: 'Pituitary',
   GTEX_TISSUE_DETAILED_PROSTATE: 'Prostate',
   GTEX_TISSUE_DETAILED_SALIVARY_GLAND: 'Salivary Gland',
-  GTEX_TISSUE_DETAILED_SKIN_NOT_SUN_EXPOSED_SUPRAPUBIC:
-    'Skin - Not Sun Exposed (Suprapubic)',
-  GTEX_TISSUE_DETAILED_SKIN_SUN_EXPOSED_LOWER_LEG:
-    'Skin - Sun Exposed (Lower leg)',
-  GTEX_TISSUE_DETAILED_SMALL_INTESTINE_TERMINAL_ILEUM:
-    'Small Intestine - Terminal Ileum',
+  GTEX_TISSUE_DETAILED_SKIN_NOT_SUN_EXPOSED_SUPRAPUBIC: 'Skin - Not Sun Exposed (Suprapubic)',
+  GTEX_TISSUE_DETAILED_SKIN_SUN_EXPOSED_LOWER_LEG: 'Skin - Sun Exposed (Lower leg)',
+  GTEX_TISSUE_DETAILED_SMALL_INTESTINE_TERMINAL_ILEUM: 'Small Intestine - Terminal Ileum',
   GTEX_TISSUE_DETAILED_SPLEEN: 'Spleen',
   GTEX_TISSUE_DETAILED_STOMACH: 'Stomach',
   GTEX_TISSUE_DETAILED_TESTIS: 'Testis',
   GTEX_TISSUE_DETAILED_THYROID: 'Thyroid',
   GTEX_TISSUE_DETAILED_UTERUS: 'Uterus',
   GTEX_TISSUE_DETAILED_VAGINA: 'Vagina',
-  GTEX_TISSUE_DETAILED_WHOLE_BLOOD: 'Whole Blood',
+  GTEX_TISSUE_DETAILED_WHOLE_BLOOD: 'Whole Blood'
 }
 
 const vegaData = computed(() => {

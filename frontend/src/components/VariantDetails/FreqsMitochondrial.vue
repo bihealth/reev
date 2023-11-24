@@ -57,7 +57,12 @@ const gnomadMtDna = computed(() => {
           <td class="text-right">{{ sep(gnomadMtDna?.acHom ?? 0) }}</td>
           <td
             class="text-right"
-            v-html="roundIt(((gnomadMtDna?.acHet ?? 0 )+ (gnomadMtDna?.acHom ?? 0)) / (gnomadMtDna?.an ?? 0), 4)"
+            v-html="
+              roundIt(
+                ((gnomadMtDna?.acHet ?? 0) + (gnomadMtDna?.acHom ?? 0)) / (gnomadMtDna?.an ?? 0),
+                4
+              )
+            "
           />
         </tr>
         <tr>
@@ -70,7 +75,12 @@ const gnomadMtDna = computed(() => {
           <td class="text-right">{{ sep(helixMtDb?.numHom ?? 0) }}</td>
           <td
             class="text-right"
-            v-html="roundIt(((helixMtDb?.numHet ?? 0) + (helixMtDb?.numHom ?? 0)) / (helixMtDb?.numTotal ?? 0), 4)"
+            v-html="
+              roundIt(
+                ((helixMtDb?.numHet ?? 0) + (helixMtDb?.numHom ?? 0)) / (helixMtDb?.numTotal ?? 0),
+                4
+              )
+            "
           />
         </tr>
       </tbody>

@@ -9,25 +9,25 @@ const props = withDefaults(defineProps<Props>(), {
   geneClinvar: null
 })
 
-const variantImpactLabels: {[key: string]: string} = {
-    IMPACT_UNKNOWN: "unknown",
-    IMPACT_THREE_PRIME_UTR_VARIANT: "3' UTR",
-    IMPACT_FIVE_PRIME_UTR_VARIANT: "5' UTR",
-    IMPACT_DOWNSTREAM_TRANSCRIPT_VARIANT: "downstream",
-    IMPACT_FRAMESHIFT_VARIANT: "frameshift",
-    IMPACT_INFRAME_INDEL: "inframe indel",
-    IMPACT_START_LOST: "start lost",
-    IMPACT_INTRON_VARIANT: "intronic",
-    IMPACT_MISSENSE_VARIANT: "missense",
-    IMPACT_NON_CODING_TRANSCRIPT_VARIANT: "non-coding",
-    IMPACT_STOP_GAINED: "stop gained",
-    IMPACT_NO_SEQUENCE_ALTERATION: "synonymous",
-    IMPACT_SPLICE_ACCEPTOR_VARIANT: "spl. acceptor",
-    IMPACT_SPLICE_DONOR_VARIANT: "spl. donor",
-    IMPACT_STOP_LOST: "stop lost",
-    IMPACT_SYNONYMOUS_VARIANT: "synonymous",
-    IMPACT_UPSTREAM_TRANSCRIPT_VARIANT: "upstream",
-    total: "total",
+const variantImpactLabels: { [key: string]: string } = {
+  IMPACT_UNKNOWN: 'unknown',
+  IMPACT_THREE_PRIME_UTR_VARIANT: "3' UTR",
+  IMPACT_FIVE_PRIME_UTR_VARIANT: "5' UTR",
+  IMPACT_DOWNSTREAM_TRANSCRIPT_VARIANT: 'downstream',
+  IMPACT_FRAMESHIFT_VARIANT: 'frameshift',
+  IMPACT_INFRAME_INDEL: 'inframe indel',
+  IMPACT_START_LOST: 'start lost',
+  IMPACT_INTRON_VARIANT: 'intronic',
+  IMPACT_MISSENSE_VARIANT: 'missense',
+  IMPACT_NON_CODING_TRANSCRIPT_VARIANT: 'non-coding',
+  IMPACT_STOP_GAINED: 'stop gained',
+  IMPACT_NO_SEQUENCE_ALTERATION: 'synonymous',
+  IMPACT_SPLICE_ACCEPTOR_VARIANT: 'spl. acceptor',
+  IMPACT_SPLICE_DONOR_VARIANT: 'spl. donor',
+  IMPACT_STOP_LOST: 'stop lost',
+  IMPACT_SYNONYMOUS_VARIANT: 'synonymous',
+  IMPACT_UPSTREAM_TRANSCRIPT_VARIANT: 'upstream',
+  total: 'total'
 }
 
 const clinsigLabels = [
@@ -43,7 +43,7 @@ const clinsigColor = ['#5d9936', '#a3f56c', '#f5c964', '#f59f9f', '#b05454']
 const perImpactCounts = computed(() => {
   const result = []
   const sum = {
-    impact: "total",
+    impact: 'total',
     counts: [0, 0, 0, 0, 0]
   }
 

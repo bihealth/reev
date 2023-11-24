@@ -22,11 +22,11 @@ describe.concurrent('FreqsAutosomal', async () => {
         props: {
           smallVar: smallVariantInfo,
           varAnnos: BRCA1VariantInfo['result'],
-          dataset: 'gnomad_genomes'
+          dataset: 'gnomad_exomes'
         }
       }
     )
-    expect(wrapper.text()).toContain('gnomAD Genomes')
+    expect(wrapper.text()).toContain('gnomAD Exomes')
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)
   })

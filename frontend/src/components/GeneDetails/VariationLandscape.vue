@@ -21,13 +21,13 @@ const props = withDefaults(defineProps<Props>(), {
   hgnc: ''
 })
 
-const clinvarSignificanceMapping:{[key: string]: number} = {
+const clinvarSignificanceMapping: { [key: string]: number } = {
   CLINICAL_SIGNIFICANCE_UNKNOWN: -3,
   CLINICAL_SIGNIFICANCE_PATHOGENIC: 2,
   CLINICAL_SIGNIFICANCE_LIKELY_PATHOGENIC: 1,
   CLINICAL_SIGNIFICANCE_UNCERTAIN_SIGNIFICANCE: 0,
   CLINICAL_SIGNIFICANCE_LIKELY_BENIGN: -1,
-  CLINICAL_SIGNIFICANCE_BENIGN: -2,
+  CLINICAL_SIGNIFICANCE_BENIGN: -2
 }
 
 interface ClinvarReferenceAssertions {

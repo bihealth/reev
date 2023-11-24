@@ -29,10 +29,6 @@ const noCohort = computed(() => {
   return null
 })
 
-const bySex = computed(() => {
-  return noCohort.value?.by_sex
-})
-
 const byPop = computed(() => {
   const res: any = {}
   for (const record of noCohort.value?.byPopulation ?? []) {
@@ -98,14 +94,10 @@ const sexExpanded: any = ref({})
             <abbr title="total number of alleles"> Allele Count </abbr>
           </th>
           <th class="text-right text-nowrap">
-            <abbr title="variant alleles in high-quality calls">
-              Allele Number
-            </abbr>
+            <abbr title="variant alleles in high-quality calls"> Allele Number </abbr>
           </th>
           <th class="text-right text-nowrap">
-            <abbr title="number of individuals with homozygote alleles">
-              Homozygotes
-            </abbr>
+            <abbr title="number of individuals with homozygote alleles"> Homozygotes </abbr>
           </th>
           <th class="text-right text-nowrap">
             <abbr title="frequency of variant alleles called with high quality">
@@ -137,7 +129,10 @@ const sexExpanded: any = ref({})
               <td class="text-right text-nowrap">
                 {{ sep(byPop[key]?.counts?.overall?.nhomalt ?? 0) }}
               </td>
-              <td class="text-right text-nowrap" v-html="roundIt(byPop[key]?.counts?.overall?.af, FREQ_DIGITS)"></td>
+              <td
+                class="text-right text-nowrap"
+                v-html="roundIt(byPop[key]?.counts?.overall?.af, FREQ_DIGITS)"
+              ></td>
             </tr>
             <tr :id="idKey(key) + '-xx'" :class="{ 'd-none': !sexExpanded[key] }">
               <td></td>
@@ -152,7 +147,10 @@ const sexExpanded: any = ref({})
                 class="text-right text-nowrap"
                 v-html="roundIt(byPop[key]?.counts?.xx?.af ?? 0.0, FREQ_DIGITS)"
               ></td>
-              <td class="text-right text-nowrap" v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"></td>
+              <td
+                class="text-right text-nowrap"
+                v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"
+              ></td>
             </tr>
             <tr :id="idKey(key) + '-xy'" :class="{ 'd-none': !sexExpanded[key] }">
               <td></td>

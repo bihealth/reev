@@ -7,12 +7,21 @@ import { StoreState } from '@/stores/misc'
 
 // Components
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+
+export interface Props {
+  genomeRelease?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  genomeRelease: 'grch38'
+})
+
 const router = useRouter()
 
 const genesListStore = useGenesListStore()
 
 const searchTermRef = ref(String(router.currentRoute.value.query.q))
-const genomeReleaseRef = ref('grch37')
+const genomeReleaseRef = ref(props.genomeRelease)
 
 const loadDataToStore = async () => {
   await genesListStore.loadData(router.currentRoute.value.query)
@@ -63,7 +72,7 @@ const useExample = (example: string) => {
             <router-link
               :to="{
                 name: 'gene',
-                params: { searchTerm: gene.data.hgnc_id, genomeRelease: 'grch37' }
+                params: { searchTerm: gene.data.hgnc_id, genomeRelease: 'grch38' }
               }"
             >
               {{ gene.data.hgnc_id }} <v-icon>mdi-launch</v-icon>
