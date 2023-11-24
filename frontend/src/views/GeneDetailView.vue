@@ -143,18 +143,18 @@ const genomeReleaseRef = ref(props.genomeRelease)
             :clinvar="geneInfoStore.geneClinvar"
             :transcripts="geneInfoStore.transcripts"
             :genome-release="genomeReleaseRef"
-            :hgnc="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+            :hgnc="geneInfoStore.geneInfo?.hgnc?.hgncId"
           />
         </div>
 
         <div id="constraints-scores" class="gene-item">
-          <ConstraintsCard :gnomad-constraints="geneInfoStore.geneInfo?.gnomad_constraints" />
+          <ConstraintsCard :gnomad-constraints="geneInfoStore.geneInfo?.gnomadConstraints" />
         </div>
 
         <div id="ncbi-summary" class="gene-item">
           <NcbiSummary
             :ncbi-summary="geneInfoStore.geneInfo?.ncbi?.summary"
-            :gene-id="geneInfoStore.geneInfo?.ncbi?.gene_id"
+            :gene-id="geneInfoStore.geneInfo?.ncbi?.geneId"
           />
         </div>
 
@@ -175,7 +175,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
         </div>
 
         <div id="acmg-list" class="gene-item">
-          <SupplementaryList :acmg-sf="geneInfoStore.geneInfo?.acmg_sf" />
+          <SupplementaryList :acmg-sf="geneInfoStore.geneInfo?.acmgSf" />
         </div>
 
         <div id="gene-rifs" class="gene-item">
@@ -192,16 +192,16 @@ const genomeReleaseRef = ref(props.genomeRelease)
 
         <div id="clinvar-frequency" class="gene-item">
           <ClinvarFreqPlot
-            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
-            :per-freq-counts="geneInfoStore.geneClinvar?.per_freq_counts"
+            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgncId"
+            :per-freq-counts="geneInfoStore.geneClinvar?.perFreqCounts"
           />
         </div>
 
         <div id="gtex" class="gene-item">
           <GtexGenePlot
-            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgnc_id"
+            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgncId"
             :expression-records="geneInfoStore.geneInfo?.gtex?.records"
-            :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensembl_gene_id"
+            :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
           />
         </div>
       </div>

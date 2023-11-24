@@ -3,7 +3,11 @@ import { computed } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
 
-const coarseClinsigLabels = ['benign', 'uncertain', 'pathogenic']
+const coarseClinsigLabels: {[key: string]: string} = {
+  COARSE_CLINICAL_SIGNIFICANCE_BENIGN: 'benign',
+  COARSE_CLINICAL_SIGNIFICANCE_UNCERTAIN: 'uncertain',
+  COARSE_CLINICAL_SIGNIFICANCE_PATHOGENIC: 'pathogenic',
+}
 
 const bucketLabels = [
   'no frequency',
@@ -27,7 +31,7 @@ const bucketLabels = [
 
 export interface CountsRecord {
   /** Coarse clinical significance ID */
-  coarse_clinsig: number
+  coarseClinsig: number
   /** Counts per bucket */
   counts: number[]
 }
@@ -46,13 +50,13 @@ const vegaData = computed(() => {
   for (const record of props?.perFreqCounts || []) {
     for (let i = 0; i < record.counts.length; i++) {
       if (record.counts[i] > 0) {
-        values.push({
-          coarseClinsig: coarseClinsigLabels[record.coarse_clinsig],
-          coarseClinsigNo: record.coarse_clinsig,
+        const value = {
+          coarseClinsig: coarseClinsigLabels[record.coarseClinsig],
           freqBucket: bucketLabels[i],
           freqBucketNo: i,
           value: record.counts[i]
-        })
+        }
+        values.push(value)
       }
     }
   }
@@ -99,16 +103,17 @@ const vegaEncoding = {
   },
   xOffset: {
     field: 'coarseClinsig',
+    title: 'clinical sig.',
     type: 'nominal',
-    sort: coarseClinsigLabels
+    sort: Object.values(coarseClinsigLabels)
   },
   color: {
     field: 'coarseClinsig',
     title: 'clinical sig.',
     type: 'nominal',
-    sort: coarseClinsigLabels,
+    sort: Object.values(coarseClinsigLabels),
     scale: {
-      domain: coarseClinsigLabels,
+      domain: Object.values(coarseClinsigLabels),
       range: ['#5d9936', '#f5c964', '#b05454']
     }
   }

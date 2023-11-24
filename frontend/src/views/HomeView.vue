@@ -36,7 +36,9 @@ const examples: Example[] = [
     label: 'SPDI (sequence, position, deleted, inserted) genomic variants'
   },
   { query: 'chr17:41197751:G:T' },
-  { query: 'DEL:chr17:41176312:41277500', label: 'genomic specification of a deletion' }
+  { query: 'DEL:chr17:41176312:41277500', label: 'genomic specification of a deletion' },
+  { query: 'chrMT:8993:T:G', label: 'mitochondrial variants' },
+  { query: 'chrMT:15172:G:A' }
 ]
 
 const performExampleSearch = (example: string) => {

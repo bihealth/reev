@@ -21,7 +21,7 @@ const selAnnos = computed(() => {
 })
 
 const noCohort = computed(() => {
-  for (const elem of selAnnos.value?.allele_counts ?? []) {
+  for (const elem of selAnnos.value?.alleleCounts ?? []) {
     if (!elem.cohort) {
       return elem
     }
@@ -35,7 +35,7 @@ const bySex = computed(() => {
 
 const byPop = computed(() => {
   const res: any = {}
-  for (const record of noCohort.value?.by_population ?? []) {
+  for (const record of noCohort.value?.byPopulation ?? []) {
     res[record.population] = record
   }
   return res
@@ -94,9 +94,24 @@ const sexExpanded: any = ref({})
         <tr>
           <th>Population</th>
           <th></th>
-          <th>Allele Count</th>
-          <th>Homozygotes</th>
-          <th>Allele Frequency</th>
+          <th class="text-right text-nowrap">
+            <abbr title="total number of alleles"> Allele Count </abbr>
+          </th>
+          <th class="text-right text-nowrap">
+            <abbr title="variant alleles in high-quality calls">
+              Allele Number
+            </abbr>
+          </th>
+          <th class="text-right text-nowrap">
+            <abbr title="number of individuals with homozygote alleles">
+              Homozygotes
+            </abbr>
+          </th>
+          <th class="text-right text-nowrap">
+            <abbr title="frequency of variant alleles called with high quality">
+              Allele Frequency
+            </abbr>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -113,63 +128,88 @@ const sexExpanded: any = ref({})
                 </a>
               </td>
               <td></td>
-              <td>
-                {{ sep(byPop[key]?.counts?.overall?.an) }}
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key]?.counts?.overall?.an ?? 0) }}
               </td>
-              <td>
-                {{ sep(byPop[key]?.counts?.overall?.nhomalt) }}
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key]?.counts?.overall?.ac ?? 0) }}
               </td>
-              <td v-html="roundIt(byPop[key]?.counts?.overall?.af, FREQ_DIGITS)"></td>
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key]?.counts?.overall?.nhomalt ?? 0) }}
+              </td>
+              <td class="text-right text-nowrap" v-html="roundIt(byPop[key]?.counts?.overall?.af, FREQ_DIGITS)"></td>
             </tr>
             <tr :id="idKey(key) + '-xx'" :class="{ 'd-none': !sexExpanded[key] }">
               <td></td>
-              <td>XX</td>
-              <td>
-                {{ sep(byPop[key]?.counts?.xx?.an) }}
+              <td class="text-right text-nowrap">XX</td>
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key]?.counts?.xx?.an ?? 0) }}
               </td>
-              <td>
-                {{ sep(byPop[key]?.counts?.xx?.nhomalt) }}
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key]?.counts?.xx?.nhomal ?? 0) }}
               </td>
-              <td v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"></td>
+              <td
+                class="text-right text-nowrap"
+                v-html="roundIt(byPop[key]?.counts?.xx?.af ?? 0.0, FREQ_DIGITS)"
+              ></td>
+              <td class="text-right text-nowrap" v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"></td>
             </tr>
             <tr :id="idKey(key) + '-xy'" :class="{ 'd-none': !sexExpanded[key] }">
               <td></td>
-              <td>XY</td>
-              <td>
-                {{ sep(byPop[key].counts?.xy?.an) }}
+              <td class="text-right text-nowrap">XY</td>
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key].counts?.xy?.an ?? 0) }}
               </td>
-              <td>
-                {{ sep(byPop[key].counts?.xy?.nhomalt) }}
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key].counts?.xy?.ac ?? 0) }}
               </td>
-              <td v-html="roundIt(byPop[key].counts?.xy?.af, FREQ_DIGITS)"></td>
+              <td class="text-right text-nowrap">
+                {{ sep(byPop[key].counts?.xy?.nhomalt ?? 0) }}
+              </td>
+              <td
+                class="text-right text-nowrap"
+                v-html="roundIt(byPop[key].counts?.xy?.af, FREQ_DIGITS)"
+              ></td>
             </tr>
           </template>
         </template>
 
-        <tr>
+        <tr class="table-info">
           <th>Total</th>
           <td></td>
-          <td>{{ sep(bySex?.overall?.an) }}</td>
-          <td>
-            {{ sep(bySex?.overall?.nhomalt) }}
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.overall?.an ?? 0) }}</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.overall?.ac ?? 0) }}</td>
+          <td class="text-right text-nowrap">
+            {{ sep(noCohort?.bySex?.overall?.nhomalt ?? 0) }}
           </td>
-          <td v-html="roundIt(bySex?.overall?.af, FREQ_DIGITS)"></td>
+          <td
+            class="text-right text-nowrap"
+            v-html="roundIt(noCohort?.bySex?.overall?.af ?? 0.0, FREQ_DIGITS)"
+          ></td>
         </tr>
 
         <tr>
           <td></td>
-          <td>XX</td>
-          <td>{{ sep(bySex?.xx?.an) }}</td>
-          <td>{{ sep(bySex?.xx?.nhomalt) }}</td>
-          <td v-html="roundIt(bySex?.xx?.af, FREQ_DIGITS)"></td>
+          <td class="text-right text-nowrap">XX</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.xx?.an ?? 0) }}</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.xx?.ac ?? 0) }}</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.xx?.nhomalt ?? 0) }}</td>
+          <td
+            class="text-right text-nowrap"
+            v-html="roundIt(noCohort?.bySex?.xx?.af ?? 0.0, FREQ_DIGITS)"
+          ></td>
         </tr>
 
         <tr>
           <td></td>
-          <td>XY</td>
-          <td>{{ sep(bySex?.xy?.an) }}</td>
-          <td>{{ sep(bySex?.xy?.nhomalt) }}</td>
-          <td v-html="roundIt(bySex?.xy?.af, FREQ_DIGITS)"></td>
+          <td class="text-right text-nowrap">XY</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.xy?.an ?? 0) }}</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.xy?.ac ?? 0) }}</td>
+          <td class="text-right text-nowrap">{{ sep(noCohort?.bySex?.xy?.nhomalt ?? 0) }}</td>
+          <td
+            class="text-right text-nowrap"
+            v-html="roundIt(noCohort?.bySex?.xy?.af ?? 0.0, FREQ_DIGITS)"
+          ></td>
         </tr>
       </tbody>
     </v-table>
