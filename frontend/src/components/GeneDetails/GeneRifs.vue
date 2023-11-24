@@ -16,9 +16,9 @@ const props = withDefaults(defineProps<Props>(), {
       <ul
         class="overflow-auto"
         style="max-height: 200px; font-size: 90%"
-        v-if="props.ncbi?.rif_entries?.length"
+        v-if="props.ncbi?.rifEntries?.length"
       >
-        <template v-for="entry in props.ncbi.rif_entries" :key="entry">
+        <template v-for="entry in props.ncbi.rifEntries" :key="entry">
           <li v-if="entry?.text?.length">
             {{ entry.text }}
             <a

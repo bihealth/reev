@@ -16,13 +16,13 @@ const props = withDefaults(defineProps<Props>(), {
       <div v-if="props.acmgSf">
         <div>
           <strong>since ACMG SF:</strong>
-          v{{ props.acmgSf.sf_list_version }}
+          v{{ props.acmgSf.sfListVersion }}
         </div>
         <div><strong>inheritance:</strong> {{ props.acmgSf.inheritance }}</div>
         <div>
           <strong>phenotype:</strong>
-          {{ props.acmgSf.phenotype_category }} /
-          {{ props.acmgSf.disease_phenotype }}
+          {{ props.acmgSf.phenotypeCategory }} /
+          {{ props.acmgSf.diseasePhenotype }}
         </div>
       </div>
       <div v-else>Gene is not on ACMG SF list.</div>

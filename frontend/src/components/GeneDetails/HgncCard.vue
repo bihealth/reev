@@ -28,11 +28,11 @@ const props = withDefaults(defineProps<Props>(), {
         </div>
         <div>
           <strong>aliases:</strong>
-          {{ props.hgnc?.alias_name?.join(', ') }}
+          {{ props.hgnc?.aliasName?.join(', ') }}
         </div>
         <div>
           <strong>synonyms:</strong>
-          {{ props.hgnc?.alias_symbol?.join(', ') }}
+          {{ props.hgnc?.aliasSymbol?.join(', ') }}
         </div>
       </div>
     </v-card-text>
