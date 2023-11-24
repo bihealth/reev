@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { AuthClient } from '@/api/auth'
 import { UsersClient } from '@/api/users'
@@ -21,9 +21,24 @@ const caseStore = useCaseStore()
 const userStore = useUserStore()
 
 const router = useRouter()
+const route = useRoute()
+
+const SECTIONS = [
+  { id: 'general-info', title: 'Profile information' },
+  { id: 'bookmarks', title: 'Bookmarks' },
+  { id: 'case-information', title: 'Case information' }
+]
 
 /** Stores the email address for sending test email. */
 const testEmailTo = ref<string>('')
+
+const scrollToSection = async () => {
+  const sectionId = route.hash.slice(1)
+  if (sectionId) {
+    const elem = document.getElementById(sectionId)
+    elem?.scrollIntoView()
+  }
+}
 
 /** Send out test email via API for superusers. */
 const sendTestEmail = async () => {
@@ -124,14 +139,33 @@ const loadDataToStore = async () => {
 onMounted(async () => {
   await Promise.all([userStore.initialize(), loadDataToStore()])
   updateEmailValue.value = userStore.currentUser?.email ?? ''
+  await scrollToSection()
 })
+
+watch(() => route.hash, scrollToSection)
 </script>
 
 <template>
   <HeaderDefault />
   <v-container fill-height fluid>
     <div v-if="userStore.currentUser">
-      <v-row class="align-center fill-height" justify="center">
+      <v-navigation-drawer location="right" class="overflow-auto">
+        <div class="navigation">
+          Sections:
+          <v-list density="compact" nav>
+            <v-list-item
+              v-for="section in SECTIONS"
+              :key="section.id"
+              :id="`${section.id}-nav`"
+              @click="router.push({ hash: `#${section.id}` })"
+            >
+              <v-list-item-title>{{ section.title }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </div>
+      </v-navigation-drawer>
+
+      <v-row class="align-center fill-height" justify="center" id="general-info">
         <v-card
           class="mx-auto pa-4 pb-8 mt-12"
           elevation="8"
@@ -271,6 +305,29 @@ onMounted(async () => {
         <v-card
           class="mx-auto pa-4 pb-8 mt-12"
           elevation="8"
+          min-width="400"
+          max-width="448"
+          rounded="lg"
+        >
+          <v-card-item>
+            <v-card-title>Send test Email</v-card-title>
+            <v-card-subtitle>(Only superusers can do this)</v-card-subtitle>
+
+            <v-card-item>
+              <v-text-field v-model="testEmailTo" label="Email Recipient"></v-text-field>
+
+              <v-btn block prepend-icon="mdi-send" class="mt-2" @click="sendTestEmail">
+                Send Test Email
+              </v-btn>
+            </v-card-item>
+          </v-card-item>
+        </v-card>
+      </v-row>
+
+      <v-row class="align-center fill-height" justify="center" id="bookmarks">
+        <v-card
+          class="mx-auto pa-4 pb-8 mt-12"
+          elevation="8"
           min-width="200"
           max-width="600"
           rounded="lg"
@@ -297,30 +354,8 @@ onMounted(async () => {
           </v-card-item>
         </v-card>
       </v-row>
-      <v-row class="align-center fill-height" justify="center">
-        <v-card
-          class="mx-auto pa-4 pb-8 mt-12"
-          elevation="8"
-          min-width="400"
-          max-width="448"
-          rounded="lg"
-        >
-          <v-card-item>
-            <v-card-title>Send test Email</v-card-title>
-            <v-card-subtitle>(Only superusers can do this)</v-card-subtitle>
 
-            <v-card-item>
-              <v-text-field v-model="testEmailTo" label="Email Recipient"></v-text-field>
-
-              <v-btn block prepend-icon="mdi-send" class="mt-2" @click="sendTestEmail">
-                Send Test Email
-              </v-btn>
-            </v-card-item>
-          </v-card-item>
-        </v-card>
-      </v-row>
-
-      <v-row class="align-center fill-height" justify="center">
+      <v-row class="align-center fill-height" justify="center" id="case-information">
         <CaseInformationCard class="mx-auto pa-4 pb-8 mt-12" elevation="8" rounded="lg" />
       </v-row>
     </div>
@@ -352,3 +387,10 @@ onMounted(async () => {
     </div>
   </v-container>
 </template>
+
+<style scoped>
+.navigation {
+  width: 95%;
+  margin: 20px;
+}
+</style>
