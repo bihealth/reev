@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { isVariantMtHomopolymer, roundIt } from '@/lib/utils'
+import { isVariantMtHomopolymer, roundIt, separateIt as sep } from '@/lib/utils'
 import { type SmallVariant } from '@/stores/variantInfo'
 
 const props = defineProps<{
@@ -18,8 +18,8 @@ const helixMtDb = computed(() => {
 })
 
 const gnomadMtDna = computed(() => {
-  if (props?.varAnnos && props?.varAnnos['gnomad-mtdna']) {
-    return props?.varAnnos['gnomad-mtdna']
+  if (props?.varAnnos && props?.varAnnos.gnomad_mtdna) {
+    return props?.varAnnos.gnomad_mtdna
   } else {
     return null
   }
@@ -49,28 +49,38 @@ const gnomadMtDna = computed(() => {
       <tbody>
         <tr>
           <td class="text-nowrap">gnomAD-MT</td>
-          <td class="text-right">{{ gnomadMtDna?.an }}</td>
+          <td class="text-right">{{ sep(gnomadMtDna?.an ?? 0) }}</td>
           <td class="text-right">
-            {{ gnomadMtDna?.ac_het + gnomadMtDna?.ac_hom }}
+            {{ sep((gnomadMtDna?.acHet ?? 0) + (gnomadMtDna?.acHom ?? 0)) }}
           </td>
-          <td class="text-right">{{ gnomadMtDna?.ac_het }}</td>
-          <td class="text-right">{{ gnomadMtDna?.ac_hom }}</td>
+          <td class="text-right">{{ sep(gnomadMtDna?.acHet ?? 0) }}</td>
+          <td class="text-right">{{ sep(gnomadMtDna?.acHom ?? 0) }}</td>
           <td
             class="text-right"
-            v-html="roundIt((gnomadMtDna?.ac_het + gnomadMtDna?.ac_hom) / gnomadMtDna?.an, 4)"
+            v-html="
+              roundIt(
+                ((gnomadMtDna?.acHet ?? 0) + (gnomadMtDna?.acHom ?? 0)) / (gnomadMtDna?.an ?? 0),
+                4
+              )
+            "
           />
         </tr>
         <tr>
           <td>HelixMTdb</td>
-          <td class="text-right">{{ helixMtDb?.num_total }}</td>
+          <td class="text-right">{{ sep(helixMtDb?.numTotal ?? 0) }}</td>
           <td class="text-right">
-            {{ helixMtDb?.num_het + helixMtDb?.num_hom }}
+            {{ sep((helixMtDb?.numHet ?? 0) + (helixMtDb?.numHom ?? 0)) }}
           </td>
-          <td class="text-right">{{ helixMtDb?.num_het }}</td>
-          <td class="text-right">{{ helixMtDb?.num_hom }}</td>
+          <td class="text-right">{{ sep(helixMtDb?.numHet ?? 0) }}</td>
+          <td class="text-right">{{ sep(helixMtDb?.numHom ?? 0) }}</td>
           <td
             class="text-right"
-            v-html="roundIt((helixMtDb?.num_het + helixMtDb?.num_hom) / helixMtDb?.num_total, 4)"
+            v-html="
+              roundIt(
+                ((helixMtDb?.numHet ?? 0) + (helixMtDb?.numHom ?? 0)) / (helixMtDb?.numTotal ?? 0),
+                4
+              )
+            "
           />
         </tr>
       </tbody>

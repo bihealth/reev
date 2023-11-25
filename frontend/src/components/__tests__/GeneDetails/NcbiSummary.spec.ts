@@ -11,7 +11,7 @@ describe.concurrent('NcbiSummary', async () => {
       {
         props: {
           ncbiSummary: BRCA1GeneInfo['genes']['HGNC:1100']['ncbi']['summary'],
-          geneId: BRCA1GeneInfo['genes']['HGNC:1100']['ncbi']['gene_id']
+          geneId: BRCA1GeneInfo['genes']['HGNC:1100']['ncbi']['geneId']
         }
       }
     )

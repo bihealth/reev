@@ -21,32 +21,33 @@ const props = withDefaults(defineProps<Props>(), {
   hgnc: ''
 })
 
-const clinvarSignificanceMapping: Record<number, number> = {
-  0: 2, // Pathogenic
-  1: 1, // Likely pathogenic
-  2: 0, // Uncertain significance
-  3: -1, // Likely benign
-  4: -2, // Benign
-  5: -3 // Other
+const clinvarSignificanceMapping: { [key: string]: number } = {
+  CLINICAL_SIGNIFICANCE_UNKNOWN: -3,
+  CLINICAL_SIGNIFICANCE_PATHOGENIC: 2,
+  CLINICAL_SIGNIFICANCE_LIKELY_PATHOGENIC: 1,
+  CLINICAL_SIGNIFICANCE_UNCERTAIN_SIGNIFICANCE: 0,
+  CLINICAL_SIGNIFICANCE_LIKELY_BENIGN: -1,
+  CLINICAL_SIGNIFICANCE_BENIGN: -2
 }
 
 interface ClinvarReferenceAssertions {
   rcv: string
-  clinical_significance: number
-  review_status: number
+  clinicalSignificance: string
+  reviewStatus: string
   title: string
 }
 
 interface ClinvarVariant {
   chrom: string
-  pos: string
+  start: number
+  stop: number
   reference: string
   alternative: string
   vcv: string
-  reference_assertions: ClinvarReferenceAssertions[]
+  referenceAssertions: ClinvarReferenceAssertions[]
 }
 
-const convertClinvarSignificance = (input: number): number => {
+const convertClinvarSignificance = (input: string): number => {
   if (input in clinvarSignificanceMapping) {
     return clinvarSignificanceMapping[input]
   } else {
@@ -61,23 +62,23 @@ const minMax = computed(() => {
   let min = null
   let max = null
   for (const item of props.clinvar.variants ?? []) {
-    if (item.genome_release.toLowerCase() == props.genomeRelease) {
+    if (item.genomeRelease.toLowerCase() == props.genomeRelease) {
       // Go through all item.variants and find the min and max pos.
       for (const variant of item.variants) {
-        if (variant.pos < min || min == null) {
-          min = variant.pos
+        if (variant.start < min || min === null) {
+          min = variant.start
         }
-        if (variant.pos > max || max == null) {
-          max = variant.pos
+        if (variant.start > max || max === null) {
+          max = variant.start
         }
       }
     }
   }
   for (const exon of exons.value) {
-    if (exon.start < min || min == null) {
+    if (exon.start < min || min === null) {
       min = exon.start
     }
-    if (exon.stop > max || max == null) {
+    if (exon.stop > max || max === null) {
       max = exon.stop
     }
   }
@@ -117,14 +118,14 @@ const vegaData = computed(() => {
   }
   let clinvarInfo = []
   for (const item of props.clinvar.variants ?? []) {
-    if (item.genome_release.toLowerCase() == props.genomeRelease) {
+    if (item.genomeRelease.toLowerCase() == props.genomeRelease) {
       clinvarInfo = item.variants
     }
   }
 
   return clinvarInfo.map((variant: ClinvarVariant) => ({
-    pos: variant.pos,
-    clinsig: convertClinvarSignificance(variant.reference_assertions[0].clinical_significance)
+    pos: variant.start,
+    clinsig: convertClinvarSignificance(variant.referenceAssertions[0].clinicalSignificance)
   }))
 })
 

@@ -27,44 +27,44 @@ const props = withDefaults(defineProps<Props>(), {
         <tbody>
           <tr>
             <td>Synonymous</td>
-            <td v-html="roundIt(props.gnomadConstraints?.exp_syn, 1)"></td>
-            <td v-html="roundIt(props.gnomadConstraints?.obs_syn, 1)"></td>
+            <td v-html="roundIt(props.gnomadConstraints?.expSyn, 1)"></td>
+            <td v-html="roundIt(props.gnomadConstraints?.obsSyn, 1)"></td>
             <td>
               Z =
-              <span v-html="roundIt(props.gnomadConstraints?.syn_z)" /><br />
+              <span v-html="roundIt(props.gnomadConstraints?.synZ)" /><br />
               o/e =
-              <span v-html="roundIt(props.gnomadConstraints?.oe_syn)" />
-              (<span v-html="roundIt(props.gnomadConstraints?.oe_syn_lower)" />
+              <span v-html="roundIt(props.gnomadConstraints?.oeSyn)" />
+              (<span v-html="roundIt(props.gnomadConstraints?.oeSynLower)" />
               -
-              <span v-html="roundIt(props.gnomadConstraints?.oe_syn_upper)" />)
+              <span v-html="roundIt(props.gnomadConstraints?.oeSynUpper)" />)
             </td>
           </tr>
           <tr>
             <td>Missense</td>
-            <td v-html="roundIt(props.gnomadConstraints?.exp_mis, 1)"></td>
-            <td v-html="roundIt(props.gnomadConstraints?.obs_mis, 1)"></td>
+            <td v-html="roundIt(props.gnomadConstraints?.expMis, 1)"></td>
+            <td v-html="roundIt(props.gnomadConstraints?.obsMis, 1)"></td>
             <td>
               Z =
-              <span v-html="roundIt(props.gnomadConstraints?.mis_z)" /><br />
+              <span v-html="roundIt(props.gnomadConstraints?.misZ)" /><br />
               o/e =
-              <span v-html="roundIt(props.gnomadConstraints?.oe_mis)" />
-              (<span v-html="roundIt(props.gnomadConstraints?.oe_mis_lower)" />
+              <span v-html="roundIt(props.gnomadConstraints?.oeMis)" />
+              (<span v-html="roundIt(props.gnomadConstraints?.oeMisLower)" />
               -
-              <span v-html="roundIt(props.gnomadConstraints?.oe_mis_upper)" />)
+              <span v-html="roundIt(props.gnomadConstraints?.oeMisUpper)" />)
             </td>
           </tr>
           <tr>
             <td>pLoF</td>
-            <td v-html="roundIt(props.gnomadConstraints?.exp_lof, 1)"></td>
-            <td v-html="roundIt(props.gnomadConstraints?.obs_lof, 1)"></td>
+            <td v-html="roundIt(props.gnomadConstraints?.expLof, 1)"></td>
+            <td v-html="roundIt(props.gnomadConstraints?.obsLof, 1)"></td>
             <td>
               pLI =
               <span v-html="roundIt(props.gnomadConstraints?.pli)" /><br />
               o/e =
-              <span v-html="roundIt(props.gnomadConstraints?.oe_lof)" />
-              (<span v-html="roundIt(props.gnomadConstraints?.oe_lof_lower)" />
+              <span v-html="roundIt(props.gnomadConstraints?.oeLof)" />
+              (<span v-html="roundIt(props.gnomadConstraints?.oeLofLower)" />
               -
-              <mark v-html="roundIt(props.gnomadConstraints?.oe_lof_upper, 2, 'LOEUF')" />)
+              <mark v-html="roundIt(props.gnomadConstraints?.oeLofUpper, 2, 'LOEUF')" />)
             </td>
           </tr>
         </tbody>

@@ -5,36 +5,35 @@ const props = defineProps({
   clinvar: Object
 })
 
-const significances = [
-  'Pathogenic', // 0
-  'Likely pathogenic', // 1
-  'Uncertain signifiance', // 2
-  'Likely benign', // 3
-  'Benign', // 4
-  'Other'
-]
+const clinicalSignificanceLabel: { [key: string]: string } = {
+  CLINICAL_SIGNIFICANCE_PATHOGENIC: 'pathogenic',
+  CLINICAL_SIGNIFICANCE_LIKELY_PATHOGENIC: 'likely pathogenic',
+  CLINICAL_SIGNIFICANCE_UNCERTAIN_SIGNIFICANCE: 'uncertain significance',
+  CLINICAL_SIGNIFICANCE_LIKELY_BENIGN: 'likely benign',
+  CLINICAL_SIGNIFICANCE_BENIGN: 'benign'
+}
 
-const review_statuses = [
-  'practice guideline', // 0
-  'reviewed by expert panel', // 1
-  'criteria provided, multiple submitters, no conflicts', // 2
-  'criteria provided, single submitter', // 3
-  'criteria provided, conflicting interpretations', // 4
-  'no assertion criteria provided', // 5
-  'no assertion provided', // 6
-  'other'
-]
+const reviewStatusLabel: { [key: string]: string } = {
+  REVIEW_STATUS_PRACTICE_GUIDELINE: 'practice guideline',
+  REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: 'reviewed by expert panel',
+  REVIEW_STATUS_CRITERIA_PROVIDED_MULTIPLE_SUBMITTERS_NO_CONFLICTS:
+    'criteria provided, multiple submitters, no conflicts',
+  REVIEW_STATUS_CRITERIA_PROVIDED_SINGLE_SUBMITTER: 'criteria provided, single submitter',
+  REVIEW_STATUS_CRITERIA_PROVIDED_CONFLICTING_INTERPRETATIONS:
+    'criteria provided, conflicting interpretations',
+  REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: 'no assertion criteria provided',
+  REVIEW_STATUS_NO_ASSERTION_PROVIDED: 'no assertion provided'
+}
 
-const stars = [
-  4, // 0 - "practice guideline"
-  3, // 1 - "reviewed by expert panel"
-  2, // 2 - "criteria provided, multiple submitters, no conflicts"
-  1, // 3 - "criteria provided, single submitter"
-  1, // 4 - "criteria provided, conflicting interpretations"
-  0, // 5 - "no assertion criteria provided"
-  0, // 6 - "no assertion provided"
-  0 // 7 - "other"
-]
+const reviewStatusStars: { [key: string]: number } = {
+  REVIEW_STATUS_PRACTICE_GUIDELINE: 4,
+  REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: 3,
+  REVIEW_STATUS_CRITERIA_PROVIDED_MULTIPLE_SUBMITTERS_NO_CONFLICTS: 2,
+  REVIEW_STATUS_CRITERIA_PROVIDED_SINGLE_SUBMITTER: 2,
+  REVIEW_STATUS_CRITERIA_PROVIDED_CONFLICTING_INTERPRETATIONS: 0,
+  REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED: 0,
+  REVIEW_STATUS_NO_ASSERTION_PROVIDED: 0
+}
 
 const vcvToNumber = (vcv: string): number => {
   return parseInt(vcv.substring(3))
@@ -50,7 +49,9 @@ const expand = ref<boolean>(false)
       <v-row no-gutters class="flex-nowrap">
         <v-col cols="1" class="font-weight-black"> Significance </v-col>
         <v-col cols="1" style="min-width: 100px; max-width: 100%" class="flex-grow-1 flex-shrink-0">
-          {{ significances[props.clinvar.reference_assertions[0].clinical_significance] }}
+          {{
+            clinicalSignificanceLabel[props.clinvar?.referenceAssertions[0]?.clinicalSignificance]
+          }}
         </v-col>
       </v-row>
 
@@ -58,7 +59,9 @@ const expand = ref<boolean>(false)
         <v-col cols="1" class="font-weight-black"> Review Status </v-col>
         <v-col cols="1" style="min-width: 100px; max-width: 100%" class="flex-grow-1 flex-shrink-0">
           <span v-for="i of [1, 2, 3, 4, 5]" :key="i">
-            <span v-if="i <= stars[props.clinvar.reference_assertions[0].review_status]">
+            <span
+              v-if="i <= reviewStatusStars[props.clinvar?.referenceAssertions[0]?.reviewStatus]"
+            >
               <v-icon>mdi-star</v-icon>
             </span>
             <span v-else>
@@ -66,7 +69,7 @@ const expand = ref<boolean>(false)
             </span>
           </span>
           <span class="ml-3">
-            {{ review_statuses[props.clinvar.reference_assertions[0].review_status] }}
+            {{ reviewStatusLabel[props.clinvar?.reviewStatus] }}
           </span>
         </v-col>
       </v-row>
@@ -105,25 +108,25 @@ const expand = ref<boolean>(false)
             </thead>
             <tbody>
               <tr
-                v-for="assertion of props.clinvar.reference_assertions"
+                v-for="assertion of props.clinvar?.referenceAssertions"
                 v-bind:key="assertion.rcv"
               >
                 <td>
                   {{ assertion.title.split('AND')[1] }}
                 </td>
                 <td>
-                  {{ significances[assertion.clinical_significance] }}
+                  {{ clinicalSignificanceLabel[assertion.clinicalSignificance] }}
                 </td>
                 <td>
                   <span v-for="i of [1, 2, 3, 4, 5]" :key="i">
-                    <span v-if="i <= stars[assertion.review_status]">
+                    <span v-if="i <= reviewStatusStars[assertion.reviewStatus]">
                       <v-icon>mdi-star</v-icon>
                     </span>
                     <span v-else>
                       <v-icon>mdi-star-outline</v-icon>
                     </span>
                   </span>
-                  <span class="ml-3"> {{ review_statuses[assertion.review_status] }} </span>
+                  <span class="ml-3"> {{ reviewStatusLabel[assertion.reviewStatus] }} </span>
                 </td>
                 <td>
                   <a
@@ -156,6 +159,6 @@ const expand = ref<boolean>(false)
   </v-card>
 
   <v-card variant="elevated" v-else>
-    <v-card-text> sNo ClinVar information available. </v-card-text>
+    <v-card-text> No ClinVar information available. </v-card-text>
   </v-card>
 </template>

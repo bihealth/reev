@@ -33,11 +33,11 @@ withDefaults(defineProps<Props>(), {
       </div>
       <div>
         <strong>aliases:</strong>
-        {{ $props.gene?.hgnc?.alias_name?.join(', ') }}
+        {{ $props.gene?.hgnc?.aliasName?.join(', ') }}
       </div>
       <div>
         <strong>synonyms:</strong>
-        {{ $props.gene?.hgnc?.alias_symbol?.join(', ') }}
+        {{ $props.gene?.hgnc?.aliasSymbol?.join(', ') }}
       </div>
     </v-card-text>
   </v-card>

@@ -98,7 +98,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     )
 
     const exampleTerms = wrapper.findAll('.example')
-    expect(exampleTerms.length).toBe(8)
+    expect(exampleTerms.length).toBe(10)
   })
 
   it('searches for example by click', async () => {

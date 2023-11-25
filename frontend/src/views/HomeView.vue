@@ -23,25 +23,41 @@ const showCaseInformation = ref(false)
 interface Example {
   query: string
   label?: string
+  genomeRelease: string
 }
 
 const examples: Example[] = [
-  { query: 'BRCA1', label: 'gene symbols BRCA1, TP53, ...' },
-  { query: 'TP53' },
-  { query: 'EMP', label: 'partial gene symbol EMP, query for similar gene' },
-  { query: 'NM_007294.4(BRCA1):c.5123C>A', label: 'HGVS position on transcript' },
-  { query: 'NC_000017.10:g.41197728G>T', label: 'HGVS genomic variant' },
+  { query: 'BRCA1', label: 'gene symbols BRCA1, TP53, ...', genomeRelease: 'grch38' },
+  { query: 'TP53', genomeRelease: 'grch38' },
+  {
+    query: 'EMP',
+    label: 'partial gene symbol EMP, query for similar gene',
+    genomeRelease: 'grch38'
+  },
+  {
+    query: 'NM_007294.4(BRCA1):c.5123C>A',
+    label: 'HGVS position on transcript',
+    genomeRelease: 'grch37'
+  },
+  { query: 'NC_000017.10:g.41197728G>T', label: 'HGVS genomic variant', genomeRelease: 'grch37' },
   {
     query: 'chr17:41197708:T:G',
-    label: 'SPDI (sequence, position, deleted, inserted) genomic variants'
+    label: 'SPDI (sequence, position, deleted, inserted) genomic variants',
+    genomeRelease: 'grch37'
   },
-  { query: 'chr17:41197751:G:T' },
-  { query: 'DEL:chr17:41176312:41277500', label: 'genomic specification of a deletion' }
+  { query: 'chr17:41197751:G:T', genomeRelease: 'grch37' },
+  {
+    query: 'DEL:chr17:41176312:41277500',
+    label: 'genomic specification of a deletion',
+    genomeRelease: 'grch37'
+  },
+  { query: 'chrMT:8993:T:G', label: 'mitochondrial variants', genomeRelease: 'grch37' },
+  { query: 'chrMT:15172:G:A', genomeRelease: 'grch38' }
 ]
 
-const performExampleSearch = (example: string) => {
-  searchTerm.value = example
-  genomeRelease.value = 'grch38'
+const performExampleSearch = (example: Example) => {
+  searchTerm.value = example.query
+  genomeRelease.value = example.genomeRelease
   performSearch()
 }
 
@@ -77,7 +93,7 @@ const performSearch = async () => {
           <v-card-text class="examples">
             <div v-for="example in examples" :key="example.label">
               <div v-if="example.label?.length" class="text-caption mt-3">{{ example.label }}</div>
-              <v-btn class="example mt-1" @click="performExampleSearch(example.query)">{{
+              <v-btn class="example mt-1" @click="performExampleSearch(example)">{{
                 example.query
               }}</v-btn>
             </div>

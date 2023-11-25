@@ -17,7 +17,7 @@ const ucscConservation = computed(() => {
 })
 
 const transcriptIds = computed(() => {
-  let res: string[] = ucscConservation.value.map(({ enst_id }: any) => enst_id)
+  let res: string[] = ucscConservation.value.map(({ enstId }: any) => enstId)
   res = [...new Set(res)]
   res.sort()
   return res
@@ -26,14 +26,14 @@ const transcriptIds = computed(() => {
 const consInfo: any = computed(() => {
   let seen = new Set()
   let res: any = {}
-  for (const { chromosome, enst_id, start, stop, alignment } of ucscConservation.value) {
-    const key = `${enst_id}-${chromosome}-${enst_id}-${start}-${stop}`
+  for (const { chrom, enstId, start, stop, alignment } of ucscConservation.value) {
+    const key = `${enstId}-${chrom}-${enstId}-${start}-${stop}`
     if (!seen.has(key)) {
       seen.add(key)
-      if (!(enst_id in res)) {
-        res[enst_id] = []
+      if (!(enstId in res)) {
+        res[enstId] = []
       }
-      res[enst_id].push({ chromosome, start, stop, alignment })
+      res[enstId].push({ chrom, start, stop, alignment })
     }
   }
 
@@ -66,8 +66,7 @@ onMounted(initSelectedTranscript)
     <v-card-title>Conservation</v-card-title>
     <v-divider />
     <v-card-text>
-      {{}}
-      <div v-if="ucscConservation">
+      <div v-if="ucscConservation.length">
         <div class="float-right">
           <select v-model="selectedTranscript">
             <option v-for="transcript in transcriptIds" :value="transcript" :key="transcript">
@@ -77,24 +76,9 @@ onMounted(initSelectedTranscript)
         </div>
         <p>The following shows UCSC 100 vertebrate conservation.</p>
         <pre><b><u>  chr  start      end          |  alignment                                                                                           </u></b>
-<template v-for="row in consInfo[selectedTranscript]">{{ row.chromosome.padStart(5) }} {{ sepIt(row.start, ',').padStart(11) }}-{{ sepIt(row.stop, ',').padEnd(11) }}  |  {{ row.alignment }}
+<template v-for="row in consInfo[selectedTranscript]">{{ row.chrom.padStart(5) }} {{ sepIt(row.start, ',').padStart(11) }}-{{ sepIt(row.stop, ',').padEnd(11) }}  |  {{ row.alignment }}
 </template></pre>
       </div>
       <div v-else class="text-muted text-center font-italic"></div> </v-card-text
   ></v-card>
-  <!-- <div class="card">
-    <div class="card-header">
-      <h4 class="card-title">UCSC 100 Vertebrate Conservation</h4>
-    </div>
-    <div class="card-body">
-      <pre
-        v-if="props.knownGeneAa.length > 0"
-      ><b><u>  chr  start      end          |  alignment                                                                                           </u></b>
-<template v-for="(row, index) in props.knownGeneAa" :key="index">{{ row.chromosome.padStart(5) }} {{ row.start.toLocaleString().padStart(11) }}-{{ row.end.toLocaleString().padEnd(11) }}  |  {{ row.alignment }}
-</template></pre>
-      <p v-else class="text-muted text-center">
-        <i>No conservation information available.</i>
-      </p>
-    </div>
-  </div> -->
 </template>

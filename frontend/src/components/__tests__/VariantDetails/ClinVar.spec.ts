@@ -1,24 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
+import * as clinVarInfo from '@/assets/__tests__/BRCA1VariantClinVar.json'
 import ClinVar from '@/components/VariantDetails/ClinVar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
-
-const clinVarInfo = {
-  chrom: '17',
-  pos: 41215920,
-  reference: 'G',
-  alternative: 'T',
-  vcv: 'VCV000055407',
-  reference_assertions: [
-    {
-      rcv: 'RCV000077599',
-      title:
-        'NM_007294.4(BRCA1):c.5123C>A (p.Ala1708Glu) AND Breast-ovarian cancer, familial, susceptibility to, 1',
-      clinical_significance: 0,
-      review_status: 1
-    }
-  ]
-}
 
 describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info', async () => {
@@ -31,13 +15,16 @@ describe.concurrent('ClinVar', async () => {
       }
     )
     expect(wrapper.text()).toContain('VCV000055407')
+    const stars = wrapper.findAll('.mdi-star')
+    expect(stars.length).toBe(18)
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(4)
+    expect(starsOutline.length).toBe(27)
   })
 
   it('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
-    clinVarInfoStars.reference_assertions[0].clinical_significance = 3
+    clinVarInfoStars.referenceAssertions[0].reviewStatus =
+      'REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED'
     const { wrapper } = await setupMountedComponents(
       { component: ClinVar, template: false },
       {
@@ -47,10 +34,10 @@ describe.concurrent('ClinVar', async () => {
       }
     )
     expect(wrapper.text()).toContain('VCV000055407')
-    const stars = wrapper.findAll('.mdi-star-outline')
-    expect(stars.length).toBe(4)
+    const stars = wrapper.findAll('.mdi-star')
+    expect(stars.length).toBe(12)
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(4)
+    expect(starsOutline.length).toBe(33)
   })
 
   it('renders the ClinVar info (not found)', async () => {

@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
             </a>
           </div>
           <div>
-            <a :href="`https://search.thegencc.org/genes/${props.hgnc?.hgnc_id}`" target="_blank">
+            <a :href="`https://search.thegencc.org/genes/${props.hgnc?.hgncId}`" target="_blank">
               <v-icon>mdi-launch</v-icon>
               GenCC
             </a>
@@ -61,9 +61,9 @@ const props = withDefaults(defineProps<Props>(), {
           </div>
           <div>
             <a
-              :href="`https://www.omim.org/entry/${props.hgnc?.omim_id[0]}`"
+              :href="`https://www.omim.org/entry/${props.hgnc?.omimId[0]}`"
               target="_blank"
-              v-if="props.hgnc?.omim_id.length"
+              v-if="props.hgnc?.omimId.length"
             >
               <v-icon>mdi-launch</v-icon>
               OMIM
@@ -102,8 +102,8 @@ const props = withDefaults(defineProps<Props>(), {
           </div>
 
           <div>
-            <template v-if="props.hgnc?.uniprot_ids?.length">
-              <template v-for="(uniprotid, index) in props.hgnc.uniprot_ids" :key="index">
+            <template v-if="props.hgnc?.uniprotIds?.length">
+              <template v-for="(uniprotid, index) in props.hgnc.uniprotIds" :key="index">
                 <template v-if="index > 0">, </template>
                 <a
                   :href="`http://missense3d.bc.ic.ac.uk:8080/search_direct?uniprot=${uniprotid}`"
@@ -118,7 +118,7 @@ const props = withDefaults(defineProps<Props>(), {
             <span v-else> <v-icon>mdi-launch</v-icon> Missense3D </span>
           </div>
           <div>
-            <a :href="`https://varsome.com/gene/hg19/${props.hgnc?.hgnc_id}`" target="_blank">
+            <a :href="`https://varsome.com/gene/hg19/${props.hgnc?.hgncId}`" target="_blank">
               <v-icon>mdi-launch</v-icon>
               VarSome
             </a>

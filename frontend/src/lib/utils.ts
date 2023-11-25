@@ -144,7 +144,7 @@ export const search = async (searchTerm: string, genomeRelease: string) => {
       })
     ],
     [
-      /^chr\d+:\d+:[ACGT]{1,50}:[ACGT]{1,50}$/,
+      /^(?:chr)?(?:\d+|X|Y|MT):\d+:[ACGT]{1,50}:[ACGT]{1,50}$/,
       (): RouteLocationFragment => ({
         name: 'variant',
         params: {

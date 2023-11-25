@@ -11,7 +11,15 @@ const adminUser: UserData = {
   email: 'admin@example.com',
   is_active: true,
   is_superuser: true,
-  is_verified: true
+  is_verified: true,
+  oauth_accounts: [
+    {
+      id: '2c0a153e-5e8c-11ee-8c99-0242ac120002',
+      oauth_name: 'google',
+      account_id: '1234567890',
+      account_email: 'admin@example.com'
+    }
+  ]
 }
 
 describe.concurrent('UserProfileButton', () => {

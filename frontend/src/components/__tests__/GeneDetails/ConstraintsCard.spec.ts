@@ -10,7 +10,7 @@ describe.concurrent('ConstraintsCard', async () => {
       { component: ConstraintsCard, template: false },
       {
         props: {
-          gnomadConstraints: BRCA1GeneInfo['genes']['HGNC:1100']['gnomad_constraints']
+          gnomadConstraints: BRCA1GeneInfo['genes']['HGNC:1100']['gnomadConstraints']
         }
       }
     )

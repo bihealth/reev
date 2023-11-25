@@ -10,7 +10,7 @@ describe.concurrent('SupplementaryList', async () => {
       { component: SupplementaryList, template: false },
       {
         props: {
-          acmgSf: BRCA1GeneInfo['genes']['HGNC:1100']['acmg_sf']
+          acmgSf: BRCA1GeneInfo['genes']['HGNC:1100']['acmgSf']
         }
       }
     )

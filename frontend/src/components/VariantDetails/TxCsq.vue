@@ -22,8 +22,20 @@ const props = defineProps<{ txCsq: any }>()
           <tr v-for="txCsq in props.txCsq" :key="txCsq">
             <td>{{ txCsq['gene_symbol'] }}</td>
             <td>
-              {{ txCsq['feature_id'] }}
-              ({{ txCsq['feature_biotype'] }})
+              {{ txCsq.feature_id }}
+              <small> ({{ txCsq.feature_biotype }}) </small>
+              <span
+                class="badge badge-primary"
+                v-if="(txCsq.feature_tag ?? []).includes('ManeSelect')"
+              >
+                MANE Select
+              </span>
+              <span
+                class="badge badge-secondary"
+                v-if="(txCsq.feature_tag ?? []).includes('ManePlusClinical')"
+              >
+                MANE Plus Clinical
+              </span>
             </td>
             <td>{{ (txCsq['consequences'] ?? []).join(', ') }}</td>
             <td>{{ txCsq['hgvs_t'] }}</td>

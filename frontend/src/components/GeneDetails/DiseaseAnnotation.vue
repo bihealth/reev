@@ -23,14 +23,14 @@ const props = withDefaults(defineProps<Props>(), {
         <tbody>
           <tr>
             <th>
-              <div v-if="props.dbnsfp?.orphanet_disorder?.length">
-                {{ props.dbnsfp.orphanet_disorder.join(', ') }}
+              <div v-if="props.dbnsfp?.orphanetDisorder?.length">
+                {{ props.dbnsfp.orphanetDisorder.join(', ') }}
               </div>
               <div v-else>No Orphanet disorders annotated in dbNSFP.</div>
             </th>
             <th>
-              <div v-if="props.dbnsfp?.mim_disease?.length">
-                {{ props.dbnsfp.mim_disease.join(', ') }}
+              <div v-if="props.dbnsfp?.mimDisease?.length">
+                {{ props.dbnsfp.mimDisease.join(', ') }}
               </div>
               <div v-else>No OMIM diseases annotated in dbNSFP.</div>
             </th>
