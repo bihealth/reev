@@ -8,12 +8,33 @@ import router from '@/router'
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any
 
-// const props = defineProps<{
-//   genesInfos?: GeneInfo[]
-// }>()
+const props = defineProps<{
+  genesInfos?: GeneInfo[]
+}>()
 
 const currentGeneInfos: Ref<any> = ref(null)
 const itemsPerPage = ref(10)
+
+const clingenDosageScore: { [key: string]: number } = {
+  CLINGEN_DOSAGE_SCORE_UNKNOWN: 0,
+  CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE: 3,
+  CLINGEN_DOSAGE_SCORE_SOME_EVIDENCE_AVAILABLE: 2,
+  CLINGEN_DOSAGE_SCORE_LITTLE_EVIDENCE: 1,
+  CLINGEN_DOSAGE_SCORE_NO_EVIDENCE_AVAILABLE: 0,
+  CLINGEN_DOSAGE_SCORE_RECESSIVE: 30,
+  CLINGEN_DOSAGE_SCORE_UNLIKELY: 40
+}
+
+const clingenDosageLabel: { [key: string]: string } = {
+  CLINGEN_DOSAGE_SCORE_UNKNOWN: 'unknown',
+  CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE:
+    'sufficient evidence for dosage pathogenicity',
+  CLINGEN_DOSAGE_SCORE_SOME_EVIDENCE_AVAILABLE: 'some evidence for dosage pathogenicity',
+  CLINGEN_DOSAGE_SCORE_LITTLE_EVIDENCE: 'little evidence for dosage pathogenicity',
+  CLINGEN_DOSAGE_SCORE_NO_EVIDENCE_AVAILABLE: 'no evidence for dosage pathogenicity',
+  CLINGEN_DOSAGE_SCORE_RECESSIVE: 'gene associated with autosomal recessive phenotype',
+  CLINGEN_DOSAGE_SCORE_UNLIKELY: 'dosage sensitivity unlikely'
+}
 
 const headers = [
   {
@@ -73,59 +94,16 @@ const headers = [
     sortable: true
   },
   {
-    title: 'CG haploin.',
+    title: 'ClinGen HI',
     width: 100,
-    key: 'clingen.haploSummary'
+    key: 'clingen.haploinsufficiencyScore'
   },
   {
-    title: 'CG triploin.',
+    title: 'ClinGen TS',
     width: 100,
-    key: 'clingen.triploSummary'
+    key: 'clingen.triplosensitivityScore'
   }
 ]
-
-/** Compute list of gene infos to protect against empty `props.genesInfos`. */
-const items: ComputedRef<GeneInfo[]> = computed(() => {
-  return []
-  // if (props.genesInfos) {
-  //   const genesInfos = JSON.parse(JSON.stringify(props.genesInfos))
-  //   for (const geneInfo of genesInfos) {
-  //     if (geneInfo.clingen) {
-  //       const haploLabels = new Map<number, string>()
-  //       const triploLabels = new Map<number, string>()
-
-  //       for (const diseaseRecord of geneInfo.clingen.disease_records) {
-  //         if (diseaseRecord.dosage_haploinsufficiency_assertion?.length) {
-  //           const val = parseInt(diseaseRecord.dosage_haploinsufficiency_assertion.split(' ')[0])
-  //           haploLabels.set(val, diseaseRecord.dosage_haploinsufficiency_assertion)
-  //         }
-  //         if (diseaseRecord.dosage_triplosensitivity_assertion?.length) {
-  //           const val = parseInt(diseaseRecord.dosage_triplosensitivity_assertion.split(' ')[0])
-  //           triploLabels.set(val, diseaseRecord.dosage_triplosensitivity_assertion)
-  //         }
-  //       }
-
-  //       if (haploLabels.size) {
-  //         geneInfo.clingen.haplo_summary = Math.max(...haploLabels.keys())
-  //         geneInfo.clingen.haplo_label = haploLabels.get(geneInfo.clingen.haplo_summary)
-  //       } else {
-  //         geneInfo.clingen.haplo_summary = null
-  //         geneInfo.clingen.haplo_label = null
-  //       }
-  //       if (triploLabels.size) {
-  //         geneInfo.clingen.triplo_summary = Math.max(...triploLabels.keys())
-  //         geneInfo.clingen.triplo_label = triploLabels.get(geneInfo.clingen.triplo_summary)
-  //       } else {
-  //         geneInfo.clingen.triplo_summary = null
-  //         geneInfo.clingen.triplo_label = null
-  //       }
-  //     }
-  //   }
-  //   return genesInfos
-  // } else {
-  //   return []
-  // }
-})
 
 /** Show gene info on click. */
 const onRowClicked = (event: Event, { item }: { item: GeneInfo }): void => {
@@ -159,11 +137,11 @@ const performSearch = async (geneSymbol: string) => {
         <v-data-table
           v-model:items-per-page="itemsPerPage"
           :headers="headers"
-          :items="items"
-          :loading="!items"
+          :items="props.genesInfos ?? []"
+          :loading="!props.genesInfos?.length"
           buttons-pagination
           show-index
-          item-key="gene_name"
+          item-key="dbnsfp.geneName"
           @click:row="onRowClicked"
         >
           <template v-slot:[`item.dbnsfp.geneName`]="{ item }">
@@ -246,16 +224,16 @@ const performSearch = async (geneSymbol: string) => {
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.clingen.haploSummary`]="{ value }">
+          <template v-slot:[`item.clingen.haploinsufficiencyScore`]="{ value }">
             <template v-if="value">
-              <abbr :title="value">{{ value }}</abbr>
+              <abbr :title="clingenDosageLabel[value]">{{ clingenDosageScore[value] }}</abbr>
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.clingen.triploSummary`]="{ value }">
+          <template v-slot:[`item.clingen.triplosensitivityScore`]="{ value }">
             <template v-if="value">
-              <abbr :title="value">{{ value }}</abbr>
+              <abbr :title="clingenDosageLabel[value]">{{ clingenDosageScore[value] }}</abbr>
             </template>
             <template v-else> &mdash; </template>
           </template>
