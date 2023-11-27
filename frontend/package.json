@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite --port 8081",
+    "dev-public": "vite --host 0.0.0.0 --port 8081",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "test:unit": "vitest --coverage",
@@ -19,13 +20,14 @@
     "igv": "^2.15.11",
     "lodash": "^4.17.21",
     "pinia": "^2.1.6",
+    "title-case": "^4.1.2",
     "vega": "^5.25.0",
     "vega-embed": "^6.22.2",
     "vue": "^3.3.4",
     "vue-matomo": "^4.2.0",
     "vue-router": "^4.2.5",
     "vue3-easy-data-table": "^1.5.47",
-    "vuetify": "^3.3.19"
+    "vuetify": "^3.4.0"
   },
   "devDependencies": {
     "@pinia/testing": "^0.1.3",

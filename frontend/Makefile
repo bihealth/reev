@@ -44,3 +44,7 @@ ci: \
 .PHONY: serve
 serve:
 	MODE=development npm run dev
+
+.PHONY: serve-public
+serve-public:
+	MODE=development npm run dev-public

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
+
+import { TISSUE_DETAILED_LABELS, TISSUE_LABELS } from './GtexGenePlot.c'
 
 export interface ExpressionRecord {
   /** Tissue id */
@@ -23,104 +25,72 @@ export interface Props {
 
 const props = withDefaults(defineProps<Props>(), {})
 
-const tissueLabels: { [key: string]: string } = {
-  GTEX_TISSUE_UNKNOWN: 'Unknown',
-  GTEX_TISSUE_ADIPOSE_TISSUE: 'Adipose Tissue',
-  GTEX_TISSUE_ADRENAL_GLAND: 'Adrenal Gland',
-  GTEX_TISSUE_BLOOD: 'Blood',
-  GTEX_TISSUE_BLOOD_VESSEL: 'Blood Vessel',
-  GTEX_TISSUE_BONE_MARROW: 'Bone Marrow',
-  GTEX_TISSUE_BRAIN: 'Brain',
-  GTEX_TISSUE_BREAST: 'Breast',
-  GTEX_TISSUE_CERVIX_UTERI: 'Cervix Uteri',
-  GTEX_TISSUE_COLON: 'Colon',
-  GTEX_TISSUE_ESOPHAGUS: 'Esophagus',
-  GTEX_TISSUE_FALLOPIAN_TUBE: 'Fallopian Tube',
-  GTEX_TISSUE_HEART: 'Heart',
-  GTEX_TISSUE_KIDNEY: 'Kidney',
-  GTEX_TISSUE_LIVER: 'Liver',
-  GTEX_TISSUE_LUNG: 'Lung',
-  GTEX_TISSUE_MUSCLE: 'Muscle',
-  GTEX_TISSUE_NERVE: 'Nerve',
-  GTEX_TISSUE_OVARY: 'Ovary',
-  GTEX_TISSUE_PANCREAS: 'Pancreas',
-  GTEX_TISSUE_PITUITARY: 'Pituitary',
-  GTEX_TISSUE_PROSTATE: 'Prostate',
-  GTEX_TISSUE_SALIVARY_GLAND: 'Salivary Gland',
-  GTEX_TISSUE_SKIN: 'Skin',
-  GTEX_TISSUE_SMALL_INTESTINE: 'Small Intestine',
-  GTEX_TISSUE_SPLEEN: 'Spleen',
-  GTEX_TISSUE_STOMACH: 'Stomach',
-  GTEX_TISSUE_TESTIS: 'Testis',
-  GTEX_TISSUE_THYROID: 'Thyroid',
-  GTEX_TISSUE_UTERUS: 'Uterus',
-  GTEX_TISSUE_VAGINA: 'Vagina'
+// -- interactive plot configuration -------------------------------------------
+
+/** Sort order. */
+enum SortOrder {
+  /** Sort alphabetically by label */
+  ALPHA = 'alphabetical',
+  /** Sort by TPM metric */
+  TPM = 'tpm'
 }
 
-const tissueDetailedLabels: { [key: string]: string } = {
-  GTEX_TISSUE_DETAILED_UNKNOWN: 'Unknown',
-  GTEX_TISSUE_DETAILED_ADIPOSE_SUBCUTANEOUS: 'Adipose - Subcutaneous',
-  GTEX_TISSUE_DETAILED_ADIPOSE_VISCERAL_OMENTUM: 'Adipose - Visceral (Omentum)',
-  GTEX_TISSUE_DETAILED_ADRENAL_GLAND: 'Adrenal Gland',
-  GTEX_TISSUE_DETAILED_ARTERY_AORTA: 'Artery - Aorta',
-  GTEX_TISSUE_DETAILED_ARTERY_CORONARY: 'Artery - Coronary',
-  GTEX_TISSUE_DETAILED_ARTERY_TIBIAL: 'Artery - Tibial',
-  GTEX_TISSUE_DETAILED_BLADDER: 'Bladder',
-  GTEX_TISSUE_DETAILED_BRAIN_AMYGDALA: 'Brain - Amygdala',
-  GTEX_TISSUE_DETAILED_BRAIN_ANTERIOR_CINGULATE_CORTEX: 'Brain - Anterior cingulate cortex (BA24)',
-  GTEX_TISSUE_DETAILED_BRAIN_CAUDATE_BASAL_GANGLIA: 'Brain - Caudate (basal ganglia)',
-  GTEX_TISSUE_DETAILED_BRAIN_CEREBELLAR_HEMISPHERE: 'Brain - Cerebellar Hemisphere',
-  GTEX_TISSUE_DETAILED_BRAIN_CEREBELLUM: 'Brain - Cerebellum',
-  GTEX_TISSUE_DETAILED_BRAIN_CORTEX: 'Brain - Cortex',
-  GTEX_TISSUE_DETAILED_BRAIN_FRONTAL_CORTEX: 'Brain - Frontal Cortex (BA9)',
-  GTEX_TISSUE_DETAILED_BRAIN_HIPPOCAMPUS: 'Brain - Hippocampus',
-  GTEX_TISSUE_DETAILED_BRAIN_HYPOTHALAMUS: 'Brain - Hypothalamus',
-  GTEX_TISSUE_DETAILED_BRAIN_NUCLEUS_ACCUMBENS: 'Brain - Nucleus accumbens (basal ganglia)',
-  GTEX_TISSUE_DETAILED_BRAIN_PUTAMEN_BASAL_GANGLIA: 'Brain - Putamen (basal ganglia)',
-  GTEX_TISSUE_DETAILED_BRAIN_SPINAL_CORD: 'Brain - Spinal cord (cervical c-1)',
-  GTEX_TISSUE_DETAILED_BRAIN_SUBSTANTIA_NIGRA: 'Brain - Substantia nigra',
-  GTEX_TISSUE_DETAILED_BREAST_MAMMARY_TISSUE: 'Breast - Mammary Tissue',
-  GTEX_TISSUE_DETAILED_CELLS_CULTURED_FIBROBLASTS: 'Cells - Cultured fibroblasts',
-  GTEX_TISSUE_DETAILED_CELLS_EBV_TRANSFORMED_LYMPHOCYTES: 'Cells - EBV-transformed lymphocytes',
-  GTEX_TISSUE_DETAILED_CELLS_LEUKEMIA_CELL_LINE: 'Cells - Leukemia cell line (CML)',
-  GTEX_TISSUE_DETAILED_CERVIX_ECTOCERVIX: 'Cervix - Ectocervix',
-  GTEX_TISSUE_DETAILED_CERVIX_ENDOCERVIX: 'Cervix - Endocervix',
-  GTEX_TISSUE_DETAILED_COLON_SIGMOID: 'Colon - Sigmoid',
-  GTEX_TISSUE_DETAILED_COLON_TRANSVERSE: 'Colon - Transverse',
-  GTEX_TISSUE_DETAILED_ESOPHAGUS_GASTROESOPHAGEAL_JUNCTION: 'Esophagus - Gastroesophageal Junction',
-  GTEX_TISSUE_DETAILED_ESOPHAGUS_MUCOSA: 'Esophagus - Mucosa',
-  GTEX_TISSUE_DETAILED_ESOPHAGUS_MUSCULARIS: 'Esophagus - Muscularis',
-  GTEX_TISSUE_DETAILED_FALLOPIAN_TUBE: 'Fallopian Tube',
-  GTEX_TISSUE_DETAILED_HEART_ATRIAL_APPENDAGE: 'Heart - Atrial Appendage',
-  GTEX_TISSUE_DETAILED_HEART_LEFT_VENTRICLE: 'Heart - Left Ventricle',
-  GTEX_TISSUE_DETAILED_KIDNEY_CORTEX: 'Kidney - Cortex',
-  GTEX_TISSUE_DETAILED_KIDNEY_MEDULLA: 'Kidney - Medulla',
-  GTEX_TISSUE_DETAILED_LIVER: 'Liver',
-  GTEX_TISSUE_DETAILED_LUNG: 'Lung',
-  GTEX_TISSUE_DETAILED_MINOR_SALIVARY_GLAND: 'Minor Salivary Gland',
-  GTEX_TISSUE_DETAILED_MUSCLE_SKELETAL: 'Muscle - Skeletal',
-  GTEX_TISSUE_DETAILED_NERVE_TIBIAL: 'Nerve - Tibial',
-  GTEX_TISSUE_DETAILED_OVARY: 'Ovary',
-  GTEX_TISSUE_DETAILED_PANCREAS: 'Pancreas',
-  GTEX_TISSUE_DETAILED_PITUITARY: 'Pituitary',
-  GTEX_TISSUE_DETAILED_PROSTATE: 'Prostate',
-  GTEX_TISSUE_DETAILED_SALIVARY_GLAND: 'Salivary Gland',
-  GTEX_TISSUE_DETAILED_SKIN_NOT_SUN_EXPOSED_SUPRAPUBIC: 'Skin - Not Sun Exposed (Suprapubic)',
-  GTEX_TISSUE_DETAILED_SKIN_SUN_EXPOSED_LOWER_LEG: 'Skin - Sun Exposed (Lower leg)',
-  GTEX_TISSUE_DETAILED_SMALL_INTESTINE_TERMINAL_ILEUM: 'Small Intestine - Terminal Ileum',
-  GTEX_TISSUE_DETAILED_SPLEEN: 'Spleen',
-  GTEX_TISSUE_DETAILED_STOMACH: 'Stomach',
-  GTEX_TISSUE_DETAILED_TESTIS: 'Testis',
-  GTEX_TISSUE_DETAILED_THYROID: 'Thyroid',
-  GTEX_TISSUE_DETAILED_UTERUS: 'Uterus',
-  GTEX_TISSUE_DETAILED_VAGINA: 'Vagina',
-  GTEX_TISSUE_DETAILED_WHOLE_BLOOD: 'Whole Blood'
+/** Sort order configuration (currently static) */
+const sortOrder = ref<SortOrder>(SortOrder.TPM)
+
+// -- data for Vega plot -------------------------------------------------------
+
+/** Interface for the plot data. */
+interface VegaData {
+  /** Tissue label */
+  tissue: string
+  /** Detailed tissue label */
+  tissueDetailed: string
+  /** Lower quantile */
+  lower: number
+  /** First quartile */
+  q1: number
+  /** Median */
+  median: number
+  /** Third quartile */
+  q3: number
+  /** Upper quantile */
+  upper: number
 }
 
-const vegaData = computed(() => {
-  return props?.expressionRecords?.map((record) => ({
-    tissue: tissueLabels[record.tissue],
-    tissueDetailed: tissueDetailedLabels[record.tissueDetailed],
+/** Compute data values for Vega plot. */
+const vegaData = computed<VegaData[]>(() => {
+  if (!props?.expressionRecords?.length) {
+    return []
+  }
+
+  let expressionRecords = Object.assign([], props?.expressionRecords)
+  if (sortOrder.value === SortOrder.ALPHA) {
+    expressionRecords.sort((a: any, b: any) => {
+      const aTissue = TISSUE_LABELS[a.tissue]
+      const bTissue = TISSUE_LABELS[b.tissue]
+      if (aTissue < bTissue) {
+        return -1
+      } else if (aTissue > bTissue) {
+        return 1
+      } else {
+        return 0
+      }
+    })
+  } else {
+    expressionRecords.sort((a: any, b: any) => {
+      if (a.tpms[2] < b.tpms[2]) {
+        return 1
+      } else if (a.tpms[2] > b.tpms[2]) {
+        return -1
+      } else {
+        return 0
+      }
+    })
+  }
+  return expressionRecords.map((record: any) => ({
+    tissue: TISSUE_LABELS[record.tissue],
+    tissueDetailed: TISSUE_DETAILED_LABELS[record.tissueDetailed],
     lower: record.tpms[0],
     q1: record.tpms[1],
     median: record.tpms[2],
@@ -129,6 +99,7 @@ const vegaData = computed(() => {
   }))
 })
 
+/** The encoding for the Vega plot. */
 const vegaEncoding = {
   x: {
     field: 'tissueDetailed',
@@ -138,6 +109,7 @@ const vegaEncoding = {
   }
 }
 
+/** The layer definition for the Vega plot. */
 const vegaLayer = [
   {
     mark: { type: 'rule', tooltip: { content: 'data' } },
@@ -174,37 +146,41 @@ const vegaLayer = [
 </script>
 
 <template>
-  <v-card v-if="props.ensemblGeneId">
-    <v-card-title>
-      GTEx Expression
-      <small>
-        <a
-          :href="`https://gtexportal.org/home/gene/${props.ensemblGeneId}`"
+  <!-- no ENSG => display loader -->
+  <template v-if="!ensemblGeneId?.length">
+    <v-skeleton-loader class="mt-3 mx-auto border" type="image,button"></v-skeleton-loader>
+  </template>
+
+  <!-- otherwise, display actual card -->
+  <template v-else>
+    <v-card class="mt-3">
+      <v-card-title class="pb-0"> Expression </v-card-title>
+      <v-card-subtitle class="text-overline">
+        Tissue-Specific Gene Expression from GTeX
+      </v-card-subtitle>
+      <v-card-text class="pt-3 pb-0">
+        <div>
+          <VegaPlot
+            data-name="expression"
+            :data-values="vegaData"
+            :encoding="vegaEncoding"
+            :layer="vegaLayer"
+            :mark="false"
+            :height="300"
+            :width="1200"
+            renderer="svg"
+          />
+        </div>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn
+          :href="`https://gtexportal.org/home/gene/${ensemblGeneId ?? ''}`"
           target="_blank"
-          v-if="props.ensemblGeneId"
+          prepend-icon="mdi-launch"
         >
-          <v-icon>mdi-launch</v-icon>
-          GTEx Portal
-        </a>
-      </small>
-    </v-card-title>
-    <v-divider />
-    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-      <figcaption class="figure-caption text-center">
-        Bulk tissue gene expression for gene {{ props.geneSymbol }}
-      </figcaption>
-      <VegaPlot
-        :data-values="vegaData"
-        :encoding="vegaEncoding"
-        :layer="vegaLayer"
-        :mark="false"
-        :height="300"
-        renderer="svg"
-      />
-    </figure>
-  </v-card>
-  <v-card v-else>
-    <v-card-title>Loading gene information</v-card-title>
-    <v-progress-circular indeterminate></v-progress-circular>
-  </v-card>
+          GTeX Portal
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+  </template>
 </template>

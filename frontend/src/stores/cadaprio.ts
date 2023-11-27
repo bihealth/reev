@@ -14,7 +14,7 @@ export interface GeneRank {
   score: number
   gene_symbol: string
   ncbi_gene_id: number
-  hgnc_id: number
+  hgnc_id: string
 }
 
 export const useCadaPrioStore = defineStore('cadaPrio', () => {

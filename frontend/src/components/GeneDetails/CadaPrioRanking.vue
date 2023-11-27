@@ -1,75 +1,49 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed } from 'vue'
 
-import { roundIt } from '@/lib/utils'
-import { useCadaPrioStore } from '@/stores/cadaprio'
-import { useCaseStore } from '@/stores/case'
-import { StoreState } from '@/stores/misc'
+import { roundIt, separateIt } from '@/lib/utils'
+import { type GeneRank, useCadaPrioStore } from '@/stores/cadaprio'
+import { type HpoTerm, useCaseStore } from '@/stores/case'
+
+export interface Props {
+  /** HGNC ID of gene to display */
+  hgncId: string | null
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  hgncId: null
+})
 
 const caseStore = useCaseStore()
 const cadaPrioStore = useCadaPrioStore()
-const cadaPrioRankingFields = ref([
-  { title: '#', key: 'rank' },
-  { title: 'Gene Symbol', key: 'gene_symbol' },
-  { title: 'Score', key: 'score' }
-])
 
-const loadDataToStore = async () => {
-  await caseStore.loadCase()
-  if (caseStore.caseInfo.hpoTerms.length > 0) {
-    const hpoTermsList: string[] = caseStore.caseInfo.hpoTerms.map((term) => term.term_id)
-    await cadaPrioStore.loadData(hpoTermsList)
-  }
-}
-
-onMounted(async () => {
-  loadDataToStore()
+const caseHpoTerms = computed<HpoTerm[]>(() => {
+  return caseStore.caseInfo.hpoTerms
 })
 
-watch(
-  () => caseStore.caseInfo.hpoTerms,
-  async () => {
-    if (caseStore.caseInfo.hpoTerms.length > 0) {
-      const hpoTermsList: string[] = caseStore.caseInfo.hpoTerms.map((term) => term.term_id)
-      await cadaPrioStore.loadData(hpoTermsList)
-    }
-  }
-)
+const geneRank = computed<GeneRank | null>(() => {
+  return (
+    (cadaPrioStore.geneRanking ?? []).find((geneRank) => {
+      return geneRank.hgnc_id === props.hgncId
+    }) ?? null
+  )
+})
 </script>
 
 <template>
-  <v-card id="gene-ranking" class="gene-item">
-    <div v-if="cadaPrioStore.geneRanking">
-      <v-card-title>Cada-prio gene ranking for current HPO:</v-card-title>
-      <v-card-text>
-        <v-data-table
-          :headers="cadaPrioRankingFields as any"
-          :items="cadaPrioStore.geneRanking"
-          :items-per-page="10"
-          density="compact"
-        >
-          <template v-slot:[`item.gene_symbol`]="{ item }">
-            <router-link
-              :to="{ name: 'gene', params: { searchTerm: item.hgnc_id, genomeRelease: 'grch38' } }"
-              target="_blank"
-            >
-              {{ item.gene_symbol }}
-            </router-link>
-          </template>
+  <v-sheet color="blue-grey-lighten-2" class="px-3 pt-1 pb-3 rounded h-100 text-center">
+    <div class="text-overline mb-1" style="font-size: 120% !important">Gene-to-Phenotype Rank</div>
 
-          <template v-slot:[`item.score`]="{ item }">
-            <span v-html="roundIt(item.score, 2)" />
-          </template>
-        </v-data-table>
-      </v-card-text>
-    </div>
-    <div v-else-if="cadaPrioStore.storeState === StoreState.Loading">
-      <v-progress-circular indeterminate></v-progress-circular>
-    </div>
+    <div v-if="!caseStore.caseInfo.hpoTerms.length">No Case HPO terms</div>
+    <div v-else-if="!geneRank">No Rank Computed</div>
     <div v-else>
-      <v-card-text>
-        <p>No gene ranking for current phenotype was found. Did you specify HPO terms?</p>
-      </v-card-text>
+      <div class="text-h2 mb-6 mt-6">#{{ separateIt(geneRank?.rank) }}</div>
+      <div class="text-caption" style="font-size: 120% !important">
+        out of {{ separateIt(cadaPrioStore?.geneRanking?.length ?? 0) }} genes
+      </div>
+      <div class="text-caption font-weight-bold mt-3" style="font-size: 120% !important">
+        CADA score: <span v-html="roundIt(geneRank?.score)" />
+      </div>
     </div>
-  </v-card>
+  </v-sheet>
 </template>

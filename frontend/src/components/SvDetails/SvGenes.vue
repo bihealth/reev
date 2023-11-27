@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { type ComputedRef, type Ref, computed, ref } from 'vue'
 
+import {
+  CLINGEN_DOSAGE_LABELS,
+  CLINGEN_DOSAGE_SCORES
+} from '@/components/GeneDetails/ConstraintsCard.c'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import { roundIt, search } from '@/lib/utils'
 import router from '@/router'
@@ -14,27 +18,6 @@ const props = defineProps<{
 
 const currentGeneInfos: Ref<any> = ref(null)
 const itemsPerPage = ref(10)
-
-const clingenDosageScore: { [key: string]: number } = {
-  CLINGEN_DOSAGE_SCORE_UNKNOWN: 0,
-  CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE: 3,
-  CLINGEN_DOSAGE_SCORE_SOME_EVIDENCE_AVAILABLE: 2,
-  CLINGEN_DOSAGE_SCORE_LITTLE_EVIDENCE: 1,
-  CLINGEN_DOSAGE_SCORE_NO_EVIDENCE_AVAILABLE: 0,
-  CLINGEN_DOSAGE_SCORE_RECESSIVE: 30,
-  CLINGEN_DOSAGE_SCORE_UNLIKELY: 40
-}
-
-const clingenDosageLabel: { [key: string]: string } = {
-  CLINGEN_DOSAGE_SCORE_UNKNOWN: 'unknown',
-  CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE:
-    'sufficient evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_SOME_EVIDENCE_AVAILABLE: 'some evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_LITTLE_EVIDENCE: 'little evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_NO_EVIDENCE_AVAILABLE: 'no evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_RECESSIVE: 'gene associated with autosomal recessive phenotype',
-  CLINGEN_DOSAGE_SCORE_UNLIKELY: 'dosage sensitivity unlikely'
-}
 
 const headers = [
   {
@@ -226,14 +209,14 @@ const performSearch = async (geneSymbol: string) => {
 
           <template v-slot:[`item.clingen.haploinsufficiencyScore`]="{ value }">
             <template v-if="value">
-              <abbr :title="clingenDosageLabel[value]">{{ clingenDosageScore[value] }}</abbr>
+              <abbr :title="CLINGEN_DOSAGE_LABELS[value]">{{ CLINGEN_DOSAGE_SCORES[value] }}</abbr>
             </template>
             <template v-else> &mdash; </template>
           </template>
 
           <template v-slot:[`item.clingen.triplosensitivityScore`]="{ value }">
             <template v-if="value">
-              <abbr :title="clingenDosageLabel[value]">{{ clingenDosageScore[value] }}</abbr>
+              <abbr :title="CLINGEN_DOSAGE_LABELS[value]">{{ CLINGEN_DOSAGE_SCORES[value] }}</abbr>
             </template>
             <template v-else> &mdash; </template>
           </template>

@@ -5,6 +5,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { CaseInfoClient } from '@/api/caseinfo'
+import { useCadaPrioStore } from '@/stores/cadaprio'
 import { StoreState } from '@/stores/misc'
 
 export enum Inheritance {
@@ -180,12 +181,22 @@ export const useCaseStore = defineStore('case', () => {
     }
   }
 
+  /** Refresh the `cadaPrioStore` when the current case's terms change. */
+  const refreshCadaPrioStore = async () => {
+    const cadaPrioStore = useCadaPrioStore()
+    await cadaPrioStore.loadData(caseInfo.value.hpoTerms.map((item) => item.term_id))
+  }
+
   const loadCase = async () => {
     storeState.value = StoreState.Loading
     try {
       const client = new CaseInfoClient()
       const result: any = await client.fetchCaseInfo()
       caseInfo.value = apiResponseToFrontendCase(result as APIResponse)
+
+      // refresh CADA prio store after loading case
+      await refreshCadaPrioStore()
+
       storeState.value = StoreState.Active
     } catch (e) {
       clearData()
@@ -207,6 +218,10 @@ export const useCaseStore = defineStore('case', () => {
         const updatedCase = await client.updateCaseInfo(caseData)
         caseInfo.value = apiResponseToFrontendCase(updatedCase as APIResponse)
       }
+
+      // refresh CADA prio store after loading case
+      await refreshCadaPrioStore()
+
       storeState.value = StoreState.Active
     } catch (e) {
       storeState.value = StoreState.Error
@@ -223,6 +238,10 @@ export const useCaseStore = defineStore('case', () => {
         return
       }
       clearData()
+
+      // refresh CADA prio store after clearing the case
+      await refreshCadaPrioStore()
+
       storeState.value = StoreState.Active
     } catch (e) {
       storeState.value = StoreState.Error

@@ -62,6 +62,7 @@ const vegaLiteSpec = computed(() => {
     height: props.height,
     description: props.description,
     params: props.params,
+    background: 'transparent',
     data: {
       values: props.dataValues,
       name: props.dataName
@@ -128,7 +129,7 @@ defineExpose({
 </template>
 
 <style>
-.vega-embed summary {
+/* .vega-embed summary {
   top: -25px !important;
   left: -5px;
   right: unset !important;
@@ -148,5 +149,5 @@ defineExpose({
 .vega-embed .vega-actions::after {
   left: 6px !important;
   right: unset !important;
-}
+} */
 </style>
