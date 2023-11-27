@@ -1,3 +1,4 @@
+from app.schemas.acmgseqvar import AcmgSeqVarCreate, AcmgSeqVarRead, AcmgSeqVarUpdate  # noqa
 from app.schemas.adminmsg import AdminMessageCreate, AdminMessageRead, AdminMessageUpdate  # noqa
 from app.schemas.auth import OAuth2ProviderConfig, OAuth2ProviderPublic  # noqa
 from app.schemas.bookmark import BookmarkCreate, BookmarkRead, BookmarkUpdate  # noqa

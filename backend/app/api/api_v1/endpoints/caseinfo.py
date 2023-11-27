@@ -67,27 +67,6 @@ async def get_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
         return response
 
 
-@router.delete(
-    "/delete-by-id",
-    dependencies=[Depends(current_active_superuser)],
-    response_model=schemas.CaseInfoRead,
-)
-async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
-    """
-    Delete a Case Information by id. Available only for superusers.
-
-    :param id: Case Information id
-    :type id: uuid
-    :return: Case Information
-    :rtype: dict
-    """
-    response = await crud.caseinfo.remove(db, id=id)
-    if not response:
-        raise HTTPException(status_code=404, detail="Case Information not found")
-    else:
-        return response
-
-
 @router.get("/list", response_model=list[schemas.CaseInfoRead])
 async def list_caseinfos_for_user(
     db: AsyncSession = Depends(deps.get_db),
@@ -138,6 +117,27 @@ async def update_caseinfo_for_user(
     if not caseinfo:
         raise HTTPException(status_code=404, detail="Case Information not found")
     return await crud.caseinfo.update(db, db_obj=caseinfo, obj_in=caseinfoupdate)
+
+
+@router.delete(
+    "/delete-by-id",
+    dependencies=[Depends(current_active_superuser)],
+    response_model=schemas.CaseInfoRead,
+)
+async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
+    """
+    Delete a Case Information by id. Available only for superusers.
+
+    :param id: Case Information id
+    :type id: uuid
+    :return: Case Information
+    :rtype: dict
+    """
+    response = await crud.caseinfo.remove(db, id=id)
+    if not response:
+        raise HTTPException(status_code=404, detail="Case Information not found")
+    else:
+        return response
 
 
 @router.delete("/delete", response_model=schemas.CaseInfoRead)

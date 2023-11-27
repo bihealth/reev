@@ -4,12 +4,13 @@ from fastapi import APIRouter
 from httpx_oauth.clients.openid import OpenID
 from httpx_oauth.errors import GetIdEmailError
 
-from app.api.api_v1.endpoints import adminmsgs, auth, bookmarks, caseinfo, utils
+from app.api.api_v1.endpoints import acmgseqvar, adminmsgs, auth, bookmarks, caseinfo, utils
 from app.core.auth import auth_backend_bearer, auth_backend_cookie, fastapi_users
 from app.core.config import settings
 from app.schemas.user import UserRead, UserUpdate
 
 api_router = APIRouter()
+api_router.include_router(acmgseqvar.router, prefix="/acmgseqvar", tags=["acmgseqvar"])
 api_router.include_router(adminmsgs.router, prefix="/adminmsgs", tags=["adminmsgs"])
 api_router.include_router(bookmarks.router, prefix="/bookmarks", tags=["bookmarks"])
 api_router.include_router(utils.router, prefix="/utils", tags=["utils"])

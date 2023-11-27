@@ -1,3 +1,4 @@
+from app.models.acmgseqvar import AcmgSeqVar  # noqa
 from app.models.adminmsg import AdminMessage  # noqa
 from app.models.bookmark import Bookmark  # noqa
 from app.models.caseinfo import CaseInfo  # noqa
