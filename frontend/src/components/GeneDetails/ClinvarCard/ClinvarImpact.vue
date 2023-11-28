@@ -175,7 +175,7 @@ const clinsigColor = (coarseClinsigIdx: number, percent: number): string => {
               :title="`${percent(key, idx)} %`"
             >
               <span
-                class="pa-3 rounded-lg"
+                class="pa-3 rounded-lg text-no-wrap"
                 :style="`background-color: ${clinsigColor(idx, percent(key, idx))}`"
               >
                 {{ separateIt(perCoarseImpactCounts[COARSE_IMPACT_TO_INDEX[key]][idx]) }}
