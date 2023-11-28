@@ -14,7 +14,7 @@ const props = withDefaults(defineProps<Props>(), {
 /** Enumeration fo coarser impacts. */
 enum CoarseImpact {
   UNKNOWN = 'UNKNOWN',
-  OTHER = 'OPTHER',
+  OTHER = 'OTHER',
   NONSENSE = 'NONSENSE',
   MISSENSE_INFRAME = 'MISSENSE_INFRAME',
   NON_CODING = 'NON_CODING',
@@ -92,6 +92,9 @@ const perCoarseImpactCounts = computed(() => {
   if (props.geneClinvar?.perImpactCounts) {
     for (const perImpactCount of props.geneClinvar.perImpactCounts) {
       const coarseImpact = IMPACT_RAW_TO_COARSE[perImpactCount.impact]
+      if (!showCoarseImpact(coarseImpact)) {
+        continue
+      }
       for (let i = 0; i < 5; ++i) {
         const idx = COARSE_IMPACT_TO_INDEX[coarseImpact]
         const idxTotal = COARSE_IMPACT_TO_INDEX[CoarseImpact.TOTAL]
