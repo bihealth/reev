@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CLINGEN_DOSAGE_LABELS_SHORT } from '@/components/GeneDetails/ConstraintsCard.c'
+import { CLINGEN_DOSAGE_LABELS_SHORT } from '@/components/GeneDetails/PathogenicityCard.c'
 import { roundIt } from '@/lib/utils'
 
 export interface Props {

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import AlternativeIdentifiers from '@/components/GeneDetails/AlternativeIdentifiers.vue'
-import ExternalResources from '@/components/GeneDetails/ExternalResources.vue'
-import GeneRifs from '@/components/GeneDetails/GeneRifs.vue'
-import LocusDatabases from '@/components/GeneDetails/LocusDatabases.vue'
+import AlternativeIdentifiers from '@/components/GeneDetails/OverviewCard/AlternativeIdentifiers.vue'
+import ExternalResources from '@/components/GeneDetails/OverviewCard/ExternalResources.vue'
+import GeneRifs from '@/components/GeneDetails/OverviewCard/GeneRifs.vue'
+import LocusDatabases from '@/components/GeneDetails/OverviewCard/LocusDatabases.vue'
 
 export interface Props {
   geneInfo: any

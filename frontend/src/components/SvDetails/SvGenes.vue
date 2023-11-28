@@ -4,7 +4,7 @@ import { type ComputedRef, type Ref, computed, ref } from 'vue'
 import {
   CLINGEN_DOSAGE_LABELS,
   CLINGEN_DOSAGE_SCORES
-} from '@/components/GeneDetails/ConstraintsCard.c'
+} from '@/components/GeneDetails/PathogenicityCard.c'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import { roundIt, search } from '@/lib/utils'
 import router from '@/router'

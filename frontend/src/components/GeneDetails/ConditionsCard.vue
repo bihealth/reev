@@ -3,8 +3,7 @@ import { titleCase } from 'title-case'
 import { computed, ref } from 'vue'
 
 import type { HpoTerm } from '@/api/viguno'
-
-import CadaPrioRanking from './CadaPrioRanking.vue'
+import CadaRanking from '@/components/GeneDetails/ConditionsCard/CadaRanking.vue'
 
 export interface Props {
   geneInfo: any
@@ -169,7 +168,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
             <div v-else class="text-grey font-italic">No OMIM diseases annotated in dbNSFP.</div>
           </v-col>
           <v-col cols="3">
-            <CadaPrioRanking :hgnc-id="geneInfo?.hgnc?.agr" />
+            <CadaRanking :hgnc-id="geneInfo?.hgnc?.agr" />
           </v-col>
         </v-row>
       </v-card-text>

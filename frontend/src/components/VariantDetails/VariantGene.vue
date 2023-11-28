@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue'
 
 const CadaPrioRanking = defineAsyncComponent(
-  () => import('@/components/GeneDetails/CadaPrioRanking.vue')
+  () => import('@/components/GeneDetails/ConditionsCard/CadaRanking.vue')
 )
 export interface Props {
   /** Gene information from annonars. */

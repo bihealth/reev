@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 
-import ClinvarFreqPlot from '@/components/GeneDetails/ClinVarFreqPlot.vue'
-import ClinvarImpact from '@/components/GeneDetails/ClinvarImpact.vue'
+import ClinvarFreqPlot from '@/components/GeneDetails/ClinvarCard/ClinvarFreqPlot.vue'
+import ClinvarImpact from '@/components/GeneDetails/ClinvarCard/ClinvarImpact.vue'
 
 const VariationLandscape = defineAsyncComponent(
-  () => import('@/components/GeneDetails/VariationLandscape.vue')
+  () => import('@/components/GeneDetails/ClinvarCard/VariationLandscape.vue')
 )
 
 export interface Props {

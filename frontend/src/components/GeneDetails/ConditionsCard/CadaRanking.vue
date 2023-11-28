@@ -7,12 +7,10 @@ import { type HpoTerm, useCaseStore } from '@/stores/case'
 
 export interface Props {
   /** HGNC ID of gene to display */
-  hgncId: string | null
+  hgncId?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  hgncId: null
-})
+const props = withDefaults(defineProps<Props>(), {})
 
 const caseStore = useCaseStore()
 const cadaPrioStore = useCadaPrioStore()

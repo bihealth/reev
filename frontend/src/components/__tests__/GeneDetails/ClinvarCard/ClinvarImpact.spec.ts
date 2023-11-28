@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import * as BRCA1ClinVar from '@/assets/__tests__/BRCA1ClinVar.json'
-import ClinvarImpact from '@/components/GeneDetails/ClinvarImpact.vue'
+import ClinvarImpact from '@/components/GeneDetails/ClinvarCard/ClinvarImpact.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ClinvarImpact', async () => {
@@ -14,6 +14,6 @@ describe.concurrent('ClinvarImpact', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('ClinVar By Impact')
+    expect(wrapper.text()).toContain('Impact Counts')
   })
 })

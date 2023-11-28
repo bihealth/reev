@@ -8,16 +8,18 @@ import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 // Components
-const ClinvarCard = defineAsyncComponent(() => import('@/components/GeneDetails/ClinvarCard.vue'))
-const ConstraintsCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ConstraintsCard.vue')
-)
-const DiseaseAnnotation = defineAsyncComponent(
-  () => import('@/components/GeneDetails/DiseaseAnnotation.vue')
-)
-const GtexGenePlot = defineAsyncComponent(() => import('@/components/GeneDetails/GtexGenePlot.vue'))
-const HgncCard = defineAsyncComponent(() => import('@/components/GeneDetails/HgncCard.vue'))
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
+const PathogenicityCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/PathogenicityCard.vue')
+)
+const ConditionsCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ConditionsCard.vue')
+)
+const ExpressionCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ExpressionCard.vue')
+)
+const ClinvarCard = defineAsyncComponent(() => import('@/components/GeneDetails/ClinvarCard.vue'))
 
 export interface Props {
   searchTerm?: string
@@ -121,25 +123,22 @@ const openedSection = ref<string[]>(['gene'])
     </v-navigation-drawer>
     <v-main class="my-3 mx-3">
       <div id="gene-overview">
-        <HgncCard :geneInfo="geneInfoStore.geneInfo" />
+        <OverviewCard :geneInfo="geneInfoStore.geneInfo" />
       </div>
 
       <div id="gene-pathogenicity">
-        <ConstraintsCard :gene-info="geneInfoStore.geneInfo" />
+        <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
       </div>
 
       <div id="phenotype">
         <div id="gene-conditions">
-          <DiseaseAnnotation
-            :geneInfo="geneInfoStore.geneInfo"
-            :hpo-terms="geneInfoStore.hpoTerms"
-          />
+          <ConditionsCard :geneInfo="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
         </div>
       </div>
 
       <div id="gene-expression">
-        <GtexGenePlot
-          :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgncId"
+        <ExpressionCard
+          :gene-symbol="geneInfoStore.geneInfo?.hgnc?.symbol"
           :expression-records="geneInfoStore.geneInfo?.gtex?.records"
           :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
         />

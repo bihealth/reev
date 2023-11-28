@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import GtexGenePlotVue from '@/components/GeneDetails/GtexGenePlot.vue'
+import GtexGenePlotVue from '@/components/GeneDetails/ExpressionCard.vue'
 import VegaPlot from '@/components/VegaPlot.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
@@ -22,7 +22,7 @@ describe.concurrent('GtexGenePlotVue', async () => {
       }
     )
 
-    expect(wrapper.text()).toContain('Bulk tissue gene expression')
+    expect(wrapper.text()).toContain('Tissue-Specific Gene Expression from GTeX')
     const vegaPlot = wrapper.findComponent(VegaPlot)
     expect(vegaPlot.exists()).toBe(true)
   })

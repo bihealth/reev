@@ -38,7 +38,7 @@ export interface CountsRecord {
 
 export interface Props {
   /** Expression records */
-  perFreqCounts: CountsRecord[]
+  perFreqCounts?: CountsRecord[]
 }
 
 const props = withDefaults(defineProps<Props>(), {})

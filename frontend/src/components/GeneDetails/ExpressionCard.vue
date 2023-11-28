@@ -3,7 +3,7 @@ import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
 
-import { TISSUE_DETAILED_LABELS, TISSUE_LABELS } from './GtexGenePlot.c'
+import { TISSUE_DETAILED_LABELS, TISSUE_LABELS } from './ExpressionCard.c'
 
 export interface ExpressionRecord {
   /** Tissue id */

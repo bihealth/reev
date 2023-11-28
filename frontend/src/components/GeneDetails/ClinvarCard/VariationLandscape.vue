@@ -92,7 +92,7 @@ const paddedMinMax = computed(() => {
 })
 
 const exons = computed(() => {
-  if (!props.transcripts) {
+  if (!props.transcripts?.length) {
     return []
   }
   const exons = []
