@@ -3,21 +3,17 @@ import { computed } from 'vue'
 
 import { roundIt, separateIt } from '@/lib/utils'
 import { type GeneRank, useCadaPrioStore } from '@/stores/cadaprio'
-import { type HpoTerm, useCaseStore } from '@/stores/case'
+import { useCaseStore } from '@/stores/case'
 
 export interface Props {
   /** HGNC ID of gene to display */
   hgncId?: string
 }
 
-const props = withDefaults(defineProps<Props>(), {})
+const props = withDefaults(defineProps<Props>(), { hgncId: '' })
 
 const caseStore = useCaseStore()
 const cadaPrioStore = useCadaPrioStore()
-
-const caseHpoTerms = computed<HpoTerm[]>(() => {
-  return caseStore.caseInfo.hpoTerms
-})
 
 const geneRank = computed<GeneRank | null>(() => {
   return (
@@ -40,7 +36,9 @@ const geneRank = computed<GeneRank | null>(() => {
         out of {{ separateIt(cadaPrioStore?.geneRanking?.length ?? 0) }} genes
       </div>
       <div class="text-caption font-weight-bold mt-3" style="font-size: 120% !important">
+        <!-- eslint-disable vue/no-v-html -->
         CADA score: <span v-html="roundIt(geneRank?.score)" />
+        <!-- eslint-enable -->
       </div>
     </div>
   </v-sheet>

@@ -111,9 +111,9 @@ const Acknowledgements: AcknowledgementsType = {
                   </v-list-item-subtitle>
                 </v-list-item>
               </v-list>
-            </p></v-card-text
-          ></v-card
-        >
+            </p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

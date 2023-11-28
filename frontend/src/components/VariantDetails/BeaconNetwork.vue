@@ -3,9 +3,11 @@ import { ref } from 'vue'
 
 import { type SmallVariant } from '@/stores/variantInfo'
 
-const props = defineProps({
-  smallVariant: Object as () => SmallVariant | undefined
-})
+interface Props {
+  smallVariant?: SmallVariant
+}
+
+const props = defineProps<Props>()
 
 const beaconAddress = ref('')
 
@@ -38,8 +40,7 @@ const loadBeacon = () => {
         style="width: 100%; height: 300px; overflow: auto; border: 0"
         vspace="0"
         hspace="0"
-      >
-      </iframe>
+      />
     </v-card-text>
     <v-card-actions v-else>
       <v-card-title>

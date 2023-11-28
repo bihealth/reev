@@ -49,10 +49,7 @@ const summaryText = computed<string>(() => {
 <template>
   <!-- no HGNC symbol => display loader -->
   <template v-if="!geneInfo?.hgnc?.symbol">
-    <v-skeleton-loader
-      class="mt-3 mx-auto border"
-      type="heading,subtitle,text,text"
-    ></v-skeleton-loader>
+    <v-skeleton-loader class="mt-3 mx-auto border" type="heading,subtitle,text,text" />
   </template>
 
   <!-- otherwise, display actual card -->
@@ -87,11 +84,11 @@ const summaryText = computed<string>(() => {
               source
             </a>
             &bull;
-            <a @click="showFullSummary = !showFullSummary" href="#"> [shorten] </a>
+            <a href="#" @click="showFullSummary = !showFullSummary"> [shorten] </a>
           </template>
           <template v-else>
             {{ summaryText }}
-            <a @click="showFullSummary = !showFullSummary" href="#"> ... [read all] </a>
+            <a href="#" @click="showFullSummary = !showFullSummary"> ... [read all] </a>
           </template>
         </template>
         <template v-else>
@@ -164,7 +161,7 @@ const summaryText = computed<string>(() => {
           MGI
         </v-btn>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
         <div class="text-grey text-caption">
           Alternate Identifiers &middot; External Resources
           <template v-if="geneInfo?.hgnc?.lsdb?.length">

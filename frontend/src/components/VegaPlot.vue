@@ -16,38 +16,22 @@ const widthPlot = computed(() => {
   }
 })
 
+interface Props {
+  description?: string
+  dataValues?: any[]
+  dataName?: string
+  encoding?: any
+  params?: any
+  layer?: any
+  width?: number | string | null
+  height?: number | string | null
+  mark?: boolean
+  renderer?: string
+  transform?: any[]
+}
+
 /** Define the props. */
-const props = defineProps({
-  description: String,
-  dataValues: {
-    type: Array,
-    default: () => []
-  },
-  dataName: {
-    type: String,
-    default: 'dataset'
-  },
-  encoding: Object,
-  params: Object,
-  layer: Object,
-  width: {
-    type: [Number, String],
-    default: null
-  },
-  height: {
-    type: [Number, String],
-    default: null
-  },
-  mark: {
-    type: [Boolean, Object],
-    default: true
-  },
-  renderer: {
-    type: String,
-    default: 'canvas'
-  },
-  transform: Array
-})
+const props = defineProps<Props>()
 
 /** The <div> with the plot. */
 const plotDivRef = ref(null)
@@ -125,7 +109,7 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="plotDivRef"></div>
+  <div ref="plotDivRef" />
 </template>
 
 <style>

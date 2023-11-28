@@ -22,7 +22,7 @@ describe.concurrent('svInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.svTerm).toBe(null)
     expect(store.currentSvRecord).toBe(null)
-    expect(store.genesInfos).toStrictEqual(Array())
+    expect(store.genesInfos).toStrictEqual([])
   })
 
   it('should clear state', () => {
@@ -36,7 +36,7 @@ describe.concurrent('svInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.svTerm).toBe(null)
     expect(store.currentSvRecord).toBe(null)
-    expect(store.genesInfos).toStrictEqual(Array())
+    expect(store.genesInfos).toStrictEqual([])
   })
 
   it('should load data', async () => {
@@ -84,6 +84,6 @@ describe.concurrent('svInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.svTerm).toBe(null)
-    expect(store.genesInfos).toStrictEqual(Array())
+    expect(store.genesInfos).toStrictEqual([])
   })
 })

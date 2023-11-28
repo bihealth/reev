@@ -42,12 +42,12 @@ withDefaults(defineProps<Props>(), {
     </v-card-text>
   </v-card>
 
-  <v-divider></v-divider>
-  <v-divider></v-divider>
+  <v-divider />
+  <v-divider />
 
   <v-card id="ncbi-summary" class="gene-item">
     <v-card-title>NCBI Summary</v-card-title>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-text>
       <div class="overflow-auto" style="max-height: 250px; font-size: 90%">
         {{ $props.gene?.ncbi?.summary }}

@@ -74,9 +74,9 @@ onMounted(async () => {
       >
         <div class="mb-8">
           <img
+            id="logo"
             style="vertical-align: middle"
             src="@/assets/reev-logo.svg"
-            id="logo"
             alt="logo"
             width="70"
           />
@@ -84,23 +84,23 @@ onMounted(async () => {
         </div>
 
         <v-card
+          v-if="message.length"
           class="mb-5 mt-5"
           :color="failure ? 'error' : 'success'"
           variant="tonal"
-          v-if="message.length"
         >
           <v-card-text class="text-medium-emphasis text-caption">
             {{ message }}
           </v-card-text>
         </v-card>
 
-        <v-card class="mb-5 mt-5" variant="tonal" v-if="userStore.oauth2Providers.length > 0">
+        <v-card v-if="userStore.oauth2Providers.length > 0" class="mb-5 mt-5" variant="tonal">
           <v-card-title> Login with... </v-card-title>
           <v-card-text class="text-medium-emphasis text-caption mt-3">
-            <template v-for="provider in userStore.oauth2Providers" v-bind:key="provider.name">
+            <template v-for="provider in userStore.oauth2Providers" :key="provider.name">
               <v-hover
-                v-slot="{ isHovering, props }"
                 v-if="provider.name.startsWith('lifescience_ri')"
+                v-slot="{ isHovering, props }"
               >
                 <v-card
                   block
@@ -127,7 +127,7 @@ onMounted(async () => {
                   </v-card-text>
                 </v-card>
               </v-hover>
-              <v-hover v-slot="{ isHovering, props }" v-else-if="provider.name.startsWith('orcid')">
+              <v-hover v-else-if="provider.name.startsWith('orcid')" v-slot="{ isHovering, props }">
                 <v-card
                   block
                   rounded="xs"
@@ -148,13 +148,13 @@ onMounted(async () => {
                 </v-card>
               </v-hover>
               <v-btn
+                v-else
                 block
                 size="large"
                 variant="tonal"
                 color="green"
                 class="mb-3"
                 @click="handleProviderLogin(provider)"
-                v-else
               >
                 Login With {{ provider.label }}
               </v-btn>
@@ -177,12 +177,12 @@ onMounted(async () => {
 
           <v-text-field
             id="email"
+            v-model="username"
             density="compact"
             placeholder="Email address"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
-            v-model="username"
-          ></v-text-field>
+          />
 
           <div
             class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
@@ -192,6 +192,7 @@ onMounted(async () => {
 
           <v-text-field
             id="password"
+            v-model="password"
             :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
             :type="visible ? 'text' : 'password'"
             density="compact"
@@ -199,8 +200,7 @@ onMounted(async () => {
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
             @click:append-inner="visible = !visible"
-            v-model="password"
-          ></v-text-field>
+          />
 
           <v-card class="mb-12" color="surface-variant" variant="tonal">
             <v-card-text class="text-medium-emphasis text-caption">

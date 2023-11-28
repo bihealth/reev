@@ -37,7 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
     <div v-if="props.hgnc?.mgdId?.length">
       <strong>MGI: </strong>
       <template v-for="(mgd_id, index) in props.hgnc.mgdId" :key="mgd_id">
-        <template v-if="index > 0">, </template>
+        <template v-if="index > 0"> , </template>
         <a :href="`https://www.informatics.jax.org/marker/${mgd_id}`" target="_blank">
           <v-icon>mdi-launch</v-icon>
           {{ mgd_id }}
@@ -49,7 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
     <div v-if="props.hgnc?.pubmedId?.length">
       <strong>Primary PMID: </strong>
       <template v-for="(pmid, index) in props.hgnc.pubmedId" :key="pmid">
-        <template v-if="index > 0">, </template>
+        <template v-if="index > 0"> , </template>
         <a :href="`https://pubmed.ncbi.nlm.nih.gov/${pmid}/`" target="_blank">
           <v-icon>mdi-launch</v-icon>
           {{ pmid }}
@@ -61,7 +61,7 @@ const props = withDefaults(defineProps<Props>(), {
     <div v-if="props.hgnc?.refseqAccession?.length">
       <strong> RefSeq: </strong>
       <template v-for="(accession, index) in props.hgnc.refseqAccession" :key="index">
-        <template v-if="index > 0">, </template>
+        <template v-if="index > 0"> , </template>
         <a
           :href="`https://www.ncbi.nlm.nih.gov/nuccore/?term=${accession}+AND+srcdb_refseq[PROP]`"
           target="_blank"
@@ -76,7 +76,7 @@ const props = withDefaults(defineProps<Props>(), {
     <div v-if="props.hgnc?.uniprotIds?.length">
       <strong> UniProt: </strong>
       <template v-for="(uniprotid, index) in props.hgnc.uniprotIds" :key="index">
-        <template v-if="index > 0">, </template>
+        <template v-if="index > 0"> , </template>
         <a :href="`https://www.uniprot.org/uniprotkb/${uniprotid}/entry`" target="_blank">
           <v-icon>mdi-launch</v-icon>
           {{ uniprotid }}

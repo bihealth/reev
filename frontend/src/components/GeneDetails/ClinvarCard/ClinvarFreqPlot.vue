@@ -41,7 +41,9 @@ export interface Props {
   perFreqCounts?: CountsRecord[]
 }
 
-const props = withDefaults(defineProps<Props>(), {})
+const props = withDefaults(defineProps<Props>(), {
+  perFreqCounts: () => []
+})
 
 const vegaData = computed<any>(() => {
   const values = []
@@ -123,10 +125,10 @@ const vegaEncoding = {
 
 <template>
   <template v-if="!perFreqCounts?.length">
-    <v-skeleton-loader class="mt-3 mx-auto border" type="image,image"></v-skeleton-loader>
+    <v-skeleton-loader class="mt-3 mx-auto border" type="image,image" />
   </template>
 
-  <v-sheet rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 ml-2 h-100" v-else>
+  <v-sheet v-else rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 ml-2 h-100">
     <div class="text-subtitle-1 text-center">Impact / Frequency</div>
     <VegaPlot
       :data-values="vegaData"

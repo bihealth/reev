@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
 
@@ -64,7 +64,7 @@ const vegaData = computed<VegaData[]>(() => {
     return []
   }
 
-  let expressionRecords = Object.assign([], props?.expressionRecords)
+  const expressionRecords = Object.assign([], props?.expressionRecords)
   if (sortOrder.value === SortOrder.ALPHA) {
     expressionRecords.sort((a: any, b: any) => {
       const aTissue = TISSUE_LABELS[a.tissue]
@@ -148,7 +148,7 @@ const vegaLayer = [
 <template>
   <!-- no ENSG => display loader -->
   <template v-if="!ensemblGeneId?.length">
-    <v-skeleton-loader class="mt-3 mx-auto border" type="image,button"></v-skeleton-loader>
+    <v-skeleton-loader class="mt-3 mx-auto border" type="image,button" />
   </template>
 
   <!-- otherwise, display actual card -->

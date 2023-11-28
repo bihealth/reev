@@ -63,20 +63,19 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
         :color="findSwitchColor()"
         :label="props.criteria"
         :model-value="props.criteriaState.presence === Presence.Present"
-        @update:model-value="switchCriteria(props.criteria, props.criteriaState.presence)"
         hide-details="auto"
         density="compact"
         class="switch"
+        @update:model-value="switchCriteria(props.criteria, props.criteriaState.presence)"
       />
       <v-tooltip :text="ACMG_CRITERIA_DEFS.get(props.criteria)?.hint">
-        <template v-slot:activator="{ props }">
-          <v-icon style="margin: 10px" v-bind="props">mdi-information</v-icon>
+        <template #activator="{ props: vProps }">
+          <v-icon style="margin: 10px" v-bind="vProps"> mdi-information </v-icon>
         </template>
       </v-tooltip>
     </div>
     <v-select
       :model-value="props.criteriaState.evidenceLevel"
-      @update:model-value="props.acmgRating.setEvidenceLevel(StateSource.User, criteria, $event)"
       :items="
         ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(props.criteriaState.evidenceLevel)
           ? ACMG_EVIDENCE_LEVELS_PATHOGENIC
@@ -85,6 +84,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
       hide-details="auto"
       density="compact"
       class="select"
+      @update:model-value="props.acmgRating.setEvidenceLevel(StateSource.User, criteria, $event)"
     />
   </v-card>
 </template>

@@ -15,12 +15,12 @@ onMounted(() => {
 
 <template>
   <template v-if="!userStore.isAuthenticated">
-    <v-btn prepend-icon="mdi-key-variant" id="login" to="/login"> Login </v-btn>
+    <v-btn id="login" prepend-icon="mdi-key-variant" to="/login"> Login </v-btn>
   </template>
   <template v-else>
     <v-btn
-      prepend-icon="mdi-account"
       id="profile"
+      prepend-icon="mdi-account"
       to="/profile"
       variant="flat"
       :color="userStore.currentUser?.is_superuser ? 'red-darken-4' : ''"

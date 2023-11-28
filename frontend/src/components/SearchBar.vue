@@ -10,6 +10,12 @@ export interface Props {
   genomeReleaseChoices?: GenomeReleaseChoice[]
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const emit = defineEmits<{
+  (event: 'update:searchTerm' | 'update:genomeRelease', value: string): void
+  clickSearch: (searchTerm: string, genomeRelease: string) => void
+}>()
+
 const props = withDefaults(defineProps<Props>(), {
   searchTerm: '',
   genomeRelease: 'grch37',
@@ -21,36 +27,36 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <v-toolbar floating id="search-bar">
+  <v-toolbar id="search-bar" floating>
     <v-text-field
+      id="search-term"
       variant="outlined"
       hide-details
       single-line
       :model-value="props.searchTerm"
+      label="Enter search term"
       @input="$emit('update:searchTerm', $event.target.value)"
       @keydown.enter="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
-      label="Enter search term"
-      id="search-term"
-    ></v-text-field>
+    />
     <div>
       <v-select
+        id="genome-release"
         variant="outlined"
         hide-details
         single-line
         :model-value="props.genomeRelease"
-        @update:model-value="$emit('update:genomeRelease', $event)"
         :items="props.genomeReleaseChoices"
         item-title="label"
         item-value="value"
         label="Genome Release"
-        id="genome-release"
-      ></v-select>
+        @update:model-value="$emit('update:genomeRelease', $event)"
+      />
     </div>
 
     <v-btn
       id="search"
-      @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
       color="primary"
+      @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
     >
       <v-icon>mdi-magnify</v-icon>
       search

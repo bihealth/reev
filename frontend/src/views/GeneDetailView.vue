@@ -99,17 +99,17 @@ const openedSection = ref<string[]>(['gene'])
         <v-list v-model:opened="openedSection">
           <v-list-subheader> GENE </v-list-subheader>
 
-          <BookmarkListItem :type="'gene'" :id="searchTermRef" />
+          <BookmarkListItem :id="searchTermRef" :type="'gene'" />
 
           <v-list-group value="gene">
-            <template v-slot:activator="{ props }">
-              <v-list-item v-bind="props" prepend-icon="mdi-dna" title="Gene"></v-list-item>
+            <template #activator="{ props: vProps }">
+              <v-list-item v-bind="vProps" prepend-icon="mdi-dna" title="Gene" />
             </template>
 
             <v-list-item
               v-for="section in SECTIONS"
-              :key="section.id"
               :id="`${section.id}-nav`"
+              :key="section.id"
               density="compact"
               @click="router.push({ hash: `#${section.id}` })"
             >
@@ -123,7 +123,7 @@ const openedSection = ref<string[]>(['gene'])
     </v-navigation-drawer>
     <v-main class="my-3 mx-3">
       <div id="gene-overview">
-        <OverviewCard :geneInfo="geneInfoStore.geneInfo" />
+        <OverviewCard :gene-info="geneInfoStore.geneInfo" />
       </div>
 
       <div id="gene-pathogenicity">
@@ -132,7 +132,7 @@ const openedSection = ref<string[]>(['gene'])
 
       <div id="phenotype">
         <div id="gene-conditions">
-          <ConditionsCard :geneInfo="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
+          <ConditionsCard :gene-info="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
         </div>
       </div>
 

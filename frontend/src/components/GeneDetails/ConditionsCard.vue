@@ -63,7 +63,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
 <template>
   <!-- no ENSG => display loader -->
   <template v-if="!geneInfo?.dbnsfp?.geneName?.length">
-    <v-skeleton-loader class="mt-3 mx-auto border" type="image,button"></v-skeleton-loader>
+    <v-skeleton-loader class="mt-3 mx-auto border" type="image,button" />
   </template>
 
   <!-- otherwise, display actual card -->
@@ -80,7 +80,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
             == HPO Terms ======================================================
           -->
             <template v-if="hpoTerms === null">
-              <v-skeleton-loader class="mt-3 mx-auto border" type="header,text"></v-skeleton-loader>
+              <v-skeleton-loader class="mt-3 mx-auto border" type="header,text" />
             </template>
             <template v-else>
               <template v-if="geneInfo?.acmgSf">
@@ -112,15 +112,15 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
 
                   <template v-if="hpoTerms.length > maxHpoTerms">
                     &bullet;
-                    <a @click.disable="showAllHpoTerms = !showAllHpoTerms" href="#">
+                    <a href="#" @click.prevent="showAllHpoTerms = !showAllHpoTerms">
                       {{ showAllHpoTerms ? ' show fewer' : ' show all' }}
                     </a>
                   </template>
                 </small>
               </div>
               <div v-if="hpoTerms?.length">
-                <template v-for="(term, idx) in hpoTermsToShow">
-                  <template v-if="idx > 0">, </template>
+                <template v-for="(term, idx) in hpoTermsToShow" :key="idx">
+                  <template v-if="idx > 0"> , </template>
                   <template v-if="showTermLinks">
                     <a
                       :href="`https://hpo.jax.org/app/browse/term/${term.term_id}`"
@@ -136,7 +136,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
                     {{ term.name }}
                   </template>
                 </template>
-                <template v-if="hpoTerms.length > maxHpoTerms">, ...</template>
+                <template v-if="hpoTerms.length > maxHpoTerms"> , ... </template>
               </div>
               <div v-else class="text-grey font-italic">No HPO terms associated with gene.</div>
             </template>
@@ -149,8 +149,8 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
               <small> ({{ geneInfo?.dbnsfp?.mimDisease?.length ?? 0 }}) </small>
             </div>
             <div v-if="geneInfo?.dbnsfp?.mimDisease?.length">
-              <template v-for="(disease, idx) in geneInfo?.dbnsfp?.mimDisease">
-                <template v-if="idx > 0">, </template>
+              <template v-for="(disease, idx) in geneInfo?.dbnsfp?.mimDisease" :key="idx">
+                <template v-if="idx > 0"> , </template>
                 <template v-if="showTermLinks">
                   <a
                     :href="`https://www.omim.org/entry/${extractMimDiseaseId(disease)}`"
@@ -185,8 +185,8 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
               <small> ({{ geneInfo?.orpha?.orphaDiseases?.length ?? 0 }}) </small>
             </div>
             <div v-if="geneInfo?.orpha?.orphaDiseases?.length">
-              <template v-for="(disease, idx) in geneInfo?.orpha?.orphaDiseases ?? []">
-                <template v-if="idx > 0">, </template>
+              <template v-for="(disease, idx) in geneInfo?.orpha?.orphaDiseases ?? []" :key="idx">
+                <template v-if="idx > 0"> , </template>
                 <template v-if="showTermLinks">
                   <a
                     :href="`https://www.orpha.net/consor/cgi-bin/Disease_Search_Simple.php?lng=EN&Disease_Disease_Search_diseaseGroup=${disease.orphaId.replace(
@@ -215,19 +215,19 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
 
       <v-card-actions>
         <v-switch
+          v-model="showTermIds"
           color="primary"
           :value="true"
           :false-value="false"
-          v-model="showTermIds"
           label="numeric terms"
           class="ml-3 d-inline-flex flex-grow-0"
           density="compact"
         />
         <v-switch
+          v-model="showTermLinks"
           color="primary"
           :value="true"
           :false-value="false"
-          v-model="showTermLinks"
           label="show links"
           class="ml-3 d-inline-flex flex-grow-0"
           density="compact"
@@ -241,25 +241,25 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
           JAX HPO
         </v-btn>
         <v-btn
+          v-if="geneInfo?.hgnc?.omimId?.length"
           :href="`https://www.omim.org/entry/${geneInfo?.hgnc?.omimId[0]}`"
           target="_blank"
           prepend-icon="mdi-launch"
           class="ml-6"
-          v-if="geneInfo?.hgnc?.omimId?.length"
         >
           OMIM
         </v-btn>
         <v-btn
+          v-if="geneInfo?.hgnc?.orphanet"
           :href="`https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=${geneInfo?.hgnc?.orphanet}`"
           target="_blank"
           prepend-icon="mdi-launch"
           class="ml-6"
-          v-if="geneInfo?.hgnc?.orphanet"
         >
           Orphanet
         </v-btn>
 
-        <v-spacer></v-spacer>
+        <v-spacer />
         <div class="text-grey text-caption">
           Orphanet Diseases ({{ geneInfo?.orpha?.orphaDiseases?.length ?? 0 }})
         </div>

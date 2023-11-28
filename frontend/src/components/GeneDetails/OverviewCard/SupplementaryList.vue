@@ -11,7 +11,7 @@ const props = withDefaults(defineProps<Props>(), {
 <template>
   <v-card>
     <v-card-title>ACMG Supplementary Findings List</v-card-title>
-    <v-divider></v-divider>
+    <v-divider />
     <v-card-text>
       <div v-if="props.acmgSf">
         <div>

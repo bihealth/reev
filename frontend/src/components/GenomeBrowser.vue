@@ -95,6 +95,6 @@ onMounted(() => {
   <v-card>
     <v-card-title>Genome Browser</v-card-title>
     <v-divider />
-    <div style="margin: 5px" ref="genomeBrowserDivRef"></div>
+    <div ref="genomeBrowserDivRef" style="margin: 5px" />
   </v-card>
 </template>

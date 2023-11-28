@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { roundIt, separateIt } from '@/lib/utils'
+import { separateIt } from '@/lib/utils'
 
 export interface Props {
   geneClinvar: any
@@ -85,7 +85,7 @@ const showCoarseImpact = (key: string): boolean => COARSE_IMPACT_TO_INDEX[key] >
 const perCoarseImpactCounts = computed(() => {
   const result = Object.keys(CoarseImpact)
     .filter(showCoarseImpact)
-    .map((key) => {
+    .map(() => {
       return [0, 0, 0, 0]
     })
 
@@ -104,11 +104,6 @@ const perCoarseImpactCounts = computed(() => {
   }
 
   return result
-})
-
-/** Return overal total count. */
-const totalCount = computed(() => {
-  return perCoarseImpactCounts.value[COARSE_IMPACT_TO_INDEX[CoarseImpact.TOTAL]][3]
 })
 
 /** Return percent given the coarse impact and clinsig index */
@@ -151,7 +146,7 @@ const clinsigColor = (coarseClinsigIdx: number, percent: number): string => {
     <v-skeleton-loader
       class="mt-3 mx-auto border"
       type="table-heading,table-row,table-row,table-row,table-row"
-    ></v-skeleton-loader>
+    />
   </template>
   <template v-else>
     <v-sheet rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 mr-1 h-100">
@@ -160,20 +155,24 @@ const clinsigColor = (coarseClinsigIdx: number, percent: number): string => {
           <tr>
             <th width="20%" class="text-subtitle-1">Impact Counts</th>
             <th
-              class="font-weight-bold text-center"
               v-for="key of Object.keys(CoarseImpact).filter(showCoarseImpact)"
+              :key="key"
+              class="font-weight-bold text-center"
             >
               {{ COARSE_IMPACT_LABELS[key] }}
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(label, idx) of COARSE_CLINSIG_LABELS">
-            <td class="font-weight-bold">{{ label }}</td>
+          <tr v-for="(label, idx) of COARSE_CLINSIG_LABELS" :key="idx">
+            <td class="font-weight-bold">
+              {{ label }}
+            </td>
             <td
+              v-for="key of Object.keys(COARSE_IMPACT_LABELS).filter(showCoarseImpact)"
+              :key="key"
               class="text-center"
               :title="`${percent(key, idx)} %`"
-              v-for="key of Object.keys(COARSE_IMPACT_LABELS).filter(showCoarseImpact)"
             >
               <span
                 class="pa-3 rounded-lg"

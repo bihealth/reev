@@ -18,9 +18,9 @@ const gnomadGenomes = 'gnomad_genomes'
     <v-card-title>Population Frequencies</v-card-title>
     <v-divider />
     <VariantDetailsFreqsMitochondrial
+      v-if="isVariantMt(props.smallVar)"
       :small-var="props.smallVar"
       :var-annos="props.varAnnos"
-      v-if="isVariantMt(props.smallVar)"
     />
     <div v-else>
       <VariantDetailsFreqsAutosomal

@@ -6,6 +6,7 @@ export interface Props {
   geneInfo: any
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
   geneInfo: null
 })
@@ -20,10 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
     <v-card-text class="pt-3">
       <!-- no constraints symbol => display loader -->
       <template v-if="!geneInfo?.gnomadConstraints?.expSyn">
-        <v-skeleton-loader
-          class="mt-3 mx-auto border"
-          type="heading,subtitle,text,text"
-        ></v-skeleton-loader>
+        <v-skeleton-loader class="mt-3 mx-auto border" type="heading,subtitle,text,text" />
       </template>
       <!-- otherwise, display actual card -->
       <template v-else>
@@ -88,7 +86,9 @@ const props = withDefaults(defineProps<Props>(), {
                         </abbr>
                       </td>
                       <td class="pa-0 text-right">
+                        <!-- eslint-disable vue/no-v-html -->
                         <span v-html="roundIt(geneInfo?.gnomadConstraints.pli)" />
+                        <!-- eslint-enable -->
                       </td>
                     </tr>
                     <tr>
@@ -96,7 +96,9 @@ const props = withDefaults(defineProps<Props>(), {
                         <abbr title="LoF observed/expected upper bound fraction"> LOEUF </abbr>
                       </td>
                       <td class="pa-0 text-right">
+                        <!-- eslint-disable vue/no-v-html -->
                         <span v-html="roundIt(geneInfo?.gnomadConstraints.oeLofUpper)" />
+                        <!-- eslint-enable -->
                       </td>
                     </tr>
                     <tr>
@@ -109,7 +111,9 @@ const props = withDefaults(defineProps<Props>(), {
                         </abbr>
                       </td>
                       <td class="pa-0 text-right">
+                        <!-- eslint-disable vue/no-v-html -->
                         <span v-html="roundIt(geneInfo?.gnomadConstraints.oeMisUpper)" />
+                        <!-- eslint-enable -->
                       </td>
                     </tr>
                     <tr>
@@ -119,7 +123,9 @@ const props = withDefaults(defineProps<Props>(), {
                         </abbr>
                       </td>
                       <td class="pa-0 text-right">
+                        <!-- eslint-disable vue/no-v-html -->
                         <span v-html="roundIt(geneInfo?.gnomadConstraints.misZ)" />
+                        <!-- eslint-enable -->
                       </td>
                     </tr>
                   </tbody>
@@ -153,27 +159,35 @@ const props = withDefaults(defineProps<Props>(), {
                         </abbr>
                       </td>
                       <td class="pa-0 text-right">
+                        <!-- eslint-disable vue/no-v-html -->
                         <span v-html="roundIt(geneInfo?.decipherHi?.pHi)" />
+                        <!-- eslint-enable -->
                       </td>
                     </tr>
                     <tr>
                       <td class="pa-0">sHet</td>
                       <td class="pa-0 text-right">
-                        <span v-html="roundIt(geneInfo?.shet.sHet)" v-if="geneInfo?.shet" />
+                        <!-- eslint-disable vue/no-v-html -->
+                        <span v-if="geneInfo?.shet" v-html="roundIt(geneInfo?.shet.sHet)" />
+                        <!-- eslint-enable -->
                         <span v-else> N/A </span>
                       </td>
                     </tr>
                     <tr>
                       <td class="pa-0">pHaplo</td>
                       <td class="pa-0 text-right">
-                        <span v-html="roundIt(geneInfo?.rcnv.pHaplo)" v-if="geneInfo?.rcnv" />
+                        <!-- eslint-disable vue/no-v-html -->
+                        <span v-if="geneInfo?.rcnv" v-html="roundIt(geneInfo?.rcnv.pHaplo)" />
+                        <!-- eslint-enable -->
                         <span v-else> N/A </span>
                       </td>
                     </tr>
                     <tr>
                       <td class="pa-0">pTriplo</td>
                       <td class="pa-0 text-right">
-                        <span v-html="roundIt(geneInfo?.rcnv.pTriplo)" v-if="geneInfo?.rcnv" />
+                        <!-- eslint-disable vue/no-v-html -->
+                        <span v-if="geneInfo?.rcnv" v-html="roundIt(geneInfo?.rcnv.pTriplo)" />
+                        <!-- eslint-enable -->
                         <span v-else> N/A </span>
                       </td>
                     </tr>

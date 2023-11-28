@@ -13,9 +13,11 @@ import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { type SmallVariant } from '@/stores/variantInfo'
 
-const props = defineProps({
-  smallVariant: Object as () => SmallVariant | undefined
-})
+interface Props {
+  smallVariant?: SmallVariant
+}
+
+const props = defineProps<Props>()
 
 const acmgRatingStore = useVariantAcmgRatingStore()
 
@@ -36,6 +38,7 @@ const updateAcmgConflicting = (isConflicting: boolean) => {
 }
 
 const calculateAcmgRating = computed((): string => {
+  // eslint-disable-next-line prefer-const
   let [acmgClass, isConflicting] = acmgRatingStore.acmgRating.getAcmgClass()
   if (isConflicting) {
     acmgClass = 'Uncertain significance'
@@ -68,11 +71,13 @@ onMounted(async () => {
     <v-card-title>ACMG Rating</v-card-title>
     <v-divider />
     <v-row>
-      <v-col cols="12" md="3"></v-col>
+      <v-col cols="12" md="3" />
       <v-col cols="12" md="6" class="section">
         <div>
           <div>
-            <h2 for="acmg-class"><strong>ACMG classification:</strong></h2>
+            <h2 for="acmg-class">
+              <strong>ACMG classification:</strong>
+            </h2>
           </div>
           <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
             {{ calculateAcmgRating }}
@@ -103,7 +108,7 @@ onMounted(async () => {
           </div>
         </div>
       </v-col>
-      <v-col cols="12" md="3"></v-col>
+      <v-col cols="12" md="3" />
     </v-row>
     <v-row style="margin-bottom: 15px">
       <v-col>
@@ -133,7 +138,7 @@ onMounted(async () => {
           </div>
         </div>
       </v-col>
-      <v-divider vertical></v-divider>
+      <v-divider vertical />
       <v-col class="d-flex flex-row flex-wrap" cols="12" md="6">
         <div style="margin-right: 20px">
           <h3><strong>Benign:</strong></h3>
@@ -193,8 +198,8 @@ onMounted(async () => {
           </tbody>
         </v-table>
       </v-col>
-    </v-row></v-card
-  >
+    </v-row>
+  </v-card>
 </template>
 
 <style scoped>

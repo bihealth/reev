@@ -16,6 +16,7 @@ export interface Props {
   perFreqCounts: any
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
   geneInfo: null
 })

@@ -141,10 +141,10 @@ watch(
           <v-card-text>
             <v-form ref="form">
               <v-text-field
+                v-model="caseStore.caseInfo.pseudonym"
                 variant="outlined"
                 label="Pseudonym"
-                v-model="caseStore.caseInfo.pseudonym"
-              ></v-text-field>
+              />
 
               <!-- Diseases -->
               <v-autocomplete
@@ -152,7 +152,6 @@ watch(
                 v-model:search="omimSearchQuery"
                 :items="termsStore.omimTerms"
                 :loading="omimIsLoading"
-                @update:search="debouncedOmimFetchTerms"
                 label="Disease"
                 item-title="name"
                 :item-value="(item) => item"
@@ -163,8 +162,8 @@ watch(
                 variant="outlined"
                 prepend-icon="mdi-database-search"
                 hint="Select one or more diseases"
-              >
-              </v-autocomplete>
+                @update:search="debouncedOmimFetchTerms"
+              />
 
               <!-- HPO Terms -->
               <v-autocomplete
@@ -172,7 +171,6 @@ watch(
                 v-model:search="hpoSearchQuery"
                 :items="termsStore.hpoTerms"
                 :loading="hpoIsLoading"
-                @update:search="debouncedHpoFetchTerms"
                 label="HPO Terms"
                 item-title="name"
                 :item-value="(item) => item"
@@ -183,77 +181,77 @@ watch(
                 variant="outlined"
                 prepend-icon="mdi-database-search"
                 hint="Select one or more HPO terms"
-              >
-              </v-autocomplete>
+                @update:search="debouncedHpoFetchTerms"
+              />
 
               <!-- Inheritance -->
               <v-select
+                v-model="caseStore.caseInfo.inheritance"
                 variant="outlined"
                 label="Inheritance"
                 :items="inheritanceOptions"
                 item-title="text"
                 item-value="value"
-                v-model="caseStore.caseInfo.inheritance"
-              ></v-select>
+              />
 
               <!-- Affected Family Members -->
               <v-switch
+                v-model="caseStore.caseInfo.affectedFamilyMembers"
                 variant="outlined"
                 label="Affected Family Members"
-                v-model="caseStore.caseInfo.affectedFamilyMembers"
                 color="primary"
-              ></v-switch>
+              />
 
               <!-- Sex -->
               <v-select
+                v-model="caseStore.caseInfo.sex"
                 variant="outlined"
                 label="Sex"
                 :items="sexOptions"
                 item-title="text"
                 item-value="value"
-                v-model="caseStore.caseInfo.sex"
-              ></v-select>
+              />
 
               <!-- Age of Onset -->
               <v-text-field
+                v-model.number="caseStore.caseInfo.ageOfOnsetMonths"
                 variant="outlined"
                 label="Age of Onset"
-                v-model.number="caseStore.caseInfo.ageOfOnsetMonths"
                 :rules="[validateAgeOfOnset]"
-              ></v-text-field>
+              />
 
               <!-- Ethnicity -->
               <v-select
+                v-model="caseStore.caseInfo.ethnicity"
                 variant="outlined"
                 label="Ethnicity"
                 :items="ethnicityOptions"
                 item-title="text"
                 item-value="value"
-                v-model="caseStore.caseInfo.ethnicity"
-              ></v-select>
+              />
 
               <!-- Zygosity -->
               <v-select
+                v-model="caseStore.caseInfo.zygosity"
                 variant="outlined"
                 label="Zygosity"
                 :items="zygosityOptions"
                 item-title="text"
                 item-value="value"
-                v-model="caseStore.caseInfo.zygosity"
-              ></v-select>
+              />
 
               <!-- Family Segregation -->
               <v-switch
-                label="Family Segregation"
                 v-model="caseStore.caseInfo.familySegregation"
+                label="Family Segregation"
                 color="primary"
-              ></v-switch>
+              />
 
               <!-- Buttons -->
-              <v-btn class="ml-2" @click="saveChanges">Save Changes</v-btn>
-              <v-btn class="ml-2" color="secondary" @click="deleteCaseInformation"
-                >Delete Case info</v-btn
-              >
+              <v-btn class="ml-2" @click="saveChanges"> Save Changes </v-btn>
+              <v-btn class="ml-2" color="secondary" @click="deleteCaseInformation">
+                Delete Case info
+              </v-btn>
             </v-form>
           </v-card-text>
         </v-col>
@@ -267,7 +265,7 @@ watch(
               :items-per-page="10"
               density="compact"
             >
-              <template v-slot:[`item.gene_symbol`]="{ item }">
+              <template #[`item.gene_symbol`]="{ item }">
                 <router-link
                   :to="{
                     name: 'gene',
@@ -279,8 +277,10 @@ watch(
                 </router-link>
               </template>
 
-              <template v-slot:[`item.score`]="{ item }">
+              <template #[`item.score`]="{ item }">
+                <!-- eslint-disable vue/no-v-html -->
                 <span v-html="roundIt(item.score, 2)" />
+                <!-- eslint-enable -->
               </template>
             </v-data-table>
           </v-card-text>
@@ -290,12 +290,12 @@ watch(
   </div>
   <div v-else-if="caseStore.storeState === StoreState.Loading">
     <v-card>
-      <v-progress-circular indeterminate></v-progress-circular>
+      <v-progress-circular indeterminate />
     </v-card>
   </div>
   <div v-else-if="caseStore.storeState === StoreState.Error">
     <v-card>
-      <v-alert type="error">Error loading data.</v-alert>
+      <v-alert type="error"> Error loading data. </v-alert>
     </v-card>
   </div>
   <div v-else>

@@ -95,13 +95,13 @@ const useExample = (example: string) => {
     <v-card v-else-if="genesListStore.storeState == StoreState.Loading">
       <div class="d-flex align-center justify-center" style="min-height: 300px">
         <v-card-title>Searching for genes</v-card-title>
-        <v-progress-circular indeterminate></v-progress-circular>
+        <v-progress-circular indeterminate />
       </div>
     </v-card>
 
     <v-card v-else-if="genesListStore.storeState == StoreState.Error">
       <v-card-title>
-        <v-icon color="red">mdi-alert-circle</v-icon>
+        <v-icon color="red"> mdi-alert-circle </v-icon>
         There was an error while searching for
         <strong>{{ $router.currentRoute.value.query.q }}</strong>
       </v-card-title>
@@ -110,7 +110,9 @@ const useExample = (example: string) => {
         <v-card-title>Try this examples:</v-card-title>
         <v-card-text class="examples">
           <div v-for="example in examples" :key="example">
-            <v-btn class="example" @click="useExample(example)">{{ example }}</v-btn>
+            <v-btn class="example" @click="useExample(example)">
+              {{ example }}
+            </v-btn>
           </div>
         </v-card-text>
       </v-card-text>

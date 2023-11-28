@@ -24,17 +24,17 @@ const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefa
                 target="_blank"
                 class="button"
               >
-                <v-icon left>mdi-github</v-icon>
+                <v-icon left> mdi-github </v-icon>
                 GitHub
               </v-btn>
               <v-btn href="mailto:cubi-helpdesk@bih-charite.de" class="button">
-                <v-icon left>mdi-email</v-icon>
+                <v-icon left> mdi-email </v-icon>
                 Email
               </v-btn>
             </div>
-          </v-card-text></v-card
-        ></v-col
-      >
+          </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </v-container>
 </template>

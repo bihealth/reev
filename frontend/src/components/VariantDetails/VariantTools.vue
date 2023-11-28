@@ -311,10 +311,12 @@ const jumpToLocus = async () => {
                   props.varAnnos?.dbnsfp?.BayesDel_addAF_score !== Infinity
                 "
               >
+                <!-- eslint-disable vue/no-v-html -->
                 <td
                   class="text-center align-middle"
                   v-html="roundIt(props.varAnnos?.dbnsfp?.BayesDel_addAF_score, 4)"
-                ></td>
+                />
+                <!-- eslint-enable -->
                 <td class="text-center align-middle">
                   <ScoreDisplay
                     :range-lower="-1"
@@ -435,7 +437,9 @@ const jumpToLocus = async () => {
               <template
                 v-if="fathmmScore && translatedFathmmScore && translatedFathmmScore !== Infinity"
               >
-                <td class="text-center align-middle">{{ fathmmScore }}</td>
+                <td class="text-center align-middle">
+                  {{ fathmmScore }}
+                </td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
                     :range-lower="0"
@@ -479,7 +483,9 @@ const jumpToLocus = async () => {
             <tr>
               <th class="align-middle">Gerp++</th>
               <template v-if="gerpScore && gerpScore !== Infinity">
-                <td class="text-center align-middle">{{ gerpScore }}</td>
+                <td class="text-center align-middle">
+                  {{ gerpScore }}
+                </td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
                     :range-lower="-10"
@@ -732,7 +738,9 @@ const jumpToLocus = async () => {
             <tr>
               <th class="align-middle">SIFT</th>
               <template v-if="siftScore && translatedSiftScore && translatedSiftScore !== Infinity">
-                <td class="text-center align-middle">{{ siftScore }}</td>
+                <td class="text-center align-middle">
+                  {{ siftScore }}
+                </td>
                 <td class="text-center align-middle">
                   <ScoreDisplay
                     :range-lower="0"

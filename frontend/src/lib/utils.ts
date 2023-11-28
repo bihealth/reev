@@ -218,7 +218,7 @@ export const infoFromSvQuery = (query: string): any => {
   }
 }
 
-export function copy(value: Object) {
+export function copy(value: any) {
   return JSON.parse(JSON.stringify(value))
 }
 

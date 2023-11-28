@@ -49,12 +49,19 @@ const gnomadMtDna = computed(() => {
       <tbody>
         <tr>
           <td class="text-nowrap">gnomAD-MT</td>
-          <td class="text-right">{{ sep(gnomadMtDna?.an ?? 0) }}</td>
+          <td class="text-right">
+            {{ sep(gnomadMtDna?.an ?? 0) }}
+          </td>
           <td class="text-right">
             {{ sep((gnomadMtDna?.acHet ?? 0) + (gnomadMtDna?.acHom ?? 0)) }}
           </td>
-          <td class="text-right">{{ sep(gnomadMtDna?.acHet ?? 0) }}</td>
-          <td class="text-right">{{ sep(gnomadMtDna?.acHom ?? 0) }}</td>
+          <td class="text-right">
+            {{ sep(gnomadMtDna?.acHet ?? 0) }}
+          </td>
+          <td class="text-right">
+            {{ sep(gnomadMtDna?.acHom ?? 0) }}
+          </td>
+          <!-- eslint-disable vue/no-v-html -->
           <td
             class="text-right"
             v-html="
@@ -64,15 +71,23 @@ const gnomadMtDna = computed(() => {
               )
             "
           />
+          <!-- eslint-enable -->
         </tr>
         <tr>
           <td>HelixMTdb</td>
-          <td class="text-right">{{ sep(helixMtDb?.numTotal ?? 0) }}</td>
+          <td class="text-right">
+            {{ sep(helixMtDb?.numTotal ?? 0) }}
+          </td>
           <td class="text-right">
             {{ sep((helixMtDb?.numHet ?? 0) + (helixMtDb?.numHom ?? 0)) }}
           </td>
-          <td class="text-right">{{ sep(helixMtDb?.numHet ?? 0) }}</td>
-          <td class="text-right">{{ sep(helixMtDb?.numHom ?? 0) }}</td>
+          <td class="text-right">
+            {{ sep(helixMtDb?.numHet ?? 0) }}
+          </td>
+          <td class="text-right">
+            {{ sep(helixMtDb?.numHom ?? 0) }}
+          </td>
+          <!-- eslint-disable vue/no-v-html -->
           <td
             class="text-right"
             v-html="
@@ -82,6 +97,7 @@ const gnomadMtDna = computed(() => {
               )
             "
           />
+          <!-- eslint-enable -->
         </tr>
       </tbody>
     </v-table>

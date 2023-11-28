@@ -17,6 +17,7 @@
   "dependencies": {
     "@mdi/font": "^7.2.96",
     "@reactgular/chunks": "^1.0.1",
+    "@vue/eslint-config-standard": "^8.0.1",
     "igv": "^2.15.11",
     "lodash": "^4.17.21",
     "pinia": "^2.1.6",

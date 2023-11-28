@@ -62,7 +62,7 @@ const toggleBookmark = async () => {
   <template v-if="bookmarksStore.storeState === StoreState.Error">
     <v-list-item class="text-caption"> Bookmarks available after login </v-list-item>
   </template>
-  <template v-else class="mb-2">
+  <template v-else>
     <v-list-item
       :prepend-icon="isBookmarked ? 'mdi-bookmark' : 'mdi-bookmark-outline'"
       @click="toggleBookmark()"

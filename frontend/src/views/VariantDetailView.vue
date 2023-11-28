@@ -120,13 +120,13 @@ const performSearch = async (geneSymbol: string) => {
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
     <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
-      <BookmarkButton :type="'seqvar'" :id="searchTermRef" />
+      <BookmarkButton :id="searchTermRef" :type="'seqvar'" />
       Sections:
       <v-list density="compact" nav>
         <v-list-item
           v-for="section in SECTIONS"
-          :key="section.id"
           :id="`${section.id}-nav`"
+          :key="section.id"
           @click="router.push({ hash: `#${section.id}` })"
         >
           <v-list-item-title>{{ section.title }}</v-list-item-title>
@@ -138,13 +138,13 @@ const performSearch = async (geneSymbol: string) => {
     <v-main style="min-height: 300px">
       <div v-if="variantInfoStore.storeState == StoreState.Active" class="variant-info">
         <div class="variant-item">
-          <v-card id="gene" v-if="variantInfoStore.geneInfo !== null">
+          <v-card v-if="variantInfoStore.geneInfo !== null" id="gene">
             <v-card-title>Gene</v-card-title>
             <v-card-subtitle>
               Link to
-              <v-btn @click="performSearch(variantInfoStore.varAnnos?.cadd?.GeneName)">{{
-                variantInfoStore.varAnnos?.cadd?.GeneName
-              }}</v-btn>
+              <v-btn @click="performSearch(variantInfoStore.varAnnos?.cadd?.GeneName)">
+                {{ variantInfoStore.varAnnos?.cadd?.GeneName }}
+              </v-btn>
             </v-card-subtitle>
             <v-divider />
             <VariantDetailsGene :gene="variantInfoStore.geneInfo" />
@@ -215,7 +215,7 @@ const performSearch = async (geneSymbol: string) => {
       <div v-else>
         <div class="d-flex align-center justify-center" style="min-height: 300px">
           <h1>Loading variant information</h1>
-          <v-progress-circular indeterminate></v-progress-circular>
+          <v-progress-circular indeterminate />
         </div>
       </div>
     </v-main>
