@@ -1,29 +1,6 @@
-<script setup lang="ts">
-import { computed } from 'vue'
+/** Constants for the `GtexGenePlot.vue` component. */
 
-import VegaPlot from '@/components/VegaPlot.vue'
-
-export interface ExpressionRecord {
-  /** Tissue id */
-  tissue: number
-  /** Detailed tissue id */
-  tissueDetailed: number
-  /** TPM quantiles (0, 0.25, 0.5, 0.75, 1.0) */
-  tpms: number[]
-}
-
-export interface Props {
-  /** Gene symbol */
-  geneSymbol: string
-  /** Expression records */
-  expressionRecords: ExpressionRecord[]
-  /** Ensembl gene ID */
-  ensemblGeneId: string
-}
-
-const props = withDefaults(defineProps<Props>(), {})
-
-const tissueLabels: { [key: string]: string } = {
+export const TISSUE_LABELS: { [key: string]: string } = {
   GTEX_TISSUE_UNKNOWN: 'Unknown',
   GTEX_TISSUE_ADIPOSE_TISSUE: 'Adipose Tissue',
   GTEX_TISSUE_ADRENAL_GLAND: 'Adrenal Gland',
@@ -57,7 +34,7 @@ const tissueLabels: { [key: string]: string } = {
   GTEX_TISSUE_VAGINA: 'Vagina'
 }
 
-const tissueDetailedLabels: { [key: string]: string } = {
+export const TISSUE_DETAILED_LABELS: { [key: string]: string } = {
   GTEX_TISSUE_DETAILED_UNKNOWN: 'Unknown',
   GTEX_TISSUE_DETAILED_ADIPOSE_SUBCUTANEOUS: 'Adipose - Subcutaneous',
   GTEX_TISSUE_DETAILED_ADIPOSE_VISCERAL_OMENTUM: 'Adipose - Visceral (Omentum)',
@@ -116,95 +93,3 @@ const tissueDetailedLabels: { [key: string]: string } = {
   GTEX_TISSUE_DETAILED_VAGINA: 'Vagina',
   GTEX_TISSUE_DETAILED_WHOLE_BLOOD: 'Whole Blood'
 }
-
-const vegaData = computed(() => {
-  return props?.expressionRecords?.map((record) => ({
-    tissue: tissueLabels[record.tissue],
-    tissueDetailed: tissueDetailedLabels[record.tissueDetailed],
-    lower: record.tpms[0],
-    q1: record.tpms[1],
-    median: record.tpms[2],
-    q3: record.tpms[3],
-    upper: record.tpms[4]
-  }))
-})
-
-const vegaEncoding = {
-  x: {
-    field: 'tissueDetailed',
-    type: 'nominal',
-    title: null,
-    axis: { labelAngle: 45 }
-  }
-}
-
-const vegaLayer = [
-  {
-    mark: { type: 'rule', tooltip: { content: 'data' } },
-    encoding: {
-      y: {
-        field: 'lower',
-        type: 'quantitative',
-        scale: { zero: false },
-        title: 'TPM'
-      },
-      y2: { field: 'upper' }
-    }
-  },
-  {
-    mark: { type: 'bar', size: 14, tooltip: { content: 'data' } },
-    encoding: {
-      y: { field: 'q1', type: 'quantitative' },
-      y2: { field: 'q3' },
-      color: { field: 'tissue', type: 'nominal', legend: null }
-    }
-  },
-  {
-    mark: {
-      type: 'tick',
-      color: 'white',
-      size: 14,
-      tooltip: { content: 'data' }
-    },
-    encoding: {
-      y: { field: 'median', type: 'quantitative' }
-    }
-  }
-]
-</script>
-
-<template>
-  <v-card v-if="props.ensemblGeneId">
-    <v-card-title>
-      GTEx Expression
-      <small>
-        <a
-          :href="`https://gtexportal.org/home/gene/${props.ensemblGeneId}`"
-          target="_blank"
-          v-if="props.ensemblGeneId"
-        >
-          <v-icon>mdi-launch</v-icon>
-          GTEx Portal
-        </a>
-      </small>
-    </v-card-title>
-    <v-divider />
-    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-      <figcaption class="figure-caption text-center">
-        Bulk tissue gene expression for gene {{ props.geneSymbol }}
-      </figcaption>
-      <VegaPlot
-        :data-values="vegaData"
-        :encoding="vegaEncoding"
-        :layer="vegaLayer"
-        :mark="false"
-        :height="300"
-        renderer="svg"
-      />
-    </figure>
-  </v-card>
-  <v-card v-else>
-    <v-card-title>Loading gene information</v-card-title>
-    <v-progress-circular indeterminate></v-progress-circular>
-  </v-card>
-</template>

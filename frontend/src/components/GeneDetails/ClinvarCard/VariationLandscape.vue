@@ -9,16 +9,13 @@ export interface Props {
   /** Transctipts information. */
   transcripts: any
   /** The genome release. */
-  genomeRelease: string
-  /** The gene HGNC symbol. */
-  hgnc: string
+  genomeRelease: 'grch37' | 'grch38'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   clinvar: null,
   transcripts: null,
-  genomeRelease: 'grch37',
-  hgnc: ''
+  genomeRelease: 'grch37'
 })
 
 const clinvarSignificanceMapping: { [key: string]: number } = {
@@ -88,14 +85,14 @@ const minMax = computed(() => {
 })
 
 const paddedMinMax = computed(() => {
-  let [min, max] = minMax.value
+  const [min, max] = minMax.value
   const totalLength = max - min
   const padding = Math.round(totalLength * 0.05)
   return [min - padding, max + padding]
 })
 
 const exons = computed(() => {
-  if (!props.transcripts) {
+  if (!props.transcripts?.length) {
     return []
   }
   const exons = []
@@ -354,13 +351,12 @@ const vegaLayer = [
 </script>
 
 <template>
-  <v-card>
-    <v-card-title> ClinVar Variation </v-card-title>
-    <v-divider />
-    <figure class="figure border rounded pl-2 pt-2 mr-3 w-100 col">
-      <figcaption class="figure-caption text-center">
-        Variantion landscape for gene {{ props?.hgnc }}
-      </figcaption>
+  <div class="pt-3">
+    <template v-if="!clinvar">
+      <v-skeleton-loader class="mt-3 mx-auto border" type="text,image,text" />
+    </template>
+    <v-sheet v-else rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 h-100">
+      <div class="text-subtitle-1 text-center">Variation Lanscape</div>
       <VegaPlot
         :data-values="vegaData"
         :encoding="vegaEncoding"
@@ -368,6 +364,6 @@ const vegaLayer = [
         :height="300"
         renderer="canvas"
       />
-    </figure>
-  </v-card>
+    </v-sheet>
+  </div>
 </template>

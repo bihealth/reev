@@ -51,7 +51,7 @@ export const useGenesListStore = defineStore('genesList', () => {
     return null
   }
 
-  const loadData = async (geneSymbolQuery: Object) => {
+  const loadData = async (geneSymbolQuery: object) => {
     // Form string from object
     const geneQuery: string = Object.entries(geneSymbolQuery)
       .map(([key, val]) => `${key}=${val}`)

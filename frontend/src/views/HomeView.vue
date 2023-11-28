@@ -92,10 +92,12 @@ const performSearch = async () => {
           <v-card-title>Example Queries:</v-card-title>
           <v-card-text class="examples">
             <div v-for="example in examples" :key="example.label">
-              <div v-if="example.label?.length" class="text-caption mt-3">{{ example.label }}</div>
-              <v-btn class="example mt-1" @click="performExampleSearch(example)">{{
-                example.query
-              }}</v-btn>
+              <div v-if="example.label?.length" class="text-caption mt-3">
+                {{ example.label }}
+              </div>
+              <v-btn class="example mt-1" @click="performExampleSearch(example)">
+                {{ example.query }}
+              </v-btn>
             </div>
           </v-card-text>
         </v-card>

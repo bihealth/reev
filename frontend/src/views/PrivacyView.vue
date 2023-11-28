@@ -19,9 +19,9 @@ const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefa
               <a href="https://www.bihealth.org/en/privacy" target="_blank">
                 privacy policy of the Berlin Institute of Health
               </a>
-            </p></v-card-text
-          ></v-card
-        >
+            </p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

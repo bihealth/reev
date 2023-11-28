@@ -16,38 +16,22 @@ const widthPlot = computed(() => {
   }
 })
 
+interface Props {
+  description?: string
+  dataValues?: any[]
+  dataName?: string
+  encoding?: any
+  params?: any
+  layer?: any
+  width?: number | string | null
+  height?: number | string | null
+  mark?: boolean
+  renderer?: string
+  transform?: any[]
+}
+
 /** Define the props. */
-const props = defineProps({
-  description: String,
-  dataValues: {
-    type: Array,
-    default: () => []
-  },
-  dataName: {
-    type: String,
-    default: 'dataset'
-  },
-  encoding: Object,
-  params: Object,
-  layer: Object,
-  width: {
-    type: [Number, String],
-    default: null
-  },
-  height: {
-    type: [Number, String],
-    default: null
-  },
-  mark: {
-    type: [Boolean, Object],
-    default: true
-  },
-  renderer: {
-    type: String,
-    default: 'canvas'
-  },
-  transform: Array
-})
+const props = defineProps<Props>()
 
 /** The <div> with the plot. */
 const plotDivRef = ref(null)
@@ -62,6 +46,7 @@ const vegaLiteSpec = computed(() => {
     height: props.height,
     description: props.description,
     params: props.params,
+    background: 'transparent',
     data: {
       values: props.dataValues,
       name: props.dataName
@@ -124,11 +109,11 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="plotDivRef"></div>
+  <div ref="plotDivRef" />
 </template>
 
 <style>
-.vega-embed summary {
+/* .vega-embed summary {
   top: -25px !important;
   left: -5px;
   right: unset !important;
@@ -148,5 +133,5 @@ defineExpose({
 .vega-embed .vega-actions::after {
   left: 6px !important;
   right: unset !important;
-}
+} */
 </style>

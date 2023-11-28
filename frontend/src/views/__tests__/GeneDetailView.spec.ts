@@ -6,16 +6,11 @@ import { VMenu } from 'vuetify/components'
 import * as BRCA1ClinVar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1Transcripts from '@/assets/__tests__/BRCA1Transcripts.json'
-import AlternativeIdentifiers from '@/components/GeneDetails/AlternativeIdentifiers.vue'
-import ClinVarFreqPlot from '@/components/GeneDetails/ClinVarFreqPlot.vue'
-import ClinvarImpact from '@/components/GeneDetails/ClinvarImpact.vue'
-import DiseaseAnnotation from '@/components/GeneDetails/DiseaseAnnotation.vue'
-import ExternalResources from '@/components/GeneDetails/ExternalResources.vue'
-import GeneRifs from '@/components/GeneDetails/GeneRifs.vue'
-import LocusDatabases from '@/components/GeneDetails/LocusDatabases.vue'
-import NcbiSummary from '@/components/GeneDetails/NcbiSummary.vue'
-import SupplementaryList from '@/components/GeneDetails/SupplementaryList.vue'
-import VariationLandscape from '@/components/GeneDetails/VariationLandscape.vue'
+import ClinvarCard from '@/components/GeneDetails/ClinvarCard.vue'
+import ConditionsCard from '@/components/GeneDetails/ConditionsCard.vue'
+import ExpressionCard from '@/components/GeneDetails/ExpressionCard.vue'
+import OverviewCard from '@/components/GeneDetails/OverviewCard.vue'
+import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
@@ -92,46 +87,29 @@ describe.concurrent('GeneDetailView', async () => {
     const navigationDrawer = wrapper.find('.v-navigation-drawer')
     expect(navigationDrawer.exists()).toBe(true)
 
-    const hgnc = wrapper.find('#hgnc')
-    const constraintsScores = wrapper.find('#constraints-scores')
-    const ncbiSummary = wrapper.find('#ncbi-summary')
-    const alternativeIdentifiers = wrapper.find('#alternative-identifiers')
-    const externalResources = wrapper.find('#external-resources')
-    const diseaseAnnotations = wrapper.find('#disease-annotation')
-    const acmgList = wrapper.find('#acmg-list')
-    const geneRifs = wrapper.find('#gene-rifs')
-    const locusSpecificDatabases = wrapper.find('#locus-specific-databases')
-    expect(hgnc.exists()).toBe(true)
-    expect(constraintsScores.exists()).toBe(true)
-    expect(ncbiSummary.exists()).toBe(true)
-    expect(alternativeIdentifiers.exists()).toBe(true)
-    expect(externalResources.exists()).toBe(true)
-    expect(diseaseAnnotations.exists()).toBe(true)
-    expect(acmgList.exists()).toBe(true)
-    expect(geneRifs.exists()).toBe(true)
-    expect(locusSpecificDatabases.exists()).toBe(true)
+    // Renders the anchors
+    const geneOverview = wrapper.find('#gene-overview')
+    const genePathogencity = wrapper.find('#gene-pathogenicity')
+    const geneConditions = wrapper.find('#gene-conditions')
+    const geneExpression = wrapper.find('#gene-expression')
+    const geneClinvar = wrapper.find('#gene-clinvar')
+    expect(geneOverview.exists()).toBe(true)
+    expect(genePathogencity.exists()).toBe(true)
+    expect(geneConditions.exists()).toBe(true)
+    expect(geneExpression.exists()).toBe(true)
+    expect(geneClinvar.exists()).toBe(true)
 
     // Renders the main content
-    const alternativeIdentifiersCard = wrapper.findComponent(AlternativeIdentifiers)
-    const externalResourcesCard = wrapper.findComponent(ExternalResources)
-    const clinVarFreqPlotCard = wrapper.findComponent(ClinVarFreqPlot)
-    const clinVarImpactCard = wrapper.findComponent(ClinvarImpact)
-    const diseaseAnnotationCard = wrapper.findComponent(DiseaseAnnotation)
-    const geneRifsCard = wrapper.findComponent(GeneRifs)
-    const locusDatabasesCard = wrapper.findComponent(LocusDatabases)
-    const ncbiSummaryCard = wrapper.findComponent(NcbiSummary)
-    const supplementaryListCard = wrapper.findComponent(SupplementaryList)
-    const variationLandscapeCard = wrapper.findComponent(VariationLandscape)
-    expect(alternativeIdentifiersCard.exists()).toBe(true)
-    expect(externalResourcesCard.exists()).toBe(true)
-    expect(clinVarFreqPlotCard.exists()).toBe(true)
-    expect(clinVarImpactCard.exists()).toBe(true)
-    expect(diseaseAnnotationCard.exists()).toBe(true)
-    expect(geneRifsCard.exists()).toBe(true)
-    expect(locusDatabasesCard.exists()).toBe(true)
-    expect(ncbiSummaryCard.exists()).toBe(true)
-    expect(supplementaryListCard.exists()).toBe(true)
-    expect(variationLandscapeCard.exists()).toBe(true)
+    const overviewCard = wrapper.findComponent(OverviewCard)
+    const pathogencityCard = wrapper.findComponent(PathogenicityCard)
+    const conditionsCard = wrapper.findComponent(ConditionsCard)
+    const expressionCard = wrapper.findComponent(ExpressionCard)
+    const clinvarCard = wrapper.findComponent(ClinvarCard)
+    expect(overviewCard.exists()).toBe(true)
+    expect(pathogencityCard.exists()).toBe(true)
+    expect(conditionsCard.exists()).toBe(true)
+    expect(expressionCard.exists()).toBe(true)
+    expect(clinvarCard.exists()).toBe(true)
   })
 
   it('emits update in header', async () => {
@@ -157,20 +135,20 @@ describe.concurrent('GeneDetailView', async () => {
   it('emits scroll to section', async () => {
     const { wrapper, router } = await makeWrapper()
 
-    const hgncLink = wrapper.find('#hgnc-nav')
-    expect(hgncLink.exists()).toBe(true)
+    const geneOverviewLink = wrapper.find('#gene-overview-nav')
+    expect(geneOverviewLink.exists()).toBe(true)
 
-    await hgncLink.trigger('click')
+    await geneOverviewLink.trigger('click')
     await nextTick()
     expect(router.push).toHaveBeenCalled()
     expect(router.push).toHaveBeenCalledWith({
-      hash: '#hgnc'
+      hash: '#gene-overview'
     })
 
     // Check if hgnc triggered scrollIntoView()
-    const hgncSection = wrapper.find('#hgnc')
-    expect(hgncSection.exists()).toBe(true)
-    expect(hgncSection.element.scrollTop).toBe(0)
+    const geneOverviewCard = wrapper.find('#gene-overview')
+    expect(geneOverviewCard.exists()).toBe(true)
+    expect(geneOverviewCard.element.scrollTop).toBe(0)
   })
 
   it('redirects if mounting with storeState Error', async () => {

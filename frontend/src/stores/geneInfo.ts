@@ -8,6 +8,7 @@ import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
 import { DottyClient } from '@/api/dotty'
+import { type HpoTerm, VigunoClient } from '@/api/viguno'
 import { StoreState } from '@/stores/misc'
 
 export const useGeneInfoStore = defineStore('geneInfo', () => {
@@ -19,6 +20,9 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
 
   /** The retrieved gene data. */
   const geneInfo = ref<any | null>(null)
+
+  /** The HPO terms retrieved from viguno. */
+  const hpoTerms = ref<HpoTerm[]>([])
 
   /** ClinVar gene-related information from annoars. */
   const geneClinvar = ref<any | null>(null)
@@ -47,14 +51,14 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     storeState.value = StoreState.Loading
     try {
       const hgncId = geneSymbolQuery
-      const client = new AnnonarsClient()
-      const data = await client.fetchGeneInfo(hgncId)
+      const annonarsClient = new AnnonarsClient()
+      const data = await annonarsClient.fetchGeneInfo(hgncId)
       if (data?.genes === null) {
         throw new Error('No gene data found.')
       }
       geneInfo.value = data['genes'][hgncId]
 
-      const geneClinvarData = await client.fetchGeneClinvarInfo(hgncId)
+      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncId)
       if (geneClinvarData?.genes === null) {
         throw new Error('No gene clinvar data found.')
       }
@@ -66,6 +70,13 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
         genomeRelease === 'grch37' ? 'GRCh37' : 'GRCh38'
       )
       transcripts.value = transcriptsData
+
+      const vigunoClient = new VigunoClient()
+      const hpoTermsData = await vigunoClient.fetchHpoTermsForHgncId(hgncId)
+      if (hpoTermsData === null) {
+        throw new Error('Problem querying HPO terms data.')
+      }
+      hpoTerms.value = hpoTermsData
 
       geneSymbol.value = geneSymbolQuery
       storeState.value = StoreState.Active
@@ -81,6 +92,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     geneSymbol,
     geneInfo,
     geneClinvar,
+    hpoTerms,
     transcripts,
     loadData,
     clearData

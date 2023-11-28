@@ -104,7 +104,7 @@ const lsriAccount = computed<OAuthAccount | null>(() => {
 const handleProviderAssociation = async (name: string) => {
   const redirectTo = new URLSearchParams(window.location.search).get('redirectTo')
 
-  let provider = userStore.oauth2Providers.find((provider) => provider.name === name)
+  const provider = userStore.oauth2Providers.find((provider) => provider.name === name)
   if (!provider) {
     throw new Error(`No provider found for name ${name}`)
   }
@@ -155,8 +155,8 @@ watch(() => route.hash, scrollToSection)
           <v-list density="compact" nav>
             <v-list-item
               v-for="section in SECTIONS"
-              :key="section.id"
               :id="`${section.id}-nav`"
+              :key="section.id"
               @click="router.push({ hash: `#${section.id}` })"
             >
               <v-list-item-title>{{ section.title }}</v-list-item-title>
@@ -165,7 +165,7 @@ watch(() => route.hash, scrollToSection)
         </div>
       </v-navigation-drawer>
 
-      <v-row class="align-center fill-height" justify="center" id="general-info">
+      <v-row id="general-info" class="align-center fill-height" justify="center">
         <v-card
           class="mx-auto pa-4 pb-8 mt-12"
           elevation="8"
@@ -221,17 +221,17 @@ watch(() => route.hash, scrollToSection)
 
               <div class="mt-3">Status</div>
               <v-checkbox
+                v-if="userStore.currentUser.is_superuser"
+                v-model="userStore.currentUser.is_superuser"
                 label="is superuser"
                 readonly
-                v-model="userStore.currentUser.is_superuser"
-                v-if="userStore.currentUser.is_superuser"
               />
               <v-checkbox
+                v-model="userStore.currentUser.is_verified"
                 label="verified email"
                 readonly
-                v-model="userStore.currentUser.is_verified"
               />
-              <v-checkbox label="active user" readonly v-model="userStore.currentUser.is_active" />
+              <v-checkbox v-model="userStore.currentUser.is_active" label="active user" readonly />
 
               <div class="mt-3">Sign-In Options</div>
               <div>
@@ -297,7 +297,7 @@ watch(() => route.hash, scrollToSection)
             </v-form>
 
             <v-row class="pt-6" justify="center">
-              <v-btn prepend-icon="mdi-key-variant" id="login" @click="logout"> Logout </v-btn>
+              <v-btn id="login" prepend-icon="mdi-key-variant" @click="logout"> Logout </v-btn>
             </v-row>
           </v-card-text>
         </v-card>
@@ -314,7 +314,7 @@ watch(() => route.hash, scrollToSection)
             <v-card-subtitle>(Only superusers can do this)</v-card-subtitle>
 
             <v-card-item>
-              <v-text-field v-model="testEmailTo" label="Email Recipient"></v-text-field>
+              <v-text-field v-model="testEmailTo" label="Email Recipient" />
 
               <v-btn block prepend-icon="mdi-send" class="mt-2" @click="sendTestEmail">
                 Send Test Email
@@ -324,7 +324,7 @@ watch(() => route.hash, scrollToSection)
         </v-card>
       </v-row>
 
-      <v-row class="align-center fill-height" justify="center" id="bookmarks">
+      <v-row id="bookmarks" class="align-center fill-height" justify="center">
         <v-card
           class="mx-auto pa-4 pb-8 mt-12"
           elevation="8"
@@ -338,7 +338,9 @@ watch(() => route.hash, scrollToSection)
               <v-list v-if="bookmarksStore.bookmarks.length">
                 <v-list-item v-for="bookmark in bookmarksStore.bookmarks" :key="bookmark.id">
                   <v-card-text>
-                    <v-btn @click="performSearch(bookmark.obj_id)">{{ bookmark.obj_id }}</v-btn>
+                    <v-btn @click="performSearch(bookmark.obj_id)">
+                      {{ bookmark.obj_id }}
+                    </v-btn>
                     <v-btn
                       class="ma-2"
                       icon
@@ -355,7 +357,7 @@ watch(() => route.hash, scrollToSection)
         </v-card>
       </v-row>
 
-      <v-row class="align-center fill-height" justify="center" id="case-information">
+      <v-row id="case-information" class="align-center fill-height" justify="center">
         <CaseInformationCard class="mx-auto pa-4 pb-8 mt-12" elevation="8" rounded="lg" />
       </v-row>
     </div>
@@ -377,7 +379,7 @@ watch(() => route.hash, scrollToSection)
 
           <v-card-text>
             <v-row class="pt-6" justify="center">
-              <v-btn prepend-icon="mdi-key-variant" id="login" color="success" to="/login">
+              <v-btn id="login" prepend-icon="mdi-key-variant" color="success" to="/login">
                 Login
               </v-btn>
             </v-row>

@@ -22,9 +22,9 @@ const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefa
               holders be liable for any claim, damages, or other liability, whether in an action of
               contract, tort, or otherwise, arising from, out of, or in connection with the software
               or the use or other dealings in the software.
-            </p></v-card-text
-          ></v-card
-        >
+            </p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
   </v-container>

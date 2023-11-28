@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
-import GeneRifs from '@/components/GeneDetails/GeneRifs.vue'
+import GeneRifs from '@/components/GeneDetails/OverviewCard/GeneRifs.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('GeneRifs', async () => {
@@ -14,6 +14,6 @@ describe.concurrent('GeneRifs', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('GeneRIFs')
+    expect(wrapper.text()).toContain('NCBI References Into Function')
   })
 })

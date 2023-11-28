@@ -33,6 +33,6 @@ const vcvUrl = (vcv: string): string => {
           SV has not been annotated with (likely) pathogenic ClinVar SV records.
         </div>
       </template>
-    </v-card-text></v-card
-  >
+    </v-card-text>
+  </v-card>
 </template>

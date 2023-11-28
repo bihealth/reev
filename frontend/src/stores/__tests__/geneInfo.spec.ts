@@ -123,6 +123,6 @@ describe.concurrent('geneInfo Store', () => {
 
     await store.loadData('HGNC:1100', 'GRCh37')
 
-    expect(fetchMocker.mock.calls.length).toBe(3)
+    expect(fetchMocker.mock.calls.length).toBe(4)
   })
 })

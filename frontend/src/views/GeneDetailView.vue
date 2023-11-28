@@ -2,50 +2,28 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+import BookmarkListItem from '@/components/BookmarkListItem.vue'
+import { useCaseStore } from '@/stores/case'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 // Components
-const BookmarkButton = defineAsyncComponent(() => import('@/components/BookmarkButton.vue'))
-const AlternativeIdentifiers = defineAsyncComponent(
-  () => import('@/components/GeneDetails/AlternativeIdentifiers.vue')
-)
-const ClinvarFreqPlot = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ClinVarFreqPlot.vue')
-)
-const ClinvarImpact = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ClinvarImpact.vue')
-)
-const ConstraintsCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ConstraintsCard.vue')
-)
-const DiseaseAnnotation = defineAsyncComponent(
-  () => import('@/components/GeneDetails/DiseaseAnnotation.vue')
-)
-const CadaPrioRanking = defineAsyncComponent(
-  () => import('@/components/GeneDetails/CadaPrioRanking.vue')
-)
-const ExternalResouces = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ExternalResources.vue')
-)
-const GeneRifs = defineAsyncComponent(() => import('@/components/GeneDetails/GeneRifs.vue'))
-const GtexGenePlot = defineAsyncComponent(() => import('@/components/GeneDetails/GtexGenePlot.vue'))
-const HgncCard = defineAsyncComponent(() => import('@/components/GeneDetails/HgncCard.vue'))
-const LocusDatabases = defineAsyncComponent(
-  () => import('@/components/GeneDetails/LocusDatabases.vue')
-)
-const NcbiSummary = defineAsyncComponent(() => import('@/components/GeneDetails/NcbiSummary.vue'))
-const SupplementaryList = defineAsyncComponent(
-  () => import('@/components/GeneDetails/SupplementaryList.vue')
-)
-const VariationLandscape = defineAsyncComponent(
-  () => import('@/components/GeneDetails/VariationLandscape.vue')
-)
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
+const PathogenicityCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/PathogenicityCard.vue')
+)
+const ConditionsCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ConditionsCard.vue')
+)
+const ExpressionCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ExpressionCard.vue')
+)
+const ClinvarCard = defineAsyncComponent(() => import('@/components/GeneDetails/ClinvarCard.vue'))
 
 export interface Props {
   searchTerm?: string
-  genomeRelease?: string
+  genomeRelease?: 'grch37' | 'grch38'
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -57,6 +35,7 @@ const router = useRouter()
 const route = useRoute()
 
 const geneInfoStore = useGeneInfoStore()
+const caseStore = useCaseStore()
 
 const scrollToSection = async () => {
   const sectionId = route.hash.slice(1)
@@ -68,6 +47,7 @@ const scrollToSection = async () => {
 
 const loadDataToStore = async () => {
   await geneInfoStore.loadData(props.searchTerm, props.genomeRelease)
+  await caseStore.loadCase()
   await scrollToSection()
 }
 
@@ -92,131 +72,87 @@ watch(
 )
 
 const SECTIONS = [
-  { id: 'hgnc', title: 'HGNC' },
-  { id: 'variation-landscape', title: 'Variation Landscape' },
-  { id: 'constraints-scores', title: 'Constraints / Scores' },
-  { id: 'ncbi-summary', title: 'NCBI Summary' },
-  { id: 'alternative-identifiers', title: 'Alternative Identifiers' },
-  { id: 'external-resources', title: 'External Resources' },
-  { id: 'disease-annotation', title: 'Disease Annotation' },
-  { id: 'gene-ranking', title: 'Gene Ranking for current Phenotype' },
-  { id: 'acmg-list', title: 'ACMG Supplementary Findings List' },
-  { id: 'gene-rifs', title: 'Gene RIFs' },
-  { id: 'locus-specific-databases', title: 'Locus-Specific Databases' },
-  { id: 'clinvar-impact', title: 'Clinvar By Impact' },
-  { id: 'clinvar-frequency', title: 'Clinvar By Frequency' },
-  { id: 'gtex', title: 'GTEx Expression' }
+  { id: 'gene-overview', title: 'Overview' },
+  { id: 'gene-pathogenicity', title: 'Pathogenicity' },
+  { id: 'gene-conditions', title: 'Conditions' },
+  { id: 'gene-expression', title: 'Expression' },
+  { id: 'gene-clinvar', title: 'ClinVar' }
 ]
 
 // We need to use refs here because of props mutations in the parent
 const searchTermRef = ref(props.searchTerm)
-const genomeReleaseRef = ref(props.genomeRelease)
+const genomeReleaseRef = ref<'grch37' | 'grch38'>(props.genomeRelease)
+
+// The `v-list-group` API needs this here so we can enable sections by default.
+const openedSection = ref<string[]>(['gene'])
 </script>
 
 <template>
-  <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
-  <v-navigation-drawer location="right" class="overflow-auto">
-    <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
-      <BookmarkButton :type="'gene'" :id="searchTermRef" />
-      Sections:
-      <v-list density="compact" nav>
-        <v-list-item
-          v-for="section in SECTIONS"
-          :key="section.id"
-          :id="`${section.id}-nav`"
-          @click="router.push({ hash: `#${section.id}` })"
-        >
-          <v-list-item-title>{{ section.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </div>
-  </v-navigation-drawer>
-  <v-layout>
-    <v-main style="min-height: 300px">
-      <div v-if="geneInfoStore.storeState == StoreState.Active" class="gene-info">
-        <div id="hgnc" class="gene-item">
-          <HgncCard :hgnc="geneInfoStore.geneInfo?.hgnc" />
-        </div>
+  <v-app>
+    <HeaderDetailPage
+      v-model:search-term="searchTermRef"
+      v-model:genome-release="genomeReleaseRef"
+    />
 
-        <div id="variation-landscape" class="gene-item">
-          <VariationLandscape
-            :clinvar="geneInfoStore.geneClinvar"
-            :transcripts="geneInfoStore.transcripts"
-            :genome-release="genomeReleaseRef"
-            :hgnc="geneInfoStore.geneInfo?.hgnc?.hgncId"
-          />
-        </div>
+    <v-navigation-drawer :elevation="3" :permanent="true">
+      <div v-if="geneInfoStore.storeState == StoreState.Active">
+        <v-list v-model:opened="openedSection">
+          <v-list-subheader> GENE </v-list-subheader>
 
-        <div id="constraints-scores" class="gene-item">
-          <ConstraintsCard :gnomad-constraints="geneInfoStore.geneInfo?.gnomadConstraints" />
-        </div>
+          <BookmarkListItem :id="searchTermRef" :type="'gene'" />
 
-        <div id="ncbi-summary" class="gene-item">
-          <NcbiSummary
-            :ncbi-summary="geneInfoStore.geneInfo?.ncbi?.summary"
-            :gene-id="geneInfoStore.geneInfo?.ncbi?.geneId"
-          />
-        </div>
+          <v-list-group value="gene">
+            <template #activator="{ props: vProps }">
+              <v-list-item v-bind="vProps" prepend-icon="mdi-dna" title="Gene" />
+            </template>
 
-        <div id="alternative-identifiers" class="gene-item">
-          <AlternativeIdentifiers :hgnc="geneInfoStore.geneInfo?.hgnc" />
-        </div>
+            <v-list-item
+              v-for="section in SECTIONS"
+              :id="`${section.id}-nav`"
+              :key="section.id"
+              density="compact"
+              @click="router.push({ hash: `#${section.id}` })"
+            >
+              <v-list-item-title>
+                {{ section.title }}
+              </v-list-item-title>
+            </v-list-item>
+          </v-list-group>
+        </v-list>
+      </div>
+    </v-navigation-drawer>
+    <v-main class="my-3 mx-3">
+      <div id="gene-overview">
+        <OverviewCard :gene-info="geneInfoStore.geneInfo" />
+      </div>
 
-        <div id="external-resources" class="gene-item">
-          <ExternalResouces :hgnc="geneInfoStore.geneInfo?.hgnc" />
-        </div>
+      <div id="gene-pathogenicity">
+        <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
+      </div>
 
-        <div id="disease-annotation" class="gene-item">
-          <DiseaseAnnotation :dbnsfp="geneInfoStore.geneInfo.dbnsfp" />
-        </div>
-
-        <div id="gene-ranking" class="gene-item">
-          <CadaPrioRanking />
-        </div>
-
-        <div id="acmg-list" class="gene-item">
-          <SupplementaryList :acmg-sf="geneInfoStore.geneInfo?.acmgSf" />
-        </div>
-
-        <div id="gene-rifs" class="gene-item">
-          <GeneRifs :ncbi="geneInfoStore.geneInfo?.ncbi" />
-        </div>
-
-        <div id="locus-specific-databases" class="gene-item">
-          <LocusDatabases :hgnc="geneInfoStore.geneInfo?.hgnc" />
-        </div>
-
-        <div id="clinvar-impact" class="gene-item">
-          <ClinvarImpact :gene-clinvar="geneInfoStore.geneClinvar" />
-        </div>
-
-        <div id="clinvar-frequency" class="gene-item">
-          <ClinvarFreqPlot
-            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgncId"
-            :per-freq-counts="geneInfoStore.geneClinvar?.perFreqCounts"
-          />
-        </div>
-
-        <div id="gtex" class="gene-item">
-          <GtexGenePlot
-            :gene-symbol="geneInfoStore.geneInfo?.hgnc?.hgncId"
-            :expression-records="geneInfoStore.geneInfo?.gtex?.records"
-            :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
-          />
+      <div id="phenotype">
+        <div id="gene-conditions">
+          <ConditionsCard :gene-info="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
         </div>
       </div>
+
+      <div id="gene-expression">
+        <ExpressionCard
+          :gene-symbol="geneInfoStore.geneInfo?.hgnc?.symbol"
+          :expression-records="geneInfoStore.geneInfo?.gtex?.records"
+          :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
+        />
+      </div>
+
+      <div id="gene-clinvar">
+        <ClinvarCard
+          :gene-clinvar="geneInfoStore.geneClinvar"
+          :transcripts="geneInfoStore.transcripts"
+          :genome-release="genomeReleaseRef"
+          :gene-info="geneInfoStore?.geneInfo"
+          :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
+        />
+      </div>
     </v-main>
-  </v-layout>
+  </v-app>
 </template>
-
-<style scoped>
-.gene-info {
-  width: 95%;
-  margin: 20px;
-}
-
-.gene-item {
-  margin-bottom: 20px;
-  padding: 5px 10px;
-}
-</style>

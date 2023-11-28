@@ -100,13 +100,13 @@ const genomeReleaseRef = ref(props.genomeRelease)
   <HeaderDetailPage v-model:search-term="searchTermRef" v-model:genome-release="genomeReleaseRef" />
   <v-navigation-drawer location="right" class="overflow-auto">
     <div v-if="svInfoStore.storeState == StoreState.Active" class="sv-info">
-      <BookmarkButton :type="'strucvar'" :id="searchTermRef" />
+      <BookmarkButton :id="searchTermRef" :type="'strucvar'" />
       Sections:
       <v-list density="compact" nav>
         <v-list-item
           v-for="section in SECTIONS"
-          :key="section.id"
           :id="`${section.id}-nav`"
+          :key="section.id"
           @click="router.push({ hash: `#${section.id}` })"
         >
           <v-list-item-title>{{ section.title }}</v-list-item-title>
@@ -145,7 +145,7 @@ const genomeReleaseRef = ref(props.genomeRelease)
         <v-card class="d-flex align-center justify-center" style="min-height: 300px">
           <v-card-title>Loading SV information</v-card-title>
           <v-divider />
-          <v-progress-circular indeterminate></v-progress-circular>
+          <v-progress-circular indeterminate />
         </v-card>
       </div>
     </v-main>

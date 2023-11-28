@@ -1,5 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{ txCsq: any }>()
+interface Props {
+  txCsq: any
+}
+
+const props = defineProps<Props>()
 </script>
 
 <template>
@@ -19,31 +23,31 @@ const props = defineProps<{ txCsq: any }>()
           </tr>
         </thead>
         <tbody>
-          <tr v-for="txCsq in props.txCsq" :key="txCsq">
-            <td>{{ txCsq['gene_symbol'] }}</td>
+          <tr v-for="oneTxCsq in props.txCsq" :key="oneTxCsq">
+            <td>{{ oneTxCsq['gene_symbol'] }}</td>
             <td>
-              {{ txCsq.feature_id }}
-              <small> ({{ txCsq.feature_biotype }}) </small>
+              {{ oneTxCsq.feature_id }}
+              <small> ({{ oneTxCsq.feature_biotype }}) </small>
               <span
+                v-if="(oneTxCsq.feature_tag ?? []).includes('ManeSelect')"
                 class="badge badge-primary"
-                v-if="(txCsq.feature_tag ?? []).includes('ManeSelect')"
               >
                 MANE Select
               </span>
               <span
+                v-if="(oneTxCsq.feature_tag ?? []).includes('ManePlusClinical')"
                 class="badge badge-secondary"
-                v-if="(txCsq.feature_tag ?? []).includes('ManePlusClinical')"
               >
                 MANE Plus Clinical
               </span>
             </td>
-            <td>{{ (txCsq['consequences'] ?? []).join(', ') }}</td>
-            <td>{{ txCsq['hgvs_t'] }}</td>
-            <td>{{ txCsq['hgvs_p'] }}</td>
-            <td>{{ txCsq['rank']?.ord }} / {{ txCsq['rank']?.total }}</td>
+            <td>{{ (oneTxCsq.consequences ?? []).join(', ') }}</td>
+            <td>{{ oneTxCsq.hgvs_t }}</td>
+            <td>{{ oneTxCsq.hgvs_p }}</td>
+            <td>{{ oneTxCsq.rank?.ord }} / {{ oneTxCsq.rank?.total }}</td>
           </tr>
         </tbody>
-      </v-table></v-card-text
-    >
+      </v-table>
+    </v-card-text>
   </v-card>
 </template>

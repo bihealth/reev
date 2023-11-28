@@ -60,9 +60,9 @@ const toggleBookmark = async () => {
 
 <template>
   <div v-if="bookmarksStore.storeState === StoreState.Error">
-    <v-alert class="mr-4" density="compact" type="error"
-      >Error loading bookmarks! &nbsp; Forgot to login?</v-alert
-    >
+    <v-alert class="mr-4" density="compact" type="error">
+      Error loading bookmarks! &nbsp; Forgot to login?
+    </v-alert>
   </div>
   <div v-else class="mb-2">
     <span v-if="!isBookmarked">Bookmark this</span>

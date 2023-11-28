@@ -24,8 +24,8 @@ const transcriptIds = computed(() => {
 })
 
 const consInfo: any = computed(() => {
-  let seen = new Set()
-  let res: any = {}
+  const seen = new Set()
+  const res: any = {}
   for (const { chrom, enstId, start, stop, alignment } of ucscConservation.value) {
     const key = `${enstId}-${chrom}-${enstId}-${start}-${stop}`
     if (!seen.has(key)) {
@@ -69,7 +69,7 @@ onMounted(initSelectedTranscript)
       <div v-if="ucscConservation.length">
         <div class="float-right">
           <select v-model="selectedTranscript">
-            <option v-for="transcript in transcriptIds" :value="transcript" :key="transcript">
+            <option v-for="transcript in transcriptIds" :key="transcript" :value="transcript">
               {{ transcript }}
             </option>
           </select>
@@ -79,6 +79,7 @@ onMounted(initSelectedTranscript)
 <template v-for="row in consInfo[selectedTranscript]">{{ row.chrom.padStart(5) }} {{ sepIt(row.start, ',').padStart(11) }}-{{ sepIt(row.stop, ',').padEnd(11) }}  |  {{ row.alignment }}
 </template></pre>
       </div>
-      <div v-else class="text-muted text-center font-italic"></div> </v-card-text
-  ></v-card>
+      <div v-else class="text-muted text-center font-italic" />
+    </v-card-text>
+  </v-card>
 </template>

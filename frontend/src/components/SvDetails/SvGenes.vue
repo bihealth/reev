@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { type ComputedRef, type Ref, computed, ref } from 'vue'
+import { type Ref, ref } from 'vue'
 
+import {
+  CLINGEN_DOSAGE_LABELS,
+  CLINGEN_DOSAGE_SCORES
+} from '@/components/GeneDetails/PathogenicityCard.c'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import { roundIt, search } from '@/lib/utils'
 import router from '@/router'
@@ -14,27 +18,6 @@ const props = defineProps<{
 
 const currentGeneInfos: Ref<any> = ref(null)
 const itemsPerPage = ref(10)
-
-const clingenDosageScore: { [key: string]: number } = {
-  CLINGEN_DOSAGE_SCORE_UNKNOWN: 0,
-  CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE: 3,
-  CLINGEN_DOSAGE_SCORE_SOME_EVIDENCE_AVAILABLE: 2,
-  CLINGEN_DOSAGE_SCORE_LITTLE_EVIDENCE: 1,
-  CLINGEN_DOSAGE_SCORE_NO_EVIDENCE_AVAILABLE: 0,
-  CLINGEN_DOSAGE_SCORE_RECESSIVE: 30,
-  CLINGEN_DOSAGE_SCORE_UNLIKELY: 40
-}
-
-const clingenDosageLabel: { [key: string]: string } = {
-  CLINGEN_DOSAGE_SCORE_UNKNOWN: 'unknown',
-  CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE:
-    'sufficient evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_SOME_EVIDENCE_AVAILABLE: 'some evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_LITTLE_EVIDENCE: 'little evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_NO_EVIDENCE_AVAILABLE: 'no evidence for dosage pathogenicity',
-  CLINGEN_DOSAGE_SCORE_RECESSIVE: 'gene associated with autosomal recessive phenotype',
-  CLINGEN_DOSAGE_SCORE_UNLIKELY: 'dosage sensitivity unlikely'
-}
 
 const headers = [
   {
@@ -144,15 +127,15 @@ const performSearch = async (geneSymbol: string) => {
           item-key="dbnsfp.geneName"
           @click:row="onRowClicked"
         >
-          <template v-slot:[`item.dbnsfp.geneName`]="{ item }">
+          <template #[`item.dbnsfp.geneName`]="{ item }">
             {{ item.dbnsfp.geneName }}
             <v-btn prepend-icon="mdi-open-in-new" @click="performSearch(item.dbnsfp.geneName)" />
           </template>
 
-          <template v-slot:[`item.omim`]="{ value }">
+          <template #[`item.omim`]="{ value }">
             <template v-if="value?.omimDiseases?.length">
               <template v-for="(disease, idx) in value?.omimDiseases" :key="idx">
-                <template v-if="idx > 0">, </template>
+                <template v-if="idx > 0"> , </template>
                 <a
                   :href="`https://www.omim.org/entry/${disease.omimId.replace('OMIM:', '')}`"
                   target="_blank"
@@ -164,10 +147,10 @@ const performSearch = async (geneSymbol: string) => {
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.orpha`]="{ value }">
+          <template #[`item.orpha`]="{ value }">
             <template v-if="value?.orphaDiseases?.length">
               <template v-for="(disease, idx) in value?.orphaDiseases" :key="idx">
-                <template v-if="idx > 0">, </template>
+                <template v-if="idx > 0"> , </template>
                 <a
                   :href="`https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=${disease.orphaId.replace(
                     'ORPHA:',
@@ -182,58 +165,70 @@ const performSearch = async (geneSymbol: string) => {
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.gnomadConstraints.pli`]="{ value }">
+          <template #[`item.gnomadConstraints.pli`]="{ value }">
             <template v-if="value">
+              <!-- eslint-disable vue/no-v-html -->
               <span v-html="roundIt(value, 3)" />
+              <!-- eslint-enable -->
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.gnomadConstraints.oeLofUpper`]="{ value }">
+          <template #[`item.gnomadConstraints.oeLofUpper`]="{ value }">
             <template v-if="value">
+              <!-- eslint-disable vue/no-v-html -->
               <span v-html="roundIt(value, 3)" />
+              <!-- eslint-enable -->
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.dbnsfp.haploinsufficiency`]="{ value }">
+          <template #[`item.dbnsfp.haploinsufficiency`]="{ value }">
             <template v-if="value">
+              <!-- eslint-disable vue/no-v-html -->
               <span v-html="roundIt(value, 3)" />
+              <!-- eslint-enable -->
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.shet.sHet`]="{ value }">
+          <template #[`item.shet.sHet`]="{ value }">
             <template v-if="value">
+              <!-- eslint-disable vue/no-v-html -->
               <span v-html="roundIt(value, 3)" />
+              <!-- eslint-enable -->
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.rcnv.pHaplo`]="{ value }">
+          <template #[`item.rcnv.pHaplo`]="{ value }">
             <template v-if="value">
-              <span v-html="roundIt(value, 3)"></span>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template v-slot:[`item.rcnv.pTriplo`]="{ value }">
-            <template v-if="value">
+              <!-- eslint-disable vue/no-v-html -->
               <span v-html="roundIt(value, 3)" />
+              <!-- eslint-enable -->
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.clingen.haploinsufficiencyScore`]="{ value }">
+          <template #[`item.rcnv.pTriplo`]="{ value }">
             <template v-if="value">
-              <abbr :title="clingenDosageLabel[value]">{{ clingenDosageScore[value] }}</abbr>
+              <!-- eslint-disable vue/no-v-html -->
+              <span v-html="roundIt(value, 3)" />
+              <!-- eslint-enable -->
             </template>
             <template v-else> &mdash; </template>
           </template>
 
-          <template v-slot:[`item.clingen.triplosensitivityScore`]="{ value }">
+          <template #[`item.clingen.haploinsufficiencyScore`]="{ value }">
             <template v-if="value">
-              <abbr :title="clingenDosageLabel[value]">{{ clingenDosageScore[value] }}</abbr>
+              <abbr :title="CLINGEN_DOSAGE_LABELS[value]">{{ CLINGEN_DOSAGE_SCORES[value] }}</abbr>
+            </template>
+            <template v-else> &mdash; </template>
+          </template>
+
+          <template #[`item.clingen.triplosensitivityScore`]="{ value }">
+            <template v-if="value">
+              <abbr :title="CLINGEN_DOSAGE_LABELS[value]">{{ CLINGEN_DOSAGE_SCORES[value] }}</abbr>
             </template>
             <template v-else> &mdash; </template>
           </template>
@@ -252,6 +247,6 @@ const performSearch = async (geneSymbol: string) => {
       <div v-else class="text-muted text-center font-italic pt-2">
         Select gene in table above to see details.
       </div>
-    </v-card-text></v-card
-  >
+    </v-card-text>
+  </v-card>
 </template>

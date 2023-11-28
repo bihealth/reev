@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps({
-  clinvar: Object
-})
+interface Props {
+  clinvar?: any
+}
+
+const props = defineProps<Props>()
 
 const clinicalSignificanceLabel: { [key: string]: string } = {
   CLINICAL_SIGNIFICANCE_PATHOGENIC: 'pathogenic',
@@ -107,10 +109,7 @@ const expand = ref<boolean>(false)
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="assertion of props.clinvar?.referenceAssertions"
-                v-bind:key="assertion.rcv"
-              >
+              <tr v-for="assertion of props.clinvar?.referenceAssertions" :key="assertion.rcv">
                 <td>
                   {{ assertion.title.split('AND')[1] }}
                 </td>
@@ -151,14 +150,11 @@ const expand = ref<boolean>(false)
         {{ !expand ? 'Show Reference Assertions' : 'Hide Reference Assertions' }}
       </v-btn>
       <v-spacer />
-      <v-btn
-        :icon="expand ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-        @click="expand = !expand"
-      ></v-btn>
+      <v-btn :icon="expand ? 'mdi-chevron-up' : 'mdi-chevron-down'" @click="expand = !expand" />
     </v-card-actions>
   </v-card>
 
-  <v-card variant="elevated" v-else>
+  <v-card v-else variant="elevated">
     <v-card-text> No ClinVar information available. </v-card-text>
   </v-card>
 </template>

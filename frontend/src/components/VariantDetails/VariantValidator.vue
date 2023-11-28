@@ -68,10 +68,11 @@ const activeIdentifier = ref<string>('')
               <v-btn
                 :id="'variant-validator-result-' + index + '-tab'"
                 :href="'#variant-validator-result-' + index"
-                @click="activeIdentifier = String(identifier)"
                 :class="{ 'active-tab': String(identifier) === activeIdentifier }"
-                >{{ identifier }}</v-btn
+                @click="activeIdentifier = String(identifier)"
               >
+                {{ identifier }}
+              </v-btn>
             </div>
           </v-list-item>
         </v-list>
@@ -79,9 +80,9 @@ const activeIdentifier = ref<string>('')
           <div v-for="(data, identifier, index) in variantValidatorResults" :key="index">
             <v-card
               v-if="String(identifier) !== 'metadata' && String(identifier) !== 'flag'"
+              v-show="String(identifier) === activeIdentifier"
               :id="'variant-validator-result-' + index"
               variant="outlined"
-              v-show="String(identifier) === activeIdentifier"
             >
               <div v-if="data.validation_warnings && data.validation_warnings.length">
                 <v-list>
@@ -194,7 +195,7 @@ const activeIdentifier = ref<string>('')
       </div>
       <div v-else-if="variantValidatorState === VariantValidatorStates.Running">
         <div class="alert alert-info">
-          <v-progress-circular indeterminate></v-progress-circular>
+          <v-progress-circular indeterminate />
           <strong class="pl-2">Loading ...</strong>
         </div>
       </div>
@@ -223,8 +224,8 @@ const activeIdentifier = ref<string>('')
           </v-btn>
         </div>
       </div>
-    </v-card-text></v-card
-  >
+    </v-card-text>
+  </v-card>
 </template>
 
 <style scoped>
