@@ -13,7 +13,7 @@ export interface Props {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (event: 'update:searchTerm' | 'update:genomeRelease', value: string): void
-  clickSearch: (searchTerm: string, genomeRelease: string) => void
+  (event: 'clickSearch', searchTerm: string, genomeRelease: string): void
 }>()
 
 const props = withDefaults(defineProps<Props>(), {
