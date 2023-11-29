@@ -80,6 +80,9 @@ export const useSvInfoStore = defineStore('svInfo', () => {
         genesInfos.value = await annonarsClient.fetchGeneInfos(hgncIds)
       }
 
+      // Sort by gene symbol
+      genesInfos.value.sort((a, b) => (a?.hgnc?.agr ?? 'ZZZ').localeCompare(b?.hgnc?.agr ?? 'ZZZ'))
+
       storeState.value = StoreState.Active
       svTerm.value = variantQuery
     } catch (e) {

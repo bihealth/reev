@@ -1,94 +1,29 @@
 <script setup lang="ts">
-import { type Ref, computed, ref } from 'vue'
+import { type Ref, computed, ref, watch } from 'vue'
+import { onMounted } from 'vue'
 
 import Entry from '@/components/SvDetails/GeneListCard/Entry.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
-import { roundIt, search } from '@/lib/utils'
+import { search } from '@/lib/utils'
 import router from '@/router'
 import { StoreState } from '@/stores/misc'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any
 
-const props = defineProps<{
-  currentSvRecord?: any
-  genesInfos?: GeneInfo[]
-  storeState?: StoreState
-}>()
-
-const headers = [
+const props = withDefaults(
+  defineProps<{
+    currentSvRecord?: any
+    genesInfos?: GeneInfo[]
+    storeState?: StoreState
+    selectedGeneHgncId: string | null
+  }>(),
   {
-    title: 'symbol',
-    key: 'dbnsfp.geneName',
-    width: 150,
-    sortable: true
-  },
-  {
-    title: 'name',
-    key: 'dbnsfp.geneFullName',
-    width: 200
-  },
-  {
-    title: 'OMIM',
-    key: 'omim',
-    sortable: true
-  },
-  {
-    title: 'Orphanet',
-    key: 'orpha',
-    sortable: true
-  },
-  {
-    title: 'pLI',
-    key: 'gnomadConstraints.pli',
-    width: 50,
-    sortable: true
-  },
-  {
-    title: 'o/e LoF (upper)',
-    key: 'gnomadConstraints.oeLofUpper',
-    width: 100,
-    sortable: true
-  },
-  {
-    title: 'P(HI)',
-    width: 50,
-    key: 'dbnsfp.haploinsufficiency'
-  },
-  {
-    title: 'sHet',
-    width: 100,
-    key: 'shet.sHet',
-    sortable: true
-  },
-  {
-    title: 'pHaplo',
-    width: 100,
-    key: 'rcnv.pHaplo',
-    sortable: true
-  },
-  {
-    title: 'pTriplo',
-    width: 100,
-    key: 'rcnv.pTriplo',
-    sortable: true
-  },
-  {
-    title: 'ClinGen HI',
-    width: 100,
-    key: 'clingen.haploinsufficiencyScore'
-  },
-  {
-    title: 'ClinGen TS',
-    width: 100,
-    key: 'clingen.triplosensitivityScore'
+    selectedGeneHgncId: null
   }
-]
+)
 
-/** Show gene info on click. */
-const onRowClicked = (event: Event, { item }: { item: GeneInfo }): void => {
-  currentGeneInfos.value = item
-}
+const emit = defineEmits(['update:selectedGeneHgncId'])
 
 /**
  * Perform a search based on the input gene symbol and current genome release.
@@ -107,10 +42,8 @@ const performSearch = async (geneSymbol: string) => {
   }
 }
 
-/** Currently selected gene infos. */
-const currentGeneInfos: Ref<any> = ref(null)
 /** Available items per page. */
-const itemsPerPageChoices = [10, 20, 50]
+const itemsPerPageChoices = [5, 10, 20, 50]
 /** Items per page for data iterator. */
 const itemsPerPage = ref<number>(10)
 /** Current page. */
@@ -126,7 +59,7 @@ const isLoading = computed<boolean>(() => {
 
 /** Mapping from transcript effect to label. */
 const TX_EFFECT_LABELS: { [key: string]: string } = {
-  transcript_variant: 'whole transcript',
+  transcript_variant: 'whole tx',
   exon_variant: 'exonic',
   splice_region_variant: 'splicing',
   intron_variant: 'intronic',
@@ -212,14 +145,40 @@ const _sortNumberNaLess = (a: number | undefined, b: number | undefined): number
     return a - b
   }
 }
-type DataTableCompareFunction<T = any> = (a: T, b: T) => number;
-const customKeySort: {[key: string]: DataTableCompareFunction} = {
+type DataTableCompareFunction<T = any> = (a: T, b: T) => number
+const customKeySort: { [key: string]: DataTableCompareFunction } = {
   'gnomadConstraints.pli': _sortNumberNaGreater,
   'gnomadConstraints.oeLofUpper': _sortNumberNaGreater,
   'decipherHi.pHi': _sortNumberNaLess,
   'rcnv.pHaplo': _sortNumberNaLess,
-  'rcnv.pTriplo': _sortNumberNaLess,
+  'rcnv.pTriplo': _sortNumberNaLess
 }
+
+/** State for selected item in iterator */
+const selectedItems = computed<any[]>({
+  get() {
+    return [props.selectedGeneHgncId]
+  },
+  set(arr) {
+    emit('update:selectedGeneHgncId', arr[0])
+  }
+})
+
+/** Select first element in iterator */
+const selectFirst = (storeState: StoreState | undefined) => {
+  if (storeState === StoreState.Active && props.genesInfos?.length) {
+    selectedItems.value = [props.genesInfos[0].hgnc.agr]
+  }
+}
+
+/** Watch store for state change to active */
+watch(
+  () => props.storeState,
+  (newStoreState) => selectFirst(newStoreState)
+)
+
+/** Select first on being mounted if the store is already active */
+onMounted(() => selectFirst(props.storeState))
 </script>
 
 <template>
@@ -228,8 +187,10 @@ const customKeySort: {[key: string]: DataTableCompareFunction} = {
     <v-card-subtitle class="text-overline"> Overlapping and Contained Genes </v-card-subtitle>
     <v-card-text>
       <v-data-iterator
+        v-model="selectedItems"
         v-model:items-per-page="itemsPerPage"
         :items="genesInfos"
+        item-value="hgnc.agr"
         :loading="isLoading"
         :page="currentPage"
         :sort-by="[{ key: sortKey, order: sortOrder }]"
@@ -242,23 +203,26 @@ const customKeySort: {[key: string]: DataTableCompareFunction} = {
         item-key="dbnsfp.geneName"
       >
         <template v-slot:header>
-          <v-toolbar class="px-2">
+          <v-toolbar class="px-2 rounded-t-lg border bg-grey-lighten-2">
             <v-spacer></v-spacer>
-            <v-select
-              style="width: 220px;"
-              label="sort by"
-              item-title="label"
-              item-value="key"
-              :items="sortItems"
-              v-model="sortKey"
-              density="compact"
-              :hide-details="true"
-              class="d-inline-flex flex-grow-0"
-              variant="outlined"
-            />
+            <div style="width: 220px">
+              <v-select
+                label="sort by"
+                item-title="label"
+                item-value="key"
+                :items="sortItems"
+                v-model="sortKey"
+                density="compact"
+                :hide-details="true"
+                variant="outlined"
+              />
+            </div>
             <v-btn @click="sortOrder = sortOrder == 'asc' ? 'desc' : 'asc'">
               {{ sortOrder }}
-              <v-icon :icon="sortOrder == 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'" class="pl-3" />
+              <v-icon
+                :icon="sortOrder == 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+                class="pl-3"
+              />
             </v-btn>
           </v-toolbar>
         </template>
@@ -271,7 +235,7 @@ const customKeySort: {[key: string]: DataTableCompareFunction} = {
               :sort-key="sortKey"
               :sort-order="sortOrder"
               :is-selected="isSelected(item as any)"
-              @toggle-selected="() => {console.log(item); return toggleSelect(item as any)}"
+              @toggle-selected="() => toggleSelect(item as any)"
             />
           </template>
         </template>
@@ -289,7 +253,9 @@ const customKeySort: {[key: string]: DataTableCompareFunction} = {
         </template>
 
         <template v-slot:footer="{ pageCount }">
-          <div class="d-flex align-center justify-center pa-3 mt-3">
+          <div
+            class="d-flex align-center justify-center pa-3 mt-1 rounded-b-lg border bg-grey-lighten-2"
+          >
             <v-select
               v-model="itemsPerPage"
               class="d-inline-flex flex-grow-0"
@@ -308,138 +274,6 @@ const customKeySort: {[key: string]: DataTableCompareFunction} = {
           </div>
         </template>
       </v-data-iterator>
-
-      <!-- <div>
-        <v-data-table
-          v-model:items-per-page="itemsPerPage"
-          :headers="headers"
-          :items="props.genesInfos ?? []"
-          :loading="!props.genesInfos?.length"
-          buttons-pagination
-          show-index
-          item-key="dbnsfp.geneName"
-          @click:row="onRowClicked"
-        >
-          <template #[`item.dbnsfp.geneName`]="{ item }">
-            {{ item.dbnsfp.geneName }}
-            <v-btn prepend-icon="mdi-open-in-new" @click="performSearch(item.dbnsfp.geneName)" />
-          </template>
-
-          <template #[`item.omim`]="{ value }">
-            <template v-if="value?.omimDiseases?.length">
-              <template v-for="(disease, idx) in value?.omimDiseases" :key="idx">
-                <template v-if="idx > 0"> , </template>
-                <a
-                  :href="`https://www.omim.org/entry/${disease.omimId.replace('OMIM:', '')}`"
-                  target="_blank"
-                >
-                  {{ disease.label }}
-                </a>
-              </template>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.orpha`]="{ value }">
-            <template v-if="value?.orphaDiseases?.length">
-              <template v-for="(disease, idx) in value?.orphaDiseases" :key="idx">
-                <template v-if="idx > 0"> , </template>
-                <a
-                  :href="`https://www.orpha.net/consor/cgi-bin/OC_Exp.php?Expert=${disease.orphaId.replace(
-                    'ORPHA:',
-                    ''
-                  )}`"
-                  target="_blank"
-                >
-                  {{ disease.label }}
-                </a>
-              </template>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.gnomadConstraints.pli`]="{ value }">
-            <template v-if="value">
-              <!## eslint-disable vue/no-v-html ##>
-              <span v-html="roundIt(value, 3)" />
-              <!## eslint-enable ##>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.gnomadConstraints.oeLofUpper`]="{ value }">
-            <template v-if="value">
-              <!## eslint-disable vue/no-v-html ##>
-              <span v-html="roundIt(value, 3)" />
-              <!## eslint-enable ##>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.dbnsfp.haploinsufficiency`]="{ value }">
-            <template v-if="value">
-              <!## eslint-disable vue/no-v-html ##>
-              <span v-html="roundIt(value, 3)" />
-              <!## eslint-enable ##>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.shet.sHet`]="{ value }">
-            <template v-if="value">
-              <!## eslint-disable vue/no-v-html ##>
-              <span v-html="roundIt(value, 3)" />
-              <!## eslint-enable ##>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.rcnv.pHaplo`]="{ value }">
-            <template v-if="value">
-              <!## eslint-disable vue/no-v-html ##>
-              <span v-html="roundIt(value, 3)" />
-              <!## eslint-enable ##>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.rcnv.pTriplo`]="{ value }">
-            <template v-if="value">
-              <!## eslint-disable vue/no-v-html ##>
-              <span v-html="roundIt(value, 3)" />
-              <!## eslint-enable ##>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.clingen.haploinsufficiencyScore`]="{ value }">
-            <template v-if="value">
-              <abbr :title="CLINGEN_DOSAGE_LABELS[value]">{{ CLINGEN_DOSAGE_SCORES[value] }}</abbr>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-
-          <template #[`item.clingen.triplosensitivityScore`]="{ value }">
-            <template v-if="value">
-              <abbr :title="CLINGEN_DOSAGE_LABELS[value]">{{ CLINGEN_DOSAGE_SCORES[value] }}</abbr>
-            </template>
-            <template v-else> &mdash; </template>
-          </template>
-        </v-data-table>
-      </div> -->
-
-      <!-- <div v-if="currentGeneInfos">
-        <div
-          class="ml-2 mr-2"
-          style="font-weight: bolder; font-size: 120%; border-bottom: 1px solid #aaaaaa"
-        >
-          Gene Details: {{ currentGeneInfos.hgnc.symbol }}
-        </div>
-        <VariantDetailsGene :gene="currentGeneInfos" />
-      </div>
-      <div v-else class="text-muted text-center font-italic pt-2">
-        Select gene in table above to see details.
-      </div> -->
     </v-card-text>
   </v-card>
 </template>

@@ -4,6 +4,7 @@ import {
   CLINGEN_DOSAGE_SCORES
 } from '@/components/GeneDetails/PathogenicityCard.c'
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
   dosage?: string
   geneSymbol?: string
@@ -23,7 +24,10 @@ const props = defineProps<{
     </a>
   </template>
   <template v-else-if="!dosage || dosage === 'CLINGEN_DOSAGE_SCORE_UNKNOWN'">
-    <span class="font-weight-bold"> N/A </span>
+    <v-chip density="compact" rounded="xl" :class="`bg-grey-lighten-5`"> N/A </v-chip>
+    <small class="pl-1">
+      <v-icon><!--spacer only--></v-icon>
+    </small>
   </template>
   <template v-else>
     <a

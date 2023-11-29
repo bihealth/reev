@@ -34,7 +34,9 @@ const props = withDefaults(defineProps<Props>(), {
 const router = useRouter()
 const route = useRoute()
 
+/** Detailed information about the currently selected gene. */
 const geneInfoStore = useGeneInfoStore()
+/** Currently active case - for HPO terms. */
 const caseStore = useCaseStore()
 
 const scrollToSection = async () => {
@@ -136,10 +138,8 @@ const openedSection = ref<string[]>(['gene'])
         <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
       </div>
 
-      <div id="phenotype">
-        <div id="gene-conditions">
-          <ConditionsCard :gene-info="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
-        </div>
+      <div id="gene-conditions">
+        <ConditionsCard :gene-info="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
       </div>
 
       <div id="gene-expression">

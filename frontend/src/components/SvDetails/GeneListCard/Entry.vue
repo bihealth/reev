@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { roundIt } from '@/lib/utils'
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref } from 'vue'
 
 import GeneDosage from '@/components/SvDetails/GeneListCard/GeneDosage.vue'
+import ScoreChip from '@/components/SvDetails/GeneListCard/ScoreChip.vue'
+import { roundIt } from '@/lib/utils'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -43,21 +44,27 @@ const sortIcon = computed<string>(() => {
 </script>
 
 <template>
-  <v-sheet rounded="lg" class="pa-3 mt-3 border">
+  <v-sheet rounded="sm" class="pa-3 mt-1 border">
     <v-row no-gutter>
-      <v-col cols="2" class="d-flex flex-row">
-        <div class="flex-shrink-0 pl-0 pr-3 py-2" @click.prevent="emit('toggleSelected')">
+      <v-col
+        cols="2"
+        class="d-flex flex-row pa-1"
+        @click.prevent="
+          () => {
+            if (!isSelected) {
+              emit('toggleSelected')
+            }
+          }
+        "
+      >
+        <div class="flex-shrink-0 pl-0 pr-3 py-2">
           <v-icon :icon="isSelected ? 'mdi-magnify-expand' : 'mdi-crop-square'" />
         </div>
         <div class="flex-grow-0">
           <div class="text-h6">
-            <v-icon
-              v-if="sortKey === 'hgnc.symbol'"
-              :icon="sortIcon"
-              class="ml-n2 mr-n3"
-            />
+            <v-icon v-if="sortKey === 'hgnc.symbol'" :icon="sortIcon" class="ml-n2 mr-n3" />
             {{ item.raw.hgnc.symbol }}
-            <span class="text-caption">
+            <span class="text-caption text-no-wrap">
               <template v-if="hgncToEffect">
                 ({{ hgncToEffect[item.raw.hgnc.agr] ?? 'unknown' }})
               </template>
@@ -69,12 +76,17 @@ const sortIcon = computed<string>(() => {
           </div>
         </div>
       </v-col>
-      <v-col cols="10" class="d-flex flex-column">
-        <v-row no-gutter class="bg-grey-lighten-3">
-          <v-col cols="3" class="pr-3 align-self-end">
+      <v-col cols="10" class="d-flex flex-column pa-0">
+        <v-row no-gutter class="bg-grey-lighten-3 ma-0">
+          <v-col cols="3" class="pr-3 align-self-end pa-1">
             <table style="width: 280px">
               <tr>
-                <td class="text-no-wrap" :class="{ 'text-decoration-underline': sortKey === 'clingen.haploinsufficiencyScore' }">
+                <td
+                  class="text-no-wrap"
+                  :class="{
+                    'text-decoration-underline': sortKey === 'clingen.haploinsufficiencyScore'
+                  }"
+                >
                   <v-icon
                     v-if="sortKey === 'clingen.haploinsufficiencyScore'"
                     :icon="sortIcon"
@@ -90,7 +102,12 @@ const sortIcon = computed<string>(() => {
                 </td>
               </tr>
               <tr>
-                <td class="text-no-wrap" :class="{ 'text-decoration-underline': sortKey === 'clingen.triplosensitivityScore' }">
+                <td
+                  class="text-no-wrap"
+                  :class="{
+                    'text-decoration-underline': sortKey === 'clingen.triplosensitivityScore'
+                  }"
+                >
                   <v-icon
                     v-if="sortKey === 'clingen.triplosensitivityScore'"
                     :icon="sortIcon"
@@ -107,14 +124,14 @@ const sortIcon = computed<string>(() => {
               </tr>
             </table>
           </v-col>
-          <v-col cols="3" class="pr-3 align-self-end">
+          <v-col cols="3" class="pr-3 align-self-end pa-1">
             <table style="width: 280px">
               <tr>
                 <td
                   class="text-no-wrap"
                   :class="{ 'text-decoration-underline': sortKey === 'gnomadConstraints.pli' }"
                 >
-                <v-icon
+                  <v-icon
                     v-if="sortKey === 'gnomadConstraints.pli'"
                     :icon="sortIcon"
                     class="ml-n2 mr-n1"
@@ -122,13 +139,16 @@ const sortIcon = computed<string>(() => {
                   gnomAD pLI
                 </td>
                 <td class="text-right text-no-wrap">
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span
-                    v-html="roundIt(item.raw.gnomadConstraints?.pli)"
-                    v-if="item.raw.gnomadConstraints"
+                  <ScoreChip
+                    :value="item.raw.gnomadConstraints?.pli"
+                    :href-url="
+                      item.raw.hgnc.ensemblGeneId
+                        ? `https://gnomad.broadinstitute.org/gene/${item.raw.hgnc.ensemblGeneId}?dataset=gnomad_r2_1`
+                        : undefined
+                    "
+                    :range-gray="[-9999, 0.9]"
+                    :range-red="[0.9, 9999]"
                   />
-                  <span class="font-weight-bold" v-else>N/A</span>
-                  <!-- eslint-enable -->
                 </td>
               </tr>
               <tr>
@@ -141,21 +161,33 @@ const sortIcon = computed<string>(() => {
                   gnomAD LOEUF
                 </td>
                 <td class="text-right text-no-wrap">
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span
-                    v-html="roundIt(item.raw.gnomadConstraints?.oeLofUpper)"
-                    v-if="item.raw.gnomadConstraints"
+                  <ScoreChip
+                    :value="item.raw.gnomadConstraints?.oeLofUpper"
+                    :href-url="
+                      item.raw.hgnc.ensemblGeneId
+                        ? `https://gnomad.broadinstitute.org/gene/${item.raw.hgnc.ensemblGeneId}?dataset=gnomad_r2_1`
+                        : undefined
+                    "
+                    :range-gray="[-9999, 0.6]"
+                    :range-red="[0.6, 9999]"
                   />
-                  <span class="font-weight-bold" v-else>N/A</span>
-                  <!-- eslint-enable -->
                 </td>
               </tr>
             </table>
           </v-col>
-          <v-col cols="3" class="pr-3 align-self-end">
+          <v-col cols="3" class="pr-3 align-self-end pa-1">
+            <!--
+              https://europepmc.org/article/MED/20976243
+
+              ClinGen Dosage Sensitivity Single Gene Evaluation Process v1.0 => >=0.9
+            
+            -->
             <table style="width: 280px">
               <tr>
-                <td class="text-no-wrap" :class="{ 'text-decoration-underline': sortKey === 'decipherHi.pHi' }">
+                <td
+                  class="text-no-wrap"
+                  :class="{ 'text-decoration-underline': sortKey === 'decipherHi.pHi' }"
+                >
                   <v-icon
                     v-if="sortKey === 'decipherHi.pHi'"
                     :icon="sortIcon"
@@ -164,10 +196,16 @@ const sortIcon = computed<string>(() => {
                   DECIPHER HI
                 </td>
                 <td class="text-right text-no-wrap">
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span v-html="roundIt(item.raw.decipherHi?.pHi)" v-if="item.raw.decipherHi" />
-                  <span class="font-weight-bold" v-else>N/A</span>
-                  <!-- eslint-enable -->
+                  <ScoreChip
+                    :value="item.raw.decipherHi?.pHi"
+                    :href-url="
+                      item.raw.hgnc.symbol
+                        ? `https://www.deciphergenomics.org/gene/${item.raw.hgnc.symbol}/`
+                        : undefined
+                    "
+                    :range-gray="[-9999, 0.9]"
+                    :range-red="[0.9, 9999]"
+                  />
                 </td>
               </tr>
               <tr>
@@ -178,38 +216,55 @@ const sortIcon = computed<string>(() => {
               </tr>
             </table>
           </v-col>
-          <v-col cols="3" class="pr-3 align-self-end">
+          <v-col cols="3" class="pr-3 align-self-end pa-1">
+            <!--
+              https://europepmc.org/article/MED/35917817
+            -->
             <table style="width: 280px">
               <tr>
-                <td class="text-no-wrap" :class="{ 'text-decoration-underline': sortKey === 'rcnv.pHaplo' }">
-                  <v-icon
-                    v-if="sortKey === 'rcnv.pHaplo'"
-                    :icon="sortIcon"
-                    class="ml-n2 mr-n1"
-                  />
+                <td
+                  class="text-no-wrap"
+                  :class="{ 'text-decoration-underline': sortKey === 'rcnv.pHaplo' }"
+                >
+                  <v-icon v-if="sortKey === 'rcnv.pHaplo'" :icon="sortIcon" class="ml-n2 mr-n1" />
                   RCNV pHaplo
                 </td>
                 <td class="text-right text-no-wrap">
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span v-html="roundIt(item.raw.rcnv?.pHaplo)" v-if="item.raw.rcnv" />
-                  <span class="font-weight-bold" v-else>N/A</span>
-                  <!-- eslint-enable -->
+                  <ScoreChip
+                    :value="item.raw.rcnv?.pHaplo"
+                    :href-url="
+                      item.raw.hgnc.symbol
+                        ? `https://www.deciphergenomics.org/gene/${item.raw.hgnc.symbol}/`
+                        : undefined
+                    "
+                    :range-green="[0.0, 0.2]"
+                    :range-gray="[0.2, 0.7]"
+                    :range-orange="[0.7, 0.86]"
+                    :range-red="[0.86, 1.0]"
+                  />
                 </td>
               </tr>
               <tr>
-                <td class="text-no-wrap" :class="{ 'text-decoration-underline': sortKey === 'rcnv.pTriplo' }">
-                  <v-icon
-                    v-if="sortKey === 'rcnv.pTriplo'"
-                    :icon="sortIcon"
-                    class="ml-n2 mr-n1"
-                  />
+                <td
+                  class="text-no-wrap"
+                  :class="{ 'text-decoration-underline': sortKey === 'rcnv.pTriplo' }"
+                >
+                  <v-icon v-if="sortKey === 'rcnv.pTriplo'" :icon="sortIcon" class="ml-n2 mr-n1" />
                   RCNV pTriplo
                 </td>
                 <td class="text-right text-no-wrap">
-                  <!-- eslint-disable vue/no-v-html -->
-                  <span v-html="roundIt(item.raw.rcnv?.pTriplo)" v-if="item.raw.rcnv" />
-                  <span class="font-weight-bold" v-else>N/A</span>
-                  <!-- eslint-enable -->
+                  <ScoreChip
+                    :value="item.raw.rcnv?.pTriplo"
+                    :href-url="
+                      item.raw.hgnc.symbol
+                        ? `https://www.deciphergenomics.org/gene/${item.raw.hgnc.symbol}/`
+                        : undefined
+                    "
+                    :range-green="[0.0, 0.2]"
+                    :range-gray="[0.2, 0.8]"
+                    :range-orange="[0.8, 0.94]"
+                    :range-red="[0.94, 1.0]"
+                  />
                 </td>
               </tr>
             </table>
