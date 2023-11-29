@@ -8,7 +8,7 @@ from sqlalchemy import JSON, Column, ForeignKey, String, UniqueConstraint, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
-from app.schemas.acmgseqvar import AcmgSeqVar
+from app.schemas.acmgseqvar import AcmgRank
 
 UUID_ID = uuid_module.UUID
 
@@ -18,13 +18,13 @@ class AcmgSeqVar(Base):
 
     __tablename__ = "acmgseqvar"
 
-    __table_args__ = (UniqueConstraint("user", "seqvar_id", name="uq_acmgseqvar"),)
+    __table_args__ = (UniqueConstraint("user", "seqvar_name", name="uq_acmgseqvar"),)
 
     if TYPE_CHECKING:  # pragma: no cover
         id: UUID_ID
         user: UUID_ID
-        seqvar_id: str
-        criteria: list[AcmgSeqVar]
+        seqvar_name: str
+        acmg_rank: AcmgRank
     else:
         #: UUID of the ACMG sequence variant.
         id: Mapped[UUID_ID] = mapped_column(
@@ -33,6 +33,6 @@ class AcmgSeqVar(Base):
         #: User who created the ACMG sequence variant.
         user = Column(Uuid, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
         #: Sequence variant ID.
-        seqvar_id = Column(String(255), nullable=False)
+        seqvar_name = Column(String(255), nullable=False)
         #: ACMG criteria.
-        criteria = Column(JSON, nullable=True)
+        acmg_rank = Column(JSON, nullable=True)

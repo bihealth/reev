@@ -87,7 +87,7 @@ async def list_acmgseqvars_by_user(
 
 @router.get("/get", response_model=schemas.AcmgSeqVarRead)
 async def get_acmgseqvar_by_user(
-    id: str,
+    seqvar: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
 ):
@@ -99,7 +99,7 @@ async def get_acmgseqvar_by_user(
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_id=id)
+    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
     if not response:
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
@@ -121,7 +121,10 @@ async def update_acmgseqvar(
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_id=acmgseqvar.id)
+    acmgseqvar.user = user.id
+    response = await crud.acmgseqvar.get_by_user(
+        db, user_id=user.id, seqvar_name=acmgseqvar.seqvar_name
+    )
     if not response:
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
@@ -151,7 +154,7 @@ async def delete_acmgseqvar(id: str, db: AsyncSession = Depends(deps.get_db)):
 
 @router.delete("/delete", response_model=schemas.AcmgSeqVarRead)
 async def delete_acmgseqvar_by_user(
-    id: str,
+    seqvar: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
 ):
@@ -163,8 +166,8 @@ async def delete_acmgseqvar_by_user(
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_id=id)
+    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
     if not response:
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
-        return await crud.acmgseqvar.remove(db, id=id)
+        return await crud.acmgseqvar.remove(db, id=response.id)
