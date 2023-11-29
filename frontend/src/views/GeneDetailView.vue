@@ -2,12 +2,12 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
+// Components
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
 import { useCaseStore } from '@/stores/case'
 import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
-// Components
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
 const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
 const PathogenicityCard = defineAsyncComponent(
@@ -71,6 +71,13 @@ watch(
   }
 )
 
+/** Data type for `SECTIONS` below. */
+interface Section {
+  id: string
+  title: string
+}
+
+/** Sections in the navigation. */
 const SECTIONS = [
   { id: 'gene-overview', title: 'Overview' },
   { id: 'gene-pathogenicity', title: 'Pathogenicity' },
@@ -93,7 +100,6 @@ const openedSection = ref<string[]>(['gene'])
       v-model:search-term="searchTermRef"
       v-model:genome-release="genomeReleaseRef"
     />
-
     <v-navigation-drawer :elevation="3" :permanent="true">
       <div v-if="geneInfoStore.storeState == StoreState.Active">
         <v-list v-model:opened="openedSection">

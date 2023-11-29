@@ -12,7 +12,7 @@ import LoginView from '@/views/LoginView.vue'
 import PathNotFound from '@/views/PathNotFound.vue'
 import PrivacyView from '@/views/PrivacyView.vue'
 import ProfileView from '@/views/ProfileView.vue'
-import SvDetailView from '@/views/SvDetailView.vue'
+import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 import TermsView from '@/views/TermsView.vue'
 import VariantDetailView from '@/views/VariantDetailView.vue'
 import VerifyEmailView from '@/views/VerifyEmailView.vue'
@@ -77,7 +77,7 @@ const routes = [
   {
     path: '/cnv/:searchTerm/:genomeRelease',
     name: 'cnv',
-    component: SvDetailView,
+    component: StrucvarDetailsView,
     props: (route: any) => {
       return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
     }
