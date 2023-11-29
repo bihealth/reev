@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { type Ref, computed, ref } from 'vue'
 
-import {
-  CLINGEN_DOSAGE_LABELS,
-  CLINGEN_DOSAGE_SCORES
-} from '@/components/GeneDetails/PathogenicityCard.c'
+import Entry from '@/components/SvDetails/GeneListCard/Entry.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import { roundIt, search } from '@/lib/utils'
 import router from '@/router'
@@ -14,7 +11,7 @@ import { StoreState } from '@/stores/misc'
 type GeneInfo = any
 
 const props = defineProps<{
-  currentSvRecord?: any,
+  currentSvRecord?: any
   genesInfos?: GeneInfo[]
   storeState?: StoreState
 }>()
@@ -128,19 +125,19 @@ const isLoading = computed<boolean>(() => {
 })
 
 /** Mapping from transcript effect to label. */
-const TX_EFFECT_LABELS: {[key: string]: string} = {
-  transcript_variant: "whole transcript",
-  exon_variant: "exonic",
-  splice_region_variant: "splicing",
-  intron_variant: "intronic",
-  upstream_variant: "upstream",
-  downstream_variant: "downstream",
-  other: "other",
+const TX_EFFECT_LABELS: { [key: string]: string } = {
+  transcript_variant: 'whole transcript',
+  exon_variant: 'exonic',
+  splice_region_variant: 'splicing',
+  intron_variant: 'intronic',
+  upstream_variant: 'upstream',
+  downstream_variant: 'downstream',
+  other: 'other'
 }
 
 /** Helper mapping from gene HGNC ID to worst transcript effect. */
-const hgncToEffect = computed<{[key: string]: string}>(() => {
-  const hgncToEffect: {[key: string]: string} = {}
+const hgncToEffect = computed<{ [key: string]: string }>(() => {
+  const hgncToEffect: { [key: string]: string } = {}
   for (const result of props.currentSvRecord.result ?? []) {
     const txEffect = result.transcript_effects[0]
     if (txEffect) {
@@ -150,20 +147,78 @@ const hgncToEffect = computed<{[key: string]: string}>(() => {
   return hgncToEffect
 })
 
-const pickRefSeqId = (refseqIds: string[] | undefined): string => {
-  if (!refseqIds) {
-    return 'N/A'
+/** `v-model` for the selected effect */
+// TODO: also display regions and filter
+/** `v-model` for the sort key, order */
+const sortKey = ref<string>('hgnc.symbol')
+const sortOrder = ref<'asc' | 'desc'>('asc')
+const sortItems = [
+  {
+    label: 'symbol',
+    key: 'hgnc.symbol'
+  },
+  {
+    label: 'ClinGen Haplo.',
+    key: 'clingen.haploinsufficiencyScore'
+  },
+  {
+    label: 'ClinGen Triplo.',
+    key: 'clingen.triplosensitivityScore'
+  },
+  {
+    label: 'gnomAD pLI',
+    key: 'gnomadConstraints.pli'
+  },
+  {
+    label: 'gnomAD LOEUF',
+    key: 'gnomadConstraints.oeLofUpper'
+  },
+  {
+    label: 'DECIPHER HI',
+    key: 'decipherHi.pHi'
+  },
+  {
+    label: 'RCNV pHaplo',
+    key: 'rcnv.pHaplo'
+  },
+  {
+    label: 'RCNV pTriplo',
+    key: 'rcnv.pTriplo'
   }
-  refseqIds.sort((a, b) => {
-    if (a.length < b.length) {
-      return -1;
-    } else if (a.length > b.length) {
-      return 1;
-    } else {
-      return a.localeCompare(b);
-    }
-  })
-  return refseqIds[0]
+]
+
+/** Custom key sorting, undefined is `+infinity` */
+const _sortNumberNaGreater = (a: number | undefined, b: number | undefined): number => {
+  if (a === undefined && b === undefined) {
+    return 0
+  } else if (a === undefined) {
+    return 1
+  } else if (b === undefined) {
+    return -1
+  } else {
+    return a - b
+  }
+}
+
+/** Custom key sorting, undefined is `-infinity` */
+const _sortNumberNaLess = (a: number | undefined, b: number | undefined): number => {
+  if (a === undefined && b === undefined) {
+    return 0
+  } else if (a === undefined) {
+    return -1
+  } else if (b === undefined) {
+    return 1
+  } else {
+    return a - b
+  }
+}
+type DataTableCompareFunction<T = any> = (a: T, b: T) => number;
+const customKeySort: {[key: string]: DataTableCompareFunction} = {
+  'gnomadConstraints.pli': _sortNumberNaGreater,
+  'gnomadConstraints.oeLofUpper': _sortNumberNaGreater,
+  'decipherHi.pHi': _sortNumberNaLess,
+  'rcnv.pHaplo': _sortNumberNaLess,
+  'rcnv.pTriplo': _sortNumberNaLess,
 }
 </script>
 
@@ -177,6 +232,10 @@ const pickRefSeqId = (refseqIds: string[] | undefined): string => {
         :items="genesInfos"
         :loading="isLoading"
         :page="currentPage"
+        :sort-by="[{ key: sortKey, order: sortOrder }]"
+        :custom-key-sort="customKeySort"
+        :must-sort="true"
+        select-strategy="single"
         loading-text="foo"
         buttons-pagination
         show-index
@@ -184,131 +243,36 @@ const pickRefSeqId = (refseqIds: string[] | undefined): string => {
       >
         <template v-slot:header>
           <v-toolbar class="px-2">
-            <v-text-field
-              v-model="search"
-              clearable
+            <v-spacer></v-spacer>
+            <v-select
+              style="width: 220px;"
+              label="sort by"
+              item-title="label"
+              item-value="key"
+              :items="sortItems"
+              v-model="sortKey"
               density="compact"
-              hide-details
-              placeholder="Search"
-              prepend-inner-icon="mdi-magnify"
-              style="max-width: 300px"
-              variant="solo"
-            ></v-text-field>
+              :hide-details="true"
+              class="d-inline-flex flex-grow-0"
+              variant="outlined"
+            />
+            <v-btn @click="sortOrder = sortOrder == 'asc' ? 'desc' : 'asc'">
+              {{ sortOrder }}
+              <v-icon :icon="sortOrder == 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'" class="pl-3" />
+            </v-btn>
           </v-toolbar>
         </template>
 
-        <template v-slot:default="{ items }">
-          <template v-for="(item, idx) in items" :key="idx">
-            <v-sheet rounded="lg" class="pa-3 mt-3 border">
-              <v-row no-gutter>
-                <v-col>
-                  <div class="text-h6">
-                    {{ item.raw.hgnc.symbol }}
-                    <span class="text-caption">
-                      ({{ hgncToEffect[item.raw.hgnc.agr] ?? "unknown" }})
-                    </span>
-                  </div>
-                  <div>
-                    {{ pickRefSeqId(item.raw.dbnsfp?.refseqId) }}
-                  </div>
-                </v-col>
-              </v-row>
-              <v-row no-gutter class="mt-3 bg-grey-lighten-3 rounded-be-lg rounded-bs-lg">
-                <v-col cols="3" class="pr-3">
-                  <table style="width: 250px;">
-                    <tr>
-                      <td class="text-no-wrap">
-                        ClinGen haploinsufficiency
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <template v-if="item.raw.clingen">
-                          {{ CLINGEN_DOSAGE_SCORES[item.raw.clingen?.haploinsufficiencyScore] ?? "N/A" }}
-                        </template>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-no-wrap">
-                        ClinGen triplosensitivity
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <template v-if="item.raw.clingen">
-                          {{ CLINGEN_DOSAGE_SCORES[item.raw.clingen?.triplosensitivityScore] ?? "N/A" }}
-                        </template>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                      </td>
-                    </tr>
-                  </table>
-                </v-col>
-                <v-col cols="3" class="pr-3">
-                  <table style="width: 250px;">
-                    <tr>
-                      <td class="text-no-wrap">
-                        gnomAD pLI
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <!-- eslint-disable vue/no-v-html -->
-                        <span v-html="roundIt(item.raw.gnomadConstraints?.pli)" v-if="item.raw.gnomadConstraints"/>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                        <!-- eslint-enable -->
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-no-wrap">
-                        gnomAD LOEUF
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <!-- eslint-disable vue/no-v-html -->
-                        <span v-html="roundIt(item.raw.gnomadConstraints?.oeLofUpper)" v-if="item.raw.gnomadConstraints"/>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                        <!-- eslint-enable -->
-                      </td>
-                    </tr>
-                  </table>
-                </v-col>
-                <v-col cols="3" class="pr-3">
-                  <table style="width: 250px;">
-                    <tr>
-                      <td class="text-no-wrap">
-                        DECIPHER HI
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <!-- eslint-disable vue/no-v-html -->
-                        <span v-html="roundIt(item.raw.decipherHi?.pHi)" v-if="item.raw.decipherHi"/>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                        <!-- eslint-enable -->
-                      </td>
-                    </tr>
-                  </table>
-                </v-col>
-                <v-col cols="3">
-                  <table style="width: 250px;">
-                    <tr>
-                      <td class="text-no-wrap">
-                        RCNV pHaplo
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <!-- eslint-disable vue/no-v-html -->
-                        <span v-html="roundIt(item.raw.rcnv?.pHaplo)" v-if="item.raw.rcnv"/>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                        <!-- eslint-enable -->
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-no-wrap">
-                        RCNV pTriplo
-                      </td>
-                      <td class="text-right text-no-wrap">
-                        <!-- eslint-disable vue/no-v-html -->
-                        <span v-html="roundIt(item.raw.rcnv?.pTriplo)" v-if="item.raw.rcnv"/>
-                        <span class="font-weight-bold" v-else>N/A</span>
-                        <!-- eslint-enable -->
-                      </td>
-                    </tr>
-                  </table>
-                </v-col>
-              </v-row>
-            </v-sheet>
+        <template v-slot:default="{ items, isSelected, toggleSelect }">
+          <template v-for="item in items" :key="item.raw.hgnc.agr">
+            <Entry
+              :item="item"
+              :hgncToEffect="hgncToEffect"
+              :sort-key="sortKey"
+              :sort-order="sortOrder"
+              :is-selected="isSelected(item as any)"
+              @toggle-selected="() => {console.log(item); return toggleSelect(item as any)}"
+            />
           </template>
         </template>
         <template v-slot:no-data>

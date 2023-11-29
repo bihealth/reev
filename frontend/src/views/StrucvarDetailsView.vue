@@ -167,7 +167,11 @@ const openedSection = ref<string[]>(['genes', 'strucvar'])
     </v-navigation-drawer>
     <v-main class="my-3 mx-3">
       <div id="strucvar-GeneListCard">
-        <GeneListCard :current-sv-record="svInfoStore.currentSvRecord" :genes-infos="svInfoStore.genesInfos" :store-state="svInfoStore.storeState" />
+        <GeneListCard
+          :current-sv-record="svInfoStore.currentSvRecord"
+          :genes-infos="svInfoStore.genesInfos"
+          :store-state="svInfoStore.storeState"
+        />
       </div>
 
       <!-- <div id="strucvar-clinvar">

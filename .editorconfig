@@ -12,6 +12,11 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
+[*.{ts,vue}]
+line_length=100
+indent_style = space
+indent_size = 2
+
 [*.py]
 line_length=120
 known_first_party=varfish
