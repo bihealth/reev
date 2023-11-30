@@ -154,7 +154,7 @@ const resources = computed<Linkout[]>(() => {
     </v-card-text>
 
     <v-card-actions>
-      <v-btn @click.prevent="jumpToLocus()" prepend-icon="mdi-launch"> Jump in Local IGV </v-btn>
+      <v-btn prepend-icon="mdi-launch" @click.prevent="jumpToLocus()"> Jump in Local IGV </v-btn>
     </v-card-actions>
   </v-card>
 </template>

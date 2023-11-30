@@ -7,14 +7,22 @@ export interface Props {
   value: number | undefined
   useRounded?: boolean
   naValue?: string | number
-  hrefUrl?: string
-  rangeGray?: [number, number]
-  rangeGreen?: [number, number]
-  rangeOrange?: [number, number]
-  rangeRed?: [number, number]
+  hrefUrl?: string | undefined
+  rangeGray?: [number, number] | undefined
+  rangeGreen?: [number, number] | undefined
+  rangeOrange?: [number, number] | undefined
+  rangeRed?: [number, number] | undefined
 }
 
-const props = withDefaults(defineProps<Props>(), { naValue: 'N/A', useRounded: true })
+const props = withDefaults(defineProps<Props>(), {
+  naValue: 'N/A',
+  useRounded: true,
+  hrefUrl: undefined,
+  rangeGray: undefined,
+  rangeGreen: undefined,
+  rangeOrange: undefined,
+  rangeRed: undefined
+})
 
 const chipColor = computed<string>(() => {
   if (props.value === undefined) {

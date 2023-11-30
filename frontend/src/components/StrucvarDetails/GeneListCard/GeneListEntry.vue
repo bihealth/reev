@@ -77,7 +77,16 @@ const sortIcon = computed<string>(() => {
           <div>
             {{ pickRefSeqId(item.raw.dbnsfp?.refseqId) }}
             |
-            <a @click.prevent="router.push({name: 'gene', params: {searchTerm: item.raw.hgnc.agr, genomeRelease: genomeRelease}})"  style="cursor: pointer;" title="go to Gene details page">
+            <a
+              style="cursor: pointer"
+              title="go to Gene details page"
+              @click.prevent="
+                router.push({
+                  name: 'gene',
+                  params: { searchTerm: item.raw.hgnc.agr, genomeRelease: genomeRelease }
+                })
+              "
+            >
               <v-icon>mdi-arrow-right-circle-outline</v-icon>
             </a>
           </div>

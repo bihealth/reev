@@ -80,7 +80,7 @@ interface Section {
 }
 
 /** Sections in the navigation. */
-const SECTIONS = [
+const SECTIONS: Section[] = [
   { id: 'gene-overview', title: 'Overview' },
   { id: 'gene-pathogenicity', title: 'Pathogenicity' },
   { id: 'gene-conditions', title: 'Conditions' },

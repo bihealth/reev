@@ -51,7 +51,7 @@ describe.concurrent('VariantToolsCard', async () => {
       {
         props: {
           svRecord: svRecord,
-          genomeRelease: 'grch37',
+          genomeRelease: 'grch37'
         }
       }
     )

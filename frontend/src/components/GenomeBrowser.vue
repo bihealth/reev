@@ -11,11 +11,11 @@ export interface Props {
   // Genome build
   genomeRelease: 'grch37' | 'grch38'
   // Locus to go to, e.g., "chr1:1,900,000-2,000,000"
-  locus: string
+  locus?: string
 }
 
 // Define the props.
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { locus: '' })
 
 /** The <div> to show the browser in. */
 const genomeBrowserDivRef = ref(null)

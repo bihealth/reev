@@ -10,7 +10,9 @@ import { StoreState } from '@/stores/misc'
 import { type SvRecord, useSvInfoStore } from '@/stores/svInfo'
 
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
-const GeneListCard = defineAsyncComponent(() => import('@/components/StrucvarDetails/GeneListCard.vue'))
+const GeneListCard = defineAsyncComponent(
+  () => import('@/components/StrucvarDetails/GeneListCard.vue')
+)
 const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
 
 const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
@@ -30,7 +32,9 @@ const GeneClinvarCard = defineAsyncComponent(
 const StrucvarClinvarCard = defineAsyncComponent(
   () => import('@/components/StrucvarDetails/ClinvarCard.vue')
 )
-const StrucvarTools = defineAsyncComponent(() => import('@/components/StrucvarDetails/VariantTools.vue'))
+const VariantToolsCard = defineAsyncComponent(
+  () => import('@/components/StrucvarDetails/VariantToolsCard.vue')
+)
 
 // const AcmgRating = defineAsyncComponent(() => import('@/components/StrucvarDetails/AcmgRating.vue'))
 // const SvDetailsClinvar = defineAsyncComponent(
@@ -260,11 +264,11 @@ const selectedGeneInfo = computed<any | null>(() => {
     <v-main class="my-3 mx-3">
       <div id="gene-list">
         <GeneListCard
+          v-model:selected-gene-hgnc-id="selectedGeneHgncId"
           :current-sv-record="svInfoStore.currentSvRecord"
           :genes-infos="svInfoStore.genesInfos"
           :store-state="svInfoStore.storeState"
           :genome-release="genomeRelease"
-          v-model:selected-gene-hgnc-id="selectedGeneHgncId"
         />
       </div>
 
@@ -304,9 +308,9 @@ const selectedGeneInfo = computed<any | null>(() => {
           <StrucvarClinvarCard :genome-release="genomeReleaseRef" />
         </div>
         <div id="strucvar-tools">
-          <StrucvarTools
+          <VariantToolsCard
             :genome-release="genomeReleaseRef"
-            :svRecord="svInfoStore.currentSvRecord"
+            :sv-record="svInfoStore.currentSvRecord"
           />
         </div>
         <div id="strucvar-genomebrowser">

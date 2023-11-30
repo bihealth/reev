@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import {
+  CLINICAL_SIGNIFICANCE_COLOR,
+  CLINICAL_SIGNIFICANCE_LABEL,
+  REVIEW_STATUS_LABEL,
+  REVIEW_STATUS_STARS
+} from '@/components/VariantDetails/ClinVar.c'
 import { roundIt } from '@/lib/utils'
 import { useSvInfoStore } from '@/stores/svInfo'
-import { CLINICAL_SIGNIFICANCE_LABEL, REVIEW_STATUS_LABEL, REVIEW_STATUS_STARS, CLINICAL_SIGNIFICANCE_COLOR } from '@/components/VariantDetails/ClinVar.c';
 
 interface Props {
   genomeRelease: 'grch37' | 'grch38'
@@ -35,7 +40,7 @@ const clinvarRange = computed<string>(() => {
 const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([{ key: 'overlap', order: 'desc' }])
 
 const headers = [
-  { title: 'Accession', value: 'record.vcv', sortable: true, align: 'start' },
+  { title: 'Accession', key: 'accession', sortable: true, align: 'start' },
   { title: 'Significance', key: 'clinSig', sortable: true, align: 'start' },
   { title: 'Status', key: 'reviewStatus', sortable: true, align: 'start' },
   { title: 'Condition', key: 'condition' },
@@ -47,38 +52,56 @@ const expanded = ref<string[]>([])
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0">
-      ClinVar
-    </v-card-title>
+    <v-card-title class="pb-0"> ClinVar </v-card-title>
     <v-card-subtitle class="text-overline"> Matching Variants in ClinVar </v-card-subtitle>
     <v-card-text>
       <v-data-table
-        density="compact"
         v-model:expanded="expanded"
+        v-model:sort-by="sortBy"
+        density="compact"
         :headers="headers"
         :items="svInfoStore.clinvarSvRecords ?? []"
         item-value="record.vcv"
         :must-sort="true"
-        v-model:sort-by="sortBy"
         show-expand
       >
-      <template v-slot:item.record.vcv="{ item: { record } }">
-        <a :href="vcvUrl(record.vcv)" target="_blank">
-          {{ record.vcv }}
-          <small><v-icon>mdi-launch</v-icon></small>
-        </a>
-      </template>
-        <template v-slot:item.clinSig="{ item: { record: {referenceAssertions} } }">
-          <v-chip density="compact" rounded="xl" :class="`bg-${CLINICAL_SIGNIFICANCE_COLOR[referenceAssertions[0].clinicalSignificance]}`">
+        <!-- eslint-disable vue/valid-v-slot -->
+        <template #item.accession="{ item: { record } }">
+          <!-- eslint-enable -->
+          <a :href="vcvUrl(record.vcv)" target="_blank">
+            {{ record.vcv }}
+            <small><v-icon>mdi-launch</v-icon></small>
+          </a>
+        </template>
+        <!-- eslint-disable vue/valid-v-slot -->
+        <template
+          #item.clinSig="{
+            item: {
+              record: { referenceAssertions }
+            }
+          }"
+        >
+          <!-- eslint-enable -->
+          <v-chip
+            density="compact"
+            rounded="xl"
+            :class="`bg-${
+              CLINICAL_SIGNIFICANCE_COLOR[referenceAssertions[0].clinicalSignificance]
+            }`"
+          >
             {{ CLINICAL_SIGNIFICANCE_LABEL[referenceAssertions[0].clinicalSignificance] }}
           </v-chip>
         </template>
-        <template v-slot:item.reviewStatus="{ item: { record: {referenceAssertions} } }">
+        <template
+          #item.reviewStatus="{
+            item: {
+              record: { referenceAssertions }
+            }
+          }"
+        >
           <span class="text-no-wrap">
             <span v-for="i of [1, 2, 3, 4, 5]" :key="i">
-              <span
-                v-if="i <= REVIEW_STATUS_STARS[referenceAssertions[0]?.reviewStatus]"
-              >
+              <span v-if="i <= REVIEW_STATUS_STARS[referenceAssertions[0]?.reviewStatus]">
                 <v-icon>mdi-star</v-icon>
               </span>
               <span v-else>
@@ -89,48 +112,57 @@ const expanded = ref<string[]>([])
           <span class="pl-3">
             {{ REVIEW_STATUS_LABEL[referenceAssertions[0].reviewStatus] }}
           </span>
-          </template>
-          <template v-slot:item.condition="{ item: { record } }">
+        </template>
+        <!-- eslint-disable vue/valid-v-slot -->
+        <template #item.condition="{ item: { record } }">
+          <!-- eslint-enable -->
           {{ record.referenceAssertions[0].title.split(' AND ')[1] ?? 'N/A' }}
         </template>
-        <template v-slot:item.overlap="{ item: { overlap } }">
+        <!-- eslint-disable vue/valid-v-slot -->
+        <template #item.overlap="{ item: { overlap } }">
+          <!-- eslint-enable -->
+          <!-- eslint-disable vue/no-v-html -->
           <span v-html="roundIt(overlap)" />
+          <!-- eslint-enable -->
         </template>
 
-        <template v-slot:expanded-row="{ columns, item }">
-          <tr v-for="referenceAssertion in item.record.referenceAssertions" :key="referenceAssertion.rcv">
+        <!-- eslint-disable vue/valid-v-slot -->
+        <template #expanded-row="{ item }">
+          <!-- eslint-enable -->
+          <tr
+            v-for="referenceAssertion in item.record.referenceAssertions"
+            :key="referenceAssertion.rcv"
+          >
             <td class="text-no-wrap bg-grey-lighten-5">
               <v-icon>mdi-circle-small</v-icon>
 
               <a :href="rcvUrl(referenceAssertion.rcv)" target="_blank">
-          {{ referenceAssertion.rcv }}
-          <small><v-icon>mdi-launch</v-icon></small>
-        </a>
+                {{ referenceAssertion.rcv }}
+                <small><v-icon>mdi-launch</v-icon></small>
+              </a>
             </td>
             <td>
-              {{ CLINICAL_SIGNIFICANCE_LABEL[referenceAssertion.clinicalSignificance] ?? "N/A" }}
+              {{ CLINICAL_SIGNIFICANCE_LABEL[referenceAssertion.clinicalSignificance] ?? 'N/A' }}
             </td>
             <td colspan="3">
               <span class="text-no-wrap">
-            <span v-for="i of [1, 2, 3, 4, 5]" :key="i">
-              <span
-                v-if="i <= REVIEW_STATUS_STARS[referenceAssertion?.reviewStatus]"
-              >
-                <v-icon>mdi-star</v-icon>
+                <span v-for="i of [1, 2, 3, 4, 5]" :key="i">
+                  <span v-if="i <= REVIEW_STATUS_STARS[referenceAssertion?.reviewStatus]">
+                    <v-icon>mdi-star</v-icon>
+                  </span>
+                  <span v-else>
+                    <v-icon>mdi-star-outline</v-icon>
+                  </span>
+                </span>
               </span>
-              <span v-else>
-                <v-icon>mdi-star-outline</v-icon>
+              <span class="pl-3">
+                {{ REVIEW_STATUS_LABEL[referenceAssertion.reviewStatus] }}
               </span>
-            </span>
-          </span>
-          <span class="pl-3">
-              {{ REVIEW_STATUS_LABEL[referenceAssertion.reviewStatus] }}
-            </span>
             </td>
           </tr>
         </template>
 
-        <template v-slot:no-data>
+        <template #no-data>
           <v-sheet rounded="lg" class="pa-3 text-center font-italic border">
             No overlapping ClinVar SV
           </v-sheet>

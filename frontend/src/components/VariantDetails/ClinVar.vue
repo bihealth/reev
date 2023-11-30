@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { CLINICAL_SIGNIFICANCE_LABEL, REVIEW_STATUS_LABEL, REVIEW_STATUS_STARS } from '@/components/VariantDetails/ClinVar.c';
+import {
+  CLINICAL_SIGNIFICANCE_LABEL,
+  REVIEW_STATUS_LABEL,
+  REVIEW_STATUS_STARS
+} from '@/components/VariantDetails/ClinVar.c'
 
 interface Props {
   clinvar?: any
 }
 
 const props = defineProps<Props>()
-
 
 const vcvToNumber = (vcv: string): number => {
   return parseInt(vcv.substring(3))
@@ -32,7 +35,11 @@ const expand = ref<boolean>(false)
 
       <v-row no-gutters class="flex-nowrap">
         <v-col cols="1" class="font-weight-black"> Review Status </v-col>
-        <v-col cols="1" style="min-width: 100px; max-width: 100%" class="flex-grow-1 flex-shrink-0 text-no-wrap">
+        <v-col
+          cols="1"
+          style="min-width: 100px; max-width: 100%"
+          class="flex-grow-1 flex-shrink-0 text-no-wrap"
+        >
           <span v-for="i of [1, 2, 3, 4, 5]" :key="i">
             <span
               v-if="i <= REVIEW_STATUS_STARS[props.clinvar?.referenceAssertions[0]?.reviewStatus]"

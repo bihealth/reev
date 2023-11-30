@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { type Ref, computed, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { onMounted } from 'vue'
 
-import Entry from '@/components/StrucvarDetails/GeneListCard/Entry.vue'
-import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
-import { search } from '@/lib/utils'
-import router from '@/router'
+import GeneListEntry from '@/components/StrucvarDetails/GeneListCard/GeneListEntry.vue'
 import { StoreState } from '@/stores/misc'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
@@ -13,35 +10,19 @@ type GeneInfo = any
 
 const props = withDefaults(
   defineProps<{
-    currentSvRecord?: any
-    genesInfos?: GeneInfo[]
-    storeState?: StoreState
+    currentSvRecord: any | undefined
+    genesInfos: GeneInfo[] | undefined
+    storeState: StoreState | undefined
     selectedGeneHgncId: string | null
     genomeRelease?: 'grch37' | 'grch38'
   }>(),
   {
-    selectedGeneHgncId: null
+    selectedGeneHgncId: null,
+    genomeRelease: 'grch37'
   }
 )
 
 const emit = defineEmits(['update:selectedGeneHgncId'])
-
-/**
- * Perform a search based on the input gene symbol and current genome release.
- *
- * If a route is found for the search term then redirect to that route.
- * Otherwise log an error.
- *
- * @param geneSymbol Gene symbol to search for
- */
-const performSearch = async (geneSymbol: string) => {
-  const routeLocation: any = await search(geneSymbol, 'grch37')
-  if (routeLocation) {
-    router.push(routeLocation)
-  } else {
-    console.error(`no route found for ${geneSymbol}`)
-  }
-}
 
 /** Available items per page. */
 const itemsPerPageChoices = [5, 10, 20, 50]
@@ -203,16 +184,16 @@ onMounted(() => selectFirst(props.storeState))
         show-index
         item-key="dbnsfp.geneName"
       >
-        <template v-slot:header>
+        <template #header>
           <v-toolbar class="px-2 rounded-t-lg border bg-grey-lighten-2">
             <v-spacer></v-spacer>
             <div style="width: 220px">
               <v-select
+                v-model="sortKey"
                 label="sort by"
                 item-title="label"
                 item-value="key"
                 :items="sortItems"
-                v-model="sortKey"
                 density="compact"
                 :hide-details="true"
                 variant="outlined"
@@ -228,11 +209,11 @@ onMounted(() => selectFirst(props.storeState))
           </v-toolbar>
         </template>
 
-        <template v-slot:default="{ items, isSelected, toggleSelect }">
+        <template #default="{ items, isSelected, toggleSelect }">
           <template v-for="item in items" :key="item.raw.hgnc.agr">
-            <Entry
+            <GeneListEntry
               :item="item"
-              :hgncToEffect="hgncToEffect"
+              :hgnc-to-effect="hgncToEffect"
               :sort-key="sortKey"
               :sort-order="sortOrder"
               :is-selected="isSelected(item as any)"
@@ -241,7 +222,7 @@ onMounted(() => selectFirst(props.storeState))
             />
           </template>
         </template>
-        <template v-slot:no-data>
+        <template #no-data>
           <template v-if="isLoading">
             <v-skeleton-loader class="mt-3 mx-auto border" type="heading,subtitle" />
             <v-skeleton-loader class="mt-3 mx-auto border" type="heading,subtitle" />
@@ -254,7 +235,7 @@ onMounted(() => selectFirst(props.storeState))
           </template>
         </template>
 
-        <template v-slot:footer="{ pageCount }">
+        <template #footer="{ pageCount }">
           <div
             class="d-flex align-center justify-center pa-3 mt-1 rounded-b-lg border bg-grey-lighten-2"
           >

@@ -14,7 +14,6 @@ export const CLINICAL_SIGNIFICANCE_COLOR: { [key: string]: string } = {
   CLINICAL_SIGNIFICANCE_BENIGN: 'green-darken-2'
 }
 
-
 export const REVIEW_STATUS_LABEL: { [key: string]: string } = {
   REVIEW_STATUS_PRACTICE_GUIDELINE: 'practice guideline',
   REVIEW_STATUS_REVIEWED_BY_EXPERT_PANEL: 'reviewed by expert panel',
