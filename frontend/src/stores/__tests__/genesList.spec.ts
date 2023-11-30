@@ -77,7 +77,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useGenesListStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.loadData('invalid')
+    await store.loadData({ q: 'XXX', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.query).toBe(null)

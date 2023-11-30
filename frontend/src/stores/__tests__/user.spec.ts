@@ -28,7 +28,8 @@ describe.concurrent('User Store', () => {
       email: 'test@example.com',
       is_active: true,
       is_superuser: false,
-      is_verified: true
+      is_verified: true,
+      oauth_accounts: []
     }
 
     const store = useUserStore()
@@ -69,7 +70,8 @@ describe.concurrent('User Store', () => {
       email: 'test@example.com',
       is_active: true,
       is_superuser: false,
-      is_verified: true
+      is_verified: true,
+      oauth_accounts: []
     }
 
     const store = useUserStore()
@@ -88,7 +90,8 @@ describe.concurrent('User Store', () => {
       email: 'test@example.com',
       is_active: true,
       is_superuser: false,
-      is_verified: true
+      is_verified: true,
+      oauth_accounts: []
     }
 
     const store = useUserStore()

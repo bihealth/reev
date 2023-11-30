@@ -100,4 +100,26 @@ export class AnnonarsClient {
     })
     return result
   }
+
+  /**
+   * Fetch overlapping ClinVar strucvars via annonars REST API.
+   */
+  async fetchClinvarStrucvars(
+    genomeRelease: string,
+    chromosome: string,
+    start: number,
+    end: number,
+    pageSize: number = 1000,
+    minOverlap: number = 0.1
+  ): Promise<any> {
+    const url =
+      `${this.apiBaseUrl}clinvar-sv/query?genomeRelease=${genomeRelease}&` +
+      `chromosome=${chromosome}&start=${start}&stop=${end}&pageSize=${pageSize}&` +
+      `minOverlap=${minOverlap}`
+
+    const response = await fetch(url, {
+      method: 'GET'
+    })
+    return await response.json()
+  }
 }

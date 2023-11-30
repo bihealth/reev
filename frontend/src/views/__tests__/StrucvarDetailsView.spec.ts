@@ -6,10 +6,10 @@ import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
-import SvDetailsClinvar from '@/components/SvDetails/SvDetailsClinvar.vue'
-import SvGenes from '@/components/SvDetails/SvGenes.vue'
-import SvTools from '@/components/SvDetails/SvTools.vue'
+import AcmgRatingCard from '@/components/StrucvarDetails/AcmgRatingCard.vue'
+import SvDetailsClinvar from '@/components/StrucvarDetails/ClinvarCard.vue'
+import SvGenes from '@/components/StrucvarDetails/GeneListCard.vue'
+import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
@@ -67,9 +67,9 @@ describe.concurrent('VariantDetailView', async () => {
     const { wrapper } = await makeWrapper()
 
     const svGenes = wrapper.findComponent(SvGenes)
-    const svTools = wrapper.findComponent(SvTools)
+    const svTools = wrapper.findComponent(VariantToolsCard)
     const svDetailsClinvar = wrapper.findComponent(SvDetailsClinvar)
-    const acmgRating = wrapper.findComponent(AcmgRating)
+    const acmgRating = wrapper.findComponent(AcmgRatingCard)
     const genomeBrowser = wrapper.findComponent(GenomeBrowser)
     expect(svGenes.exists()).toBe(true)
     expect(svTools.exists()).toBe(true)

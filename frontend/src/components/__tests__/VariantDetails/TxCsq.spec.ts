@@ -23,6 +23,6 @@ describe.concurrent('TxCsq', async () => {
     expect(headers[2].text()).toBe('Consequence')
     expect(headers[3].text()).toBe('HGVS.p')
     expect(headers[4].text()).toBe('HGVS.t')
-    expect(headers[5].text()).toBe('Rank')
+    expect(headers[5].text()).toBe('Exon/Intron')
   })
 })

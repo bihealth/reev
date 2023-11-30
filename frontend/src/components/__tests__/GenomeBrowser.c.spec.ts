@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { publicTracks } from '../genomeBrowserTracks'
+import { publicTracks } from '../GenomeBrowser.c'
 
 describe('publicTracks', () => {
   it('should have at least one track', () => {

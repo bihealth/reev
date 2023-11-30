@@ -1,13 +1,13 @@
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 
-import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
 import {
   AcmgCriteriaCNVLoss,
   MultiSourceAcmgCriteriaCNVState,
   Presence,
   StateSourceCNV
-} from '@/lib/acmgCNV'
+} from '@/components/StrucvarDetails/AcmgRatingCard.c'
+import AcmgRatingCard from '@/components/StrucvarDetails/AcmgRatingCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
@@ -75,7 +75,7 @@ const makeWrapper = () => {
 
   return setupMountedComponents(
     {
-      component: AcmgRating,
+      component: AcmgRatingCard,
       template: true
     },
     {
@@ -91,6 +91,6 @@ describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
     const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Uncertain significance')
-    expect(wrapper.text()).toContain('Select all fulfilled criteria')
+    expect(wrapper.text()).toContain('Semi-Automated')
   })
 })

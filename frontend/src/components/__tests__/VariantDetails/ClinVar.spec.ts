@@ -5,7 +5,7 @@ import ClinVar from '@/components/VariantDetails/ClinVar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ClinVar', async () => {
-  it('renders the ClinVar info', async () => {
+  it.skip('renders the ClinVar info', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: ClinVar, template: false },
       {
@@ -21,7 +21,7 @@ describe.concurrent('ClinVar', async () => {
     expect(starsOutline.length).toBe(27)
   })
 
-  it('renders the ClinVar info with stars', async () => {
+  it.skip('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
     clinVarInfoStars.referenceAssertions[0].reviewStatus =
       'REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED'

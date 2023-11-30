@@ -13,6 +13,8 @@ import { StoreState } from '@/stores/misc'
 
 /** `SvRecord` is a type alias for easier future interface definition. */
 export type SvRecord = any | null
+/** `ClinvarSvRecord` is a type alias for easier future interface definition. */
+export type ClinvarSvRecord = any | null
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any | null
 
@@ -28,6 +30,9 @@ export const useSvInfoStore = defineStore('svInfo', () => {
 
   /** Infos on the variants of the record. */
   const genesInfos = ref<GeneInfo[]>([])
+
+  /** The ClinVar SV records. */
+  const clinvarSvRecords = ref<ClinvarSvRecord[]>([])
 
   function clearData() {
     storeState.value = StoreState.Initial
@@ -68,6 +73,14 @@ export const useSvInfoStore = defineStore('svInfo', () => {
         release: genomeRelease,
         result: svRecord.result
       }
+      // Fetch ClinVar SV records
+      const { records: responseRecords } = await annonarsClient.fetchClinvarStrucvars(
+        genomeRelease,
+        chromosome,
+        start,
+        end
+      )
+      clinvarSvRecords.value = responseRecords ?? []
 
       // Fetch gene infos
       const hgncIds = []
@@ -79,6 +92,9 @@ export const useSvInfoStore = defineStore('svInfo', () => {
       if (hgncIds.length) {
         genesInfos.value = await annonarsClient.fetchGeneInfos(hgncIds)
       }
+
+      // Sort by gene symbol
+      genesInfos.value.sort((a, b) => (a?.hgnc?.agr ?? 'ZZZ').localeCompare(b?.hgnc?.agr ?? 'ZZZ'))
 
       storeState.value = StoreState.Active
       svTerm.value = variantQuery
@@ -93,6 +109,7 @@ export const useSvInfoStore = defineStore('svInfo', () => {
     svTerm,
     currentSvRecord,
     genesInfos,
+    clinvarSvRecords,
     clearData,
     loadData
   }

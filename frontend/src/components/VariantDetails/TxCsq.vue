@@ -19,7 +19,7 @@ const props = defineProps<Props>()
             <th>Consequence</th>
             <th>HGVS.p</th>
             <th>HGVS.t</th>
-            <th>Rank</th>
+            <th>Exon/Intron</th>
           </tr>
         </thead>
         <tbody>

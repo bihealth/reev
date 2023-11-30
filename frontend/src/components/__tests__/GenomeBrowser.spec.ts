@@ -10,7 +10,7 @@ describe.concurrent('GenomeBrowser', async () => {
       { component: GenomeBrowser, template: false },
       {
         props: {
-          genome: 'hg19',
+          genomeRelease: 'grch37',
           locus: 'chr17:41246243-41246243'
         }
       }
@@ -23,7 +23,7 @@ describe.concurrent('GenomeBrowser', async () => {
       { component: GenomeBrowser, template: false },
       {
         props: {
-          genome: 'hg38',
+          genomeRelease: 'grch38',
           locus: 'chr17:41246243-41246243'
         }
       }

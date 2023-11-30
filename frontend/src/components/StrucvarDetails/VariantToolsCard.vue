@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { type SvRecord } from '@/stores/svInfo'
 
 export interface Props {
+  genomeRelease: 'grch37' | 'grch38'
   svRecord: SvRecord | null
 }
 
@@ -15,7 +16,7 @@ const ucscLinkout = computed((): string => {
   if (!props.svRecord) {
     return '#'
   }
-  const db = props.svRecord.release === 'grch37' ? 'hg19' : 'hg38'
+  const db = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
   return (
     `https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=${db}&position=` +
     `${props.svRecord.chromosome}:${props.svRecord.start}-` +
@@ -28,9 +29,9 @@ const ensemblLinkout = computed((): string => {
     return '#'
   }
   const loc = `${props.svRecord.chromosome}:${props.svRecord.start}-${props.svRecord.end}`
-  if (props.svRecord.release === 'grch37') {
+  if (props.genomeRelease === 'grch37') {
     return `https://grch37.ensembl.org/Homo_sapiens/Location/View?r=${loc}`
-  } else if (props.svRecord.release === 'grch38') {
+  } else if (props.genomeRelease === 'grch38') {
     return `https://ensembl.org/Homo_sapiens/Location/View?r=${loc}`
   }
   return '#'
@@ -40,7 +41,7 @@ const dgvLinkout = computed((): string => {
   if (!props.svRecord) {
     return '#'
   }
-  const db = props.svRecord.release === 'grch37' ? 'hg19' : 'hg38'
+  const db = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
   return (
     `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.svRecord.chromosome}:` +
     `${props.svRecord.start}-${props.svRecord.end};search=Search`
@@ -51,7 +52,7 @@ const gnomadLinkout = computed((): string => {
   if (!props.svRecord) {
     return '#'
   }
-  const dataset = props.svRecord.release === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
+  const dataset = props.genomeRelease === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
   return (
     `https://gnomad.broadinstitute.org/region/${props.svRecord.chromosome}:` +
     `${props.svRecord.start}-${props.svRecord.end}?dataset=${dataset}`
@@ -62,11 +63,23 @@ const varsomeLinkout = computed((): string => {
   if (!props.svRecord) {
     return '#'
   }
-  const urlRelease = props.svRecord.release === 'grch37' ? 'hg19' : 'hg38'
+  const urlRelease = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
   const chrom = props.svRecord.chromosome.startsWith('chr')
     ? props.svRecord.chromosome
     : `chr${props.svRecord.chromosome}`
   return `https://varsome.com/cnv/${urlRelease}/${chrom}:${props.svRecord.start}:${props.svRecord.end}:${props.svRecord.svType}`
+})
+
+const franklinLinkout = computed((): string => {
+  if (!props.svRecord) {
+    return '#'
+  }
+  const { chromosome, start, end, svType } = props.svRecord
+  const urlRelease = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
+  return `https://franklin.genoox.com/clinical-db/variant/sv/chr${chromosome.replace(
+    'chr',
+    ''
+  )}-${start}-${end}-${svType}-${urlRelease}`
 })
 
 const jumpToLocus = async () => {
@@ -81,61 +94,68 @@ const jumpToLocus = async () => {
     console.error(msg, e)
   })
 }
+
+interface Linkout {
+  href: string
+  label: string
+}
+
+const genomeBrowsers = computed<Linkout[]>(() => {
+  return [
+    { label: 'ENSEMBL', href: ensemblLinkout.value },
+    { label: 'UCSC', href: ucscLinkout.value }
+  ]
+})
+
+const resources = computed<Linkout[]>(() => {
+  return [
+    { label: 'DGV', href: dgvLinkout.value },
+    { label: 'gnomAD', href: gnomadLinkout.value },
+    { label: 'varsome', href: varsomeLinkout.value },
+    { label: 'genoox Franklin', href: franklinLinkout.value }
+  ]
+})
 </script>
 
 <template>
-  <v-card>
-    <v-card-title>SV Tools</v-card-title>
-    <v-divider />
+  <v-card class="mt-3">
+    <v-card-title class="pb-0"> Variant Tools </v-card-title>
+
+    <v-card-subtitle class="text-overline"> Genome Browsers </v-card-subtitle>
     <v-card-text>
-      <v-card-item>
-        <h3>External Resources</h3>
-        <div class="external-resource-item">
-          <a :href="dgvLinkout" target="_blank">
-            <v-icon>mdi-launch</v-icon>
-            DGV
-          </a>
-        </div>
-        <div class="external-resource-item">
-          <a :href="ensemblLinkout" target="_blank">
-            <v-icon>mdi-launch</v-icon>
-            ENSEBML
-          </a>
-        </div>
-        <div class="external-resource-item">
-          <a :href="gnomadLinkout" target="_blank">
-            <v-icon>mdi-launch</v-icon>
-            gnomAD
-          </a>
-        </div>
-        <div class="external-resource-item">
-          <a :href="ucscLinkout" target="_blank">
-            <v-icon>mdi-launch</v-icon>
-            UCSC Genome Browser
-          </a>
-        </div>
-        <div class="external-resource-item">
-          <a :href="varsomeLinkout" target="_blank">
-            <v-icon>mdi-launch</v-icon>
-            varsome
-          </a>
-        </div>
-      </v-card-item>
-
-      <v-divider />
-
-      <v-card-item>
-        <h3>IGV</h3>
-        <div>
-          <div>
-            <a href="#" target="_blank" @click.prevent="jumpToLocus()">
-              <v-icon>mdi-launch</v-icon>
-              Jump to Location in IGV
-            </a>
-          </div>
-        </div>
-      </v-card-item>
+      <v-btn
+        v-for="linkout in genomeBrowsers"
+        :key="linkout.label"
+        :href="linkout.href"
+        target="_blank"
+        prepend-icon="mdi-launch"
+        variant="tonal"
+        rounded="sm"
+        class="mr-2"
+      >
+        {{ linkout.label }}
+      </v-btn>
     </v-card-text>
+
+    <v-card-subtitle class="text-overline"> Other Resources </v-card-subtitle>
+    <v-card-text>
+      <v-btn
+        v-for="linkout in resources"
+        :key="linkout.label"
+        :href="linkout.href"
+        target="_blank"
+        prepend-icon="mdi-launch"
+        variant="tonal"
+        rounded="sm"
+        class="mr-2"
+      >
+        {{ linkout.label }}
+      </v-btn>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-btn prepend-icon="mdi-launch" @click.prevent="jumpToLocus()"> Jump in Local IGV </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 

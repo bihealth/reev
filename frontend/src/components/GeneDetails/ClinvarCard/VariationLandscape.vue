@@ -10,12 +10,15 @@ export interface Props {
   transcripts: any
   /** The genome release. */
   genomeRelease: 'grch37' | 'grch38'
+  /** Gene symbol */
+  geneSymbol: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   clinvar: null,
   transcripts: null,
-  genomeRelease: 'grch37'
+  genomeRelease: 'grch37',
+  geneSymbol: '???'
 })
 
 const clinvarSignificanceMapping: { [key: string]: number } = {
@@ -361,9 +364,14 @@ const vegaLayer = [
         :data-values="vegaData"
         :encoding="vegaEncoding"
         :layer="vegaLayer"
+        :width="1200"
         :height="300"
         renderer="canvas"
       />
+      <div>
+        The plot above shows the sequence variants in the ClinVar database that are that are located
+        in the gene <span class="font-italic"> {{ geneSymbol }} </span>.
+      </div>
     </v-sheet>
   </div>
 </template>

@@ -9,7 +9,7 @@ import {
   MultiSourceAcmgCriteriaCNVState,
   Presence,
   StateSourceCNV
-} from '@/lib/acmgCNV'
+} from '@/components/StrucvarDetails/AcmgRatingCard.c'
 
 import { StoreState } from '../misc'
 import { useSvAcmgRatingStore } from '../svAcmgRating'

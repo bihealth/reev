@@ -24,7 +24,7 @@ describe.concurrent('Terms Store', () => {
 
   it('clears data', () => {
     const store = useTermsStore()
-    store.hpoTerms = [{ id: 'HP:0000118', name: 'Phenotypic abnormality' }]
+    store.hpoTerms = [{ term_id: 'HP:0000118', name: 'Phenotypic abnormality' }]
 
     store.clearData()
 
@@ -32,7 +32,7 @@ describe.concurrent('Terms Store', () => {
   })
 
   it('fetches HPO terms by name', async () => {
-    const mockHpoTerms = [{ id: 'HP:0000118', name: 'Phenotypic abnormality' }]
+    const mockHpoTerms = [{ term_id: 'HP:0000118', name: 'Phenotypic abnormality' }]
     fetchMocker.mockResponseOnce(JSON.stringify({ result: mockHpoTerms }))
 
     const store = useTermsStore()
@@ -43,7 +43,7 @@ describe.concurrent('Terms Store', () => {
   })
 
   it('fetches HPO term by ID', async () => {
-    const mockHpoTerm = { id: 'HP:0000118', name: 'Phenotypic abnormality' }
+    const mockHpoTerm = { term_id: 'HP:0000118', name: 'Phenotypic abnormality' }
     fetchMocker.mockResponseOnce(JSON.stringify({ result: mockHpoTerm }))
 
     const store = useTermsStore()
@@ -68,7 +68,7 @@ describe.concurrent('Terms Store', () => {
   it('fetches OMIM terms by name', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const mockOmimTerms = [{ id: 'OMIM:123456', name: 'Example Disease' }]
+    const mockOmimTerms = [{ term_id: 'OMIM:123456', name: 'Example Disease' }]
     fetchMocker.mockResponseOnce(JSON.stringify({ result: mockOmimTerms }))
 
     const store = useTermsStore()
@@ -79,7 +79,7 @@ describe.concurrent('Terms Store', () => {
   })
 
   it('fetches OMIM term by ID', async () => {
-    const mockOmimTerm = { id: 'OMIM:123456', name: 'Example Disease' }
+    const mockOmimTerm = { term_id: 'OMIM:123456', name: 'Example Disease' }
     fetchMocker.mockResponseOnce(JSON.stringify({ result: mockOmimTerm }))
 
     const store = useTermsStore()
