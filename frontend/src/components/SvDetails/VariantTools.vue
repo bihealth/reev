@@ -116,7 +116,7 @@ const resources = computed<Linkout[]>(() => {
 </script>
 
 <template>
-  <v-card class="mt-3" id="strucvar-tools">
+  <v-card class="mt-3">
     <v-card-title class="pb-0"> Variant Tools </v-card-title>
 
     <v-card-subtitle class="text-overline"> Genome Browsers </v-card-subtitle>

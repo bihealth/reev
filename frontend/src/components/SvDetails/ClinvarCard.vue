@@ -28,7 +28,7 @@ const clinvarRange = computed<string>(() => {
 </script>
 
 <template>
-  <v-card class="mt-3" id="strucvar-clinvar">
+  <v-card class="mt-3">
     <v-card-title class="pb-0">
       ClinVar
       <small>

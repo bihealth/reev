@@ -11,7 +11,7 @@ import { type SvRecord, useSvInfoStore } from '@/stores/svInfo'
 
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
 const GeneListCard = defineAsyncComponent(() => import('@/components/SvDetails/GeneListCard.vue'))
-// const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
+const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
 
 const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
 const PathogenicityCard = defineAsyncComponent(
@@ -152,7 +152,7 @@ const SECTIONS: { [key: string]: Section[] } = {
     { id: 'strucvar-clinvar', title: 'ClinVar' },
     { id: 'strucvar-tools', title: 'Tools' },
     { id: 'strucvar-acmg', title: 'ACMG' },
-    { id: 'strucvar-genome-browser', title: 'Genome Browser' }
+    { id: 'strucvar-genomebrowser', title: 'Genome Browser' }
   ]
 }
 
@@ -298,8 +298,18 @@ const selectedGeneInfo = computed<any | null>(() => {
       <div>
         <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
 
-        <StrucvarClinvarCard :genome-release="genomeReleaseRef" />
-        <StrucvarTools :genome-release="genomeReleaseRef" :svRecord="svInfoStore.currentSvRecord" />
+        <div id="strucvar-clinvar">
+          <StrucvarClinvarCard :genome-release="genomeReleaseRef" />
+        </div>
+        <div id="strucvar-tools">
+          <StrucvarTools :genome-release="genomeReleaseRef" :svRecord="svInfoStore.currentSvRecord" />
+        </div>
+        <div id="strucvar-genomebrowser">
+          <GenomeBrowser
+            :genome-release="genomeRelease"
+            :locus="svLocus(svInfoStore.currentSvRecord) as string"
+          />
+        </div>
       </div>
     </v-main>
   </v-app>
