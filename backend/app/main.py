@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 if settings.SENTRY_DSN:  # pragma: no cover
     sentry_sdk.init(
-        dsn=settings.SENTRY_DSN,
+        dsn=Str(settings.SENTRY_DSN),
         enable_tracing=True,
     )
 
