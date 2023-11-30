@@ -30,7 +30,7 @@ async def version():
 
 @api_router.get("/frontend-settings")
 @api_router.post("/frontend-settings")
-async def matomo():
+async def frontend_settings():
     """
     Return frontend settings.
 

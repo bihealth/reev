@@ -2,6 +2,7 @@ import logging
 import pathlib
 from contextlib import asynccontextmanager
 
+import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.cors import CORSMiddleware
@@ -17,12 +18,25 @@ if settings.DEBUG:
 
 logger = logging.getLogger(__name__)
 
+if settings.SENTRY_DSN:  # pragma: no cover
+    sentry_sdk.init(
+        dsn=settings.SENTRY_DSN,
+        enable_tracing=True,
+    )
+
 app = FastAPI(
     title="REEV",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url=f"{settings.API_V1_STR}/docs",
     debug=settings.DEBUG,
 )
+
+if settings.SENTRY_DSN and settings.DEBUG:  # pragma: no cover
+
+    @app.get("/sentry-debug")
+    async def trigger_error():
+        division_by_zero = 1 / 0
+
 
 # Set all CORS enabled origins
 if settings.BACKEND_CORS_ORIGINS:

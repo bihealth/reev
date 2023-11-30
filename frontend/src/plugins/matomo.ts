@@ -5,10 +5,11 @@
  */
 import { type App } from 'vue'
 import VueMatomo from 'vue-matomo'
+import { type Router } from 'vue-router'
 
 import { SettingsClient } from '@/api/settings'
 
-async function setupMatomo(app: App, router: any) {
+export async function setupMatomo(app: App, router: Router) {
   try {
     const client = new SettingsClient()
     const response = await client.fetchFrontendSettings()
@@ -27,5 +28,3 @@ async function setupMatomo(app: App, router: any) {
     console.error('Failed to initialize Matomo:', error)
   }
 }
-
-export default setupMatomo
