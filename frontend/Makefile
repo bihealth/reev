@@ -25,6 +25,7 @@ format:
 .PHONY: lint
 lint:
 	npm run lint
+	npm run type-check
 	npm run format:check
 
 .PHONY: test

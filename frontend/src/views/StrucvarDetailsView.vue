@@ -13,8 +13,6 @@ const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderD
 const GeneListCard = defineAsyncComponent(
   () => import('@/components/StrucvarDetails/GeneListCard.vue')
 )
-const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
-
 const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
 const PathogenicityCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/PathogenicityCard.vue')
@@ -36,10 +34,11 @@ const VariantToolsCard = defineAsyncComponent(
   () => import('@/components/StrucvarDetails/VariantToolsCard.vue')
 )
 
-// const AcmgRating = defineAsyncComponent(() => import('@/components/StrucvarDetails/AcmgRating.vue'))
-// const SvDetailsClinvar = defineAsyncComponent(
-//   () => import('@/components/StrucvarDetails/SvDetailsClinvar.vue')
-// )
+const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
+
+const AcmgRatingCard = defineAsyncComponent(
+  () => import('@/components/StrucvarDetails/AcmgRatingCard.vue')
+)
 
 export interface Props {
   searchTerm?: string
@@ -318,6 +317,10 @@ const selectedGeneInfo = computed<any | null>(() => {
             :genome-release="genomeRelease"
             :locus="svLocus(svInfoStore.currentSvRecord) as string"
           />
+        </div>
+
+        <div id="strucvar-acmg">
+          <AcmgRatingCard :sv-record="svInfoStore.currentSvRecord" />
         </div>
       </div>
     </v-main>

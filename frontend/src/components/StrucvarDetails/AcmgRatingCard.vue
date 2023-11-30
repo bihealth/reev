@@ -9,7 +9,7 @@ import {
   AcmgCriteriaCNVLoss,
   Presence,
   StateSourceCNV
-} from '@/lib/acmgCNV'
+} from '@/components/StrucvarDetails/AcmgRatingCard.c'
 import { StoreState } from '@/stores/misc'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
 import type { SvRecord } from '@/stores/svInfo'
@@ -89,7 +89,7 @@ const switchCriteria = (
     <v-card-title>ACMG</v-card-title>
     <v-divider />
 
-    <div v-if="acmgRatingStore !== undefined">
+    <div v-if="acmgRatingStore.storeState === StoreState.Active">
       <v-row>
         <v-col cols="12" md="3" />
         <v-col cols="12" md="6" class="section">

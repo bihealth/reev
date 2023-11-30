@@ -12,7 +12,8 @@ const adminUser: UserData = {
   email: 'admin@example.com',
   is_active: true,
   is_superuser: true,
-  is_verified: true
+  is_verified: true,
+  oauth_accounts: []
 }
 
 const exampleBookmark: BookmarkData = {

@@ -552,7 +552,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Reported proband (from literature, public databases, or internal lab data) has either:
       • A complete deletion of or a LOF variant within gene encompassed by the observed
       copy-number loss OR
-      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
+      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND
       the reported phenotype is highly specific and relatively unique to the gene or
       genomic region,`,
       conflictingEvidence: [AcmgCriteriaCNVLoss.Loss4B, AcmgCriteriaCNVLoss.Loss4C],
@@ -568,7 +568,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Reported proband (from literature, public databases, or internal lab data) has either:
       • A complete deletion of or a LOF variant within gene encompassed by the observed
       copy-number loss OR
-      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
+      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND
       the reported phenotype is consistent with the gene/genomic region, is highly
       specific, but not necessarily unique to the gene/genomic region.`,
       conflictingEvidence: [AcmgCriteriaCNVLoss.Loss4A, AcmgCriteriaCNVLoss.Loss4C],
@@ -584,7 +584,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Reported proband (from literature, public databases, or internal lab data) has either:
       • A complete deletion of or a LOF variant within gene encompassed by the observed
       copy-number loss OR
-      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
+      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND
       the reported phenotype is consistent with the gene/genomic region, but not highly
       specific and/or with high genetic heterogeneity.`,
       conflictingEvidence: [AcmgCriteriaCNVLoss.Loss4A, AcmgCriteriaCNVLoss.Loss4B],
@@ -600,7 +600,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       description: `Reported proband (from literature, public databases, or internal lab data) has either:
       • A complete deletion of or a LOF variant within gene encompassed by the observed
       copy-number loss OR
-      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND 
+      • An overlapping copy-number loss similar in genomic content to the observed copynumber loss AND
       the reported phenotype is NOT consistent with what is expected for the gene/
       genomic region or not consistent in general.`,
       conflictingEvidence: [],
@@ -740,7 +740,7 @@ const ACMG_CRITERIA_CNV_DEFS: Map<
       minScore: 0,
       maxScore: 0.45,
       label: '5A',
-      hint: `Observed copy-number loss is de novo. Use de novo scoring categories from section 4 
+      hint: `Observed copy-number loss is de novo. Use de novo scoring categories from section 4
       (4A-4D) to determine score`,
       description: `Use appropriate category from de novo scoring section in section 4.`,
       conflictingEvidence: [
