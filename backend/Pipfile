@@ -26,6 +26,7 @@ types-requests = "*"
 greenlet = "*"
 emails = "*"
 jinja2 = "*"
+sentry-sdk = {extras = ["fastapi"], version = "*"}
 
 [dev-packages]
 aiosqlite = "*"
