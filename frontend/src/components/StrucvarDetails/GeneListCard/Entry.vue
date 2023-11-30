@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
-import GeneDosage from '@/components/SvDetails/GeneListCard/GeneDosage.vue'
-import ScoreChip from '@/components/SvDetails/GeneListCard/ScoreChip.vue'
-import { roundIt } from '@/lib/utils'
+import GeneDosage from '@/components/StrucvarDetails/GeneListCard/GeneDosage.vue'
+import ScoreChip from '@/components/StrucvarDetails/GeneListCard/ScoreChip.vue'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -12,9 +12,12 @@ const props = defineProps<{
   sortKey?: string
   sortOrder?: 'asc' | 'desc'
   isSelected: boolean
+  genomeRelease?: 'grch37' | 'grch38'
 }>()
 
 const emit = defineEmits(['toggleSelected'])
+
+const router = useRouter()
 
 /**
  * Pick smallest of the shortest RefSeq transcript IDs.
@@ -73,6 +76,10 @@ const sortIcon = computed<string>(() => {
           </div>
           <div>
             {{ pickRefSeqId(item.raw.dbnsfp?.refseqId) }}
+            |
+            <a @click.prevent="router.push({name: 'gene', params: {searchTerm: item.raw.hgnc.agr, genomeRelease: genomeRelease}})"  style="cursor: pointer;" title="go to Gene details page">
+              <v-icon>mdi-arrow-right-circle-outline</v-icon>
+            </a>
           </div>
         </div>
       </v-col>
@@ -180,7 +187,7 @@ const sortIcon = computed<string>(() => {
               https://europepmc.org/article/MED/20976243
 
               ClinGen Dosage Sensitivity Single Gene Evaluation Process v1.0 => >=0.9
-            
+
             -->
             <table style="width: 280px">
               <tr>

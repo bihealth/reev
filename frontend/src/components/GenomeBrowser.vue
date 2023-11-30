@@ -9,7 +9,7 @@ type GenomeBrowser = any
 
 export interface Props {
   // Genome build
-  genomeRelease: "grch37" | "grch38"
+  genomeRelease: 'grch37' | 'grch38'
   // Locus to go to, e.g., "chr1:1,900,000-2,000,000"
   locus: string
 }

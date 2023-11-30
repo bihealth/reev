@@ -2,7 +2,7 @@
 import { type Ref, computed, ref, watch } from 'vue'
 import { onMounted } from 'vue'
 
-import Entry from '@/components/SvDetails/GeneListCard/Entry.vue'
+import Entry from '@/components/StrucvarDetails/GeneListCard/Entry.vue'
 import VariantDetailsGene from '@/components/VariantDetails/VariantGene.vue'
 import { search } from '@/lib/utils'
 import router from '@/router'
@@ -17,6 +17,7 @@ const props = withDefaults(
     genesInfos?: GeneInfo[]
     storeState?: StoreState
     selectedGeneHgncId: string | null
+    genomeRelease?: 'grch37' | 'grch38'
   }>(),
   {
     selectedGeneHgncId: null
@@ -235,6 +236,7 @@ onMounted(() => selectFirst(props.storeState))
               :sort-key="sortKey"
               :sort-order="sortOrder"
               :is-selected="isSelected(item as any)"
+              :genome-release="genomeRelease"
               @toggle-selected="() => toggleSelect(item as any)"
             />
           </template>

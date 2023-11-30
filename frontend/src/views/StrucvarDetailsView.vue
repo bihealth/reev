@@ -10,7 +10,7 @@ import { StoreState } from '@/stores/misc'
 import { type SvRecord, useSvInfoStore } from '@/stores/svInfo'
 
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
-const GeneListCard = defineAsyncComponent(() => import('@/components/SvDetails/GeneListCard.vue'))
+const GeneListCard = defineAsyncComponent(() => import('@/components/StrucvarDetails/GeneListCard.vue'))
 const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
 
 const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
@@ -28,13 +28,13 @@ const GeneClinvarCard = defineAsyncComponent(
 )
 
 const StrucvarClinvarCard = defineAsyncComponent(
-  () => import('@/components/SvDetails/ClinvarCard.vue')
+  () => import('@/components/StrucvarDetails/ClinvarCard.vue')
 )
-const StrucvarTools = defineAsyncComponent(() => import('@/components/SvDetails/VariantTools.vue'))
+const StrucvarTools = defineAsyncComponent(() => import('@/components/StrucvarDetails/VariantTools.vue'))
 
-// const AcmgRating = defineAsyncComponent(() => import('@/components/SvDetails/AcmgRating.vue'))
+// const AcmgRating = defineAsyncComponent(() => import('@/components/StrucvarDetails/AcmgRating.vue'))
 // const SvDetailsClinvar = defineAsyncComponent(
-//   () => import('@/components/SvDetails/SvDetailsClinvar.vue')
+//   () => import('@/components/StrucvarDetails/SvDetailsClinvar.vue')
 // )
 
 export interface Props {
@@ -172,6 +172,7 @@ watch(
   (newHgncId: string | null) => {
     if (newHgncId !== null) {
       loadGeneToStore(newHgncId)
+      router.push({ hash: '#gene-overview' })
     }
   }
 )
@@ -262,6 +263,7 @@ const selectedGeneInfo = computed<any | null>(() => {
           :current-sv-record="svInfoStore.currentSvRecord"
           :genes-infos="svInfoStore.genesInfos"
           :store-state="svInfoStore.storeState"
+          :genome-release="genomeRelease"
           v-model:selected-gene-hgnc-id="selectedGeneHgncId"
         />
       </div>
@@ -302,7 +304,10 @@ const selectedGeneInfo = computed<any | null>(() => {
           <StrucvarClinvarCard :genome-release="genomeReleaseRef" />
         </div>
         <div id="strucvar-tools">
-          <StrucvarTools :genome-release="genomeReleaseRef" :svRecord="svInfoStore.currentSvRecord" />
+          <StrucvarTools
+            :genome-release="genomeReleaseRef"
+            :svRecord="svInfoStore.currentSvRecord"
+          />
         </div>
         <div id="strucvar-genomebrowser">
           <GenomeBrowser

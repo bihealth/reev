@@ -1,7 +1,7 @@
 import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 
-import AcmgRating from '@/components/SvDetails/AcmgRating.vue'
+import AcmgRating from '@/components/StrucvarDetails/AcmgRating.vue'
 import {
   AcmgCriteriaCNVLoss,
   MultiSourceAcmgCriteriaCNVState,

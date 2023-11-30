@@ -74,11 +74,13 @@ const franklinLinkout = computed((): string => {
   if (!props.svRecord) {
     return '#'
   }
-  const { chromosome, start, end, svType } = props.svRecord;
+  const { chromosome, start, end, svType } = props.svRecord
   const urlRelease = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
-  return `https://franklin.genoox.com/clinical-db/variant/sv/chr${chromosome.replace('chr', '')}-${start}-${end}-${svType}-${urlRelease}`
+  return `https://franklin.genoox.com/clinical-db/variant/sv/chr${chromosome.replace(
+    'chr',
+    ''
+  )}-${start}-${end}-${svType}-${urlRelease}`
 })
-
 
 const jumpToLocus = async () => {
   const chrPrefixed = props.svRecord?.chromosome.startsWith('chr')
@@ -110,7 +112,7 @@ const resources = computed<Linkout[]>(() => {
     { label: 'DGV', href: dgvLinkout.value },
     { label: 'gnomAD', href: gnomadLinkout.value },
     { label: 'varsome', href: varsomeLinkout.value },
-    { label: 'genoox Franklin', href: franklinLinkout.value },
+    { label: 'genoox Franklin', href: franklinLinkout.value }
   ]
 })
 </script>
