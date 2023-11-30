@@ -91,6 +91,6 @@ describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
     const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Uncertain significance')
-    expect(wrapper.text()).toContain('Select all fulfilled criteria')
+    expect(wrapper.text()).toContain('Semi-Automated')
   })
 })

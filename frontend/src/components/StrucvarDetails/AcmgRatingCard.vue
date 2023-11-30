@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 import {
   ACMG_CRITERIA_CNV_DEFS,
-  ACMG_CRITERIA_CNV_GAIN,
-  ACMG_CRITERIA_CNV_LOSS,
   AcmgCriteriaCNVGain,
   AcmgCriteriaCNVLoss,
   Presence,
   StateSourceCNV
 } from '@/components/StrucvarDetails/AcmgRatingCard.c'
+import CnGain from '@/components/StrucvarDetails/AcmgRatingCard/CnGain.vue'
+import CnLoss from '@/components/StrucvarDetails/AcmgRatingCard/CnLoss.vue'
+import SummarySheet from '@/components/StrucvarDetails/AcmgRatingCard/SummarySheet.vue'
 import { StoreState } from '@/stores/misc'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
 import type { SvRecord } from '@/stores/svInfo'
@@ -22,6 +23,9 @@ const props = defineProps<Props>()
 
 const acmgRatingStore = useSvAcmgRatingStore()
 
+/**
+ * Update user ACMG rating values to those of AutoCNV.
+ */
 const resetAcmgRating = () => {
   if (!acmgRatingStore.acmgRating) {
     return
@@ -82,165 +86,64 @@ const switchCriteria = (
     }
   }
 }
+
+/** Whehter display of conflicting sections is enabled. */
+const showConflictingSections = ref<boolean>(false)
 </script>
 
 <template>
-  <v-card>
-    <v-card-title>ACMG</v-card-title>
-    <v-divider />
+  <!-- store not read => display loader -->
+  <!-- <template v-if="acmgRatingStore.storeState !== StoreState.Active">
+    <v-skeleton-loader class="mt-3 mx-auto border" type="image,button" />
+  </template> -->
 
-    <div v-if="acmgRatingStore.storeState === StoreState.Active">
-      <v-row>
-        <v-col cols="12" md="3" />
-        <v-col cols="12" md="6" class="section">
-          <div>
-            <div>
-              <h2 for="acmg-class">
-                <strong>ACMG classification:</strong>
-              </h2>
-            </div>
-            <h1 title="Automatically determined ACMG class (Richards et al., 2015)">
-              {{ calculateAcmgClass }} with score: {{ calculateAcmgScore }}
-            </h1>
-            <router-link to="/acmg-sv-docs" target="_blank">
-              Further documentation <v-icon>mdi-open-in-new</v-icon>
-            </router-link>
+  <!-- <template v-else> -->
+  <template v-if="true">
+    <v-card class="mt-3">
+      <v-card-title class="pb-0"> ACMG </v-card-title>
+      <v-card-subtitle class="text-overline">
+        Semi-Automated Pathogenicity Prediction
+      </v-card-subtitle>
+      <v-card-text>
+        <div>
+          <v-row>
+            <v-col cols="3"></v-col>
+            <v-col cols="6">
+              <SummarySheet
+                :calculated-acmg-class="calculateAcmgClass"
+                :calculated-acmg-score="calculateAcmgScore"
+                @clear-user="() => resetAcmgRating()"
+              />
+              <v-col cols="3"></v-col>
+            </v-col>
+          </v-row>
+          <div v-if="props.svRecord?.svType === 'DEL'">
+            <CnLoss
+              :show-conflicting-sections="showConflictingSections"
+              @switch-criteria="(criteria, presence) => switchCriteria(criteria, presence)"
+            />
           </div>
-          <div class="button-group">
-            <v-btn color="black" variant="outlined" @click="resetAcmgRating()"> Reset </v-btn>
+          <div v-if="props.svRecord?.svType === 'DUP'">
+            <CnGain
+              :show-conflicting-sections="showConflictingSections"
+              @switch-criteria="(criteria, presence) => switchCriteria(criteria, presence)"
+            />
           </div>
-          <div>
-            <div>
-              <div>
-                <v-icon>mdi-information-outline</v-icon>
-                Select all fulfilled criteria to get the classification following Rooney Riggs
-                <i>et al.</i> (2020).
-              </div>
-            </div>
-          </div>
-        </v-col>
-        <v-col cols="12" md="3" />
-      </v-row>
-      <v-row>
-        <v-col class="d-flex flex-row flex-wrap">
-          <v-table>
-            <thead>
-              <tr>
-                <th width="20%">Evidence</th>
-                <th width="74%">Description</th>
-                <th width="3%">Suggested points</th>
-                <th width="3%">Max score</th>
-              </tr>
-            </thead>
-            <tbody v-if="props.svRecord?.svType === 'DEL'">
-              <tr v-for="criteria in ACMG_CRITERIA_CNV_LOSS" :key="criteria">
-                <td>
-                  <v-switch
-                    :label="criteria"
-                    :model-value="
-                      acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).presence ===
-                      Presence.Present
-                    "
-                    color="primary"
-                    hide-details="auto"
-                    density="compact"
-                    class="switch"
-                    @update:model-value="
-                      switchCriteria(
-                        criteria,
-                        acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).presence
-                      )
-                    "
-                  />
-                  <div v-if="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.slider">
-                    <v-slider
-                      :model-value="
-                        acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score ?? 0
-                      "
-                      :min="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.minScore ?? 0"
-                      :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 0"
-                      :step="0.05"
-                      thumb-label
-                      thumb-size="10"
-                      class="slider"
-                      @update:model-value="
-                        acmgRatingStore.acmgRating.setScore(StateSourceCNV.User, criteria, $event)
-                      "
-                    />
-                  </div>
-                </td>
-                <td>
-                  {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.hint }}
-                  <br />
-                  {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.description ?? '' }}
-                  <br />
-                  Conflicting evidence:
-                  {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.conflictingEvidence }}
-                </td>
-                <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.defaultScore }}</td>
-                <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore }}</td>
-              </tr>
-            </tbody>
-            <tbody v-else-if="props.svRecord?.svType === 'DUP'">
-              <tr v-for="criteria in ACMG_CRITERIA_CNV_GAIN" :key="criteria">
-                <td>
-                  <v-switch
-                    :label="criteria"
-                    :model-value="
-                      acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).presence ===
-                      Presence.Present
-                    "
-                    color="primary"
-                    hide-details="auto"
-                    density="compact"
-                    class="switch"
-                    @update:model-value="
-                      switchCriteria(
-                        criteria,
-                        acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).presence
-                      )
-                    "
-                  />
-                  <div v-if="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.slider">
-                    <v-slider
-                      :model-value="
-                        acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score ?? 0
-                      "
-                      :min="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.minScore ?? 0"
-                      :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 1"
-                      :step="0.05"
-                      thumb-label
-                      thumb-size="10"
-                      class="slider"
-                      @update:model-value="
-                        acmgRatingStore.acmgRating.setScore(StateSourceCNV.User, criteria, $event)
-                      "
-                    />
-                  </div>
-                </td>
-                <td>
-                  {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.hint }}
-                  <br />
-                  {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.description ?? '' }}
-                  <br />
-                  Conflicting evidence:
-                  {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.conflictingEvidence }}
-                </td>
-                <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.defaultScore }}</td>
-                <td>{{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore }}</td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-col>
-      </v-row>
-    </div>
-    <v-card-text v-else>
-      <div class="d-flex align-center justify-center" style="min-height: 300px">
-        <h3>Loading ACMG information</h3>
-        <v-progress-circular indeterminate />
-      </div>
-    </v-card-text>
-  </v-card>
+        </div>
+      </v-card-text>
+      <v-card-actions>
+        <v-switch
+          v-model="showConflictingSections"
+          color="primary"
+          :value="true"
+          :false-value="false"
+          label="conflicts documentation"
+          class="ml-3 d-inline-flex flex-grow-0"
+          density="compact"
+        />
+      </v-card-actions>
+    </v-card>
+  </template>
 </template>
 
 <style scoped>

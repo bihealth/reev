@@ -222,6 +222,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
           label="numeric terms"
           class="ml-3 d-inline-flex flex-grow-0"
           density="compact"
+          inset
         />
         <v-switch
           v-model="showTermLinks"
@@ -231,6 +232,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
           label="show links"
           class="ml-3 d-inline-flex flex-grow-0"
           density="compact"
+          inset
         />
         <v-btn
           :href="`https://hpo.jax.org/app/browse/gene/${geneInfo?.hgnc?.entrezId}`"

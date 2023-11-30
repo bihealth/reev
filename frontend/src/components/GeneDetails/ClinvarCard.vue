@@ -48,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
             :clinvar="geneClinvar"
             :transcripts="transcripts"
             :genome-release="genomeRelease"
+            :gene-symbol="geneInfo?.hgnc?.symbol"
           />
         </v-col>
       </v-row>

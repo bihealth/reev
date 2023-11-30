@@ -55,6 +55,7 @@ const route = useRoute()
 
 /** Information about the SV.  We load almost all the information directly through it. */
 const svInfoStore = useSvInfoStore()
+
 /**
  * However, for the gene-wise ClinVar information, we load through the gene store.
  *
@@ -312,15 +313,14 @@ const selectedGeneInfo = computed<any | null>(() => {
             :sv-record="svInfoStore.currentSvRecord"
           />
         </div>
+        <div id="strucvar-acmg">
+          <AcmgRatingCard :sv-record="svInfoStore.currentSvRecord" />
+        </div>
         <div id="strucvar-genomebrowser">
           <GenomeBrowser
             :genome-release="genomeRelease"
             :locus="svLocus(svInfoStore.currentSvRecord) as string"
           />
-        </div>
-
-        <div id="strucvar-acmg">
-          <AcmgRatingCard :sv-record="svInfoStore.currentSvRecord" />
         </div>
       </div>
     </v-main>

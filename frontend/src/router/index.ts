@@ -96,8 +96,8 @@ const routes = [
     component: ACMGCriteriaDocs
   },
   {
-    path: '/acmg-sv-docs',
-    name: 'acmg-sv-docs',
+    path: '/docs/acmg-cnv',
+    name: 'docs-acmg-cnv',
     component: ACMGSVDocs
   },
   {
