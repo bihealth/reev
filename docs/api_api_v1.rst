@@ -6,6 +6,16 @@ app.api.api_v1
 
 .. contents::
 
+-----------------------------------
+app.api.api_v1.endpoints.acmgseqvar
+-----------------------------------
+
+.. automodule:: app.api.api_v1.endpoints.acmgseqvar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+
 ----------------------------------
 app.api.api_v1.endpoints.adminmsgs
 ----------------------------------
