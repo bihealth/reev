@@ -2,6 +2,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
+import * as ServerResponse from '@/assets/__tests__/ExampleAcmgSeqVarRank.json'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 
 import { StoreState } from '../misc'
@@ -68,6 +69,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
     expect(store.smallVariant).toBe(null)
+    expect(store.acmgRatingStatus).toBe(false)
   })
 
   it('should clear state', () => {
@@ -83,9 +85,16 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.smallVariant).toBe(null)
   })
 
-  it('should correctly retrieve data', async () => {
+  it('should correctly retrieve data for InterVar and Server', async () => {
     const store = useVariantAcmgRatingStore()
-    fetchMocker.mockResponseOnce(JSON.stringify(ExampleInterVarResponse))
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('remote/acmg')) {
+        return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
+      } else if (req.url.includes('acmgseqvar')) {
+        return Promise.resolve(JSON.stringify(ServerResponse))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
 
     await store.setAcmgRating(smallVariantInfo)
 
@@ -97,6 +106,22 @@ describe.concurrent('geneInfo Store', () => {
         StateSource.InterVar,
         AcmgCriteria[acmgCriteriaKey],
         value ? Presence.Present : Presence.Absent
+      )
+      // Set Absent for all criteria for Server source
+      expectedAcmgRating.setPresence(
+        StateSource.Server,
+        AcmgCriteria[acmgCriteriaKey],
+        Presence.Absent
+      )
+      // Set evidence level to the Default for all criteria for Server source
+      const defaultEvidenceLevel = expectedAcmgRating.getCriteriaStateFromSource(
+        acmgCriteriaKey,
+        StateSource.Default
+      ).evidenceLevel
+      expectedAcmgRating.setEvidenceLevel(
+        StateSource.Server,
+        AcmgCriteria[acmgCriteriaKey],
+        defaultEvidenceLevel
       )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
@@ -118,7 +143,14 @@ describe.concurrent('geneInfo Store', () => {
 
   it('should not load data if small variant is the same', async () => {
     const store = useVariantAcmgRatingStore()
-    fetchMocker.mockResponse(JSON.stringify(ExampleInterVarResponse))
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('remote/acmg')) {
+        return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
+      } else if (req.url.includes('acmgseqvar')) {
+        return Promise.resolve(JSON.stringify(ServerResponse))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
     await store.setAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Active)
@@ -130,12 +162,28 @@ describe.concurrent('geneInfo Store', () => {
         AcmgCriteria[acmgCriteriaKey],
         value ? Presence.Present : Presence.Absent
       )
+      // Set Absent for all criteria for Server source
+      expectedAcmgRating.setPresence(
+        StateSource.Server,
+        AcmgCriteria[acmgCriteriaKey],
+        Presence.Absent
+      )
+      // Set evidence level to the Default for all criteria for Server source
+      const defaultEvidenceLevel = expectedAcmgRating.getCriteriaStateFromSource(
+        acmgCriteriaKey,
+        StateSource.Default
+      ).evidenceLevel
+      expectedAcmgRating.setEvidenceLevel(
+        StateSource.Server,
+        AcmgCriteria[acmgCriteriaKey],
+        defaultEvidenceLevel
+      )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
 
     await store.setAcmgRating(store.smallVariant as SmallVariant)
 
-    expect(fetchMocker.mock.calls.length).toBe(1)
+    expect(fetchMocker.mock.calls.length).toBe(2)
   })
 })

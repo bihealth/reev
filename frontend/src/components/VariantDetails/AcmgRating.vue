@@ -29,8 +29,20 @@ const unsetAcmgRating = () => {
   acmgRatingStore.acmgRating.setUserPresenceAbsent()
 }
 
-const resetAcmgRating = () => {
+const resetAcmgRatingInterVar = () => {
   acmgRatingStore.acmgRating.setUserPresenceInterVar()
+}
+
+const resetAcmgRatingServer = () => {
+  acmgRatingStore.acmgRating.setUserPresenceServer()
+}
+
+const saveAcmgRating = () => {
+  acmgRatingStore.saveAcmgRating()
+}
+
+const deleteAcmgRating = () => {
+  acmgRatingStore.deleteAcmgRating()
 }
 
 const updateAcmgConflicting = (isConflicting: boolean) => {
@@ -54,7 +66,11 @@ watch(
   async () => {
     if (props.smallVariant && acmgRatingStore.storeState === StoreState.Active) {
       await acmgRatingStore.setAcmgRating(props.smallVariant)
-      resetAcmgRating()
+      if (acmgRatingStore.acmgRatingStatus === false) {
+        resetAcmgRatingInterVar()
+      } else {
+        resetAcmgRatingServer()
+      }
     }
   }
 )
@@ -70,9 +86,8 @@ onMounted(async () => {
   <v-card>
     <v-card-title>ACMG Rating</v-card-title>
     <v-divider />
-    <v-row>
-      <v-col cols="12" md="3" />
-      <v-col cols="12" md="6" class="section">
+    <v-row align-content="center" class="ml-3">
+      <v-col class="mx-auto">
         <div>
           <div>
             <h2 for="acmg-class">
@@ -85,10 +100,6 @@ onMounted(async () => {
           <router-link to="/acmg-docs" target="_blank">
             Further documentation <v-icon>mdi-open-in-new</v-icon>
           </router-link>
-        </div>
-        <div class="button-group">
-          <v-btn color="black" variant="outlined" @click="unsetAcmgRating()"> Clear </v-btn>
-          <v-btn color="black" variant="outlined" @click="resetAcmgRating()"> Reset </v-btn>
         </div>
         <div v-if="acmgRatingConflicting">
           <div>
@@ -108,16 +119,44 @@ onMounted(async () => {
           </div>
         </div>
       </v-col>
-      <v-col cols="12" md="3" />
+      <v-divider vertical />
+      <v-col class="mx-auto">
+        <v-card-text>
+          With the buttons below you can twick the presented ACMG rating:
+          <div class="button-group">
+            <v-btn color="black" variant="outlined" @click="unsetAcmgRating()"> Clear </v-btn>
+            <v-btn color="black" variant="outlined" @click="resetAcmgRatingInterVar()">
+              Reset to InterVar
+            </v-btn>
+            <div v-if="acmgRatingStore.acmgRatingStatus === true">
+              <v-btn color="black" variant="outlined" @click="resetAcmgRatingServer()">
+                Reset to server
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn color="black" variant="outlined" disabled> Reset to server </v-btn>
+            </div>
+          </div>
+          With this buttons below you can
+          {{ acmgRatingStore.acmgRatingStatus === false ? 'save' : 'update' }} ACMG rating on the
+          server:
+          <div class="button-group">
+            <v-btn color="black" variant="outlined" @click="saveAcmgRating()">
+              {{ acmgRatingStore.acmgRatingStatus === false ? 'Save' : 'Update' }}
+            </v-btn>
+            <v-btn color="black" variant="outlined" @click="deleteAcmgRating()"> Delete </v-btn>
+          </div>
+        </v-card-text>
+      </v-col>
     </v-row>
-    <v-row style="margin-bottom: 15px">
+    <v-row class="ml-3 mb-3">
       <v-col>
         <v-btn color="black" variant="outlined" @click="showSwitches = !showSwitches">
           {{ showSwitches ? 'Hide' : 'Show' }} summary view
         </v-btn>
       </v-col>
     </v-row>
-    <v-row v-show="showSwitches" class="section">
+    <v-row v-show="showSwitches" class="ml-3 mb-3">
       <v-col class="d-flex flex-row flex-wrap" cols="12" md="6">
         <div style="margin-right: 20px">
           <h3><strong>Pathogenic:</strong></h3>
@@ -160,7 +199,7 @@ onMounted(async () => {
         </div>
       </v-col>
     </v-row>
-    <v-row>
+    <v-row class="ml-3 mb-3">
       <v-col class="d-flex flex-row flex-wrap">
         <v-btn color="black" variant="outlined" @click="showFailed = !showFailed">
           {{ showFailed ? 'Hide' : 'Show' }} failed criteria
@@ -203,17 +242,6 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-#acmg-rating {
-  margin: 10px;
-}
-
-.section {
-  margin: 10px;
-  border: 2px solid #757ce8;
-  border-radius: 10px;
-  padding: 5px 10px;
-}
-
 #acmg-class-override {
   width: 135px;
   height: 50px;
