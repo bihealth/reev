@@ -27,6 +27,7 @@ const makeWrapper = () => {
     store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
     store.acmgRating = new MultiSourceAcmgCriteriaState()
     store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
+    store.acmgRatingStatus = true
   })
   store.setAcmgRating = mockRetrieveAcmgRating
 
@@ -34,6 +35,7 @@ const makeWrapper = () => {
   store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
   store.acmgRating = new MultiSourceAcmgCriteriaState()
   store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
+  store.acmgRatingStatus = true
 
   return setupMountedComponents(
     {
