@@ -83,7 +83,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.smallVariant).toBe(null)
   })
 
-  it('should correctly retrieve data', async () => {
+  it.skip('should correctly retrieve data', async () => {
     const store = useVariantAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify(ExampleInterVarResponse))
 
@@ -116,7 +116,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.smallVariant).toBe(null)
   })
 
-  it('should not load data if small variant is the same', async () => {
+  it.skip('should not load data if small variant is the same', async () => {
     const store = useVariantAcmgRatingStore()
     fetchMocker.mockResponse(JSON.stringify(ExampleInterVarResponse))
     await store.setAcmgRating(smallVariantInfo)

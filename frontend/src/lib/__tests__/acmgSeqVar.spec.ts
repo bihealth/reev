@@ -12,7 +12,7 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   it('should have correct default values', () => {
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     // Check keys of AcmgCriteriaState.criteriaStates
-    expect(Object.keys(AcmgCriteriaState.criteriaStates).length).toEqual(3)
+    expect(Object.keys(AcmgCriteriaState.criteriaStates).length).toEqual(4)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.Default)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.InterVar)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.User)
@@ -223,7 +223,7 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
 
     const criteriaStates = AcmgCriteriaState.getStates()
     // Check keys of AcmgCriteriaState.criteriaStates
-    expect(Object.keys(criteriaStates).length).toEqual(3)
+    expect(Object.keys(criteriaStates).length).toEqual(4)
     expect(criteriaStates).toHaveProperty(StateSource.Default)
     expect(criteriaStates).toHaveProperty(StateSource.InterVar)
     expect(criteriaStates).toHaveProperty(StateSource.User)
