@@ -357,11 +357,17 @@ interface CriteriaState {
 enum StateSource {
   Default = 'Default',
   InterVar = 'InterVar',
+  Server = 'Server',
   User = 'User'
 }
 
 /** All state sources from lowest to highest priority. */
-const ALL_STATE_SOURCES = [StateSource.Default, StateSource.InterVar, StateSource.User]
+const ALL_STATE_SOURCES = [
+  StateSource.Default,
+  StateSource.InterVar,
+  StateSource.Server,
+  StateSource.User
+]
 
 /** Mapping from `AcmgCriteria` to `CriteriaState`. */
 type CriteriaToState = { [key in AcmgCriteria]: CriteriaState }
@@ -380,6 +386,7 @@ class MultiSourceAcmgCriteriaState {
     this.criteriaStates = {
       Default: this.createCriteriaStateMap(StateSource.Default),
       InterVar: this.createCriteriaStateMap(StateSource.InterVar),
+      Server: this.createCriteriaStateMap(StateSource.Server),
       User: this.createCriteriaStateMap(StateSource.User)
     }
   }
@@ -603,6 +610,14 @@ class MultiSourceAcmgCriteriaState {
     for (const criteria of ALL_ACMG_CRITERIA) {
       const criteriaStateInterVar = this.getCriteriaStateFromSource(criteria, StateSource.InterVar)
       this.setPresence(StateSource.User, criteria, criteriaStateInterVar.presence)
+    }
+  }
+
+  /** Resets the presence of all criteria for a `StateSource.User` to a presence of `StateSource.Server`. */
+  setUserPresenceServer() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateServer = this.getCriteriaStateFromSource(criteria, StateSource.Server)
+      this.setPresence(StateSource.User, criteria, criteriaStateServer.presence)
     }
   }
 
