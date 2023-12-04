@@ -25,5 +25,10 @@ describe.concurrent('GtexGenePlotVue', async () => {
     expect(wrapper.text()).toContain('Tissue-Specific Gene Expression from GTeX')
     const vegaPlot = wrapper.findComponent(VegaPlot)
     expect(vegaPlot.exists()).toBe(true)
+
+    // Find gtex linkout
+    const gtexLink = wrapper.find('#expression-card-gtex-portal')
+    expect(gtexLink.exists()).toBe(true)
+    expect(gtexLink.attributes('href')).toBe('https://gtexportal.org/home/gene/ENSG00000012048')
   })
 })

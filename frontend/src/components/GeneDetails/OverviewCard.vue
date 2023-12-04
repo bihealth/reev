@@ -172,6 +172,7 @@ const summaryText = computed<string>(() => {
           </template>
         </div>
         <v-btn
+          id="overview-card-expand-button"
           :append-icon="isExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
           @click="isExpanded = !isExpanded"
         >
