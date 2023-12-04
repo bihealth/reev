@@ -91,6 +91,14 @@ describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
     const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Uncertain significance')
-    expect(wrapper.text()).toContain('Semi-Automated')
+    expect(wrapper.text()).toContain('Semi-Automated Pathogenicity Prediction')
+  })
+
+  it('shows swithces and buttons', async () => {
+    const { wrapper } = await makeWrapper()
+    const switches = wrapper.findAllComponents({ name: 'VSwitch' })
+    expect(switches.length).toBe(1)
+    expect(wrapper.text()).toContain('Reset')
+    expect(wrapper.text()).toContain('Documentation')
   })
 })
