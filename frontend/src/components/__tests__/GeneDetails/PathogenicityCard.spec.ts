@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { VSheet } from 'vuetify/components'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
@@ -15,5 +16,10 @@ describe.concurrent('PathogenicityCard', async () => {
       }
     )
     expect(wrapper.text()).toContain('Gene Pathogenicity')
+    expect(wrapper.text()).toContain('Intolerance Constraints and Annotations')
+
+    // Find v-sheet components
+    const vSheets = wrapper.findAllComponents(VSheet)
+    expect(vSheets.length).toBe(3)
   })
 })

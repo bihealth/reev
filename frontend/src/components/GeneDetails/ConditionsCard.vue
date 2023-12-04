@@ -215,6 +215,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
 
       <v-card-actions>
         <v-switch
+          id="conditions-card-show-term-ids"
           v-model="showTermIds"
           color="primary"
           :value="true"
@@ -266,6 +267,7 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
           Orphanet Diseases ({{ geneInfo?.orpha?.orphaDiseases?.length ?? 0 }})
         </div>
         <v-btn
+          id="conditions-card-expand-button"
           :append-icon="isExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
           @click="isExpanded = !isExpanded"
         >

@@ -174,6 +174,7 @@ const vegaLayer = [
       </v-card-text>
       <v-card-actions>
         <v-btn
+          id="expression-card-gtex-portal"
           :href="`https://gtexportal.org/home/gene/${ensemblGeneId ?? ''}`"
           target="_blank"
           prepend-icon="mdi-launch"
