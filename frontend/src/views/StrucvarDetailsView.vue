@@ -216,7 +216,7 @@ const selectedGeneInfo = computed<any | null>(() => {
 
           <v-list-group value="gene">
             <template #activator="{ props: vProps }">
-              <v-list-item :value="vProps" prepend-icon="mdi-dna">
+              <v-list-item :value="vProps" prepend-icon="mdi-dna" v-bind="vProps">
                 Gene
                 <span class="font-italic">
                   {{ selectedGeneInfo?.hgnc?.symbol || selectedGeneInfo?.hgnc?.agr }}
@@ -242,6 +242,7 @@ const selectedGeneInfo = computed<any | null>(() => {
               <v-list-item
                 :value="vProps"
                 prepend-icon="mdi-magnify-expand"
+                v-bind="vProps"
                 title="Variant Details"
               />
             </template>
@@ -273,7 +274,6 @@ const selectedGeneInfo = computed<any | null>(() => {
       </div>
 
       <template v-if="selectedGeneInfo">
-        <div class="text-h4 mt-6 mb-3 ml-1">Gene Details</div>
         <div id="gene-overview" class="mt-3">
           <OverviewCard :gene-info="selectedGeneInfo" />
         </div>
