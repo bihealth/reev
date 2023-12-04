@@ -14,7 +14,8 @@ describe.concurrent('VariationLandscape', async () => {
           clinvar: BRCA1Clinvar['genes']['HGNC:1100'],
           genomeRelease: 'grch37',
           hgnc: 'HGNC:1100',
-          transcripts: BRCA1Transcripts
+          transcripts: BRCA1Transcripts,
+          geneSymbol: 'BRCA1'
         }
       }
     )
