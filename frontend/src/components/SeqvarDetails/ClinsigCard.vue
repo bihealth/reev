@@ -1,0 +1,276 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
+
+import CriterionSwitch from '@/components/SeqvarDetails/ClinsigCard/CriterionSwitch.vue'
+import SummarySheet from '@/components/SeqvarDetails/ClinsigCard/SummarySheet.vue'
+import {
+  ACMG_CRITERIA_DEFS,
+  ACMG_EVIDENCE_LEVELS_BENIGN,
+  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
+  ALL_ACMG_CRITERIA,
+  Presence
+} from '@/lib/acmgSeqVar'
+import { StoreState } from '@/stores/misc'
+import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
+import { type SmallVariant } from '@/stores/variantInfo'
+
+/** Data type used for component's props. */
+interface Props {
+  smallVariant?: SmallVariant | null
+}
+
+/** Define component's props. */
+const props = defineProps<Props>()
+
+/** Store to use for ACMG ratings of sequence variants. */
+const acmgRatingStore = useVariantAcmgRatingStore()
+
+/** Component state: whether to enable summary view. */
+const showTerse = ref(false)
+/** Component state: whether to show failed criteria. */
+const showFailed = ref(false)
+
+/** Clear ACMG ratings to result. */
+const unfetchAcmgRating = () => {
+  acmgRatingStore.acmgRating.setUserPresenceAbsent()
+}
+
+/** Re-fetch ACMG rating from InterVar. */
+const refetchAcmgRatingInterVar = () => {
+  acmgRatingStore.acmgRating.setUserPresenceInterVar()
+}
+
+/** Whether to re-fetch ACMG rating saved on server earlier. */
+const refetchAcmgRatingServer = () => {
+  acmgRatingStore.acmgRating.setUserPresenceServer()
+}
+
+/** Store ACMG rating on server. */
+const saveAcmgRating = () => {
+  acmgRatingStore.saveAcmgRating()
+}
+
+/** Delete ACMG rating on server. */
+const deleteAcmgRating = () => {
+  acmgRatingStore.deleteAcmgRating()
+}
+
+/** Overall ACMG rating computed from current criteria state */
+const calculatedAcmgClass = computed((): string => {
+  // eslint-disable-next-line prefer-const
+  let [acmgClass, isConflicting] = acmgRatingStore.acmgRating.getAcmgClass()
+  if (isConflicting) {
+    acmgClass = 'Uncertain significance'
+  } else {
+  }
+  return acmgClass
+})
+
+/** Whether to show conflict warning */
+const acmgRatingConflicting = computed((): boolean => {
+  // eslint-disable-next-line prefer-const
+  let [, isConflicting] = acmgRatingStore.acmgRating.getAcmgClass()
+  return isConflicting
+})
+
+/** Re-compute ACMG rating from InterVar when the sequence variant changed. */
+watch(
+  () => [props.smallVariant, acmgRatingStore.storeState],
+  async () => {
+    if (props.smallVariant && acmgRatingStore.storeState === StoreState.Active) {
+      await acmgRatingStore.fetchAcmgRating(props.smallVariant)
+      if (acmgRatingStore.acmgRatingStatus === false) {
+        refetchAcmgRatingInterVar()
+      } else {
+        refetchAcmgRatingServer()
+      }
+    }
+  }
+)
+
+/** Fetch ACMG rating when mounted. */
+onMounted(async () => {
+  if (props.smallVariant) {
+    await acmgRatingStore.fetchAcmgRating(props.smallVariant)
+  }
+})
+</script>
+
+<template>
+  <v-card>
+    <v-card-title class="pb-0"> Clinical Significance </v-card-title>
+    <v-card-subtitle class="text-overline">
+      Semi-Automated Pathogenicity Prediction
+    </v-card-subtitle>
+    <v-card-text>
+      <!-- Top summary sheet and server storage buttons -->
+      <v-row>
+        <v-col cols="3">
+          <div class="d-flex flex-column">
+            <v-btn
+              color="black"
+              variant="text"
+              rounded="sm"
+              :prepend-icon="showTerse ? 'mdi-playlist-remove' : 'mdi-playlist-check'"
+              @click="showTerse = !showTerse"
+            >
+              {{ showTerse ? 'Hide' : 'Show' }} terse mode
+            </v-btn>
+            <v-btn
+              color="black"
+              variant="text"
+              rounded="sm"
+              :prepend-icon="showFailed ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
+              class="show-failed"
+              @click="showFailed = !showFailed"
+            >
+              {{ showFailed ? 'Hide' : 'Show' }} failed criteria
+            </v-btn>
+          </div>
+        </v-col>
+        <v-col cols="6">
+          <SummarySheet
+            :calculated-acmg-class="calculatedAcmgClass"
+            @clear-all="() => unfetchAcmgRating()"
+            @reset-to-auto="() => refetchAcmgRatingInterVar()"
+          />
+        </v-col>
+        <v-col cols="3">
+          <div class="d-flex flex-column">
+            <v-btn
+              color="black"
+              variant="text"
+              rounded="sm"
+              prepend-icon="mdi-cloud-upload-outline"
+              @click="() => saveAcmgRating()"
+            >
+              Save to Server
+            </v-btn>
+            <v-btn
+              color="black"
+              variant="text"
+              rounded="sm"
+              prepend-icon="mdi-cloud-download-outline"
+              @click="() => refetchAcmgRatingServer()"
+            >
+              Load from Server
+            </v-btn>
+            <v-btn
+              color="black"
+              variant="text"
+              rounded="sm"
+              prepend-icon="mdi-cloud-remove-outline"
+              @click="() => deleteAcmgRating()"
+            >
+              Delete from Server
+            </v-btn>
+          </div>
+        </v-col>
+      </v-row>
+      <!-- Warning in case of conflicts -->
+      <v-alert v-if="acmgRatingConflicting" type="warning">
+        Conflicting interpretation of variant.
+      </v-alert>
+      <!-- Actual criteria-->
+      <v-row v-show="showTerse" class="ml-3 mb-3">
+        <v-col cols="12" md="6">
+          <v-card-subtitle class="text-overline pl-0"> Pathogenic </v-card-subtitle>
+          <div class="d-flex flex-row flex-wrap">
+            <div v-for="criteria in ALL_ACMG_CRITERIA" :key="criteria">
+              <div
+                v-if="
+                  ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(
+                    acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
+                  ) &&
+                  (acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                    Presence.Present ||
+                    showFailed)
+                "
+              >
+                <CriterionSwitch
+                  :acmg-rating="acmgRatingStore.acmgRating"
+                  :criteria="criteria"
+                  :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
+                />
+              </div>
+            </div>
+          </div>
+        </v-col>
+        <v-col cols="12" md="6">
+          <v-card-subtitle class="text-overline pl-0"> Benign </v-card-subtitle>
+          <div class="d-flex flex-row flex-wrap">
+            <div v-for="criteria in ALL_ACMG_CRITERIA" :key="criteria">
+              <div
+                v-if="
+                  ACMG_EVIDENCE_LEVELS_BENIGN.includes(
+                    acmgRatingStore.acmgRating.getCriteriaState(criteria).evidenceLevel
+                  ) &&
+                  (acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                    Presence.Present ||
+                    showFailed)
+                "
+              >
+                <CriterionSwitch
+                  :acmg-rating="acmgRatingStore.acmgRating"
+                  :criteria="criteria"
+                  :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
+                />
+              </div>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+      <v-row v-show="!showTerse">
+        <v-col class="d-flex flex-row flex-wrap">
+          <v-table>
+            <thead>
+              <tr>
+                <th class="font-weight-bold">Criteria</th>
+                <th class="font-weight-bold">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="criteria in ALL_ACMG_CRITERIA" :key="criteria">
+                <td
+                  v-if="
+                    acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                      Presence.Present || showFailed
+                  "
+                >
+                  <CriterionSwitch
+                    :acmg-rating="acmgRatingStore.acmgRating"
+                    :criteria="criteria"
+                    :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
+                  />
+                </td>
+                <td
+                  v-if="
+                    acmgRatingStore.acmgRating.getCriteriaState(criteria).presence ===
+                      Presence.Present || showFailed
+                  "
+                >
+                  {{ ACMG_CRITERIA_DEFS.get(criteria)?.description ?? '' }}
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
+</template>
+
+<style scoped>
+#acmg-class-override {
+  width: 135px;
+  height: 50px;
+  margin-bottom: 120px;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 12px;
+}
+</style>

@@ -7,7 +7,7 @@ import { StoreState } from '@/stores/misc'
 // Import the BookmarksClient
 
 export interface Props {
-  type: string
+  type: 'gene' | 'seqvar' | 'strucvar' | ''
   id: string
 }
 

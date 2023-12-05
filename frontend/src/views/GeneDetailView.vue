@@ -131,7 +131,7 @@ const openedSection = ref<string[]>(['gene'])
     </v-navigation-drawer>
     <v-main class="my-3 mx-3">
       <div id="gene-overview">
-        <OverviewCard :gene-info="geneInfoStore.geneInfo" />
+        <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
       </div>
 
       <div id="gene-pathogenicity">
@@ -150,7 +150,7 @@ const openedSection = ref<string[]>(['gene'])
         />
       </div>
 
-      <div id="gene-clinvar">
+      <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
         <ClinvarCard
           :gene-clinvar="geneInfoStore.geneClinvar"
           :transcripts="geneInfoStore.transcripts"

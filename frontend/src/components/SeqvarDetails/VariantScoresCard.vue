@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import ScoreDisplay from '@/components/VariantDetails/ScoreDisplay.vue'
+import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
+import Conservation from '@/components/SeqvarDetails/VariantScoresCard/UcscConservation.vue'
 import { roundIt } from '@/lib/utils'
 import { type SmallVariant } from '@/stores/variantInfo'
 
@@ -108,188 +109,15 @@ const revelScore = computed((): number | null =>
 const polyphenScore = computed((): number | null =>
   decodeMultiDbnsfp(props.varAnnos?.dbnsfp?.Polyphen2_HVAR_score)
 )
-
-const ucscLinkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  const db = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-  return (
-    `https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=${db}&position=` +
-    `${props.smallVar.chromosome}:${props.smallVar.start}-` +
-    `${props.smallVar.end}`
-  )
-})
-
-const ensemblLinkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  const loc = `${props.smallVar.chromosome}:${props.smallVar.start}-${props.smallVar.end}`
-  if (props.smallVar.release === 'grch37') {
-    return `https://grch37.ensembl.org/Homo_sapiens/Location/View?r=${loc}`
-  } else if (props.smallVar.release === 'grch38') {
-    return `https://ensembl.org/Homo_sapiens/Location/View?r=${loc}`
-  }
-  return '#'
-})
-
-const dgvLinkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  const db = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-  return (
-    `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.smallVar.chromosome}:` +
-    `${props.smallVar.start}-${props.smallVar.end};search=Search`
-  )
-})
-
-const gnomadLinkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  const dataset = props.smallVar.release === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
-  return (
-    `https://gnomad.broadinstitute.org/region/${props.smallVar.chromosome}:` +
-    `${props.smallVar.start}-${props.smallVar.end}?dataset=${dataset}`
-  )
-})
-
-const mt85Linkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  if (props.smallVar.release === 'grch37') {
-    return (
-      `https://www.genecascade.org/MT85/ChrPos85.cgi?chromosome=${props.smallVar.chromosome}` +
-      `&position=${props.smallVar.start}&ref=${props.smallVar.reference}&alt=${props.smallVar.alternative}`
-    )
-  } else {
-    return ''
-  }
-})
-
-const mt2021Linkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  if (props.smallVar.release === 'grch37') {
-    return (
-      `https://www.genecascade.org/MTc2021/ChrPos102.cgi?chromosome=${props.smallVar.chromosome}` +
-      `&position=${props.smallVar.start}&ref=${props.smallVar.reference}&alt=${props.smallVar.alternative}`
-    )
-  } else {
-    return ''
-  }
-})
-
-const varsomeLinkout = computed((): string => {
-  if (!props.smallVar) {
-    return '#'
-  }
-  const urlRelease = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-  const chrom = props.smallVar.chromosome.startsWith('chr')
-    ? props.smallVar.chromosome
-    : `chr${props.smallVar.chromosome}`
-  return (
-    `https://varsome.com/variant/${urlRelease}/${chrom}:${props.smallVar.start}:` +
-    `${props.smallVar.reference}:${props.smallVar.alternative}`
-  )
-})
-
-const jumpToLocus = async () => {
-  const chrPrefixed = props.smallVar?.chromosome.startsWith('chr')
-    ? props.smallVar?.chromosome
-    : `chr${props.smallVar?.chromosome}`
-  await fetch(
-    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.smallVar?.start}-${props.smallVar?.end}`
-  ).catch((e) => {
-    const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
-    alert(msg)
-    console.error(msg, e)
-  })
-}
 </script>
 
 <template>
   <v-card>
-    <v-card-title>Variant Tools</v-card-title>
-    <v-divider />
+    <v-card-title> Scores </v-card-title>
+    <v-card-subtitle class="text-overline"> Precomputed Sequence Variant Scores </v-card-subtitle>
     <v-card-text>
-      <h3>External Resources</h3>
-      <div class="external-resource-item">
-        <a :href="dgvLinkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          DGV
-        </a>
-      </div>
-      <div class="external-resource-item">
-        <a :href="ensemblLinkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          ENSEBML
-        </a>
-      </div>
-      <div class="external-resource-item">
-        <a :href="gnomadLinkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          gnomAD
-        </a>
-      </div>
-      <div class="external-resource-item">
-        <a v-if="mt85Linkout" :href="mt85Linkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          MutationTaster 85
-        </a>
-        <span v-else>
-          <v-icon>mdi-launch</v-icon>
-          MutationTaster 85
-        </span>
-      </div>
-      <div class="external-resource-item">
-        <a v-if="mt2021Linkout" :href="mt2021Linkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          MutationTaster 2021
-        </a>
-        <span v-else>
-          <v-icon>mdi-launch</v-icon>
-          MutationTaster 2021
-        </span>
-      </div>
-      <div class="external-resource-item">
-        <a :href="ucscLinkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          UCSC Genome Browser
-        </a>
-      </div>
-      <div class="external-resource-item">
-        <a :href="varsomeLinkout" target="_blank">
-          <v-icon>mdi-launch</v-icon>
-          varsome
-        </a>
-      </div>
-    </v-card-text>
-
-    <v-divider />
-
-    <v-card-text>
-      <h3>IGV</h3>
-      <div>
-        <div>
-          <a href="#" target="_blank" @click.prevent="jumpToLocus()">
-            <v-icon>mdi-launch</v-icon>
-            Jump to Location in IGV
-          </a>
-        </div>
-      </div>
-    </v-card-text>
-
-    <v-divider />
-
-    <v-card-text>
-      <h3>Precomputed Scores</h3>
       <div v-if="props.varAnnos?.dbnsfp">
-        <v-table>
+        <v-table density="compact">
           <thead>
             <tr>
               <th class="text-left">Scoring Method</th>
@@ -875,6 +703,10 @@ const jumpToLocus = async () => {
           Variant predictions are currently only available for SNVs and certain precomputed indels.
         </p>
       </div>
+    </v-card-text>
+    <v-card-subtitle class="text-overline"> UCSC 100 Vertebrate Conservation </v-card-subtitle>
+    <v-card-text>
+      <Conservation :var-annos="varAnnos" />
     </v-card-text>
   </v-card>
 </template>

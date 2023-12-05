@@ -14,7 +14,7 @@ import {
   MultiSourceAcmgCriteriaCNVState,
   Presence,
   StateSourceCNV
-} from '@/components/StrucvarDetails/AcmgRatingCard.c'
+} from '@/components/StrucvarDetails/ClinsigCard.c'
 import { StoreState } from '@/stores/misc'
 import { type SvRecord } from '@/stores/svInfo'
 
@@ -55,11 +55,11 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
   }
 
   /**
-   * Retrieve the ACMG rating for a small variant.
+   * Retrieve the ACMG rating for a structural variant.
    *
    * @param smallVar The small variant to retrieve the ACMG rating for.
    */
-  const setAcmgRating = async (svRec: SvRecord) => {
+  const fetchAcmgRating = async (svRec: SvRecord) => {
     // Do not re-load data if the small variant is the same
     if (svRec === svRecord.value) {
       return
@@ -179,6 +179,6 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
     storeState,
     acmgRating,
     clearData,
-    setAcmgRating
+    fetchAcmgRating
   }
 })

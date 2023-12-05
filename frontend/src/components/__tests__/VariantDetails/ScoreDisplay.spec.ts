@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import ScoreDisplay from '@/components/VariantDetails/ScoreDisplay.vue'
+import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ScoreDisplay', async () => {

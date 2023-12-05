@@ -1,31 +1,16 @@
 <script setup lang="ts">
+import { classColor } from '@/lib/utils'
+
 interface Props {
   calculatedAcmgClass?: string
-  calculatedAcmgScore?: number
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
-  calculatedAcmgClass: 'N/A',
-  calculatedAcmgScore: 0
+  calculatedAcmgClass: 'N/A'
 })
 
-const emit = defineEmits(['resetToAuto'])
-
-const classColor = (patho: string) => {
-  switch (patho.toLowerCase()) {
-    case 'pathogenic':
-      return 'red-darken-3'
-    case 'likely pathogenic':
-      return 'orange-darken-3'
-    case 'likely benign':
-      return 'green-lighten-3'
-    case 'benign':
-      return 'green-darken-3'
-    default:
-      return 'grey-lighten-2'
-  }
-}
+const emit = defineEmits(['clearAll', 'resetToAuto'])
 </script>
 
 <template>
@@ -36,10 +21,18 @@ const classColor = (patho: string) => {
       <span density="compact" :class="`px-3 py-1 rounded-xl bg-${classColor(calculatedAcmgClass)}`">
         {{ calculatedAcmgClass }}
       </span>
-      with score: {{ calculatedAcmgScore }}
     </div>
 
     <div class="mt-3 d-flex flex-row">
+      <v-btn
+        color="black"
+        variant="text"
+        rounded="sm"
+        prepend-icon="mdi-file-outline"
+        @click="emit('clearAll')"
+      >
+        Clear
+      </v-btn>
       <v-btn
         color="black"
         variant="text"
@@ -50,7 +43,7 @@ const classColor = (patho: string) => {
         Reset to Auto
       </v-btn>
       <v-btn
-        href="/docs/acmg-cnv"
+        href="/docs/acmg-docs"
         _target="_blank"
         variant="text"
         rounded="sm"

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
-import VariantDetailsFreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
-import VariantDetailsFreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
-import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
+import Freqs from '@/components/SeqvarDetails/FreqsCard.vue'
+import VariantDetailsFreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
+import VariantDetailsFreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
@@ -26,10 +26,10 @@ const smallVariantInfoMitochondrial = {
   hgnc_id: 'HGNC:1100'
 }
 
-describe.concurrent('VariantFreqs', async () => {
-  it('renders the VariantFreqs info', async () => {
+describe.concurrent('Freqs', async () => {
+  it('renders the Freqs info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantFreqs, template: false },
+      { component: Freqs, template: false },
       {
         props: {
           smallVar: smallVariantInfo,
@@ -41,9 +41,9 @@ describe.concurrent('VariantFreqs', async () => {
     expect(freqsAutosomal.exists()).toBe(true)
   })
 
-  it('renders the VariantFreqs info for Mitochondrial Variants', async () => {
+  it('renders the Freqs info for Mitochondrial Variants', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantFreqs, template: false },
+      { component: Freqs, template: false },
       {
         props: {
           smallVar: smallVariantInfoMitochondrial,

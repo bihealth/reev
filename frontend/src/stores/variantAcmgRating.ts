@@ -84,11 +84,11 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   }
 
   /**
-   * Retrieve the ACMG rating for a small variant.
+   * Retrieve the ACMG rating for a sequence variant.
    *
-   * @param smallVar The small variant to retrieve the ACMG rating for.
+   * @param smallVar The sequence variant to retrieve the ACMG rating for.
    */
-  const setAcmgRating = async (smallVar: SmallVariant) => {
+  const fetchAcmgRating = async (smallVar: SmallVariant) => {
     // Do not re-load data if the small variant is the same
     if (smallVar === smallVariant.value) {
       return
@@ -262,6 +262,6 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
     saveAcmgRating,
     deleteAcmgRating,
     clearData,
-    setAcmgRating
+    fetchAcmgRating
   }
 })

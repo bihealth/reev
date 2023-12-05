@@ -62,24 +62,20 @@ onMounted(initSelectedTranscript)
 </script>
 
 <template>
-  <v-card>
-    <v-card-title>Conservation</v-card-title>
-    <v-divider />
-    <v-card-text>
-      <div v-if="ucscConservation.length">
-        <div class="float-right">
-          <select v-model="selectedTranscript">
-            <option v-for="transcript in transcriptIds" :key="transcript" :value="transcript">
-              {{ transcript }}
-            </option>
-          </select>
-        </div>
-        <p>The following shows UCSC 100 vertebrate conservation.</p>
-        <pre><b><u>  chr  start      end          |  alignment                                                                                           </u></b>
+  <div v-if="ucscConservation.length">
+    <div class="float-right">
+      <v-select
+        v-model="selectedTranscript"
+        label="transcript"
+        :items="transcriptIds"
+        density="compact"
+        :hide-details="true"
+        variant="outlined"
+      />
+    </div>
+    <pre><b><u>  chr  start      end          |  alignment                                                                                           </u></b>
 <template v-for="row in consInfo[selectedTranscript]">{{ row.chrom.padStart(5) }} {{ sepIt(row.start, ',').padStart(11) }}-{{ sepIt(row.stop, ',').padEnd(11) }}  |  {{ row.alignment }}
 </template></pre>
-      </div>
-      <div v-else class="text-muted text-center font-italic" />
-    </v-card-text>
-  </v-card>
+  </div>
+  <div v-else class="text-muted text-center font-italic">No UCSC conservation data available.</div>
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { onMounted, ref, watch } from 'vue'
+
 export interface Props {
   ncbi: any
 }
@@ -7,6 +9,41 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   ncbi: null
 })
+
+/** Data structure for gene RIF. */
+interface GeneRif {
+  text: string
+  pmids: string[]
+}
+
+// The data to display.
+const items = ref<GeneRif[]>([])
+
+// Initialize `items`.
+const initializeItems = () => {
+  if (props.ncbi?.rifEntries?.length) {
+    items.value = props.ncbi.rifEntries.slice(0, 10)
+  }
+}
+
+// Initialize items on mounted and change of `ncbi.rifEntries`.
+onMounted(initializeItems)
+watch(() => props.ncbi?.rifEntries, initializeItems)
+
+// Load more items.
+type Done = (status: 'error' | 'loading' | 'empty' | 'ok') => void
+type LoadItemsArgs = { done: Done }
+const loadItems = async ({ done }: LoadItemsArgs) => {
+  if (props.ncbi?.rifEntries?.length) {
+    if (items.value.length === props.ncbi.rifEntries.length) {
+      done('empty')
+    } else {
+      const nextItems = props.ncbi.rifEntries.slice(items.value.length, items.value.length + 10)
+      items.value = items.value.concat(nextItems)
+      done('ok')
+    }
+  }
+}
 </script>
 
 <template>
@@ -17,22 +54,23 @@ const props = withDefaults(defineProps<Props>(), {
         <small>({{ ncbi?.rifEntries?.length ?? 0 }})</small>
       </div>
     </div>
-    <ul v-if="ncbi?.rifEntries?.length" class="d-flex flex-column flex-grow-1">
-      <ul class="h-auto overflow-auto" style="max-height: 200px; font-size: 90%; height: 100%">
-        <template v-for="entry in ncbi.rifEntries" :key="entry">
-          <li v-if="entry?.text?.length">
-            {{ entry.text }}
+    <div v-if="ncbi?.rifEntries?.length" class="d-flex flex-column flex-grow-1">
+      <v-infinite-scroll :height="200" style="font-size: 90%" :on-load="loadItems">
+        <template v-for="(item, index) in items" :key="index">
+          <div v-if="item?.text?.length">
+            {{ item.text }}
             <a
-              :href="'https://www.ncbi.nlm.nih.gov/pubmed/?term=' + entry.pmids.join('+')"
+              :href="'https://www.ncbi.nlm.nih.gov/pubmed/?term=' + item.pmids.join('+')"
               target="_blank"
             >
               <v-icon>mdi-launch</v-icon>
               PubMed
             </a>
-          </li>
+          </div>
         </template>
-      </ul>
-    </ul>
-    <div v-else>No GeneRIFs available for gene.</div>
+
+        <template #empty> No GeneRIFs available for gene </template>
+      </v-infinite-scroll>
+    </div>
   </div>
 </template>

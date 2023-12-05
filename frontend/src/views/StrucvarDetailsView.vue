@@ -13,14 +13,17 @@ const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderD
 const GeneListCard = defineAsyncComponent(
   () => import('@/components/StrucvarDetails/GeneListCard.vue')
 )
-const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
-const PathogenicityCard = defineAsyncComponent(
+
+const GeneOverviewCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/OverviewCard.vue')
+)
+const GenePathogenicityCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/PathogenicityCard.vue')
 )
-const ConditionsCard = defineAsyncComponent(
+const GeneConditionsCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/ConditionsCard.vue')
 )
-const ExpressionCard = defineAsyncComponent(
+const GeneExpressionCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/ExpressionCard.vue')
 )
 const GeneClinvarCard = defineAsyncComponent(
@@ -36,8 +39,8 @@ const VariantToolsCard = defineAsyncComponent(
 
 const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
 
-const AcmgRatingCard = defineAsyncComponent(
-  () => import('@/components/StrucvarDetails/AcmgRatingCard.vue')
+const ClinsigCard = defineAsyncComponent(
+  () => import('@/components/StrucvarDetails/ClinsigCard.vue')
 )
 
 export interface Props {
@@ -155,7 +158,7 @@ const SECTIONS: { [key: string]: Section[] } = {
   STRUCVAR: [
     { id: 'strucvar-clinvar', title: 'ClinVar' },
     { id: 'strucvar-tools', title: 'Tools' },
-    { id: 'strucvar-acmg', title: 'ACMG' },
+    { id: 'strucvar-clinsig', title: 'Clinical Significance' },
     { id: 'strucvar-genomebrowser', title: 'Genome Browser' }
   ]
 }
@@ -196,7 +199,7 @@ const selectedGeneInfo = computed<any | null>(() => {
       v-model:genome-release="genomeReleaseRef"
     />
     <v-navigation-drawer :elevation="3" :permanent="true">
-      <div v-if="svInfoStore.storeState == StoreState.Active" class="sv-info">
+      <div v-if="svInfoStore.storeState == StoreState.Active">
         <v-list v-model:opened="openedSection">
           <BookmarkListItem :id="searchTermRef" :type="'strucvar'" />
 
@@ -275,22 +278,22 @@ const selectedGeneInfo = computed<any | null>(() => {
       <template v-if="selectedGeneInfo">
         <div class="text-h4 mt-6 mb-3 ml-1">Gene Details</div>
         <div id="gene-overview" class="mt-3">
-          <OverviewCard :gene-info="selectedGeneInfo" />
+          <GeneOverviewCard :gene-info="selectedGeneInfo" />
         </div>
         <div id="gene-pathogenicity">
-          <PathogenicityCard :gene-info="selectedGeneInfo" />
+          <GenePathogenicityCard :gene-info="selectedGeneInfo" />
         </div>
         <div id="gene-conditions">
-          <ConditionsCard :gene-info="selectedGeneInfo" :hpo-terms="[]" />
+          <GeneConditionsCard :gene-info="selectedGeneInfo" :hpo-terms="[]" />
         </div>
         <div id="gene-expression">
-          <ExpressionCard
+          <GeneExpressionCard
             :gene-symbol="selectedGeneInfo?.hgnc?.symbol"
             :expression-records="selectedGeneInfo?.gtex?.records"
             :ensembl-gene-id="selectedGeneInfo?.gtex?.ensemblGeneId"
           />
         </div>
-        <div id="gene-clinvar">
+        <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
           <GeneClinvarCard
             :gene-clinvar="geneInfoStore.geneClinvar"
             :transcripts="geneInfoStore.transcripts"
@@ -313,8 +316,8 @@ const selectedGeneInfo = computed<any | null>(() => {
             :sv-record="svInfoStore.currentSvRecord"
           />
         </div>
-        <div id="strucvar-acmg">
-          <AcmgRatingCard :sv-record="svInfoStore.currentSvRecord" />
+        <div id="strucvar-clinsig">
+          <ClinsigCard :sv-record="svInfoStore.currentSvRecord" />
         </div>
         <div id="strucvar-genomebrowser">
           <GenomeBrowser

@@ -6,7 +6,7 @@ import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
-import AcmgRatingCard from '@/components/StrucvarDetails/AcmgRatingCard.vue'
+import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import SvDetailsClinvar from '@/components/StrucvarDetails/ClinvarCard.vue'
 import SvGenes from '@/components/StrucvarDetails/GeneListCard.vue'
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
@@ -14,7 +14,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
 
-import VariantDetailView from '../VariantDetailView.vue'
+import SeqvarDetailsView from '../SeqvarDetailsView.vue'
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
@@ -34,7 +34,7 @@ const makeWrapper = () => {
   svInfoStore.genesInfos = JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']]))
 
   return setupMountedComponents(
-    { component: VariantDetailView, template: true },
+    { component: SeqvarDetailsView, template: true },
     {
       props: {
         searchTerm: 'DEL:chr17:41176312:41277500',
@@ -45,7 +45,7 @@ const makeWrapper = () => {
   )
 }
 
-describe.concurrent('VariantDetailView', async () => {
+describe.concurrent('SeqvarDetailsView', async () => {
   it('renders the header', async () => {
     const { wrapper } = await makeWrapper()
 
@@ -69,7 +69,7 @@ describe.concurrent('VariantDetailView', async () => {
     const svGenes = wrapper.findComponent(SvGenes)
     const svTools = wrapper.findComponent(VariantToolsCard)
     const svDetailsClinvar = wrapper.findComponent(SvDetailsClinvar)
-    const acmgRating = wrapper.findComponent(AcmgRatingCard)
+    const acmgRating = wrapper.findComponent(ClinsigCard)
     const genomeBrowser = wrapper.findComponent(GenomeBrowser)
     expect(svGenes.exists()).toBe(true)
     expect(svTools.exists()).toBe(true)

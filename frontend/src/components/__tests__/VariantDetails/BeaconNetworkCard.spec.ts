@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
+import BeaconNetwork from '@/components/SeqvarDetails/BeaconNetworkCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
@@ -24,7 +24,7 @@ describe.concurrent('BeaconNetwork', async () => {
       }
     )
     expect(wrapper.text()).toContain('Query Beacon')
-    const refreshButton = wrapper.find('.mdi-refresh')
+    const refreshButton = wrapper.find('.mdi-cloud-search')
     expect(refreshButton.exists()).toBe(true)
   })
 
