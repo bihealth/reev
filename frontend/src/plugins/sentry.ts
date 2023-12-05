@@ -10,7 +10,7 @@ import { type Router } from 'vue-router'
 export async function setupSentry(app: App, router: Router) {
   Sentry.init({
     app,
-    dsn: 'https://c578eb3f2d4546808dd5caddf0fecd90@sentry.cubi.bihealth.org/7',
+    dsn: 'https://ee06fe1f4715e740256c7b762fe0e162@sentry.cubi.bihealth.org/3',
     integrations: [
       new Sentry.BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router)
