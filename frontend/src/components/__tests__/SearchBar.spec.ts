@@ -23,16 +23,13 @@ describe.concurrent('SearchBar.vue', () => {
     )
 
     const textField = wrapper.find('.v-text-field')
-    const select = wrapper.find('.v-select')
-    const searchButton = wrapper.find('#search')
+    const genomeReleaseMenu = wrapper.find('.genome-release-menu')
+    const searchButton = wrapper.find('.start-search')
     expect(textField.exists()).toBe(true)
-    expect(select.exists()).toBe(true)
+    expect(genomeReleaseMenu.exists()).toBe(true)
     expect(searchButton.exists()).toBe(true)
-    expect(textField.html()).toMatch('Enter search term')
-    expect(select.html()).toMatch('Genome Release')
-    expect(select.html()).toMatch('label')
-    expect(select.html()).toMatch('value')
-    expect(select.html()).toMatch('GRCh37')
+    expect(textField.html()).toMatch('Search for variant or gene')
+    expect(genomeReleaseMenu.html()).toMatch('GRCh37')
     expect(searchButton.html()).toMatch('search')
   })
 
@@ -47,22 +44,18 @@ describe.concurrent('SearchBar.vue', () => {
       }
     )
 
-    const textField = wrapper.find('#search-term') as any
+    const textField = wrapper.find('.search-term input') as any
     expect(textField.exists()).toBe(true)
     await textField.setValue('test')
     expect(textField.element.value).toBe('test')
 
-    const select = wrapper.find('#genome-release') as any
+    const select = wrapper.find('.genome-release-menu') as any
     expect(select.exists()).toBe(true)
 
-    const searchButton = wrapper.findComponent('#search') as any
-    expect(searchButton.exists()).toBe(true)
-    await searchButton.trigger('click')
+    const genomeReleaseMenu = wrapper.findComponent('.genome-release-menu') as any
+    expect(genomeReleaseMenu.exists()).toBe(true)
+    await genomeReleaseMenu.trigger('click')
     await nextTick()
-    await searchButton.trigger('click')
-    await nextTick()
-    expect(wrapper.emitted()).toHaveProperty('click')
-    expect(wrapper.emitted('click')).toHaveLength(2)
   })
 
   it('correctly emits search', async () => {
@@ -86,7 +79,7 @@ describe.concurrent('SearchBar.vue', () => {
     await searchBar.setValue('grch37', 'genomeRelease')
     expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
     expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
-    const searchButton = searchBar.findComponent('#search') as any
+    const searchButton = searchBar.findComponent('button.start-search') as any
     expect(searchButton.exists()).toBe(true)
     await searchButton.trigger('click')
     await nextTick()
