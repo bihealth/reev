@@ -11,9 +11,12 @@ const CaseInformationCard = defineAsyncComponent(
   () => import('@/components/CaseInformationCard.vue')
 )
 
+/** Genome release string values. */
+type GenomeRelease = 'grch37' | 'grch38'
+
 export interface Props {
   searchTerm?: string
-  genomeRelease?: string
+  genomeRelease?: GenomeRelease
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -65,9 +68,10 @@ watch(() => props.searchTerm, updateTerms)
       v-model:search-term="searchTermRef"
       v-model:genome-release="genomeReleaseRef"
       class="top-search-bar"
+      density="compact"
       @click-search="performSearch"
     />
-    <v-spacer />
+    <v-spacer></v-spacer>
     <v-toolbar-items class="topbar-links">
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">

@@ -73,10 +73,10 @@ describe.concurrent('HomeView with mocked router', async () => {
     )
 
     const textField = wrapper.find('.v-text-field')
-    const select = wrapper.find('.v-select')
-    const searchButton = wrapper.find('#search')
+    const genomeReleaseButton = wrapper.find('.genome-release-menu')
+    const searchButton = wrapper.find('.start-search')
     expect(textField.exists()).toBe(true)
-    expect(select.exists()).toBe(true)
+    expect(genomeReleaseButton.exists()).toBe(true)
     expect(searchButton.exists()).toBe(true)
   })
 

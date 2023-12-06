@@ -1,78 +1,98 @@
 <script setup lang="ts">
-export interface GenomeReleaseChoice {
-  value: string
+/** Genome release string values. */
+type GenomeRelease = 'grch37' | 'grch38'
+
+/** Type for genome releases. */
+interface GenomeReleaseChoice {
+  value: GenomeRelease
   label: string
 }
 
-export interface Props {
+/** The choices of genomes available. */
+const GENOME_RELEASES: GenomeReleaseChoice[] = [
+  { value: 'grch37', label: 'GRCh37' },
+  { value: 'grch38', label: 'GRCh38' }
+]
+
+/** Mapping from gennome release name to `GenomeReleaseChoice`. */
+const GENOME_RELEASES_MAP: { [key: string]: GenomeReleaseChoice } = Object.fromEntries(
+  GENOME_RELEASES.map((choice) => [choice.value, choice])
+)
+
+/** Type definition for component's props. */
+interface Props {
   searchTerm?: string
-  genomeRelease?: string
-  genomeReleaseChoices?: GenomeReleaseChoice[]
+  genomeRelease?: GenomeRelease
+  density?: 'default' | 'comfortable' | 'compact'
 }
 
+/** Define the component's props. */
+const props = withDefaults(defineProps<Props>(), {
+  searchTerm: '',
+  genomeRelease: 'grch37',
+  density: 'default'
+})
+
+/** Launch search if any term has been entered. */
+const runSearch = async () => {
+  if (props.searchTerm) {
+    emit('clickSearch', props.searchTerm, props.genomeRelease)
+  }
+}
+
+/** Define the emits. */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const emit = defineEmits<{
   (event: 'update:searchTerm' | 'update:genomeRelease', value: string): void
   (event: 'clickSearch', searchTerm: string, genomeRelease: string): void
 }>()
-
-const props = withDefaults(defineProps<Props>(), {
-  searchTerm: '',
-  genomeRelease: 'grch37',
-  genomeReleaseChoices: () => [
-    { value: 'grch37', label: 'GRCh37' },
-    { value: 'grch38', label: 'GRCh38' }
-  ]
-})
 </script>
 
 <template>
-  <v-toolbar id="search-bar" floating>
+  <div class="d-flex d-flex-row">
     <v-text-field
-      id="search-term"
+      class="my-3 search-term"
+      :label="props.density != 'compact' ? 'Search for variant or gene' : undefined"
+      prepend-inner-icon="mdi-magnify"
+      rounded="xl"
       variant="outlined"
-      hide-details
-      single-line
-      :model-value="props.searchTerm"
-      label="Enter search term"
+      :density="props.density"
+      clearable
+      :hide-details="true"
+      :model-value="searchTerm"
       @input="$emit('update:searchTerm', $event.target.value)"
-      @keydown.enter="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
-    />
-    <div>
-      <v-select
-        id="genome-release"
-        variant="outlined"
-        hide-details
-        single-line
-        :model-value="props.genomeRelease"
-        :items="props.genomeReleaseChoices"
-        item-title="label"
-        item-value="value"
-        label="Genome Release"
-        @update:model-value="$emit('update:genomeRelease', $event)"
-      />
-    </div>
-
-    <v-btn
-      id="search"
-      color="primary"
-      @click="$emit('clickSearch', props.searchTerm, props.genomeRelease)"
+      @keydown.enter="() => runSearch()"
     >
-      <v-icon>mdi-magnify</v-icon>
-      search
-    </v-btn>
-  </v-toolbar>
+      <template #append-inner>
+        <v-menu :transition="false">
+          <template #activator="{ props: innerProps }">
+            <v-btn
+              color="black"
+              v-bind="innerProps"
+              rounded="xs"
+              spacing="compact"
+              append-icon="mdi-chevron-down"
+              variant="text"
+              class="genome-release-menu"
+            >
+              {{ GENOME_RELEASES_MAP[genomeRelease]?.label }}
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item
+              v-for="{ value, label } in GENOME_RELEASES"
+              :key="value"
+              :value="value"
+              @click.prevent="() => runSearch()"
+            >
+              <v-list-item-title>{{ label }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+        <v-btn variant="text" rounded="xl" class="start-search" @click.prevent="() => runSearch()">
+          <v-icon>mdi-rocket-launch</v-icon>
+        </v-btn>
+      </template>
+    </v-text-field>
+  </div>
 </template>
-
-<style scoped>
-#search-bar {
-  background-color: white;
-  border: 1px solid #455a64;
-  border-radius: 10px;
-  padding: 0 10px;
-}
-
-#search {
-  margin-left: 10px;
-}
-</style>
