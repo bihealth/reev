@@ -161,7 +161,7 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
           <template v-if="geneInfoStore.geneSymbol?.length">
             <v-list-group value="gene">
               <template #activator="{ props: vProps }">
-                <v-list-item :value="vProps" prepend-icon="mdi-dna">
+                <v-list-item :value="vProps" prepend-icon="mdi-dna" v-bind="vProps">
                   Gene
                   <span class="font-italic">
                     {{
@@ -195,6 +195,7 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
             <template #activator="{ props: vProps }">
               <v-list-item
                 :value="vProps"
+                v-bind="vProps"
                 prepend-icon="mdi-magnify-expand"
                 title="Variant Details"
               />
