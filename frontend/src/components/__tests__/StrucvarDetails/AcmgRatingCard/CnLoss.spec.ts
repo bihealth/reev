@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
-import CnLoss from '@/components/StrucvarDetails/AcmgRatingCard/CnLoss.vue'
+import CnLoss from '@/components/StrucvarDetails/ClinsigCard/CnLoss.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('CnLoss', async () => {
