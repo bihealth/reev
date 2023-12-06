@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import { search } from '@/lib/utils'
 
@@ -22,9 +23,14 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const router = useRouter()
+const theme = useTheme()
 
 const searchTermRef = ref(props.searchTerm)
 const genomeReleaseRef = ref(props.genomeRelease)
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+}
 
 /**
  * Perform a search based on the current search term and genome release.
@@ -54,6 +60,7 @@ watch(() => props.searchTerm, updateTerms)
       <router-link to="/">
         <img
           id="logo"
+          class="ml-4 mr-3"
           style="vertical-align: middle"
           src="@/assets/reev-logo.svg"
           alt="logo"
@@ -68,7 +75,8 @@ watch(() => props.searchTerm, updateTerms)
       @click-search="performSearch"
     />
     <v-spacer />
-    <v-toolbar-items class="topbar-links">
+    <v-btn @click="toggleTheme">toggle theme</v-btn>
+    <v-toolbar-items>
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">
           <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="vProps">
@@ -107,23 +115,11 @@ watch(() => props.searchTerm, updateTerms)
 
 <style scoped>
 .top-bar {
-  background-color: white;
   border-bottom: 2px solid #455a64;
 }
 
 .top-search-bar {
   display: flex;
   width: 50%;
-}
-
-.topbar-links {
-  display: flex;
-  margin: 0 10px;
-}
-
-#logo {
-  margin-left: 25px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 </style>
