@@ -52,10 +52,6 @@ watch(
   () => userStore.isAuthenticated,
   () => goToProfileIfAuthenticated()
 )
-watch(
-  () => window.location.href,
-  () => console.log(window.location.href)
-)
 
 onMounted(async () => {
   goToProfileIfAuthenticated()

@@ -6,8 +6,8 @@ import {
   MultiSourceAcmgCriteriaCNVState,
   Presence,
   StateSourceCNV
-} from '@/components/StrucvarDetails/AcmgRatingCard.c'
-import AcmgRatingCard from '@/components/StrucvarDetails/AcmgRatingCard.vue'
+} from '@/components/StrucvarDetails/ClinsigCard.c'
+import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
@@ -66,7 +66,7 @@ const makeWrapper = () => {
       Presence.Present
     )
   })
-  store.setAcmgRating = mockRetrieveAcmgRating
+  store.fetchAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
   store.svRecord = JSON.parse(JSON.stringify(svRecord))
@@ -75,7 +75,7 @@ const makeWrapper = () => {
 
   return setupMountedComponents(
     {
-      component: AcmgRatingCard,
+      component: ClinsigCard,
       template: true
     },
     {

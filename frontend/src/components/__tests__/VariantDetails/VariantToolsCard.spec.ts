@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
-import VariantTools from '@/components/VariantDetails/VariantTools.vue'
+import VariantTools from '@/components/SeqvarDetails/VariantToolsCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
@@ -15,7 +15,7 @@ const smallVariantInfo = {
 }
 
 describe.concurrent('VariantTools', async () => {
-  it('renders the Varia ntTools info', async () => {
+  it('renders the Variant Tools info', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: VariantTools, template: false },
       {
@@ -25,10 +25,10 @@ describe.concurrent('VariantTools', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('External Resources')
-    expect(wrapper.text()).toContain('IGV')
-    expect(wrapper.text()).toContain('Precomputed Scores')
+    expect(wrapper.text()).toContain('Genome Browsers')
+    expect(wrapper.text()).toContain('Other Resources')
+    expect(wrapper.text()).toContain('Local IGV')
     const launchIcons = wrapper.findAll('.mdi-launch')
-    expect(launchIcons.length).toBe(8)
+    expect(launchIcons.length).toBe(9)
   })
 })

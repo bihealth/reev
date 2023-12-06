@@ -2,12 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 import { VSwitch } from 'vuetify/components'
 
+import CriterionSwitch from '@/components/SeqvarDetails/ClinsigCard/CriterionSwitch.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { setupMountedComponents } from '@/lib/test-utils'
 
-import AcmgCriteriaCard from '../AcmgCriteriaCard.vue'
-
-describe.concurrent('AcmgCriteriaCard', async () => {
+describe.concurrent('ClinsigCard', async () => {
   it('renders the AcmgRating info', async () => {
     const acmgRating = new MultiSourceAcmgCriteriaState()
     acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
@@ -15,7 +14,7 @@ describe.concurrent('AcmgCriteriaCard', async () => {
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
     const { wrapper } = await setupMountedComponents(
-      { component: AcmgCriteriaCard, template: false },
+      { component: CriterionSwitch, template: false },
       {
         props: {
           acmgRating: acmgRating,
@@ -34,14 +33,14 @@ describe.concurrent('AcmgCriteriaCard', async () => {
     expect(selection.text()).toContain('Pathogenic')
   })
 
-  it('should correctly update the AcmgCriteriaCard info', async () => {
+  it('should correctly update the ClinsigCard info', async () => {
     const acmgRating = new MultiSourceAcmgCriteriaState()
     acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
     const criteria = AcmgCriteria.Pvs1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
     const { wrapper } = await setupMountedComponents(
-      { component: AcmgCriteriaCard, template: false },
+      { component: CriterionSwitch, template: false },
       {
         props: {
           acmgRating: acmgRating,

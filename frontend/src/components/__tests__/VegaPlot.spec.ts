@@ -55,7 +55,7 @@ describe.concurrent('VegaPlot', async () => {
   // Skipping tests due to error with vega-embed
   // DataCloneError: #<Object> could not be cloned.
   it.skip('renders the VegaPlot info', async () => {
-    const { wrapper } = await setupMountedComponents(
+    await setupMountedComponents(
       { component: VegaPlot, template: false },
       {
         props: {
@@ -72,6 +72,5 @@ describe.concurrent('VegaPlot', async () => {
         }
       }
     )
-    console.log(wrapper.html())
   })
 })

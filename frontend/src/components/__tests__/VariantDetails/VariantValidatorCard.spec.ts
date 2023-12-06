@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
 import * as VariantValidatorInfo from '@/assets/__tests__/BRCA1VariantValidator.json'
-import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import VariantValidator from '@/components/SeqvarDetails/VariantValidatorCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {
@@ -29,13 +29,13 @@ describe.concurrent('VariantValidator', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('to submit the variant to VariantValidator.org.')
+    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org')
 
     const submitButton = wrapper.find('button')
     expect(submitButton.exists()).toBe(true)
     submitButton.trigger('click')
     await nextTick()
-    expect(wrapper.text()).toContain('Loading ...')
+    expect(wrapper.text()).toContain('Loading...')
     const icon = wrapper.find('.v-progress-circular')
     expect(icon.exists()).toBe(true)
     await nextTick()
@@ -54,13 +54,13 @@ describe.concurrent('VariantValidator', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('to submit the variant to VariantValidator.org.')
+    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org')
 
     const submitButton = wrapper.find('button')
     expect(submitButton.exists()).toBe(true)
     submitButton.trigger('click')
     await nextTick()
-    expect(wrapper.text()).toContain('Loading ...')
+    expect(wrapper.text()).toContain('Loading...')
     const icon = wrapper.find('.v-progress-circular')
     expect(icon.exists()).toBe(true)
     await nextTick()

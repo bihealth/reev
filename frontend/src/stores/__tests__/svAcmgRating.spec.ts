@@ -9,7 +9,7 @@ import {
   MultiSourceAcmgCriteriaCNVState,
   Presence,
   StateSourceCNV
-} from '@/components/StrucvarDetails/AcmgRatingCard.c'
+} from '@/components/StrucvarDetails/ClinsigCard.c'
 
 import { StoreState } from '../misc'
 import { useSvAcmgRatingStore } from '../svAcmgRating'
@@ -113,7 +113,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useSvAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify(ExampleAutoCNVResponse))
 
-    await store.setAcmgRating(svRecord)
+    await store.fetchAcmgRating(svRecord)
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
@@ -164,7 +164,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useSvAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.setAcmgRating(svRecord)
+    await store.fetchAcmgRating(svRecord)
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
@@ -174,7 +174,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should not load data if structure variant is the same', async () => {
     const store = useSvAcmgRatingStore()
     fetchMocker.mockResponse(JSON.stringify(ExampleAutoCNVResponse))
-    await store.setAcmgRating(svRecord)
+    await store.fetchAcmgRating(svRecord)
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
@@ -218,7 +218,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.svRecord).toStrictEqual(JSON.parse(JSON.stringify(svRecord)))
 
-    await store.setAcmgRating(store.svRecord as SmallVariant)
+    await store.fetchAcmgRating(store.svRecord as SmallVariant)
 
     expect(fetchMocker.mock.calls.length).toBe(1)
   })

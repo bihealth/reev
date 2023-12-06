@@ -7,23 +7,27 @@ import * as BRCA1ClinVar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
+import ConditionsCard from '@/components/GeneDetails/ConditionsCard.vue'
+import ExpressionCard from '@/components/GeneDetails/ExpressionCard.vue'
+import GeneOverviewCard from '@/components/GeneDetails/OverviewCard.vue'
+import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
 import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import BeaconNetwork from '@/components/VariantDetails/BeaconNetwork.vue'
-import ClinVar from '@/components/VariantDetails/ClinVar.vue'
-import TxCsq from '@/components/VariantDetails/TxCsq.vue'
-import VariantConservation from '@/components/VariantDetails/VariantConservation.vue'
-import VariantFreqs from '@/components/VariantDetails/VariantFreqs.vue'
-import VariantGene from '@/components/VariantDetails/VariantGene.vue'
-import VariantTools from '@/components/VariantDetails/VariantTools.vue'
-import VariantValidator from '@/components/VariantDetails/VariantValidator.vue'
+import BeaconNetworkCard from '@/components/SeqvarDetails/BeaconNetworkCard.vue'
+import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
+import ClinvarCard from '@/components/SeqvarDetails/ClinvarCard.vue'
+import FreqsCard from '@/components/SeqvarDetails/FreqsCard.vue'
+import TxCsqCard from '@/components/SeqvarDetails/TxCsqCard.vue'
+import VariantScoresCard from '@/components/SeqvarDetails/VariantScoresCard.vue'
+import VariantToolsCard from '@/components/SeqvarDetails/VariantToolsCard.vue'
+import VariantValidatorCard from '@/components/SeqvarDetails/VariantValidatorCard.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 
-import VariantDetailView from '../VariantDetailView.vue'
+import SeqvarDetailsView from '../SeqvarDetailsView.vue'
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -70,7 +74,7 @@ const makeWrapper = () => {
       Presence.Present
     )
   })
-  variantAcmgStore.setAcmgRating = mockRetrieveAcmgRating
+  variantAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
 
   // Initial load
   variantInfoStore.storeState = StoreState.Active
@@ -85,7 +89,7 @@ const makeWrapper = () => {
   variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
   return setupMountedComponents(
-    { component: VariantDetailView, template: true },
+    { component: SeqvarDetailsView, template: true },
     {
       props: {
         searchTerm: 'chr17:43044295:G:A',
@@ -96,7 +100,7 @@ const makeWrapper = () => {
   )
 }
 
-describe.concurrent('VariantDetailView', async () => {
+describe.concurrent('SeqvarDetailsView', async () => {
   beforeEach(() => {
     // Disable Vue warn. This warning is caused by BookmarkButton.vue due to
     // unproper mocking of the store and props passed to the component.
@@ -141,39 +145,47 @@ describe.concurrent('VariantDetailView', async () => {
   it('renders VariantDatails components', async () => {
     const { wrapper } = await makeWrapper()
 
-    const variantInfo = wrapper.findComponent(VariantGene)
-    const beaconNetwork = wrapper.findComponent(BeaconNetwork)
-    const clinVar = wrapper.findComponent(ClinVar)
-    const variantFreqs = wrapper.findComponent(VariantFreqs)
-    const variantConservation = wrapper.findComponent(VariantConservation)
-    const variantTools = wrapper.findComponent(VariantTools)
-    const variantValidator = wrapper.findComponent(VariantValidator)
-    const txCsq = wrapper.findComponent(TxCsq)
-    expect(variantInfo.exists()).toBe(true)
+    const geneOverviewCard = wrapper.findComponent(GeneOverviewCard)
+    const conditionsCard = wrapper.findComponent(ConditionsCard)
+    const expressionCard = wrapper.findComponent(ExpressionCard)
+    const beaconNetwork = wrapper.findComponent(BeaconNetworkCard)
+    const clinvarCard = wrapper.findComponent(ClinvarCard)
+    const clinsigCard = wrapper.findComponent(ClinsigCard)
+    const freqsCard = wrapper.findComponent(FreqsCard)
+    const pathogenicityCard = wrapper.findComponent(PathogenicityCard)
+    const variantScoresCard = wrapper.findComponent(VariantScoresCard)
+    const variantTools = wrapper.findComponent(VariantToolsCard)
+    const variantValidator = wrapper.findComponent(VariantValidatorCard)
+    const txCsqCard = wrapper.findComponent(TxCsqCard)
+    expect(geneOverviewCard.exists()).toBe(true)
+    expect(conditionsCard.exists()).toBe(true)
+    expect(expressionCard.exists()).toBe(true)
     expect(beaconNetwork.exists()).toBe(true)
-    expect(clinVar.exists()).toBe(true)
-    expect(variantFreqs.exists()).toBe(true)
-    expect(variantConservation.exists()).toBe(true)
+    expect(clinvarCard.exists()).toBe(true)
+    expect(clinsigCard.exists()).toBe(true)
+    expect(freqsCard.exists()).toBe(true)
+    expect(pathogenicityCard.exists()).toBe(true)
+    expect(variantScoresCard.exists()).toBe(true)
     expect(variantTools.exists()).toBe(true)
     expect(variantValidator.exists()).toBe(true)
-    expect(txCsq.exists()).toBe(true)
+    expect(txCsqCard.exists()).toBe(true)
   })
 
   it('emits scroll to section', async () => {
     const { wrapper, router } = await makeWrapper()
 
-    const geneLink = wrapper.find('#gene-nav')
+    const geneLink = wrapper.find('#seqvar-csq-nav')
     expect(geneLink.exists()).toBe(true)
 
     await geneLink.trigger('click')
     await nextTick()
     expect(router.push).toHaveBeenCalled()
     expect(router.push).toHaveBeenCalledWith({
-      hash: '#gene'
+      hash: '#seqvar-csq'
     })
 
     // Check if hgnc triggered scrollIntoView()
-    const hgncSection = wrapper.find('#gene')
+    const hgncSection = wrapper.find('#seqvar-csq')
     expect(hgncSection.exists()).toBe(true)
     expect(hgncSection.element.scrollTop).toBe(0)
   })
@@ -209,7 +221,7 @@ describe.concurrent('VariantDetailView', async () => {
       variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
       variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     })
-    variantAcmgStore.setAcmgRating = mockRetrieveAcmgRating
+    variantAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
 
     // Initial load
     variantInfoStore.storeState = StoreState.Active
@@ -225,7 +237,7 @@ describe.concurrent('VariantDetailView', async () => {
 
     const { router } = await setupMountedComponents(
       {
-        component: VariantDetailView,
+        component: SeqvarDetailsView,
         template: true
       },
       {

@@ -12,9 +12,9 @@ import LoginView from '@/views/LoginView.vue'
 import PathNotFound from '@/views/PathNotFound.vue'
 import PrivacyView from '@/views/PrivacyView.vue'
 import ProfileView from '@/views/ProfileView.vue'
+import SeqvarDetailsView from '@/views/SeqvarDetailsView.vue'
 import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 import TermsView from '@/views/TermsView.vue'
-import VariantDetailView from '@/views/VariantDetailView.vue'
 import VerifyEmailView from '@/views/VerifyEmailView.vue'
 
 const routes = [
@@ -69,7 +69,7 @@ const routes = [
   {
     path: '/variant/:searchTerm/:genomeRelease',
     name: 'variant',
-    component: VariantDetailView,
+    component: SeqvarDetailsView,
     props: (route: any) => {
       return { searchTerm: route.params.searchTerm, genomeRelease: route.params.genomeRelease }
     }
@@ -91,7 +91,7 @@ const routes = [
     }
   },
   {
-    path: '/acmg-docs',
+    path: '/docs/acmg-docs',
     name: 'acmg-docs',
     component: ACMGCriteriaDocs
   },

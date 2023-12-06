@@ -8,10 +8,14 @@ import LocusDatabases from '@/components/GeneDetails/OverviewCard/LocusDatabases
 
 export interface Props {
   geneInfo: any
+  showGeneDetailsLink?: boolean
+  genomeRelease?: 'grch37' | 'grch38'
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  geneInfo: null
+  geneInfo: null,
+  showGeneDetailsLink: true,
+  genomeRelease: 'grch37'
 })
 
 // -- code for expanded / collapsed card --------------------------------------
@@ -98,6 +102,18 @@ const summaryText = computed<string>(() => {
           </a>
         </template>
       </v-card-text>
+      <!-- <a
+              style="cursor: pointer"
+              title="go to Gene details page"
+              @click.prevent="
+                router.push({
+                  name: 'gene',
+                  params: { searchTerm: item.raw.hgnc.agr, genomeRelease: genomeRelease }
+                })
+              "
+            >
+              <v-icon>mdi-arrow-right-circle-outline</v-icon>
+            </a> -->
 
       <v-expand-transition>
         <div v-if="isExpanded">
@@ -159,6 +175,17 @@ const summaryText = computed<string>(() => {
           prepend-icon="mdi-launch"
         >
           MGI
+        </v-btn>
+        <v-btn
+          v-if="showGeneDetailsLink"
+          :to="{
+            name: 'gene',
+            params: { searchTerm: geneInfo?.hgnc?.agr, genomeRelease }
+          }"
+          target="_blank"
+          prepend-icon="mdi-arrow-right-circle-outline"
+        >
+          Gene Details
         </v-btn>
 
         <v-spacer />

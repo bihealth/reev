@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { type SmallVariant } from '@/stores/variantInfo'
 
 interface Props {
-  smallVariant?: SmallVariant
+  smallVariant?: SmallVariant | null
 }
 
 const props = defineProps<Props>()
@@ -31,8 +31,10 @@ const loadBeacon = () => {
 
 <template>
   <v-card>
-    <v-card-title>Beacon Network</v-card-title>
-    <v-divider />
+    <v-card-title> Beacon Network </v-card-title>
+    <v-card-subtitle class="text-overline">
+      Lookup Variant in GA4GH Beacon Network
+    </v-card-subtitle>
     <v-card-text v-if="beaconAddress">
       <iframe
         ref="beaconFrame"
@@ -42,12 +44,10 @@ const loadBeacon = () => {
         hspace="0"
       />
     </v-card-text>
-    <v-card-actions v-else>
-      <v-card-title>
-        <v-btn prepend-icon="mdi-refresh" style="float: right" @click="loadBeacon()">
-          Query Beacon
-        </v-btn>
-      </v-card-title>
-    </v-card-actions>
+    <v-card-text v-else>
+      <v-btn prepend-icon="mdi-cloud-search" variant="tonal" rounded="sm" @click="loadBeacon()">
+        Query Beacon Network
+      </v-btn>
+    </v-card-text>
   </v-card>
 </template>

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {
   ACMG_CRITERIA_CNV_DEFS,
-  ACMG_CRITERIA_CNV_GAIN,
-  AcmgCriteriaCNVGain,
+  ACMG_CRITERIA_CNV_LOSS,
+  AcmgCriteriaCNVLoss,
   Presence,
   StateSourceCNV
-} from '@/components/StrucvarDetails/AcmgRatingCard.c'
+} from '@/components/StrucvarDetails/ClinsigCard.c'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
 
 const emit = defineEmits<{
-  (e: 'switchCriteria', criteria: AcmgCriteriaCNVGain, presence: Presence): void
+  (e: 'switchCriteria', criteria: AcmgCriteriaCNVLoss, presence: Presence): void
 }>()
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -36,7 +36,7 @@ const acmgRatingStore = useSvAcmgRatingStore()
       </tr>
     </thead>
     <tbody>
-      <tr v-for="criteria in ACMG_CRITERIA_CNV_GAIN" :key="criteria">
+      <tr v-for="criteria in ACMG_CRITERIA_CNV_LOSS" :key="criteria">
         <td>
           <v-switch
             :label="criteria"
@@ -59,7 +59,7 @@ const acmgRatingStore = useSvAcmgRatingStore()
             <v-slider
               :model-value="acmgRatingStore.acmgRating.getCriteriaCNVState(criteria).score ?? 0"
               :min="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.minScore ?? 0"
-              :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 1"
+              :max="ACMG_CRITERIA_CNV_DEFS.get(criteria)?.maxScore ?? 0"
               :step="0.05"
               thumb-label
               thumb-size="10"
@@ -77,7 +77,7 @@ const acmgRatingStore = useSvAcmgRatingStore()
           <div>
             {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.description ?? '' }}
           </div>
-          <div v-if="true || showConflictingSections">
+          <div v-if="showConflictingSections">
             Conflicting evidence:
             {{ ACMG_CRITERIA_CNV_DEFS.get(criteria)?.conflictingEvidence }}
           </div>
@@ -88,3 +88,4 @@ const acmgRatingStore = useSvAcmgRatingStore()
     </tbody>
   </v-table>
 </template>
+@/components/StrucvarDetails/ClinsigCard.c

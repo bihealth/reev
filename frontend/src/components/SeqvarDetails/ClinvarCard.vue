@@ -5,7 +5,7 @@ import {
   CLINICAL_SIGNIFICANCE_LABEL,
   REVIEW_STATUS_LABEL,
   REVIEW_STATUS_STARS
-} from '@/components/VariantDetails/ClinVar.c'
+} from '@/components/SeqvarDetails/ClinvarCard.c'
 
 interface Props {
   clinvar?: any

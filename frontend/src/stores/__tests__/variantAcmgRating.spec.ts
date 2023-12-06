@@ -96,7 +96,7 @@ describe.concurrent('geneInfo Store', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
-    await store.setAcmgRating(smallVariantInfo)
+    await store.fetchAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
@@ -134,7 +134,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useVariantAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.setAcmgRating(smallVariantInfo)
+    await store.fetchAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
@@ -151,7 +151,7 @@ describe.concurrent('geneInfo Store', () => {
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
-    await store.setAcmgRating(smallVariantInfo)
+    await store.fetchAcmgRating(smallVariantInfo)
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
@@ -182,7 +182,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
 
-    await store.setAcmgRating(store.smallVariant as SmallVariant)
+    await store.fetchAcmgRating(store.smallVariant as SmallVariant)
 
     expect(fetchMocker.mock.calls.length).toBe(2)
   })

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
-import FreqsAutosomal from '@/components/VariantDetails/FreqsAutosomal.vue'
+import FreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {

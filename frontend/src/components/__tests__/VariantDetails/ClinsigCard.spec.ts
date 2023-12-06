@@ -2,7 +2,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
-import AcmgRating from '@/components/VariantDetails/AcmgRating.vue'
+import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
@@ -29,7 +29,7 @@ const makeWrapper = () => {
     store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
     store.acmgRatingStatus = true
   })
-  store.setAcmgRating = mockRetrieveAcmgRating
+  store.fetchAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
   store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
@@ -39,7 +39,7 @@ const makeWrapper = () => {
 
   return setupMountedComponents(
     {
-      component: AcmgRating,
+      component: ClinsigCard,
       template: true
     },
     {
@@ -54,15 +54,22 @@ const makeWrapper = () => {
 describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
     const { wrapper } = await makeWrapper()
-    expect(wrapper.text()).toContain('Pathogenic')
-    expect(wrapper.text()).toContain('Benign')
+    expect(wrapper.text()).toContain('Semi-Automated')
 
     const switchers = wrapper.findAll('.v-switch')
-    expect(switchers.length).toBe(29)
+    expect(switchers.length).toBe(2)
+
+    // click show failed button
+    const btnShowFailed = wrapper.findAll('.show-failed')
+    await btnShowFailed[0].trigger('click')
+    await nextTick()
+    // check again that more switches are displayed
+    expect(wrapper.findAll('.v-switch').length).toBe(56)
   })
 
   it('should correctly update the AcmgRating info', async () => {
     const { wrapper } = await makeWrapper()
+
     const switchers = wrapper.findAll('.v-switch')
     const switcher = switchers[0]
     await switcher.trigger('click')

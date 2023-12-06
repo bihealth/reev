@@ -37,7 +37,7 @@ const examples: Example[] = [
   {
     query: 'NM_007294.4(BRCA1):c.5123C>A',
     label: 'HGVS position on transcript',
-    genomeRelease: 'grch37'
+    genomeRelease: 'grch38'
   },
   { query: 'NC_000017.10:g.41197728G>T', label: 'HGVS genomic variant', genomeRelease: 'grch37' },
   {

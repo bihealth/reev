@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import FreqsMitochondrial from '@/components/VariantDetails/FreqsMitochondrial.vue'
+import FreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 const smallVariantInfo = {

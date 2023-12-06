@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import SummarySheet from '@/components/StrucvarDetails/AcmgRatingCard/SummarySheet.vue'
+import SummarySheet from '@/components/StrucvarDetails/ClinsigCard/SummarySheet.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('SummarySheet', async () => {

@@ -238,3 +238,24 @@ export function displayName(name: string): string {
     return name
   }
 }
+
+/**
+ * Return Vuetify color for the given pathogenicity.
+ *
+ * @param patho Pathogenicity string
+ * @returns Color string
+ */
+export const classColor = (patho: string) => {
+  switch (patho.toLowerCase()) {
+    case 'pathogenic':
+      return 'red-darken-3'
+    case 'likely pathogenic':
+      return 'orange-darken-3'
+    case 'likely benign':
+      return 'green-lighten-3'
+    case 'benign':
+      return 'green-darken-3'
+    default:
+      return 'grey-lighten-2'
+  }
+}

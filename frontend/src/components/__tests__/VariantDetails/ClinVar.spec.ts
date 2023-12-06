@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import * as clinVarInfo from '@/assets/__tests__/BRCA1VariantClinVar.json'
-import ClinVar from '@/components/VariantDetails/ClinVar.vue'
+import ClinVar from '@/components/SeqvarDetails/ClinvarCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ClinVar', async () => {
