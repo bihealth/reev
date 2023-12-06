@@ -2,33 +2,39 @@ import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
+import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import GeneListCard from '@/components/StrucvarDetails/GeneListCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
+import { StoreState } from '@/stores/misc'
 
 describe.concurrent('GeneListCard', async () => {
-  it.skip('renders the GeneListCard table', async () => {
+  it('renders the GeneListCard table', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: GeneListCard, template: false },
       {
         props: {
-          currentSvRecord: JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']])),
-          selectedGeneHgncId: 'HGNC:1100'
+          genesInfos: JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']])),
+          currentSvRecord: JSON.parse(JSON.stringify(CurrentSV)),
+          selectedGeneHgncId: 'HGNC:1100',
+          storeState: StoreState.Active
         }
       }
     )
 
     const table = wrapper.findComponent({ name: 'VDataIterator' })
     expect(table.exists()).toBe(true)
-    expect(wrapper.text()).toContain('Select gene in table above to see details.')
+    expect(wrapper.text()).toContain('Overlapping and Contained Genes')
   })
 
-  it.skip('shows the gene info on row click', async () => {
+  it('shows the gene info on row click', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: GeneListCard, template: false },
       {
         props: {
-          currentSvRecord: JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']])),
-          selectedGeneHgncId: 'HGNC:1100'
+          genesInfos: JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']])),
+          currentSvRecord: JSON.parse(JSON.stringify(CurrentSV)),
+          selectedGeneHgncId: 'HGNC:1100',
+          storeState: StoreState.Active
         }
       }
     )

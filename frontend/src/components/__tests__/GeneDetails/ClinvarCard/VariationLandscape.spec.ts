@@ -13,8 +13,9 @@ describe.concurrent('VariationLandscape', async () => {
         props: {
           clinvar: BRCA1Clinvar['genes']['HGNC:1100'],
           genomeRelease: 'grch37',
-          geneSymbol: 'HGNC:1100',
-          transcripts: BRCA1Transcripts
+          hgnc: 'HGNC:1100',
+          transcripts: BRCA1Transcripts,
+          geneSymbol: 'BRCA1'
         }
       }
     )
