@@ -29,5 +29,27 @@ describe.concurrent('ProfileInformationCard', async () => {
     )
 
     expect(wrapper.text()).toMatch('Profile Information')
+    expect(wrapper.text()).toMatch('User Profile')
+    expect(wrapper.text()).toMatch('You are currently logged in')
+
+    const vForm = wrapper.findComponent({ name: 'VForm' })
+    expect(vForm.exists()).toBe(true)
+  })
+
+  it('renders the ProfileInformationCard information with no user.', async () => {
+    const { wrapper } = await setupMountedComponents(
+      { component: ProfileInformationCard, template: false },
+      {
+        initialStoreState: {
+          user: {
+            storeState: StoreState.Active,
+            currentUser: null
+          }
+        }
+      }
+    )
+
+    expect(wrapper.html()).toBeTruthy()
+    expect(wrapper.text()).not.toContain('Profile Information')
   })
 })
