@@ -11,7 +11,7 @@ import ConditionsCard from '@/components/GeneDetails/ConditionsCard.vue'
 import ExpressionCard from '@/components/GeneDetails/ExpressionCard.vue'
 import GeneOverviewCard from '@/components/GeneDetails/OverviewCard.vue'
 import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import BeaconNetworkCard from '@/components/SeqvarDetails/BeaconNetworkCard.vue'
 import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
@@ -22,7 +22,9 @@ import VariantScoresCard from '@/components/SeqvarDetails/VariantScoresCard.vue'
 import VariantToolsCard from '@/components/SeqvarDetails/VariantToolsCard.vue'
 import VariantValidatorCard from '@/components/SeqvarDetails/VariantValidatorCard.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
+import { deepCopy } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { useVariantInfoStore } from '@/stores/variantInfo'
@@ -39,9 +41,17 @@ const smallVariantInfo = {
   hgnc_id: 'HGNC:1100'
 }
 
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
+}
+
 const variantData = {
   storeState: StoreState.Active,
-  variantTerm: 'chr17:12345:A:T',
   smallVariant: smallVariantInfo,
   varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
   geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
@@ -53,10 +63,9 @@ const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const variantInfoStore = useVariantInfoStore(pinia)
   const variantAcmgStore = useVariantAcmgRatingStore(pinia)
-  const mockLoadData = vi.fn().mockImplementation(async (variantTerm: string) => {
+  const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
     variantInfoStore.storeState = StoreState.Active
-    variantInfoStore.variantTerm = variantTerm
-    variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantInfoStore.seqvar = deepCopy(seqvar)
     variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
     variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
     variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
@@ -66,7 +75,7 @@ const makeWrapper = () => {
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     variantAcmgStore.storeState = StoreState.Active
-    variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantInfoStore.seqvar = deepCopy(seqvarInfo)
     variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     variantAcmgStore.acmgRating.setPresence(
       StateSource.InterVar,
@@ -78,14 +87,13 @@ const makeWrapper = () => {
 
   // Initial load
   variantInfoStore.storeState = StoreState.Active
-  variantInfoStore.variantTerm = 'chr17:12345:A:T'
-  variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+  variantInfoStore.seqvar = deepCopy(seqvarInfo)
   variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
   variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
   variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
   variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
   variantAcmgStore.storeState = StoreState.Active
-  variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+  variantInfoStore.seqvar = deepCopy(seqvarInfo)
   variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
   return setupMountedComponents(
@@ -102,7 +110,7 @@ const makeWrapper = () => {
 
 describe.concurrent('SeqvarDetailsView', async () => {
   beforeEach(() => {
-    // Disable Vue warn. This warning is caused by BookmarkButton.vue due to
+    // Disable Vue warn. This warning is caused by BookmarkListItem.vue due to
     // unproper mocking of the store and props passed to the component.
     const spy = vi.spyOn(console, 'warn')
     spy.mockImplementation(() => {})
@@ -111,7 +119,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
   it('renders the header', async () => {
     const { wrapper } = await makeWrapper()
 
-    const header = wrapper.findComponent(HeaderDetailPage)
+    const header = wrapper.findComponent(PageHeader)
     const searchBar = wrapper.findComponent(SearchBar)
     expect(header.exists()).toBe(true)
     expect(searchBar.exists()).toBe(true)
@@ -125,7 +133,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
   it('emits update in header', async () => {
     const { wrapper } = await makeWrapper()
 
-    const header = wrapper.findComponent(HeaderDetailPage)
+    const header = wrapper.findComponent(PageHeader)
     expect(header.exists()).toBe(true)
     await header.setValue('HGNC:1100', 'searchTermRef')
     await header.setValue('grch37', 'genomeReleaseRef')
@@ -195,10 +203,9 @@ describe.concurrent('SeqvarDetailsView', async () => {
     const variantInfoStore = useVariantInfoStore(pinia)
     const variantAcmgStore = useVariantAcmgRatingStore(pinia)
 
-    const mockLoadData = vi.fn().mockImplementation(async (variantTerm: string) => {
+    const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
       variantInfoStore.storeState = StoreState.Error
-      variantInfoStore.variantTerm = variantTerm
-      variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+      variantInfoStore.seqvar = seqvar
       variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
       variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
       variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
@@ -206,8 +213,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
     })
     const mockClearData = vi.fn().mockImplementation(() => {
       variantInfoStore.storeState = StoreState.Initial
-      variantInfoStore.variantTerm = ''
-      variantInfoStore.smallVariant = null
+      variantInfoStore.seqvar = undefined
       variantInfoStore.varAnnos = null
       variantInfoStore.geneInfo = null
       variantInfoStore.geneClinvar = null
@@ -218,21 +224,20 @@ describe.concurrent('SeqvarDetailsView', async () => {
 
     const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
       variantAcmgStore.storeState = StoreState.Active
-      variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+      variantAcmgStore.seqvar = deepCopy(seqvarInfo)
       variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     })
     variantAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
 
     // Initial load
     variantInfoStore.storeState = StoreState.Active
-    variantInfoStore.variantTerm = 'chr17:12345:A:T'
-    variantInfoStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantAcmgStore.seqvar = deepCopy(seqvarInfo)
     variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
     variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
     variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
     variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
     variantAcmgStore.storeState = StoreState.Active
-    variantAcmgStore.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    variantAcmgStore.seqvar = deepCopy(seqvarInfo)
     variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
     const { router } = await setupMountedComponents(

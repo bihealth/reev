@@ -7,14 +7,11 @@ import { StoreState } from '@/stores/misc'
 // Import the BookmarksClient
 
 export interface Props {
-  type: 'gene' | 'seqvar' | 'strucvar' | ''
-  id: string
+  type?: 'gene' | 'seqvar' | 'strucvar' | undefined
+  id?: string | undefined
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  type: '',
-  id: ''
-})
+const props = defineProps<Props>()
 
 const bookmarksStore = useBookmarksStore()
 
@@ -26,7 +23,12 @@ const loadDataToStore = async () => {
 
 // Fetch existing bookmark for the given type and id on mount
 onMounted(async () => {
-  loadDataToStore()
+  await loadDataToStore()
+  if (!props.type || !props.id) {
+    console.error('type or id not defined')
+    return
+  }
+
   bookmarksStore
     .fetchBookmark(props.type, props.id)
     ?.then((bookmark) => {
@@ -44,6 +46,11 @@ onMounted(async () => {
 
 // Function to toggle bookmark
 const toggleBookmark = async () => {
+  if (!props.type || !props.id) {
+    console.error('type or id not defined')
+    return
+  }
+
   if (isBookmarked.value) {
     await bookmarksStore.deleteBookmark(props.type, props.id)
   } else {
@@ -59,7 +66,10 @@ const toggleBookmark = async () => {
 </script>
 
 <template>
-  <template v-if="bookmarksStore.storeState === StoreState.Error">
+  <template v-if="id === undefined || type === undefined">
+    <v-skeleton-loader type="list-item"></v-skeleton-loader>
+  </template>
+  <template v-else-if="bookmarksStore.storeState === StoreState.Error">
     <v-list-item class="text-caption"> Bookmarks available after login </v-list-item>
   </template>
   <template v-else>

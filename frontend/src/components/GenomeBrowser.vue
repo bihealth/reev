@@ -2,20 +2,21 @@
 import igv from 'igv'
 import { onMounted, ref, watch } from 'vue'
 
-import { publicTracks } from './GenomeBrowser.c'
+import { publicTracks } from '@/components/GenomeBrowser.c'
+import type { GenomeBuild } from '@/lib/genomeBuilds'
 
 /** Alias for Genome Browser type. */
 type GenomeBrowser = any
 
 export interface Props {
   // Genome build
-  genomeRelease: 'grch37' | 'grch38'
+  genomeBuild?: GenomeBuild
   // Locus to go to, e.g., "chr1:1,900,000-2,000,000"
   locus?: string
 }
 
 // Define the props.
-const props = withDefaults(defineProps<Props>(), { locus: '' })
+const props = withDefaults(defineProps<Props>(), { genomeBuild: 'grch37', locus: '' })
 
 /** The <div> to show the browser in. */
 const genomeBrowserDivRef = ref(null)
@@ -28,7 +29,7 @@ const igvBrowser = ref(null)
  * @param value The genome build name.
  * @returns The translated genome build name. (hg19/hg38)
  */
-const translateGenome = (value: any) => {
+const translateGenome = (value: GenomeBuild) => {
   if (value === 'grch37') {
     return 'hg19'
   } else if (value === 'grch38') {
@@ -51,10 +52,10 @@ const addTracks = (browser: any) => {
 
 // Watch changes to the genome (requires full reload).
 watch(
-  () => props.genomeRelease,
+  () => props.genomeBuild,
   () => {
     ;(igvBrowser.value! as GenomeBrowser)
-      .loadGenome(translateGenome(props.genomeRelease))
+      .loadGenome(translateGenome(props.genomeBuild))
       .then((browser: GenomeBrowser) => {
         browser.search(props.locus)
       })
@@ -78,7 +79,7 @@ watch(
 onMounted(() => {
   igv
     .createBrowser(genomeBrowserDivRef.value, {
-      genome: translateGenome(props.genomeRelease),
+      genome: translateGenome(props.genomeBuild),
       locus: props.locus
     })
     .then((browser: GenomeBrowser) => {

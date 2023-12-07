@@ -4,10 +4,10 @@ import { VMenu } from 'vuetify/components'
 
 import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
-import HeaderDetailPage from '../HeaderDetailPage.vue'
+import PageHeader from '../PageHeader.vue'
 
 const geneData = {
   storeState: 'active',
@@ -21,22 +21,22 @@ const geneData = {
   }
 }
 
-describe.concurrent('HeaderDetailPage', async () => {
+describe.concurrent('PageHeader', async () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })
 
   it('renders the gene symbol and nav links', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: HeaderDetailPage, template: true },
+      { component: PageHeader, template: true },
       {
         initialStoreState: geneData
       }
     )
 
-    const store = useGeneInfoStore()
+    const store = usegeneInfoStore()
     store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
+    store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     const logo = wrapper.find('#logo')
@@ -47,14 +47,14 @@ describe.concurrent('HeaderDetailPage', async () => {
 
   it('renders the search bar', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: HeaderDetailPage, template: true },
+      { component: PageHeader, template: true },
       {
         initialStoreState: geneData
       }
     )
-    const store = useGeneInfoStore()
+    const store = usegeneInfoStore()
     store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
+    store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     // search bar value is updated to "HGNC:1100"
@@ -69,14 +69,14 @@ describe.concurrent('HeaderDetailPage', async () => {
     )
 
     const { wrapper, router } = await setupMountedComponents(
-      { component: HeaderDetailPage, template: true },
+      { component: PageHeader, template: true },
       {
         initialStoreState: geneData
       }
     )
-    const store = useGeneInfoStore()
+    const store = usegeneInfoStore()
     store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
+    store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     // search bar value is updated to "HGNC:1100"
@@ -92,8 +92,8 @@ describe.concurrent('HeaderDetailPage', async () => {
 
     expect(router.push).toHaveBeenCalledOnce()
     expect(router.push).toHaveBeenCalledWith({
-      name: 'gene',
-      params: { searchTerm: 'HGNC:1100', genomeRelease: 'grch37' }
+      name: 'gene-details',
+      params: { gene: 'BRCA1' }
     })
   })
 })

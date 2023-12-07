@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import { type Seqvar } from '@/lib/genomicVars'
 import { roundIt, separateIt as sep } from '@/lib/utils'
-import { type SmallVariant } from '@/stores/variantInfo'
 
-const props = defineProps<{
-  smallVar: SmallVariant | null
-  varAnnos: any | null
+interface Props {
+  seqvar?: Seqvar
+  varAnnos?: any
   dataset: string
-}>()
+}
+
+const props = defineProps<Props>()
 
 const FREQ_DIGITS = 5
 
@@ -56,7 +58,7 @@ const sexExpanded: any = ref({})
 </script>
 
 <template>
-  <template v-if="smallVar === null">
+  <template v-if="!seqvar">
     <v-skeleton-loader type="table" />
   </template>
   <template v-else>
@@ -66,22 +68,20 @@ const sexExpanded: any = ref({})
           <template v-if="props.dataset === 'gnomad_exomes'"> gnomAD Exomes </template>
           <template v-if="props.dataset === 'gnomad_genomes'"> gnomAD Genomes </template>
           <a
-            v-if="smallVar.release == 'grch37'"
-            :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
-              /^chr/,
-              ''
-            )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
+            v-if="seqvar.genomeBuild == 'grch37'"
+            :href="`https://gnomad.broadinstitute.org/variant/${seqvar.chrom.replace(/^chr/, '')}-${
+              seqvar.pos
+            }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r2_1`"
             target="_blank"
           >
             <v-icon>mdi-launch</v-icon>
             @gnomAD
           </a>
           <a
-            v-if="smallVar.release == 'grch38'"
-            :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
-              /^chr/,
-              ''
-            )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
+            v-if="seqvar.genomeBuild == 'grch38'"
+            :href="`https://gnomad.broadinstitute.org/variant/${seqvar.chrom.replace(/^chr/, '')}-${
+              seqvar.pos
+            }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r3`"
             target="_blank"
           >
             <v-icon>mdi-launch</v-icon>
@@ -247,21 +247,19 @@ const sexExpanded: any = ref({})
         No allele frequency information available in local database. Try to lookup the variant
         directly:
         <a
-          v-if="smallVar.release == 'grch37'"
-          :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
-            /^chr/,
-            ''
-          )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r2_1`"
+          v-if="seqvar.genomeBuild == 'grch37'"
+          :href="`https://gnomad.broadinstitute.org/variant/${seqvar.chrom.replace(/^chr/, '')}-${
+            seqvar.pos
+          }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r2_1`"
         >
           <v-icon>mdi-launch</v-icon>
           gnomAD
         </a>
         <a
-          v-if="smallVar.release == 'grch38'"
-          :href="`https://gnomad.broadinstitute.org/variant/${smallVar.chromosome.replace(
-            /^chr/,
-            ''
-          )}-${smallVar.start}-${smallVar.reference}-${smallVar.alternative}?dataset=gnomad_r3`"
+          v-if="seqvar.genomeBuild == 'grch38'"
+          :href="`https://gnomad.broadinstitute.org/variant/${seqvar.chrom.replace(/^chr/, '')}-${
+            seqvar.pos
+          }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r3`"
         >
           <v-icon>mdi-launch</v-icon>
           gnomAD

@@ -3,24 +3,34 @@ import { computed, ref, watch } from 'vue'
 import { onMounted } from 'vue'
 
 import GeneListEntry from '@/components/StrucvarDetails/GeneListCard/GeneListEntry.vue'
+import { type Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
+import { type Consequence } from '@/stores/svInfo'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any
 
-const props = withDefaults(
-  defineProps<{
-    currentSvRecord: any | undefined
-    genesInfos: GeneInfo[] | undefined
-    storeState: StoreState | undefined
-    selectedGeneHgncId: string | null
-    genomeRelease?: 'grch37' | 'grch38'
-  }>(),
-  {
-    selectedGeneHgncId: null,
-    genomeRelease: 'grch37'
-  }
-)
+/** Type for this component's props. */
+interface Props {
+  /** Strucvar to be displayed for. */
+  // eslint-disable-next-line vue/require-default-prop
+  currentStrucvarRecord?: Strucvar
+  /** The consequences to be displayed. */
+  // eslint-disable-next-line vue/require-default-prop
+  csq?: Consequence[]
+  /** Gene info records to list for. */
+  // eslint-disable-next-line vue/require-default-prop
+  genesInfos?: GeneInfo[]
+  /** The state of the store that we display for. */
+  storeState?: StoreState
+  /** The HGNC ID of the selected gene. */
+  // eslint-disable-next-line vue/require-default-prop
+  selectedGeneHgncId?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  storeState: StoreState.Initial
+})
 
 const emit = defineEmits(['update:selectedGeneHgncId'])
 
@@ -53,7 +63,7 @@ const TX_EFFECT_LABELS: { [key: string]: string } = {
 /** Helper mapping from gene HGNC ID to worst transcript effect. */
 const hgncToEffect = computed<{ [key: string]: string }>(() => {
   const hgncToEffect: { [key: string]: string } = {}
-  for (const result of props.currentSvRecord.result ?? []) {
+  for (const result of props.csq ?? []) {
     const txEffect = result.transcript_effects[0]
     if (txEffect) {
       hgncToEffect[result.hgnc_id] = TX_EFFECT_LABELS[txEffect]
@@ -217,7 +227,7 @@ onMounted(() => selectFirst(props.storeState))
               :sort-key="sortKey"
               :sort-order="sortOrder"
               :is-selected="isSelected(item as any)"
-              :genome-release="genomeRelease"
+              :genome-build="currentStrucvarRecord?.genomeBuild ?? 'grch37'"
               @toggle-selected="() => toggleSelect(item as any)"
             />
           </template>

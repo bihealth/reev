@@ -5,7 +5,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { AuthClient } from '@/api/auth'
 import { UsersClient } from '@/api/users'
 import { UtilsClient } from '@/api/utils'
-import { search } from '@/lib/utils'
 import { useBookmarksStore } from '@/stores/bookmarks'
 import { useCaseStore } from '@/stores/case'
 import { type OAuthAccount, useUserStore } from '@/stores/user'
@@ -14,7 +13,7 @@ import { type OAuthAccount, useUserStore } from '@/stores/user'
 const CaseInformationCard = defineAsyncComponent(
   () => import('@/components/CaseInformationCard.vue')
 )
-const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 
 const bookmarksStore = useBookmarksStore()
 const caseStore = useCaseStore()
@@ -123,12 +122,7 @@ const handleProviderAssociation = async (name: string) => {
  * @param query Query to search for
  */
 const performSearch = async (query: string) => {
-  const routeLocation: any = await search(query, 'grch37')
-  if (routeLocation) {
-    router.push(routeLocation)
-  } else {
-    console.error(`no route found for ${query}`)
-  }
+  await router.push({ path: '/search', query: { q: query } })
 }
 
 const loadDataToStore = async () => {
@@ -146,7 +140,7 @@ watch(() => route.hash, scrollToSection)
 </script>
 
 <template>
-  <HeaderDefault />
+  <PageHeader />
   <v-container fill-height fluid>
     <div v-if="userStore.currentUser">
       <v-navigation-drawer location="right" class="overflow-auto">

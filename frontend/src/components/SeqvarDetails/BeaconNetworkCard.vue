@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { type SmallVariant } from '@/stores/variantInfo'
+import { type Seqvar } from '@/lib/genomicVars'
 
 interface Props {
-  smallVariant?: SmallVariant | null
+  seqvar?: Seqvar
 }
 
 const props = defineProps<Props>()
@@ -12,20 +12,20 @@ const props = defineProps<Props>()
 const beaconAddress = ref('')
 
 const loadBeacon = () => {
-  if (!props.smallVariant) {
+  if (!props.seqvar) {
     return
   }
   beaconAddress.value =
     'https://beacon-network.org:443/#/widget?rs=' +
-    props.smallVariant.release +
+    props.seqvar.genomeBuild +
     '&chrom=' +
-    props.smallVariant.chromosome +
+    props.seqvar.chrom +
     '&pos=' +
-    props.smallVariant.start +
+    props.seqvar.pos +
     '&ref=' +
-    props.smallVariant.reference +
+    props.seqvar.del +
     '&allele=' +
-    props.smallVariant.alternative
+    props.seqvar.ins
 }
 </script>
 

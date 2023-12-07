@@ -1,6 +1,7 @@
 /**
  * Store for handling per-variant ACMG rating.
  */
+import equal from 'fast-deep-equal'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -15,8 +16,8 @@ import {
   Presence,
   StateSourceCNV
 } from '@/components/StrucvarDetails/ClinsigCard.c'
+import { type Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-import { type SvRecord } from '@/stores/svInfo'
 
 const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
@@ -24,8 +25,8 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  /** The small variant that acmgRating are handled for. */
-  const svRecord = ref<SvRecord | null>(null)
+  /** The structural variant that acmgRating are handled for. */
+  const strucvar = ref<Strucvar | undefined>(undefined)
 
   /** The small variants ACMG rating. */
   const acmgRating = ref<MultiSourceAcmgCriteriaCNVState>(
@@ -38,7 +39,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
   function clearData() {
     storeState.value = StoreState.Initial
     acmgRating.value = new MultiSourceAcmgCriteriaCNVState('DEL')
-    svRecord.value = null
+    strucvar.value = undefined
   }
 
   /** Helper function to get Enum key based on Enum value.
@@ -49,19 +50,24 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
   function getEnumKeyByEnumValue<T extends { [index: string]: string }>(
     myEnum: T,
     enumValue: string
-  ): keyof T | null {
+  ): keyof T | undefined {
     const keys = Object.keys(myEnum).filter((x) => myEnum[x] == enumValue)
-    return keys.length > 0 ? keys[0] : null
+    return keys.length > 0 ? keys[0] : undefined
   }
 
   /**
-   * Retrieve the ACMG rating for a structural variant.
+   * Load data from the server.
    *
-   * @param smallVar The small variant to retrieve the ACMG rating for.
+   * @param strucvar$ The structural variant to use compute ACMG rating for.
+   * @param forceReload Whether to force-reload in case the variant is the same.
    */
-  const fetchAcmgRating = async (svRec: SvRecord) => {
-    // Do not re-load data if the small variant is the same
-    if (svRec === svRecord.value) {
+  const fetchAcmgRating = async (strucvar$: Strucvar, forceReload: boolean = false) => {
+    // Protect against loading multiple times.
+    if (
+      !forceReload &&
+      storeState.value !== StoreState.Initial &&
+      equal(strucvar$, strucvar.value)
+    ) {
       return
     }
 
@@ -69,13 +75,13 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
     clearData()
 
     // Init acmgCriteria
-    acmgRating.value = new MultiSourceAcmgCriteriaCNVState(svRec.svType)
+    acmgRating.value = new MultiSourceAcmgCriteriaCNVState(strucvar$.svType)
 
     // Load data from AutoCNV via API
     storeState.value = StoreState.Loading
     try {
       // Set presence for all criteria to absent and score to default
-      if (svRec.svType === 'DUP') {
+      if (strucvar$.svType === 'DUP') {
         for (const criteria of ACMG_CRITERIA_CNV_GAIN) {
           const criteriaKey = getEnumKeyByEnumValue(AcmgCriteriaCNVGain, criteria)
           acmgRating.value.setPresence(
@@ -94,7 +100,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
           )
         }
         acmgRating.value.setUserToAutoCNV()
-      } else if (svRec.svType === 'DEL') {
+      } else if (strucvar$.svType === 'DEL') {
         for (const criteria of ACMG_CRITERIA_CNV_LOSS) {
           const criteriaKey = getEnumKeyByEnumValue(AcmgCriteriaCNVLoss, criteria)
           acmgRating.value.setPresence(
@@ -116,12 +122,10 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
       }
 
       // Retrieve ACMG rating from AutoCNV
-      const chromosome = svRec.chromosome.replace('chr', '')
-      const start = svRec.start
-      const end = svRec.end
-      const svType = svRec.svType === 'DEL' ? 'del' : 'dup'
+      const { chrom, start, stop, svType } = strucvar$
+      const func = svType === 'DEL' ? 'del' : 'dup'
       const response = await fetch(
-        `${API_BASE_URL}remote/cnv/acmg/?chromosome=${chromosome}&start=${start}&end=${end}&func=${svType}`,
+        `${API_BASE_URL}remote/cnv/acmg/?chromosome=${chrom}&start=${start}&end=${stop}&func=${func}`,
         { method: 'GET' }
       )
       if (!response.ok) {
@@ -134,7 +138,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
         acmgRatingAutoCNVData.job.result.auto_evidence_score
       )) {
         const score: number = +(value as string)
-        if (svRec.svType === 'DUP') {
+        if (strucvar$.svType === 'DUP') {
           const criteria = 'G' + criteriaId
           const criteriaKey = getEnumKeyByEnumValue(AcmgCriteriaCNVGain, criteria)
           acmgRating.value.setPresence(
@@ -148,7 +152,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
             score as number
           )
           acmgRating.value.setUserToAutoCNV()
-        } else if (svRec.svType === 'DEL') {
+        } else if (strucvar$.svType === 'DEL') {
           const criteria = 'L' + criteriaId
           const criteriaKey = getEnumKeyByEnumValue(AcmgCriteriaCNVLoss, criteria)
           acmgRating.value.setPresence(
@@ -165,7 +169,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
         }
       }
 
-      svRecord.value = svRec
+      strucvar.value = strucvar$
       storeState.value = StoreState.Active
     } catch (e) {
       clearData()
@@ -175,7 +179,7 @@ export const useSvAcmgRatingStore = defineStore('svAcmgRating', () => {
   }
 
   return {
-    svRecord,
+    strucvar,
     storeState,
     acmgRating,
     clearData,

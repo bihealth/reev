@@ -1,3 +1,10 @@
+<!--
+This component provides access to semi-automatic ACMG classification of seqvars.
+
+Any errors on interacting with the server are communicated to the parent
+component via the `errorDisplay` event and are handled there.
+-->
+
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
@@ -8,21 +15,26 @@ import {
   Presence,
   StateSourceCNV
 } from '@/components/StrucvarDetails/ClinsigCard.c'
-// -- local components ---------------------------------------------------------
 import CnGain from '@/components/StrucvarDetails/ClinsigCard/CnGain.vue'
 import CnLoss from '@/components/StrucvarDetails/ClinsigCard/CnLoss.vue'
 import SummarySheet from '@/components/StrucvarDetails/ClinsigCard/SummarySheet.vue'
+import type { Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
-import type { SvRecord } from '@/stores/svInfo'
 
 /** Data type used for component's props. */
 interface Props {
-  svRecord?: SvRecord
+  strucvar?: Strucvar
 }
 
 /** Define component's props. */
 const props = defineProps<Props>()
+
+/** Define emits. */
+const emit = defineEmits<{
+  /** Display error to user. */
+  (e: 'errorDisplay', msg: string): void
+}>()
 
 /** Store to use for ACMG ratings of structural variants. */
 const acmgRatingStore = useSvAcmgRatingStore()
@@ -30,14 +42,22 @@ const acmgRatingStore = useSvAcmgRatingStore()
 /** Component state: whether display of conflicting sections is enabled. */
 const showConflictingSections = ref<boolean>(false)
 
+/** Helper function to run a function in a try/catch and emit `errorDisplay` otherwise.. */
+const tryCatchEmitErrorDisplay = async (fn: () => Promise<void>) => {
+  try {
+    await fn()
+  } catch (err) {
+    emit('errorDisplay', `Ooops, there was an error: ${err}`)
+  }
+}
+
 /**
  * Update user ACMG rating values to those of AutoCNV.
  */
 const refetchAcmgRating = () => {
-  if (!acmgRatingStore.acmgRating) {
-    return
+  if (acmgRatingStore.acmgRating) {
+    tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserToAutoCNV())
   }
-  acmgRatingStore.acmgRating.setUserToAutoCNV()
 }
 
 /** Calculate ACMG class from data in `acmgRatingStore`. */
@@ -60,18 +80,19 @@ const calculateAcmgScore = computed((): number => {
 
 /** Fetch ACMG rating of SV from server when it changed. */
 watch(
-  () => [props.svRecord, acmgRatingStore.storeState],
+  () => [props.strucvar, acmgRatingStore.storeState],
   async () => {
-    if (props.svRecord && acmgRatingStore.storeState === StoreState.Active) {
-      await acmgRatingStore.fetchAcmgRating(props.svRecord)
+    if (props.strucvar && acmgRatingStore.storeState === StoreState.Active) {
+      await acmgRatingStore.fetchAcmgRating(props.strucvar)
     }
   }
 )
 
 /** Fetch ACMG rating when mounted. */
 onMounted(async () => {
-  if (props.svRecord) {
-    await acmgRatingStore.fetchAcmgRating(props.svRecord)
+  if (props.strucvar) {
+    const strucvar = props.strucvar // so that it is not undefined
+    tryCatchEmitErrorDisplay(async () => acmgRatingStore.fetchAcmgRating(strucvar))
   }
 })
 
@@ -119,13 +140,13 @@ const switchCriteria = (
             <v-col cols="3"></v-col>
           </v-col>
         </v-row>
-        <div v-if="props.svRecord?.svType === 'DEL'">
+        <div v-if="props.strucvar?.svType === 'DEL'">
           <CnLoss
             :show-conflicting-sections="showConflictingSections"
             @switch-criteria="(criteria, presence) => switchCriteria(criteria, presence)"
           />
         </div>
-        <div v-if="props.svRecord?.svType === 'DUP'">
+        <div v-if="props.strucvar?.svType === 'DUP'">
           <CnGain
             :show-conflicting-sections="showConflictingSections"
             @switch-criteria="(criteria, presence) => switchCriteria(criteria, presence)"
@@ -146,21 +167,3 @@ const switchCriteria = (
     </v-card-actions>
   </v-card>
 </template>
-
-<style scoped>
-.section {
-  margin: 10px;
-  border: 2px solid rgb(229, 85, 64);
-  border-radius: 10px;
-  padding: 5px 10px;
-}
-.switch {
-  margin-left: 10px;
-  padding: 0px;
-}
-
-.slider {
-  margin-top: 10px;
-}
-</style>
-@/components/StrucvarDetails/ClinsigCard.c

@@ -7,12 +7,13 @@ It supports them by providing aggregated information on genomic variants.
 .. toctree::
    :hidden:
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Contents
 
    acmg_seqvars_criteria
    acmg_seqvars_details
    acmg_cnvs_criteria
    acmg_cnvs_details
+   ui_urls
 
 .. toctree::
    :hidden:

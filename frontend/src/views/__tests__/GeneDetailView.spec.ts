@@ -11,10 +11,10 @@ import ConditionsCard from '@/components/GeneDetails/ConditionsCard.vue'
 import ExpressionCard from '@/components/GeneDetails/ExpressionCard.vue'
 import OverviewCard from '@/components/GeneDetails/OverviewCard.vue'
 import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 import GeneDetailView from '@/views/GeneDetailView.vue'
 
@@ -28,10 +28,10 @@ const geneData = {
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
-  const geneInfoStore = useGeneInfoStore(pinia)
+  const geneInfoStore = usegeneInfoStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
     geneInfoStore.storeState = StoreState.Active
-    geneInfoStore.geneSymbol = geneSymbol
+    geneInfoStore.hgncId = geneSymbol
     geneInfoStore.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
     geneInfoStore.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
     geneInfoStore.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))
@@ -39,7 +39,7 @@ const makeWrapper = () => {
   geneInfoStore.loadData = mockLoadData
 
   geneInfoStore.storeState = StoreState.Active
-  geneInfoStore.geneSymbol = geneData.geneSymbol
+  geneInfoStore.hgncId = geneData.geneSymbol
   geneInfoStore.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
   geneInfoStore.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
   geneInfoStore.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))
@@ -61,7 +61,7 @@ const makeWrapper = () => {
 
 describe.concurrent('GeneDetailView', async () => {
   beforeEach(() => {
-    // Disable Vue warn. This warning is caused by BookmarkButton.vue due to
+    // Disable Vue warn. This warning is caused by BookmarkListItem.vue due to
     // unproper mocking of the store and props passed to the component.
     const spy = vi.spyOn(console, 'warn')
     spy.mockImplementation(() => {})
@@ -70,7 +70,7 @@ describe.concurrent('GeneDetailView', async () => {
   it('renders the header', async () => {
     const { wrapper } = await makeWrapper()
 
-    const header = wrapper.findComponent(HeaderDetailPage)
+    const header = wrapper.findComponent(PageHeader)
     const searchBar = wrapper.findComponent(SearchBar)
     expect(header.exists()).toBe(true)
     expect(searchBar.exists()).toBe(true)
@@ -115,7 +115,7 @@ describe.concurrent('GeneDetailView', async () => {
   it('emits update in header', async () => {
     const { wrapper } = await makeWrapper()
 
-    const header = wrapper.findComponent(HeaderDetailPage)
+    const header = wrapper.findComponent(PageHeader)
     expect(header.exists()).toBe(true)
     await header.setValue('HGNC:1100', 'searchTermRef')
     await header.setValue('grch37', 'genomeReleaseRef')
@@ -153,17 +153,17 @@ describe.concurrent('GeneDetailView', async () => {
 
   it('redirects if mounting with storeState Error', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const store = useGeneInfoStore(pinia)
+    const store = usegeneInfoStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
       store.storeState = StoreState.Error
-      store.geneSymbol = geneSymbol
+      store.hgncId = geneSymbol
       store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
       store.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
       store.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))
     })
     const mockClearData = vi.fn().mockImplementation(() => {
       store.storeState = StoreState.Initial
-      store.geneSymbol = ''
+      store.hgncId = ''
       store.geneInfo = {}
       store.geneClinvar = {}
       store.transcripts = {}
@@ -172,7 +172,7 @@ describe.concurrent('GeneDetailView', async () => {
     store.clearData = mockClearData
 
     store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
+    store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
     store.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
     store.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))

@@ -1,16 +1,35 @@
+<!--
+This view displays the details for one sequence variants.
+
+As done in all detail views, the component loads the information through
+the stores in a function `loadDataToStore`.  This is called both on
+mounted and when the props change.
+
+A canonical variant description will be given by the `seqvarDesc` prop.
+Optionally, a query parameter `orig` can be given that is the user's
+original input which will be displayed rather than the genome variant.
+
+Note that the view first needs to resolve the seqvar description which
+may fail in which case the view will display an error.
+-->
+
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-// Components
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
+import { type Seqvar } from '@/lib/genomicVars'
+import { resolveSeqvar } from '@/lib/query'
+import { scrollToSection } from '@/lib/utils'
+import { useCaseStore } from '@/stores/case'
+import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { useVariantInfoStore } from '@/stores/variantInfo'
-import { type SmallVariant } from '@/stores/variantInfo'
 
-const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+// Define the async components to use in this view.
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 
 const GeneOverviewCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/OverviewCard.vue')
@@ -51,64 +70,130 @@ const VariantValidatorCard = defineAsyncComponent(
   () => import('@/components/SeqvarDetails/VariantValidatorCard.vue')
 )
 
+/** Type for this component's props. */
 export interface Props {
-  searchTerm?: string
-  genomeRelease?: 'grch37' | 'grch38'
+  /** Description of the seqvar to display for.
+   *
+   * This will be a canonical hyphen-separated description with a prefix of
+   * the genome build, for example `grch37-17-41215920-G-T`.
+   */
+  seqvarDesc: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  searchTerm: '',
-  genomeRelease: 'grch37'
-})
+/** The component's props; no need for defaults. */
+const props = defineProps<Props>()
 
+/** The global Router objects. */
 const router = useRouter()
+/** The global Route object. */
 const route = useRoute()
 
 /** Information about the sequence variant, used to fetch information on load. */
 const variantInfoStore = useVariantInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
-const geneInfoStore = useGeneInfoStore()
+const geneInfoStore = usegeneInfoStore()
 /** ACMG criteria store. */
 const acmgRatingStore = useVariantAcmgRatingStore()
+/** Currently active case - for HPO terms. */
+const caseStore = useCaseStore()
 
-const scrollToSection = async () => {
-  const sectionId = route.hash.slice(1)
-  if (!sectionId) {
-    return
+/** The user's original input from the query, if given. */
+const orig = computed<string | undefined>(() => (route.query.orig as string) || undefined)
+/** The variant identifier for the bookmark. */
+const idForBookmark = computed<string | undefined>(() => {
+  const seqvar$ = seqvar.value
+  if (seqvar$) {
+    return `${seqvar$.genomeBuild}-${seqvar$.chrom}-${seqvar$.pos}-${seqvar$.del}-${seqvar$.ins}`
+  } else {
+    return undefined
   }
-  const elem = document.getElementById(sectionId)
-  elem?.scrollIntoView()
+})
+
+/** Component state; resolved seqvar, resolved in `loadDataToStore()`. */
+const seqvar = ref<Seqvar | undefined>(undefined)
+/** Component state; use for opening sections by default. */
+const openedSection = ref<string[]>(['gene', 'seqvar'])
+/** Component state; any error message. */
+const errorMessage = ref<string>('')
+/** Component state; control snackbar display. */
+const errSnackbarShow = ref<boolean>(false)
+/** Component state; error message for snack bar. */
+const errSnackbarMsg = ref<string>('')
+
+/**
+ * Handler for `@display-error` event.
+ */
+const handleDisplayError = async (msg: string) => {
+  errSnackbarMsg.value = msg
+  errSnackbarShow.value = true
 }
 
+/**
+ * Helper that reads the props and initializes the stores.
+ *
+ * The function will first resolve the sequence variant description
+ * and display an error message if this fails.
+ */
 const loadDataToStore = async () => {
-  await variantInfoStore.loadData(props.searchTerm, props.genomeRelease)
-  if (variantInfoStore.geneInfo?.hgnc?.agr) {
-    await geneInfoStore.loadData(variantInfoStore.geneInfo?.hgnc?.agr, props.genomeRelease)
-  } else {
-    await geneInfoStore.clearData()
+  const query = router.currentRoute.value.query
+
+  // Obtain `?genomeBuild=`, fallback to 'grch37', and obtain as `GenomeBuild`.
+  let genomeBuild: GenomeBuild
+  try {
+    genomeBuild = guessGenomeBuild(query.genomeBuild ?? 'grch37')
+  } catch (err) {
+    errorMessage.value = String(err)
+    return
   }
-  acmgRatingStore.fetchAcmgRating(variantInfoStore.smallVariant as SmallVariant)
-  await scrollToSection()
+
+  // Resolve the seqvar description to a `Seqvar` object, or fail with parsing.
+  try {
+    seqvar.value = await resolveSeqvar(props.seqvarDesc, genomeBuild)
+  } catch (err) {
+    errorMessage.value = `Invalid sequence variant description "${props.seqvarDesc}": ${err}`
+    return
+  }
+
+  // Also, resolve the original input of the user so we don't display arbitrary
+  // strings.
+  if (orig.value) {
+    try {
+      await resolveSeqvar(orig.value, genomeBuild)
+    } catch (err) {
+      errorMessage.value = `Invalid original input "${orig.value}".`
+      return
+    }
+  }
+
+  // Finally, load sequence variant, ACMG rating information, and case info.
+  await Promise.all([
+    variantInfoStore.loadData(seqvar.value).then(() => {
+      // If we have gene information, load the gene information.  Otherwise,
+      // clear the gene info store.
+      if (variantInfoStore.geneInfo?.hgnc?.agr) {
+        return geneInfoStore.loadData(variantInfoStore.geneInfo?.hgnc?.agr, genomeBuild)
+      } else {
+        geneInfoStore.clearData()
+        return Promise.resolve()
+      }
+    }),
+    acmgRatingStore.fetchAcmgRating(seqvar.value),
+    caseStore.loadCase()
+  ])
+  // Once all data has been loaded, scroll to the given section.
+  await scrollToSection(route)
 }
 
 // When the component is mounted or the search term is changed through
 // the router then we need to fetch the variant information from the backend
 // through the store.
 onMounted(loadDataToStore)
-
-watch(() => props.searchTerm, loadDataToStore)
-watch(() => route.hash, scrollToSection)
-
-// If variantInfoStore.storeState is StoreState.Error then redirect to the
-// home page.
+// Watch change of HGNC symbol and hash and update store or scroll to
+// selected section.
+watch(() => props.seqvarDesc, loadDataToStore)
 watch(
-  () => variantInfoStore.storeState,
-  (storeState) => {
-    if (storeState == StoreState.Error) {
-      variantInfoStore.clearData()
-      router.push({ name: 'home' })
-    }
-  }
+  () => route.hash,
+  () => scrollToSection(route)
 )
 
 /** Data type for `SECTIONS` below. */
@@ -136,32 +221,30 @@ const SECTIONS: { [key: string]: Section[] } = {
     { id: 'seqvar-variantvalidator', title: 'VariantValidator' }
   ]
 }
-
-// We need to use refs here because of props mutations in the parent
-const searchTermRef = ref(props.searchTerm)
-const genomeReleaseRef = ref(props.genomeRelease)
-
-// The `v-list-group` API needs this here so we can enable sections by default.
-const openedSection = ref<string[]>(['gene', 'seqvar'])
 </script>
 
 <template>
   <v-app>
-    <HeaderDetailPage
-      v-model:search-term="searchTermRef"
-      v-model:genome-release="genomeReleaseRef"
-    />
+    <v-snackbar v-model="errSnackbarShow" multi-line>
+      {{ errSnackbarMsg }}
+
+      <template #actions>
+        <v-btn color="red" variant="text" @click="errSnackbarShow = false"> Close </v-btn>
+      </template>
+    </v-snackbar>
+
+    <PageHeader />
     <v-navigation-drawer :elevation="3" :permanent="true">
       <div v-if="variantInfoStore.storeState == StoreState.Active">
-        <v-list v-model:opened="openedSection">
-          <BookmarkListItem :id="searchTermRef" type="seqvar" />
+        <v-list v-model:opened="openedSection" density="compact">
+          <BookmarkListItem :id="idForBookmark" type="seqvar" />
 
           <v-list-subheader> GENE </v-list-subheader>
 
-          <template v-if="geneInfoStore.geneSymbol?.length">
+          <template v-if="geneInfoStore.hgncId?.length">
             <v-list-group value="gene">
               <template #activator="{ props: vProps }">
-                <v-list-item :value="vProps" prepend-icon="mdi-dna">
+                <v-list-item :value="vProps" prepend-icon="mdi-dna" class="text-no-break">
                   Gene
                   <span class="font-italic">
                     {{
@@ -179,7 +262,7 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
                 density="compact"
                 @click="router.push({ hash: `#${section.id}` })"
               >
-                <v-list-item-title>
+                <v-list-item-title class="text-no-break">
                   {{ section.title }}
                 </v-list-item-title>
               </v-list-item>
@@ -193,11 +276,9 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
 
           <v-list-group value="seqvar">
             <template #activator="{ props: vProps }">
-              <v-list-item
-                :value="vProps"
-                prepend-icon="mdi-magnify-expand"
-                title="Variant Details"
-              />
+              <v-list-item :value="vProps" prepend-icon="mdi-magnify-expand" class="text-no-wrap">
+                Variant
+              </v-list-item>
             </template>
 
             <v-list-item
@@ -207,7 +288,7 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
               density="compact"
               @click="router.push({ hash: `#${section.id}` })"
             >
-              <v-list-item-title>
+              <v-list-item-title class="text-no-break">
                 {{ section.title }}
               </v-list-item-title>
             </v-list-item>
@@ -217,6 +298,21 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
     </v-navigation-drawer>
 
     <v-main class="mb-3 mx-3">
+      <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
+        <div>
+          {{ errorMessage }}
+        </div>
+        <v-btn
+          :to="{ name: 'home' }"
+          prepend-icon="mdi-arrow-left-circle-outline"
+          class="mt-3"
+          variant="outlined"
+          color="white"
+        >
+          Back to home
+        </v-btn>
+      </v-alert>
+
       <template v-if="variantInfoStore?.geneInfo">
         <div id="gene-overview" class="mt-3">
           <GeneOverviewCard :gene-info="variantInfoStore?.geneInfo" />
@@ -234,59 +330,54 @@ const openedSection = ref<string[]>(['gene', 'seqvar'])
             :ensembl-gene-id="variantInfoStore?.geneInfo?.gtex?.ensemblGeneId"
           />
         </div>
-        <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
+        <div v-if="geneInfoStore?.geneClinvar && seqvar?.genomeBuild" id="gene-clinvar">
           <GeneClinvarCard
             :gene-clinvar="geneInfoStore.geneClinvar"
             :transcripts="geneInfoStore.transcripts"
-            :genome-release="genomeReleaseRef"
+            :genome-build="seqvar?.genomeBuild"
             :gene-info="geneInfoStore?.geneInfo"
             :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
           />
         </div>
       </template>
-
       <div>
-        <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
-
-        <div id="sevar-clinsig">
-          <ClinsigCard :small-variant="variantInfoStore.smallVariant" />
+        <div class="text-h4 mt-6 mb-3 ml-1">
+          Variant Details
+          <template v-if="orig">
+            <small class="font-italic">
+              {{ orig }}
+            </small>
+          </template>
         </div>
-
+        <div id="seqvar-clinsig">
+          <ClinsigCard :seqvar="variantInfoStore.seqvar" @error-display="handleDisplayError" />
+        </div>
         <div id="seqvar-csq" class="mt-3">
           <VariantDetailsTxCsq :tx-csq="variantInfoStore.txCsq" />
         </div>
-
         <div id="seqvar-clinvar" class="mt-3">
           <VariantDetailsClinvar :clinvar="variantInfoStore.varAnnos?.clinvar" />
         </div>
-
         <div id="seqvar-freqs" class="mt-3">
           <VariantDetailsFreqs
-            :small-var="variantInfoStore.smallVariant as SmallVariant"
+            :seqvar="variantInfoStore.seqvar"
             :var-annos="variantInfoStore.varAnnos"
           />
         </div>
-
         <div id="seqvar-scores" class="mt-3">
-          <VariantScoresCard
-            :small-var="variantInfoStore.smallVariant"
-            :var-annos="variantInfoStore.varAnnos"
-          />
+          <VariantScoresCard :var-annos="variantInfoStore.varAnnos" />
         </div>
-
         <div id="seqvar-tools" class="mt-3">
           <VariantToolsCard
-            :small-var="variantInfoStore.smallVariant"
+            :seqvar="variantInfoStore.seqvar"
             :var-annos="variantInfoStore.varAnnos"
           />
         </div>
-
         <div id="seqvar-ga4ghbeacons" class="mt-3">
-          <BeaconNetworkCard :small-variant="variantInfoStore.smallVariant" />
+          <BeaconNetworkCard :seqvar="variantInfoStore.seqvar" />
         </div>
-
         <div id="seqvar-variantvalidator" class="mt-3">
-          <VariantValidatorCard :small-variant="variantInfoStore.smallVariant" />
+          <VariantValidatorCard :seqvar="variantInfoStore.seqvar" />
         </div>
       </div>
     </v-main>

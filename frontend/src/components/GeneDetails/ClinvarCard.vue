@@ -3,6 +3,7 @@ import { defineAsyncComponent } from 'vue'
 
 import ClinvarFreqPlot from '@/components/GeneDetails/ClinvarCard/ClinvarFreqPlot.vue'
 import ClinvarImpact from '@/components/GeneDetails/ClinvarCard/ClinvarImpact.vue'
+import type { GenomeBuild } from '@/lib/genomeBuilds'
 
 const VariationLandscape = defineAsyncComponent(
   () => import('@/components/GeneDetails/ClinvarCard/VariationLandscape.vue')
@@ -11,15 +12,13 @@ const VariationLandscape = defineAsyncComponent(
 export interface Props {
   geneClinvar: any
   geneInfo: any
-  genomeRelease: 'grch37' | 'grch38'
-  transcripts: any | null
+  genomeBuild?: GenomeBuild
+  transcripts?: any
   perFreqCounts: any
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const props = withDefaults(defineProps<Props>(), {
-  geneInfo: null
-})
+const props = defineProps<Props>()
 </script>
 
 <template>
@@ -47,7 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
           <VariationLandscape
             :clinvar="geneClinvar"
             :transcripts="transcripts"
-            :genome-release="genomeRelease"
+            :genome-build="genomeBuild"
             :gene-symbol="geneInfo?.hgnc?.symbol"
           />
         </v-col>

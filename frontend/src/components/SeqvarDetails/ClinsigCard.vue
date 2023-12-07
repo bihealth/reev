@@ -1,3 +1,10 @@
+<!--
+This component provides access to semi-automatic ACMG classification of seqvars.
+
+Any errors on interacting with the server are communicated to the parent
+component via the `errorDisplay` event and are handled there.
+-->
+
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
@@ -10,17 +17,23 @@ import {
   ALL_ACMG_CRITERIA,
   Presence
 } from '@/lib/acmgSeqVar'
+import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import { type SmallVariant } from '@/stores/variantInfo'
 
 /** Data type used for component's props. */
 interface Props {
-  smallVariant?: SmallVariant | null
+  seqvar?: Seqvar
 }
 
 /** Define component's props. */
 const props = defineProps<Props>()
+
+/** Define emits. */
+const emit = defineEmits<{
+  /** Display error to user. */
+  (e: 'errorDisplay', msg: string): void
+}>()
 
 /** Store to use for ACMG ratings of sequence variants. */
 const acmgRatingStore = useVariantAcmgRatingStore()
@@ -30,29 +43,38 @@ const showTerse = ref(false)
 /** Component state: whether to show failed criteria. */
 const showFailed = ref(false)
 
+/** Helper function to run a function in a try/catch and emit `errorDisplay` otherwise.. */
+const tryCatchEmitErrorDisplay = async (fn: () => Promise<void>) => {
+  try {
+    await fn()
+  } catch (err) {
+    emit('errorDisplay', `Ooops, there was an error: ${err}`)
+  }
+}
+
 /** Clear ACMG ratings to result. */
 const unfetchAcmgRating = () => {
-  acmgRatingStore.acmgRating.setUserPresenceAbsent()
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceAbsent())
 }
 
 /** Re-fetch ACMG rating from InterVar. */
 const refetchAcmgRatingInterVar = () => {
-  acmgRatingStore.acmgRating.setUserPresenceInterVar()
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceInterVar())
 }
 
 /** Whether to re-fetch ACMG rating saved on server earlier. */
 const refetchAcmgRatingServer = () => {
-  acmgRatingStore.acmgRating.setUserPresenceServer()
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceServer())
 }
 
 /** Store ACMG rating on server. */
 const saveAcmgRating = () => {
-  acmgRatingStore.saveAcmgRating()
+  tryCatchEmitErrorDisplay(async () => await acmgRatingStore.saveAcmgRating())
 }
 
 /** Delete ACMG rating on server. */
 const deleteAcmgRating = () => {
-  acmgRatingStore.deleteAcmgRating()
+  tryCatchEmitErrorDisplay(async () => await acmgRatingStore.deleteAcmgRating())
 }
 
 /** Overall ACMG rating computed from current criteria state */
@@ -75,10 +97,13 @@ const acmgRatingConflicting = computed((): boolean => {
 
 /** Re-compute ACMG rating from InterVar when the sequence variant changed. */
 watch(
-  () => [props.smallVariant, acmgRatingStore.storeState],
+  () => [props.seqvar, acmgRatingStore.storeState],
   async () => {
-    if (props.smallVariant && acmgRatingStore.storeState === StoreState.Active) {
-      await acmgRatingStore.fetchAcmgRating(props.smallVariant)
+    if (
+      props.seqvar?.genomeBuild === 'grch37' &&
+      acmgRatingStore.storeState !== StoreState.Loading
+    ) {
+      await acmgRatingStore.fetchAcmgRating(props.seqvar)
       if (acmgRatingStore.acmgRatingStatus === false) {
         refetchAcmgRatingInterVar()
       } else {
@@ -90,8 +115,9 @@ watch(
 
 /** Fetch ACMG rating when mounted. */
 onMounted(async () => {
-  if (props.smallVariant) {
-    await acmgRatingStore.fetchAcmgRating(props.smallVariant)
+  if (props.seqvar?.genomeBuild === 'grch37') {
+    const seqvar = props.seqvar // so that it is not undefined in the async function
+    await tryCatchEmitErrorDisplay(async () => await acmgRatingStore.fetchAcmgRating(seqvar))
   }
 })
 </script>
@@ -102,7 +128,13 @@ onMounted(async () => {
     <v-card-subtitle class="text-overline">
       Semi-Automated Pathogenicity Prediction
     </v-card-subtitle>
-    <v-card-text>
+    <v-card-text v-if="seqvar?.genomeBuild !== 'grch37'">
+      <div class="text-center font-italic py-6">
+        Sequence variant ACMG classification is provided by InterVar. This only works for GRCh37 at
+        the moment.
+      </div>
+    </v-card-text>
+    <v-card-text v-else>
       <!-- Top summary sheet and server storage buttons -->
       <v-row>
         <v-col cols="3">

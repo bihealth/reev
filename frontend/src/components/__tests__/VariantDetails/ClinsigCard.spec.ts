@@ -4,9 +4,19 @@ import { nextTick } from 'vue'
 
 import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
-import { setupMountedComponents } from '@/lib/test-utils'
+import type { Seqvar } from '@/lib/genomicVars'
+import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
+
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
+}
 
 const smallVariantInfo = {
   release: 'grch37',
@@ -24,7 +34,7 @@ const makeWrapper = () => {
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
-    store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    store.seqvar = deepCopy(seqvarInfo)
     store.acmgRating = new MultiSourceAcmgCriteriaState()
     store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
     store.acmgRatingStatus = true
@@ -32,7 +42,7 @@ const makeWrapper = () => {
   store.fetchAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
-  store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+  store.seqvar = deepCopy(seqvarInfo)
   store.acmgRating = new MultiSourceAcmgCriteriaState()
   store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
   store.acmgRatingStatus = true

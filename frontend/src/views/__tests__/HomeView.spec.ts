@@ -3,10 +3,10 @@ import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
 import FooterDefault from '@/components/FooterDefault.vue'
-import HeaderDefault from '@/components/HeaderDefault.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 import HomeView from '../HomeView.vue'
@@ -44,7 +44,7 @@ describe.concurrent('HomeView with mocked router', async () => {
         }
       }
     )
-    const header = wrapper.findComponent(HeaderDefault)
+    const header = wrapper.findComponent(PageHeader)
     const footer = wrapper.findComponent(FooterDefault)
     expect(header.exists()).toBe(true)
     expect(footer.exists()).toBe(true)
@@ -121,14 +121,14 @@ describe.concurrent('HomeView with mocked router', async () => {
         }
       }
     )
-    const store = useGeneInfoStore()
+    const store = usegeneInfoStore()
 
     const exampleTerm = wrapper.find('.example')
     expect(exampleTerm.exists()).toBe(true)
     expect(exampleTerm.text()).toBe('BRCA1')
     await exampleTerm.trigger('click')
     await nextTick()
-    expect(store.geneSymbol).toBe('BRCA1')
+    expect(store.hgncId).toBe('BRCA1')
   })
 
   it.skip('correctly uses the router', async () => {
@@ -151,9 +151,9 @@ describe.concurrent('HomeView with mocked router', async () => {
         }
       }
     )
-    const store = useGeneInfoStore()
+    const store = usegeneInfoStore()
     store.storeState = StoreState.Active
-    store.geneSymbol = geneData.geneSymbol
+    store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
 
     // search bar value is updated to "HGNC:1100"
@@ -169,8 +169,8 @@ describe.concurrent('HomeView with mocked router', async () => {
 
     expect(router.push).toHaveBeenCalledOnce()
     expect(router.push).toHaveBeenCalledWith({
-      name: 'gene',
-      params: { searchTerm: 'HGNC:1100', genomeRelease: 'grch37' }
+      name: 'gene-details',
+      params: { gene: 'BRCA1' }
     })
   })
 })

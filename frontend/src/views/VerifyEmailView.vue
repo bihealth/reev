@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <HeaderDefault />
+  <PageHeader />
   <v-container fill-height fluid>
     <v-row v-if="isVerifying" class="align-center fill-height" justify="center">
       <v-progress-circular indeterminate size="64" />

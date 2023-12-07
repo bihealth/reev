@@ -3,11 +3,21 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import * as geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
-
-import { StoreState } from '../misc'
-import { useSvInfoStore } from '../svInfo'
+import type { Strucvar } from '@/lib/genomicVars'
+import { deepCopy } from '@/lib/test-utils'
+import { StoreState } from '@/stores/misc'
+import { useSvInfoStore } from '@/stores/svInfo'
 
 const fetchMocker = createFetchMock(vi)
+
+const strucvarInfo: Strucvar = {
+  genomeBuild: 'grch37',
+  svType: 'DEL',
+  chrom: '17',
+  start: 41176312,
+  stop: 41277500,
+  userRepr: 'DEL-grch37-17-41176312-41277500'
+}
 
 describe.concurrent('svInfo Store', () => {
   beforeEach(() => {
@@ -20,22 +30,20 @@ describe.concurrent('svInfo Store', () => {
     const store = useSvInfoStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
-    expect(store.svTerm).toBe(null)
-    expect(store.currentSvRecord).toBe(null)
+    expect(store.strucvar).toBe(undefined)
     expect(store.genesInfos).toStrictEqual([])
   })
 
   it('should clear state', () => {
     const store = useSvInfoStore()
     store.storeState = StoreState.Active
-    store.svTerm = 'DEL:chr17:41176312:41277500'
+    store.strucvar = deepCopy(strucvarInfo)
     store.genesInfos = JSON.parse(JSON.stringify([geneInfo['genes']['HGNC:1100']]))
 
     store.clearData()
 
     expect(store.storeState).toBe(StoreState.Initial)
-    expect(store.svTerm).toBe(null)
-    expect(store.currentSvRecord).toBe(null)
+    expect(store.strucvar).toBe(undefined)
     expect(store.genesInfos).toStrictEqual([])
   })
 
@@ -48,22 +56,10 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify(geneInfo))
       }
     })
-    await store.loadData('DEL:chr17:41176312:41277500', 'grch37')
+    await store.loadData(deepCopy(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.svTerm).toBe('DEL:chr17:41176312:41277500')
-    expect(store.currentSvRecord).toEqual({
-      chromosome: 'chr17',
-      svType: 'DEL',
-      start: '41176312',
-      end: '41277500',
-      release: 'grch37',
-      result: [
-        {
-          hgnc_id: 'HGNC:1100'
-        }
-      ]
-    })
+    expect(store.strucvar).toStrictEqual(strucvarInfo)
     expect(store.genesInfos).toStrictEqual([geneInfo['genes']['HGNC:1100']])
   })
 
@@ -80,10 +76,10 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-    await store.loadData('DEL:chr17:41176312:41277500', 'grch37')
+    await store.loadData(deepCopy(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Error)
-    expect(store.svTerm).toBe(null)
+    expect(store.strucvar).toBe(undefined)
     expect(store.genesInfos).toStrictEqual([])
   })
 })

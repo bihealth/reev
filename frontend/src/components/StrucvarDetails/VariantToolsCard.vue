@@ -1,93 +1,94 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { type SvRecord } from '@/stores/svInfo'
+import type { GenomeBuild } from '@/lib/genomeBuilds'
+import { type Strucvar } from '@/lib/genomicVars'
 
+/** Type for this component's props. */
 export interface Props {
-  genomeRelease: 'grch37' | 'grch38'
-  svRecord: SvRecord | null
+  genomeBuild?: GenomeBuild
+  // eslint-disable-next-line vue/require-default-prop
+  strucvar?: Strucvar
 }
 
+/** The component's props, fallback for genome build is GRCh37. */
 const props = withDefaults(defineProps<Props>(), {
-  svRecord: null
+  genomeBuild: 'grch37'
 })
 
 const ucscLinkout = computed((): string => {
-  if (!props.svRecord) {
+  if (!props.strucvar) {
     return '#'
   }
-  const db = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
+  const db = props.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
   return (
     `https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=${db}&position=` +
-    `${props.svRecord.chromosome}:${props.svRecord.start}-` +
-    `${props.svRecord.end}`
+    `${props.strucvar.chrom}:${props.strucvar.start}-` +
+    `${props.strucvar.stop}`
   )
 })
 
 const ensemblLinkout = computed((): string => {
-  if (!props.svRecord) {
+  if (!props.strucvar) {
     return '#'
   }
-  const loc = `${props.svRecord.chromosome}:${props.svRecord.start}-${props.svRecord.end}`
-  if (props.genomeRelease === 'grch37') {
+  const loc = `${props.strucvar.chrom}:${props.strucvar.start}-${props.strucvar.stop}`
+  if (props.genomeBuild === 'grch37') {
     return `https://grch37.ensembl.org/Homo_sapiens/Location/View?r=${loc}`
-  } else if (props.genomeRelease === 'grch38') {
+  } else if (props.genomeBuild === 'grch38') {
     return `https://ensembl.org/Homo_sapiens/Location/View?r=${loc}`
   }
   return '#'
 })
 
 const dgvLinkout = computed((): string => {
-  if (!props.svRecord) {
+  if (!props.strucvar) {
     return '#'
   }
-  const db = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
+  const db = props.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
   return (
-    `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.svRecord.chromosome}:` +
-    `${props.svRecord.start}-${props.svRecord.end};search=Search`
+    `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.strucvar.chrom}:` +
+    `${props.strucvar.start}-${props.strucvar.stop};search=Search`
   )
 })
 
 const gnomadLinkout = computed((): string => {
-  if (!props.svRecord) {
+  if (!props.strucvar) {
     return '#'
   }
-  const dataset = props.genomeRelease === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
+  const dataset = props.genomeBuild === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
   return (
-    `https://gnomad.broadinstitute.org/region/${props.svRecord.chromosome}:` +
-    `${props.svRecord.start}-${props.svRecord.end}?dataset=${dataset}`
+    `https://gnomad.broadinstitute.org/region/${props.strucvar.chrom}:` +
+    `${props.strucvar.start}-${props.strucvar.stop}?dataset=${dataset}`
   )
 })
 
 const varsomeLinkout = computed((): string => {
-  if (!props.svRecord) {
+  if (!props.strucvar) {
     return '#'
   }
-  const urlRelease = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
-  const chrom = props.svRecord.chromosome.startsWith('chr')
-    ? props.svRecord.chromosome
-    : `chr${props.svRecord.chromosome}`
-  return `https://varsome.com/cnv/${urlRelease}/${chrom}:${props.svRecord.start}:${props.svRecord.end}:${props.svRecord.svType}`
+  const urlRelease = props.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
+  const chrom = props.strucvar.chrom.startsWith('chr')
+    ? props.strucvar.chrom
+    : `chr${props.strucvar.chrom}`
+  return `https://varsome.com/cnv/${urlRelease}/${chrom}:${props.strucvar.start}:${props.strucvar.stop}:${props.strucvar.svType}`
 })
 
 const franklinLinkout = computed((): string => {
-  if (!props.svRecord) {
+  if (!props.strucvar) {
     return '#'
   }
-  const { chromosome, start, end, svType } = props.svRecord
-  const urlRelease = props.genomeRelease === 'grch37' ? 'hg19' : 'hg38'
-  return `https://franklin.genoox.com/clinical-db/variant/sv/chr${chromosome.replace(
-    'chr',
-    ''
-  )}-${start}-${end}-${svType}-${urlRelease}`
+  const { chrom, start, stop, svType } = props.strucvar
+  const urlRelease = props.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
+  return `https://franklin.genoox.com/clinical-db/variant/sv/chr${chrom}-${start}-${stop}-${svType}-${urlRelease}`
 })
 
 const jumpToLocus = async () => {
-  const chrPrefixed = props.svRecord?.chromosome.startsWith('chr')
-    ? props.svRecord?.chromosome
-    : `chr${props.svRecord?.chromosome}`
+  const chrPrefixed = props.strucvar?.chrom.startsWith('chr')
+    ? props.strucvar?.chrom
+    : `chr${props.strucvar?.chrom}`
   await fetch(
-    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.svRecord?.start}-${props.svRecord?.end}`
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.strucvar?.start}-${props.strucvar?.stop}`
   ).catch((e) => {
     const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
     alert(msg)

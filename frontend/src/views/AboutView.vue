@@ -2,7 +2,7 @@
 import { defineAsyncComponent } from 'vue'
 
 // Components
-const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 
 type AcknowledgementsType = {
   [key: string]: {
@@ -33,7 +33,7 @@ const Acknowledgements: AcknowledgementsType = {
 </script>
 
 <template>
-  <HeaderDefault />
+  <PageHeader />
   <v-container class="about-view">
     <v-row>
       <v-col cols="12">

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import HeaderDefault from '@/components/HeaderDefault.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import PrivacyView from '@/views/PrivacyView.vue'
 
@@ -17,7 +17,7 @@ describe.concurrent('PrivacyView', async () => {
       }
     )
 
-    const header = wrapper.findComponent(HeaderDefault)
+    const header = wrapper.findComponent(PageHeader)
     expect(header.exists()).toBe(true)
   })
 

@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 
 import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
-import { type SmallVariant } from '@/stores/variantInfo'
+import { type Seqvar } from '@/lib/genomicVars'
 
 const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
@@ -13,9 +13,11 @@ enum VariantValidatorStates {
   Error = 3
 }
 
-const props = defineProps<{
-  smallVariant?: SmallVariant | null
-}>()
+interface Props {
+  seqvar?: Seqvar
+}
+
+const props = defineProps<Props>()
 
 const variantValidatorState = ref<VariantValidatorStates>(VariantValidatorStates.Initial)
 const variantValidatorResults = ref<any>(null)
@@ -28,9 +30,9 @@ const queryVariantValidatorApi = async () => {
   primaryAssemblyLoci.value = null
   const url =
     API_BASE_URL +
-    `remote/variantvalidator/${props.smallVariant?.release}/` +
-    `${props.smallVariant?.chromosome}-${props.smallVariant?.start}-` +
-    `${props.smallVariant?.reference}-${props.smallVariant?.alternative}` +
+    `remote/variantvalidator/${props.seqvar?.genomeBuild}/` +
+    `${props.seqvar?.chrom}-${props.seqvar?.pos}-` +
+    `${props.seqvar?.del}-${props.seqvar?.ins}` +
     `/all?content-type=application%2Fjson`
   const res = await fetch(url)
   if (res.ok) {
@@ -60,7 +62,10 @@ const queryVariantValidatorApi = async () => {
 </script>
 
 <template>
-  <v-card>
+  <template v-if="!seqvar">
+    <v-skeleton-loader type="card" />
+  </template>
+  <v-card v-else>
     <v-card-title> Variant Validator </v-card-title>
     <v-card-subtitle class="text-overline">
       Retrieve Predictions from VariantValidator.org

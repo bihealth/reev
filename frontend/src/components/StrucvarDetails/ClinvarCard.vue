@@ -7,11 +7,13 @@ import {
   REVIEW_STATUS_LABEL,
   REVIEW_STATUS_STARS
 } from '@/components/SeqvarDetails/ClinvarCard.c'
+import { type Strucvar } from '@/lib/genomicVars'
 import { roundIt } from '@/lib/utils'
 import { useSvInfoStore } from '@/stores/svInfo'
 
+/** Type for this component's props. */
 interface Props {
-  genomeRelease: 'grch37' | 'grch38'
+  strucvar?: Strucvar
 }
 
 const props = defineProps<Props>()
@@ -29,12 +31,12 @@ const rcvUrl = (rcv: string): string => {
 
 /** Return coordinates for ClinVar link-out */
 const clinvarRange = computed<string>(() => {
-  if (!props.genomeRelease || !svInfoStore.currentSvRecord) {
+  if (props.strucvar === undefined) {
     return ''
   }
-  const release = props.genomeRelease === 'grch37' ? 'GRCh37' : 'GRCh38'
-  const { chromosome, start, end } = svInfoStore.currentSvRecord
-  return `${release}:${chromosome.replace('chr', '')}:${start}-${end}`
+  const release = props.strucvar.genomeBuild === 'grch37' ? 'GRCh37' : 'GRCh38'
+  const { chrom, start, stop } = props.strucvar
+  return `${release}:${chrom.replace('chr', '')}:${start}-${stop}`
 })
 
 const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([{ key: 'overlap', order: 'desc' }])

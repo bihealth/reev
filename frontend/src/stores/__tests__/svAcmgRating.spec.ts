@@ -10,52 +10,62 @@ import {
   Presence,
   StateSourceCNV
 } from '@/components/StrucvarDetails/ClinsigCard.c'
+import type { Strucvar } from '@/lib/genomicVars'
+import { deepCopy } from '@/lib/test-utils'
 
 import { StoreState } from '../misc'
 import { useSvAcmgRatingStore } from '../svAcmgRating'
-import type { SmallVariant } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)
 
-const svRecord = {
+const strucvarInfo: Strucvar = {
+  genomeBuild: 'grch37',
   svType: 'DEL',
-  chromosome: 'chr17',
-  start: '41176312',
-  end: '41277500',
-  release: 'grch37',
-  result: [
-    {
-      hgnc_id: 'HGNC:18315',
-      transcript_effects: [
-        'transcript_variant',
-        'exon_variant',
-        'splice_region_variant',
-        'intron_variant',
-        'upstream_variant',
-        'downstream_variant'
-      ]
-    },
-    {
-      hgnc_id: 'HGNC:20691',
-      transcript_effects: ['upstream_variant']
-    },
-    {
-      hgnc_id: 'HGNC:1100',
-      transcript_effects: [
-        'transcript_variant',
-        'exon_variant',
-        'splice_region_variant',
-        'intron_variant',
-        'upstream_variant',
-        'downstream_variant'
-      ]
-    },
-    {
-      hgnc_id: 'HGNC:16919',
-      transcript_effects: ['upstream_variant']
-    }
-  ]
+  chrom: '17',
+  start: 41176312,
+  stop: 41277500,
+  userRepr: 'DEL-grch37-17-41176312-41277500'
 }
+
+// const svRecord = {
+//   svType: 'DEL',
+//   chromosome: 'chr17',
+//   start: '41176312',
+//   end: '41277500',
+//   release: 'grch37',
+//   result: [
+//     {
+//       hgnc_id: 'HGNC:18315',
+//       transcript_effects: [
+//         'transcript_variant',
+//         'exon_variant',
+//         'splice_region_variant',
+//         'intron_variant',
+//         'upstream_variant',
+//         'downstream_variant'
+//       ]
+//     },
+//     {
+//       hgnc_id: 'HGNC:20691',
+//       transcript_effects: ['upstream_variant']
+//     },
+//     {
+//       hgnc_id: 'HGNC:1100',
+//       transcript_effects: [
+//         'transcript_variant',
+//         'exon_variant',
+//         'splice_region_variant',
+//         'intron_variant',
+//         'upstream_variant',
+//         'downstream_variant'
+//       ]
+//     },
+//     {
+//       hgnc_id: 'HGNC:16919',
+//       transcript_effects: ['upstream_variant']
+//     }
+//   ]
+// }
 
 const ExampleAutoCNVResponse = {
   job: {
@@ -93,27 +103,27 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
-    expect(store.svRecord).toBe(null)
+    expect(store.strucvar).toBe(undefined)
   })
 
   it('should clear state', () => {
     const store = useSvAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
-    store.svRecord = JSON.parse(JSON.stringify(svRecord))
+    store.strucvar = deepCopy(strucvarInfo)
 
     store.clearData()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
-    expect(store.svRecord).toBe(null)
+    expect(store.strucvar).toBe(undefined)
   })
 
   it('should correctly retrieve data', async () => {
     const store = useSvAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify(ExampleAutoCNVResponse))
 
-    await store.fetchAcmgRating(svRecord)
+    await store.fetchAcmgRating(deepCopy(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
@@ -155,7 +165,7 @@ describe.concurrent('geneInfo Store', () => {
       expectedAcmgRating.setUserToAutoCNV()
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.svRecord).toStrictEqual(JSON.parse(JSON.stringify(svRecord)))
+    expect(store.strucvar).toStrictEqual(deepCopy(strucvarInfo))
   })
 
   it('should fail to load data with invalid request', async () => {
@@ -164,17 +174,17 @@ describe.concurrent('geneInfo Store', () => {
     const store = useSvAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.fetchAcmgRating(svRecord)
+    await store.fetchAcmgRating(deepCopy(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
-    expect(store.svRecord).toBe(null)
+    expect(store.strucvar).toBe(undefined)
   })
 
   it('should not load data if structure variant is the same', async () => {
     const store = useSvAcmgRatingStore()
     fetchMocker.mockResponse(JSON.stringify(ExampleAutoCNVResponse))
-    await store.fetchAcmgRating(svRecord)
+    await store.fetchAcmgRating(deepCopy(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
@@ -216,9 +226,9 @@ describe.concurrent('geneInfo Store', () => {
       expectedAcmgRating.setUserToAutoCNV()
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.svRecord).toStrictEqual(JSON.parse(JSON.stringify(svRecord)))
+    expect(store.strucvar).toStrictEqual(deepCopy(strucvarInfo))
 
-    await store.fetchAcmgRating(store.svRecord as SmallVariant)
+    await store.fetchAcmgRating(deepCopy(strucvarInfo))
 
     expect(fetchMocker.mock.calls.length).toBe(1)
   })

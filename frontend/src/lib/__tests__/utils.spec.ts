@@ -1,6 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-
-import { DottyClient } from '@/api/dotty'
+import { describe, expect, it } from 'vitest'
 
 import {
   copy,
@@ -9,7 +7,6 @@ import {
   isVariantMtHomopolymer,
   removeCommasFromNumbers,
   roundIt,
-  search,
   separateIt
 } from '../utils'
 
@@ -136,98 +133,6 @@ describe.concurrent('removeCommasFromNumbers method', () => {
   it('should not remove commas from numbers in strings', () => {
     const result = removeCommasFromNumbers('foo,1,234,567,890,bar')
     expect(result).toBe('foo,1234567890,bar')
-  })
-})
-
-describe.concurrent('search method', async () => {
-  beforeEach(() => {
-    // we make `DottyClient.toSpdi` return null / fail every time
-    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
-  it('should return "gene" route location for HGNC queries', async () => {
-    const result = await search('HGNC:1100', 'ghcr37')
-    expect(result).toEqual({
-      name: 'gene',
-      params: {
-        searchTerm: 'HGNC:1100',
-        genomeRelease: 'ghcr37'
-      }
-    })
-  })
-
-  it('should return "variant" route location for Variant queries', async () => {
-    const result = await search('chr37:12345:A:G', 'ghcr37')
-    expect(result).toEqual({
-      name: 'variant',
-      params: {
-        searchTerm: 'chr37:12345:A:G',
-        genomeRelease: 'ghcr37'
-      }
-    })
-  })
-
-  it('should return "variant" route location for Variant queries with commas in position', async () => {
-    const result = await search('chr37:12,345:A:G', 'ghcr37')
-    expect(result).toEqual({
-      name: 'variant',
-      params: {
-        searchTerm: 'chr37:12345:A:G',
-        genomeRelease: 'ghcr37'
-      }
-    })
-  })
-
-  it('should return "cnv" route location for SV quries', async () => {
-    const result = await search('DEL:chr37:12345:123456', 'ghcr37')
-    expect(result).toEqual({
-      name: 'cnv',
-      params: {
-        searchTerm: 'DEL:chr37:12345:123456',
-        genomeRelease: 'ghcr37'
-      }
-    })
-  })
-
-  it('should return "cnv" route location for SV quries with commas in start and end', async () => {
-    const result = await search('DEL:chr37:12,345:123,456', 'ghcr37')
-    expect(result).toEqual({
-      name: 'cnv',
-      params: {
-        searchTerm: 'DEL:chr37:12345:123456',
-        genomeRelease: 'ghcr37'
-      }
-    })
-  })
-
-  it('should return "genes" route location for general queries', async () => {
-    const result = await search('TP53', 'ghcr37')
-    expect(result).toEqual({
-      name: 'genes',
-      query: {
-        q: 'TP53',
-        fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
-      }
-    })
-  })
-
-  it('should return null if no entry', async () => {
-    const result = await search('', 'foo37')
-    expect(result).toBe(null)
-  })
-
-  it('should remove whitespace', async () => {
-    const result = await search(' HGNC:1100  ', 'ghcr37')
-    expect(result).toEqual({
-      name: 'gene',
-      params: {
-        searchTerm: 'HGNC:1100',
-        genomeRelease: 'ghcr37'
-      }
-    })
   })
 })
 

@@ -1,73 +1,72 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-import { type SmallVariant } from '@/stores/variantInfo'
+import { type Seqvar } from '@/lib/genomicVars'
 
 export interface Props {
-  smallVar: SmallVariant | null
-  varAnnos: any
+  seqvar?: Seqvar
+  varAnnos?: any
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  smallVar: null,
-  varAnnos: null
-})
+const props = defineProps<Props>()
 
 const ucscLinkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  const db = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
+  const db = props.seqvar.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
   return (
     `https://genome-euro.ucsc.edu/cgi-bin/hgTracks?db=${db}&position=` +
-    `${props.smallVar.chromosome}:${props.smallVar.start}-` +
-    `${props.smallVar.end}`
+    `${props.seqvar.chrom}:${props.seqvar.pos}-` +
+    `${props.seqvar.pos + props.seqvar.del.length}`
   )
 })
 
 const ensemblLinkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  const loc = `${props.smallVar.chromosome}:${props.smallVar.start}-${props.smallVar.end}`
-  if (props.smallVar.release === 'grch37') {
+  const loc = `${props.seqvar.chrom}:${props.seqvar.pos}-${
+    props.seqvar.pos + props.seqvar.del.length
+  }`
+  if (props.seqvar.genomeBuild === 'grch37') {
     return `https://grch37.ensembl.org/Homo_sapiens/Location/View?r=${loc}`
-  } else if (props.smallVar.release === 'grch38') {
+  } else if (props.seqvar.genomeBuild === 'grch38') {
     return `https://ensembl.org/Homo_sapiens/Location/View?r=${loc}`
   }
   return '#'
 })
 
 const dgvLinkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  const db = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
+  const db = props.seqvar.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
   return (
-    `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.smallVar.chromosome}:` +
-    `${props.smallVar.start}-${props.smallVar.end};search=Search`
+    `http://dgv.tcag.ca/gb2/gbrowse/dgv2_${db}/?name=${props.seqvar.chrom}:` +
+    `${props.seqvar.pos}-${props.seqvar.pos + props.seqvar.del.length};search=Search`
   )
 })
 
 const gnomadLinkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  const dataset = props.smallVar.release === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
+  const dataset = props.seqvar.genomeBuild === 'grch37' ? 'gnomad_r2_1' : 'gnomad_r3'
   return (
-    `https://gnomad.broadinstitute.org/region/${props.smallVar.chromosome}:` +
-    `${props.smallVar.start}-${props.smallVar.end}?dataset=${dataset}`
+    `https://gnomad.broadinstitute.org/region/${props.seqvar.chrom}:` +
+    `${props.seqvar.pos}-${props.seqvar.pos + props.seqvar.del.length}?dataset=${dataset}`
   )
 })
 
 const mt85Linkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  if (props.smallVar.release === 'grch37') {
+  if (props.seqvar.genomeBuild === 'grch37') {
     return (
-      `https://www.genecascade.org/MT85/ChrPos85.cgi?chromosome=${props.smallVar.chromosome}` +
-      `&position=${props.smallVar.start}&ref=${props.smallVar.reference}&alt=${props.smallVar.alternative}`
+      `https://www.genecascade.org/MT85/ChrPos85.cgi?chromosome=${props.seqvar.chrom}` +
+      `&position=${props.seqvar.pos}&ref=${props.seqvar.del}&alt=${props.seqvar.ins}`
     )
   } else {
     return ''
@@ -75,13 +74,13 @@ const mt85Linkout = computed((): string => {
 })
 
 const mt2021Linkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  if (props.smallVar.release === 'grch37') {
+  if (props.seqvar.genomeBuild === 'grch37') {
     return (
-      `https://www.genecascade.org/MTc2021/ChrPos102.cgi?chromosome=${props.smallVar.chromosome}` +
-      `&position=${props.smallVar.start}&ref=${props.smallVar.reference}&alt=${props.smallVar.alternative}`
+      `https://www.genecascade.org/MTc2021/ChrPos102.cgi?chromosome=${props.seqvar.chrom}` +
+      `&position=${props.seqvar.pos}&ref=${props.seqvar.del}&alt=${props.seqvar.ins}`
     )
   } else {
     return ''
@@ -89,37 +88,39 @@ const mt2021Linkout = computed((): string => {
 })
 
 const varsomeLinkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  const urlRelease = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-  const chrom = props.smallVar.chromosome.startsWith('chr')
-    ? props.smallVar.chromosome
-    : `chr${props.smallVar.chromosome}`
+  const urlRelease = props.seqvar.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
+  const chrom = props.seqvar.chrom.startsWith('chr')
+    ? props.seqvar.chrom
+    : `chr${props.seqvar.chrom}`
   return (
-    `https://varsome.com/variant/${urlRelease}/${chrom}:${props.smallVar.start}:` +
-    `${props.smallVar.reference}:${props.smallVar.alternative}`
+    `https://varsome.com/variant/${urlRelease}/${chrom}:${props.seqvar.pos}:` +
+    `${props.seqvar.del}:${props.seqvar.ins}`
   )
 })
 
 const franklinLinkout = computed((): string => {
-  if (!props.smallVar) {
+  if (!props.seqvar) {
     return '#'
   }
-  const { chromosome, start, reference, alternative } = props.smallVar
-  const urlRelease = props.smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-  return `https://franklin.genoox.com/clinical-db/variant/snp/chr${chromosome.replace(
+  const { chrom, pos, del, ins } = props.seqvar
+  const urlRelease = props.seqvar.genomeBuild === 'grch37' ? 'hg19' : 'hg38'
+  return `https://franklin.genoox.com/clinical-db/variant/snp/chr${chrom.replace(
     'chr',
     ''
-  )}-${start}-${reference}-${alternative}-${urlRelease}`
+  )}-${pos}-${del}-${ins}-${urlRelease}`
 })
 
 const jumpToLocus = async () => {
-  const chrPrefixed = props.smallVar?.chromosome.startsWith('chr')
-    ? props.smallVar?.chromosome
-    : `chr${props.smallVar?.chromosome}`
+  const chrPrefixed = props.seqvar?.chrom.startsWith('chr')
+    ? props.seqvar?.chrom
+    : `chr${props.seqvar?.chrom}`
   await fetch(
-    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.smallVar?.start}-${props.smallVar?.end}`
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.seqvar?.pos}-${
+      (props.seqvar?.pos ?? 0) + (props.seqvar?.del?.length ?? 0)
+    }`
   ).catch((e) => {
     const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
     alert(msg)

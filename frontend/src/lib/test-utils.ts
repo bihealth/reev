@@ -100,3 +100,8 @@ export const setupMountedComponents = async (
 
   return { pinia, wrapper, router }
 }
+
+/** Create a deep copy using JSON stringify. */
+export function deepCopy<T>(obj: any): T {
+  return JSON.parse(JSON.stringify(obj)) as T
+}
