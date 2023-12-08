@@ -54,7 +54,7 @@ export const separateIt = (value: number, separator: string = ' '): string => {
  * @returns whether the position is on the mitochondrial genome
  */
 export const isVariantMt = (smallVar: any): boolean => {
-  return ['MT', 'M', 'chrMT', 'chrM'].includes(smallVar?.chromosome)
+  return ['MT', 'M', 'chrMT', 'chrM'].includes(smallVar?.chrom)
 }
 
 /**

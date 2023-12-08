@@ -26,7 +26,7 @@ const seqvarInfoMitochondrial = {
 }
 
 describe.concurrent('Freqs', async () => {
-  it('renders the Freqs info', async () => {
+  it('renders the Freqs info for Autosonmal Variants', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: Freqs, template: false },
       {
@@ -50,7 +50,7 @@ describe.concurrent('Freqs', async () => {
         }
       }
     )
-    const freqsAutosomal = wrapper.findComponent(VariantDetailsFreqsMitochondrial)
-    expect(freqsAutosomal.exists()).toBe(true)
+    const freqsMitochondrial = wrapper.findComponent(VariantDetailsFreqsMitochondrial)
+    expect(freqsMitochondrial.exists()).toBe(true)
   })
 })
