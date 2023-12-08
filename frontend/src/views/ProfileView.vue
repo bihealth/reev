@@ -11,6 +11,9 @@ const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefa
 const ProfileInformationCard = defineAsyncComponent(
   () => import('@/components/Profile/ProfileInformationCard.vue')
 )
+const SeqVarsACMGCard = defineAsyncComponent(
+  () => import('@/components/Profile/SeqVarsACMGCard.vue')
+)
 
 const userStore = useUserStore()
 
@@ -20,7 +23,8 @@ const route = useRoute()
 const SECTIONS = [
   { id: 'general-info', title: 'Profile information' },
   { id: 'bookmarks', title: 'Bookmarks' },
-  { id: 'case-information', title: 'Case information' }
+  { id: 'case-information', title: 'Case information' },
+  { id: 'acmg-seq-vars', title: 'ACMG Sequence Variant Interpretation' }
 ]
 
 const scrollToSection = async () => {
@@ -69,6 +73,10 @@ watch(() => route.hash, scrollToSection)
 
           <div id="case-information">
             <CaseCard />
+          </div>
+
+          <div id="acmg-seq-vars">
+            <SeqVarsACMGCard />
           </div>
         </v-main>
       </div>

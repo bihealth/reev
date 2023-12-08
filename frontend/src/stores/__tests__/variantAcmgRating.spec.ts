@@ -68,6 +68,7 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
+    expect(store.acmgRatings).toStrictEqual([])
     expect(store.smallVariant).toBe(null)
     expect(store.acmgRatingStatus).toBe(false)
   })
@@ -82,6 +83,7 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
+    expect(store.acmgRatings).toStrictEqual([])
     expect(store.smallVariant).toBe(null)
   })
 
