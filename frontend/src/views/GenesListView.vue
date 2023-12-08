@@ -8,8 +8,11 @@ import { StoreState } from '@/stores/misc'
 // Components
 const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
 
+/** Genome release string values. */
+type GenomeRelease = 'grch37' | 'grch38'
+
 export interface Props {
-  genomeRelease?: string
+  genomeRelease?: GenomeRelease
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -21,7 +24,7 @@ const router = useRouter()
 const genesListStore = useGenesListStore()
 
 const searchTermRef = ref(String(router.currentRoute.value.query.q))
-const genomeReleaseRef = ref(props.genomeRelease)
+const genomeReleaseRef = ref<GenomeRelease>(props.genomeRelease)
 
 const loadDataToStore = async () => {
   await genesListStore.loadData(router.currentRoute.value.query)

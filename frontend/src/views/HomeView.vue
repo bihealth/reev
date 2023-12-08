@@ -16,14 +16,17 @@ const SearchBar = defineAsyncComponent(() => import('@/components/SearchBar.vue'
 
 const router = useRouter()
 
-const searchTerm = ref('')
-const genomeRelease = ref('grch37')
+/** Genome release string values. */
+type GenomeRelease = 'grch37' | 'grch38'
+
+const searchTerm = ref<string>('')
+const genomeRelease = ref<GenomeRelease>('grch37')
 const showCaseInformation = ref(false)
 
 interface Example {
   query: string
   label?: string
-  genomeRelease: string
+  genomeRelease: GenomeRelease
 }
 
 const examples: Example[] = [
