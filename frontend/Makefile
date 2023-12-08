@@ -5,14 +5,15 @@ help:
 	@echo "Usage: make <target>"
 	@echo
 	@echo "Targets:"
-	@echo "  help    This help (default target)"
-	@echo "  deps    Install all dependencies"
-	@echo "  format  Format source code"
-	@echo "  lint    Run lint checks"
-	@echo "  test    Run tests (no watch)"
-	@echo "  test-w  Run tests (watch)"
-	@echo "  ci      Install dependencies, run lints and tests"
-	@echo "  serve   Run the (development) server"
+	@echo "  help        This help (default target)"
+	@echo "  deps        Install all dependencies"
+	@echo "  format      Format source code"
+	@echo "  lint        Run lint checks"
+	@echo "  test        Run tests (no watch)"
+	@echo "  test-w      Run tests (watch)"
+	@echo "  test-nocov  Run tests (no watch) without coverage"
+	@echo "  ci          Install dependencies, run lints and tests"
+	@echo "  serve       Run the (development) server"
 
 .PHONY: deps
 deps:
@@ -31,6 +32,10 @@ lint:
 .PHONY: test
 test:
 	npm run -- test:unit --run
+
+.PHONY: test-nocov
+test-nocov:
+	npm run -- test:unit:nocov --run
 
 .PHONY: test-w
 test-w:
