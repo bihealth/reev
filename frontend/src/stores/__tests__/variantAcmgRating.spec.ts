@@ -68,7 +68,7 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
-    expect(store.seqvar).toBe(undefined)
+    expect(store.seqvar).toBe(null)
     expect(store.acmgRatingStatus).toBe(false)
   })
 
@@ -82,7 +82,7 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
-    expect(store.seqvar).toBe(undefined)
+    expect(store.seqvar).toBe(null)
   })
 
   it('should correctly retrieve data for InterVar and Server', async () => {
@@ -134,11 +134,11 @@ describe.concurrent('geneInfo Store', () => {
     const store = useVariantAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.fetchAcmgRating(deepCopy(seqvarInfo))
+    await expect(async () => await store.fetchAcmgRating(deepCopy(seqvarInfo))).rejects.toThrow()
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
-    expect(store.seqvar).toBe(undefined)
+    expect(store.seqvar).toBe(null)
   })
 
   it('should not load data if small variant is the same', async () => {

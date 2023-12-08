@@ -19,11 +19,10 @@ import StrucvarClinvarCard from '@/components/StrucvarDetails/ClinvarCard.vue'
 import GeneListCard from '@/components/StrucvarDetails/GeneListCard.vue'
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { type Strucvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
-
-import StrucvarDetailsView from '../StrucvarDetailsView.vue'
+import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
@@ -46,8 +45,7 @@ const makeWrapper = () => {
     { component: StrucvarDetailsView, template: true },
     {
       props: {
-        searchTerm: 'DEL:chr17:41176312:41277500',
-        genomeRelease: 'grch37'
+        strucvarDesc: 'DEL-grch37-17-41176312-41277500'
       },
       pinia
     }

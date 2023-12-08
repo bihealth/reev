@@ -454,7 +454,7 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
       start: 100,
       stop: 200,
       svType: 'DEL',
-      userRepr: 'GRCh37-DEL-1-100-200'
+      userRepr: 'DEL-GRCh37-1-100-200'
     })
   })
 
@@ -466,7 +466,7 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
       start: 100,
       stop: 200,
       svType: 'DEL',
-      userRepr: 'GRCh37-DEL-1-100-200'
+      userRepr: 'DEL-GRCh37-1-100-200'
     })
   })
 
@@ -478,7 +478,7 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
       start: 100,
       stop: 200,
       svType: 'DEL',
-      userRepr: 'GRCh38-DEL-1-100-200'
+      userRepr: 'DEL-GRCh38-1-100-200'
     })
   })
 
@@ -490,7 +490,7 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
       start: 100,
       stop: 200,
       svType: 'DUP',
-      userRepr: 'GRCh38-DUP-1-100-200'
+      userRepr: 'DUP-GRCh38-1-100-200'
     })
   })
 
