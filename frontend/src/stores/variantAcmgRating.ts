@@ -40,6 +40,9 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   /** The small variants ACMG rating. */
   const acmgRating = ref<MultiSourceAcmgCriteriaState>(new MultiSourceAcmgCriteriaState())
 
+  /** All ACMG ratings for a user. */
+  const acmgRatings = ref<any>([])
+
   /** Status of the ACMG Rating on the server. */
   const acmgRatingStatus = ref<boolean>(false)
 
@@ -49,6 +52,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   function clearData() {
     storeState.value = StoreState.Initial
     acmgRating.value = new MultiSourceAcmgCriteriaState()
+    acmgRatings.value = []
     smallVariant.value = null
   }
 
@@ -182,6 +186,23 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   }
 
   /**
+   * List all ACMG ratings for a user.
+   *
+   * @returns The list of ACMG ratings for the user.
+   */
+  const listAcmgRatings = async () => {
+    try {
+      const acmgSeqVarClient = new AcmgSeqVarClient()
+      const data = await acmgSeqVarClient.listAcmgRatings()
+      acmgRatings.value = data
+    } catch (e) {
+      console.error('There was an error loading the ACMG data.', e)
+      clearData()
+      storeState.value = StoreState.Error
+    }
+  }
+
+  /**
    * Save the ACMG rating for a variant.
    *
    * @param variantName The variant to save the ACMG rating for.
@@ -258,10 +279,12 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
     smallVariant,
     storeState,
     acmgRating,
+    acmgRatings,
     acmgRatingStatus,
     saveAcmgRating,
     deleteAcmgRating,
     clearData,
-    fetchAcmgRating
+    fetchAcmgRating,
+    listAcmgRatings
   }
 })

@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
+import { useTheme } from 'vuetify'
 
 const CaseInformationCard = defineAsyncComponent(
   () => import('@/components/CaseInformationCard.vue')
 )
 const UserProfileButton = defineAsyncComponent(() => import('@/components/UserProfileButton.vue'))
+
+const theme = useTheme()
+
+function toggleTheme() {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+}
 </script>
 
 <template>
@@ -13,6 +20,7 @@ const UserProfileButton = defineAsyncComponent(() => import('@/components/UserPr
       <router-link to="/">
         <img
           id="logo"
+          class="ml-4 mr-3"
           style="vertical-align: middle"
           src="@/assets/reev-logo.svg"
           alt="logo"
@@ -22,7 +30,8 @@ const UserProfileButton = defineAsyncComponent(() => import('@/components/UserPr
       <router-link to="/"> REEV Explains and Evaluates Variants </router-link>
     </v-toolbar-title>
     <v-spacer />
-    <v-toolbar-items class="topbar-links">
+    <v-btn @click="toggleTheme">toggle theme</v-btn>
+    <v-toolbar-items>
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props }">
           <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="props">
@@ -61,19 +70,6 @@ const UserProfileButton = defineAsyncComponent(() => import('@/components/UserPr
 
 <style scoped>
 .top-bar {
-  background-color: white;
   border-bottom: 2px solid #455a64;
-}
-
-.topbar-links {
-  display: flex;
-  margin: 0 10px;
-}
-
-#logo {
-  margin-left: 25px;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
 }
 </style>
