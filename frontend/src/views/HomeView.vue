@@ -69,7 +69,7 @@ const performExampleSearch = (example: Example) => {
                     <v-btn
                       v-for="example in section.examples"
                       :key="example.query"
-                      class="mr-1 mb-1"
+                      class="mr-1 mb-1 example"
                       variant="text"
                       prepend-icon="mdi-arrow-right-circle-outline"
                       @click="performExampleSearch(example)"

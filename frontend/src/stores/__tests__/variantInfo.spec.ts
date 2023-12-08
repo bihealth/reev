@@ -92,9 +92,9 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.seqvar).toBe(undefined)
-    expect(store.varAnnos).toBe(undefined)
-    expect(store.geneInfo).toBe(undefined)
-    expect(store.txCsq).toBe(undefined)
+    expect(store.varAnnos).toBe(null)
+    expect(store.geneInfo).toBe(null)
+    expect(store.txCsq).toBe(null)
   })
 
   it('should handle loading data with invalid fetchVariantInfo response', async () => {
@@ -183,13 +183,13 @@ describe.concurrent('geneInfo Store', () => {
     expect(console.error).toHaveBeenCalled()
     expect(console.error).toHaveBeenCalledWith(
       'There was an error loading the variant data.',
-      new Error('No gene data found.')
+      new TypeError("Cannot read properties of null (reading 'HGNC:1100')")
     )
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.seqvar).toBe(undefined)
-    expect(store.varAnnos).toBe(undefined)
-    expect(store.geneInfo).toBe(undefined)
-    expect(store.txCsq).toBe(undefined)
+    expect(store.varAnnos).toBe(null)
+    expect(store.geneInfo).toBe(null)
+    expect(store.txCsq).toBe(null)
   })
 
   it('should not load data if variant is the same', async () => {

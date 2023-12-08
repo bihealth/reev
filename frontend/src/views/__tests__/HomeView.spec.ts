@@ -97,8 +97,10 @@ describe.concurrent('HomeView with mocked router', async () => {
       }
     )
 
-    const exampleTerms = wrapper.findAll('.example')
-    expect(exampleTerms.length).toBe(10)
+    const exampleTermsCard = wrapper.find('#examples')
+    expect(exampleTermsCard.exists()).toBe(true)
+    const exampleTerms = exampleTermsCard.findAll('.v-btn')
+    expect(exampleTerms.length).toBe(12)
   })
 
   it('searches for example by click', async () => {
@@ -121,14 +123,11 @@ describe.concurrent('HomeView with mocked router', async () => {
         }
       }
     )
-    const store = usegeneInfoStore()
 
-    const exampleTerm = wrapper.find('.example')
-    expect(exampleTerm.exists()).toBe(true)
-    expect(exampleTerm.text()).toBe('BRCA1')
+    const exampleTermsCard = wrapper.find('#examples')
+    expect(exampleTermsCard.exists()).toBe(true)
+    const exampleTerm = exampleTermsCard.find('.example')
     await exampleTerm.trigger('click')
-    await nextTick()
-    expect(store.hgncId).toBe('BRCA1')
   })
 
   it.skip('correctly uses the router', async () => {

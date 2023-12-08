@@ -42,7 +42,7 @@ const makeWrapper = () => {
   svInfoStore.genesInfos = JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']]))
 
   return setupMountedComponents(
-    { component: StrucvarDetailsView, template: true },
+    { component: StrucvarDetailsView, template: false },
     {
       props: {
         strucvarDesc: 'DEL-grch37-17-41176312-41277500'
@@ -93,7 +93,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
     // const geneClinvar = wrapper.find('#gene-clinvar')
     const strucvarClinvar = wrapper.find('#strucvar-clinvar')
     const strucvarTools = wrapper.find('#strucvar-tools')
-    // const strucvarAcmg = wrapper.find('#strucvar-acmg')
+    // const strucvarClinsig = wrapper.find('#strucvar-clinsig')
     const strucvarGenomeBrowser = wrapper.find('#strucvar-genomebrowser')
     expect(geneList.exists()).toBe(true)
     expect(geneOverview.exists()).toBe(true)
@@ -103,7 +103,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
     // expect(geneClinvar.exists()).toBe(true)
     expect(strucvarClinvar.exists()).toBe(true)
     expect(strucvarTools.exists()).toBe(true)
-    // expect(strucvarAcmg.exists()).toBe(true)
+    // expect(strucvarClinsig.exists()).toBe(true)
     expect(strucvarGenomeBrowser.exists()).toBe(true)
 
     // Renders the cards

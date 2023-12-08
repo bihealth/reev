@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
 import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
+import SummarySheet from '@/components/SeqvarDetails/ClinsigCard/SummarySheet.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import type { Seqvar } from '@/lib/genomicVars'
 import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
@@ -16,16 +17,6 @@ const seqvarInfo: Seqvar = {
   del: 'G',
   ins: 'A',
   userRepr: 'grch37-17-43044295-G-A'
-}
-
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
 }
 
 const makeWrapper = () => {
@@ -50,11 +41,11 @@ const makeWrapper = () => {
   return setupMountedComponents(
     {
       component: ClinsigCard,
-      template: true
+      template: false
     },
     {
       props: {
-        smallVariant: smallVariantInfo
+        seqvar: seqvarInfo
       },
       pinia: pinia
     }
@@ -66,7 +57,9 @@ describe.concurrent('AcmgRating', async () => {
     const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Semi-Automated')
 
-    const switchers = wrapper.findAll('.v-switch')
+    const summarySheet = wrapper.findComponent(SummarySheet)
+    expect(summarySheet.exists()).toBe(true)
+    const switchers = wrapper.findAllComponents({ name: 'CriterionSwitch' })
     expect(switchers.length).toBe(2)
 
     // click show failed button

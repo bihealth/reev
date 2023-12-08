@@ -121,7 +121,7 @@ describe.concurrent('GeneDetailView', async () => {
     await header.setValue('grch37', 'genomeReleaseRef')
     expect(header.emitted()).toHaveProperty('update:searchTermRef')
     expect(header.emitted()).toHaveProperty('update:genomeReleaseRef')
-    expect(header.vm.$props).toStrictEqual({ searchTerm: '', genomeRelease: 'grch37' })
+    expect(header.vm.$props).toStrictEqual({ hideSearchBar: false })
 
     const searchBar = wrapper.findComponent(SearchBar)
     expect(searchBar.exists()).toBe(true)
@@ -142,7 +142,8 @@ describe.concurrent('GeneDetailView', async () => {
     await nextTick()
     expect(router.push).toHaveBeenCalled()
     expect(router.push).toHaveBeenCalledWith({
-      hash: '#gene-overview'
+      hash: '#gene-overview',
+      query: { genomeBuild: 'grch37' }
     })
 
     // Check if hgnc triggered scrollIntoView()
@@ -151,7 +152,7 @@ describe.concurrent('GeneDetailView', async () => {
     expect(geneOverviewCard.element.scrollTop).toBe(0)
   })
 
-  it('redirects if mounting with storeState Error', async () => {
+  it('shows the Error message', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
     const store = usegeneInfoStore(pinia)
     const mockLoadData = vi.fn().mockImplementation(async (geneSymbol: string) => {
@@ -177,7 +178,7 @@ describe.concurrent('GeneDetailView', async () => {
     store.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
     store.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))
 
-    const { router } = await setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       {
         component: GeneDetailView,
         template: true
@@ -192,7 +193,9 @@ describe.concurrent('GeneDetailView', async () => {
     )
 
     await nextTick()
-    expect(router.push).toHaveBeenCalledOnce()
-    expect(router.push).toHaveBeenCalledWith({ name: 'home' })
+
+    const errorMessage = wrapper.findComponent({ name: 'VAlert' })
+    expect(errorMessage.exists()).toBe(true)
+    expect(errorMessage.text()).toContain('TypeError: Failed to parse URL')
   })
 })

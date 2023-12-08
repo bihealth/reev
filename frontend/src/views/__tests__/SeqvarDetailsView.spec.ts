@@ -139,7 +139,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
     await header.setValue('grch37', 'genomeReleaseRef')
     expect(header.emitted()).toHaveProperty('update:searchTermRef')
     expect(header.emitted()).toHaveProperty('update:genomeReleaseRef')
-    expect(header.vm.$props).toStrictEqual({ searchTerm: '', genomeRelease: 'grch37' })
+    expect(header.vm.$props).toStrictEqual({ hideSearchBar: false })
 
     const searchBar = wrapper.findComponent(SearchBar)
     expect(searchBar.exists()).toBe(true)
@@ -240,7 +240,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
     variantAcmgStore.seqvar = deepCopy(seqvarInfo)
     variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
-    const { router } = await setupMountedComponents(
+    const { wrapper } = await setupMountedComponents(
       {
         component: SeqvarDetailsView,
         template: true
@@ -254,6 +254,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
       }
     )
     await nextTick()
-    expect(router.push).toHaveBeenCalledWith({ name: 'home' })
+    const errorMessage = wrapper.findComponent({ name: 'VAlert' })
+    expect(errorMessage.exists()).toBe(true)
   })
 })
