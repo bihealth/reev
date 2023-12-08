@@ -1,6 +1,7 @@
-import { type RouteLocationNormalizedLoaded, type Router } from 'vue-router'
+import { type RouteLocationNormalizedLoaded, type RouteLocationRaw, type Router } from 'vue-router'
 
 import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { type BookmarkData } from '@/stores/bookmarks'
 
 /**
  * Round `value` to `digits` and return an `<abbr>` tag that has the original value
@@ -196,5 +197,31 @@ export const classColor = (patho: string) => {
       return 'green-darken-3'
     default:
       return 'grey-lighten-2'
+  }
+}
+
+/**
+ * Convert a {BoookmarkData} to a route location.
+ *
+ * @param bookmark Bookmark to convert
+ * @returns Route location
+ */
+export const bookmarkTo = (bookmark: BookmarkData): RouteLocationRaw => {
+  switch (bookmark.obj_type) {
+    case 'gene':
+      return {
+        name: 'gene',
+        params: { geneId: bookmark.obj_id }
+      }
+    case 'seqvar':
+      return {
+        name: 'seqvar-details',
+        params: { seqvar: bookmark.obj_id }
+      }
+    case 'strucvar':
+      return {
+        name: 'strucvar-details',
+        params: { strucvar: bookmark.obj_id }
+      }
   }
 }

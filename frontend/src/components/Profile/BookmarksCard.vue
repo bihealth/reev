@@ -1,33 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 
-import { search } from '@/lib/utils'
+import { bookmarkTo } from '@/lib/utils'
 import { useBookmarksStore } from '@/stores/bookmarks'
 
 const bookmarksStore = useBookmarksStore()
-const router = useRouter()
 
-/**
- * Perform a search based on the bookmark id.
- *
- * If a route is found for the search term then redirect to that route.
- * Otherwise log an error.
- *
- * @param query Query to search for
- */
-const performSearch = async (query: string) => {
-  const routeLocation: any = await search(query, 'grch37')
-  if (routeLocation) {
-    router.push(routeLocation)
-  } else {
-    console.error(`no route found for ${query}`)
-  }
-}
-
-onMounted(async () => {
-  await bookmarksStore.loadBookmarks()
-})
+// Load bookmarks when mounted.
+onMounted(() => bookmarksStore.loadBookmarks())
 </script>
 
 <template>
@@ -41,7 +21,7 @@ onMounted(async () => {
           density="compact"
         >
           <v-list-item-title>
-            <v-btn color="primary" @click="performSearch(bookmark.obj_id)">
+            <v-btn color="primary" :to="bookmarkTo(bookmark)">
               {{ bookmark.obj_id }}
             </v-btn>
             <v-btn

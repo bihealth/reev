@@ -7,11 +7,19 @@ import { ref } from 'vue'
 import { BookmarksClient } from '@/api/bookmarks'
 import { StoreState } from '@/stores/misc'
 
+/** Allowed values for bookmark types. */
+export type BookmarkType = 'seqvar' | 'strucvar' | 'gene'
+
+/** Type for bookmarks in the API. */
 export interface BookmarkData {
-  user: string
-  obj_type: string
+  /** The ID of the bookmark itself, only set when fetching. */
+  id?: string
+  /** The owner of the bookmark, only set when fetching. */
+  user?: string
+  /** Type of the bookmark. */
+  obj_type: BookmarkType
+  /** The bookmarked object identifier. */
   obj_id: string
-  id: string
 }
 
 export const useBookmarksStore = defineStore('bookmarks', () => {

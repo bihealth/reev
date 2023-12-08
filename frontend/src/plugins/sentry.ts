@@ -8,6 +8,10 @@ import { type App } from 'vue'
 import { type Router } from 'vue-router'
 
 export async function setupSentry(app: App, router: Router) {
+  if (!import.meta.env.PROD) {
+    return // don't setup in development
+  }
+
   Sentry.init({
     app,
     dsn: 'https://ee06fe1f4715e740256c7b762fe0e162@sentry.cubi.bihealth.org/3',

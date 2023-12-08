@@ -39,7 +39,7 @@ const runSearch = async () => {
 </script>
 
 <template>
-  <div class="d-flex d-flex-row">
+  <div class="d-flex d-flex-row flex-grow-0" style="min-width: 600px">
     <v-text-field
       class="my-3 search-term"
       :label="props.density != 'compact' ? 'Search for variant or gene' : undefined"

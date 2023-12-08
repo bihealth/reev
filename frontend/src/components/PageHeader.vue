@@ -49,8 +49,8 @@ function toggleTheme() {
 </script>
 
 <template>
-  <v-app-bar app class="top-bar">
-    <v-toolbar-title>
+  <v-app-bar app>
+    <div class="ml-0 flex-shrink-0 flex-grow-0">
       <router-link to="/">
         <img
           id="logo"
@@ -61,19 +61,19 @@ function toggleTheme() {
           width="70"
         />
       </router-link>
-    </v-toolbar-title>
+    </div>
+    <v-spacer></v-spacer>
     <template v-if="!hideSearchBar">
       <SearchBar
         v-model:search-term="searchTermRef"
         v-model:genome-release="genomeBuildRef"
-        class="top-search-bar"
         density="compact"
         @click-search="() => performSearch(router, searchTermRef, genomeBuildRef)"
       />
-      <v-spacer></v-spacer>
     </template>
-    <v-btn @click="toggleTheme">toggle theme</v-btn>
+    <v-spacer></v-spacer>
     <v-toolbar-items>
+      <v-btn @click="toggleTheme">toggle theme</v-btn>
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">
           <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="vProps">
