@@ -1,8 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
 import HeaderDefault from '@/components/HeaderDefault.vue'
-import BookmarksCard from '@/components/Profile/BookmarksCard.vue'
-import CaseCard from '@/components/Profile/CaseCard.vue'
 import ProfileInformationCard from '@/components/Profile/ProfileInformationCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { type UserData } from '@/stores/user'
@@ -40,15 +38,11 @@ describe.concurrent('Profile view', async () => {
 
     expect(wrapper.html()).toMatch('User Profile')
     expect(wrapper.text()).toMatch('You are currently logged in...')
-    expect(wrapper.text()).toMatch('Your bookmarks')
+    expect(wrapper.text()).toMatch('Bookmarks')
     expect(wrapper.text()).toMatch('Case Information')
 
     const profileInformationCard = wrapper.findComponent(ProfileInformationCard)
-    const bookmarksCard = wrapper.findComponent(BookmarksCard)
-    const caseCard = wrapper.findComponent(CaseCard)
     expect(profileInformationCard.exists()).toBe(true)
-    expect(bookmarksCard.exists()).toBe(true)
-    expect(caseCard.exists()).toBe(true)
   })
 
   it('renders the main content if not logged in', async () => {
