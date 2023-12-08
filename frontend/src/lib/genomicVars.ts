@@ -102,7 +102,10 @@ export interface RegexCnvIscnGroups {
 export interface Seqvar {
   /** Genome build */
   genomeBuild: GenomeBuild
-  /** Canonical chromomsome name "1", .., "22", "X", "Y", "MT" */
+  /**
+   * Canonical chromomsome name "1", .., "22", "X", "Y", "MT"
+   * **without** `chr` prefix.
+   */
   chrom: string
   /** 1-based position */
   pos: number
@@ -277,7 +280,10 @@ export interface LinearStrucvar {
   svType: 'DEL' | 'DUP'
   /** The genome build. */
   genomeBuild: GenomeBuild
-  /** The canonical chromosome name. */
+  /**
+   * Canonical chromomsome name "1", .., "22", "X", "Y", "MT"
+   * **without** `chr` prefix.
+   */
   chrom: string
   /** The 1-based start position. */
   start: number

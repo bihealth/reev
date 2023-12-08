@@ -179,13 +179,17 @@ export class MappingError extends Error {
  *
  * In the case of duplicate sequence name, (only for chrMT), the genome build is assumed
  * to be GRCh38.
+ *
+ * @param refseqAcc Accession of the RefSeq contig sequence.
+ * @return The genome build.
+ * @throw MappingError if the RefSeq identifier is not known.
  */
-export function refseqToGenomeBuild(refseq: string): GenomeBuild {
-  if (refseq.toUpperCase() in REFSEQ_CHROM_38) {
+export function refseqToGenomeBuild(refseqAcc: string): GenomeBuild {
+  if (refseqAcc.toUpperCase() in REFSEQ_CHROM_38) {
     return 'grch38'
-  } else if (refseq.toUpperCase() in REFSEQ_CHROM_37) {
+  } else if (refseqAcc.toUpperCase() in REFSEQ_CHROM_37) {
     return 'grch37'
   } else {
-    throw new MappingError(`Unknown RefSeq identifier: ${refseq}`)
+    throw new MappingError(`Unknown RefSeq identifier: ${refseqAcc}`)
   }
 }
