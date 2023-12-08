@@ -24,6 +24,29 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.resetMocks()
   })
 
+  it('lists ACMG ratings correctly', async () => {
+    fetchMocker.mockResponse(JSON.stringify([mockAcmgRating]))
+
+    const client = new AcmgSeqVarClient()
+    const result = await client.listAcmgRatings()
+
+    expect(result).toEqual([mockAcmgRating])
+  })
+
+  it('fails to list ACMG ratings', async () => {
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('acmgseqvar/list')) {
+        return Promise.resolve(JSON.stringify({ status: 500 }))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
+
+    const client = new AcmgSeqVarClient()
+    const result = await client.listAcmgRatings()
+
+    expect(result).toEqual({ status: 500 })
+  })
+
   it('fetches ACMG rating correctly', async () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 

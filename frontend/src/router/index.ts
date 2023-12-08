@@ -3,18 +3,15 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
 import ACMGSVDocs from '@/views/ACMGSVDocs.vue'
-import AboutView from '@/views/AboutView.vue'
-import ContactView from '@/views/ContactView.vue'
 import GeneDetailView from '@/views/GeneDetailView.vue'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import PathNotFound from '@/views/PathNotFound.vue'
-import PrivacyView from '@/views/PrivacyView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import QueryView from '@/views/QueryView.vue'
 import SeqvarDetailsView from '@/views/SeqvarDetailsView.vue'
+import StaticView from '@/views/StaticView.vue'
 import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
-import TermsView from '@/views/TermsView.vue'
 import VerifyEmailView from '@/views/VerifyEmailView.vue'
 
 const routes = [
@@ -55,24 +52,9 @@ const routes = [
     }
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutView
-  },
-  {
     path: '/login',
     name: 'login',
     component: LoginView
-  },
-  {
-    path: '/privacy',
-    name: 'privacy',
-    component: PrivacyView
-  },
-  {
-    path: '/terms',
-    name: 'terms',
-    component: TermsView
   },
   {
     path: '/profile',
@@ -85,9 +67,9 @@ const routes = [
     component: VerifyEmailView
   },
   {
-    path: '/contact',
-    name: 'contact',
-    component: ContactView
+    path: '/info',
+    name: 'static-info',
+    component: StaticView
   },
   {
     path: '/docs/acmg-docs',

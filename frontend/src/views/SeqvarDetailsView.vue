@@ -244,7 +244,7 @@ const SECTIONS: { [key: string]: Section[] } = {
           <template v-if="geneInfoStore.hgncId?.length">
             <v-list-group value="gene">
               <template #activator="{ props: vProps }">
-                <v-list-item :value="vProps" prepend-icon="mdi-dna" class="text-no-break">
+                <v-list-item :value="vProps" prepend-icon="mdi-dna" v-bind="vProps" class="text-no-break">
                   Gene
                   <span class="font-italic">
                     {{
@@ -276,7 +276,7 @@ const SECTIONS: { [key: string]: Section[] } = {
 
           <v-list-group value="seqvar">
             <template #activator="{ props: vProps }">
-              <v-list-item :value="vProps" prepend-icon="mdi-magnify-expand" class="text-no-wrap">
+              <v-list-item :value="vProps" v-bind="vProps" prepend-icon="mdi-magnify-expand" class="text-no-wrap">
                 Variant
               </v-list-item>
             </template>

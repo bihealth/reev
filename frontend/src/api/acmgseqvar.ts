@@ -16,6 +16,21 @@ export class AcmgSeqVarClient {
   }
 
   /**
+   * List all ACMG ratings for a user.
+   *
+   * @returns The list of ACMG ratings for the user.
+   */
+  async listAcmgRatings(): Promise<any> {
+    const url = `${this.apiBaseUrl}acmgseqvar/list`
+    const response = await fetch(url, {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include'
+    })
+    return await response.json()
+  }
+
+  /**
    * Obtains the ACMG rating for a variant.
    *
    * @param variantName The variant to retrieve the ACMG rating for.
