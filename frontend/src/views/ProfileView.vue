@@ -35,6 +35,7 @@ const currentSection = ref(SECTIONS[0].id) // Default to the first section
 
 const updateCurrentSection = (sectionId: string) => {
   currentSection.value = sectionId
+  router.push({ hash: `#${sectionId}` })
 }
 
 const scrollToSection = async () => {
@@ -66,12 +67,8 @@ watch(() => route.hash, scrollToSection)
               :id="`${section.id}-nav`"
               :key="section.id"
               density="compact"
-              @click="
-                updateCurrentSection(section.id)
-                router.push({ hash: `#${section.id}` })
-              "
+              @click="updateCurrentSection(section.id)"
             >
-              <!-- @click="router.push({ hash: `#${section.id}` })"-->
               <v-list-item-title>{{ section.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
