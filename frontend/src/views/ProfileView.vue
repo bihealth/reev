@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, watch } from 'vue'
+import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import { useUserStore } from '@/stores/user'
@@ -14,6 +14,9 @@ const ProfileInformationCard = defineAsyncComponent(
 const SeqVarsACMGCard = defineAsyncComponent(
   () => import('@/components/Profile/SeqVarsACMGCard.vue')
 )
+const StrucVarsACMGCard = defineAsyncComponent(
+  () => import('@/components/Profile/StrucVarsACMGCard.vue')
+)
 
 const userStore = useUserStore()
 
@@ -24,8 +27,15 @@ const SECTIONS = [
   { id: 'general-info', title: 'Profile information' },
   { id: 'bookmarks', title: 'Bookmarks' },
   { id: 'case-information', title: 'Case information' },
-  { id: 'acmg-seq-vars', title: 'ACMG Sequence Variant Interpretation' }
+  { id: 'acmg-seq-vars', title: 'ACMG Sequence Variant' },
+  { id: 'acmg-struc-vars', title: 'ACMG Structure Variant' }
 ]
+
+const currentSection = ref(SECTIONS[0].id) // Default to the first section
+
+const updateCurrentSection = (sectionId: string) => {
+  currentSection.value = sectionId
+}
 
 const scrollToSection = async () => {
   const sectionId = route.hash.slice(1)
@@ -56,27 +66,35 @@ watch(() => route.hash, scrollToSection)
               :id="`${section.id}-nav`"
               :key="section.id"
               density="compact"
-              @click="router.push({ hash: `#${section.id}` })"
+              @click="
+                updateCurrentSection(section.id)
+                router.push({ hash: `#${section.id}` })
+              "
             >
+              <!-- @click="router.push({ hash: `#${section.id}` })"-->
               <v-list-item-title>{{ section.title }}</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-navigation-drawer>
         <v-main>
-          <div id="general-info">
+          <div v-if="currentSection === 'general-info'" id="general-info">
             <ProfileInformationCard />
           </div>
 
-          <div id="bookmarks">
+          <div v-if="currentSection === 'bookmarks'" id="bookmarks">
             <BookmarksCard />
           </div>
 
-          <div id="case-information">
+          <div v-if="currentSection === 'case-information'" id="case-information">
             <CaseCard />
           </div>
 
-          <div id="acmg-seq-vars">
+          <div v-if="currentSection === 'acmg-seq-vars'" id="acmg-seq-vars">
             <SeqVarsACMGCard />
+          </div>
+
+          <div v-if="currentSection === 'acmg-struc-vars'" id="acmg-struc-vars">
+            <StrucVarsACMGCard />
           </div>
         </v-main>
       </div>
