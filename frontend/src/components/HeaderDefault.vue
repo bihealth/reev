@@ -50,16 +50,16 @@ function toggleTheme() {
         </template>
 
         <v-list>
-          <v-list-item id="about" to="/about">
+          <v-list-item id="about" to="/info#about">
             <v-list-item-title> About </v-list-item-title>
           </v-list-item>
-          <v-list-item id="contact" to="/contact">
+          <v-list-item id="contact" to="/info#contact">
             <v-list-item-title> Contact </v-list-item-title>
           </v-list-item>
-          <v-list-item id="privacy" to="/privacy">
+          <v-list-item id="privacy" to="/info#privacy-policy">
             <v-list-item-title> Privacy Policy </v-list-item-title>
           </v-list-item>
-          <v-list-item id="terms" to="/terms">
+          <v-list-item id="terms" to="/info#terms-of-use">
             <v-list-item-title> Terms of Use </v-list-item-title>
           </v-list-item>
         </v-list>
