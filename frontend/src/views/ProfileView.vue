@@ -124,10 +124,3 @@ watch(() => route.hash, scrollToSection)
     </v-container>
   </v-app>
 </template>
-
-<style scoped>
-.navigation {
-  width: 95%;
-  margin: 20px;
-}
-</style>
