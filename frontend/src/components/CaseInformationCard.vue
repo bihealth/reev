@@ -268,8 +268,8 @@ watch(
               <template #[`item.gene_symbol`]="{ item }">
                 <router-link
                   :to="{
-                    name: 'gene',
-                    params: { searchTerm: item.hgnc_id, genomeRelease: 'grch38' }
+                    name: 'gene-details',
+                    params: { gene: item.hgnc_id }
                   }"
                   target="_blank"
                 >

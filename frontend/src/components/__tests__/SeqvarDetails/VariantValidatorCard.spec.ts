@@ -3,16 +3,16 @@ import { nextTick } from 'vue'
 
 import * as VariantValidatorInfo from '@/assets/__tests__/BRCA1VariantValidator.json'
 import VariantValidator from '@/components/SeqvarDetails/VariantValidatorCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import type { Seqvar } from '@/lib/genomicVars'
+import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
 }
 
 describe.concurrent('VariantValidator', async () => {
@@ -25,7 +25,7 @@ describe.concurrent('VariantValidator', async () => {
       { component: VariantValidator, template: false },
       {
         props: {
-          smallVariant: smallVariantInfo
+          seqvar: deepCopy(seqvarInfo)
         }
       }
     )
@@ -50,7 +50,7 @@ describe.concurrent('VariantValidator', async () => {
       { component: VariantValidator, template: false },
       {
         props: {
-          smallVariant: smallVariantInfo
+          seqvar: deepCopy(seqvarInfo)
         }
       }
     )

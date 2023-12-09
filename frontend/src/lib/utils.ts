@@ -1,4 +1,8 @@
-import { DottyClient } from '@/api/dotty'
+import { type RouteLocationNormalizedLoaded, type RouteLocationRaw, type Router } from 'vue-router'
+
+import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { type Seqvar } from '@/lib/genomicVars'
+import { type BookmarkData } from '@/stores/bookmarks'
 
 /**
  * Round `value` to `digits` and return an `<abbr>` tag that has the original value
@@ -47,24 +51,24 @@ export const separateIt = (value: number, separator: string = ' '): string => {
 /**
  * Returns whether the given variant looks mitochondrial.
  *
- * @param smallVar Small variant to check.
+ * @param seqvar Small variant to check.
  * @returns whether the position is on the mitochondrial genome
  */
-export const isVariantMt = (smallVar: any): boolean => {
-  return ['MT', 'M', 'chrMT', 'chrM'].includes(smallVar?.chromosome)
+export const isVariantMt = (seqvar: Seqvar): boolean => {
+  return ['MT', 'M', 'chrMT', 'chrM'].includes(seqvar?.chrom)
 }
 
 /**
  * Returns whether the given position is in a homopolymer on the mitochondrial chromosome.
  *
- * @param smallVar Small variant to check.
+ * @param seqvar Small variant to check.
  * @returns whether the position is in a mitochondrial homopolymer
  */
-export const isVariantMtHomopolymer = (smallVar: any): boolean => {
-  if (!smallVar) {
+export const isVariantMtHomopolymer = (seqvar: Seqvar): boolean => {
+  if (!seqvar) {
     return false
   }
-  const { start, end } = smallVar
+  const { pos } = seqvar
   const positionCheck = (pos: number) => {
     return (
       (pos >= 66 && pos <= 71) ||
@@ -75,8 +79,8 @@ export const isVariantMtHomopolymer = (smallVar: any): boolean => {
       (pos >= 16182 && pos <= 16194)
     )
   }
-  if (isVariantMt(smallVar)) {
-    return positionCheck(start) || positionCheck(end)
+  if (isVariantMt(seqvar)) {
+    return positionCheck(pos)
   } else {
     return false
   }
@@ -93,96 +97,33 @@ export function removeCommasFromNumbers(str: string): string {
   return str.replace(/(\d),(?=\d)/g, '$1')
 }
 
-/**
- * Take a `searchTerm` and return a route location that can be used to navigate to
- * the correct page.
+/** Helper that scrolls to the given section. */
+export const scrollToSection = async (route: RouteLocationNormalizedLoaded) => {
+  const sectionId = route.hash.slice(1)
+  if (sectionId) {
+    const elem = document.getElementById(sectionId)
+    elem?.scrollIntoView()
+  }
+}
+
+/** Helper that launches a search through the router.
  *
+ * @param router The {Router} to use.
  * @param searchTerm The search term to use.
- * @param genomeRelease The genome release to use.
+ * @param genomeBuild The genome build to use.
  */
-export const search = async (searchTerm: string, genomeRelease: string) => {
-  // Remove leading/trailing whitespace.
-  searchTerm = searchTerm.trim()
-  if (!searchTerm) {
-    return null // no query ;-)
-  }
-
-  // First, attempt to resolve using dotty.
-  const dottyClient = new DottyClient()
-  const result = await dottyClient.toSpdi(
-    searchTerm,
-    genomeRelease === 'grch37' ? 'GRCh37' : 'GRCh38'
-  )
-  if (result && result?.success) {
-    const spdi = result.value
-    searchTerm = `${spdi.contig}:${spdi.pos}:${spdi.reference_deleted}:${spdi.alternate_inserted}`
-    if (!searchTerm.startsWith('chr')) {
-      searchTerm = `chr${searchTerm}`
+export const performSearch = async (
+  router: Router,
+  searchTerm: string,
+  genomeBuild: GenomeBuild
+) => {
+  router.push({
+    name: 'query',
+    query: {
+      q: searchTerm,
+      genomeBuild: genomeBuild
     }
-    genomeRelease = spdi.assembly.toLowerCase()
-  }
-
-  interface RouteLocationFragment {
-    name: string
-    params?: any
-    query?: any
-  }
-
-  type RouteLoctionBuilder = () => RouteLocationFragment
-
-  // We iterate the regexps in the `Map` and will use the route from the
-  // first match.
-  const SEARCH_REGEXPS: [RegExp, RouteLoctionBuilder][] = [
-    [
-      /^HGNC:\d+$/,
-      (): RouteLocationFragment => ({
-        name: 'gene',
-        params: {
-          searchTerm: searchTerm,
-          genomeRelease: genomeRelease
-        }
-      })
-    ],
-    [
-      /^(?:chr)?(?:\d+|X|Y|MT):\d+:[ACGT]{1,50}:[ACGT]{1,50}$/,
-      (): RouteLocationFragment => ({
-        name: 'variant',
-        params: {
-          searchTerm: searchTerm,
-          genomeRelease: genomeRelease
-        }
-      })
-    ],
-    [
-      /^(?:DEL|DUP):chr\d+:\d+:\d+$/,
-      (): RouteLocationFragment => ({
-        name: 'cnv',
-        params: {
-          searchTerm: searchTerm,
-          genomeRelease: genomeRelease
-        }
-      })
-    ],
-    [
-      /^.*$/,
-      (): RouteLocationFragment => ({
-        name: 'genes',
-        query: {
-          q: searchTerm,
-          fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
-        }
-      })
-    ]
-  ]
-
-  searchTerm = removeCommasFromNumbers(searchTerm)
-  for (const [regexp, getRoute] of SEARCH_REGEXPS) {
-    if (regexp.test(searchTerm)) {
-      const routeLocation = getRoute()
-      // console.log(`term ${searchTerm} matched ${regexp}, route is`, routeLocation)
-      return routeLocation
-    }
-  }
+  })
 }
 
 /**
@@ -257,5 +198,31 @@ export const classColor = (patho: string) => {
       return 'green-darken-3'
     default:
       return 'grey-lighten-2'
+  }
+}
+
+/**
+ * Convert a {BoookmarkData} to a route location.
+ *
+ * @param bookmark Bookmark to convert
+ * @returns Route location
+ */
+export const bookmarkTo = (bookmark: BookmarkData): RouteLocationRaw => {
+  switch (bookmark.obj_type) {
+    case 'gene':
+      return {
+        name: 'gene',
+        params: { geneId: bookmark.obj_id }
+      }
+    case 'seqvar':
+      return {
+        name: 'seqvar-details',
+        params: { seqvar: bookmark.obj_id }
+      }
+    case 'strucvar':
+      return {
+        name: 'strucvar-details',
+        params: { strucvar: bookmark.obj_id }
+      }
   }
 }

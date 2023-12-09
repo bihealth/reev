@@ -4,35 +4,34 @@ import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import Freqs from '@/components/SeqvarDetails/FreqsCard.vue'
 import VariantDetailsFreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
+import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
 
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
 }
 
-const smallVariantInfoMitochondrial = {
-  release: 'grch37',
-  chromosome: 'chrM',
-  start: '70',
-  end: '70',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfoMitochondrial = {
+  genomeBuild: 'grch37',
+  chrom: 'chrM',
+  pos: 70,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-chrM-70-G-A'
 }
 
 describe.concurrent('Freqs', async () => {
-  it('renders the Freqs info', async () => {
+  it('renders the Freqs info for Autosonmal Variants', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: Freqs, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqvar: seqvarInfo,
           varAnnos: BRCA1VariantInfo
         }
       }
@@ -46,12 +45,12 @@ describe.concurrent('Freqs', async () => {
       { component: Freqs, template: false },
       {
         props: {
-          smallVar: smallVariantInfoMitochondrial,
+          seqvar: seqvarInfoMitochondrial,
           varAnnos: BRCA1VariantInfo
         }
       }
     )
-    const freqsAutosomal = wrapper.findComponent(VariantDetailsFreqsMitochondrial)
-    expect(freqsAutosomal.exists()).toBe(true)
+    const freqsMitochondrial = wrapper.findComponent(VariantDetailsFreqsMitochondrial)
+    expect(freqsMitochondrial.exists()).toBe(true)
   })
 })

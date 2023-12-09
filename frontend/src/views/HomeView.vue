@@ -1,128 +1,91 @@
+<!--
+View for the homepage.
+
+Implements the search bar for variants and genes.
+-->
+
 <script setup lang="ts">
-/**
- * Display of Home default page.
- *
- * Implements the search bar for variants and genes.
- */
-import { defineAsyncComponent, ref } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { search } from '@/lib/utils'
+import FooterDefault from '@/components/FooterDefault.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import SearchBar from '@/components/SearchBar.vue'
+import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { performSearch } from '@/lib/utils'
+import { EXAMPLES, type Example } from '@/views/HomeView.c'
 
-// Components
-const FooterDefault = defineAsyncComponent(() => import('@/components/FooterDefault.vue'))
-const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
-const SearchBar = defineAsyncComponent(() => import('@/components/SearchBar.vue'))
-
+/** The current router. */
 const router = useRouter()
 
-/** Genome release string values. */
-type GenomeRelease = 'grch37' | 'grch38'
-
+/** Component state; current search term. */
 const searchTerm = ref<string>('')
-const genomeRelease = ref<GenomeRelease>('grch37')
+/** Component state; currently selected genome build. */
+const genomeBuild = ref<GenomeBuild>('grch37')
+/** Component state; whether or not to show case information. */
 const showCaseInformation = ref(false)
 
-interface Example {
-  query: string
-  label?: string
-  genomeRelease: GenomeRelease
-}
-
-const examples: Example[] = [
-  { query: 'BRCA1', label: 'gene symbols BRCA1, TP53, ...', genomeRelease: 'grch38' },
-  { query: 'TP53', genomeRelease: 'grch38' },
-  {
-    query: 'EMP',
-    label: 'partial gene symbol EMP, query for similar gene',
-    genomeRelease: 'grch38'
-  },
-  {
-    query: 'NM_007294.4(BRCA1):c.5123C>A',
-    label: 'HGVS position on transcript',
-    genomeRelease: 'grch38'
-  },
-  { query: 'NC_000017.10:g.41197728G>T', label: 'HGVS genomic variant', genomeRelease: 'grch37' },
-  {
-    query: 'chr17:41197708:T:G',
-    label: 'SPDI (sequence, position, deleted, inserted) genomic variants',
-    genomeRelease: 'grch37'
-  },
-  { query: 'chr17:41197751:G:T', genomeRelease: 'grch37' },
-  {
-    query: 'DEL:chr17:41176312:41277500',
-    label: 'genomic specification of a deletion',
-    genomeRelease: 'grch37'
-  },
-  { query: 'chrMT:8993:T:G', label: 'mitochondrial variants', genomeRelease: 'grch37' },
-  { query: 'chrMT:15172:G:A', genomeRelease: 'grch38' }
-]
-
+/** Launches a search for one of the examples. */
 const performExampleSearch = (example: Example) => {
   searchTerm.value = example.query
-  genomeRelease.value = example.genomeRelease
-  performSearch()
-}
-
-/**
- * Perform a search based on the current search term and genome release.
- *
- * If a route is found for the search term then redirect to that route.
- * Otherwise log an error.
- */
-const performSearch = async () => {
-  const routeLocation: any = await search(searchTerm.value, genomeRelease.value)
-  if (routeLocation) {
-    router.push(routeLocation)
-  } else {
-    console.error(`no route found for ${searchTerm.value}`)
-  }
+  genomeBuild.value = example.genomeBuild ?? 'grch37'
+  performSearch(router, searchTerm.value, genomeBuild.value)
 }
 </script>
 
 <template>
-  <HeaderDefault v-model:case-information="showCaseInformation" />
-  <v-container class="home-view">
-    <SearchBar
-      v-model:search-term="searchTerm"
-      v-model:genome-release="genomeRelease"
-      @click-search="performSearch"
-    />
+  <v-app>
+    <PageHeader v-model:case-information="showCaseInformation" :hide-search-bar="true" />
+    <v-main>
+      <v-container class="home-view">
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-col cols="12" lg="6">
+            <div class="text-h6">Enter a variant or gene to query for</div>
 
-    <v-row>
-      <v-col cols="12" md="4">
-        <v-card id="examples">
-          <v-card-title>Example Queries:</v-card-title>
-          <v-card-text class="examples">
-            <div v-for="example in examples" :key="example.label">
-              <div v-if="example.label?.length" class="text-caption mt-3">
-                {{ example.label }}
-              </div>
-              <v-btn class="example mt-1" @click="performExampleSearch(example)">
-                {{ example.query }}
-              </v-btn>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
-  <FooterDefault />
+            <SearchBar
+              v-model:search-term="searchTerm"
+              v-model:genome-release="genomeBuild"
+              @click-search="() => performSearch(router, searchTerm, genomeBuild)"
+            />
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-col cols="12" lg="6">
+            <v-card id="examples">
+              <v-card-title> Need some inspiration? </v-card-title>
+              <v-card-text>
+                <div v-for="section in EXAMPLES" :key="section.title">
+                  <div class="text-overline mt-3">
+                    {{ section.title }}
+                  </div>
+                  <div v-if="section.text">
+                    {{ section.text }}
+                  </div>
+                  <div class="mt-2">
+                    <v-btn
+                      v-for="example in section.examples"
+                      :key="example.query"
+                      class="mr-1 mb-1 example"
+                      variant="text"
+                      prepend-icon="mdi-arrow-right-circle-outline"
+                      @click="performExampleSearch(example)"
+                    >
+                      {{ example.query }}
+                      <template v-if="example.hint">({{ example.hint }})</template>
+                    </v-btn>
+                  </div>
+                </div>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+      </v-container>
+    </v-main>
+    <FooterDefault />
+  </v-app>
 </template>
-
-<style scoped>
-#examples {
-  margin-top: 30px;
-  padding: 10px;
-}
-
-.examples {
-  display: flex;
-  flex-direction: column;
-}
-
-.example {
-  width: 300px;
-  cursor: pointer;
-}
-</style>

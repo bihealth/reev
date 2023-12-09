@@ -8,9 +8,19 @@ import {
   StateSourceCNV
 } from '@/components/StrucvarDetails/ClinsigCard.c'
 import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import type { Strucvar } from '@/lib/genomicVars'
+import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
+
+const strucvarInfo: Strucvar = {
+  genomeBuild: 'grch37',
+  svType: 'DEL',
+  chrom: '17',
+  start: 41176312,
+  stop: 41277500,
+  userRepr: 'DEL-grch37-17-41176312-41277500'
+}
 
 const svRecord = {
   svType: 'DEL',
@@ -58,7 +68,7 @@ const makeWrapper = () => {
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
-    store.svRecord = JSON.parse(JSON.stringify(svRecord))
+    store.strucvar = deepCopy(strucvarInfo)
     store.acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
     store.acmgRating.setPresence(
       StateSourceCNV.AutoCNV,
@@ -69,7 +79,7 @@ const makeWrapper = () => {
   store.fetchAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
-  store.svRecord = JSON.parse(JSON.stringify(svRecord))
+  store.strucvar = deepCopy(strucvarInfo)
   store.acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
   store.acmgRating.setPresence(StateSourceCNV.AutoCNV, AcmgCriteriaCNVLoss.Loss1A, Presence.Present)
 

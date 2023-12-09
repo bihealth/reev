@@ -2,11 +2,11 @@
 import { defineAsyncComponent } from 'vue'
 
 // Components
-const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 </script>
 
 <template>
-  <HeaderDefault />
+  <PageHeader />
   <v-container class="docs-view">
     <v-row>
       <v-col>

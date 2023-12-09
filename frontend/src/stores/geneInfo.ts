@@ -11,12 +11,12 @@ import { DottyClient } from '@/api/dotty'
 import { type HpoTerm, VigunoClient } from '@/api/viguno'
 import { StoreState } from '@/stores/misc'
 
-export const useGeneInfoStore = defineStore('geneInfo', () => {
+export const usegeneInfoStore = defineStore('geneInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
   /** The current gene query. */
-  const geneSymbol = ref<string | null>(null)
+  const hgncId = ref<string | null>(null)
 
   /** The retrieved gene data. */
   const geneInfo = ref<any | null>(null)
@@ -32,15 +32,15 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
 
   function clearData() {
     storeState.value = StoreState.Initial
-    geneSymbol.value = null
+    hgncId.value = null
     geneInfo.value = null
     geneClinvar.value = null
     transcripts.value = null
   }
 
-  const loadData = async (geneSymbolQuery: string, genomeRelease: string) => {
+  const loadData = async (hgncIdQuery: string, genomeRelease: string) => {
     // Do not re-load data if the gene symbol is the same
-    if (geneSymbolQuery === geneSymbol.value) {
+    if (hgncIdQuery === hgncId.value) {
       return
     }
 
@@ -50,35 +50,34 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
     // Load data via API
     storeState.value = StoreState.Loading
     try {
-      const hgncId = geneSymbolQuery
       const annonarsClient = new AnnonarsClient()
-      const data = await annonarsClient.fetchGeneInfo(hgncId)
+      const data = await annonarsClient.fetchGeneInfo(hgncIdQuery)
       if (data?.genes === null) {
         throw new Error('No gene data found.')
       }
-      geneInfo.value = data['genes'][hgncId]
+      geneInfo.value = data['genes'][hgncIdQuery]
 
-      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncId)
+      const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgncIdQuery)
       if (geneClinvarData?.genes === null) {
         throw new Error('No gene clinvar data found.')
       }
-      geneClinvar.value = geneClinvarData['genes'][hgncId]
+      geneClinvar.value = geneClinvarData['genes'][hgncIdQuery]
 
       const dottyClient = new DottyClient()
       const transcriptsData = await dottyClient.fetchTranscripts(
-        hgncId,
+        hgncIdQuery,
         genomeRelease === 'grch37' ? 'GRCh37' : 'GRCh38'
       )
       transcripts.value = transcriptsData
 
       const vigunoClient = new VigunoClient()
-      const hpoTermsData = await vigunoClient.fetchHpoTermsForHgncId(hgncId)
+      const hpoTermsData = await vigunoClient.fetchHpoTermsForHgncId(hgncIdQuery)
       if (hpoTermsData === null) {
         throw new Error('Problem querying HPO terms data.')
       }
       hpoTerms.value = hpoTermsData
 
-      geneSymbol.value = geneSymbolQuery
+      hgncId.value = hgncIdQuery
       storeState.value = StoreState.Active
     } catch (e) {
       console.error('There was an error loading the gene data.', e)
@@ -89,7 +88,7 @@ export const useGeneInfoStore = defineStore('geneInfo', () => {
 
   return {
     storeState,
-    geneSymbol,
+    hgncId,
     geneInfo,
     geneClinvar,
     hpoTerms,

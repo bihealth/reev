@@ -4,17 +4,12 @@ import { computed } from 'vue'
 import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
 import Conservation from '@/components/SeqvarDetails/VariantScoresCard/UcscConservation.vue'
 import { roundIt } from '@/lib/utils'
-import { type SmallVariant } from '@/stores/variantInfo'
 
 export interface Props {
-  smallVar: SmallVariant | null
-  varAnnos: any
+  varAnnos?: any
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  smallVar: null,
-  varAnnos: null
-})
+const props = defineProps<Props>()
 
 const bestOf = (obj: any, keys: string[]) => {
   if (!obj) {

@@ -1,16 +1,16 @@
 import { describe, expect, it } from 'vitest'
 
 import FreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
+import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
 
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chrM',
-  start: '70',
-  end: '70',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
 }
 
 const variantInfo = {
@@ -37,7 +37,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
       { component: FreqsMitochondrial, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqVar: seqvarInfo,
           varAnnos: variantInfo
         }
       }
@@ -55,7 +55,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
       { component: FreqsMitochondrial, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqVar: seqvarInfo,
           varAnnos: variantInfoNoHelixmtdb
         }
       }
@@ -73,7 +73,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
       { component: FreqsMitochondrial, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqVar: seqvarInfo,
           varAnnos: variantInfoNoGnomad
         }
       }
@@ -89,7 +89,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
       { component: FreqsMitochondrial, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqVar: seqvarInfo,
           varAnnos: {}
         }
       }

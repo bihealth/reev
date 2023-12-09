@@ -12,43 +12,42 @@ import ExpressionCard from '@/components/GeneDetails/ExpressionCard.vue'
 import OverviewCard from '@/components/GeneDetails/OverviewCard.vue'
 import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
 import GenomeBrowser from '@/components/GenomeBrowser.vue'
-import HeaderDetailPage from '@/components/HeaderDetailPage.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
 // import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import StrucvarClinvarCard from '@/components/StrucvarDetails/ClinvarCard.vue'
 import GeneListCard from '@/components/StrucvarDetails/GeneListCard.vue'
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
+import { type Strucvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useSvInfoStore } from '@/stores/svInfo'
-
-import StrucvarDetailsView from '../StrucvarDetailsView.vue'
+import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
   const svInfoStore = useSvInfoStore(pinia)
-  const mockLoadData = vi.fn().mockImplementation(async (searchTerm: string) => {
+  const mockLoadData = vi.fn().mockImplementation(async (strucvar: Strucvar) => {
     svInfoStore.storeState = StoreState.Active
-    svInfoStore.svTerm = searchTerm
-    svInfoStore.currentSvRecord = JSON.parse(JSON.stringify(CurrentSV))
+    svInfoStore.strucvar = strucvar
+    const tmp = JSON.parse(JSON.stringify(CurrentSV))
+    svInfoStore.csq = tmp.result
     svInfoStore.genesInfos = JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']]))
   })
   svInfoStore.loadData = mockLoadData
 
   // Initial load
   svInfoStore.storeState = StoreState.Loading
-  svInfoStore.svTerm = null
-  svInfoStore.currentSvRecord = null
+  svInfoStore.strucvar = undefined
   svInfoStore.genesInfos = JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']]))
 
   return setupMountedComponents(
-    { component: StrucvarDetailsView, template: true },
+    { component: StrucvarDetailsView, template: false },
     {
       props: {
-        searchTerm: 'DEL:chr17:41176312:41277500',
-        genomeRelease: 'grch37'
+        strucvarDesc: 'DEL-grch37-17-41176312-41277500'
       },
-      pinia: pinia
+      pinia
     }
   )
 }
@@ -57,7 +56,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
   it('renders the header', async () => {
     const { wrapper } = await makeWrapper()
 
-    const header = wrapper.findComponent(HeaderDetailPage)
+    const header = wrapper.findComponent(PageHeader)
     const searchBar = wrapper.findComponent(SearchBar)
     expect(header.exists()).toBe(true)
     expect(searchBar.exists()).toBe(true)
@@ -94,7 +93,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
     // const geneClinvar = wrapper.find('#gene-clinvar')
     const strucvarClinvar = wrapper.find('#strucvar-clinvar')
     const strucvarTools = wrapper.find('#strucvar-tools')
-    // const strucvarAcmg = wrapper.find('#strucvar-acmg')
+    // const strucvarClinsig = wrapper.find('#strucvar-clinsig')
     const strucvarGenomeBrowser = wrapper.find('#strucvar-genomebrowser')
     expect(geneList.exists()).toBe(true)
     expect(geneOverview.exists()).toBe(true)
@@ -104,7 +103,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
     // expect(geneClinvar.exists()).toBe(true)
     expect(strucvarClinvar.exists()).toBe(true)
     expect(strucvarTools.exists()).toBe(true)
-    // expect(strucvarAcmg.exists()).toBe(true)
+    // expect(strucvarClinsig.exists()).toBe(true)
     expect(strucvarGenomeBrowser.exists()).toBe(true)
 
     // Renders the cards
@@ -133,7 +132,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
   it.skip('emits update in header', async () => {
     const { wrapper } = await makeWrapper()
 
-    const header = wrapper.findComponent(HeaderDetailPage)
+    const header = wrapper.findComponent(PageHeader)
     expect(header.exists()).toBe(true)
     await header.setValue('DEL:chr17:41176312:41277500', 'searchTermRef')
     await header.setValue('grch37', 'genomeReleaseRef')

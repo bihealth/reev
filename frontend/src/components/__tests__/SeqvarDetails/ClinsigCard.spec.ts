@@ -3,19 +3,20 @@ import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
 import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
+import SummarySheet from '@/components/SeqvarDetails/ClinsigCard/SummarySheet.vue'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
-import { setupMountedComponents } from '@/lib/test-utils'
+import type { Seqvar } from '@/lib/genomicVars'
+import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
 }
 
 const makeWrapper = () => {
@@ -24,7 +25,7 @@ const makeWrapper = () => {
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
-    store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+    store.seqvar = deepCopy(seqvarInfo)
     store.acmgRating = new MultiSourceAcmgCriteriaState()
     store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
     store.acmgRatingStatus = true
@@ -32,7 +33,7 @@ const makeWrapper = () => {
   store.fetchAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
-  store.smallVariant = JSON.parse(JSON.stringify(smallVariantInfo))
+  store.seqvar = deepCopy(seqvarInfo)
   store.acmgRating = new MultiSourceAcmgCriteriaState()
   store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
   store.acmgRatingStatus = true
@@ -40,11 +41,11 @@ const makeWrapper = () => {
   return setupMountedComponents(
     {
       component: ClinsigCard,
-      template: true
+      template: false
     },
     {
       props: {
-        smallVariant: smallVariantInfo
+        seqvar: seqvarInfo
       },
       pinia: pinia
     }
@@ -56,7 +57,9 @@ describe.concurrent('AcmgRating', async () => {
     const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Semi-Automated')
 
-    const switchers = wrapper.findAll('.v-switch')
+    const summarySheet = wrapper.findComponent(SummarySheet)
+    expect(summarySheet.exists()).toBe(true)
+    const switchers = wrapper.findAllComponents({ name: 'CriterionSwitch' })
     expect(switchers.length).toBe(2)
 
     // click show failed button

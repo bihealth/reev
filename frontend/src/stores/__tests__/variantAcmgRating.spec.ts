@@ -4,21 +4,21 @@ import createFetchMock from 'vitest-fetch-mock'
 
 import * as ServerResponse from '@/assets/__tests__/ExampleAcmgSeqVarRank.json'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { type Seqvar } from '@/lib/genomicVars'
+import { deepCopy } from '@/lib/test-utils'
 
 import { StoreState } from '../misc'
 import { useVariantAcmgRatingStore } from '../variantAcmgRating'
-import type { SmallVariant } from '../variantInfo'
 
 const fetchMocker = createFetchMock(vi)
 
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
 }
 
 const ExampleInterVarResponse = {
@@ -68,8 +68,7 @@ describe.concurrent('geneInfo Store', () => {
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
-    expect(store.acmgRatings).toStrictEqual([])
-    expect(store.smallVariant).toBe(null)
+    expect(store.seqvar).toBe(null)
     expect(store.acmgRatingStatus).toBe(false)
   })
 
@@ -77,14 +76,13 @@ describe.concurrent('geneInfo Store', () => {
     const store = useVariantAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
-    store.smallVariant = JSON.parse(JSON.stringify({ gene: 'info' }))
+    store.seqvar = deepCopy(seqvarInfo)
 
     store.clearData()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
-    expect(store.acmgRatings).toStrictEqual([])
-    expect(store.smallVariant).toBe(null)
+    expect(store.seqvar).toBe(null)
   })
 
   it('should correctly retrieve data for InterVar and Server', async () => {
@@ -98,7 +96,7 @@ describe.concurrent('geneInfo Store', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
-    await store.fetchAcmgRating(smallVariantInfo)
+    await store.fetchAcmgRating(deepCopy(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
@@ -127,7 +125,7 @@ describe.concurrent('geneInfo Store', () => {
       )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
+    expect(store.seqvar).toStrictEqual(deepCopy(seqvarInfo))
   })
 
   it('should fail to load data with invalid request', async () => {
@@ -136,11 +134,11 @@ describe.concurrent('geneInfo Store', () => {
     const store = useVariantAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.fetchAcmgRating(smallVariantInfo)
+    await expect(async () => await store.fetchAcmgRating(deepCopy(seqvarInfo))).rejects.toThrow()
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
-    expect(store.smallVariant).toBe(null)
+    expect(store.seqvar).toBe(null)
   })
 
   it('should not load data if small variant is the same', async () => {
@@ -153,7 +151,7 @@ describe.concurrent('geneInfo Store', () => {
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
-    await store.fetchAcmgRating(smallVariantInfo)
+    await store.fetchAcmgRating(deepCopy(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
@@ -182,9 +180,9 @@ describe.concurrent('geneInfo Store', () => {
       )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.smallVariant).toStrictEqual(JSON.parse(JSON.stringify(smallVariantInfo)))
+    expect(store.seqvar).toStrictEqual(seqvarInfo)
 
-    await store.fetchAcmgRating(store.smallVariant as SmallVariant)
+    await store.fetchAcmgRating(deepCopy(store.seqvar))
 
     expect(fetchMocker.mock.calls.length).toBe(2)
   })

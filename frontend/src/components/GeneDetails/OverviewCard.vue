@@ -179,8 +179,8 @@ const summaryText = computed<string>(() => {
         <v-btn
           v-if="showGeneDetailsLink"
           :to="{
-            name: 'gene',
-            params: { searchTerm: geneInfo?.hgnc?.agr, genomeRelease }
+            name: 'gene-details',
+            params: { gene: geneInfo?.hgnc?.symbol }
           }"
           target="_blank"
           prepend-icon="mdi-arrow-right-circle-outline"

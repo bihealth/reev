@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 
 import VegaPlot from '@/components/VegaPlot.vue'
+import type { GenomeBuild } from '@/lib/genomeBuilds'
 
 export interface Props {
   /** Gene information from annonars. */
@@ -9,7 +10,7 @@ export interface Props {
   /** Transctipts information. */
   transcripts: any
   /** The genome release. */
-  genomeRelease: 'grch37' | 'grch38'
+  genomeBuild?: GenomeBuild
   /** Gene symbol */
   geneSymbol: string
 }
@@ -17,7 +18,7 @@ export interface Props {
 const props = withDefaults(defineProps<Props>(), {
   clinvar: null,
   transcripts: null,
-  genomeRelease: 'grch37',
+  genomeBuild: 'grch37',
   geneSymbol: '???'
 })
 
@@ -62,7 +63,7 @@ const minMax = computed(() => {
   let min = null
   let max = null
   for (const item of props.clinvar.variants ?? []) {
-    if (item.genomeRelease.toLowerCase() == props.genomeRelease) {
+    if (item.genomeRelease.toLowerCase() == props.genomeBuild) {
       // Go through all item.variants and find the min and max pos.
       for (const variant of item.variants) {
         if (variant.start < min || min === null) {
@@ -118,7 +119,7 @@ const vegaData = computed(() => {
   }
   let clinvarInfo = []
   for (const item of props.clinvar.variants ?? []) {
-    if (item.genomeRelease.toLowerCase() == props.genomeRelease) {
+    if (item.genomeRelease.toLowerCase() == props.genomeBuild) {
       clinvarInfo = item.variants
     }
   }

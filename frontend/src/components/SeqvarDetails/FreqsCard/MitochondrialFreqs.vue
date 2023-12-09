@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { type Seqvar } from '@/lib/genomicVars'
 import { isVariantMtHomopolymer, roundIt, separateIt as sep } from '@/lib/utils'
-import { type SmallVariant } from '@/stores/variantInfo'
 
-const props = defineProps<{
-  smallVar: SmallVariant | null
-  varAnnos: any | null
-}>()
+interface Props {
+  seqVar?: Seqvar
+  varAnnos?: any
+}
+
+const props = defineProps<Props>()
 
 const helixMtDb = computed(() => {
   if (props?.varAnnos?.helixmtdb) {
@@ -27,12 +29,12 @@ const gnomadMtDna = computed(() => {
 </script>
 
 <template>
-  <template v-if="smallVar === null">
+  <template v-if="!seqVar">
     <v-skeleton-loader type="table" />
   </template>
   <template v-else>
     <div>
-      <div v-if="!isVariantMtHomopolymer(props.smallVar)">
+      <div v-if="!isVariantMtHomopolymer(seqVar as Seqvar)">
         <small>
           <v-icon>mdi-alert-circle-outline</v-icon>
           Variant in homopolymeric region

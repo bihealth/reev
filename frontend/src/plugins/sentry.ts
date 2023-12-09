@@ -8,6 +8,10 @@ import { type App } from 'vue'
 import { type Router } from 'vue-router'
 
 export async function setupSentry(app: App, router: Router) {
+  if (!import.meta.env.PROD) {
+    return // don't setup in development
+  }
+
   Sentry.init({
     app,
     dsn: 'https://ee06fe1f4715e740256c7b762fe0e162@sentry.cubi.bihealth.org/3',
@@ -17,12 +21,10 @@ export async function setupSentry(app: App, router: Router) {
       }),
       new Sentry.Replay()
     ],
-
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
     // We recommend adjusting this value in production
     tracesSampleRate: 1.0,
-
     // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
     tracePropagationTargets: [
       // 'localhost',
@@ -32,7 +34,6 @@ export async function setupSentry(app: App, router: Router) {
       /^https:\/\/reev-staging.bihealth.org\//,
       /^https:\/\/reev-staging.cubi.bihealth.org\//
     ],
-
     // Capture Replay for 10% of all sessions,
     // plus for 100% of sessions with an error
     replaysSessionSampleRate: 0.1,

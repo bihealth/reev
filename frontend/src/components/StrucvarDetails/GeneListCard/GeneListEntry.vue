@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 
 import GeneDosage from '@/components/StrucvarDetails/GeneListCard/GeneDosage.vue'
 import ScoreChip from '@/components/StrucvarDetails/GeneListCard/ScoreChip.vue'
+import { type GenomeBuild } from '@/lib/genomeBuilds'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
@@ -12,7 +13,7 @@ const props = defineProps<{
   sortKey?: string
   sortOrder?: 'asc' | 'desc'
   isSelected: boolean
-  genomeRelease?: 'grch37' | 'grch38'
+  genomeBuild?: GenomeBuild
 }>()
 
 const emit = defineEmits(['toggleSelected'])
@@ -82,8 +83,8 @@ const sortIcon = computed<string>(() => {
               title="go to Gene details page"
               @click.prevent="
                 router.push({
-                  name: 'gene',
-                  params: { searchTerm: item.raw.hgnc.agr, genomeRelease: genomeRelease }
+                  name: 'gene-details',
+                  params: { gene: item.raw.hgnc.symbol }
                 })
               "
             >

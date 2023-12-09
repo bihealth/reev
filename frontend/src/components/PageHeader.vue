@@ -1,65 +1,56 @@
+<!--
+Component displayed as the page header.
+
+By default, contains a search bar that allows to trigger search (by pushing
+the query term through the router), but this can be disabled.
+-->
+
 <script setup lang="ts">
-import { defineAsyncComponent, ref, watch } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import { search } from '@/lib/utils'
+import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { performSearch } from '@/lib/utils'
 
-// Components
+// Define the async components.
 const SearchBar = defineAsyncComponent(() => import('@/components/SearchBar.vue'))
 const UserProfileButton = defineAsyncComponent(() => import('@/components/UserProfileButton.vue'))
 const CaseInformationCard = defineAsyncComponent(
   () => import('@/components/CaseInformationCard.vue')
 )
 
-/** Genome release string values. */
-type GenomeRelease = 'grch37' | 'grch38'
-
+/** This component's props. */
 export interface Props {
-  searchTerm?: string
-  genomeRelease?: GenomeRelease
+  /** Whether to hide the search bar. */
+  hideSearchBar?: boolean
 }
 
+/** The component's props with defaults applied. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
-  searchTerm: '',
-  genomeRelease: 'grch37'
+  hideSearchBar: false
 })
 
+/** The global Router instance. */
 const router = useRouter()
+/** The global Theme instance. */
 const theme = useTheme()
 
-const searchTermRef = ref(props.searchTerm)
-const genomeReleaseRef = ref(props.genomeRelease)
+/** Component state; search term */
+const searchTermRef = ref<string>('')
+/** Component state; genome build. */
+const genomeBuildRef = ref<GenomeBuild>('grch37')
 
+/** Helper function to between light and dark theme. */
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
-
-/**
- * Perform a search based on the current search term and genome release.
- *
- * If a route is found for the search term then redirect to that route.
- * Otherwise log an error.
- */
-const performSearch = async () => {
-  const routeLocation: any = await search(searchTermRef.value, genomeReleaseRef.value)
-  if (routeLocation) {
-    router.push(routeLocation)
-  } else {
-    console.error(`no route found for ${searchTermRef.value}`)
-  }
-}
-
-const updateTerms = async () => {
-  searchTermRef.value = props.searchTerm
-}
-
-watch(() => props.searchTerm, updateTerms)
 </script>
 
 <template>
-  <v-app-bar app class="top-bar">
-    <v-toolbar-title>
+  <v-app-bar app>
+    <div class="ml-0 flex-shrink-0 flex-grow-0">
       <router-link to="/">
         <img
           id="logo"
@@ -70,18 +61,19 @@ watch(() => props.searchTerm, updateTerms)
           width="70"
         />
       </router-link>
-    </v-toolbar-title>
-    <SearchBar
-      v-model:search-term="searchTermRef"
-      v-model:genome-release="genomeReleaseRef"
-      class="top-search-bar"
-      density="compact"
-      @click-search="performSearch"
-    />
-
-    <v-spacer />
-    <v-btn @click="toggleTheme">toggle theme</v-btn>
+    </div>
+    <v-spacer></v-spacer>
+    <template v-if="!hideSearchBar">
+      <SearchBar
+        v-model:search-term="searchTermRef"
+        v-model:genome-release="genomeBuildRef"
+        density="compact"
+        @click-search="() => performSearch(router, searchTermRef, genomeBuildRef)"
+      />
+    </template>
+    <v-spacer></v-spacer>
     <v-toolbar-items>
+      <v-btn @click="toggleTheme">toggle theme</v-btn>
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">
           <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="vProps">
@@ -117,14 +109,3 @@ watch(() => props.searchTerm, updateTerms)
     </v-toolbar-items>
   </v-app-bar>
 </template>
-
-<style scoped>
-.top-bar {
-  border-bottom: 2px solid #455a64;
-}
-
-.top-search-bar {
-  display: flex;
-  width: 50%;
-}
-</style>

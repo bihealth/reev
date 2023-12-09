@@ -3,7 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 // Components
-const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 const AboutView = defineAsyncComponent(() => import('@/components/StaticViews/AboutView.vue'))
 const ContactView = defineAsyncComponent(() => import('@/components/StaticViews/ContactView.vue'))
 const PrivacyView = defineAsyncComponent(() => import('@/components/StaticViews/PrivacyView.vue'))
@@ -20,7 +20,7 @@ enum StaticPages {
   TermsOfUse = 'terms-of-use'
 }
 
-const pages = [
+const PAGES = [
   { id: StaticPages.About, title: 'About' },
   { id: StaticPages.Contact, title: 'Contact' },
   { id: StaticPages.PrivacyPolicy, title: 'Privacy Policy' },
@@ -51,12 +51,12 @@ watch(
 </script>
 
 <template>
-  <HeaderDefault />
+  <PageHeader />
   <v-container fill-height fluid>
     <v-navigation-drawer class="overflow-auto" :elevation="3" :permanent="true">
       <v-list>
         <v-list-item
-          v-for="page in pages"
+          v-for="page in PAGES"
           :key="page.title"
           @click="updateCurrentStaticPage(page.id)"
         >

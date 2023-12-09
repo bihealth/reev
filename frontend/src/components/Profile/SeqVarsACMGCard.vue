@@ -1,36 +1,24 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 
-import { search } from '@/lib/utils'
 import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 
 const acmgRatingStore = useVariantAcmgRatingStore()
-const router = useRouter()
 
 const getPresentCriterias = (criterias: any) =>
   criterias.filter((criteria: any) => criteria.presence === 'Present')
 
-/**
- * Perform a search based on the seqvar name.
- *
- * If a route is found for the search term then redirect to that route.
- * Otherwise log an error.
- *
- * @param query Query to search for
- */
-const performSearch = async (query: string) => {
-  const routeLocation: any = await search(query, 'grch38')
-  if (routeLocation) {
-    router.push(routeLocation)
-  } else {
-    console.error(`no route found for ${query}`)
+/** Return route for seqvar name. */
+const seqvarNameTo = (seqvarName: string) => {
+  const seqvar = 'grch37-' + seqvarName.replace(/:/g, '-')
+  return {
+    name: 'seqvar-details',
+    params: { seqvar }
   }
 }
 
-onMounted(() => {
-  acmgRatingStore.listAcmgRatings()
-})
+// Load ACMG ratings when mounted.
+onMounted(() => acmgRatingStore.listAcmgRatings())
 </script>
 
 <template>
@@ -41,17 +29,21 @@ onMounted(() => {
       <div v-if="acmgRatingStore.acmgRatings.length === 0">No ACMG ratings available.</div>
 
       <div v-else>
-        <v-table>
+        <v-table density="compact">
           <thead>
             <tr>
               <th style="width: 20%">Variant Name</th>
-              <th style="width: 60%">Active Criteria</th>
-              <th style="width: 20%">Variant Link</th>
+              <th style="width: 80%">Active Criteria</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="rating in acmgRatingStore.acmgRatings" :key="rating.seqvar_name">
-              <td>{{ rating.seqvar_name }}</td>
+              <td>
+                <v-btn variant="text" :to="seqvarNameTo(rating.seqvar_name)">
+                  {{ rating.seqvar_name }}
+                  <v-icon class="pl-1">mdi-arrow-right-circle-outline</v-icon>
+                </v-btn>
+              </td>
               <td>
                 <div
                   v-for="criteria in getPresentCriterias(rating.acmg_rank.criterias)"
@@ -59,11 +51,6 @@ onMounted(() => {
                 >
                   {{ criteria.criteria }}: {{ criteria.evidence }}
                 </div>
-              </td>
-              <td>
-                <v-btn color="primary" @click="performSearch(rating.seqvar_name)">
-                  {{ rating.seqvar_name }}
-                </v-btn>
               </td>
             </tr>
           </tbody>

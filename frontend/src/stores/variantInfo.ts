@@ -3,34 +3,21 @@
  *
  * This includes the data retrieved from the APIs.
  */
+import equal from 'fast-deep-equal'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
 import { MehariClient } from '@/api/mehari'
-import { infoFromQuery } from '@/lib/utils'
+import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-
-/** Alias definition of SmallVariant type. */
-export type SmallVariant = {
-  release: string
-  chromosome: string
-  start: string
-  end: string
-  reference: string
-  alternative: string
-  hgnc_id?: string
-}
 
 export const useVariantInfoStore = defineStore('variantInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  /** The search query of the variant. */
-  const variantTerm = ref<string | null>(null)
-
-  /** The small variant that the previous record has been retrieved for. */
-  const smallVariant = ref<SmallVariant | null>(null)
+  /** The Seqvar that the previous record has been retrieved for. */
+  const seqvar = ref<Seqvar | undefined>(undefined)
 
   /** Variant-related information from annonars. */
   const varAnnos = ref<any | null>(null)
@@ -44,20 +31,30 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
   /** Transcript consequence information from mehari. */
   const txCsq = ref<any | null>(null)
 
-  function clearData() {
+  /** Promise for initialization of the store. */
+  const loadDataRes = ref<Promise<any> | null>(null)
+
+  /** Clear all data in the store. */
+  const clearData = () => {
     storeState.value = StoreState.Initial
-    variantTerm.value = null
-    smallVariant.value = null
+    seqvar.value = undefined
     varAnnos.value = null
     txCsq.value = null
     geneInfo.value = null
     geneClinvar.value = null
   }
 
-  const loadData = async (variantQuery: string, genomeRelease: string) => {
-    // Do not re-load data if the variant symbol is the same
-    if (variantQuery === variantTerm.value) {
-      return
+  /**
+   * Load data from the server.
+   *
+   * @param seqvar$ The sequence variant to use for the query.
+   * @param forceReload Whether to force-reload in case the variant is the same.
+   * @returns
+   */
+  const loadData = async (seqvar$: Seqvar, forceReload: boolean = false) => {
+    // Protect against loading multiple times.
+    if (!forceReload && storeState.value !== StoreState.Initial && equal(seqvar$, seqvar.value)) {
+      return loadDataRes.value
     }
 
     // Clear against artifact
@@ -65,70 +62,53 @@ export const useVariantInfoStore = defineStore('variantInfo', () => {
 
     // Load data via API
     storeState.value = StoreState.Loading
-    try {
-      const { chromosome, pos, reference, alternative } = infoFromQuery(variantQuery)
+    const annonarsClient = new AnnonarsClient()
+    const mehariClient = new MehariClient()
+    let hgncId = ''
 
-      const annonarsClient = new AnnonarsClient()
-      const mehariClient = new MehariClient()
-      let hgnc_id = ''
+    const { genomeBuild, chrom, pos, del, ins } = seqvar$
 
-      const variantData = await annonarsClient.fetchVariantInfo(
-        genomeRelease,
-        chromosome,
-        pos,
-        reference,
-        alternative
-      )
-      varAnnos.value = variantData.result
-
-      const txCsqData = await mehariClient.retrieveSeqvarsCsq(
-        genomeRelease,
-        chromosome,
-        pos,
-        reference,
-        alternative
-      )
-
-      if (txCsqData.result.length === 0) {
-        txCsq.value = txCsqData.result
-      } else {
-        hgnc_id = txCsqData.result[0]['gene_id']
-        const geneData = await annonarsClient.fetchGeneInfo(hgnc_id)
-        if (geneData?.genes === null) {
-          throw new Error('No gene data found.')
+    // Retrieve variant information from annonars and mehari.
+    loadDataRes.value = Promise.all([
+      annonarsClient.fetchVariantInfo(genomeBuild, chrom, pos, del, ins).then((data) => {
+        varAnnos.value = data.result
+      }),
+      mehariClient.retrieveSeqvarsCsq(genomeBuild, chrom, pos, del, ins).then((data) => {
+        txCsq.value = data.result ?? []
+      })
+    ])
+      .then((): Promise<any> => {
+        if (txCsq.value.length !== 0) {
+          hgncId = txCsq.value[0].gene_id
+          return Promise.all([
+            annonarsClient.fetchGeneInfo(hgncId).then((data) => {
+              geneInfo.value = data.genes[hgncId]
+            }),
+            annonarsClient.fetchGeneClinvarInfo(hgncId).then((data) => {
+              geneClinvar.value = data.genes[hgncId]
+            })
+          ])
+        } else {
+          return Promise.resolve()
         }
-        geneInfo.value = geneData['genes'][hgnc_id]
+      })
+      .then(() => {
+        seqvar.value = seqvar$
+        storeState.value = StoreState.Active
+      })
+      .catch((err) => {
+        console.error('There was an error loading the variant data.', err)
+        clearData()
+        storeState.value = StoreState.Error
+      })
 
-        const geneClinvarData = await annonarsClient.fetchGeneClinvarInfo(hgnc_id)
-        if (geneClinvarData?.genes === null) {
-          throw new Error('No gene clinvar data found.')
-        }
-        geneClinvar.value = geneClinvarData['genes'][hgnc_id]
-        txCsq.value = txCsqData.result
-      }
-
-      variantTerm.value = variantQuery
-      smallVariant.value = {
-        release: genomeRelease,
-        chromosome: chromosome,
-        start: pos,
-        end: (Number(pos) + reference.length - 1).toString(),
-        reference: reference,
-        alternative: alternative,
-        hgnc_id: hgnc_id
-      }
-      storeState.value = StoreState.Active
-    } catch (e) {
-      console.error('There was an error loading the variant data.', e)
-      clearData()
-      storeState.value = StoreState.Error
-    }
+    return loadDataRes.value
   }
 
   return {
+    loadDataRes,
     storeState,
-    variantTerm,
-    smallVariant,
+    seqvar,
     varAnnos,
     geneClinvar,
     geneInfo,

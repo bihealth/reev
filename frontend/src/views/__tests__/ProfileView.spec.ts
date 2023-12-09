@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import HeaderDefault from '@/components/HeaderDefault.vue'
+import PageHeader from '@/components/PageHeader.vue'
 import ProfileInformationCard from '@/components/Profile/ProfileInformationCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { type UserData } from '@/stores/user'
@@ -20,7 +20,7 @@ describe.concurrent('Profile view', async () => {
   it('renders the header', async () => {
     const { wrapper } = await setupMountedComponents({ component: ProfileView, template: true }, {})
 
-    const header = wrapper.findComponent(HeaderDefault)
+    const header = wrapper.findComponent(PageHeader)
     expect(header.exists()).toBe(true)
   })
 

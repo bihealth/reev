@@ -1,14 +1,33 @@
+<!--
+View that displays the details for a single gene.
+
+As done in all detail views, the component loads the information through
+the stores in a function `loadDataToStore`.  This is called both on
+mounted and when the props change.
+
+This view will attempt to obtain the genome build from the query string,
+falling back to 'grch37'.  In case that the genome build value is not
+valid, an error message is displayed.
+
+Note that the HGNC symbol is pushed into the component by  the router.
+The backend uses HGNC IDs, however.  The `geneInfo` store will take care
+of this resolution.
+-->
+
 <script setup lang="ts">
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-// Components
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
+import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
+import { lookupGene } from '@/lib/query'
+import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
-import { useGeneInfoStore } from '@/stores/geneInfo'
+import { usegeneInfoStore as useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
-const HeaderDetailPage = defineAsyncComponent(() => import('@/components/HeaderDetailPage.vue'))
+// Define the async components to use in this view.
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
 const PathogenicityCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/PathogenicityCard.vue')
@@ -21,56 +40,68 @@ const ExpressionCard = defineAsyncComponent(
 )
 const ClinvarCard = defineAsyncComponent(() => import('@/components/GeneDetails/ClinvarCard.vue'))
 
+/** Type for this component's props. */
 export interface Props {
-  searchTerm?: string
-  genomeRelease?: 'grch37' | 'grch38'
+  /** The HGNC gene symbol to display for. */
+  hgncSymbol: string
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  searchTerm: '',
-  genomeRelease: 'grch37'
-})
+/** The component's props; no need for defaults. */
+const props = defineProps<Props>()
 
+/** The global Router objects. */
 const router = useRouter()
+/** The global Route object. */
 const route = useRoute()
 
 /** Detailed information about the currently selected gene. */
 const geneInfoStore = useGeneInfoStore()
-/** Currently active case - for HPO terms. */
+/** Information about the current case, used for HPO terms and phenotypes. */
 const caseStore = useCaseStore()
 
-const scrollToSection = async () => {
-  const sectionId = route.hash.slice(1)
-  if (sectionId) {
-    const elem = document.getElementById(sectionId)
-    elem?.scrollIntoView()
-  }
-}
+/** Component state; used genome build. */
+const genomeBuild = ref<GenomeBuild>('grch37')
+/** Component state; use for opening sections by default. */
+const openedSection = ref<string[]>(['gene'])
+/** Component state; any error message. */
+const errorMessage = ref<string>('')
 
+/** Helper that reads the props and initializes the stores. */
 const loadDataToStore = async () => {
-  await geneInfoStore.loadData(props.searchTerm, props.genomeRelease)
-  await caseStore.loadCase()
-  await scrollToSection()
-}
+  const query = router.currentRoute.value.query
 
-// When the component is mounted or the search term is changed through
-// the router then we need to fetch the gene information from the backend
-// through the store.
-onMounted(loadDataToStore)
-
-watch(() => props.searchTerm, loadDataToStore)
-watch(() => route.hash, scrollToSection)
-
-// If geneInfoStore.storeState is StoreState.Error then redirect to the
-// home page.
-watch(
-  () => geneInfoStore.storeState,
-  (storeState) => {
-    if (storeState == StoreState.Error) {
-      geneInfoStore.clearData()
-      router.push({ name: 'home' })
+  // Check genome release and obtain as `GenomeBuild`.
+  if (query.genomeBuild) {
+    try {
+      genomeBuild.value = guessGenomeBuild(query.genomeBuild)
+    } catch (err) {
+      errorMessage.value = String(err)
+      return
     }
   }
+
+  let hgncId
+  try {
+    hgncId = await lookupGene(props.hgncSymbol, 'hgncId')
+  } catch (err) {
+    errorMessage.value = `${err}`
+    return
+  }
+  await geneInfoStore.loadData(hgncId, genomeBuild.value)
+  await caseStore.loadCase()
+  await scrollToSection(route)
+}
+
+// When the component is mounted or the gene symbol or genome release are
+// changed through the router then we need to fetch the gene information
+// from the backend through the store.
+onMounted(loadDataToStore)
+// Watch change of HGNC symbol and hash and update store or scroll to
+// selected section.
+watch(() => [props.hgncSymbol, genomeBuild.value], loadDataToStore)
+watch(
+  () => route.hash,
+  async () => scrollToSection(route)
 )
 
 /** Data type for `SECTIONS` below. */
@@ -87,27 +118,17 @@ const SECTIONS: Section[] = [
   { id: 'gene-expression', title: 'Expression' },
   { id: 'gene-clinvar', title: 'ClinVar' }
 ]
-
-// We need to use refs here because of props mutations in the parent
-const searchTermRef = ref(props.searchTerm)
-const genomeReleaseRef = ref<'grch37' | 'grch38'>(props.genomeRelease)
-
-// The `v-list-group` API needs this here so we can enable sections by default.
-const openedSection = ref<string[]>(['gene'])
 </script>
 
 <template>
   <v-app>
-    <HeaderDetailPage
-      v-model:search-term="searchTermRef"
-      v-model:genome-release="genomeReleaseRef"
-    />
+    <PageHeader />
     <v-navigation-drawer :elevation="3" :permanent="true">
       <div v-if="geneInfoStore.storeState == StoreState.Active">
         <v-list v-model:opened="openedSection">
           <v-list-subheader> GENE </v-list-subheader>
 
-          <BookmarkListItem :id="searchTermRef" :type="'gene'" />
+          <BookmarkListItem :id="geneInfoStore.hgncId ?? ''" :type="'gene'" />
 
           <v-list-group value="gene">
             <template #activator="{ props: vProps }">
@@ -119,7 +140,12 @@ const openedSection = ref<string[]>(['gene'])
               :id="`${section.id}-nav`"
               :key="section.id"
               density="compact"
-              @click="router.push({ hash: `#${section.id}` })"
+              @click="
+                router.push({
+                  query: { genomeBuild: genomeBuild },
+                  hash: `#${section.id}`
+                })
+              "
             >
               <v-list-item-title>
                 {{ section.title }}
@@ -130,6 +156,21 @@ const openedSection = ref<string[]>(['gene'])
       </div>
     </v-navigation-drawer>
     <v-main class="my-3 mx-3">
+      <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
+        <div>
+          {{ errorMessage }}
+        </div>
+        <v-btn
+          :to="{ name: 'home' }"
+          prepend-icon="mdi-arrow-left-circle-outline"
+          class="mt-3"
+          variant="outlined"
+          color="white"
+        >
+          Back to home
+        </v-btn>
+      </v-alert>
+
       <div id="gene-overview">
         <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
       </div>
@@ -154,7 +195,7 @@ const openedSection = ref<string[]>(['gene'])
         <ClinvarCard
           :gene-clinvar="geneInfoStore.geneClinvar"
           :transcripts="geneInfoStore.transcripts"
-          :genome-release="genomeReleaseRef"
+          :genome-build="genomeBuild"
           :gene-info="geneInfoStore?.geneInfo"
           :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
         />

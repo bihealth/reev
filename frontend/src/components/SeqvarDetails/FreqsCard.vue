@@ -1,16 +1,22 @@
+<!--
+Display population frequencies.
+
+Note that we do not use VSkelLoader here as this is done in the child
+components when necessary.
+-->
+
 <script setup lang="ts">
 import VariantDetailsFreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
+import { type Seqvar } from '@/lib/genomicVars'
 import { isVariantMt } from '@/lib/utils'
-import { type SmallVariant } from '@/stores/variantInfo'
 
+/** The component's props with defaults applied. */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<{
-  smallVar: SmallVariant | null
-  varAnnos: any | null
+  seqvar?: Seqvar
+  varAnnos?: any
 }>()
-
-const gnomadExomes = 'gnomad_exomes'
-const gnomadGenomes = 'gnomad_genomes'
 </script>
 
 <template>
@@ -18,24 +24,24 @@ const gnomadGenomes = 'gnomad_genomes'
     <v-card-title class="mb-0">Population Frequencies</v-card-title>
     <v-card-text>
       <VariantDetailsFreqsMitochondrial
-        v-if="isVariantMt(props.smallVar)"
-        :small-var="props.smallVar"
-        :var-annos="props.varAnnos"
+        v-if="isVariantMt(seqvar as Seqvar)"
+        :seqvar="seqvar"
+        :var-annos="varAnnos"
       />
       <div v-else>
         <v-row no-gutters>
           <v-col cols="6">
             <VariantDetailsFreqsAutosomal
-              :small-var="props.smallVar"
-              :var-annos="props.varAnnos"
-              :dataset="gnomadExomes"
+              :seqvar="seqvar"
+              :var-annos="varAnnos"
+              dataset="gnomad_exomes"
             />
           </v-col>
           <v-col cols="6">
             <VariantDetailsFreqsAutosomal
-              :small-var="props.smallVar"
-              :var-annos="props.varAnnos"
-              :dataset="gnomadGenomes"
+              :seqvar="seqvar"
+              :var-annos="varAnnos"
+              dataset="gnomad_genomes"
             />
           </v-col>
         </v-row>

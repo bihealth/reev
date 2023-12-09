@@ -23,7 +23,11 @@ export interface Props {
   ensemblGeneId: string
 }
 
-const props = withDefaults(defineProps<Props>(), {})
+const props = withDefaults(defineProps<Props>(), {
+  geneSymbol: '',
+  expressionRecords: () => [],
+  ensemblGeneId: ''
+})
 
 // -- interactive plot configuration -------------------------------------------
 

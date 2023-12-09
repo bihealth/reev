@@ -2,16 +2,16 @@ import { describe, expect, it } from 'vitest'
 
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import FreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import type { Seqvar } from '@/lib/genomicVars'
+import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
+const seqvarInfo: Seqvar = {
+  genomeBuild: 'grch37',
+  chrom: '17',
+  pos: 43044295,
+  del: 'G',
+  ins: 'A',
+  userRepr: 'grch37-17-43044295-G-A'
 }
 
 describe.concurrent('FreqsAutosomal', async () => {
@@ -20,7 +20,7 @@ describe.concurrent('FreqsAutosomal', async () => {
       { component: FreqsAutosomal, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqvar: deepCopy(seqvarInfo),
           varAnnos: BRCA1VariantInfo['result'],
           dataset: 'gnomad_exomes'
         }
@@ -36,7 +36,7 @@ describe.concurrent('FreqsAutosomal', async () => {
       { component: FreqsAutosomal, template: false },
       {
         props: {
-          smallVar: smallVariantInfo,
+          seqvar: deepCopy(seqvarInfo),
           varAnnos: null,
           dataset: 'gnomad_genomes'
         }

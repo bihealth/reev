@@ -3,6 +3,7 @@ import { CLINGEN_DOSAGE_LABELS_SHORT } from '@/components/GeneDetails/Pathogenic
 import { roundIt } from '@/lib/utils'
 
 export interface Props {
+  /** Gene information, if any. */
   geneInfo: any
 }
 
@@ -20,7 +21,7 @@ const props = withDefaults(defineProps<Props>(), {
     </v-card-subtitle>
     <v-card-text class="pt-3">
       <!-- no constraints symbol => display loader -->
-      <template v-if="!geneInfo?.gnomadConstraints?.expSyn">
+      <template v-if="!geneInfo">
         <v-skeleton-loader class="mt-3 mx-auto border" type="heading,subtitle,text,text" />
       </template>
       <!-- otherwise, display actual card -->
@@ -160,7 +161,11 @@ const props = withDefaults(defineProps<Props>(), {
                       </td>
                       <td class="pa-0 text-right">
                         <!-- eslint-disable vue/no-v-html -->
-                        <span v-html="roundIt(geneInfo?.decipherHi?.pHi)" />
+                        <span
+                          v-if="geneInfo?.decipherHi !== undefined"
+                          v-html="roundIt(geneInfo?.decipherHi?.pHi)"
+                        />
+                        <span v-else> N/A </span>
                         <!-- eslint-enable -->
                       </td>
                     </tr>

@@ -7,7 +7,7 @@ import { useUserStore } from '@/stores/user'
 // Components
 const CaseCard = defineAsyncComponent(() => import('@/components/Profile/CaseCard.vue'))
 const BookmarksCard = defineAsyncComponent(() => import('@/components/Profile/BookmarksCard.vue'))
-const HeaderDefault = defineAsyncComponent(() => import('@/components/HeaderDefault.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 const ProfileInformationCard = defineAsyncComponent(
   () => import('@/components/Profile/ProfileInformationCard.vue')
 )
@@ -23,47 +23,55 @@ const userStore = useUserStore()
 const router = useRouter()
 const route = useRoute()
 
-const SECTIONS = [
-  { id: 'general-info', title: 'Profile information' },
-  { id: 'bookmarks', title: 'Bookmarks' },
-  { id: 'case-information', title: 'Case information' },
-  { id: 'acmg-seq-vars', title: 'ACMG Sequence Variant' },
-  { id: 'acmg-struc-vars', title: 'ACMG Structure Variant' }
-]
-
-const currentSection = ref(SECTIONS[0].id) // Default to the first section
-
-const updateCurrentSection = (sectionId: string) => {
-  currentSection.value = sectionId
-  router.push({ hash: `#${sectionId}` })
+enum Section {
+  GeneralInfo = 'general-info',
+  Bookmarks = 'bookmarks',
+  CaseInformation = 'case-information',
+  AcmgSeqvar = 'acmg-seqvar',
+  AcmgStrucvar = 'acmg-strucvar'
 }
 
-const scrollToSection = async () => {
-  const sectionId = route.hash.slice(1)
-  if (sectionId) {
-    const elem = document.getElementById(sectionId)
-    elem?.scrollIntoView()
-  }
+const PAGES = [
+  { id: Section.GeneralInfo, title: 'Profile information' },
+  { id: Section.Bookmarks, title: 'Bookmarks' },
+  { id: Section.CaseInformation, title: 'Case information' },
+  { id: Section.AcmgSeqvar, title: 'ACMG Sequence Variant' },
+  { id: Section.AcmgStrucvar, title: 'ACMG Structure Variant' }
+]
+
+const currentSection = ref<Section>(Section.GeneralInfo)
+
+const updateCurrentSection = (section: Section) => {
+  currentSection.value = section
+  router.push({ hash: `#${section}` })
 }
 
 onMounted(async () => {
-  await userStore.initialize()
-  await scrollToSection()
+  if (route.hash) {
+    updateCurrentSection(route.hash.slice(1) as Section)
+  } else {
+    updateCurrentSection(Section.GeneralInfo)
+  }
 })
 
-watch(() => route.hash, scrollToSection)
+watch(
+  () => route.hash,
+  () => {
+    updateCurrentSection(route.hash.slice(1) as Section)
+  }
+)
 </script>
 
 <template>
   <v-app>
-    <HeaderDefault />
+    <PageHeader />
     <v-container fill-height fluid>
       <div v-if="userStore.currentUser">
         <v-navigation-drawer class="overflow-auto" :elevation="3" :permanent="true">
           <v-list>
-            <v-list-subheader>PROFILE:</v-list-subheader>
+            <v-list-subheader>PROFILE</v-list-subheader>
             <v-list-item
-              v-for="section in SECTIONS"
+              v-for="section in PAGES"
               :id="`${section.id}-nav`"
               :key="section.id"
               density="compact"
@@ -74,23 +82,19 @@ watch(() => route.hash, scrollToSection)
           </v-list>
         </v-navigation-drawer>
         <v-main>
-          <div v-if="currentSection === 'general-info'" id="general-info">
+          <div v-if="currentSection === Section.GeneralInfo" :id="Section.GeneralInfo">
             <ProfileInformationCard />
           </div>
-
-          <div v-if="currentSection === 'bookmarks'" id="bookmarks">
+          <div v-if="currentSection === Section.Bookmarks" :id="Section.Bookmarks">
             <BookmarksCard />
           </div>
-
-          <div v-if="currentSection === 'case-information'" id="case-information">
+          <div v-if="currentSection === Section.CaseInformation" :id="Section.CaseInformation">
             <CaseCard />
           </div>
-
-          <div v-if="currentSection === 'acmg-seq-vars'" id="acmg-seq-vars">
+          <div v-if="currentSection === Section.AcmgSeqvar" :id="Section.AcmgSeqvar">
             <SeqVarsACMGCard />
           </div>
-
-          <div v-if="currentSection === 'acmg-struc-vars'" id="acmg-struc-vars">
+          <div v-if="currentSection === Section.AcmgStrucvar" :id="Section.AcmgStrucvar">
             <StrucVarsACMGCard />
           </div>
         </v-main>

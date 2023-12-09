@@ -1,6 +1,7 @@
 /**
  * Store for handling per-variant ACMG rating.
  */
+import equal from 'fast-deep-equal'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
@@ -13,9 +14,8 @@ import {
   Presence,
   StateSource
 } from '@/lib/acmgSeqVar'
+import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-
-import { type SmallVariant } from './variantInfo'
 
 const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
@@ -34,8 +34,8 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
-  /** The small variant that acmgRating are handled for. */
-  const smallVariant = ref<SmallVariant | null>(null)
+  /** The sequence variant that acmgRating are handled for. */
+  const seqvar = ref<Seqvar | null>(null)
 
   /** The small variants ACMG rating. */
   const acmgRating = ref<MultiSourceAcmgCriteriaState>(new MultiSourceAcmgCriteriaState())
@@ -52,8 +52,8 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   function clearData() {
     storeState.value = StoreState.Initial
     acmgRating.value = new MultiSourceAcmgCriteriaState()
+    seqvar.value = null
     acmgRatings.value = []
-    smallVariant.value = null
   }
 
   /**
@@ -90,11 +90,12 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
   /**
    * Retrieve the ACMG rating for a sequence variant.
    *
-   * @param smallVar The sequence variant to retrieve the ACMG rating for.
+   * @param seqvar$ The sequence variant to retrieve the ACMG rating for.
+   * @param forceReload Whether to force-reload in case the variant is the same.
    */
-  const fetchAcmgRating = async (smallVar: SmallVariant) => {
-    // Do not re-load data if the small variant is the same
-    if (smallVar === smallVariant.value) {
+  const fetchAcmgRating = async (seqvar$: Seqvar, forceReload: boolean = false) => {
+    // Protect against loading multiple times.
+    if (!forceReload && storeState.value !== StoreState.Initial && equal(seqvar$, seqvar.value)) {
       return
     }
 
@@ -106,18 +107,15 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
 
     // Fetch the ACMG rating from InterVar
     try {
-      const release = smallVar.release === 'grch37' ? 'hg19' : 'hg38'
-      const chromosome = smallVar.chromosome.replace('chr', '')
-      const pos = smallVar.start
-      const ref = smallVar.reference
-      const alt = smallVar.alternative
+      const { genomeBuild, chrom, pos, del, ins } = seqvar$
+      const release = genomeBuild === 'grch37' ? 'hg19' : 'hg38'
       const response = await fetch(
-        `${API_BASE_URL}remote/acmg/?release=${release}&chromosome=${chromosome}` +
-          `&position=${pos}&reference=${ref}&alternative=${alt}`,
+        `${API_BASE_URL}remote/acmg/?release=${release}&chromosome=${chrom}` +
+          `&position=${pos}&reference=${del}&alternative=${ins}`,
         { method: 'GET' }
       )
       if (!response.ok) {
-        throw new Error('There was an error loading the ACMG data.')
+        throw new Error('The server responded with an error.')
       }
       const acmgRatingInterVarData = await response.json()
       // Go through the data and setPresense for each criteria
@@ -137,28 +135,22 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
           )
         }
       }
-      smallVariant.value = smallVar
+      seqvar.value = seqvar$
       storeState.value = StoreState.Active
     } catch (e) {
-      console.error('There was an error loading the ACMG data.', e)
       clearData()
       storeState.value = StoreState.Error
+      throw new Error(`There was an error loading the ACMG data: ${e}`)
     }
 
     // Fetch the ACMG rating from the server
     try {
       const acmgSeqVarClient = new AcmgSeqVarClient()
-      if (!smallVar) {
+      if (!seqvar$) {
         throw new Error('There was an error loading the ACMG data.')
       }
       const acmgRatingBackend = await acmgSeqVarClient.fetchAcmgRating(
-        smallVar.chromosome +
-          ':' +
-          smallVar.start +
-          ':' +
-          smallVar.reference +
-          ':' +
-          smallVar.alternative
+        seqvar$.chrom + ':' + seqvar$.pos + ':' + seqvar$.del + ':' + seqvar$.ins
       )
       if (acmgRatingBackend && acmgRatingBackend.detail !== 'ACMG Sequence Variant not found') {
         acmgRatingStatus.value = true
@@ -179,9 +171,9 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
       }
       return
     } catch (e) {
-      console.error('There was an error loading the ACMG data.', e)
       clearData()
       storeState.value = StoreState.Error
+      throw new Error(`There was an error loading the ACMG data: ${e}`)
     }
   }
 
@@ -210,23 +202,12 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
    * @returns The saved ACMG rating.
    */
   const saveAcmgRating = async () => {
-    if (!smallVariant.value) {
-      console.error('There was an error saving the ACMG rating.')
-      return
+    if (!seqvar.value) {
+      throw new Error('Cannot save ACMG rating without a variant.')
     }
-    const variantName =
-      smallVariant.value.chromosome +
-      ':' +
-      smallVariant.value.start +
-      ':' +
-      smallVariant.value.reference +
-      ':' +
-      smallVariant.value.alternative
+    const { chrom, pos, del, ins } = seqvar.value
+    const variantName = `${chrom}:${pos}:${del}:${ins}`
     const acmgRating = transformAcmgRating()
-    if (!variantName || !acmgRating) {
-      console.error('There was an error saving the ACMG rating.')
-      return
-    }
 
     try {
       const acmgSeqVarClient = new AcmgSeqVarClient()
@@ -238,7 +219,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
       }
       acmgRatingStatus.value = true
     } catch (e) {
-      console.error('There was an error saving the ACMG rating.', e)
+      throw new Error(`There was an error saving the ACMG data: ${e}`)
     }
   }
 
@@ -249,34 +230,22 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
    * @returns The deleted ACMG rating.
    */
   const deleteAcmgRating = async () => {
-    if (!smallVariant.value) {
-      console.error('There was an error saving the ACMG rating.')
-      return
+    if (!seqvar.value) {
+      throw new Error('Cannot delete ACMG rating without a variant.')
     }
-    const variantName =
-      smallVariant.value?.chromosome +
-      ':' +
-      smallVariant.value?.start +
-      ':' +
-      smallVariant.value?.reference +
-      ':' +
-      smallVariant.value?.alternative
-    if (!variantName) {
-      console.error('There was an error deleting the ACMG rating.')
-      return
-    }
-
+    const { chrom, pos, del, ins } = seqvar.value
+    const variantName = `${chrom}:${pos}:${del}:${ins}`
     try {
       const acmgSeqVarClient = new AcmgSeqVarClient()
       await acmgSeqVarClient.deleteAcmgRating(variantName)
       acmgRatingStatus.value = false
     } catch (e) {
-      console.error('There was an error deleting the ACMG rating.', e)
+      throw new Error(`There was an error deleting the ACMG data: ${e}`)
     }
   }
 
   return {
-    smallVariant,
+    seqvar,
     storeState,
     acmgRating,
     acmgRatings,
