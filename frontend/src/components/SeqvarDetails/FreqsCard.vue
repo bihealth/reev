@@ -24,7 +24,7 @@ const props = defineProps<{
     <v-card-title class="mb-0">Population Frequencies</v-card-title>
     <v-card-text>
       <VariantDetailsFreqsMitochondrial
-        v-if="isVariantMt(seqvar)"
+        v-if="isVariantMt(seqvar as Seqvar)"
         :seqvar="seqvar"
         :var-annos="varAnnos"
       />

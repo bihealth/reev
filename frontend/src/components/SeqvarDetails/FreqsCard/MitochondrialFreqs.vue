@@ -29,12 +29,12 @@ const gnomadMtDna = computed(() => {
 </script>
 
 <template>
-  <template v-if="seqVar">
+  <template v-if="!seqVar">
     <v-skeleton-loader type="table" />
   </template>
   <template v-else>
     <div>
-      <div v-if="!isVariantMtHomopolymer(seqVar)">
+      <div v-if="!isVariantMtHomopolymer(seqVar as Seqvar)">
         <small>
           <v-icon>mdi-alert-circle-outline</v-icon>
           Variant in homopolymeric region

@@ -1,6 +1,7 @@
 import { type RouteLocationNormalizedLoaded, type RouteLocationRaw, type Router } from 'vue-router'
 
 import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { type Seqvar } from '@/lib/genomicVars'
 import { type BookmarkData } from '@/stores/bookmarks'
 
 /**
@@ -50,24 +51,24 @@ export const separateIt = (value: number, separator: string = ' '): string => {
 /**
  * Returns whether the given variant looks mitochondrial.
  *
- * @param smallVar Small variant to check.
+ * @param seqvar Small variant to check.
  * @returns whether the position is on the mitochondrial genome
  */
-export const isVariantMt = (smallVar: any): boolean => {
-  return ['MT', 'M', 'chrMT', 'chrM'].includes(smallVar?.chrom)
+export const isVariantMt = (seqvar: Seqvar): boolean => {
+  return ['MT', 'M', 'chrMT', 'chrM'].includes(seqvar?.chrom)
 }
 
 /**
  * Returns whether the given position is in a homopolymer on the mitochondrial chromosome.
  *
- * @param smallVar Small variant to check.
+ * @param seqvar Small variant to check.
  * @returns whether the position is in a mitochondrial homopolymer
  */
-export const isVariantMtHomopolymer = (smallVar: any): boolean => {
-  if (!smallVar) {
+export const isVariantMtHomopolymer = (seqvar: Seqvar): boolean => {
+  if (!seqvar) {
     return false
   }
-  const { start, end } = smallVar
+  const { pos } = seqvar
   const positionCheck = (pos: number) => {
     return (
       (pos >= 66 && pos <= 71) ||
@@ -78,8 +79,8 @@ export const isVariantMtHomopolymer = (smallVar: any): boolean => {
       (pos >= 16182 && pos <= 16194)
     )
   }
-  if (isVariantMt(smallVar)) {
-    return positionCheck(start) || positionCheck(end)
+  if (isVariantMt(seqvar)) {
+    return positionCheck(pos)
   } else {
     return false
   }

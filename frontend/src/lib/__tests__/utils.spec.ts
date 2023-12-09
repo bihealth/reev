@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
+import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { type Seqvar } from '@/lib/genomicVars'
+
 import {
   copy,
   infoFromQuery,
@@ -9,6 +12,16 @@ import {
   roundIt,
   separateIt
 } from '../utils'
+
+/** Example Sequence variant. */
+const seqVar: Seqvar = {
+  genomeBuild: 'grch37' as GenomeBuild,
+  chrom: '1',
+  pos: 12345,
+  del: 'A',
+  ins: 'G',
+  userRepr: 'chr1:12345:A:G'
+}
 
 describe.concurrent('roundIt method', () => {
   it('should round a positive value with default digits', () => {
@@ -71,10 +84,14 @@ describe.concurrent('separateIt method', () => {
 
 describe.concurrent('isVariantMt method', () => {
   it('should return true if mitochondrial chromosome', () => {
-    const result_MT = isVariantMt({ chromosome: 'MT' })
-    const result_M = isVariantMt({ chromosome: 'M' })
-    const result_chrMT = isVariantMt({ chromosome: 'chrMT' })
-    const result_chrM = isVariantMt({ chromosome: 'chrM' })
+    seqVar.chrom = 'MT'
+    const result_MT = isVariantMt(seqVar)
+    seqVar.chrom = 'M'
+    const result_M = isVariantMt(seqVar)
+    seqVar.chrom = 'chrMT'
+    const result_chrMT = isVariantMt(seqVar)
+    seqVar.chrom = 'chrM'
+    const result_chrM = isVariantMt(seqVar)
     expect(result_MT).toBe(true)
     expect(result_M).toBe(true)
     expect(result_chrMT).toBe(true)
@@ -82,29 +99,31 @@ describe.concurrent('isVariantMt method', () => {
   })
 
   it('should return false if not mitochondrial chromosome', () => {
-    const result = isVariantMt({ chromosome: '1' })
+    seqVar.chrom = '1'
+    const result = isVariantMt(seqVar)
     expect(result).toBe(false)
   })
 })
 
 describe.concurrent('isVariantMtHomopolymer method', () => {
   it('should return true if mitochondrial homopolymer', () => {
-    const result = isVariantMtHomopolymer({ chromosome: 'MT', start: 70 })
+    seqVar.chrom = 'MT'
+    seqVar.pos = 70
+    const result = isVariantMtHomopolymer(seqVar)
     expect(result).toBe(true)
   })
 
   it('should return false if not mitochondrial homopolymer (chromosome)', () => {
-    const result = isVariantMtHomopolymer({ chromosome: '1', start: 70 })
+    seqVar.chrom = '1'
+    seqVar.pos = 70
+    const result = isVariantMtHomopolymer(seqVar)
     expect(result).toBe(false)
   })
 
   it('should return false if not mitochondrial homopolymer (position)', () => {
-    const result = isVariantMtHomopolymer({ chromosome: 'MT', start: 1 })
-    expect(result).toBe(false)
-  })
-
-  it('should return false for NaN', () => {
-    const result = isVariantMtHomopolymer(NaN)
+    seqVar.chrom = 'MT'
+    seqVar.pos = 1
+    const result = isVariantMtHomopolymer(seqVar)
     expect(result).toBe(false)
   })
 })
