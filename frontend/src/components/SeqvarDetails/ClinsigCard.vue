@@ -38,17 +38,21 @@ const emit = defineEmits<{
 /** Store to use for ACMG ratings of sequence variants. */
 const acmgRatingStore = useVariantAcmgRatingStore()
 
+/** Component state: error message to display, if any. */
+const errorMessage = ref<string>('')
 /** Component state: whether to enable summary view. */
-const showTerse = ref(false)
+const showTerse = ref<boolean>(false)
 /** Component state: whether to show failed criteria. */
-const showFailed = ref(false)
+const showFailed = ref<boolean>(false)
 
 /** Helper function to run a function in a try/catch and emit `errorDisplay` otherwise.. */
-const tryCatchEmitErrorDisplay = async (fn: () => Promise<void>) => {
+const tryCatchEmitErrorDisplay = async (fn: () => Promise<any>) => {
   try {
-    await fn()
+    return await fn()
   } catch (err) {
-    emit('errorDisplay', `Ooops, there was an error: ${err}`)
+    const msg = `Ooops, there was an error: ${err}`
+    errorMessage.value = msg
+    emit('errorDisplay', msg)
   }
 }
 
@@ -101,13 +105,19 @@ watch(
   async () => {
     if (
       props.seqvar?.genomeBuild === 'grch37' &&
-      acmgRatingStore.storeState !== StoreState.Loading
+      ![StoreState.Loading, StoreState.Error].includes(acmgRatingStore.storeState)
     ) {
-      await acmgRatingStore.fetchAcmgRating(props.seqvar)
-      if (acmgRatingStore.acmgRatingStatus === false) {
-        refetchAcmgRatingInterVar()
-      } else {
-        refetchAcmgRatingServer()
+      try {
+        await acmgRatingStore.fetchAcmgRating(props.seqvar)
+        if (acmgRatingStore.acmgRatingStatus === false) {
+          refetchAcmgRatingInterVar()
+        } else {
+          refetchAcmgRatingServer()
+        }
+      } catch (err) {
+        const msg = `Ooops, there was an error: ${err}`
+        errorMessage.value = msg
+        emit('errorDisplay', msg)
       }
     }
   }
@@ -133,6 +143,11 @@ onMounted(async () => {
         Sequence variant ACMG classification is provided by InterVar. This only works for GRCh37 at
         the moment.
       </div>
+    </v-card-text>
+    <v-card-text v-else-if="errorMessage">
+      <v-card>
+        <v-alert type="error"> {{ errorMessage }} </v-alert>
+      </v-card>
     </v-card-text>
     <v-card-text v-else>
       <!-- Top summary sheet and server storage buttons -->
