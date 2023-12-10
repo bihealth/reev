@@ -623,7 +623,7 @@ const polyphenScore = computed((): number | null =>
                 <td class="text-center align-middle">&mdash;</td>
               </template>
               <td v-else colspan="4" class="text-muted text-center font-italic">
-                CADD prediction not available.
+                SpliceAI prediction not available.
               </td>
             </tr>
 
