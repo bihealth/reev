@@ -226,3 +226,21 @@ export const bookmarkTo = (bookmark: BookmarkData): RouteLocationRaw => {
       }
   }
 }
+
+/**
+ * Extract MIM disease ID from dbSNFP string
+ */
+export const extractDbnsfpMimDiseaseId = (id: string) => {
+  return id.split('[')[1].split(']', 1)[0].replace('MIM:', '')
+}
+
+/**
+ * Transforms MIM disease ID from dbNSFP depending on `showTermIds.value`
+ */
+export const transformDbnsfpMimDiseaseId = (id: string, showTermIds: boolean) => {
+  if (showTermIds) {
+    return id.replace(']', '] ')
+  } else {
+    return id.split(']').splice(1).join(']').trim()
+  }
+}
