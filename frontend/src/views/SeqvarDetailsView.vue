@@ -25,7 +25,6 @@ import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
 import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
 import { useVariantInfoStore } from '@/stores/variantInfo'
 
 // Define the async components to use in this view.
@@ -92,8 +91,6 @@ const route = useRoute()
 const variantInfoStore = useVariantInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
 const geneInfoStore = usegeneInfoStore()
-/** ACMG criteria store. */
-const acmgRatingStore = useVariantAcmgRatingStore()
 /** Currently active case - for HPO terms. */
 const caseStore = useCaseStore()
 
@@ -177,7 +174,6 @@ const loadDataToStore = async () => {
         return Promise.resolve()
       }
     }),
-    acmgRatingStore.fetchAcmgRating(seqvar.value),
     caseStore.loadCase()
   ])
   // Once all data has been loaded, scroll to the given section.

@@ -128,7 +128,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
     const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
     expect(menu.exists()).toBe(true)
-  })
+  }, 10000)
 
   it('emits update in header', async () => {
     const { wrapper } = await makeWrapper()

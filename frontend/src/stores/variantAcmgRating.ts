@@ -152,7 +152,7 @@ export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => 
       const acmgRatingBackend = await acmgSeqVarClient.fetchAcmgRating(
         seqvar$.chrom + ':' + seqvar$.pos + ':' + seqvar$.del + ':' + seqvar$.ins
       )
-      if (acmgRatingBackend && acmgRatingBackend.detail !== 'ACMG Sequence Variant not found') {
+      if (acmgRatingBackend.acmg_rank?.criterias) {
         acmgRatingStatus.value = true
         // Go through the data and setPresense for each criteria
         for (const criteria of acmgRatingBackend.acmg_rank.criterias) {
