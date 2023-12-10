@@ -10,8 +10,9 @@ help:
 	@echo "  format      Format source code"
 	@echo "  lint        Run lint checks"
 	@echo "  test        Run tests (no watch)"
-	@echo "  test-w      Run tests (watch)"
+	@echo "  test-ci     Run tests (no watch) for CI (with coverage, single-threaded)"
 	@echo "  test-nocov  Run tests (no watch) without coverage"
+	@echo "  test-w      Run tests (watch)"
 	@echo "  ci          Install dependencies, run lints and tests"
 	@echo "  serve       Run the (development) server"
 
@@ -32,6 +33,12 @@ lint:
 .PHONY: test
 test:
 	npm run -- test:unit --run
+
+# Tests in the CI are forced into a single thread as the worker only has
+# two cores only and some tests run into timeouts otherwise.
+.PHONY: test-ci
+test-ci:
+	npm run -- test:unit --run --single-thread
 
 .PHONY: test-nocov
 test-nocov:
