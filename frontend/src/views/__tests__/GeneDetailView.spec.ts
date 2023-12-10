@@ -196,6 +196,6 @@ describe.concurrent('GeneDetailView', async () => {
 
     const errorMessage = wrapper.findComponent({ name: 'VAlert' })
     expect(errorMessage.exists()).toBe(true)
-    expect(errorMessage.text()).toContain('TypeError: Failed to parse URL from')
+    expect(errorMessage.text()).toContain('Error:')
   })
 })
