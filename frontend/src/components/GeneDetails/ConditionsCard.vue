@@ -4,6 +4,7 @@ import { computed, ref } from 'vue'
 
 import type { HpoTerm } from '@/api/viguno'
 import CadaRanking from '@/components/GeneDetails/ConditionsCard/CadaRanking.vue'
+import { extractDbnsfpMimDiseaseId, transformDbnsfpMimDiseaseId } from '@/lib/utils'
 
 export interface Props {
   geneInfo: any
@@ -22,20 +23,6 @@ const showTermIds = ref<boolean>(false)
 
 /** Whether to show terms as hyperlinks. */
 const showTermLinks = ref<boolean>(true)
-
-/** Extract MIM disease ID from dbSNFP string */
-const extractMimDiseaseId = (id: string) => {
-  return id.split('[')[1].split(']')[0]
-}
-
-/** Transforms MIM disease ID from dbNSFP depending on `showTermIds.value` */
-const transformMimDiseaseId = (id: string) => {
-  if (showTermIds.value) {
-    return id.replace(']', '] ')
-  } else {
-    return id.split(']')[1].trim()
-  }
-}
 
 // -- code for expanded / collapsed card --------------------------------------
 
@@ -153,15 +140,15 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
                 <template v-if="idx > 0"> , </template>
                 <template v-if="showTermLinks">
                   <a
-                    :href="`https://www.omim.org/entry/${extractMimDiseaseId(disease)}`"
+                    :href="`https://www.omim.org/entry/${extractDbnsfpMimDiseaseId(disease)}`"
                     target="_blank"
                   >
                     <v-icon>mdi-launch</v-icon>
-                    {{ transformMimDiseaseId(disease) }}
+                    {{ transformDbnsfpMimDiseaseId(disease, showTermIds) }}
                   </a>
                 </template>
                 <template v-else>
-                  {{ transformMimDiseaseId(disease) }}
+                  {{ transformDbnsfpMimDiseaseId(disease, showTermIds) }}
                 </template>
               </template>
             </div>

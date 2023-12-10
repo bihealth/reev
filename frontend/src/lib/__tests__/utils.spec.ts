@@ -1,16 +1,18 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 
 import { type GenomeBuild } from '@/lib/genomeBuilds'
 import { type Seqvar } from '@/lib/genomicVars'
 
 import {
   copy,
+  extractDbnsfpMimDiseaseId,
   infoFromQuery,
   isVariantMt,
   isVariantMtHomopolymer,
   removeCommasFromNumbers,
   roundIt,
-  separateIt
+  separateIt,
+  transformDbnsfpMimDiseaseId
 } from '../utils'
 
 /** Example Sequence variant. */
@@ -183,5 +185,41 @@ describe.concurrent('copy method', () => {
   it('should return a JSON object for given dict', () => {
     const result = copy({ foo: 'bar' })
     expect(result).toEqual({ foo: 'bar' })
+  })
+})
+
+describe.concurrent('extractDbnsfpMimDiseaseId', () => {
+  test.each([
+    ['[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset', '616921'],
+    ['[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset [recessive?]', '616921']
+  ])('%s => %s', (lhs, rhs) => {
+    expect(extractDbnsfpMimDiseaseId(lhs)).toEqual(rhs)
+  })
+})
+
+describe.concurrent('transformDbnsfpMimDiseaseId', () => {
+  test.each([
+    [
+      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset',
+      '[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset',
+      true
+    ],
+    [
+      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
+      '[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
+      true
+    ],
+    [
+      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset',
+      'Dyskinesia, limb and orofacial, infantile-onset',
+      false
+    ],
+    [
+      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
+      'Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
+      false
+    ]
+  ])('should work correctly', (lhs, rhs, showTermIds) => {
+    expect(transformDbnsfpMimDiseaseId(lhs, showTermIds)).toEqual(rhs)
   })
 })
