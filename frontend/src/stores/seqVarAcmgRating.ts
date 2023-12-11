@@ -30,7 +30,7 @@ export interface AcmgRatingBackend {
   comment: string
 }
 
-export const useVariantAcmgRatingStore = defineStore('variantAcmgRating', () => {
+export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 

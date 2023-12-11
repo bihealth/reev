@@ -65,4 +65,29 @@ describe.concurrent('VariantValidator', async () => {
     expect(icon.exists()).toBe(true)
     await nextTick()
   })
+
+  it('renders the VariantValidator info with empty data', async () => {
+    // Mock fetch
+    global.fetch = vi.fn((): any =>
+      Promise.resolve({ ok: true, json: () => Promise.resolve({ foo: 'foo' }) })
+    )
+    const { wrapper } = await setupMountedComponents(
+      { component: VariantValidator, template: false },
+      {
+        props: {
+          seqvar: deepCopy(seqvarInfo)
+        }
+      }
+    )
+    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org')
+
+    const submitButton = wrapper.find('button')
+    expect(submitButton.exists()).toBe(true)
+    submitButton.trigger('click')
+    await nextTick()
+    expect(wrapper.text()).toContain('Loading...')
+    const icon = wrapper.find('.v-progress-circular')
+    expect(icon.exists()).toBe(true)
+    await nextTick()
+  })
 })

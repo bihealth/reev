@@ -5,7 +5,7 @@ import { onMounted } from 'vue'
 import GeneListEntry from '@/components/StrucvarDetails/GeneListCard/GeneListEntry.vue'
 import { type Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-import { type Consequence } from '@/stores/svInfo'
+import { type Consequence } from '@/stores/strucVarInfo'
 
 /** `GeneInfo` is a type alias for easier future interface definition. */
 type GeneInfo = any

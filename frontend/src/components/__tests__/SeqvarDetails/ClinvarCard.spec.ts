@@ -5,7 +5,7 @@ import ClinVar from '@/components/SeqvarDetails/ClinvarCard.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 
 describe.concurrent('ClinVar', async () => {
-  it.skip('renders the ClinVar info', async () => {
+  it('renders the ClinVar info', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: ClinVar, template: false },
       {
@@ -14,14 +14,15 @@ describe.concurrent('ClinVar', async () => {
         }
       }
     )
+    expect(wrapper.text()).toContain('ClinVar')
     expect(wrapper.text()).toContain('VCV000055407')
     const stars = wrapper.findAll('.mdi-star')
-    expect(stars.length).toBe(18)
+    expect(stars.length).toBe(15)
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(27)
+    expect(starsOutline.length).toBe(30)
   })
 
-  it.skip('renders the ClinVar info with stars', async () => {
+  it('renders the ClinVar info with stars', async () => {
     const clinVarInfoStars = structuredClone(clinVarInfo)
     clinVarInfoStars.referenceAssertions[0].reviewStatus =
       'REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED'
@@ -35,9 +36,9 @@ describe.concurrent('ClinVar', async () => {
     )
     expect(wrapper.text()).toContain('VCV000055407')
     const stars = wrapper.findAll('.mdi-star')
-    expect(stars.length).toBe(12)
+    expect(stars.length).toBe(9)
     const starsOutline = wrapper.findAll('.mdi-star-outline')
-    expect(starsOutline.length).toBe(33)
+    expect(starsOutline.length).toBe(36)
   })
 
   it('renders the ClinVar info (not found)', async () => {

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import { AcmgSeqVarClient } from '@/api/acmgseqvar'
-import { type AcmgRatingBackend } from '@/stores/variantAcmgRating'
+import { type AcmgRatingBackend } from '@/stores/seqVarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 

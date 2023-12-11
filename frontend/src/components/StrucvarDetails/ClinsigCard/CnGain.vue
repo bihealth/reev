@@ -6,7 +6,7 @@ import {
   Presence,
   StateSourceCNV
 } from '@/components/StrucvarDetails/ClinsigCard.c'
-import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
+import { useStrucVarAcmgRatingStore } from '@/stores/strucVarAcmgRating'
 
 const emit = defineEmits<{
   (e: 'switchCriteria', criteria: AcmgCriteriaCNVGain, presence: Presence): void
@@ -22,7 +22,7 @@ const props = withDefaults(
   }
 )
 
-const acmgRatingStore = useSvAcmgRatingStore()
+const acmgRatingStore = useStrucVarAcmgRatingStore()
 </script>
 
 <template>

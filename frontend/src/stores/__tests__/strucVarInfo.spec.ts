@@ -6,7 +6,7 @@ import * as geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import type { Strucvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
-import { useSvInfoStore } from '@/stores/svInfo'
+import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -27,7 +27,7 @@ describe.concurrent('svInfo Store', () => {
   })
 
   it('should have initial state', () => {
-    const store = useSvInfoStore()
+    const store = useStrucVarInfoStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.strucvar).toBe(undefined)
@@ -35,7 +35,7 @@ describe.concurrent('svInfo Store', () => {
   })
 
   it('should clear state', () => {
-    const store = useSvInfoStore()
+    const store = useStrucVarInfoStore()
     store.storeState = StoreState.Active
     store.strucvar = deepCopy(strucvarInfo)
     store.genesInfos = JSON.parse(JSON.stringify([geneInfo['genes']['HGNC:1100']]))
@@ -48,7 +48,7 @@ describe.concurrent('svInfo Store', () => {
   })
 
   it('should load data', async () => {
-    const store = useSvInfoStore()
+    const store = useStrucVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('csq')) {
         return Promise.resolve(JSON.stringify({ result: [{ hgnc_id: 'HGNC:1100' }] }))
@@ -68,7 +68,7 @@ describe.concurrent('svInfo Store', () => {
     const spy = vi.spyOn(console, 'error')
     spy.mockImplementation(() => {})
 
-    const store = useSvInfoStore()
+    const store = useStrucVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('csq')) {
         return Promise.resolve(JSON.stringify({ status: 400 }))

@@ -1,5 +1,5 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
-import { type AcmgRatingBackend } from '@/stores/variantAcmgRating'
+import { type AcmgRatingBackend } from '@/stores/seqVarAcmgRating'
 
 /**
  * Access to the seqvar part of the API.
