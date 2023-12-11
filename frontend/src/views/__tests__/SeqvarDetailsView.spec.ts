@@ -105,6 +105,9 @@ describe.concurrent('SeqvarDetailsView', async () => {
     // unproper mocking of the store and props passed to the component.
     const spy = vi.spyOn(console, 'warn')
     spy.mockImplementation(() => {})
+    // Disable Vue error.
+    const spy2 = vi.spyOn(console, 'error')
+    spy2.mockImplementation(() => {})
   })
 
   it('renders the header', async () => {
