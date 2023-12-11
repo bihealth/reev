@@ -19,7 +19,7 @@ export type GeneInfo = any | null
 /** `Consequence` is a type alias for future interface definition. */
 export type Consequence = any | null
 
-export const useSvInfoStore = defineStore('strucvarInfo', () => {
+export const useStrucVarInfoStore = defineStore('strucVarInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 

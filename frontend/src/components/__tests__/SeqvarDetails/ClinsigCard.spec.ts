@@ -8,7 +8,7 @@ import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } fro
 import type { Seqvar } from '@/lib/genomicVars'
 import { deepCopy, setupMountedComponents } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
+import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
@@ -21,7 +21,7 @@ const seqvarInfo: Seqvar = {
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
-  const store = useVariantAcmgRatingStore(pinia)
+  const store = useSeqVarAcmgRatingStore(pinia)
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active

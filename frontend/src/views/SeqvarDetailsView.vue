@@ -25,7 +25,7 @@ import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
 import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import { useVariantInfoStore } from '@/stores/variantInfo'
+import { useSeqVarInfoStore } from '@/stores/seqVarInfo'
 
 // Define the async components to use in this view.
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
@@ -88,7 +88,7 @@ const router = useRouter()
 const route = useRoute()
 
 /** Information about the sequence variant, used to fetch information on load. */
-const variantInfoStore = useVariantInfoStore()
+const seqvarInfoStore = useSeqVarInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
 const geneInfoStore = usegeneInfoStore()
 /** Currently active case - for HPO terms. */
@@ -164,11 +164,11 @@ const loadDataToStore = async () => {
 
   // Finally, load sequence variant, ACMG rating information, and case info.
   await Promise.all([
-    variantInfoStore.loadData(seqvar.value).then(() => {
+    seqvarInfoStore.loadData(seqvar.value).then(() => {
       // If we have gene information, load the gene information.  Otherwise,
       // clear the gene info store.
-      if (variantInfoStore.geneInfo?.hgnc?.agr) {
-        return geneInfoStore.loadData(variantInfoStore.geneInfo?.hgnc?.agr, genomeBuild)
+      if (seqvarInfoStore.geneInfo?.hgnc?.agr) {
+        return geneInfoStore.loadData(seqvarInfoStore.geneInfo?.hgnc?.agr, genomeBuild)
       } else {
         geneInfoStore.clearData()
         return Promise.resolve()
@@ -231,7 +231,7 @@ const SECTIONS: { [key: string]: Section[] } = {
 
     <PageHeader />
     <v-navigation-drawer :elevation="3" :permanent="true">
-      <div v-if="variantInfoStore.storeState == StoreState.Active">
+      <div v-if="seqvarInfoStore.storeState == StoreState.Active">
         <v-list v-model:opened="openedSection" density="compact">
           <BookmarkListItem :id="idForBookmark" type="seqvar" />
 
@@ -249,8 +249,8 @@ const SECTIONS: { [key: string]: Section[] } = {
                   Gene
                   <span class="font-italic">
                     {{
-                      variantInfoStore?.geneInfo?.hgnc?.symbol ||
-                      variantInfoStore?.geneInfo?.hgnc?.agr
+                      seqvarInfoStore?.geneInfo?.hgnc?.symbol ||
+                      seqvarInfoStore?.geneInfo?.hgnc?.agr
                     }}
                   </span>
                 </v-list-item>
@@ -319,21 +319,21 @@ const SECTIONS: { [key: string]: Section[] } = {
         </v-btn>
       </v-alert>
 
-      <template v-if="variantInfoStore?.geneInfo">
+      <template v-if="seqvarInfoStore?.geneInfo">
         <div id="gene-overview" class="mt-3">
-          <GeneOverviewCard :gene-info="variantInfoStore?.geneInfo" />
+          <GeneOverviewCard :gene-info="seqvarInfoStore?.geneInfo" />
         </div>
         <div id="gene-pathogenicity">
-          <GenePathogenicityCard :gene-info="variantInfoStore?.geneInfo" />
+          <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo" />
         </div>
         <div id="gene-conditions">
-          <GeneConditionsCard :gene-info="variantInfoStore?.geneInfo" :hpo-terms="[]" />
+          <GeneConditionsCard :gene-info="seqvarInfoStore?.geneInfo" :hpo-terms="[]" />
         </div>
         <div id="gene-expression">
           <GeneExpressionCard
-            :gene-symbol="variantInfoStore?.geneInfo?.hgnc?.symbol"
-            :expression-records="variantInfoStore?.geneInfo?.gtex?.records"
-            :ensembl-gene-id="variantInfoStore?.geneInfo?.gtex?.ensemblGeneId"
+            :gene-symbol="seqvarInfoStore?.geneInfo?.hgnc?.symbol"
+            :expression-records="seqvarInfoStore?.geneInfo?.gtex?.records"
+            :ensembl-gene-id="seqvarInfoStore?.geneInfo?.gtex?.ensemblGeneId"
           />
         </div>
         <div v-if="geneInfoStore?.geneClinvar && seqvar?.genomeBuild" id="gene-clinvar">
@@ -356,34 +356,34 @@ const SECTIONS: { [key: string]: Section[] } = {
           </template>
         </div>
         <div id="seqvar-clinsig">
-          <ClinsigCard :seqvar="variantInfoStore.seqvar" @error-display="handleDisplayError" />
+          <ClinsigCard :seqvar="seqvarInfoStore.seqvar" @error-display="handleDisplayError" />
         </div>
         <div id="seqvar-csq" class="mt-3">
-          <VariantDetailsTxCsq :tx-csq="variantInfoStore.txCsq" />
+          <VariantDetailsTxCsq :tx-csq="seqvarInfoStore.txCsq" />
         </div>
         <div id="seqvar-clinvar" class="mt-3">
-          <VariantDetailsClinvar :clinvar="variantInfoStore.varAnnos?.clinvar" />
+          <VariantDetailsClinvar :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
         </div>
         <div id="seqvar-freqs" class="mt-3">
           <VariantDetailsFreqs
-            :seqvar="variantInfoStore.seqvar"
-            :var-annos="variantInfoStore.varAnnos"
+            :seqvar="seqvarInfoStore.seqvar"
+            :var-annos="seqvarInfoStore.varAnnos"
           />
         </div>
         <div id="seqvar-scores" class="mt-3">
-          <VariantScoresCard :var-annos="variantInfoStore.varAnnos" />
+          <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
         </div>
         <div id="seqvar-tools" class="mt-3">
           <VariantToolsCard
-            :seqvar="variantInfoStore.seqvar"
-            :var-annos="variantInfoStore.varAnnos"
+            :seqvar="seqvarInfoStore.seqvar"
+            :var-annos="seqvarInfoStore.varAnnos"
           />
         </div>
         <div id="seqvar-ga4ghbeacons" class="mt-3">
-          <BeaconNetworkCard :seqvar="variantInfoStore.seqvar" />
+          <BeaconNetworkCard :seqvar="seqvarInfoStore.seqvar" />
         </div>
         <div id="seqvar-variantvalidator" class="mt-3">
-          <VariantValidatorCard :seqvar="variantInfoStore.seqvar" />
+          <VariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
         </div>
       </div>
     </v-main>

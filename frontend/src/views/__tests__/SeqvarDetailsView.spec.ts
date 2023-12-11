@@ -26,20 +26,10 @@ import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { deepCopy } from '@/lib/test-utils'
 import { StoreState } from '@/stores/misc'
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
-import { useVariantInfoStore } from '@/stores/variantInfo'
+import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
+import { useSeqVarInfoStore } from '@/stores/seqVarInfo'
 
 import SeqvarDetailsView from '../SeqvarDetailsView.vue'
-
-const smallVariantInfo = {
-  release: 'grch37',
-  chromosome: 'chr17',
-  start: '43044295',
-  end: '43044295',
-  reference: 'G',
-  alternative: 'A',
-  hgnc_id: 'HGNC:1100'
-}
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
@@ -50,51 +40,52 @@ const seqvarInfo: Seqvar = {
   userRepr: 'grch37-17-43044295-G-A'
 }
 
-const variantData = {
+const seqvarData = {
   storeState: StoreState.Active,
-  smallVariant: smallVariantInfo,
+  seqvar: seqvarInfo,
   varAnnos: JSON.parse(JSON.stringify(BRCA1VariantInfo)).result,
+  geneClinvar: JSON.parse(JSON.stringify(BRCA1ClinVar)).genes['HGNC:1100'], //.variants[0].variants[0],
   geneInfo: JSON.parse(JSON.stringify(BRCA1GeneInfo)).genes['HGNC:1100'],
-  clinvar: JSON.parse(JSON.stringify(BRCA1ClinVar)).genes['HGNC:1100'], //.variants[0].variants[0],
-  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result
+  txCsq: JSON.parse(JSON.stringify(BRCA1TxInfo)).result,
+  loadDataRes: null
 }
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
-  const variantInfoStore = useVariantInfoStore(pinia)
-  const variantAcmgStore = useVariantAcmgRatingStore(pinia)
+  const seqvarInfoStore = useSeqVarInfoStore(pinia)
+  const seqvarAcmgStore = useSeqVarAcmgRatingStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
-    variantInfoStore.storeState = StoreState.Active
-    variantInfoStore.seqvar = deepCopy(seqvar)
-    variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-    variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-    variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
-    variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+    seqvarInfoStore.storeState = StoreState.Active
+    seqvarInfoStore.seqvar = deepCopy(seqvar)
+    seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
+    seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
+    seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
+    seqvarInfoStore.txCsq = JSON.parse(JSON.stringify(seqvarData.txCsq))
   })
-  variantInfoStore.loadData = mockLoadData
+  seqvarInfoStore.loadData = mockLoadData
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
-    variantAcmgStore.storeState = StoreState.Active
-    variantInfoStore.seqvar = deepCopy(seqvarInfo)
-    variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
-    variantAcmgStore.acmgRating.setPresence(
+    seqvarAcmgStore.storeState = StoreState.Active
+    seqvarInfoStore.seqvar = deepCopy(seqvarInfo)
+    seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
+    seqvarAcmgStore.acmgRating.setPresence(
       StateSource.InterVar,
       AcmgCriteria.Pvs1,
       Presence.Present
     )
   })
-  variantAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
+  seqvarAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
 
   // Initial load
-  variantInfoStore.storeState = StoreState.Active
-  variantInfoStore.seqvar = deepCopy(seqvarInfo)
-  variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-  variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-  variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
-  variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
-  variantAcmgStore.storeState = StoreState.Active
-  variantInfoStore.seqvar = deepCopy(seqvarInfo)
-  variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
+  seqvarInfoStore.storeState = StoreState.Active
+  seqvarInfoStore.seqvar = deepCopy(seqvarInfo)
+  seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
+  seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
+  seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
+  seqvarInfoStore.txCsq = JSON.parse(JSON.stringify(seqvarData.txCsq))
+  seqvarAcmgStore.storeState = StoreState.Active
+  seqvarInfoStore.seqvar = deepCopy(seqvarInfo)
+  seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
   return setupMountedComponents(
     { component: SeqvarDetailsView, template: true },
@@ -150,7 +141,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
     expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch37' })
   })
 
-  it('renders VariantDatails components', async () => {
+  it('renders seqvarDatails components', async () => {
     const { wrapper } = await makeWrapper()
 
     const geneOverviewCard = wrapper.findComponent(GeneOverviewCard)
@@ -200,45 +191,45 @@ describe.concurrent('SeqvarDetailsView', async () => {
 
   it('redirects if mounting with storeState Error', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const variantInfoStore = useVariantInfoStore(pinia)
-    const variantAcmgStore = useVariantAcmgRatingStore(pinia)
+    const seqvarInfoStore = useSeqVarInfoStore(pinia)
+    const seqvarAcmgStore = useSeqVarAcmgRatingStore(pinia)
 
     const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
-      variantInfoStore.storeState = StoreState.Error
-      variantInfoStore.seqvar = seqvar
-      variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-      variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-      variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
-      variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
+      seqvarInfoStore.storeState = StoreState.Error
+      seqvarInfoStore.seqvar = seqvar
+      seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
+      seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
+      seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
+      seqvarInfoStore.txCsq = JSON.parse(JSON.stringify(seqvarData.txCsq))
     })
     const mockClearData = vi.fn().mockImplementation(() => {
-      variantInfoStore.storeState = StoreState.Initial
-      variantInfoStore.seqvar = undefined
-      variantInfoStore.varAnnos = null
-      variantInfoStore.geneInfo = null
-      variantInfoStore.geneClinvar = null
-      variantInfoStore.txCsq = null
+      seqvarInfoStore.storeState = StoreState.Initial
+      seqvarInfoStore.seqvar = undefined
+      seqvarInfoStore.varAnnos = null
+      seqvarInfoStore.geneInfo = null
+      seqvarInfoStore.geneClinvar = null
+      seqvarInfoStore.txCsq = null
     })
-    variantInfoStore.loadData = mockLoadData
-    variantInfoStore.clearData = mockClearData
+    seqvarInfoStore.loadData = mockLoadData
+    seqvarInfoStore.clearData = mockClearData
 
     const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
-      variantAcmgStore.storeState = StoreState.Active
-      variantAcmgStore.seqvar = deepCopy(seqvarInfo)
-      variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
+      seqvarAcmgStore.storeState = StoreState.Active
+      seqvarAcmgStore.seqvar = deepCopy(seqvarInfo)
+      seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     })
-    variantAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
+    seqvarAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
 
     // Initial load
-    variantInfoStore.storeState = StoreState.Active
-    variantAcmgStore.seqvar = deepCopy(seqvarInfo)
-    variantInfoStore.varAnnos = JSON.parse(JSON.stringify(variantData.varAnnos))
-    variantInfoStore.geneInfo = JSON.parse(JSON.stringify(variantData.geneInfo))
-    variantInfoStore.geneClinvar = JSON.parse(JSON.stringify(variantData.clinvar))
-    variantInfoStore.txCsq = JSON.parse(JSON.stringify(variantData.txCsq))
-    variantAcmgStore.storeState = StoreState.Active
-    variantAcmgStore.seqvar = deepCopy(seqvarInfo)
-    variantAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
+    seqvarInfoStore.storeState = StoreState.Active
+    seqvarAcmgStore.seqvar = deepCopy(seqvarInfo)
+    seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
+    seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
+    seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
+    seqvarInfoStore.txCsq = JSON.parse(JSON.stringify(seqvarData.txCsq))
+    seqvarAcmgStore.storeState = StoreState.Active
+    seqvarAcmgStore.seqvar = deepCopy(seqvarInfo)
+    seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
     const { wrapper } = await setupMountedComponents(
       {

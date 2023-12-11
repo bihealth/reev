@@ -12,7 +12,7 @@ import { MehariClient } from '@/api/mehari'
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 
-export const useVariantInfoStore = defineStore('variantInfo', () => {
+export const useSeqVarInfoStore = defineStore('seqVarInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 

@@ -25,7 +25,7 @@ import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
 import { usegeneInfoStore as useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import { useSvInfoStore } from '@/stores/svInfo'
+import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
 
 // Define the async components to use in this view.
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
@@ -79,7 +79,7 @@ const router = useRouter()
 const route = useRoute()
 
 /** Information about the strucvar, used to fetch information on load. */
-const strucvarInfoStore = useSvInfoStore()
+const strucvarInfoStore = useStrucVarInfoStore()
 /** Information about the genes. */
 const geneInfoStore = useGeneInfoStore()
 /** Currently active case - for HPO terms. */

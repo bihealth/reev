@@ -20,7 +20,7 @@ import CnLoss from '@/components/StrucvarDetails/ClinsigCard/CnLoss.vue'
 import SummarySheet from '@/components/StrucvarDetails/ClinsigCard/SummarySheet.vue'
 import type { Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-import { useSvAcmgRatingStore } from '@/stores/svAcmgRating'
+import { useStrucVarAcmgRatingStore } from '@/stores/strucVarAcmgRating'
 
 /** Data type used for component's props. */
 interface Props {
@@ -37,7 +37,7 @@ const emit = defineEmits<{
 }>()
 
 /** Store to use for ACMG ratings of structural variants. */
-const acmgRatingStore = useSvAcmgRatingStore()
+const acmgRatingStore = useStrucVarAcmgRatingStore()
 
 /** Component state: whether display of conflicting sections is enabled. */
 const showConflictingSections = ref<boolean>(false)

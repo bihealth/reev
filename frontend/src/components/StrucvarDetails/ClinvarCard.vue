@@ -9,7 +9,7 @@ import {
 } from '@/components/SeqvarDetails/ClinvarCard.c'
 import { type Strucvar } from '@/lib/genomicVars'
 import { roundIt } from '@/lib/utils'
-import { useSvInfoStore } from '@/stores/svInfo'
+import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
 
 /** Type for this component's props. */
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const svInfoStore = useSvInfoStore()
+const svInfoStore = useStrucVarInfoStore()
 
 const vcvUrl = (vcv: string): string => {
   const stripped = vcv.replace(/^VCV0+/, '')

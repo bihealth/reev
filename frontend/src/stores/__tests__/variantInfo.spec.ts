@@ -10,7 +10,7 @@ import { type Seqvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/test-utils'
 
 import { StoreState } from '../misc'
-import { useVariantInfoStore } from '../variantInfo'
+import { useSeqVarInfoStore } from '../seqVarInfo'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -31,7 +31,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.seqvar).toBe(undefined)
@@ -41,7 +41,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     store.storeState = StoreState.Active
     store.seqvar = deepCopy(seqvarInfo)
     store.varAnnos = JSON.parse(JSON.stringify(BRCA1VariantInfo))
@@ -58,7 +58,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should load data', async () => {
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -85,7 +85,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should fail to load data with invalid request', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
     await store.loadData(deepCopy(seqvarInfo))
@@ -100,7 +100,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should handle loading data with invalid fetchVariantInfo response', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(
@@ -135,7 +135,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should handle loading data with invalid retrieveSeqvarsCsq response', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -163,7 +163,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should fail to load data with invalid fetchGeneInfo response', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -193,7 +193,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should not load data if variant is the same', async () => {
-    const store = useVariantInfoStore()
+    const store = useSeqVarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))

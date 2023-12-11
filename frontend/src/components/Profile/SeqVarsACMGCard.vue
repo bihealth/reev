@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import { useVariantAcmgRatingStore } from '@/stores/variantAcmgRating'
+import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
 
-const acmgRatingStore = useVariantAcmgRatingStore()
+const acmgRatingStore = useSeqVarAcmgRatingStore()
 
 const getPresentCriterias = (criterias: any) =>
   criterias.filter((criteria: any) => criteria.presence === 'Present')

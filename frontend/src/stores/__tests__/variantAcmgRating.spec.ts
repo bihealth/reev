@@ -8,7 +8,7 @@ import { type Seqvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/test-utils'
 
 import { StoreState } from '../misc'
-import { useVariantAcmgRatingStore } from '../variantAcmgRating'
+import { useSeqVarAcmgRatingStore } from '../seqVarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -64,7 +64,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
-    const store = useVariantAcmgRatingStore()
+    const store = useSeqVarAcmgRatingStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
@@ -73,7 +73,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
-    const store = useVariantAcmgRatingStore()
+    const store = useSeqVarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
     store.seqvar = deepCopy(seqvarInfo)
@@ -86,7 +86,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should correctly retrieve data for InterVar and Server', async () => {
-    const store = useVariantAcmgRatingStore()
+    const store = useSeqVarAcmgRatingStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
@@ -131,7 +131,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should fail to load data with invalid request', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useVariantAcmgRatingStore()
+    const store = useSeqVarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
     await expect(async () => await store.fetchAcmgRating(deepCopy(seqvarInfo))).rejects.toThrow()
@@ -142,7 +142,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should not load data if small variant is the same', async () => {
-    const store = useVariantAcmgRatingStore()
+    const store = useSeqVarAcmgRatingStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
