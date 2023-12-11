@@ -27,6 +27,7 @@ greenlet = "*"
 emails = "*"
 jinja2 = "*"
 sentry-sdk = {extras = ["fastapi"], version = "*"}
+clinvar-this = "*"
 
 [dev-packages]
 aiosqlite = "*"
