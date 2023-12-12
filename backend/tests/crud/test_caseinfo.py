@@ -33,7 +33,7 @@ def case_create() -> CaseInfoCreate:
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_get_caseinfo(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test creating and retrieving a caseinfo."""
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
@@ -52,14 +52,14 @@ async def test_create_get_caseinfo(db_session: AsyncSession, case_create: CaseIn
     assert caseinfo_postcreate.family_segregation == stored_item.family_segregation
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_caseinfo(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test deleting a caseinfo."""
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
     await crud.caseinfo.remove(session=db_session, id=caseinfo_postcreate.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_multi_by_user(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test retrieving multiple caseinfos by user."""
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
@@ -81,7 +81,7 @@ async def test_get_multi_by_user(db_session: AsyncSession, case_create: CaseInfo
     assert caseinfo_postcreate.family_segregation == stored_items[0].family_segregation
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_by_user(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test retrieving a caseinfo by user."""
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)

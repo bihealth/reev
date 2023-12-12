@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import settings
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_adminmsgs_list(db_session: AsyncSession, client: TestClient):
     """Test proxying to annonars backend."""
     _ = db_session  # via ``get_db()`` dependency injection

@@ -45,7 +45,9 @@ const runSearch = async () => {
       :label="props.density != 'compact' ? 'Search for variant or gene' : undefined"
       prepend-inner-icon="mdi-magnify"
       rounded="xl"
-      variant="outlined"
+      variant="solo-filled"
+      single-line
+      flat
       :density="props.density"
       clearable
       :hide-details="true"
@@ -80,7 +82,7 @@ const runSearch = async () => {
           </v-list>
         </v-menu>
         <v-btn variant="text" rounded="xl" class="start-search" @click.prevent="() => runSearch()">
-          <v-icon>mdi-rocket-launch</v-icon>
+          Go
         </v-btn>
       </template>
     </v-text-field>

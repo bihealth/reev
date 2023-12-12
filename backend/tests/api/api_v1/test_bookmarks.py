@@ -12,7 +12,7 @@ from app.models.user import User
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_create_bookmark(
     db_session: AsyncSession,
@@ -31,7 +31,7 @@ async def test_create_bookmark(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_bookmark_superuser(
     db_session: AsyncSession,
@@ -50,7 +50,7 @@ async def test_create_bookmark_superuser(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_bookmark_anon(db_session: AsyncSession, client: TestClient):
     """Test creating a bookmark as anonymous user."""
     _ = db_session
@@ -62,7 +62,7 @@ async def test_create_bookmark_anon(db_session: AsyncSession, client: TestClient
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_bookmark_invalid_data(
     db_session: AsyncSession,
@@ -83,7 +83,7 @@ async def test_create_bookmark_invalid_data(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_list_all_bookmarks(
     db_session: AsyncSession,
@@ -104,7 +104,7 @@ async def test_list_all_bookmarks(
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_all_bookmarks_superuser(
     db_session: AsyncSession,
@@ -127,7 +127,7 @@ async def test_list_all_bookmarks_superuser(
     assert response.json()[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_list_all_bookmarks_anon(db_session: AsyncSession, client: TestClient):
     """Test listing all bookmarks as anonymous user."""
     _ = db_session
@@ -136,7 +136,7 @@ async def test_list_all_bookmarks_anon(db_session: AsyncSession, client: TestCli
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_all_no_bookmarks(
     db_session: AsyncSession,
@@ -155,7 +155,7 @@ async def test_list_all_no_bookmarks(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_get_bookmark_by_id(
     db_session: AsyncSession,
@@ -168,7 +168,7 @@ async def test_get_bookmark_by_id(
     assert response.status_code == 401  # Forbidden access should be 403
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_bookmark_by_id_superuser(
     db_session: AsyncSession,
@@ -191,7 +191,7 @@ async def test_get_bookmark_by_id_superuser(
     assert response.json()["id"] == bookmark_id
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_bookmark_by_id_anon(db_session: AsyncSession, client: TestClient):
     """Test getting a bookmark by id as anonymous user."""
     _ = db_session
@@ -201,7 +201,7 @@ async def test_get_bookmark_by_id_anon(db_session: AsyncSession, client: TestCli
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_bookmark_by_invalid_id(
     db_session: AsyncSession,
@@ -220,7 +220,7 @@ async def test_get_bookmark_by_invalid_id(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_delete_bookmark_by_id(
     db_session: AsyncSession,
@@ -248,7 +248,7 @@ async def test_delete_bookmark_by_id(
     assert response.json()[0]["id"] == bookmark_id
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_bookmark_by_id_superuser(
     db_session: AsyncSession,
@@ -275,7 +275,7 @@ async def test_delete_bookmark_by_id_superuser(
     assert response.status_code == 404  # Not Found
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_bookmark_by_id_anon(db_session: AsyncSession, client: TestClient):
     """Test deleting a bookmark by id as anonymous user."""
     _ = db_session
@@ -285,7 +285,7 @@ async def test_delete_bookmark_by_id_anon(db_session: AsyncSession, client: Test
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_bookmark_by_invalid_id(
     db_session: AsyncSession,
@@ -305,7 +305,7 @@ async def test_delete_bookmark_by_invalid_id(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_list_bookmarks(
     db_session: AsyncSession,
@@ -328,7 +328,7 @@ async def test_list_bookmarks(
     assert response.json()[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_bookmarks_superuser(
     db_session: AsyncSession,
@@ -351,7 +351,7 @@ async def test_list_bookmarks_superuser(
     assert response.json()[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_list_bookmarks_anon(db_session: AsyncSession, client: TestClient):
     """Test listing bookmarks as anonymous user."""
     _ = db_session
@@ -360,7 +360,7 @@ async def test_list_bookmarks_anon(db_session: AsyncSession, client: TestClient)
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_no_bookmarks(
     db_session: AsyncSession,
@@ -378,7 +378,7 @@ async def test_list_no_bookmarks(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_get_bookmark(
     db_session: AsyncSession,
@@ -403,7 +403,7 @@ async def test_get_bookmark(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_bookmark_superuser(
     db_session: AsyncSession,
@@ -428,7 +428,7 @@ async def test_get_bookmark_superuser(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_bookmark_anon(db_session: AsyncSession, client: TestClient):
     """Test getting a bookmark as anonymous user."""
     _ = db_session
@@ -437,7 +437,7 @@ async def test_get_bookmark_anon(db_session: AsyncSession, client: TestClient):
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_no_bookmarks(
     db_session: AsyncSession,
@@ -457,7 +457,7 @@ async def test_get_no_bookmarks(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_delete_bookmark(
     db_session: AsyncSession,
@@ -485,7 +485,7 @@ async def test_delete_bookmark(
     assert response.status_code == 404
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_bookmark_superuser(
     db_session: AsyncSession,
@@ -513,7 +513,7 @@ async def test_delete_bookmark_superuser(
     assert response.status_code == 404
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_bookmark_anon(db_session: AsyncSession, client: TestClient):
     """Test deleting a bookmark as anonymous user."""
     _ = db_session
@@ -524,7 +524,7 @@ async def test_delete_bookmark_anon(db_session: AsyncSession, client: TestClient
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_no_bookmarks(
     db_session: AsyncSession,
