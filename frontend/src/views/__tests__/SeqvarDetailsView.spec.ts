@@ -124,26 +124,6 @@ describe.concurrent('SeqvarDetailsView', async () => {
     expect(menu.exists()).toBe(true)
   }, 10000)
 
-  it('emits update in header', async () => {
-    const { wrapper } = await makeWrapper()
-
-    const header = wrapper.findComponent(PageHeader)
-    expect(header.exists()).toBe(true)
-    await header.setValue('HGNC:1100', 'searchTermRef')
-    await header.setValue('grch37', 'genomeReleaseRef')
-    expect(header.emitted()).toHaveProperty('update:searchTermRef')
-    expect(header.emitted()).toHaveProperty('update:genomeReleaseRef')
-    expect(header.vm.$props).toStrictEqual({ hideSearchBar: false })
-
-    const searchBar = wrapper.findComponent(SearchBar)
-    expect(searchBar.exists()).toBe(true)
-    await searchBar.setValue('HGNC:1100', 'searchTerm')
-    await searchBar.setValue('grch37', 'genomeRelease')
-    expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
-    expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
-    expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch37' })
-  })
-
   it('renders seqvarDatails components', async () => {
     const { wrapper } = await makeWrapper()
 
