@@ -84,9 +84,6 @@ describe.concurrent('GeneDetailView', async () => {
   it('renders info-cards and navigation drawer', async () => {
     const { wrapper } = await makeWrapper()
 
-    const navigationDrawer = wrapper.find('.v-navigation-drawer')
-    expect(navigationDrawer.exists()).toBe(true)
-
     // Renders the anchors
     const geneOverview = wrapper.find('#gene-overview')
     const genePathogencity = wrapper.find('#gene-pathogenicity')

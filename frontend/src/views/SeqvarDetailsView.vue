@@ -18,6 +18,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
+import FooterDefault from '@/components/FooterDefault.vue'
 import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
 import { type Seqvar } from '@/lib/genomicVars'
 import { resolveSeqvar } from '@/lib/query'
@@ -221,171 +222,177 @@ const SECTIONS: { [key: string]: Section[] } = {
 
 <template>
   <v-app>
-    <v-snackbar v-model="errSnackbarShow" multi-line>
-      {{ errSnackbarMsg }}
-
-      <template #actions>
-        <v-btn color="red" variant="text" @click="errSnackbarShow = false"> Close </v-btn>
-      </template>
-    </v-snackbar>
-
     <PageHeader />
-    <v-navigation-drawer :elevation="3" :permanent="true">
-      <div v-if="seqvarInfoStore.storeState == StoreState.Active">
-        <v-list v-model:opened="openedSection" density="compact">
-          <BookmarkListItem :id="idForBookmark" type="seqvar" />
+    <v-main class="bg-grey-lighten-2">
+      <v-container>
+        <v-row>
+          <v-col cols="2">
+            <div v-if="seqvarInfoStore.storeState == StoreState.Active">
+              <v-list v-model:opened="openedSection" density="compact" rounded="lg">
+                <BookmarkListItem :id="idForBookmark" type="seqvar" />
 
-          <v-list-subheader> GENE </v-list-subheader>
+                <template v-if="geneInfoStore.hgncId?.length">
+                  <v-list-group value="gene">
+                    <template #activator="{ props: vProps }">
+                      <v-list-item
+                        :value="vProps"
+                        prepend-icon="mdi-dna"
+                        v-bind="vProps"
+                        class="text-no-break"
+                      >
+                        Gene
+                        <span class="font-italic">
+                          {{
+                            seqvarInfoStore?.geneInfo?.hgnc?.symbol ||
+                            seqvarInfoStore?.geneInfo?.hgnc?.agr
+                          }}
+                        </span>
+                      </v-list-item>
+                    </template>
 
-          <template v-if="geneInfoStore.hgncId?.length">
-            <v-list-group value="gene">
-              <template #activator="{ props: vProps }">
-                <v-list-item
-                  :value="vProps"
-                  prepend-icon="mdi-dna"
-                  v-bind="vProps"
-                  class="text-no-break"
-                >
-                  Gene
-                  <span class="font-italic">
-                    {{
-                      seqvarInfoStore?.geneInfo?.hgnc?.symbol ||
-                      seqvarInfoStore?.geneInfo?.hgnc?.agr
-                    }}
-                  </span>
-                </v-list-item>
-              </template>
+                    <v-list-item
+                      v-for="section in SECTIONS.GENE"
+                      :id="`${section.id}-nav`"
+                      :key="section.id"
+                      density="compact"
+                      @click="router.push({ hash: `#${section.id}` })"
+                    >
+                      <v-list-item-title class="text-no-break">
+                        {{ section.title }}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list-group>
+                </template>
+                <template v-else>
+                  <v-list-item prepend-icon="mdi-dna" class="font-italic text-grey-darken-2">
+                    No Gene
+                  </v-list-item>
+                </template>
 
-              <v-list-item
-                v-for="section in SECTIONS.GENE"
-                :id="`${section.id}-nav`"
-                :key="section.id"
-                density="compact"
-                @click="router.push({ hash: `#${section.id}` })"
+                <v-list-group value="seqvar">
+                  <template #activator="{ props: vProps }">
+                    <v-list-item
+                      :value="vProps"
+                      v-bind="vProps"
+                      prepend-icon="mdi-magnify-expand"
+                      class="text-no-wrap"
+                    >
+                      Variant
+                    </v-list-item>
+                  </template>
+
+                  <v-list-item
+                    v-for="section in SECTIONS.SEQVAR"
+                    :id="`${section.id}-nav`"
+                    :key="section.id"
+                    density="compact"
+                    @click="router.push({ hash: `#${section.id}` })"
+                  >
+                    <v-list-item-title class="text-no-break">
+                      {{ section.title }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list-group>
+              </v-list>
+            </div>
+          </v-col>
+
+          <v-col cols="10">
+            <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
+              <div>
+                {{ errorMessage }}
+              </div>
+              <v-btn
+                :to="{ name: 'home' }"
+                prepend-icon="mdi-arrow-left-circle-outline"
+                class="mt-3"
+                variant="outlined"
+                color="white"
               >
-                <v-list-item-title class="text-no-break">
-                  {{ section.title }}
-                </v-list-item-title>
-              </v-list-item>
-            </v-list-group>
-          </template>
-          <template v-else>
-            <v-list-item prepend-icon="mdi-dna" class="font-italic text-grey-darken-2">
-              No Gene
-            </v-list-item>
-          </template>
+                Back to home
+              </v-btn>
+            </v-alert>
 
-          <v-list-group value="seqvar">
-            <template #activator="{ props: vProps }">
-              <v-list-item
-                :value="vProps"
-                v-bind="vProps"
-                prepend-icon="mdi-magnify-expand"
-                class="text-no-wrap"
-              >
-                Variant
-              </v-list-item>
+            <template v-if="seqvarInfoStore?.geneInfo">
+              <div id="gene-overview">
+                <GeneOverviewCard :gene-info="seqvarInfoStore?.geneInfo" />
+              </div>
+              <div id="gene-pathogenicity">
+                <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo" />
+              </div>
+              <div id="gene-conditions">
+                <GeneConditionsCard :gene-info="seqvarInfoStore?.geneInfo" :hpo-terms="[]" />
+              </div>
+              <div id="gene-expression">
+                <GeneExpressionCard
+                  :gene-symbol="seqvarInfoStore?.geneInfo?.hgnc?.symbol"
+                  :expression-records="seqvarInfoStore?.geneInfo?.gtex?.records"
+                  :ensembl-gene-id="seqvarInfoStore?.geneInfo?.gtex?.ensemblGeneId"
+                />
+              </div>
+              <div v-if="geneInfoStore?.geneClinvar && seqvar?.genomeBuild" id="gene-clinvar">
+                <GeneClinvarCard
+                  :gene-clinvar="geneInfoStore.geneClinvar"
+                  :transcripts="geneInfoStore.transcripts"
+                  :genome-build="seqvar?.genomeBuild"
+                  :gene-info="geneInfoStore?.geneInfo"
+                  :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
+                />
+              </div>
             </template>
+            <div>
+              <div class="text-h4 mt-6 mb-3 ml-1">
+                Variant Details
+                <template v-if="orig">
+                  <small class="font-italic">
+                    {{ orig }}
+                  </small>
+                </template>
+              </div>
+              <div id="seqvar-clinsig">
+                <ClinsigCard :seqvar="seqvarInfoStore.seqvar" @error-display="handleDisplayError" />
+              </div>
+              <div id="seqvar-csq" class="mt-3">
+                <VariantDetailsTxCsq :tx-csq="seqvarInfoStore.txCsq" />
+              </div>
+              <div id="seqvar-clinvar" class="mt-3">
+                <VariantDetailsClinvar :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
+              </div>
+              <div id="seqvar-freqs" class="mt-3">
+                <VariantDetailsFreqs
+                  :seqvar="seqvarInfoStore.seqvar"
+                  :var-annos="seqvarInfoStore.varAnnos"
+                />
+              </div>
+              <div id="seqvar-scores" class="mt-3">
+                <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
+              </div>
+              <div id="seqvar-tools" class="mt-3">
+                <VariantToolsCard
+                  :seqvar="seqvarInfoStore.seqvar"
+                  :var-annos="seqvarInfoStore.varAnnos"
+                />
+              </div>
+              <div id="seqvar-ga4ghbeacons" class="mt-3">
+                <BeaconNetworkCard :seqvar="seqvarInfoStore.seqvar" />
+              </div>
+              <div id="seqvar-variantvalidator" class="mt-3">
+                <VariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+        <FooterDefault />
+      </v-container>
 
-            <v-list-item
-              v-for="section in SECTIONS.SEQVAR"
-              :id="`${section.id}-nav`"
-              :key="section.id"
-              density="compact"
-              @click="router.push({ hash: `#${section.id}` })"
-            >
-              <v-list-item-title class="text-no-break">
-                {{ section.title }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-group>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
+      <!-- VSnackbar for displaying errors -->
+      <v-snackbar v-model="errSnackbarShow" multi-line>
+        {{ errSnackbarMsg }}
 
-    <v-main class="mb-3 mx-3">
-      <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
-        <div>
-          {{ errorMessage }}
-        </div>
-        <v-btn
-          :to="{ name: 'home' }"
-          prepend-icon="mdi-arrow-left-circle-outline"
-          class="mt-3"
-          variant="outlined"
-          color="white"
-        >
-          Back to home
-        </v-btn>
-      </v-alert>
-
-      <template v-if="seqvarInfoStore?.geneInfo">
-        <div id="gene-overview" class="mt-3">
-          <GeneOverviewCard :gene-info="seqvarInfoStore?.geneInfo" />
-        </div>
-        <div id="gene-pathogenicity">
-          <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo" />
-        </div>
-        <div id="gene-conditions">
-          <GeneConditionsCard :gene-info="seqvarInfoStore?.geneInfo" :hpo-terms="[]" />
-        </div>
-        <div id="gene-expression">
-          <GeneExpressionCard
-            :gene-symbol="seqvarInfoStore?.geneInfo?.hgnc?.symbol"
-            :expression-records="seqvarInfoStore?.geneInfo?.gtex?.records"
-            :ensembl-gene-id="seqvarInfoStore?.geneInfo?.gtex?.ensemblGeneId"
-          />
-        </div>
-        <div v-if="geneInfoStore?.geneClinvar && seqvar?.genomeBuild" id="gene-clinvar">
-          <GeneClinvarCard
-            :gene-clinvar="geneInfoStore.geneClinvar"
-            :transcripts="geneInfoStore.transcripts"
-            :genome-build="seqvar?.genomeBuild"
-            :gene-info="geneInfoStore?.geneInfo"
-            :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
-          />
-        </div>
-      </template>
-      <div>
-        <div class="text-h4 mt-6 mb-3 ml-1">
-          Variant Details
-          <template v-if="orig">
-            <small class="font-italic">
-              {{ orig }}
-            </small>
-          </template>
-        </div>
-        <div id="seqvar-clinsig">
-          <ClinsigCard :seqvar="seqvarInfoStore.seqvar" @error-display="handleDisplayError" />
-        </div>
-        <div id="seqvar-csq" class="mt-3">
-          <VariantDetailsTxCsq :tx-csq="seqvarInfoStore.txCsq" />
-        </div>
-        <div id="seqvar-clinvar" class="mt-3">
-          <VariantDetailsClinvar :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
-        </div>
-        <div id="seqvar-freqs" class="mt-3">
-          <VariantDetailsFreqs
-            :seqvar="seqvarInfoStore.seqvar"
-            :var-annos="seqvarInfoStore.varAnnos"
-          />
-        </div>
-        <div id="seqvar-scores" class="mt-3">
-          <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
-        </div>
-        <div id="seqvar-tools" class="mt-3">
-          <VariantToolsCard
-            :seqvar="seqvarInfoStore.seqvar"
-            :var-annos="seqvarInfoStore.varAnnos"
-          />
-        </div>
-        <div id="seqvar-ga4ghbeacons" class="mt-3">
-          <BeaconNetworkCard :seqvar="seqvarInfoStore.seqvar" />
-        </div>
-        <div id="seqvar-variantvalidator" class="mt-3">
-          <VariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
-        </div>
-      </div>
+        <template #actions>
+          <v-btn color="red" variant="text" @click="errSnackbarShow = false"> Close </v-btn>
+        </template>
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>

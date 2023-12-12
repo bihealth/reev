@@ -19,6 +19,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
+import FooterDefault from '@/components/FooterDefault.vue'
 import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
 import { lookupGene } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
@@ -129,8 +130,6 @@ const SECTIONS: Section[] = [
           <v-col cols="2">
             <div v-if="geneInfoStore.storeState == StoreState.Active">
               <v-list v-model:opened="openedSection" rounded="lg">
-                <v-list-subheader> GENE </v-list-subheader>
-
                 <BookmarkListItem :id="geneInfoStore.hgncId ?? ''" :type="'gene'" />
 
                 <v-list-group value="gene">
@@ -209,6 +208,7 @@ const SECTIONS: Section[] = [
             </div>
           </v-col>
         </v-row>
+        <FooterDefault />
       </v-container>
     </v-main>
   </v-app>
