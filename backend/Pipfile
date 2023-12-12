@@ -44,10 +44,11 @@ pytest-faker = "*"
 pytest-httpx = "*"
 pytest-subprocess = "*"
 sphinx = "*"
-sphinx-rtd-theme = "*"
+furo = "*"
 starlette = "*"
 types-passlib = "*"
-sphinx-serve = "*"
+sphinx-autobuild = "*"
+sphinxcontrib-bibtex = "*"
 
 [requires]
 python_version = "3.10"

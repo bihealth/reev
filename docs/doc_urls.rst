@@ -1,4 +1,4 @@
-.. _ui_urls:
+.. _doc_urls:
 
 ==============
 Front-End URLs
