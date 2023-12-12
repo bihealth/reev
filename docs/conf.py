@@ -14,13 +14,13 @@ sys.path.insert(0, os.path.abspath("../backend"))
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "REEV"
-copyright = "2023, Manuel Holtgrewe"
-author = "Manuel Holtgrewe"
+copyright = "2023, REEV Authors"
+author = "REEV Authors"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx_rtd_theme", "sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.autodoc"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -29,5 +29,5 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 html_static_path = ["_static"]
