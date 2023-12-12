@@ -74,15 +74,13 @@ function toggleTheme() {
       </template>
       <v-spacer></v-spacer>
 
-      <v-btn @click="toggleTheme" variant="text">
+      <v-btn variant="text" @click="toggleTheme">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
 
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">
-          <v-btn class="mr-4" prepend-icon="mdi-account-group" v-bind="vProps">
-            Update Case
-          </v-btn>
+          <v-btn class="mr-4" prepend-icon="mdi-account-group" v-bind="vProps"> Update Case </v-btn>
         </template>
         <v-card>
           <CaseInformationCard />

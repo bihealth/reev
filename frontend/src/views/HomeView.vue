@@ -43,14 +43,12 @@ const performExampleSearch = (example: Example) => {
           <v-col cols="12" lg="6" class="py-2">
             <v-sheet class="px-6 py-3">
               <p>
-                <span class="font-weight-bold">
-                  REEV evaluates and explains variants.
-                </span>
+                <span class="font-weight-bold"> REEV evaluates and explains variants. </span>
               </p>
               <p>
-                REEV is a tool to help you interpret genomic variants. You can enter your query
-                for genes, small, and structural variants into the search bar below. If you
-                are new to REEV, consider looking at our
+                REEV is a tool to help you interpret genomic variants. You can enter your query for
+                genes, small, and structural variants into the search bar below. If you are new to
+                REEV, consider looking at our
                 <a href="https://reev.readthedocs.io/en/latest/doc_quickstart.html" target="_blank">
                   quickstart instructions
                   <small><v-icon>mdi-launch</v-icon></small>
@@ -58,8 +56,8 @@ const performExampleSearch = (example: Example) => {
                 or our
                 <a href="https://reev.readthedocs.io/en/latest/doc_tutorial.html" target="_blank">
                   tutorial
-                  <small><v-icon>mdi-launch</v-icon></small>
-                </a>.
+                  <small><v-icon>mdi-launch</v-icon></small> </a
+                >.
               </p>
             </v-sheet>
           </v-col>
