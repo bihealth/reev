@@ -111,8 +111,8 @@ const performExampleSearch = (example: Example) => {
           </v-col>
           <v-spacer></v-spacer>
         </v-row>
+        <FooterDefault />
       </v-container>
     </v-main>
-    <FooterDefault />
   </v-app>
 </template>
