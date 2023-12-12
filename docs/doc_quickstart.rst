@@ -127,6 +127,7 @@ You can find the following elements on the page:
 5. The population frequencies in dfiferent populations.
    Click on the population name to obtain frequency details by XX/XY karyotype.
 6. Variant pathogenicity scores from different tools, aggregated by dbNSFP.
+   To help interpreting the variant scores, we show scores calibrated following :footcite:t:`pejaver:2022` where applicable (currently for all scores except for SpliceAI).
 7. Also, you can find the UCSC 100 vertebrate conservation here on the protein level.
 8. Link-outs to genome browsers and various external tools to help you to assess the variant further.
 9. Query the GA4GH Beacon network for presence of the variant at other sites.
@@ -191,3 +192,5 @@ This is shown in the following figure.
 8. See the location of the variant in an internal genome browser with useful tracks for interpreting the variant.
 
 For more details, see the section :ref:`doc_tutorial_strucvar` of the :ref:`doc_tutorial` or use the little (?) help icons on the page.
+
+.. footbibliography::

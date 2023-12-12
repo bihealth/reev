@@ -20,7 +20,7 @@ author = "REEV Authors"
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.autodoc", "sphinxcontrib.bibtex"]
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -31,3 +31,9 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 html_theme = "furo"
 html_static_path = ["_static"]
+
+# -- Configuration for sphinxcontrib-bibtex ----------------------------------
+# https://sphinxcontrib-bibtex.readthedocs.io/en/latest/usage.html
+
+bibtex_bibfiles = ["refs.bib"]
+bibtex_default_style = "author_year"
