@@ -36,26 +36,56 @@ const performExampleSearch = (example: Example) => {
 <template>
   <v-app>
     <PageHeader v-model:case-information="showCaseInformation" :hide-search-bar="true" />
-    <v-main>
-      <v-container class="home-view">
+    <v-main class="bg-grey-lighten-2">
+      <v-container>
         <v-row>
           <v-spacer></v-spacer>
-          <v-col cols="12" lg="6">
-            <div class="text-h6">Enter a variant or gene to query for</div>
-
-            <SearchBar
-              v-model:search-term="searchTerm"
-              v-model:genome-release="genomeBuild"
-              @click-search="() => performSearch(router, searchTerm, genomeBuild)"
-            />
+          <v-col cols="12" lg="6" class="py-2">
+            <v-sheet rounded="lg" class="px-6 py-3">
+              <p>
+                <span class="font-weight-bold">
+                  REEV evaluates and explains variants.
+                </span>
+              </p>
+              <p>
+                REEV is a tool to help you interpret genomic variants. You can enter your query
+                for genes, small, and structural variants into the search bar below. If you
+                are new to REEV, consider looking at our
+                <a href="https://reev.readthedocs.io/en/latest/doc_quickstart.html" target="_blank">
+                  quickstart instructions
+                  <small><v-icon>mdi-launch</v-icon></small>
+                </a>
+                or our
+                <a href="https://reev.readthedocs.io/en/latest/doc_tutorial.html" target="_blank">
+                  tutorial
+                  <small><v-icon>mdi-launch</v-icon></small>
+                </a>.
+              </p>
+            </v-sheet>
           </v-col>
           <v-spacer></v-spacer>
         </v-row>
 
         <v-row>
           <v-spacer></v-spacer>
-          <v-col cols="12" lg="6">
-            <v-card id="examples">
+          <v-col cols="12" lg="6" class="py-2">
+            <v-sheet rounded="lg" class="px-6 py-3">
+              <div class="text-h6">Enter a variant or gene to query for</div>
+
+              <SearchBar
+                v-model:search-term="searchTerm"
+                v-model:genome-release="genomeBuild"
+                @click-search="() => performSearch(router, searchTerm, genomeBuild)"
+              />
+            </v-sheet>
+          </v-col>
+          <v-spacer></v-spacer>
+        </v-row>
+
+        <v-row>
+          <v-spacer></v-spacer>
+          <v-col cols="12" lg="6" class="py-2">
+            <v-card flat id="examples" rounded="lg" class="px-3 py-3">
               <v-card-title> Need some inspiration? </v-card-title>
               <v-card-text>
                 <div v-for="section in EXAMPLES" :key="section.title">
@@ -69,8 +99,9 @@ const performExampleSearch = (example: Example) => {
                     <v-btn
                       v-for="example in section.examples"
                       :key="example.query"
-                      class="mr-1 mb-1 example"
+                      class="mx-1 mb-1 example text-none px-2"
                       variant="text"
+                      :rounded="false"
                       prepend-icon="mdi-arrow-right-circle-outline"
                       @click="performExampleSearch(example)"
                     >

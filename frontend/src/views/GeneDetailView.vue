@@ -155,6 +155,7 @@ const SECTIONS: Section[] = [
         </v-list>
       </div>
     </v-navigation-drawer>
+
     <v-main class="my-3 mx-3">
       <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
         <div>

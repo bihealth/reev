@@ -49,8 +49,8 @@ function toggleTheme() {
 </script>
 
 <template>
-  <v-app-bar app>
-    <div class="ml-0 flex-shrink-0 flex-grow-0">
+  <v-app-bar flat>
+    <v-container class="mx-auto d-flex align-center justify-center">
       <router-link to="/">
         <img
           id="logo"
@@ -58,26 +58,30 @@ function toggleTheme() {
           style="vertical-align: middle"
           src="@/assets/reev-logo.svg"
           alt="logo"
-          width="70"
+          width="50"
         />
+        <span class="text-h6"> REEV </span>
       </router-link>
-    </div>
-    <v-spacer></v-spacer>
-    <template v-if="!hideSearchBar">
-      <SearchBar
-        v-model:search-term="searchTermRef"
-        v-model:genome-release="genomeBuildRef"
-        density="compact"
-        @click-search="() => performSearch(router, searchTermRef, genomeBuildRef)"
-      />
-    </template>
-    <v-spacer></v-spacer>
-    <v-toolbar-items>
-      <v-btn @click="toggleTheme">toggle theme</v-btn>
+
+      <v-spacer></v-spacer>
+      <template v-if="!hideSearchBar">
+        <SearchBar
+          v-model:search-term="searchTermRef"
+          v-model:genome-release="genomeBuildRef"
+          density="compact"
+          @click-search="() => performSearch(router, searchTermRef, genomeBuildRef)"
+        />
+      </template>
+      <v-spacer></v-spacer>
+
+      <v-btn @click="toggleTheme" variant="text">
+        <v-icon>mdi-theme-light-dark</v-icon>
+      </v-btn>
+
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">
-          <v-btn class="mr-4" prepend-icon="mdi-information-outline" v-bind="vProps">
-            Show Case Information
+          <v-btn class="mr-4" prepend-icon="mdi-account-group" v-bind="vProps">
+            Update Case
           </v-btn>
         </template>
         <v-card>
@@ -106,6 +110,6 @@ function toggleTheme() {
           </v-list-item>
         </v-list>
       </v-menu>
-    </v-toolbar-items>
+    </v-container>
   </v-app-bar>
 </template>
