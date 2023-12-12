@@ -22,8 +22,6 @@ const router = useRouter()
 const searchTerm = ref<string>('')
 /** Component state; currently selected genome build. */
 const genomeBuild = ref<GenomeBuild>('grch37')
-/** Component state; whether or not to show case information. */
-const showCaseInformation = ref(false)
 
 /** Launches a search for one of the examples. */
 const performExampleSearch = (example: Example) => {
@@ -35,13 +33,13 @@ const performExampleSearch = (example: Example) => {
 
 <template>
   <v-app>
-    <PageHeader v-model:case-information="showCaseInformation" :hide-search-bar="true" />
+    <PageHeader :hide-search-bar="true" />
     <v-main class="bg-grey-lighten-2">
       <v-container>
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="12" lg="6" class="py-2">
-            <v-sheet rounded="lg" class="px-6 py-3">
+            <v-sheet class="px-6 py-3">
               <p>
                 <span class="font-weight-bold"> REEV evaluates and explains variants. </span>
               </p>
@@ -67,7 +65,7 @@ const performExampleSearch = (example: Example) => {
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="12" lg="6" class="py-2">
-            <v-sheet rounded="lg" class="px-6 py-3">
+            <v-sheet class="px-6 py-3">
               <div class="text-h6">Enter a variant or gene to query for</div>
 
               <SearchBar
@@ -83,7 +81,7 @@ const performExampleSearch = (example: Example) => {
         <v-row>
           <v-spacer></v-spacer>
           <v-col cols="12" lg="6" class="py-2">
-            <v-card id="examples" flat rounded="lg" class="px-3 py-3">
+            <v-card id="examples" class="px-3 py-3">
               <v-card-title> Need some inspiration? </v-card-title>
               <v-card-text>
                 <div v-for="section in EXAMPLES" :key="section.title">

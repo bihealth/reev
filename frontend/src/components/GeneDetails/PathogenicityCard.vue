@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<Props>(), {
       <template v-else>
         <v-row no-gutters class="d-flex flex-row">
           <v-col cols="3">
-            <v-sheet rounded="lg" class="pa-3 bg-grey-lighten-2 mr-2 h-100">
+            <v-sheet class="pa-3 bg-grey-lighten-2 mr-2 h-100">
               <template v-if="geneInfo?.clingen">
                 <div class="text-subtitle-1">
                   ClinGen
@@ -62,7 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
           </v-col>
 
           <v-col cols="3">
-            <v-sheet rounded="lg" class="pa-3 bg-grey-lighten-2 mx-1 h-100">
+            <v-sheet class="pa-3 bg-grey-lighten-2 mx-1 h-100">
               <template v-if="geneInfo?.gnomadConstraints">
                 <div class="text-subtitle-1">
                   gnomAD
@@ -137,7 +137,7 @@ const props = withDefaults(defineProps<Props>(), {
           </v-col>
 
           <v-col cols="3">
-            <v-sheet rounded="lg" class="pa-3 bg-grey-lighten-2 mx-1 h-100">
+            <v-sheet class="pa-3 bg-grey-lighten-2 mx-1 h-100">
               <template v-if="true">
                 <div class="text-subtitle-1">
                   DECIPHER

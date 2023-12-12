@@ -152,7 +152,7 @@ const clinsigColor = (coarseClinsigIdx: number, percent: number): string => {
     />
   </template>
   <template v-else>
-    <v-sheet rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 mr-1 h-100">
+    <v-sheet class="bg-grey-lighten-3 pa-3 mt-3 mr-1 h-100">
       <v-table class="bg-transparent">
         <thead>
           <tr>

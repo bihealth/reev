@@ -239,9 +239,7 @@ onMounted(() => selectFirst(props.storeState))
             <v-skeleton-loader class="mt-3 mx-auto border" type="heading,subtitle" />
           </template>
           <template v-else>
-            <v-sheet rounded="lg" class="pa-3 text-center font-italic border">
-              No overlapping gene.
-            </v-sheet>
+            <v-sheet class="pa-3 text-center font-italic border"> No overlapping gene. </v-sheet>
           </template>
         </template>
 

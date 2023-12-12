@@ -48,7 +48,7 @@ const sortIcon = computed<string>(() => {
 </script>
 
 <template>
-  <v-sheet rounded="sm" class="pa-3 mt-1 border">
+  <v-sheet class="pa-3 mt-1 border">
     <v-row no-gutter>
       <v-col
         cols="2"

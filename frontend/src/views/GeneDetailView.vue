@@ -123,84 +123,93 @@ const SECTIONS: Section[] = [
 <template>
   <v-app>
     <PageHeader />
-    <v-navigation-drawer :elevation="3" :permanent="true">
-      <div v-if="geneInfoStore.storeState == StoreState.Active">
-        <v-list v-model:opened="openedSection">
-          <v-list-subheader> GENE </v-list-subheader>
+    <v-main class="bg-grey-lighten-2">
+      <v-container>
+        <v-row>
+          <v-col cols="2">
+            <div v-if="geneInfoStore.storeState == StoreState.Active">
+              <v-list v-model:opened="openedSection" rounded="lg">
+                <v-list-subheader> GENE </v-list-subheader>
 
-          <BookmarkListItem :id="geneInfoStore.hgncId ?? ''" :type="'gene'" />
+                <BookmarkListItem :id="geneInfoStore.hgncId ?? ''" :type="'gene'" />
 
-          <v-list-group value="gene">
-            <template #activator="{ props: vProps }">
-              <v-list-item v-bind="vProps" prepend-icon="mdi-dna" title="Gene" />
-            </template>
+                <v-list-group value="gene">
+                  <template #activator="{ props: vProps }">
+                    <v-list-item v-bind="vProps" prepend-icon="mdi-dna" title="Gene" />
+                  </template>
 
-            <v-list-item
-              v-for="section in SECTIONS"
-              :id="`${section.id}-nav`"
-              :key="section.id"
-              density="compact"
-              @click="
-                router.push({
-                  query: { genomeBuild: genomeBuild },
-                  hash: `#${section.id}`
-                })
-              "
-            >
-              <v-list-item-title>
-                {{ section.title }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-group>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
+                  <v-list-item
+                    v-for="section in SECTIONS"
+                    :id="`${section.id}-nav`"
+                    :key="section.id"
+                    density="compact"
+                    @click="
+                      router.push({
+                        query: { genomeBuild: genomeBuild },
+                        hash: `#${section.id}`
+                      })
+                    "
+                  >
+                    <v-list-item-title>
+                      {{ section.title }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list-group>
+              </v-list>
+            </div>
+          </v-col>
 
-    <v-main class="my-3 mx-3">
-      <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
-        <div>
-          {{ errorMessage }}
-        </div>
-        <v-btn
-          :to="{ name: 'home' }"
-          prepend-icon="mdi-arrow-left-circle-outline"
-          class="mt-3"
-          variant="outlined"
-          color="white"
-        >
-          Back to home
-        </v-btn>
-      </v-alert>
+          <v-col cols="10">
+            <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
+              <div>
+                {{ errorMessage }}
+              </div>
+              <v-btn
+                :to="{ name: 'home' }"
+                prepend-icon="mdi-arrow-left-circle-outline"
+                class="mt-3"
+                variant="outlined"
+                color="white"
+              >
+                Back to home
+              </v-btn>
+            </v-alert>
 
-      <div id="gene-overview">
-        <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
-      </div>
+            <div id="gene-overview">
+              <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
+            </div>
 
-      <div id="gene-pathogenicity">
-        <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
-      </div>
+            <div id="gene-pathogenicity">
+              <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
+            </div>
 
-      <div id="gene-conditions">
-        <ConditionsCard :gene-info="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
-      </div>
+            <div id="gene-conditions">
+              <ConditionsCard
+                :gene-info="geneInfoStore.geneInfo"
+                :hpo-terms="geneInfoStore.hpoTerms"
+              />
+            </div>
 
-      <div id="gene-expression">
-        <ExpressionCard
-          :gene-symbol="geneInfoStore.geneInfo?.hgnc?.symbol"
-          :expression-records="geneInfoStore.geneInfo?.gtex?.records"
-          :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
-        />
-      </div>
+            <div id="gene-expression">
+              <ExpressionCard
+                :gene-symbol="geneInfoStore.geneInfo?.hgnc?.symbol"
+                :expression-records="geneInfoStore.geneInfo?.gtex?.records"
+                :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
+              />
+            </div>
 
-      <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
-        <ClinvarCard
-          :gene-clinvar="geneInfoStore.geneClinvar"
-          :transcripts="geneInfoStore.transcripts"
-          :genome-build="genomeBuild"
-          :gene-info="geneInfoStore?.geneInfo"
-          :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
-        />
-      </div>
+            <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
+              <ClinvarCard
+                :gene-clinvar="geneInfoStore.geneClinvar"
+                :transcripts="geneInfoStore.transcripts"
+                :genome-build="genomeBuild"
+                :gene-info="geneInfoStore?.geneInfo"
+                :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
+              />
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
   </v-app>
 </template>

@@ -102,13 +102,7 @@ watch(
 
       <div v-else>
         <v-row>
-          <v-card
-            class="mx-auto pa-4 pb-8 mt-12"
-            elevation="8"
-            min-width="400"
-            max-width="448"
-            rounded="lg"
-          >
+          <v-card class="mx-auto pa-4 pb-8 mt-12" elevation="8" min-width="400" max-width="448">
             <v-card-item>
               <v-card-title>User Profile</v-card-title>
 

@@ -359,7 +359,7 @@ const vegaLayer = [
     <template v-if="!clinvar">
       <v-skeleton-loader class="mt-3 mx-auto border" type="text,image,text" />
     </template>
-    <v-sheet v-else rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 h-100">
+    <v-sheet v-else class="bg-grey-lighten-3 pa-3 mt-3 h-100">
       <div class="text-subtitle-1 text-center">Variation Lanscape</div>
       <VegaPlot
         :data-values="vegaData"

@@ -39,6 +39,17 @@ export default createVuetify({
     ...components
   },
   directives,
+  defaults: {
+    global: {
+      flat: true
+    },
+    VCard: {
+      rounded: 'lg'
+    },
+    VSheet: {
+      rounded: 'lg'
+    }
+  },
   theme: {
     defaultTheme: 'light',
     themes: {
