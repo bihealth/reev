@@ -11,7 +11,7 @@ MOCKED_BACKEND_HOST = "mocked-backend"
 MOCKED_URL_TOKEN = "xXTeStXxx"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_variantvalidator(httpx_mock: HTTPXMock, client: TestClient):
     """Test variant validator endpoint."""
     variantvalidator_url = "https://rest.variantvalidator.org/VariantValidator/variantvalidator"
@@ -26,7 +26,7 @@ async def test_variantvalidator(httpx_mock: HTTPXMock, client: TestClient):
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_acmg(httpx_mock: HTTPXMock, client: TestClient):
     """Test ACMG endpoint."""
     acmg_url = "http://wintervar.wglab.org/api_new.php"
@@ -42,7 +42,7 @@ async def test_acmg(httpx_mock: HTTPXMock, client: TestClient):
     assert response.json() == default_acmg_rating()
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_acmg_missing_query_params(client: TestClient):
     """Test ACMG endpoint with missing query parameters."""
     response = client.get("/internal/remote/acmg")

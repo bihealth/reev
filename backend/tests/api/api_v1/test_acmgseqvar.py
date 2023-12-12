@@ -30,7 +30,7 @@ def acmgseqvar_post_data() -> dict[str, Any]:
     }
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_create_acmgseqvar(
     db_session: AsyncSession,
@@ -51,7 +51,7 @@ async def test_create_acmgseqvar(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_acmgseqvar_superuser(
     db_session: AsyncSession,
@@ -72,7 +72,7 @@ async def test_create_acmgseqvar_superuser(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_acmgseqvar_anon(
     db_session: AsyncSession, client: TestClient, acmgseqvar_post_data: dict[str, Any]
 ):
@@ -86,7 +86,7 @@ async def test_create_acmgseqvar_anon(
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_acmgseqvar_invalid_data(
     db_session: AsyncSession,
@@ -102,7 +102,7 @@ async def test_create_acmgseqvar_invalid_data(
     assert response.status_code == 422
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_acmgseqvar_invalid_enums(
     db_session: AsyncSession,
@@ -126,7 +126,7 @@ async def test_create_acmgseqvar_invalid_enums(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_list_all_acmgseqvars(
     db_session: AsyncSession,
@@ -151,7 +151,7 @@ async def test_list_all_acmgseqvars(
     assert content == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_all_acmgseqvars_superuser(
     db_session: AsyncSession,
@@ -178,7 +178,7 @@ async def test_list_all_acmgseqvars_superuser(
     assert content[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_list_all_acmgseqvars_anon(db_session: AsyncSession, client: TestClient):
     """Test listing all acmgseqvars as anonymous user."""
     _ = db_session
@@ -189,7 +189,7 @@ async def test_list_all_acmgseqvars_anon(db_session: AsyncSession, client: TestC
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_all_no_acmgseqvars(
     db_session: AsyncSession,
@@ -211,7 +211,7 @@ async def test_list_all_no_acmgseqvars(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_get_by_id_acmgseqvar(
     db_session: AsyncSession,
@@ -239,7 +239,7 @@ async def test_get_by_id_acmgseqvar(
     assert content == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_by_id_acmgseqvar_superuser(
     db_session: AsyncSession,
@@ -269,7 +269,7 @@ async def test_get_by_id_acmgseqvar_superuser(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_by_id_acmgseqvar_anon(db_session: AsyncSession, client: TestClient):
     """Test getting a acmgseqvar as anonymous user."""
     _ = db_session
@@ -280,7 +280,7 @@ async def test_get_by_id_acmgseqvar_anon(db_session: AsyncSession, client: TestC
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_acmgseqvar_by_invalid_id(
     db_session: AsyncSession,
@@ -301,7 +301,7 @@ async def test_get_acmgseqvar_by_invalid_id(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_list_acmgseqvars(
     db_session: AsyncSession,
@@ -328,7 +328,7 @@ async def test_list_acmgseqvars(
     assert content[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_acmgseqvars_superuser(
     db_session: AsyncSession,
@@ -355,7 +355,7 @@ async def test_list_acmgseqvars_superuser(
     assert content[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_list_acmgseqvars_anon(db_session: AsyncSession, client: TestClient):
     """Test listing acmgseqvars as anonymous user."""
     _ = db_session
@@ -366,7 +366,7 @@ async def test_list_acmgseqvars_anon(db_session: AsyncSession, client: TestClien
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_no_acmgseqvars(
     db_session: AsyncSession,
@@ -388,7 +388,7 @@ async def test_list_no_acmgseqvars(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_get_acmgseqvar(
     db_session: AsyncSession,
@@ -415,7 +415,7 @@ async def test_get_acmgseqvar(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_acmgseqvar_superuser(
     db_session: AsyncSession,
@@ -442,7 +442,7 @@ async def test_get_acmgseqvar_superuser(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_acmgseqvar_anon(db_session: AsyncSession, client: TestClient):
     """Test getting a acmgseqvar as anonymous user."""
     _ = db_session
@@ -453,7 +453,7 @@ async def test_get_acmgseqvar_anon(db_session: AsyncSession, client: TestClient)
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_no_acmgseqvar(
     db_session: AsyncSession,
@@ -491,7 +491,7 @@ def acmgseqvar_update_data() -> dict[str, Any]:
     }
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_update_acmgseqvar(
     db_session: AsyncSession,
@@ -520,7 +520,7 @@ async def test_update_acmgseqvar(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_acmgseqvar_superuser(
     db_session: AsyncSession,
@@ -549,7 +549,7 @@ async def test_update_acmgseqvar_superuser(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_update_acmgseqvar_anon(
     db_session: AsyncSession, client: TestClient, acmgseqvar_update_data: dict[str, Any]
 ):
@@ -563,7 +563,7 @@ async def test_update_acmgseqvar_anon(
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_acmgseqvar_patch(
     db_session: AsyncSession,
@@ -592,7 +592,7 @@ async def test_update_acmgseqvar_patch(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_acmgseqvar_no_acmgseqvar(
     db_session: AsyncSession,
@@ -610,7 +610,7 @@ async def test_update_acmgseqvar_no_acmgseqvar(
     assert response.json() == {"detail": "ACMG Sequence Variant not found"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_acmgseqvar_invalid_enum(
     db_session: AsyncSession,
@@ -642,7 +642,7 @@ async def test_update_acmgseqvar_invalid_enum(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_delete_acmgseqvar_by_id(
     db_session: AsyncSession,
@@ -669,7 +669,7 @@ async def test_delete_acmgseqvar_by_id(
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_acmgseqvar_by_id_superuser(
     db_session: AsyncSession,
@@ -699,7 +699,7 @@ async def test_delete_acmgseqvar_by_id_superuser(
     assert content["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_acmgseqvar_by_id_anon(db_session: AsyncSession, client: TestClient):
     """Test deleting a acmgseqvar by id as anonymous user."""
     _ = db_session
@@ -710,7 +710,7 @@ async def test_delete_acmgseqvar_by_id_anon(db_session: AsyncSession, client: Te
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_acmgseqvar_by_invalid_id(
     db_session: AsyncSession,
@@ -731,7 +731,7 @@ async def test_delete_acmgseqvar_by_invalid_id(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_delete_acmgseqvar(
     db_session: AsyncSession,
@@ -763,7 +763,7 @@ async def test_delete_acmgseqvar(
     assert response.status_code == 404
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_acmgseqvar_superuser(
     db_session: AsyncSession,
@@ -795,7 +795,7 @@ async def test_delete_acmgseqvar_superuser(
     assert response.status_code == 404
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_acmgseqvar_anon(db_session: AsyncSession, client: TestClient):
     """Test deleting a acmgseqvar as anonymous user."""
     _ = db_session
@@ -806,7 +806,7 @@ async def test_delete_acmgseqvar_anon(db_session: AsyncSession, client: TestClie
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_acmgseqvar_no_acmgseqvar(
     db_session: AsyncSession,

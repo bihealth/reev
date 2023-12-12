@@ -18,7 +18,7 @@ def adminmessage_create(faker: typing.Any) -> AdminMessageCreate:
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_get_adminmessage(
     db_session: AsyncSession, adminmessage_create: AdminMessageCreate
 ):
@@ -33,7 +33,7 @@ async def test_create_get_adminmessage(
     assert adminmessage_postcreate.active_stop == stored_item.active_stop
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_update_adminmessage(
     db_session: AsyncSession, faker: typing.Any, adminmessage_create: AdminMessageCreate
 ) -> None:
@@ -50,7 +50,7 @@ async def test_create_update_adminmessage(
     assert adminmessage_postupdate.title == adminmessage_update.title
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_adminmessage(
     db_session: AsyncSession, adminmessage_create: AdminMessageCreate
 ):

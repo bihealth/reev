@@ -2,7 +2,6 @@ import asyncio
 from typing import AsyncGenerator, Iterator
 
 import pytest
-import pytest_asyncio
 from _pytest.monkeypatch import MonkeyPatch
 from fastapi.testclient import TestClient
 from sqlalchemy import StaticPool
@@ -21,6 +20,11 @@ from app.main import app
 from app.models.user import User
 
 
+@pytest.fixture
+def anyio_backend():
+    return "asyncio"
+
+
 @pytest.fixture()
 def db_engine() -> Iterator[AsyncEngine]:
     # setup engine with in-memory sqlite for testing
@@ -32,7 +36,7 @@ def db_engine() -> Iterator[AsyncEngine]:
     yield engine
 
 
-@pytest_asyncio.fixture()
+@pytest.fixture()
 async def db_session(
     db_engine: AsyncEngine, monkeypatch: MonkeyPatch
 ) -> AsyncGenerator[AsyncSession, None]:

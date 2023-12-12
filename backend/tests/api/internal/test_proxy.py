@@ -12,7 +12,7 @@ MOCKED_BACKEND_HOST = "mocked-backend"
 MOCKED_URL_TOKEN = "xXTeStXxx"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_proxy_annonars(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
     """Test proxying to annonars backend."""
     monkeypatch.setattr(settings, "BACKEND_PREFIX_ANNONARS", f"http://{MOCKED_BACKEND_HOST}")
@@ -27,7 +27,7 @@ async def test_proxy_annonars(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, c
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_proxy_mehari(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
     """Test proxying to mehari backend."""
     monkeypatch.setattr(settings, "BACKEND_PREFIX_MEHARI", f"http://{MOCKED_BACKEND_HOST}")
@@ -42,7 +42,7 @@ async def test_proxy_mehari(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, cli
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_proxy_viguno(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
     """Test proxying to viguno backend."""
     monkeypatch.setattr(settings, "BACKEND_PREFIX_VIGUNO", f"http://{MOCKED_BACKEND_HOST}")
@@ -57,7 +57,7 @@ async def test_proxy_viguno(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, cli
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_proxy_nginx(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
     """Test proxying to nginx backend."""
     monkeypatch.setattr(settings, "BACKEND_PREFIX_NGINX", f"http://{MOCKED_BACKEND_HOST}")
@@ -72,7 +72,7 @@ async def test_proxy_nginx(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, clie
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_proxy_dotty(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
     """Test proxying to dotty backend."""
     monkeypatch.setattr(settings, "BACKEND_PREFIX_DOTTY", f"http://{MOCKED_BACKEND_HOST}")
@@ -87,7 +87,7 @@ async def test_proxy_dotty(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, clie
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_proxy_cada_prio(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, client: TestClient):
     """Test proxying to cada-prio backend."""
     monkeypatch.setattr(settings, "BACKEND_PREFIX_CADA_PRIO", f"http://{MOCKED_BACKEND_HOST}")
@@ -102,7 +102,7 @@ async def test_proxy_cada_prio(monkeypatch: MonkeyPatch, httpx_mock: HTTPXMock, 
     assert response.text == "Mocked response"
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_invalid_proxy_route(client: TestClient):
     """Test invalid proxy route."""
     response = client.get("/internal/proxy/some-other-path")
