@@ -101,7 +101,7 @@ onMounted(async () => {
 
       <v-row class="align-center fill-height" justify="center">
         <v-col cols="6">
-          <v-card class="mb-5 ml-5" elevation="0" min-width="400" max-width="448" rounded="lg">
+          <v-card class="mb-5 ml-5" elevation="0" min-width="400" max-width="448">
             <v-card-item>
               <v-card-title>User Profile</v-card-title>
 
@@ -244,7 +244,6 @@ onMounted(async () => {
             elevation="0"
             min-width="400"
             max-width="448"
-            rounded="lg"
           >
             <v-card-item>
               <v-card-title>Send test Email</v-card-title>

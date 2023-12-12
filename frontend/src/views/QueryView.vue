@@ -93,7 +93,6 @@ onMounted(queryExecutionOnMounted)
                   v-for="{ data: geneInfo } in scoredGeneInfos"
                   :key="geneInfo.symbol"
                   class="bg-grey-lighten-2 pa-3 mb-2"
-                  rounded="lg"
                 >
                   <div>
                     <v-btn

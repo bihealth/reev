@@ -107,7 +107,6 @@ watch(
             elevation="8"
             min-width="400"
             max-width="448"
-            rounded="lg"
           >
             <v-card-item>
               <v-card-title>User Profile</v-card-title>

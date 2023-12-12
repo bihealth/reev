@@ -128,7 +128,7 @@ const vegaEncoding = {
     <v-skeleton-loader class="mt-3 mx-auto border" type="image,image" />
   </template>
 
-  <v-sheet v-else rounded="lg" class="bg-grey-lighten-3 pa-3 mt-3 ml-2 h-100">
+  <v-sheet v-else class="bg-grey-lighten-3 pa-3 mt-3 ml-2 h-100">
     <div class="text-subtitle-1 text-center">Impact / Frequency</div>
     <VegaPlot
       :data-values="vegaData"

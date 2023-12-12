@@ -165,7 +165,7 @@ const expanded = ref<string[]>([])
         </template>
 
         <template #no-data>
-          <v-sheet rounded="lg" class="pa-3 text-center font-italic border">
+          <v-sheet class="pa-3 text-center font-italic border">
             No overlapping ClinVar SV
           </v-sheet>
         </template>

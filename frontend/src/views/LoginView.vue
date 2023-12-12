@@ -65,7 +65,6 @@ onMounted(async () => {
         class="mx-auto pa-12 pb-8 mt-12"
         elevation="8"
         max-width="600"
-        rounded="lg"
         @dblclick="showLoginForm = !showLoginForm"
       >
         <div class="mb-8">

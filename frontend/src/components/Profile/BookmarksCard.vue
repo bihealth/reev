@@ -11,7 +11,7 @@ onMounted(() => bookmarksStore.loadBookmarks())
 </script>
 
 <template>
-  <v-card class="mx-auto pa-4 pb-8 mt-3" rounded="lg">
+  <v-card class="mx-auto pa-4 pb-8 mt-3">
     <v-card-title>Your bookmarks:</v-card-title>
     <v-card-text>
       <v-list v-if="bookmarksStore.bookmarks.length">
