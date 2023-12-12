@@ -81,9 +81,7 @@ const runSearch = async () => {
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn variant="text" class="start-search" @click.prevent="() => runSearch()">
-          Go
-        </v-btn>
+        <v-btn variant="text" class="start-search" @click.prevent="() => runSearch()"> Go </v-btn>
       </template>
     </v-text-field>
   </div>

@@ -184,7 +184,10 @@ const SECTIONS: Section[] = [
             </div>
 
             <div id="gene-conditions">
-              <ConditionsCard :gene-info="geneInfoStore.geneInfo" :hpo-terms="geneInfoStore.hpoTerms" />
+              <ConditionsCard
+                :gene-info="geneInfoStore.geneInfo"
+                :hpo-terms="geneInfoStore.hpoTerms"
+              />
             </div>
 
             <div id="gene-expression">

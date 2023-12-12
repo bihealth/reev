@@ -239,12 +239,7 @@ onMounted(async () => {
           </v-card>
         </v-col>
         <v-col cols="6">
-          <v-card
-            class="mx-auto pa-4 pb-8 mt-12"
-            elevation="0"
-            min-width="400"
-            max-width="448"
-          >
+          <v-card class="mx-auto pa-4 pb-8 mt-12" elevation="0" min-width="400" max-width="448">
             <v-card-item>
               <v-card-title>Send test Email</v-card-title>
               <v-card-subtitle>(Only superusers can do this)</v-card-subtitle>

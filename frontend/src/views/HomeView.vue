@@ -22,8 +22,6 @@ const router = useRouter()
 const searchTerm = ref<string>('')
 /** Component state; currently selected genome build. */
 const genomeBuild = ref<GenomeBuild>('grch37')
-/** Component state; whether or not to show case information. */
-const showCaseInformation = ref(false)
 
 /** Launches a search for one of the examples. */
 const performExampleSearch = (example: Example) => {

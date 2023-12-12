@@ -44,10 +44,10 @@ export default createVuetify({
       flat: true
     },
     VCard: {
-      rounded: "lg"
+      rounded: 'lg'
     },
     VSheet: {
-      rounded: "lg"
+      rounded: 'lg'
     }
   },
   theme: {
