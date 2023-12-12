@@ -18,6 +18,7 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
+import FooterDefault from '@/components/FooterDefault.vue'
 import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
 import { type Strucvar } from '@/lib/genomicVars'
 import { resolveStrucvar } from '@/lib/query'
@@ -254,148 +255,164 @@ const SECTIONS: { [key: string]: Section[] } = {
 <template>
   <v-app>
     <PageHeader />
-    <v-navigation-drawer :elevation="3" :permanent="true">
-      <div v-if="strucvarInfoStore.storeState == StoreState.Active">
-        <v-list v-model:opened="openedSection">
-          <BookmarkListItem :id="idForBookmark" type="strucvar" />
+    <v-main class="bg-grey-lighten-2">
+      <v-container>
+        <v-row>
+          <v-col cols="2">
+            <div v-if="strucvarInfoStore.storeState == StoreState.Active">
+              <v-list v-model:opened="openedSection" density="compact" rounded="lg">
+                <BookmarkListItem :id="idForBookmark" type="strucvar" />
 
-          <v-list-subheader> STRUCTURAL VARIANT </v-list-subheader>
-          <v-list-item
-            v-for="section in SECTIONS.TOP"
-            :id="`${section.id}-nav`"
-            :key="section.id"
-            density="compact"
-            prepend-icon="mdi-table-filter"
-            @click="router.push({ hash: `#${section.id}` })"
-          >
-            <v-list-item-title class="text-no-break">
-              {{ section.title }}
-            </v-list-item-title>
-          </v-list-item>
+                <v-list-item
+                  v-for="section in SECTIONS.TOP"
+                  :id="`${section.id}-nav`"
+                  :key="section.id"
+                  density="compact"
+                  prepend-icon="mdi-table-filter"
+                  @click="router.push({ hash: `#${section.id}` })"
+                >
+                  <v-list-item-title class="text-no-break">
+                    {{ section.title }}
+                  </v-list-item-title>
+                </v-list-item>
 
-          <v-list-group value="gene">
-            <template #activator="{ props: vProps }">
-              <v-list-item
-                :value="vProps"
-                prepend-icon="mdi-dna"
-                v-bind="vProps"
-                class="text-no-break"
+                <v-list-group value="gene">
+                  <template #activator="{ props: vProps }">
+                    <v-list-item
+                      :value="vProps"
+                      prepend-icon="mdi-dna"
+                      v-bind="vProps"
+                      class="text-no-break"
+                    >
+                      Gene
+                      <span class="font-italic">
+                        {{ selectedGeneInfo?.hgnc?.symbol || selectedGeneInfo?.hgnc?.agr }}
+                      </span>
+                    </v-list-item>
+                  </template>
+
+                  <v-list-item
+                    v-for="section in SECTIONS.GENE"
+                    :id="`${section.id}-nav`"
+                    :key="section.id"
+                    density="compact"
+                    @click="router.push({ hash: `#${section.id}` })"
+                  >
+                    <v-list-item-title class="text-no-break">
+                      {{ section.title }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list-group>
+
+                <v-list-group value="strucvar">
+                  <template #activator="{ props: vProps }">
+                    <v-list-item :value="vProps" prepend-icon="mdi-magnify-expand" v-bind="vProps">
+                      <v-list-item-title class="text-no-break"> Variant Details </v-list-item-title>
+                    </v-list-item>
+                  </template>
+
+                  <v-list-item
+                    v-for="section in SECTIONS.STRUCVAR"
+                    :id="`${section.id}-nav`"
+                    :key="section.id"
+                    density="compact"
+                    @click="router.push({ hash: `#${section.id}` })"
+                  >
+                    <v-list-item-title class="text-no-break">
+                      {{ section.title }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list-group>
+              </v-list>
+            </div>
+          </v-col>
+
+          <v-col cols="10">
+            <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
+              <div>
+                {{ errorMessage }}
+              </div>
+              <v-btn
+                :to="{ name: 'home' }"
+                prepend-icon="mdi-arrow-left-circle-outline"
+                class="mt-3"
+                variant="outlined"
+                color="white"
               >
-                Gene
-                <span class="font-italic">
-                  {{ selectedGeneInfo?.hgnc?.symbol || selectedGeneInfo?.hgnc?.agr }}
-                </span>
-              </v-list-item>
+                Back to home
+              </v-btn>
+            </v-alert>
+
+            <div id="gene-list">
+              <GeneListCard
+                v-model:selected-gene-hgnc-id="selectedGeneHgncId"
+                :current-strucvar-record="strucvarInfoStore.strucvar"
+                :csq="strucvarInfoStore.csq"
+                :genes-infos="strucvarInfoStore.genesInfos"
+                :store-state="strucvarInfoStore.storeState"
+              />
+            </div>
+
+            <template v-if="selectedGeneInfo">
+              <div id="gene-overview" class="mt-3">
+                <GeneOverviewCard :gene-info="selectedGeneInfo" />
+              </div>
+              <div id="gene-pathogenicity">
+                <GenePathogenicityCard :gene-info="selectedGeneInfo" />
+              </div>
+              <div id="gene-conditions">
+                <GeneConditionsCard :gene-info="selectedGeneInfo" :hpo-terms="[]" />
+              </div>
+              <div id="gene-expression">
+                <GeneExpressionCard
+                  :gene-symbol="selectedGeneInfo?.hgnc?.symbol"
+                  :expression-records="selectedGeneInfo?.gtex?.records"
+                  :ensembl-gene-id="selectedGeneInfo?.gtex?.ensemblGeneId"
+                />
+              </div>
+              <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
+                <GeneClinvarCard
+                  :gene-clinvar="geneInfoStore.geneClinvar"
+                  :transcripts="geneInfoStore.transcripts"
+                  :genome-build="strucvar?.genomeBuild"
+                  :gene-info="geneInfoStore?.geneInfo"
+                  :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
+                />
+              </div>
             </template>
 
-            <v-list-item
-              v-for="section in SECTIONS.GENE"
-              :id="`${section.id}-nav`"
-              :key="section.id"
-              density="compact"
-              @click="router.push({ hash: `#${section.id}` })"
-            >
-              <v-list-item-title class="text-no-break">
-                {{ section.title }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-group>
+            <div>
+              <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
 
-          <v-list-group value="strucvar">
-            <template #activator="{ props: vProps }">
-              <v-list-item :value="vProps" prepend-icon="mdi-magnify-expand" v-bind="vProps">
-                <v-list-item-title class="text-no-break"> Variant Details </v-list-item-title>
-              </v-list-item>
-            </template>
+              <div id="strucvar-clinvar">
+                <StrucvarClinvarCard :strucvar="strucvar" />
+              </div>
+              <div id="strucvar-tools">
+                <VariantToolsCard :strucvar="strucvar" />
+              </div>
+              <div id="strucvar-clinsig">
+                <ClinsigCard :strucvar="strucvar" @error-display="handleDisplayError" />
+              </div>
+              <div id="strucvar-genomebrowser">
+                <GenomeBrowser
+                  :genome-build="strucvar?.genomeBuild"
+                  :locus="svLocus(strucvar) as string"
+                />
+              </div>
+            </div>
+          </v-col>
+        </v-row>
+        <FooterDefault />
+      </v-container>
 
-            <v-list-item
-              v-for="section in SECTIONS.STRUCVAR"
-              :id="`${section.id}-nav`"
-              :key="section.id"
-              density="compact"
-              @click="router.push({ hash: `#${section.id}` })"
-            >
-              <v-list-item-title class="text-no-break">
-                {{ section.title }}
-              </v-list-item-title>
-            </v-list-item>
-          </v-list-group>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
-    <v-main class="my-3 mx-3">
-      <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
-        <div>
-          {{ errorMessage }}
-        </div>
-        <v-btn
-          :to="{ name: 'home' }"
-          prepend-icon="mdi-arrow-left-circle-outline"
-          class="mt-3"
-          variant="outlined"
-          color="white"
-        >
-          Back to home
-        </v-btn>
-      </v-alert>
+      <!-- VSnackbar for displaying errors -->
+      <v-snackbar v-model="errSnackbarShow" multi-line>
+        {{ errSnackbarMsg }}
 
-      <div id="gene-list">
-        <GeneListCard
-          v-model:selected-gene-hgnc-id="selectedGeneHgncId"
-          :current-strucvar-record="strucvarInfoStore.strucvar"
-          :csq="strucvarInfoStore.csq"
-          :genes-infos="strucvarInfoStore.genesInfos"
-          :store-state="strucvarInfoStore.storeState"
-        />
-      </div>
-
-      <template v-if="selectedGeneInfo">
-        <div id="gene-overview" class="mt-3">
-          <GeneOverviewCard :gene-info="selectedGeneInfo" />
-        </div>
-        <div id="gene-pathogenicity">
-          <GenePathogenicityCard :gene-info="selectedGeneInfo" />
-        </div>
-        <div id="gene-conditions">
-          <GeneConditionsCard :gene-info="selectedGeneInfo" :hpo-terms="[]" />
-        </div>
-        <div id="gene-expression">
-          <GeneExpressionCard
-            :gene-symbol="selectedGeneInfo?.hgnc?.symbol"
-            :expression-records="selectedGeneInfo?.gtex?.records"
-            :ensembl-gene-id="selectedGeneInfo?.gtex?.ensemblGeneId"
-          />
-        </div>
-        <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
-          <GeneClinvarCard
-            :gene-clinvar="geneInfoStore.geneClinvar"
-            :transcripts="geneInfoStore.transcripts"
-            :genome-build="strucvar?.genomeBuild"
-            :gene-info="geneInfoStore?.geneInfo"
-            :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
-          />
-        </div>
-      </template>
-
-      <div>
-        <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
-
-        <div id="strucvar-clinvar">
-          <StrucvarClinvarCard :strucvar="strucvar" />
-        </div>
-        <div id="strucvar-tools">
-          <VariantToolsCard :strucvar="strucvar" />
-        </div>
-        <div id="strucvar-clinsig">
-          <ClinsigCard :strucvar="strucvar" @error-display="handleDisplayError" />
-        </div>
-        <div id="strucvar-genomebrowser">
-          <GenomeBrowser
-            :genome-build="strucvar?.genomeBuild"
-            :locus="svLocus(strucvar) as string"
-          />
-        </div>
-      </div>
+        <template #actions>
+          <v-btn color="red" variant="text" @click="errSnackbarShow = false"> Close </v-btn>
+        </template>
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>

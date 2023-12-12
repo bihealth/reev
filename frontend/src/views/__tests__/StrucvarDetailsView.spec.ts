@@ -77,12 +77,9 @@ describe.concurrent('StrucvarDetailsView', async () => {
     expect(loading.exists()).toBe(true)
   })
 
-  it('renders SvDetails info-cards and navigation drawer', async () => {
+  it('renders SvDetails info-cards', async () => {
     const { wrapper } = await makeWrapper()
     await flushPromises()
-
-    const navigationDrawer = wrapper.find('.v-navigation-drawer')
-    expect(navigationDrawer.exists()).toBe(true)
 
     // Renders the anchors
     const geneList = wrapper.find('#gene-list')
