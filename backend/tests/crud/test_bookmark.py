@@ -17,7 +17,7 @@ def bookmark_create() -> BookmarkCreate:
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_get_bookmark(db_session: AsyncSession, bookmark_create: BookmarkCreate):
     """Test creating and retrieving a bookmark."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
@@ -28,14 +28,14 @@ async def test_create_get_bookmark(db_session: AsyncSession, bookmark_create: Bo
     assert bookmark_postcreate.obj_id == stored_item.obj_id
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_bookmark(db_session: AsyncSession, bookmark_create: BookmarkCreate):
     """Test deleting a bookmark."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
     await crud.bookmark.remove(session=db_session, id=bookmark_postcreate.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_multi_by_user(db_session: AsyncSession, bookmark_create: BookmarkCreate):
     """Test retrieving multiple bookmarks by user."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)
@@ -49,7 +49,7 @@ async def test_get_multi_by_user(db_session: AsyncSession, bookmark_create: Book
     assert bookmark_postcreate.obj_id == stored_items[0].obj_id
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_by_user_and_obj(db_session: AsyncSession, bookmark_create: BookmarkCreate):
     """Test retrieving a bookmark by user and object."""
     bookmark_postcreate = await crud.bookmark.create(session=db_session, obj_in=bookmark_create)

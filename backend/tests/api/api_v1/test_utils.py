@@ -6,7 +6,7 @@ from app.core.config import settings
 from app.models.user import User
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_test_email(
     db_session: AsyncSession,
@@ -23,7 +23,7 @@ async def test_test_email(
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_test_email_superuser(
     db_session: AsyncSession,
@@ -43,7 +43,7 @@ async def test_test_email_superuser(
     assert response.json() == {"msg": "Test email sent"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_test_email_anon(db_session: AsyncSession, client: TestClient):
     """Test sending an email as anonymous user."""
     _ = db_session

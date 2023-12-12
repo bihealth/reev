@@ -33,7 +33,7 @@ def acmgseqvar_create() -> AcmgSeqVarCreate:
     )
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_get_acmgseqvar(db_session: AsyncSession, acmgseqvar_create: AcmgSeqVarCreate):
     """Test creating and retrieving a acmgseqvar."""
     acmgseqvar_postcreate = await crud.acmgseqvar.create(
@@ -49,7 +49,7 @@ async def test_create_get_acmgseqvar(db_session: AsyncSession, acmgseqvar_create
     assert acmgseqvar_postcreate.acmg_rank == stored_item.acmg_rank
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_acmgseqvar(db_session: AsyncSession, acmgseqvar_create: AcmgSeqVarCreate):
     """Test deleting a acmgseqvar."""
     acmgseqvar_postcreate = await crud.acmgseqvar.create(
@@ -58,7 +58,7 @@ async def test_delete_acmgseqvar(db_session: AsyncSession, acmgseqvar_create: Ac
     await crud.acmgseqvar.remove(session=db_session, id=acmgseqvar_postcreate.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_multi_by_user(db_session: AsyncSession, acmgseqvar_create: AcmgSeqVarCreate):
     """Test get_multi_by_user."""
     acmgseqvar_postcreate = await crud.acmgseqvar.create(
@@ -74,7 +74,7 @@ async def test_get_multi_by_user(db_session: AsyncSession, acmgseqvar_create: Ac
     assert acmgseqvar_postcreate.acmg_rank == stored_item[0].acmg_rank
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_by_user(db_session: AsyncSession, acmgseqvar_create: AcmgSeqVarCreate):
     """Test get_by_user."""
     acmgseqvar_postcreate = await crud.acmgseqvar.create(

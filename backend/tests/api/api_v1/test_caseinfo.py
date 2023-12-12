@@ -12,7 +12,7 @@ from app.models.user import User
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_create_caseinfo(
     db_session: AsyncSession,
@@ -50,7 +50,7 @@ async def test_create_caseinfo(
     assert response.json()["family_segregation"] == True
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_caseinfo_superuser(
     db_session: AsyncSession,
@@ -69,7 +69,7 @@ async def test_create_caseinfo_superuser(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_create_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     """Test creating a caseinfo as anonymous user."""
     _ = db_session
@@ -81,7 +81,7 @@ async def test_create_caseinfo_anon(db_session: AsyncSession, client: TestClient
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_caseinfo_invalid_data(
     db_session: AsyncSession,
@@ -97,7 +97,7 @@ async def test_create_caseinfo_invalid_data(
     assert response.status_code == 422
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_caseinfo_invalid_enums(
     db_session: AsyncSession,
@@ -113,7 +113,7 @@ async def test_create_caseinfo_invalid_enums(
     assert response.status_code == 422
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_create_caseinfo_invalid_terms(
     db_session: AsyncSession,
@@ -134,7 +134,7 @@ async def test_create_caseinfo_invalid_terms(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_list_all_caseinfos(
     db_session: AsyncSession,
@@ -155,7 +155,7 @@ async def test_list_all_caseinfos(
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_all_caseinfos_superuser(
     db_session: AsyncSession,
@@ -178,7 +178,7 @@ async def test_list_all_caseinfos_superuser(
     assert response.json()[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_list_all_caseinfos_anon(db_session: AsyncSession, client: TestClient):
     """Test listing all caseinfos as anonymous user."""
     _ = db_session
@@ -187,7 +187,7 @@ async def test_list_all_caseinfos_anon(db_session: AsyncSession, client: TestCli
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_all_no_caseinfos(
     db_session: AsyncSession,
@@ -206,7 +206,7 @@ async def test_list_all_no_caseinfos(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_get_caseinfo_by_id(
     db_session: AsyncSession,
@@ -219,7 +219,7 @@ async def test_get_caseinfo_by_id(
     assert response.status_code == 401  # Forbidden access should be 403
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_caseinfo_by_id_superuser(
     db_session: AsyncSession,
@@ -243,7 +243,7 @@ async def test_get_caseinfo_by_id_superuser(
     assert response.json()["id"] == caseinfo_id
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_caseinfo_by_id_anon(db_session: AsyncSession, client: TestClient):
     """Test getting a caseinfo by id as anonymous user."""
     _ = db_session
@@ -253,7 +253,7 @@ async def test_get_caseinfo_by_id_anon(db_session: AsyncSession, client: TestCli
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_caseinfo_by_invalid_id(
     db_session: AsyncSession,
@@ -272,7 +272,7 @@ async def test_get_caseinfo_by_invalid_id(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_delete_caseinfo_by_id(
     db_session: AsyncSession,
@@ -300,7 +300,7 @@ async def test_delete_caseinfo_by_id(
     assert response.json()[0]["id"] == caseinfo_id
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_caseinfo_by_id_superuser(
     db_session: AsyncSession,
@@ -327,7 +327,7 @@ async def test_delete_caseinfo_by_id_superuser(
     assert response.status_code == 404  # Not Found
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_caseinfo_by_id_anon(db_session: AsyncSession, client: TestClient):
     """Test deleting a caseinfo by id as anonymous user."""
     _ = db_session
@@ -337,7 +337,7 @@ async def test_delete_caseinfo_by_id_anon(db_session: AsyncSession, client: Test
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_caseinfo_by_invalid_id(
     db_session: AsyncSession,
@@ -357,7 +357,7 @@ async def test_delete_caseinfo_by_invalid_id(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_list_caseinfo(
     db_session: AsyncSession,
@@ -380,7 +380,7 @@ async def test_list_caseinfo(
     assert response.json()[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_caseinfo_superuser(
     db_session: AsyncSession,
@@ -403,7 +403,7 @@ async def test_list_caseinfo_superuser(
     assert response.json()[0]["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_list_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     """Test listing caseinfos as anonymous user."""
     _ = db_session
@@ -412,7 +412,7 @@ async def test_list_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_list_no_caseinfo(
     db_session: AsyncSession,
@@ -430,7 +430,7 @@ async def test_list_no_caseinfo(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_get_caseinfo(
     db_session: AsyncSession,
@@ -453,7 +453,7 @@ async def test_get_caseinfo(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_caseinfo_superuser(
     db_session: AsyncSession,
@@ -476,7 +476,7 @@ async def test_get_caseinfo_superuser(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_get_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     """Test getting a caseinfo as anonymous user."""
     _ = db_session
@@ -485,7 +485,7 @@ async def test_get_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_get_no_caseinfo(
     db_session: AsyncSession,
@@ -503,7 +503,7 @@ async def test_get_no_caseinfo(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_update_caseinfo(
     db_session: AsyncSession,
@@ -529,7 +529,7 @@ async def test_update_caseinfo(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_caseinfo_superuser(
     db_session: AsyncSession,
@@ -555,7 +555,7 @@ async def test_update_caseinfo_superuser(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_update_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     """Test updating a caseinfo as anonymous user."""
     _ = db_session
@@ -567,7 +567,7 @@ async def test_update_caseinfo_anon(db_session: AsyncSession, client: TestClient
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_caseinfo_patch(
     db_session: AsyncSession,
@@ -593,7 +593,7 @@ async def test_update_caseinfo_patch(
     assert response.json()["user"] == str(test_user.id)
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_no_caseinfo(
     db_session: AsyncSession,
@@ -609,7 +609,7 @@ async def test_update_no_caseinfo(
     assert response.json() == {"detail": "Case Information not found"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_caseinfo_invalid_enum(
     db_session: AsyncSession,
@@ -632,7 +632,7 @@ async def test_update_caseinfo_invalid_enum(
     assert response.status_code == 422
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_update_caseinfo_invalid_terms(
     db_session: AsyncSession,
@@ -664,7 +664,7 @@ async def test_update_caseinfo_invalid_terms(
 # ------------------------------------------------------------------------------
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(False, False)], indirect=True)
 async def test_delete_caseinfo(
     db_session: AsyncSession,
@@ -689,7 +689,7 @@ async def test_delete_caseinfo(
     assert response.status_code == 404
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_caseinfo_superuser(
     db_session: AsyncSession,
@@ -714,7 +714,7 @@ async def test_delete_caseinfo_superuser(
     assert response.status_code == 404
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 async def test_delete_caseinfo_anon(db_session: AsyncSession, client: TestClient):
     """Test deleting a caseinfo as anonymous user."""
     _ = db_session
@@ -723,7 +723,7 @@ async def test_delete_caseinfo_anon(db_session: AsyncSession, client: TestClient
     assert response.json() == {"detail": "Unauthorized"}
 
 
-@pytest.mark.asyncio
+@pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(True, True)], indirect=True)
 async def test_delete_no_caseinfo(
     db_session: AsyncSession,
