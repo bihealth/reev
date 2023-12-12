@@ -14,12 +14,6 @@ const router = useRouter()
 /** Stores the email address for sending test email. */
 const testEmailTo = ref<string>('')
 
-/** Send out test email via API for superusers. */
-const sendTestEmail = async () => {
-  const utilsClient = new UtilsClient()
-  await utilsClient.sendTestEmail(testEmailTo.value)
-}
-
 const logout = async () => {
   const authClient = new AuthClient()
   await authClient.logout()
@@ -236,22 +230,6 @@ onMounted(async () => {
                 <v-btn id="login" prepend-icon="mdi-key-variant" @click="logout"> Logout </v-btn>
               </v-row>
             </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="6">
-          <v-card class="mx-auto pa-4 pb-8 mt-12" elevation="0" min-width="400" max-width="448">
-            <v-card-item>
-              <v-card-title>Send test Email</v-card-title>
-              <v-card-subtitle>(Only superusers can do this)</v-card-subtitle>
-
-              <v-card-item>
-                <v-text-field v-model="testEmailTo" label="Email Recipient" />
-
-                <v-btn block prepend-icon="mdi-send" class="mt-2" @click="sendTestEmail">
-                  Send Test Email
-                </v-btn>
-              </v-card-item>
-            </v-card-item>
           </v-card>
         </v-col>
       </v-row>

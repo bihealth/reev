@@ -3,6 +3,7 @@ import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 // Components
+import FooterDefault from '@/components/FooterDefault.vue'
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 const AboutView = defineAsyncComponent(() => import('@/components/StaticViews/AboutView.vue'))
 const ContactView = defineAsyncComponent(() => import('@/components/StaticViews/ContactView.vue'))
@@ -51,36 +52,41 @@ watch(
 </script>
 
 <template>
-  <PageHeader />
-  <v-container fill-height fluid>
-    <v-navigation-drawer class="overflow-auto" :elevation="3" :permanent="true">
-      <v-list>
-        <v-list-item
-          v-for="page in PAGES"
-          :key="page.title"
-          @click="updateCurrentStaticPage(page.id)"
-        >
-          <v-list-item-title>{{ page.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+  <v-app>
+    <PageHeader />
+    <v-main class="bg-grey-lighten-2">
+      <v-container>
+        <v-row>
+          <v-col cols="3" lg="2">
+            <v-list rounded="lg">
+              <v-list-item
+                v-for="page in PAGES"
+                :key="page.title"
+                @click="updateCurrentStaticPage(page.id)"
+              >
+                <v-list-item-title>{{ page.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-col>
 
-    <!-- Static Views -->
-
-    <div v-if="currentStaticPage === StaticPages.About">
-      <AboutView />
-    </div>
-
-    <div v-if="currentStaticPage === StaticPages.Contact">
-      <ContactView />
-    </div>
-
-    <div v-if="currentStaticPage === StaticPages.PrivacyPolicy">
-      <PrivacyView />
-    </div>
-
-    <div v-if="currentStaticPage === StaticPages.TermsOfUse">
-      <TermsView />
-    </div>
-  </v-container>
+          <v-col cols="9">
+          <!-- Static Views -->
+          <div v-if="currentStaticPage === StaticPages.About">
+            <AboutView />
+          </div>
+          <div v-if="currentStaticPage === StaticPages.Contact">
+            <ContactView />
+          </div>
+          <div v-if="currentStaticPage === StaticPages.PrivacyPolicy">
+            <PrivacyView />
+          </div>
+          <div v-if="currentStaticPage === StaticPages.TermsOfUse">
+            <TermsView />
+          </div>
+        </v-col>
+      </v-row>
+      <FooterDefault />
+    </v-container>
+  </v-main>
+  </v-app>
 </template>
