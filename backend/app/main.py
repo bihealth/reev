@@ -5,6 +5,7 @@ from contextlib import asynccontextmanager
 import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi_pagination import add_pagination
 from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import FileResponse
 
@@ -52,6 +53,9 @@ if settings.BACKEND_CORS_ORIGINS:
 app.include_router(internal_router, prefix=settings.INTERNAL_STR, include_in_schema=settings.DEBUG)
 # Add V1 API to router
 app.include_router(api_v1_router, prefix=settings.API_V1_STR)
+
+# Enable pagination with fastapi-pagination after all router includes.
+add_pagination(app)
 
 
 @asynccontextmanager

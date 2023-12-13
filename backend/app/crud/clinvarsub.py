@@ -1,5 +1,6 @@
-from typing import Any, Sequence
+from typing import Any, Tuple
 
+from sqlalchemy import Select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -16,7 +17,9 @@ from app.schemas.clinvarsub import (
 
 
 class CrudClinvarSubmittingOrg(CrudBase[SubmittingOrg, SubmittingOrgCreate, SubmittingOrgUpdate]):
-    pass
+    def query_by_owner(self, *, user_id: Any) -> Select[Tuple[SubmittingOrg]]:
+        """Return query filtered by owner (order by label)."""
+        return select(self.model).filter(self.model.owner == user_id).order_by(self.model.label)
 
 
 class CrudSubmissionThread(

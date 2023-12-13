@@ -3,14 +3,36 @@ import os
 import secrets
 from typing import Any
 
-from pydantic import AnyHttpUrl, EmailStr, HttpUrl, PostgresDsn, field_validator
+from pydantic import AnyHttpUrl, BaseModel, EmailStr, HttpUrl, PostgresDsn, field_validator
 from pydantic_core.core_schema import ValidationInfo
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from app.schemas import OAuth2ProviderConfig
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+class OAuth2ProviderBase(BaseModel):
+    """Base class for OAuth2 providers infos."""
+
+    #: Name of the identity provider.
+    name: str
+    #: Label to display to users
+    label: str
+
+
+class OAuth2ProviderPublic(OAuth2ProviderBase):
+    """Information exposed via API."""
+
+
+class OAuth2ProviderConfig(OAuth2ProviderBase):
+    """OAuth2 provider configuration with client secrets."""
+
+    #: Configuration URL of the provider.
+    config_url: HttpUrl
+    #: Client ID to use.
+    client_id: str
+    #: Client secret to use.
+    client_secret: str
 
 
 class Settings(BaseSettings):

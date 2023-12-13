@@ -10,12 +10,12 @@ from app.models.clinvarsub import ActivityKind, Presence, ResponseMessage, Statu
 
 
 class SubmittingOrgBase(BaseModel):
+    owner: UUID | None = None
     label: str
     clinvar_api_token: str
 
 
 class SubmittingOrgCreate(SubmittingOrgBase):
-    owner: UUID
     clinvar_api_token: str
 
 
