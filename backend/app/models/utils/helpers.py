@@ -2,6 +2,7 @@ import json
 from typing import Any, TypeVar
 
 import sqlalchemy as sa
+from fastapi.encoders import jsonable_encoder
 from pydantic.json import pydantic_encoder
 from sqlalchemy.dialects.postgresql import JSONB
 
@@ -19,22 +20,25 @@ def sa_model_to_dict(db_obj: ModelType) -> dict[str, Any]:
 
 class PydanticType(sa.types.TypeDecorator):
     """Pydantic type.
+
     SAVING:
+
     - Uses SQLAlchemy JSON type under the hood.
     - Acceps the pydantic model and converts it to a dict on save.
     - SQLAlchemy engine JSON-encodes the dict to a string.
+
     RETRIEVING:
+
     - Pulls the string from the database.
     - SQLAlchemy engine JSON-decodes the string to a dict.
     - Uses the dict to create a pydantic model.
+
+    source: https://roman.pt/posts/pydantic-in-sqlalchemy-fields/
     """
 
-    # If you work with PostgreSQL, you can consider using
-    # sqlalchemy.dialects.postgresql.JSONB instead of a
-    # generic sa.types.JSON
-    #
-    # Ref: https://www.postgresql.org/docs/13/datatype-json.html
-    impl = sa.types.JSON
+    # We implement ``load_dialect_impl`` to and use ``TypeEngine`` here as
+    # a placeholder as suggested io the SQLAlchemy docs.
+    impl = sa.types.TypeEngine
 
     def __init__(self, pydantic_type):
         super().__init__()
@@ -48,11 +52,7 @@ class PydanticType(sa.types.TypeDecorator):
             return dialect.type_descriptor(sa.JSON())
 
     def process_bind_param(self, value, dialect):
-        return value.dict() if value else None
-        # If you use FasAPI, you can replace the line above with their jsonable_encoder().
-        # E.g.,
-        # from fastapi.encoders import jsonable_encoder
-        # return jsonable_encoder(value) if value else None
+        return jsonable_encoder(value) if value else None
 
     def process_result_value(self, value, dialect):
         _ = dialect
