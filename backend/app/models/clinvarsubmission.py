@@ -9,18 +9,7 @@ import clinvar_api.client as clinvar_api_client
 import clinvar_api.models as clinvar_api_models
 import pydantic  # noqa
 from fastapi_users_db_sqlalchemy.generics import GUID
-from sqlalchemy import (
-    JSON,
-    Boolean,
-    Column,
-    Enum,
-    ForeignKey,
-    Index,
-    Integer,
-    String,
-    UniqueConstraint,
-    Uuid,
-)
+from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String, Uuid
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
@@ -195,11 +184,11 @@ class SubmissionActivity(Base):
         request_payload = Column(JSON, nullable=True)
         #: Timestamp of the request.
         request_timestamp = Column(
-            "request_timestamp", Column.DateTime, nullable=False, default=datetime.datetime.utcnow
+            "request_timestamp", DateTime, nullable=False, default=datetime.datetime.utcnow
         )
         #: Status of the response.
         response_status = Column(Enum(Status), nullable=True)
         #: Response payload.
         response_payload = Column(JSON, nullable=True)
         #: Timestamp of the response.
-        response_timestamp = Column("response_timestamp", Column.DateTime, nullable=True)
+        response_timestamp = Column("response_timestamp", DateTime, nullable=True)

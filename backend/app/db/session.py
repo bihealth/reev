@@ -1,11 +1,17 @@
+import json
 from typing import Any
 
+from pydantic.json import pydantic_encoder
 from sqlalchemy import create_engine
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 from app.core.config import settings
-from app.models.utils.helpers import json_serializer
+
+
+def json_serializer(*args, **kwargs) -> str:
+    return json.dumps(*args, default=pydantic_encoder, **kwargs)
+
 
 #: Async engine, to be used throughout the app.
 engine = create_async_engine(

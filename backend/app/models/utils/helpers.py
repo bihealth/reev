@@ -3,7 +3,6 @@ from typing import Any, TypeVar
 
 import sqlalchemy as sa
 from fastapi.encoders import jsonable_encoder
-from pydantic.json import pydantic_encoder
 from sqlalchemy.dialects.postgresql import JSONB
 
 from app.db.session import Base
@@ -57,7 +56,3 @@ class PydanticType(sa.types.TypeDecorator):
     def process_result_value(self, value, dialect):
         _ = dialect
         return self.pydantic_type.model_validate_obj(self.pydantic_type, value) if value else None
-
-
-def json_serializer(*args, **kwargs) -> str:
-    return json.dumps(*args, default=pydantic_encoder, **kwargs)
