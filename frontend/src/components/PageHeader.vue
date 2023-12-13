@@ -44,7 +44,7 @@ const genomeBuildRef = ref<GenomeBuild>('grch37')
 
 /** Helper function to between light and dark theme. */
 function toggleTheme() {
-  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+  theme.global.name.value = theme.global.current.value.dark ? 'customLightTheme' : 'dark'
 }
 </script>
 
