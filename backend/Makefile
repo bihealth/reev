@@ -63,6 +63,15 @@ lint-mypy:
 .PHONY: test
 test:
 	pipenv run pytest \
+		-n auto \
+		--cov-report term-missing \
+		--cov-report lcov \
+		--cov=app \
+		tests/
+
+.PHONY: test-ci
+test-ci:
+	pipenv run pytest \
 		--cov-report term-missing \
 		--cov-report lcov \
 		--cov=app \
@@ -72,7 +81,7 @@ test:
 ci: \
 	deps \
 	lint \
-	test
+	test-ci
 
 .PHONY: docs
 docs:

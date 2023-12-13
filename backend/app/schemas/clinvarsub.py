@@ -38,14 +38,14 @@ class SubmittingOrgInDb(SubmittingOrgInDbBase):
 
 
 class SubmissionThreadBase(BaseModel):
-    effective_scv: Optional[str]
-    effective_presence: Optional[Presence]
+    effective_scv: Optional[str] = None
+    effective_presence: Optional[Presence] = None
     desired_presence: Presence
     status: Status
 
 
 class SubmissionThreadCreate(SubmissionThreadBase):
-    clinvarsubmittingorg: UUID
+    submittingorg: UUID
     primary_variant_id: str
 
 
@@ -57,7 +57,7 @@ class SubmissionThreadInDbBase(SubmissionThreadBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    clinvarsubmittingorg: UUID
+    submittingorg: UUID
 
 
 class SubmissionThreadRead(SubmissionThreadInDbBase):
@@ -86,8 +86,7 @@ class SubmissionActivityBase(BaseModel):
 class SubmissionActivityCreate(SubmissionActivityBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: UUID
-    clinvarsub: UUID
+    submissionthread: UUID
 
 
 class SubmissionActivityUpdate(SubmissionActivityBase):

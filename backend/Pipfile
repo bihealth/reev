@@ -50,6 +50,7 @@ sphinx-autobuild = "*"
 sphinxcontrib-bibtex = "*"
 starlette = "*"
 types-passlib = "*"
+pytest-xdist = {extras = ["psutil"], version = "*"}
 
 [requires]
 python_version = "3.10"

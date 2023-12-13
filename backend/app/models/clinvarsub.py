@@ -86,12 +86,12 @@ class SubmissionThread(Base):
     __tablename__ = "clinvarsubthread"
 
     __table_args__ = (
-        Index("clinvarsubthread_org_variantid", "clinvarsubmittingorg", "primary_variant_id"),
+        Index("clinvarsubthread_org_variantid", "submittingorg", "primary_variant_id"),
     )
 
     if TYPE_CHECKING:  # pragma: no cover
         id: UUID_ID
-        clinvarsubmittingorg: UUID_ID
+        submittingorg: UUID_ID
         primary_variant_id: str
         effective_scv: Optional[str]
         effective_presence: Optional[Presence]
@@ -103,7 +103,7 @@ class SubmissionThread(Base):
             GUID, primary_key=True, index=True, default=uuid_module.uuid4
         )
         #: Submitting organisation.
-        clinvarsubmittingorg = Column(
+        submittingorg = Column(
             Uuid, ForeignKey("clinvarsubuserorg.id", ondelete="CASCADE"), nullable=False
         )
         #: Primary variant identifier, e.g., ``GRCh37-1-1000-A-G`` or
@@ -173,7 +173,7 @@ class SubmissionActivity(Base):
             GUID, primary_key=True, index=True, default=uuid_module.uuid4
         )
         #: Submission thread.
-        clinvarsubthread = Column(
+        submissionthread = Column(
             Uuid, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
         )
         #: Kind of the activity.
