@@ -185,7 +185,8 @@ onMounted(async () => {
             <div class="mt-3">
               <v-sheet
                 v-if="orcidAccount?.id"
-                class="px-3 py-3 my-2 bg-grey-lighten-2 cursor-pointer"
+                class="px-3 py-3 my-2 cursor-pointer"
+                color="background"
               >
                 <div>Your OrcID has been connected successfully.</div>
                 <div>
@@ -197,7 +198,8 @@ onMounted(async () => {
               </v-sheet>
               <v-sheet
                 v-else
-                class="px-3 py-3 my-2 bg-grey-lighten-2 cursor-pointer"
+                class="px-3 py-3 my-2 cursor-pointer"
+                color="background"
                 @click="handleProviderAssociation('orcid')"
               >
                 <img
@@ -212,7 +214,8 @@ onMounted(async () => {
               <div>
                 <v-sheet
                   v-if="lsriAccount?.id"
-                  class="px-3 py-3 mt-2 bg-grey-lighten-2 cursor-pointer"
+                  class="px-3 py-3 mt-2 cursor-pointer"
+                  color="background"
                 >
                   <div>Your LifeScience RI Account has been connected successfully.</div>
                   <div>
@@ -221,7 +224,8 @@ onMounted(async () => {
                 </v-sheet>
                 <v-sheet
                   v-else
-                  class="px-3 py-3 mt-2 bg-grey-lighten-2 cursor-pointer"
+                  class="px-3 py-3 mt-2 cursor-pointer"
+                  color="background"
                   @click="handleProviderAssociation('lifescience_ri')"
                 >
                   LifeScience RI not connected yet. Click here to connect.
