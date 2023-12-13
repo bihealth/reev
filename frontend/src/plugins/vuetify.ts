@@ -26,20 +26,6 @@ const customLightTheme: ThemeDefinition = {
   }
 }
 
-const customDarkTheme: ThemeDefinition = {
-  dark: true,
-  colors: {
-    primary: '#757ce8',
-    secondary: '#757575',
-    tertiary: '#002884',
-    background: '#eeeeee',
-    success: '#4caf50',
-    warning: '#ff9800',
-    error: '#f44336',
-    info: '#f0f2f5'
-  }
-}
-
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   blueprint: md3,

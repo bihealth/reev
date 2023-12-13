@@ -232,7 +232,7 @@ onMounted(async () => {
         </v-col>
         <v-spacer></v-spacer>
       </v-row>
-      <v-row class="mt-3 mb-3" justify="center">
+      <v-row class="mt-3 mb-0" justify="center">
         <v-btn id="login" prepend-icon="mdi-key-variant" @click="logout"> Logout </v-btn>
       </v-row>
     </v-card>
