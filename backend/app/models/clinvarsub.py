@@ -17,13 +17,13 @@ from app.db.session import Base
 UUID_ID = uuid_module.UUID
 
 
-class ClinvarSubmittingOrg(Base):
+class SubmittingOrg(Base):
     """Information about a submitting organisation for ClinVar.
 
     These are owned by a single user at the moment.
     """
 
-    __tablename__ = "clinvarsubmissionuserorg"
+    __tablename__ = "clinvarsubuserorg"
 
     if TYPE_CHECKING:  # pragma: no cover
         id: UUID_ID
@@ -83,12 +83,10 @@ class SubmissionThread(Base):
     only.
     """
 
-    __tablename__ = "clinvarsubmissionthread"
+    __tablename__ = "clinvarsubthread"
 
     __table_args__ = (
-        Index(
-            "clinvarsubmissionthread_org_variantid", "clinvarsubmittingorg", "primary_variant_id"
-        ),
+        Index("clinvarsubthread_org_variantid", "clinvarsubmittingorg", "primary_variant_id"),
     )
 
     if TYPE_CHECKING:  # pragma: no cover
@@ -106,7 +104,7 @@ class SubmissionThread(Base):
         )
         #: Submitting organisation.
         clinvarsubmittingorg = Column(
-            Uuid, ForeignKey("clinvarsubmissionuserorg.id", ondelete="CASCADE"), nullable=False
+            Uuid, ForeignKey("clinvarsubuserorg.id", ondelete="CASCADE"), nullable=False
         )
         #: Primary variant identifier, e.g., ``GRCh37-1-1000-A-G`` or
         #: ``DEL-GRCh38-1-1000-2000``.
@@ -152,11 +150,11 @@ class SubmissionActivity(Base):
     response.
     """
 
-    __tablename__ = "clinvarsubmissionactivity"
+    __tablename__ = "clinvarsubactivity"
 
     if TYPE_CHECKING:  # pragma: no cover
         id: UUID_ID
-        clinvarsubmissionactivity: UUID_ID
+        clinvarsubactivity: UUID_ID
         kind: ActivityKind
         status: Status
         request_payload: Union[clinvar_api_models.SubmissionContainer, None]
@@ -175,8 +173,8 @@ class SubmissionActivity(Base):
             GUID, primary_key=True, index=True, default=uuid_module.uuid4
         )
         #: Submission thread.
-        clinvarsubmissionthread = Column(
-            Uuid, ForeignKey("clinvarsubmissionthread.id", ondelete="CASCADE"), nullable=False
+        clinvarsubthread = Column(
+            Uuid, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
         )
         #: Kind of the activity.
         kind = Column(Enum(ActivityKind), nullable=False)

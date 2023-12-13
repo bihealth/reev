@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app import crud
 from app.schemas.caseinfo import (
     CaseInfoCreate,
-    CaseInfoUpdate,
     DiseaseTerm,
     Ethnicity,
     HpoTerm,
