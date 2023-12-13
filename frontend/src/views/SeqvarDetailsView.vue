@@ -223,7 +223,7 @@ const SECTIONS: { [key: string]: Section[] } = {
 <template>
   <v-app>
     <PageHeader />
-    <v-main class="bg-grey-lighten-2">
+    <v-main>
       <v-container>
         <v-row>
           <v-col cols="2">

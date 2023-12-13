@@ -34,7 +34,7 @@ const performExampleSearch = (example: Example) => {
 <template>
   <v-app>
     <PageHeader :hide-search-bar="true" />
-    <v-main class="bg-grey-lighten-2">
+    <v-main>
       <v-container>
         <v-row>
           <v-spacer></v-spacer>

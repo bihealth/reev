@@ -15,19 +15,6 @@ import 'vuetify/styles'
 const customLightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    primary: '#757ce8',
-    secondary: '#3f50b5',
-    tertiary: '#002884',
-    background: '#eeeeee'
-  }
-}
-
-const customDarkTheme: ThemeDefinition = {
-  dark: true,
-  colors: {
-    primary: '#757ce8',
-    secondary: '#3f50b5',
-    tertiary: '#002884',
     background: '#eeeeee'
   }
 }
@@ -51,10 +38,9 @@ export default createVuetify({
     }
   },
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: 'customLightTheme',
     themes: {
-      customLightTheme,
-      customDarkTheme
+      customLightTheme
     }
   }
 })
