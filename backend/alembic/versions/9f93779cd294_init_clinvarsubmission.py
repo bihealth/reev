@@ -45,7 +45,15 @@ def upgrade():
         ),
         sa.Column(
             "status",
-            sa.Enum("INITIAL", "SUBMITTED", "IN_PROGRESS", "COMPLETE", "FAILED", name="status"),
+            sa.Enum(
+                "INITIAL",
+                "SUBMITTED",
+                "IN_PROGRESS",
+                "WAITING",
+                "COMPLETE",
+                "FAILED",
+                name="status",
+            ),
             nullable=False,
         ),
         sa.ForeignKeyConstraint(

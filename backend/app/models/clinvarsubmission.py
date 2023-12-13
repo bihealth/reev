@@ -63,6 +63,8 @@ class Status(enum.Enum):
     SUBMITTED = "submitted"
     #: Submission is in progress, user has to wait.
     IN_PROGRESS = "in_progress"
+    #: Submission is awaiting processing by ClinVar, user has to wait.
+    WAITING = "waiting"
     #: Submission is complete, user can edit and create new entry.
     COMPLETE = "complete"
     #: Submission failed, user can edit and create new entry.
