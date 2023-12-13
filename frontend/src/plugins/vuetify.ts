@@ -18,7 +18,11 @@ const customLightTheme: ThemeDefinition = {
     primary: '#757ce8',
     secondary: '#3f50b5',
     tertiary: '#002884',
-    background: '#eeeeee'
+    background: '#eeeeee',
+    success: '#4caf50',
+    warning: '#ff9800',
+    error: '#f44336',
+    info: '#f0f2f5'
   }
 }
 
@@ -26,9 +30,13 @@ const customDarkTheme: ThemeDefinition = {
   dark: true,
   colors: {
     primary: '#757ce8',
-    secondary: '#3f50b5',
+    secondary: '#757575',
     tertiary: '#002884',
-    background: '#eeeeee'
+    background: '#eeeeee',
+    success: '#4caf50',
+    warning: '#ff9800',
+    error: '#f44336',
+    info: '#f0f2f5'
   }
 }
 

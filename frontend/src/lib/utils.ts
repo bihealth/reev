@@ -211,8 +211,8 @@ export const bookmarkTo = (bookmark: BookmarkData): RouteLocationRaw => {
   switch (bookmark.obj_type) {
     case 'gene':
       return {
-        name: 'gene',
-        params: { geneId: bookmark.obj_id }
+        name: 'gene-details',
+        params: { gene: bookmark.obj_id }
       }
     case 'seqvar':
       return {

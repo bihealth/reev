@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
-// Components
-import FooterDefault from '@/components/FooterDefault.vue'
 import { useUserStore } from '@/stores/user'
 
 const CaseCard = defineAsyncComponent(() => import('@/components/Profile/CaseCard.vue'))
@@ -24,6 +23,9 @@ const userStore = useUserStore()
 
 const router = useRouter()
 const route = useRoute()
+
+/** The global theme. */
+const theme = useTheme()
 
 enum ProfileSection {
   GeneralInfo = 'general-info',
@@ -68,12 +70,17 @@ watch(
     updateCurrentSection(route.hash.slice(1) as ProfileSection)
   }
 )
+
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
 </script>
 
 <template>
   <v-app>
     <PageHeader />
-    <v-main class="bg-grey-lighten-2">
+    <v-main :class="mainBackgroundColor">
       <v-container>
         <div v-if="userStore.currentUser">
           <v-row>

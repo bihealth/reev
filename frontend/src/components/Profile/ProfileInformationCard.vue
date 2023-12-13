@@ -4,15 +4,11 @@ import { useRouter } from 'vue-router'
 
 import { AuthClient } from '@/api/auth'
 import { UsersClient } from '@/api/users'
-import { UtilsClient } from '@/api/utils'
 import { type OAuthAccount, useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
 
 const router = useRouter()
-
-/** Stores the email address for sending test email. */
-const testEmailTo = ref<string>('')
 
 const logout = async () => {
   const authClient = new AuthClient()
@@ -153,27 +149,27 @@ onMounted(async () => {
               <div class="text-h7">Account Status</div>
 
               <v-checkbox
-                density="compact"
                 v-model="userStore.currentUser.is_verified"
+                density="compact"
                 label="verified email"
                 readonly
                 hide-details
               />
               <v-checkbox
-                density="compact"
                 v-if="userStore.currentUser.is_superuser"
                 v-model="userStore.currentUser.is_superuser"
+                density="compact"
                 label="is superuser"
                 readonly
                 hide-details
               />
               <v-checkbox
-                density="compact"
+                v-if="userStore.currentUser.is_superuser"
                 v-model="userStore.currentUser.is_active"
+                density="compact"
                 label="active user"
                 readonly
                 hide-details
-                v-if="userStore.currentUser.is_superuser"
               />
             </v-form>
           </v-sheet>
@@ -205,7 +201,7 @@ onMounted(async () => {
                 @click="handleProviderAssociation('orcid')"
               >
                 <img
-                  style="vertical-align: middle; width: 50px"
+                  style="vertical-align: middle; width: 40px"
                   src="@/assets/orcid.svg"
                   class="float-left pr-3"
                 />
@@ -235,6 +231,9 @@ onMounted(async () => {
           </v-sheet>
         </v-col>
         <v-spacer></v-spacer>
+      </v-row>
+      <v-row class="mt-3 mb-3" justify="center">
+        <v-btn id="login" prepend-icon="mdi-key-variant" @click="logout"> Logout </v-btn>
       </v-row>
     </v-card>
   </div>

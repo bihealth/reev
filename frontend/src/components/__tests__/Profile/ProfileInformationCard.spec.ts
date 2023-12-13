@@ -30,7 +30,6 @@ describe.concurrent('ProfileInformationCard', async () => {
 
     expect(wrapper.text()).toMatch('Profile Information')
     expect(wrapper.text()).toMatch('User Profile')
-    expect(wrapper.text()).toMatch('You are currently logged in')
 
     const vForm = wrapper.findComponent({ name: 'VForm' })
     expect(vForm.exists()).toBe(true)
