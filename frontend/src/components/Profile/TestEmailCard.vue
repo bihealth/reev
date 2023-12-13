@@ -4,6 +4,7 @@ Display Admin-Only "Send Test Email" Card
 
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import { UtilsClient } from '@/api/utils'
 
 /** Stores the email address for sending test email. */

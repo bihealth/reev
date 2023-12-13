@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 // Components
 import FooterDefault from '@/components/FooterDefault.vue'
+
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
 const AboutView = defineAsyncComponent(() => import('@/components/StaticViews/AboutView.vue'))
 const ContactView = defineAsyncComponent(() => import('@/components/StaticViews/ContactView.vue'))
@@ -70,23 +71,23 @@ watch(
           </v-col>
 
           <v-col cols="9">
-          <!-- Static Views -->
-          <div v-if="currentStaticPage === StaticPages.About">
-            <AboutView />
-          </div>
-          <div v-if="currentStaticPage === StaticPages.Contact">
-            <ContactView />
-          </div>
-          <div v-if="currentStaticPage === StaticPages.PrivacyPolicy">
-            <PrivacyView />
-          </div>
-          <div v-if="currentStaticPage === StaticPages.TermsOfUse">
-            <TermsView />
-          </div>
-        </v-col>
-      </v-row>
-      <FooterDefault />
-    </v-container>
-  </v-main>
+            <!-- Static Views -->
+            <div v-if="currentStaticPage === StaticPages.About">
+              <AboutView />
+            </div>
+            <div v-if="currentStaticPage === StaticPages.Contact">
+              <ContactView />
+            </div>
+            <div v-if="currentStaticPage === StaticPages.PrivacyPolicy">
+              <PrivacyView />
+            </div>
+            <div v-if="currentStaticPage === StaticPages.TermsOfUse">
+              <TermsView />
+            </div>
+          </v-col>
+        </v-row>
+        <FooterDefault />
+      </v-container>
+    </v-main>
   </v-app>
 </template>

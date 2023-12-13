@@ -2,10 +2,10 @@
 import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { useUserStore } from '@/stores/user'
-
 // Components
 import FooterDefault from '@/components/FooterDefault.vue'
+import { useUserStore } from '@/stores/user'
+
 const CaseCard = defineAsyncComponent(() => import('@/components/Profile/CaseCard.vue'))
 const BookmarksCard = defineAsyncComponent(() => import('@/components/Profile/BookmarksCard.vue'))
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
@@ -18,9 +18,7 @@ const SeqVarsACMGCard = defineAsyncComponent(
 const StrucVarsACMGCard = defineAsyncComponent(
   () => import('@/components/Profile/StrucVarsACMGCard.vue')
 )
-const TestEmailCard = defineAsyncComponent(
-  () => import('@/components/Profile/TestEmailCard.vue')
-)
+const TestEmailCard = defineAsyncComponent(() => import('@/components/Profile/TestEmailCard.vue'))
 
 const userStore = useUserStore()
 
@@ -35,7 +33,6 @@ enum ProfileSection {
   AcmgStrucvar = 'acmg-strucvar'
 }
 
-
 const PROFILE_PAGES = [
   { id: ProfileSection.GeneralInfo, title: 'Overview' },
   { id: ProfileSection.Bookmarks, title: 'Bookmarks' },
@@ -48,9 +45,7 @@ enum AdminSection {
   SendTestEmail = 'admin-email-test'
 }
 
-const ADMIN_PAGES = [
-  { id: AdminSection.SendTestEmail, title: 'Test Email' },
-]
+const ADMIN_PAGES = [{ id: AdminSection.SendTestEmail, title: 'Test Email' }]
 
 const currentSection = ref<ProfileSection | AdminSection>(ProfileSection.GeneralInfo)
 
@@ -109,22 +104,40 @@ watch(
               </v-list>
             </v-col>
             <v-col cols="10">
-              <div v-if="currentSection === ProfileSection.GeneralInfo" :id="ProfileSection.GeneralInfo">
+              <div
+                v-if="currentSection === ProfileSection.GeneralInfo"
+                :id="ProfileSection.GeneralInfo"
+              >
                 <ProfileInformationCard />
               </div>
-              <div v-if="currentSection === ProfileSection.Bookmarks" :id="ProfileSection.Bookmarks">
+              <div
+                v-if="currentSection === ProfileSection.Bookmarks"
+                :id="ProfileSection.Bookmarks"
+              >
                 <BookmarksCard />
               </div>
-              <div v-if="currentSection === ProfileSection.CaseInformation" :id="ProfileSection.CaseInformation">
+              <div
+                v-if="currentSection === ProfileSection.CaseInformation"
+                :id="ProfileSection.CaseInformation"
+              >
                 <CaseCard />
               </div>
-              <div v-if="currentSection === ProfileSection.AcmgSeqvar" :id="ProfileSection.AcmgSeqvar">
+              <div
+                v-if="currentSection === ProfileSection.AcmgSeqvar"
+                :id="ProfileSection.AcmgSeqvar"
+              >
                 <SeqVarsACMGCard />
               </div>
-              <div v-if="currentSection === ProfileSection.AcmgStrucvar" :id="ProfileSection.AcmgStrucvar">
+              <div
+                v-if="currentSection === ProfileSection.AcmgStrucvar"
+                :id="ProfileSection.AcmgStrucvar"
+              >
                 <StrucVarsACMGCard />
               </div>
-              <div v-if="currentSection === AdminSection.SendTestEmail" :id="AdminSection.SendTestEmail">
+              <div
+                v-if="currentSection === AdminSection.SendTestEmail"
+                :id="AdminSection.SendTestEmail"
+              >
                 <TestEmailCard />
               </div>
             </v-col>
