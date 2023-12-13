@@ -15,8 +15,9 @@ of this resolution.
 -->
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
@@ -54,6 +55,9 @@ const props = defineProps<Props>()
 const router = useRouter()
 /** The global Route object. */
 const route = useRoute()
+
+/** The global theme. */
+const theme = useTheme()
 
 /** Detailed information about the currently selected gene. */
 const geneInfoStore = useGeneInfoStore()
@@ -93,6 +97,11 @@ const loadDataToStore = async () => {
   await scrollToSection(route)
 }
 
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
+
 // When the component is mounted or the gene symbol or genome release are
 // changed through the router then we need to fetch the gene information
 // from the backend through the store.
@@ -124,7 +133,7 @@ const SECTIONS: Section[] = [
 <template>
   <v-app>
     <PageHeader />
-    <v-main>
+    <v-main :class="mainBackgroundColor">
       <v-container>
         <v-row>
           <v-col cols="2">

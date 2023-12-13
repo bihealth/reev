@@ -16,6 +16,7 @@ may fail in which case the view will display an error.
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
@@ -88,6 +89,9 @@ const router = useRouter()
 /** The global Route object. */
 const route = useRoute()
 
+/** The global theme. */
+const theme = useTheme()
+
 /** Information about the sequence variant, used to fetch information on load. */
 const seqvarInfoStore = useSeqVarInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
@@ -125,6 +129,11 @@ const handleDisplayError = async (msg: string) => {
   errSnackbarMsg.value = msg
   errSnackbarShow.value = true
 }
+
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
 
 /**
  * Helper that reads the props and initializes the stores.
@@ -223,7 +232,7 @@ const SECTIONS: { [key: string]: Section[] } = {
 <template>
   <v-app>
     <PageHeader />
-    <v-main>
+    <v-main :class="mainBackgroundColor">
       <v-container>
         <v-row>
           <v-col cols="2">

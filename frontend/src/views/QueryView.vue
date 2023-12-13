@@ -5,8 +5,9 @@ The home page and search bars redirect here when the user executes the query.
 -->
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -16,6 +17,9 @@ import { NotOneGeneInfo, type ScoredGeneInfo, performQuery } from '@/lib/query'
 
 /** The global Router instance. */
 const router = useRouter()
+
+/** The global theme. */
+const theme = useTheme()
 
 /** Component state; Warning or error message to display to user. */
 const errorMessage = ref<string>('')
@@ -51,6 +55,11 @@ const queryExecutionOnMounted = async () => {
   }
 }
 
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
+
 // Execute the query resolution logic after the component has been mounted.
 onMounted(queryExecutionOnMounted)
 </script>
@@ -58,7 +67,7 @@ onMounted(queryExecutionOnMounted)
 <template>
   <v-app>
     <PageHeader :hide-search-bar="true" />
-    <v-main>
+    <v-main :class="mainBackgroundColor">
       <v-container>
         <div>
           <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
