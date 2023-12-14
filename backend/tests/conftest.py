@@ -1,4 +1,7 @@
 import asyncio
+import datetime
+import logging
+import os
 from typing import AsyncGenerator, Iterator
 
 import pytest
@@ -12,12 +15,29 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from app import crud
 from app.api import deps
 from app.api.deps import current_active_superuser, current_active_user
 from app.db import init_db, session
 from app.db.base import Base
 from app.main import app
+from app.models.clinvarsub import (
+    ActivityKind,
+    Presence,
+    Status,
+    SubmissionActivity,
+    SubmissionThread,
+    SubmittingOrg,
+)
 from app.models.user import User
+from app.schemas.clinvarsub import (
+    SubmissionActivityCreate,
+    SubmissionThreadCreate,
+    SubmittingOrgCreate,
+)
+
+if os.environ.get("SQLALCHEMY_DEBUG", "0") == "1":
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
 @pytest.fixture
@@ -140,3 +160,62 @@ def client_user(test_user: User, request):
     app.dependency_overrides.pop(current_active_user, None)
     if superuser:
         app.dependency_overrides.pop(current_active_superuser, None)
+
+
+@pytest.fixture
+def submittingorg_create(test_user: User) -> SubmittingOrgCreate:
+    """Create a new schema object only, owned by `test_user`."""
+    return SubmittingOrgCreate(label="test", clinvar_api_token="le-token", owner=test_user.id)
+
+
+@pytest.fixture
+async def submittingorg(
+    db_session: AsyncSession, submittingorg_create: SubmittingOrgCreate
+) -> SubmittingOrg:
+    """Create a new database record (tests use isolated databases)."""
+    res = await crud.submittingorg.create(session=db_session, obj_in=submittingorg_create)
+    return res
+
+
+@pytest.fixture
+def submissionthread_create(submittingorg: SubmittingOrg) -> SubmissionThreadCreate:
+    """Create a new schema object only."""
+    return SubmissionThreadCreate(
+        desired_presence=Presence.PRESENT,
+        status=Status.INITIAL,
+        submittingorg=submittingorg.id,
+        primary_variant_id="grch37-1-1000-A-G",
+    )
+
+
+@pytest.fixture
+async def submissionthread(
+    db_session: AsyncSession, submissionthread_create: SubmissionThreadCreate
+) -> SubmissionThread:
+    """Create a new schema object only."""
+    return await crud.submissionthread.create(session=db_session, obj_in=submissionthread_create)
+
+
+@pytest.fixture
+def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
+    """Create a new schema object only."""
+    return SubmissionActivityCreate(
+        submissionthread=submissionthread.id,
+        kind=ActivityKind.CREATE,
+        status=Status.INITIAL,
+        request_payload=None,
+        request_timestamp=datetime.datetime.utcnow(),
+        response_status=None,
+        response_payload=None,
+        response_timestamp=None,
+    )
+
+
+@pytest.fixture
+async def submissionactivity(
+    db_session: AsyncSession, submissionactivity_create: SubmissionActivityCreate
+) -> SubmissionActivity:
+    """Create a new schema object only."""
+    return await crud.submissionactivity.create(
+        session=db_session, obj_in=submissionactivity_create
+    )

@@ -19,6 +19,10 @@ if settings.DEBUG:
 
 logger = logging.getLogger(__name__)
 
+# Suppress logging to suppress "(trapped) error reading bcrypt version"
+# warning in passlib.
+logging.getLogger("passlib.handlers.bcrypt").setLevel(logging.ERROR)
+
 if settings.SENTRY_DSN:  # pragma: no cover
     sentry_sdk.init(
         dsn=str(settings.SENTRY_DSN),

@@ -1,5 +1,8 @@
 """Endpoints for the ClinVar submission API."""
 
+from typing import Optional
+from uuid import UUID
+
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_pagination.cursor import CursorPage
 from fastapi_pagination.ext.sqlalchemy import paginate
@@ -118,5 +121,132 @@ async def delete_submittingorg(
 
 
 # -- SubmissionThread ---------------------------------------------------------
+
+
+@router.get("/submissionthreads", response_model=CursorPage[schemas.SubmissionThreadRead])
+async def list_submissionthreads(
+    primary_variant_id: Optional[str] = None,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    List submitting orgs of current user in paginated fashion.
+
+    :return: Paginated list of results.
+    """
+    query = crud.submissionthread.query_by_user(
+        user_id=user.id, primary_variant_id=primary_variant_id
+    )
+    return await paginate(db, query)
+
+
+@router.post("/submissionthreads", response_model=schemas.SubmissionThreadRead)
+async def create_submissionthread(
+    submissionthread: schemas.SubmissionThreadCreate,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    Create a new submitting org.
+
+    :param submissionthread: Data of submitting org to create.
+    :return: Created submitting org.
+    """
+    submittingorg = await crud.submittingorg.get(db, id=submissionthread.submittingorg)
+    if not submittingorg:
+        raise HTTPException(status_code=404, detail="submitting org not found")
+    elif submittingorg.owner != user.id:
+        raise HTTPException(status_code=403, detail="user not owner of submitting org")
+    elif await crud.submissionthread.get_by_primaryvariantid(
+        db,
+        submittingorg_id=submissionthread.submittingorg,
+        primary_variant_id=submissionthread.primary_variant_id,
+    ):
+        raise HTTPException(status_code=409, detail="submission thread already exists")
+    else:
+        return await crud.submissionthread.create(db, obj_in=submissionthread)
+
+
+@router.get(
+    "/submisisonthreads/{submissionthread_id}",
+    response_model=schemas.SubmissionThreadRead,
+)
+async def get_submissionthread_by_id(
+    submissionthread_id: str,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    Retrieve submissionthread (current user must be owner).
+
+    :param id: Submission thread UUID.
+    :return: Submission tread data.
+    """
+    submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
+    if not submissionthread_db:
+        raise HTTPException(status_code=404, detail="submission thread not found")
+    submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg)
+    if not submittingorg:
+        raise HTTPException(status_code=404, detail="submitting org not found")
+    elif submittingorg.owner != user.id:
+        raise HTTPException(status_code=403, detail="user not owner of submitting org")
+    else:
+        return submissionthread_db
+
+
+@router.put(
+    "/submissionthreads/{submissionthread_id}",
+    response_model=schemas.SubmissionThreadRead,
+)
+async def update_submissionthread(
+    submissionthread_id: str,
+    submissionthread: schemas.SubmissionThreadUpdate,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    Update submitting org (current user must be owner).
+
+    :return: Paginated list of results.
+    """
+    submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
+    if not submissionthread_db:
+        raise HTTPException(status_code=404, detail="submission thread not found")
+    submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg)
+    if not submittingorg:
+        raise HTTPException(status_code=404, detail="submitting org not found")
+    elif submittingorg.owner != user.id:
+        raise HTTPException(status_code=403, detail="user not owner of submitting org")
+    else:
+        return await crud.submissionthread.update(
+            db, db_obj=submissionthread_db, obj_in=submissionthread
+        )
+
+
+@router.delete(
+    "/submissionthreads/{submissionthread_id}",
+    response_model=schemas.SubmissionThreadRead,
+)
+async def delete_submissionthread(
+    submissionthread_id: str,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    Update submitting org (current user must be owner).
+
+    :return: Paginated list of results.
+    """
+    submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
+    if not submissionthread_db:
+        raise HTTPException(status_code=404, detail="submission thread not found")
+    submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg)
+    if not submittingorg:
+        raise HTTPException(status_code=404, detail="submitting org not found")
+    elif submittingorg.owner != user.id:
+        raise HTTPException(status_code=403, detail="user not owner of submitting org")
+    else:
+        return await crud.submittingorg.remove(db, id=submissionthread_id)
+
 
 # -- SubmissionActivity -------------------------------------------------------

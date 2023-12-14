@@ -1,12 +1,11 @@
-import datetime
-import uuid
+import logging
 
 import pytest
 from faker.providers.lorem import Provider as LoremProvider
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
-from app.models.clinvarsub import ActivityKind, Presence, Status, SubmissionThread, SubmittingOrg
+from app.models.clinvarsub import Presence, Status
 from app.schemas.clinvarsub import (
     SubmissionActivityCreate,
     SubmissionThreadCreate,
@@ -14,20 +13,6 @@ from app.schemas.clinvarsub import (
     SubmittingOrgCreate,
     SubmittingOrgUpdate,
 )
-
-
-@pytest.fixture
-def submittingorg_create() -> SubmittingOrgCreate:
-    """Create a new schema object only."""
-    return SubmittingOrgCreate(label="test", clinvar_api_token="le-token", owner=uuid.uuid4())
-
-
-@pytest.fixture
-async def submittingorg(
-    db_session: AsyncSession, submittingorg_create: SubmittingOrgCreate
-) -> SubmittingOrg:
-    """Create a new database record (tests use isolated databases)."""
-    return await crud.submittingorg.create(session=db_session, obj_in=submittingorg_create)
 
 
 @pytest.mark.anyio
@@ -72,25 +57,6 @@ async def test_delete_submittingorg(
         session=db_session, obj_in=submittingorg_create
     )
     await crud.submittingorg.remove(session=db_session, id=submittingorg_postcreate.id)
-
-
-@pytest.fixture
-def submissionthread_create(submittingorg: SubmittingOrg) -> SubmissionThreadCreate:
-    """Create a new schema object only."""
-    return SubmissionThreadCreate(
-        desired_presence=Presence.PRESENT,
-        status=Status.INITIAL,
-        submittingorg=submittingorg.id,
-        primary_variant_id="grch37-1-1000-A-G",
-    )
-
-
-@pytest.fixture
-async def submissionthread(
-    db_session: AsyncSession, submissionthread_create: SubmissionThreadCreate
-) -> SubmissionThread:
-    """Create a new schema object only."""
-    return await crud.submissionthread.create(session=db_session, obj_in=submissionthread_create)
 
 
 @pytest.mark.anyio
@@ -150,21 +116,6 @@ async def test_delete_submissionthread(
         session=db_session, obj_in=submissionthread_create
     )
     await crud.submissionthread.remove(session=db_session, id=submissionthread_postcreate.id)
-
-
-@pytest.fixture
-def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
-    """Create a new schema object only."""
-    return SubmissionActivityCreate(
-        submissionthread=submissionthread.id,
-        kind=ActivityKind.CREATE,
-        status=Status.INITIAL,
-        request_payload=None,
-        request_timestamp=datetime.datetime.utcnow(),
-        response_status=None,
-        response_payload=None,
-        response_timestamp=None,
-    )
 
 
 @pytest.mark.anyio

@@ -15,10 +15,14 @@ class SubmittingOrgBase(BaseModel):
 
 
 class SubmittingOrgCreate(SubmittingOrgBase):
+    model_config = ConfigDict(from_attributes=True)
+
     clinvar_api_token: str
 
 
 class SubmittingOrgUpdate(SubmittingOrgBase):
+    model_config = ConfigDict(from_attributes=True)
+
     clinvar_api_token: str | None = None
 
 
@@ -44,11 +48,15 @@ class SubmissionThreadBase(BaseModel):
 
 
 class SubmissionThreadCreate(SubmissionThreadBase):
+    model_config = ConfigDict(from_attributes=True)
+
     submittingorg: UUID
     primary_variant_id: str
 
 
 class SubmissionThreadUpdate(SubmissionThreadBase):
+    model_config = ConfigDict(from_attributes=True)
+
     pass
 
 
@@ -89,7 +97,7 @@ class SubmissionActivityCreate(SubmissionActivityBase):
 
 
 class SubmissionActivityUpdate(SubmissionActivityBase):
-    pass
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SubmissionActivityInDbBase(SubmissionActivityBase):

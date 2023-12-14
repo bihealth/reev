@@ -9,7 +9,7 @@ import clinvar_api.client as clinvar_api_client
 import clinvar_api.models as clinvar_api_models
 import pydantic  # noqa
 from fastapi_users_db_sqlalchemy.generics import GUID
-from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String, Uuid
+from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
@@ -25,22 +25,18 @@ class SubmittingOrg(Base):
 
     __tablename__ = "clinvarsubuserorg"
 
-    if TYPE_CHECKING:  # pragma: no cover
-        id: UUID_ID
-        owner: UUID_ID
-        label: str
-        clinvar_api_token: str
-    else:
-        #: UUID of the submitting organisation.
-        id: Mapped[UUID_ID] = mapped_column(
-            GUID, primary_key=True, index=True, default=uuid_module.uuid4
-        )
-        #: User who owns the submitting organisation.
-        owner = Column(Uuid, ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
-        #: Label of the submitting organisation.
-        label = Column(String(255), nullable=False)
-        #: ClinVar API token.
-        clinvar_api_token = Column(String(255), nullable=False)
+    #: UUID of the submitting organisation.
+    id: Mapped[UUID_ID] = mapped_column(
+        GUID, primary_key=True, index=True, default=uuid_module.uuid4
+    )
+    #: User who owns the submitting organisation.
+    owner: Mapped[UUID_ID] = mapped_column(
+        GUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+    )
+    #: Label of the submitting organisation.
+    label = Column(String(255), nullable=False)
+    #: ClinVar API token.
+    clinvar_api_token = Column(String(255), nullable=False)
 
 
 @enum.unique
@@ -86,37 +82,29 @@ class SubmissionThread(Base):
     __tablename__ = "clinvarsubthread"
 
     __table_args__ = (
-        Index("clinvarsubthread_org_variantid", "submittingorg", "primary_variant_id"),
+        Index("clinvarsubthread_variantid", "primary_variant_id"),
+        UniqueConstraint("submittingorg", "primary_variant_id"),
     )
 
-    if TYPE_CHECKING:  # pragma: no cover
-        id: UUID_ID
-        submittingorg: UUID_ID
-        primary_variant_id: str
-        effective_scv: Optional[str]
-        effective_presence: Optional[Presence]
-        desired_presence: Presence
-        status: Status
-    else:
-        #: UUID of the submission thread.
-        id: Mapped[UUID_ID] = mapped_column(
-            GUID, primary_key=True, index=True, default=uuid_module.uuid4
-        )
-        #: Submitting organisation.
-        submittingorg = Column(
-            Uuid, ForeignKey("clinvarsubuserorg.id", ondelete="CASCADE"), nullable=False
-        )
-        #: Primary variant identifier, e.g., ``GRCh37-1-1000-A-G`` or
-        #: ``DEL-GRCh38-1-1000-2000``.
-        primary_variant_id = Column(String(1024), nullable=False)
-        #: Effective SCV identifier.
-        effective_scv = Column(String(32), nullable=True)
-        #: Effective presence.
-        effective_presence = Column(Enum(Presence), nullable=True)
-        #: Desired presence.
-        desired_presence = Column(Enum(Presence), nullable=False)
-        #: Status of the submission.
-        status = Column(Enum(Status), nullable=False)
+    #: UUID of the submission thread.
+    id: Mapped[UUID_ID] = mapped_column(
+        GUID, primary_key=True, index=True, default=uuid_module.uuid4
+    )
+    #: Submitting organisation.
+    submittingorg: Mapped[UUID_ID] = mapped_column(
+        GUID, ForeignKey("clinvarsubuserorg.id", ondelete="CASCADE"), nullable=False
+    )
+    #: Primary variant identifier, e.g., ``GRCh37-1-1000-A-G`` or
+    #: ``DEL-GRCh38-1-1000-2000``.
+    primary_variant_id = Column(String(1024), nullable=False)
+    #: Effective SCV identifier.
+    effective_scv = Column(String(32), nullable=True)
+    #: Effective presence.
+    effective_presence: Column[Presence] = Column(Enum(Presence), nullable=True)
+    #: Desired presence.
+    desired_presence: Column[Presence] = Column(Enum(Presence), nullable=False)
+    #: Status of the submission.
+    status: Column[Status] = Column(Enum(Status), nullable=False)
 
 
 @enum.unique
@@ -152,43 +140,27 @@ class SubmissionActivity(Base):
 
     __tablename__ = "clinvarsubactivity"
 
-    if TYPE_CHECKING:  # pragma: no cover
-        id: UUID_ID
-        clinvarsubactivity: UUID_ID
-        kind: ActivityKind
-        status: Status
-        request_payload: Union[clinvar_api_models.SubmissionContainer, None]
-        request_timestamp: datetime.datetime
-        response_status: Optional[Status]
-        response_payload: Union[
-            ResponseMessage,
-            clinvar_api_models.Created,
-            clinvar_api_client.RetrieveStatusResult,
-            None,
-        ]
-        response_timestamp: Optional[datetime.datetime]
-    else:
-        #: UUID of the submission activity.
-        id: Mapped[UUID_ID] = mapped_column(
-            GUID, primary_key=True, index=True, default=uuid_module.uuid4
-        )
-        #: Submission thread.
-        submissionthread = Column(
-            Uuid, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
-        )
-        #: Kind of the activity.
-        kind = Column(Enum(ActivityKind), nullable=False)
-        #: Status of the activity.
-        status = Column(Enum(Status), nullable=False)
-        #: Request payload.
-        request_payload = Column(JSON, nullable=True)
-        #: Timestamp of the request.
-        request_timestamp = Column(
-            "request_timestamp", DateTime, nullable=False, default=datetime.datetime.utcnow
-        )
-        #: Status of the response.
-        response_status = Column(Enum(Status), nullable=True)
-        #: Response payload.
-        response_payload = Column(JSON, nullable=True)
-        #: Timestamp of the response.
-        response_timestamp = Column("response_timestamp", DateTime, nullable=True)
+    #: UUID of the submission activity.
+    id: Mapped[UUID_ID] = mapped_column(
+        GUID, primary_key=True, index=True, default=uuid_module.uuid4
+    )
+    #: Submission thread.
+    submissionthread: Mapped[UUID_ID] = mapped_column(
+        GUID, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
+    )
+    #: Kind of the activity.
+    kind: Column[ActivityKind] = Column(Enum(ActivityKind), nullable=False)
+    #: Status of the activity.
+    status: Column[Status] = Column(Enum(Status), nullable=False)
+    #: Request payload.
+    request_payload = Column(JSON, nullable=True)
+    #: Timestamp of the request.
+    request_timestamp = Column(
+        "request_timestamp", DateTime, nullable=False, default=datetime.datetime.utcnow
+    )
+    #: Status of the response.
+    response_status: Column[Status] = Column(Enum(Status), nullable=True)
+    #: Response payload.
+    response_payload = Column(JSON, nullable=True)
+    #: Timestamp of the response.
+    response_timestamp = Column("response_timestamp", DateTime, nullable=True)
