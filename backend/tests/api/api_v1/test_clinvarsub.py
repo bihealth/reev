@@ -10,7 +10,11 @@ from app import crud
 from app.core.config import settings
 from app.models.clinvarsub import SubmissionThread, SubmittingOrg
 from app.models.user import User
-from app.schemas.clinvarsub import SubmissionThreadUpdate, SubmittingOrgCreate
+from app.schemas.clinvarsub import (
+    SubmissionThreadCreate,
+    SubmissionThreadUpdate,
+    SubmittingOrgCreate,
+)
 
 # == /api/v1/clinvarsub/submittingorgs ========================================
 
@@ -224,3 +228,76 @@ async def test_list_submissionthreads(
         }
     else:
         assert len(pages["items"]) == 0
+
+
+# -- POST /api/v1/clinvarsub/submissionthreads --------------------------------
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("is_owner", (True, False))
+async def test_create_submissionthreads(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread_create: SubmissionThreadCreate,
+    is_owner: bool,
+):
+    if not is_owner:
+        # make submission org owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the test
+    response = client_user.post(
+        f"{settings.API_V1_STR}/clinvarsub/submissionthreads",
+        json=submissionthread_create.model_dump(mode="json"),
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "effective_scv": None,
+            "effective_presence": None,
+            "desired_presence": "present",
+            "status": "initial",
+            "id": response.json()["id"],
+            "submittingorg": str(submittingorg.id),
+        }
+    else:
+        assert response.status_code == 403
+
+
+# -- GET /api/v1/clinvarsub/submissionthreads/{id} ----------------------------
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("is_owner", [True, False])
+async def test_read_submissionthreads(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread: SubmissionThread,
+    is_owner: bool,
+):
+    if not is_owner:
+        # make submittingorg owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the tests
+    response = client_user.get(
+        f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}",
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "effective_scv": None,
+            "effective_presence": None,
+            "desired_presence": "present",
+            "status": "initial",
+            "id": response.json()["id"],
+            "submittingorg": str(submittingorg.id),
+        }
+    else:
+        assert response.status_code == 403

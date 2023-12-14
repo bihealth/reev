@@ -168,7 +168,7 @@ async def create_submissionthread(
 
 
 @router.get(
-    "/submisisonthreads/{submissionthread_id}",
+    "/submissionthreads/{submissionthread_id}",
     response_model=schemas.SubmissionThreadRead,
 )
 async def get_submissionthread_by_id(
