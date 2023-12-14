@@ -54,6 +54,7 @@ starlette = "*"
 types-passlib = "*"
 pytest-xdist = {extras = ["psutil"], version = "*"}
 syrupy = "*"
+freezegun = "*"
 
 [requires]
 python_version = "3.10"

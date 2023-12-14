@@ -30,6 +30,8 @@ class SubmittingOrgInDbBase(SubmittingOrgBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
+    created: datetime.datetime
+    updated: datetime.datetime
 
 
 class SubmittingOrgRead(SubmittingOrgInDbBase):
@@ -64,6 +66,8 @@ class SubmissionThreadInDbBase(SubmissionThreadBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
+    created: datetime.datetime
+    updated: datetime.datetime
     submittingorg: UUID
 
 
@@ -79,7 +83,7 @@ class SubmissionActivityBase(BaseModel):
     kind: ActivityKind
     status: Status
     request_payload: Union[clinvar_api_models.SubmissionContainer, None]
-    request_timestamp: datetime.datetime
+    request_timestamp: Optional[datetime.datetime]
     response_status: Optional[Status]
     response_payload: Union[
         ResponseMessage,
@@ -104,8 +108,13 @@ class SubmissionActivityInDbBase(SubmissionActivityBase):
     model_config = ConfigDict(from_attributes=True)
 
     id: UUID
-    clinvarsub: UUID
+    created: datetime.datetime
+    submissionthread: UUID
 
 
 class SubmissionActivityRead(SubmissionActivityInDbBase):
+    pass
+
+
+class SubmissionActivityInDb(SubmissionActivityInDbBase):
     pass

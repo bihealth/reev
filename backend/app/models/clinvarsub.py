@@ -1,12 +1,9 @@
 """Models for the ClinVar submission."""
 
-import datetime
 import enum
 import uuid as uuid_module
-from typing import TYPE_CHECKING, Optional, Union
+from datetime import datetime
 
-import clinvar_api.client as clinvar_api_client
-import clinvar_api.models as clinvar_api_models
 import pydantic  # noqa
 from fastapi_users_db_sqlalchemy.generics import GUID
 from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String, UniqueConstraint
@@ -15,6 +12,11 @@ from sqlalchemy.orm import Mapped, mapped_column
 from app.db.session import Base
 
 UUID_ID = uuid_module.UUID
+
+
+def default_utcnow():
+    """Freezegun friendly utcnow."""
+    return datetime.utcnow()
 
 
 class SubmittingOrg(Base):
@@ -29,6 +31,10 @@ class SubmittingOrg(Base):
     id: Mapped[UUID_ID] = mapped_column(
         GUID, primary_key=True, index=True, default=uuid_module.uuid4
     )
+    #: Timestamp of creation.
+    created: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
+    #: Timestamp of last update.
+    updated: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
     #: User who owns the submitting organisation.
     owner: Mapped[UUID_ID] = mapped_column(
         GUID, ForeignKey("user.id", ondelete="CASCADE"), nullable=False
@@ -94,6 +100,10 @@ class SubmissionThread(Base):
     submittingorg: Mapped[UUID_ID] = mapped_column(
         GUID, ForeignKey("clinvarsubuserorg.id", ondelete="CASCADE"), nullable=False
     )
+    #: Timestamp of creation.
+    created: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
+    #: Timestamp of last update.
+    updated: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
     #: Primary variant identifier, e.g., ``GRCh37-1-1000-A-G`` or
     #: ``DEL-GRCh38-1-1000-2000``.
     primary_variant_id = Column(String(1024), nullable=False)
@@ -144,6 +154,8 @@ class SubmissionActivity(Base):
     id: Mapped[UUID_ID] = mapped_column(
         GUID, primary_key=True, index=True, default=uuid_module.uuid4
     )
+    #: Timestamp of creation.
+    created: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
     #: Submission thread.
     submissionthread: Mapped[UUID_ID] = mapped_column(
         GUID, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
@@ -156,7 +168,9 @@ class SubmissionActivity(Base):
     request_payload = Column(JSON, nullable=True)
     #: Timestamp of the request.
     request_timestamp = Column(
-        "request_timestamp", DateTime, nullable=False, default=datetime.datetime.utcnow
+        "request_timestamp",
+        DateTime,
+        nullable=True,
     )
     #: Status of the response.
     response_status: Column[Status] = Column(Enum(Status), nullable=True)

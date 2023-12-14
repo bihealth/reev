@@ -1,5 +1,4 @@
 import asyncio
-import datetime
 import logging
 import os
 from typing import AsyncGenerator, Iterator
@@ -7,6 +6,7 @@ from typing import AsyncGenerator, Iterator
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from fastapi.testclient import TestClient
+from freezegun import freeze_time
 from sqlalchemy import StaticPool
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -173,8 +173,8 @@ async def submittingorg(
     db_session: AsyncSession, submittingorg_create: SubmittingOrgCreate
 ) -> SubmittingOrg:
     """Create a new database record (tests use isolated databases)."""
-    res = await crud.submittingorg.create(session=db_session, obj_in=submittingorg_create)
-    return res
+    with freeze_time("2023-12-14T09:01:19.452062"):
+        return await crud.submittingorg.create(session=db_session, obj_in=submittingorg_create)
 
 
 @pytest.fixture
@@ -193,7 +193,10 @@ async def submissionthread(
     db_session: AsyncSession, submissionthread_create: SubmissionThreadCreate
 ) -> SubmissionThread:
     """Create a new schema object only."""
-    return await crud.submissionthread.create(session=db_session, obj_in=submissionthread_create)
+    with freeze_time("2023-12-14T09:01:19.452062"):
+        return await crud.submissionthread.create(
+            session=db_session, obj_in=submissionthread_create
+        )
 
 
 @pytest.fixture
@@ -204,7 +207,7 @@ def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionA
         kind=ActivityKind.CREATE,
         status=Status.INITIAL,
         request_payload=None,
-        request_timestamp=datetime.datetime.utcnow(),
+        request_timestamp=None,
         response_status=None,
         response_payload=None,
         response_timestamp=None,
@@ -216,6 +219,7 @@ async def submissionactivity(
     db_session: AsyncSession, submissionactivity_create: SubmissionActivityCreate
 ) -> SubmissionActivity:
     """Create a new schema object only."""
-    return await crud.submissionactivity.create(
-        session=db_session, obj_in=submissionactivity_create
-    )
+    with freeze_time("2023-12-14T09:01:19.452062"):
+        return await crud.submissionactivity.create(
+            session=db_session, obj_in=submissionactivity_create
+        )

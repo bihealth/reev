@@ -4,15 +4,16 @@ from typing import Optional
 
 import pytest
 from fastapi.testclient import TestClient
+from freezegun import freeze_time
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
 from app.core.config import settings
-from app.models.clinvarsub import SubmissionThread, SubmittingOrg
+from app.models.clinvarsub import SubmissionActivity, SubmissionThread, SubmittingOrg
 from app.models.user import User
 from app.schemas.clinvarsub import (
+    SubmissionActivityCreate,
     SubmissionThreadCreate,
-    SubmissionThreadUpdate,
     SubmittingOrgCreate,
 )
 
@@ -22,6 +23,7 @@ from app.schemas.clinvarsub import (
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 async def test_list_submittingorg(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -61,6 +63,7 @@ async def test_list_submittingorg(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 async def test_create_submittingorg(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -79,6 +82,8 @@ async def test_create_submittingorg(
         "owner": str(test_user.id),
         "label": "my-org",
         "id": response.json()["id"],
+        "created": "2023-12-14T09:01:19.452062",
+        "updated": "2023-12-14T09:01:19.452062",
     }, "response should match expected"
     assert await crud.submittingorg.get(
         db_session, response.json()["id"]
@@ -89,6 +94,7 @@ async def test_create_submittingorg(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_read_submittingorg(
     db_session: AsyncSession,
@@ -120,6 +126,7 @@ async def test_read_submittingorg(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 async def test_update_submittingorg(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -150,6 +157,7 @@ async def test_update_submittingorg(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_delete_submittingorg(
     db_session: AsyncSession,
@@ -184,6 +192,7 @@ async def test_delete_submittingorg(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 @pytest.mark.parametrize(
     "is_owner, good_query", itertools.product((True, False), (None, True, False))
 )
@@ -224,6 +233,8 @@ async def test_list_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": str(submissionthread.id),
+            "created": "2023-12-14T09:01:19.452062",
+            "updated": "2023-12-14T09:01:19.452062",
             "submittingorg": str(submittingorg.id),
         }
     else:
@@ -234,6 +245,7 @@ async def test_list_submissionthreads(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 @pytest.mark.parametrize("is_owner", (True, False))
 async def test_create_submissionthreads(
     db_session: AsyncSession,
@@ -261,6 +273,8 @@ async def test_create_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": response.json()["id"],
+            "created": "2023-12-14T09:01:19.452062",
+            "updated": "2023-12-14T09:01:19.452062",
             "submittingorg": str(submittingorg.id),
         }
     else:
@@ -271,6 +285,7 @@ async def test_create_submissionthreads(
 
 
 @pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_read_submissionthreads(
     db_session: AsyncSession,
@@ -297,7 +312,150 @@ async def test_read_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": response.json()["id"],
+            "created": "2023-12-14T09:01:19.452062",
+            "updated": "2023-12-14T09:01:19.452062",
             "submittingorg": str(submittingorg.id),
+        }
+    else:
+        assert response.status_code == 403
+
+
+# -- DELETE /api/v1/clinvarsub/submissionthreads/{id} -------------------------
+
+
+@pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
+@pytest.mark.parametrize("is_owner", [True, False])
+async def test_delete_submissionthreads(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread: SubmissionThread,
+    is_owner: bool,
+):
+    if not is_owner:
+        # make submittingorg owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the tests
+    response = client_user.delete(
+        f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}",
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "effective_scv": None,
+            "effective_presence": None,
+            "desired_presence": "present",
+            "status": "initial",
+            "id": str(submissionthread.id),
+            "created": "2023-12-14T09:01:19.452062",
+            "updated": "2023-12-14T09:01:19.452062",
+            "submittingorg": str(submittingorg.id),
+        }
+    else:
+        assert response.status_code == 403
+
+
+# == /api/v1/clinvarsub/submissionthreads/{id}/activities =====================
+
+# -- GET /api/v1/clinvarsub/submissionthreads/{id}/activities -----------------
+
+
+@pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
+@pytest.mark.parametrize("is_owner", [True, False])
+async def test_list_submissionactivities(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread: SubmissionThread,
+    submissionactivity: SubmissionActivity,
+    is_owner: bool,
+):
+    """
+    :param is_owner: test case where ``client_user`` is owner or not
+    """
+    if not is_owner:
+        # make submitting org owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the test
+    response = client_user.get(
+        f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}/activities",
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "current_page": "Pg%3D%3D",
+            "current_page_backwards": "PA%3D%3D",
+            "items": [
+                {
+                    "id": str(submissionactivity.id),
+                    "created": "2023-12-14T09:01:19.452062",
+                    "kind": "create",
+                    "request_payload": None,
+                    "request_timestamp": None,
+                    "response_payload": None,
+                    "response_status": None,
+                    "response_timestamp": None,
+                    "status": "initial",
+                    "submissionthread": str(submissionthread.id),
+                }
+            ],
+            "next_page": None,
+            "previous_page": None,
+            "total": None,
+        }
+    else:
+        assert response.status_code == 403
+
+
+# -- POST /api/v1/clinvarsub/submissionthreads/{id}/activities ----------------
+
+
+@pytest.mark.anyio
+@freeze_time("2023-12-14T09:01:19.452062")
+@pytest.mark.parametrize("is_owner", [True, False])
+async def test_create_submissionactivity(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread: SubmissionThread,
+    submissionactivity_create: SubmissionActivityCreate,
+    is_owner: bool,
+):
+    """
+    :param is_owner: test case where ``client_user`` is owner or not
+    """
+    if not is_owner:
+        # make submitting org owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the test
+    response = client_user.post(
+        f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}/activities",
+        json=submissionactivity_create.model_dump(mode="json"),
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": response.json()["id"],
+            "created": "2023-12-14T09:01:19.452062",
+            "kind": "create",
+            "request_payload": None,
+            "request_timestamp": None,
+            "response_payload": None,
+            "response_status": None,
+            "response_timestamp": None,
+            "status": "initial",
+            "submissionthread": str(submissionthread.id),
         }
     else:
         assert response.status_code == 403

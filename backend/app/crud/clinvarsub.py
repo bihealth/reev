@@ -59,4 +59,16 @@ class CrudSubmissionThread(
 class CrudSubmissionActivity(
     CrudBase[SubmissionActivity, SubmissionActivityCreate, SubmissionActivityUpdate]
 ):
-    pass
+    def query_by_submissionthread(
+        self, *, submissionthread: str | UUID
+    ) -> Select[Tuple[SubmissionThread]]:
+        """Return query filtered by submission thread (ordered by timestamp).
+
+        :param user_id: User ID.
+        :param primary_variant_id: Optionally, a primary variant ID to filter by.
+        """
+        return (
+            select(self.model)
+            .filter(self.model.submissionthread == submissionthread)
+            .order_by(self.model.created.desc())
+        )
