@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.crud.base import CrudBase
-from app.models.clinvarsub import SubmissionActivity, SubmissionThread, SubmittingOrg
+from app.models.clinvarsub import ActivityKind, SubmissionActivity, SubmissionThread, SubmittingOrg
 from app.schemas.clinvarsub import (
     SubmissionActivityCreate,
     SubmissionActivityUpdate,
@@ -60,15 +60,14 @@ class CrudSubmissionActivity(
     CrudBase[SubmissionActivity, SubmissionActivityCreate, SubmissionActivityUpdate]
 ):
     def query_by_submissionthread(
-        self, *, submissionthread: str | UUID
-    ) -> Select[Tuple[SubmissionThread]]:
+        self, *, submissionthread: str | UUID, kind: Optional[ActivityKind] = None
+    ) -> Select[Tuple[SubmissionActivity]]:
         """Return query filtered by submission thread (ordered by timestamp).
 
         :param user_id: User ID.
-        :param primary_variant_id: Optionally, a primary variant ID to filter by.
+        :param kind: Optionally, an ``ActivyKind`` to filter by
         """
-        return (
-            select(self.model)
-            .filter(self.model.submissionthread == submissionthread)
-            .order_by(self.model.created.desc())
-        )
+        query = select(self.model).filter(self.model.submissionthread == submissionthread)
+        if kind:
+            query = query.filter(self.model.kind == kind)
+        return query.order_by(self.model.created.desc())

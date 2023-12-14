@@ -14,6 +14,7 @@ help:
 	@echo "  ci      Install dependencies, run lints and tests"
 	@echo "  docs    Generate the documentation"
 	@echo "  serve   Run the (development) server"
+	@echo "  celery  Run celery"
 	@echo "  migrate Create alembic versions and upgrade"
 	@echo ""
 	@echo "  alembic-check        Run alembic check"
@@ -90,6 +91,12 @@ docs:
 .PHONY: serve
 serve:
 	pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload --workers 8
+
+.PHONY: celery
+celery:
+	PYTHONPATH=. pipenv run \
+		watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- \
+		celery -A app.worker worker --loglevel=debug --beat
 
 .PHONY: alembic-check
 alembic-check:

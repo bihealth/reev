@@ -92,13 +92,15 @@ Running the Servers
 For development, you have to run a server both for the frontend and the backend.
 In deployment, the frontent will be built to a static ``dist`` directory and served through the backend HTTP server.
 
-Execute the following two commands in separate terminals.
+Execute the following commands in separate terminals.
 The servers will be started with automated code reload.
+You will have to restart celery manually.
 In case of weird issues, try to stop them with ``Ctrl-C`` and starting them again.
 
 .. code-block:: bash
 
     $ make -C backend serve
+    $ make -C backend celery
     $ make -C frontend serve
 
 Now you can navigate to the frontend development server at http://localhost:8081.

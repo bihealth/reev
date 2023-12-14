@@ -118,8 +118,11 @@ class Settings(BaseSettings):
     #: Prefix for the backend of cada-prio service.
     BACKEND_PREFIX_CADA_PRIO: str = "http://cada-prio:8080"
 
-    #: URL to REDIS service.
+    #: URL to Redis service.
     REDIS_URL: str = "redis://redis:6379"
+
+    #: URL to RabbitMQ service.
+    RABBITMQ_URL: str = "amqp://guest@rabbitmq:6379"
 
     # -- User-Related Configuration ---------------------------------------------
 

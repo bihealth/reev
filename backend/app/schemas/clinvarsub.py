@@ -59,8 +59,6 @@ class SubmissionThreadCreate(SubmissionThreadBase):
 class SubmissionThreadUpdate(SubmissionThreadBase):
     model_config = ConfigDict(from_attributes=True)
 
-    pass
-
 
 class SubmissionThreadInDbBase(SubmissionThreadBase):
     model_config = ConfigDict(from_attributes=True)
@@ -72,17 +70,17 @@ class SubmissionThreadInDbBase(SubmissionThreadBase):
 
 
 class SubmissionThreadRead(SubmissionThreadInDbBase):
-    pass
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SubmissionThreadInDb(SubmissionThreadInDbBase):
-    pass
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SubmissionActivityBase(BaseModel):
     kind: ActivityKind
     status: Status
-    request_payload: Union[clinvar_api_models.SubmissionContainer, None]
+    request_payload: Optional[clinvar_api_models.SubmissionContainer]
     request_timestamp: Optional[datetime.datetime]
     response_status: Optional[Status]
     response_payload: Union[
@@ -113,8 +111,8 @@ class SubmissionActivityInDbBase(SubmissionActivityBase):
 
 
 class SubmissionActivityRead(SubmissionActivityInDbBase):
-    pass
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SubmissionActivityInDb(SubmissionActivityInDbBase):
-    pass
+    model_config = ConfigDict(from_attributes=True)

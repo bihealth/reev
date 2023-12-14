@@ -71,6 +71,8 @@ class Status(enum.Enum):
     COMPLETE = "complete"
     #: Submission failed, user can edit and create new entry.
     FAILED = "failed"
+    #: Failed because of a timeout.
+    TIMEOUT = "timeout"
 
 
 class SubmissionThread(Base):
