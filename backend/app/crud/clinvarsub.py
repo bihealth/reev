@@ -27,30 +27,30 @@ class CrudSubmissionThread(
     CrudBase[SubmissionThread, SubmissionThreadCreate, SubmissionThreadUpdate]
 ):
     def query_by_user(
-        self, *, user_id: str | UUID, primary_variant_id: Optional[str]
+        self, *, user_id: str | UUID, primary_variant_desc: Optional[str]
     ) -> Select[Tuple[SubmissionThread]]:
         """Return query filtered by user (order by label).
 
         :param user_id: User ID.
-        :param primary_variant_id: Optionally, a primary variant ID to filter by.
+        :param primary_variant_desc: Optionally, a primary variant ID to filter by.
         """
         stmt = (
             select(self.model)
             .join(SubmittingOrg)
-            .filter(self.model.submittingorg == SubmittingOrg.id)
+            .filter(self.model.submittingorg_id == SubmittingOrg.id)
             .filter(SubmittingOrg.owner == user_id)
         )
-        if primary_variant_id:
-            stmt = stmt.filter(self.model.primary_variant_id == primary_variant_id)
+        if primary_variant_desc:
+            stmt = stmt.filter(self.model.primary_variant_desc == primary_variant_desc)
         return stmt.order_by(SubmittingOrg.label)
 
     async def get_by_primaryvariantid(
-        self, session: AsyncSession, *, submittingorg_id: str | UUID, primary_variant_id: str
+        self, session: AsyncSession, *, submittingorg_id: str | UUID, primary_variant_desc: str
     ) -> Optional[SubmissionThread]:
         """Return any submission with matching submitting org and variant ID."""
         query = select(self.model).filter(
-            self.model.submittingorg == submittingorg_id,
-            self.model.primary_variant_id == primary_variant_id,
+            self.model.submittingorg_id == submittingorg_id,
+            self.model.primary_variant_desc == primary_variant_desc,
         )
         result = await session.execute(query)
         return result.scalars().first()
@@ -60,14 +60,14 @@ class CrudSubmissionActivity(
     CrudBase[SubmissionActivity, SubmissionActivityCreate, SubmissionActivityUpdate]
 ):
     def query_by_submissionthread(
-        self, *, submissionthread: str | UUID, kind: Optional[ActivityKind] = None
+        self, *, submissionthread_id: str | UUID, kind: Optional[ActivityKind] = None
     ) -> Select[Tuple[SubmissionActivity]]:
         """Return query filtered by submission thread (ordered by timestamp).
 
         :param user_id: User ID.
         :param kind: Optionally, an ``ActivyKind`` to filter by
         """
-        query = select(self.model).filter(self.model.submissionthread == submissionthread)
+        query = select(self.model).filter(self.model.submissionthread_id == submissionthread_id)
         if kind:
             query = query.filter(self.model.kind == kind)
         return query.order_by(self.model.created.desc())

@@ -14,6 +14,7 @@ help:
 	@echo "  ci      Install dependencies, run lints and tests"
 	@echo "  docs    Generate the documentation"
 	@echo "  serve   Run the (development) server"
+	@echo "  jupyterlab Run jupyterlab"
 	@echo "  celery  Run celery"
 	@echo "  migrate Create alembic versions and upgrade"
 	@echo ""
@@ -97,6 +98,14 @@ celery:
 	PYTHONPATH=. pipenv run \
 		watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- \
 		celery -A app.worker worker --loglevel=debug --beat
+
+.PHONY: jupyterlab
+jupyterlab:
+	cp utils/minimal.ipynb tmp.ipynb && \
+	PYTHON=. pipenv run \
+		jupyter lab \
+			--ip=0.0.0.0 --allow-root --NotebookApp.custom_display_url=http://127.0.0.1:8888 \
+			tmp.ipynb
 
 .PHONY: alembic-check
 alembic-check:

@@ -52,8 +52,8 @@ class SubmissionThreadBase(BaseModel):
 class SubmissionThreadCreate(SubmissionThreadBase):
     model_config = ConfigDict(from_attributes=True)
 
-    submittingorg: UUID
-    primary_variant_id: str
+    submittingorg_id: UUID
+    primary_variant_desc: str
 
 
 class SubmissionThreadUpdate(SubmissionThreadBase):
@@ -66,7 +66,8 @@ class SubmissionThreadInDbBase(SubmissionThreadBase):
     id: UUID
     created: datetime.datetime
     updated: datetime.datetime
-    submittingorg: UUID
+    submittingorg_id: UUID
+    primary_variant_desc: str
 
 
 class SubmissionThreadRead(SubmissionThreadInDbBase):
@@ -95,7 +96,7 @@ class SubmissionActivityBase(BaseModel):
 class SubmissionActivityCreate(SubmissionActivityBase):
     model_config = ConfigDict(from_attributes=True)
 
-    submissionthread: UUID
+    submissionthread_id: UUID
 
 
 class SubmissionActivityUpdate(SubmissionActivityBase):
@@ -107,7 +108,7 @@ class SubmissionActivityInDbBase(SubmissionActivityBase):
 
     id: UUID
     created: datetime.datetime
-    submissionthread: UUID
+    submissionthread_id: UUID
 
 
 class SubmissionActivityRead(SubmissionActivityInDbBase):

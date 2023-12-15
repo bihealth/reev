@@ -42,6 +42,11 @@ class Settings(BaseSettings):
 
     # -- app-specific settings -----------------------------------------------
 
+    # == clinvar submission specific ==
+
+    #: Whether to submit to production.
+    CLINVAR_USE_PRODUCTION: bool = False
+
     # == deployment-related settings ==
 
     #: Enable debug mode (makes all APIs appear in openapi.json)

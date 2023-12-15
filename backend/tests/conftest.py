@@ -183,8 +183,8 @@ def submissionthread_create(submittingorg: SubmittingOrg) -> SubmissionThreadCre
     return SubmissionThreadCreate(
         desired_presence=Presence.PRESENT,
         status=Status.INITIAL,
-        submittingorg=submittingorg.id,
-        primary_variant_id="grch37-1-1000-A-G",
+        submittingorg_id=submittingorg.id,
+        primary_variant_desc="grch37-1-1000-A-G",
     )
 
 
@@ -203,7 +203,7 @@ async def submissionthread(
 def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
     """Create a new schema object only."""
     return SubmissionActivityCreate(
-        submissionthread=submissionthread.id,
+        submissionthread_id=submissionthread.id,
         kind=ActivityKind.CREATE,
         status=Status.INITIAL,
         request_payload=None,

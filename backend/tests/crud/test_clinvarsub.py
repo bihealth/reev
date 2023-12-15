@@ -74,8 +74,8 @@ async def test_create_get_submissionthread(
     assert submissionthread_postcreate.id == stored_item.id
     assert submissionthread_postcreate.desired_presence == stored_item.desired_presence
     assert submissionthread_postcreate.status == stored_item.status
-    assert submissionthread_postcreate.submittingorg == stored_item.submittingorg
-    assert submissionthread_postcreate.primary_variant_id == stored_item.primary_variant_id
+    assert submissionthread_postcreate.submittingorg_id == stored_item.submittingorg_id
+    assert submissionthread_postcreate.primary_variant_desc == stored_item.primary_variant_desc
 
 
 @pytest.mark.anyio
@@ -102,9 +102,10 @@ async def test_create_update_submissionthread(
         submissionthread_postcreate.effective_presence == submissionthread_update.effective_presence
     )
     assert (
-        submissionthread_postcreate.primary_variant_id == submissionthread_create.primary_variant_id
+        submissionthread_postcreate.primary_variant_desc
+        == submissionthread_create.primary_variant_desc
     )
-    assert submissionthread_postcreate.submittingorg == submissionthread_create.submittingorg
+    assert submissionthread_postcreate.submittingorg_id == submissionthread_create.submittingorg_id
 
 
 @pytest.mark.anyio
@@ -131,7 +132,7 @@ async def test_create_get_submissionactivity(
     )
     assert stored_item
     assert submissionactivity_postcreate.id == stored_item.id
-    assert submissionactivity_postcreate.submissionthread == stored_item.submissionthread
+    assert submissionactivity_postcreate.submissionthread_id == stored_item.submissionthread_id
     assert submissionactivity_postcreate.kind == stored_item.kind
     assert submissionactivity_postcreate.status == stored_item.status
     assert submissionactivity_postcreate.request_payload == stored_item.request_payload

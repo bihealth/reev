@@ -1,8 +1,8 @@
-"""init clinvarsub
+"""empty message
 
-Revision ID: 9f93779cd294
+Revision ID: 7b8f5e250824
 Revises: d10fec1c88fc
-Create Date: 2023-12-13 10:46:23.236550+01:00
+Create Date: 2023-12-14 15:28:19.317317+01:00
 
 """
 import fastapi_users_db_sqlalchemy.generics  # noqa
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "9f93779cd294"
+revision = "7b8f5e250824"
 down_revision = "d10fec1c88fc"
 branch_labels = None
 depends_on = None
@@ -22,7 +22,9 @@ def upgrade():
     op.create_table(
         "clinvarsubuserorg",
         sa.Column("id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
-        sa.Column("owner", sa.Uuid(), nullable=False),
+        sa.Column("created", sa.DateTime(), nullable=False),
+        sa.Column("updated", sa.DateTime(), nullable=False),
+        sa.Column("owner", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
         sa.Column("label", sa.String(length=255), nullable=False),
         sa.Column("clinvar_api_token", sa.String(length=255), nullable=False),
         sa.ForeignKeyConstraint(["owner"], ["user.id"], ondelete="CASCADE"),
@@ -32,8 +34,10 @@ def upgrade():
     op.create_table(
         "clinvarsubthread",
         sa.Column("id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
-        sa.Column("clinvarsubmittingorg", sa.Uuid(), nullable=False),
-        sa.Column("primary_variant_id", sa.String(length=1024), nullable=False),
+        sa.Column("submittingorg_id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
+        sa.Column("created", sa.DateTime(), nullable=False),
+        sa.Column("updated", sa.DateTime(), nullable=False),
+        sa.Column("primary_variant_desc", sa.String(length=1024), nullable=False),
         sa.Column("effective_scv", sa.String(length=32), nullable=True),
         sa.Column(
             "effective_presence", sa.Enum("ABSENT", "PRESENT", name="presence"), nullable=True
@@ -50,26 +54,26 @@ def upgrade():
                 "WAITING",
                 "COMPLETE",
                 "FAILED",
+                "TIMEOUT",
                 name="status",
             ),
             nullable=False,
         ),
-        sa.ForeignKeyConstraint(
-            ["clinvarsubmittingorg"], ["clinvarsubuserorg.id"], ondelete="CASCADE"
-        ),
+        sa.ForeignKeyConstraint(["submittingorg_id"], ["clinvarsubuserorg.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("submittingorg_id", "primary_variant_desc"),
     )
     op.create_index(
-        "clinvarsubthread_org_variantid",
-        "clinvarsubthread",
-        ["clinvarsubmittingorg", "primary_variant_id"],
-        unique=False,
+        "clinvarsubthread_variantid", "clinvarsubthread", ["primary_variant_desc"], unique=False
     )
     op.create_index(op.f("ix_clinvarsubthread_id"), "clinvarsubthread", ["id"], unique=False)
     op.create_table(
         "clinvarsubactivity",
         sa.Column("id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False),
-        sa.Column("clinvarsubthread", sa.Uuid(), nullable=False),
+        sa.Column("created", sa.DateTime(), nullable=False),
+        sa.Column(
+            "submissionthread_id", fastapi_users_db_sqlalchemy.generics.GUID(), nullable=False
+        ),
         sa.Column(
             "kind",
             sa.Enum("RETRIEVE", "CREATE", "UPDATE", "DELETE", name="activitykind"),
@@ -77,19 +81,39 @@ def upgrade():
         ),
         sa.Column(
             "status",
-            sa.Enum("INITIAL", "SUBMITTED", "IN_PROGRESS", "COMPLETE", "FAILED", name="status"),
+            sa.Enum(
+                "INITIAL",
+                "SUBMITTED",
+                "IN_PROGRESS",
+                "WAITING",
+                "COMPLETE",
+                "FAILED",
+                "TIMEOUT",
+                name="status",
+            ),
             nullable=False,
         ),
         sa.Column("request_payload", sa.JSON(), nullable=True),
-        sa.Column("request_timestamp", sa.DateTime(), nullable=False),
+        sa.Column("request_timestamp", sa.DateTime(), nullable=True),
         sa.Column(
             "response_status",
-            sa.Enum("INITIAL", "SUBMITTED", "IN_PROGRESS", "COMPLETE", "FAILED", name="status"),
+            sa.Enum(
+                "INITIAL",
+                "SUBMITTED",
+                "IN_PROGRESS",
+                "WAITING",
+                "COMPLETE",
+                "FAILED",
+                "TIMEOUT",
+                name="status",
+            ),
             nullable=True,
         ),
         sa.Column("response_payload", sa.JSON(), nullable=True),
         sa.Column("response_timestamp", sa.DateTime(), nullable=True),
-        sa.ForeignKeyConstraint(["clinvarsubthread"], ["clinvarsubthread.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(
+            ["submissionthread_id"], ["clinvarsubthread.id"], ondelete="CASCADE"
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_index(op.f("ix_clinvarsubactivity_id"), "clinvarsubactivity", ["id"], unique=False)
@@ -101,7 +125,7 @@ def downgrade():
     op.drop_index(op.f("ix_clinvarsubactivity_id"), table_name="clinvarsubactivity")
     op.drop_table("clinvarsubactivity")
     op.drop_index(op.f("ix_clinvarsubthread_id"), table_name="clinvarsubthread")
-    op.drop_index("clinvarsubthread_org_variantid", table_name="clinvarsubthread")
+    op.drop_index("clinvarsubthread_variantid", table_name="clinvarsubthread")
     op.drop_table("clinvarsubthread")
     op.drop_index(op.f("ix_clinvarsubuserorg_id"), table_name="clinvarsubuserorg")
     op.drop_table("clinvarsubuserorg")

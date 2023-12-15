@@ -211,15 +211,15 @@ async def test_list_submissionthreads(
     if not is_owner:
         # make thread owned by different user
         await crud.submissionthread.update(
-            db_session, db_obj=submissionthread, obj_in={"submittingorg": uuid.uuid4()}
+            db_session, db_obj=submissionthread, obj_in={"submittingorg_id": uuid.uuid4()}
         )
 
     # run the test
     if good_query is None:
         query = ""
     else:
-        val = submissionthread.primary_variant_id if good_query else "BOGUS"
-        query = f"?primary_variant_id={val}"
+        val = submissionthread.primary_variant_desc if good_query else "BOGUS"
+        query = f"?primary_variant_desc={val}"
     response = client_user.get(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads{query}",
     )
@@ -235,7 +235,8 @@ async def test_list_submissionthreads(
             "id": str(submissionthread.id),
             "created": "2023-12-14T09:01:19.452062",
             "updated": "2023-12-14T09:01:19.452062",
-            "submittingorg": str(submittingorg.id),
+            "submittingorg_id": str(submittingorg.id),
+            "primary_variant_desc": "grch37-1-1000-A-G",
         }
     else:
         assert len(pages["items"]) == 0
@@ -275,7 +276,8 @@ async def test_create_submissionthreads(
             "id": response.json()["id"],
             "created": "2023-12-14T09:01:19.452062",
             "updated": "2023-12-14T09:01:19.452062",
-            "submittingorg": str(submittingorg.id),
+            "submittingorg_id": str(submittingorg.id),
+            "primary_variant_desc": "grch37-1-1000-A-G",
         }
     else:
         assert response.status_code == 403
@@ -314,7 +316,8 @@ async def test_read_submissionthreads(
             "id": response.json()["id"],
             "created": "2023-12-14T09:01:19.452062",
             "updated": "2023-12-14T09:01:19.452062",
-            "submittingorg": str(submittingorg.id),
+            "submittingorg_id": str(submittingorg.id),
+            "primary_variant_desc": "grch37-1-1000-A-G",
         }
     else:
         assert response.status_code == 403
@@ -353,7 +356,8 @@ async def test_delete_submissionthreads(
             "id": str(submissionthread.id),
             "created": "2023-12-14T09:01:19.452062",
             "updated": "2023-12-14T09:01:19.452062",
-            "submittingorg": str(submittingorg.id),
+            "submittingorg_id": str(submittingorg.id),
+            "primary_variant_desc": "grch37-1-1000-A-G",
         }
     else:
         assert response.status_code == 403
@@ -404,7 +408,7 @@ async def test_list_submissionactivities(
                     "response_status": None,
                     "response_timestamp": None,
                     "status": "initial",
-                    "submissionthread": str(submissionthread.id),
+                    "submissionthread_id": str(submissionthread.id),
                 }
             ],
             "next_page": None,
@@ -455,7 +459,7 @@ async def test_create_submissionactivity(
             "response_status": None,
             "response_timestamp": None,
             "status": "initial",
-            "submissionthread": str(submissionthread.id),
+            "submissionthread_id": str(submissionthread.id),
         }
     else:
         assert response.status_code == 403

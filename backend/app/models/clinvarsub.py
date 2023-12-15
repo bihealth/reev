@@ -7,6 +7,7 @@ from datetime import datetime
 import pydantic  # noqa
 from fastapi_users_db_sqlalchemy.generics import GUID
 from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String, UniqueConstraint
+from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.session import Base
@@ -19,7 +20,7 @@ def default_utcnow():
     return datetime.utcnow()
 
 
-class SubmittingOrg(Base):
+class SubmittingOrg(AsyncAttrs, Base):
     """Information about a submitting organisation for ClinVar.
 
     These are owned by a single user at the moment.
@@ -75,7 +76,7 @@ class Status(enum.Enum):
     TIMEOUT = "timeout"
 
 
-class SubmissionThread(Base):
+class SubmissionThread(AsyncAttrs, Base):
     """
     Container for the activity of one variant submission to ClinVar for
     a single variant.
@@ -90,8 +91,8 @@ class SubmissionThread(Base):
     __tablename__ = "clinvarsubthread"
 
     __table_args__ = (
-        Index("clinvarsubthread_variantid", "primary_variant_id"),
-        UniqueConstraint("submittingorg", "primary_variant_id"),
+        Index("clinvarsubthread_variantid", "primary_variant_desc"),
+        UniqueConstraint("submittingorg_id", "primary_variant_desc"),
     )
 
     #: UUID of the submission thread.
@@ -99,7 +100,7 @@ class SubmissionThread(Base):
         GUID, primary_key=True, index=True, default=uuid_module.uuid4
     )
     #: Submitting organisation.
-    submittingorg: Mapped[UUID_ID] = mapped_column(
+    submittingorg_id: Mapped[UUID_ID] = mapped_column(
         GUID, ForeignKey("clinvarsubuserorg.id", ondelete="CASCADE"), nullable=False
     )
     #: Timestamp of creation.
@@ -108,7 +109,7 @@ class SubmissionThread(Base):
     updated: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
     #: Primary variant identifier, e.g., ``GRCh37-1-1000-A-G`` or
     #: ``DEL-GRCh38-1-1000-2000``.
-    primary_variant_id = Column(String(1024), nullable=False)
+    primary_variant_desc = Column(String(1024), nullable=False)
     #: Effective SCV identifier.
     effective_scv = Column(String(32), nullable=True)
     #: Effective presence.
@@ -143,7 +144,7 @@ class ResponseMessage(pydantic.BaseModel):
     text: str
 
 
-class SubmissionActivity(Base):
+class SubmissionActivity(AsyncAttrs, Base):
     """One entry in a :ref:`SubmissionThread`.
 
     This corresponds to a submission sent to ClinVar and the corresponding
@@ -159,7 +160,7 @@ class SubmissionActivity(Base):
     #: Timestamp of creation.
     created: Mapped[datetime] = mapped_column(DateTime, nullable=False, default=default_utcnow)
     #: Submission thread.
-    submissionthread: Mapped[UUID_ID] = mapped_column(
+    submissionthread_id: Mapped[UUID_ID] = mapped_column(
         GUID, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
     )
     #: Kind of the activity.
