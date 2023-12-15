@@ -1,3 +1,4 @@
+/dev-*.py
 /*.ipynb
 
 celerybeat-schedule.bak
