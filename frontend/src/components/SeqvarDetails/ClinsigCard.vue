@@ -41,9 +41,9 @@ const acmgRatingStore = useSeqVarAcmgRatingStore()
 /** Component state: error message to display, if any. */
 const errorMessage = ref<string>('')
 /** Component state: whether to enable summary view. */
-const showTerse = ref<boolean>(false)
+const showTerse = ref<boolean>(true)
 /** Component state: whether to show failed criteria. */
-const showFailed = ref<boolean>(false)
+const showFailed = ref<boolean>(true)
 
 /** Helper function to run a function in a try/catch and emit `errorDisplay` otherwise.. */
 const tryCatchEmitErrorDisplay = async (fn: () => Promise<any>) => {
