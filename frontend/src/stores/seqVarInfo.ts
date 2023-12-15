@@ -9,6 +9,7 @@ import { ref } from 'vue'
 
 import { AnnonarsClient } from '@/api/annonars'
 import { MehariClient } from '@/api/mehari'
+import { type HpoTerm, VigunoClient } from '@/api/viguno'
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 
@@ -27,6 +28,9 @@ export const useSeqVarInfoStore = defineStore('seqVarInfo', () => {
 
   /** Information about related gene. */
   const geneInfo = ref<any | null>(null)
+
+  /** The HPO terms retrieved from viguno. */
+  const hpoTerms = ref<HpoTerm[]>([])
 
   /** Transcript consequence information from mehari. */
   const txCsq = ref<any | null>(null)
@@ -64,6 +68,7 @@ export const useSeqVarInfoStore = defineStore('seqVarInfo', () => {
     storeState.value = StoreState.Loading
     const annonarsClient = new AnnonarsClient()
     const mehariClient = new MehariClient()
+    const vigunoClient = new VigunoClient()
     let hgncId = ''
 
     const { genomeBuild, chrom, pos, del, ins } = seqvar$
@@ -86,6 +91,12 @@ export const useSeqVarInfoStore = defineStore('seqVarInfo', () => {
             }),
             annonarsClient.fetchGeneClinvarInfo(hgncId).then((data) => {
               geneClinvar.value = data.genes[hgncId]
+            }),
+            vigunoClient.fetchHpoTermsForHgncId(hgncId).then((data) => {
+              if (data === null) {
+                throw new Error('No HPO terms found.')
+              }
+              hpoTerms.value = data
             })
           ])
         } else {
@@ -112,6 +123,7 @@ export const useSeqVarInfoStore = defineStore('seqVarInfo', () => {
     varAnnos,
     geneClinvar,
     geneInfo,
+    hpoTerms,
     txCsq,
     loadData,
     clearData

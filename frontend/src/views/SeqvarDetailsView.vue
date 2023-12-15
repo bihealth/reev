@@ -330,7 +330,10 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo" />
               </div>
               <div id="gene-conditions">
-                <GeneConditionsCard :gene-info="seqvarInfoStore?.geneInfo" :hpo-terms="[]" />
+                <GeneConditionsCard
+                  :gene-info="seqvarInfoStore?.geneInfo"
+                  :hpo-terms="seqvarInfoStore.hpoTerms"
+                />
               </div>
               <div id="gene-expression">
                 <GeneExpressionCard
