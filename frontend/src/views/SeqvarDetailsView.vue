@@ -190,6 +190,24 @@ const loadDataToStore = async () => {
   await scrollToSection(route)
 }
 
+/**
+ * Jump to the locus in the local IGV.
+ */
+const jumpToLocus = async () => {
+  const chrPrefixed = seqvarInfoStore.seqvar?.chrom.startsWith('chr')
+    ? seqvarInfoStore.seqvar?.chrom
+    : `chr${seqvarInfoStore.seqvar?.chrom}`
+  await fetch(
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${seqvarInfoStore.seqvar?.pos}-${
+      (seqvarInfoStore.seqvar?.pos ?? 0) + (seqvarInfoStore.seqvar?.del?.length ?? 0)
+    }`
+  ).catch((e) => {
+    const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
+    alert(msg)
+    console.error(msg, e)
+  })
+}
+
 // When the component is mounted or the search term is changed through
 // the router then we need to fetch the variant information from the backend
 // through the store.
@@ -239,6 +257,17 @@ const SECTIONS: { [key: string]: Section[] } = {
             <div v-if="seqvarInfoStore.storeState == StoreState.Active">
               <v-list v-model:opened="openedSection" density="compact" rounded="lg">
                 <BookmarkListItem :id="idForBookmark" type="seqvar" />
+
+                <!-- Jump to IGV -->
+                <v-btn
+                  color=""
+                  variant="outlined"
+                  class="ma-2"
+                  prepend-icon="mdi-launch"
+                  @click.prevent="jumpToLocus()"
+                >
+                  Jump in Local IGV
+                </v-btn>
 
                 <template v-if="geneInfoStore.hgncId?.length">
                   <v-list-group value="gene">
