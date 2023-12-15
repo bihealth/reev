@@ -233,7 +233,7 @@ const SECTIONS: { [key: string]: Section[] } = {
   <v-app>
     <PageHeader />
     <v-main :class="mainBackgroundColor">
-      <v-container>
+      <v-container fluid>
         <v-row>
           <v-col cols="2">
             <div v-if="seqvarInfoStore.storeState == StoreState.Active">

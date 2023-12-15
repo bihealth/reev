@@ -81,7 +81,7 @@ const mainBackgroundColor = computed(() => {
   <v-app>
     <PageHeader />
     <v-main :class="mainBackgroundColor">
-      <v-container>
+      <v-container fluid>
         <div v-if="userStore.currentUser">
           <v-row>
             <v-col cols="2">

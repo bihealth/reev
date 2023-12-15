@@ -6,7 +6,12 @@
  *
  * The `clickSearch` event is emitted when the search button is clicked.
  */
+import { computed } from 'vue'
+import { useTheme } from 'vuetify'
+
 import { GENOME_BUILD_LABELS, type GenomeBuild } from '@/lib/genomeBuilds'
+
+const theme = useTheme()
 
 /** Type definition for component's props. */
 interface Props {
@@ -36,10 +41,15 @@ const runSearch = async () => {
     emit('clickSearch', props.searchTerm, props.genomeRelease)
   }
 }
+
+/** Return font color for genome build based on current theme. */
+const fontColor = computed(() => {
+  return theme.global.current.value.dark ? 'white' : 'black'
+})
 </script>
 
 <template>
-  <div class="d-flex d-flex-row flex-grow-0" style="min-width: 600px">
+  <div class="d-flex d-flex-row flex-grow-0" style="min-width: 400px">
     <v-text-field
       class="my-3 search-term"
       :label="props.density != 'compact' ? 'Search for variant or gene' : undefined"
@@ -59,7 +69,7 @@ const runSearch = async () => {
         <v-menu :transition="false">
           <template #activator="{ props: innerProps }">
             <v-btn
-              color="black"
+              :color="fontColor"
               v-bind="innerProps"
               rounded="xs"
               spacing="compact"
