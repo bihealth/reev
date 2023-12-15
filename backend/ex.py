@@ -9,6 +9,7 @@ from app.db.session import SyncSessionLocal, SessionLocal
 
 import clinvar_api.models as clinvar_api_models
 from app.clinvarsub import SubmissionActivityHandler
+from app.worker import handle_submission_activity
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger("app.clinvarsub")
@@ -113,15 +114,15 @@ async def main():
                     label='medgen',
                     primary_variant_desc='grch37-11-179390771-A-G',
                     owner=user.id,
-                    desired_presence=schemas.Presence.PRESENT,
-                    status=schemas.Status.SUBMITTED,
+                    desired_presence=schemas.VariantPresence.PRESENT,
+                    status=schemas.SubmissionThreadStatus.INITIAL,
                     submittingorg_id=submittingorg.id,
                 ),
             )
         submissionthread = schemas.SubmissionThreadUpdate.model_validate(submissionthread_db).model_copy(
             update={
                 "primary_variant_desc": 'grch37-11-179390771-A-G',
-                "status": schemas.Status.SUBMITTED,
+                "status": schemas.SubmissionThreadStatus.WAITING,
             })
         submissionthread_db = await crud.submissionthread.update(session, db_obj=submissionthread_db, obj_in=submissionthread)
         submissionthread = schemas.SubmissionThreadInDb.model_validate(submissionthread_db)
@@ -135,8 +136,8 @@ async def main():
                 session,
                 obj_in=schemas.SubmissionActivityCreate(
                     submissionthread_id=submissionthread.id,
-                    kind=schemas.ActivityKind.CREATE,
-                    status=schemas.Status.INITIAL,
+                    kind=schemas.SubmissionActivityKind.CREATE,
+                    status=schemas.SubmissionActivityStatus.WAITING,
                     request_timestamp=None,
                     request_payload=request_payload,
                     response_status=None,
@@ -154,7 +155,7 @@ async def main():
                         obj=submissionactivity_db
                     ).model_copy(
                         update={
-                            "status": schemas.Status.SUBMITTED
+                            "status": schemas.SubmissionActivityStatus.WAITING
                         }
                     )
                 )
@@ -162,6 +163,7 @@ async def main():
         submissionactivity = schemas.SubmissionActivityInDb.model_validate(submissionactivity_db)
         print(submissionactivity.model_dump(mode="json"))
 
-        await SubmissionActivityHandler(str(submissionactivity_db.id)).run()
+        res = handle_submission_activity.delay(str(submissionactivity_db.id))
+        print(f"task = {res}", res)
 
 asyncio.run(main())

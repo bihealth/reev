@@ -97,7 +97,7 @@ serve:
 celery:
 	PYTHONPATH=. pipenv run \
 		watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- \
-		celery -A app.worker worker --loglevel=debug --beat
+		celery -A app.worker worker --loglevel=debug --beat -Q main-queue
 
 .PHONY: jupyterlab
 jupyterlab:

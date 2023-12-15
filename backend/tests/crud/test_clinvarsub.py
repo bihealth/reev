@@ -5,7 +5,7 @@ from faker.providers.lorem import Provider as LoremProvider
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
-from app.models.clinvarsub import Presence, Status
+from app.models.clinvarsub import SubmissionActivityStatus, SubmissionThreadStatus, VariantPresence
 from app.schemas.clinvarsub import (
     SubmissionActivityCreate,
     SubmissionThreadCreate,
@@ -83,10 +83,10 @@ async def test_create_update_submissionthread(
     db_session: AsyncSession, submissionthread_create: SubmissionThreadCreate
 ) -> None:
     submissionthread_update = SubmissionThreadUpdate(
-        status=Status.IN_PROGRESS,
+        status=SubmissionThreadStatus.IN_PROGRESS,
         effective_scv="SCV000000001",
-        desired_presence=Presence.PRESENT,
-        effective_presence=Presence.PRESENT,
+        desired_presence=VariantPresence.PRESENT,
+        effective_presence=VariantPresence.PRESENT,
     )
     submissionthread_postcreate = await crud.submissionthread.create(
         session=db_session, obj_in=submissionthread_create
@@ -137,6 +137,5 @@ async def test_create_get_submissionactivity(
     assert submissionactivity_postcreate.status == stored_item.status
     assert submissionactivity_postcreate.request_payload == stored_item.request_payload
     assert submissionactivity_postcreate.request_timestamp == stored_item.request_timestamp
-    assert submissionactivity_postcreate.response_status == stored_item.response_status
     assert submissionactivity_postcreate.response_payload == stored_item.response_payload
     assert submissionactivity_postcreate.response_timestamp == stored_item.response_timestamp

@@ -3,21 +3,22 @@ from app.schemas.adminmsg import AdminMessageCreate, AdminMessageRead, AdminMess
 from app.schemas.bookmark import BookmarkCreate, BookmarkRead, BookmarkUpdate  # noqa
 from app.schemas.caseinfo import CaseInfoCreate, CaseInfoRead, CaseInfoUpdate  # noqa
 from app.schemas.clinvarsub import (  # noqa
-    ActivityKind,
-    Presence,
-    Status,
     SubmissionActivityCreate,
     SubmissionActivityInDb,
+    SubmissionActivityKind,
     SubmissionActivityRead,
+    SubmissionActivityStatus,
     SubmissionActivityUpdate,
     SubmissionThreadCreate,
     SubmissionThreadInDb,
     SubmissionThreadRead,
+    SubmissionThreadStatus,
     SubmissionThreadUpdate,
     SubmittingOrgCreate,
     SubmittingOrgInDb,
     SubmittingOrgRead,
     SubmittingOrgUpdate,
+    VariantPresence,
 )
 from app.schemas.msg import Msg  # noqa
 from app.schemas.user import UserCreate, UserRead, UserUpdate  # noqa

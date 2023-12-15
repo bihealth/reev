@@ -6,7 +6,13 @@ import clinvar_api.client as clinvar_api_client
 import clinvar_api.models as clinvar_api_models
 from pydantic import BaseModel, ConfigDict
 
-from app.models.clinvarsub import ActivityKind, Presence, ResponseMessage, Status
+from app.models.clinvarsub import (
+    ResponseMessage,
+    SubmissionActivityKind,
+    SubmissionActivityStatus,
+    SubmissionThreadStatus,
+    VariantPresence,
+)
 
 
 class SubmittingOrgBase(BaseModel):
@@ -44,9 +50,9 @@ class SubmittingOrgInDb(SubmittingOrgInDbBase):
 
 class SubmissionThreadBase(BaseModel):
     effective_scv: Optional[str] = None
-    effective_presence: Optional[Presence] = None
-    desired_presence: Presence
-    status: Status
+    effective_presence: Optional[VariantPresence] = None
+    desired_presence: VariantPresence
+    status: SubmissionThreadStatus
 
 
 class SubmissionThreadCreate(SubmissionThreadBase):
@@ -79,11 +85,10 @@ class SubmissionThreadInDb(SubmissionThreadInDbBase):
 
 
 class SubmissionActivityBase(BaseModel):
-    kind: ActivityKind
-    status: Status
+    kind: SubmissionActivityKind
+    status: SubmissionActivityStatus
     request_payload: Optional[clinvar_api_models.SubmissionContainer]
     request_timestamp: Optional[datetime.datetime]
-    response_status: Optional[Status]
     response_payload: Union[
         ResponseMessage,
         clinvar_api_models.Created,

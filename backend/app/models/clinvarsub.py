@@ -6,7 +6,17 @@ from datetime import datetime
 
 import pydantic  # noqa
 from fastapi_users_db_sqlalchemy.generics import GUID
-from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String, UniqueConstraint
+from sqlalchemy import (
+    JSON,
+    Column,
+    DateTime,
+    Enum,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -47,7 +57,7 @@ class SubmittingOrg(AsyncAttrs, Base):
 
 
 @enum.unique
-class Presence(enum.Enum):
+class VariantPresence(enum.Enum):
     """Status of a variant in ClinVar."""
 
     #: Variant is absent from ClinVar.
@@ -57,23 +67,45 @@ class Presence(enum.Enum):
 
 
 @enum.unique
-class Status(enum.Enum):
-    """Status of a variant submission to ClinVar."""
+class SubmissionThreadStatus(enum.Enum):
+    """Status of a :ref:`SubmissionThread`.
 
-    #: Initial status, user can edit and create new entry.
+    A thread starts out being in initial state while being edit by the
+    user.  It is then submitted into the work queue together with an
+    initial activity where it is waiting to be processed.  It is then
+    worked on in the form of activities and ends up being complete or
+    failed.  If the latest activity runs into a timeout (e.g., worker
+    death) then this is reflected on the thread as well.
+    """
+
+    #: Initial state while being edited by the user.
     INITIAL = "initial"
-    #: Has been flagged for submission, to be picked up by the celery task.
-    SUBMITTED = "submitted"
-    #: Submission is in progress, user has to wait.
-    IN_PROGRESS = "in_progress"
-    #: Submission is awaiting processing by ClinVar, user has to wait.
+    #: Waiting in the queue to be picked up by the worker.
     WAITING = "waiting"
-    #: Submission is complete, user can edit and create new entry.
-    COMPLETE = "complete"
-    #: Submission failed, user can edit and create new entry.
+    #: At least one activity has been picked up by the worker and
+    #: there is at least one activity that is not complete yet.
+    IN_PROGRESS = "in_progress"
+    #: The submission thread has been processed with final result
+    #: of success.
+    SUCCESS = "success"
+    #: The submission thread has terminated with final result of failure.
     FAILED = "failed"
-    #: Failed because of a timeout.
-    TIMEOUT = "timeout"
+
+    def is_initial(self):
+        """Return whether the status is initial."""
+        return self is SubmissionThreadStatus.INITIAL
+
+    def is_waiting(self):
+        """Return whether the status is waiting."""
+        return self is SubmissionThreadStatus.WAITING
+
+    def is_in_progress(self):
+        """Return whether the status is in progress."""
+        return self is SubmissionThreadStatus.IN_PROGRESS
+
+    def is_terminal(self):
+        """Return whether the status is terminal."""
+        return self in (SubmissionThreadStatus.SUCCESS, SubmissionThreadStatus.FAILED)
 
 
 class SubmissionThread(AsyncAttrs, Base):
@@ -113,15 +145,15 @@ class SubmissionThread(AsyncAttrs, Base):
     #: Effective SCV identifier.
     effective_scv = Column(String(32), nullable=True)
     #: Effective presence.
-    effective_presence: Column[Presence] = Column(Enum(Presence), nullable=True)
+    effective_presence: Column[VariantPresence] = Column(Enum(VariantPresence), nullable=True)
     #: Desired presence.
-    desired_presence: Column[Presence] = Column(Enum(Presence), nullable=False)
+    desired_presence: Column[VariantPresence] = Column(Enum(VariantPresence), nullable=False)
     #: Status of the submission.
-    status: Column[Status] = Column(Enum(Status), nullable=False)
+    status: Column[SubmissionThreadStatus] = Column(Enum(SubmissionThreadStatus), nullable=False)
 
 
 @enum.unique
-class ActivityKind(enum.Enum):
+class SubmissionActivityKind(enum.Enum):
     """Type of the :ref:`SubmissionActivity`."""
 
     #: Retrieve the currently submitted data from ClinVar.
@@ -144,6 +176,49 @@ class ResponseMessage(pydantic.BaseModel):
     text: str
 
 
+@enum.unique
+class SubmissionActivityStatus(enum.Enum):
+    """Status of a :ref:`SubmissionActivity`.
+
+    An activity starts out waiting in the queue to be picked up by the
+    worker, goes on into being processed, and ends up being complete
+    or failed.  An activity can also end up being in a timeout state.
+    """
+
+    #: Waiting in the queue to be picked up by the worker.
+    WAITING = "waiting"
+    #: Activity is in progress.
+    IN_PROGRESS = "in_progress"
+    #: Activity is complete with result success.
+    COMPLETE_SUCCESS = "complete_success"
+    #: Activity is complete with result "submission failure".
+    COMPLETE_FAILURE = "complete_failure"
+    #: Activity is complete with result "submission in progress".
+    COMPLETE_IN_PROGRESS = "complete_in_progress"
+    #: Activity failed.
+    FAILED = "failed"
+    #: Activity failed because of a timeout.
+    TIMEOUT = "timeout"
+
+    def is_waiting(self):
+        """Return whether the status is waiting."""
+        return self is SubmissionActivityStatus.WAITING
+
+    def is_in_progress(self):
+        """Return whether the status is in progress."""
+        return self is SubmissionActivityStatus.IN_PROGRESS
+
+    def is_terminal(self):
+        """Return whether the status is terminal."""
+        return self in (
+            SubmissionActivityStatus.COMPLETE_SUCCESS,
+            SubmissionActivityStatus.COMPLETE_FAILURE,
+            SubmissionActivityStatus.COMPLETE_IN_PROGRESS,
+            SubmissionActivityStatus.FAILED,
+            SubmissionActivityStatus.TIMEOUT,
+        )
+
+
 class SubmissionActivity(AsyncAttrs, Base):
     """One entry in a :ref:`SubmissionThread`.
 
@@ -164,9 +239,11 @@ class SubmissionActivity(AsyncAttrs, Base):
         GUID, ForeignKey("clinvarsubthread.id", ondelete="CASCADE"), nullable=False
     )
     #: Kind of the activity.
-    kind: Column[ActivityKind] = Column(Enum(ActivityKind), nullable=False)
+    kind: Column[SubmissionActivityKind] = Column(Enum(SubmissionActivityKind), nullable=False)
     #: Status of the activity.
-    status: Column[Status] = Column(Enum(Status), nullable=False)
+    status: Column[SubmissionActivityStatus] = Column(
+        Enum(SubmissionActivityStatus), nullable=False
+    )
     #: Request payload.
     request_payload = Column(JSON, nullable=True)
     #: Timestamp of the request.
@@ -175,8 +252,6 @@ class SubmissionActivity(AsyncAttrs, Base):
         DateTime,
         nullable=True,
     )
-    #: Status of the response.
-    response_status: Column[Status] = Column(Enum(Status), nullable=True)
     #: Response payload.
     response_payload = Column(JSON, nullable=True)
     #: Timestamp of the response.

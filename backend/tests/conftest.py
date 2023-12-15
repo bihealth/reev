@@ -22,12 +22,13 @@ from app.db import init_db, session
 from app.db.base import Base
 from app.main import app
 from app.models.clinvarsub import (
-    ActivityKind,
-    Presence,
-    Status,
     SubmissionActivity,
+    SubmissionActivityKind,
+    SubmissionActivityStatus,
     SubmissionThread,
+    SubmissionThreadStatus,
     SubmittingOrg,
+    VariantPresence,
 )
 from app.models.user import User
 from app.schemas.clinvarsub import (
@@ -181,8 +182,8 @@ async def submittingorg(
 def submissionthread_create(submittingorg: SubmittingOrg) -> SubmissionThreadCreate:
     """Create a new schema object only."""
     return SubmissionThreadCreate(
-        desired_presence=Presence.PRESENT,
-        status=Status.INITIAL,
+        desired_presence=VariantPresence.PRESENT,
+        status=SubmissionThreadStatus.INITIAL,
         submittingorg_id=submittingorg.id,
         primary_variant_desc="grch37-1-1000-A-G",
     )
@@ -204,11 +205,10 @@ def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionA
     """Create a new schema object only."""
     return SubmissionActivityCreate(
         submissionthread_id=submissionthread.id,
-        kind=ActivityKind.CREATE,
-        status=Status.INITIAL,
+        kind=SubmissionActivityKind.CREATE,
+        status=SubmissionActivityStatus.WAITING,
         request_payload=None,
         request_timestamp=None,
-        response_status=None,
         response_payload=None,
         response_timestamp=None,
     )

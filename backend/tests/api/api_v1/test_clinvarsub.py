@@ -405,9 +405,8 @@ async def test_list_submissionactivities(
                     "request_payload": None,
                     "request_timestamp": None,
                     "response_payload": None,
-                    "response_status": None,
                     "response_timestamp": None,
-                    "status": "initial",
+                    "status": "waiting",
                     "submissionthread_id": str(submissionthread.id),
                 }
             ],
@@ -456,9 +455,8 @@ async def test_create_submissionactivity(
             "request_payload": None,
             "request_timestamp": None,
             "response_payload": None,
-            "response_status": None,
             "response_timestamp": None,
-            "status": "initial",
+            "status": "waiting",
             "submissionthread_id": str(submissionthread.id),
         }
     else:

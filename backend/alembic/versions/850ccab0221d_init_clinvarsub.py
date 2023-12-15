@@ -1,8 +1,8 @@
-"""empty message
+"""initialize clinvarsub tables
 
-Revision ID: 7b8f5e250824
+Revision ID: 850ccab0221d
 Revises: d10fec1c88fc
-Create Date: 2023-12-14 15:28:19.317317+01:00
+Create Date: 2023-12-15 12:32:49.537941+01:00
 
 """
 import fastapi_users_db_sqlalchemy.generics  # noqa
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.
-revision = "7b8f5e250824"
+revision = "850ccab0221d"
 down_revision = "d10fec1c88fc"
 branch_labels = None
 depends_on = None
@@ -40,22 +40,22 @@ def upgrade():
         sa.Column("primary_variant_desc", sa.String(length=1024), nullable=False),
         sa.Column("effective_scv", sa.String(length=32), nullable=True),
         sa.Column(
-            "effective_presence", sa.Enum("ABSENT", "PRESENT", name="presence"), nullable=True
+            "effective_presence",
+            sa.Enum("ABSENT", "PRESENT", name="variantpresence"),
+            nullable=True,
         ),
         sa.Column(
-            "desired_presence", sa.Enum("ABSENT", "PRESENT", name="presence"), nullable=False
+            "desired_presence", sa.Enum("ABSENT", "PRESENT", name="variantpresence"), nullable=False
         ),
         sa.Column(
             "status",
             sa.Enum(
                 "INITIAL",
-                "SUBMITTED",
-                "IN_PROGRESS",
                 "WAITING",
-                "COMPLETE",
+                "IN_PROGRESS",
+                "SUCCESS",
                 "FAILED",
-                "TIMEOUT",
-                name="status",
+                name="submissionthreadstatus",
             ),
             nullable=False,
         ),
@@ -76,39 +76,25 @@ def upgrade():
         ),
         sa.Column(
             "kind",
-            sa.Enum("RETRIEVE", "CREATE", "UPDATE", "DELETE", name="activitykind"),
+            sa.Enum("RETRIEVE", "CREATE", "UPDATE", "DELETE", name="submissionactivitykind"),
             nullable=False,
         ),
         sa.Column(
             "status",
             sa.Enum(
-                "INITIAL",
-                "SUBMITTED",
-                "IN_PROGRESS",
                 "WAITING",
-                "COMPLETE",
+                "IN_PROGRESS",
+                "COMPLETE_SUCCESS",
+                "COMPLETE_FAILURE",
+                "COMPLETE_IN_PROGRESS",
                 "FAILED",
                 "TIMEOUT",
-                name="status",
+                name="submissionactivitystatus",
             ),
             nullable=False,
         ),
         sa.Column("request_payload", sa.JSON(), nullable=True),
         sa.Column("request_timestamp", sa.DateTime(), nullable=True),
-        sa.Column(
-            "response_status",
-            sa.Enum(
-                "INITIAL",
-                "SUBMITTED",
-                "IN_PROGRESS",
-                "WAITING",
-                "COMPLETE",
-                "FAILED",
-                "TIMEOUT",
-                name="status",
-            ),
-            nullable=True,
-        ),
         sa.Column("response_payload", sa.JSON(), nullable=True),
         sa.Column("response_timestamp", sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(
@@ -131,6 +117,7 @@ def downgrade():
     op.drop_table("clinvarsubuserorg")
     # ### end Alembic commands ###
 
-    sa.Enum(name="activitykind").drop(op.get_bind(), checkfirst=False)
-    sa.Enum(name="presence").drop(op.get_bind(), checkfirst=False)
-    sa.Enum(name="status").drop(op.get_bind(), checkfirst=False)
+    sa.Enum(name="submissionthreadstatus").drop(op.get_bind(), checkfirst=False)
+    sa.Enum(name="variantpresence").drop(op.get_bind(), checkfirst=False)
+    sa.Enum(name="submissionactivitystatus").drop(op.get_bind(), checkfirst=False)
+    sa.Enum(name="submissionactivitykind").drop(op.get_bind(), checkfirst=False)
