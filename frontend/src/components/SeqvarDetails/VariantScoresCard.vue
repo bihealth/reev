@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
 import Conservation from '@/components/SeqvarDetails/VariantScoresCard/UcscConservation.vue'
@@ -29,20 +29,18 @@ const bestOf = (obj: any, keys: string[]) => {
   }
 }
 
+const expandSpliceAi = ref(false)
+const expandMMSplice = ref(false)
+
+const SpliceAiKeys = ['SpliceAI-acc-gain', 'SpliceAi-acc-loss', 'SpliceAi-don-gain', 'SpliceAi-don-loss']
+const MMSpliceKeys = ['MMSp_acceptorIntron','MMSp_acceptor','MMSp_exon','MMSp_donor','MMSp_donorIntron']
+
 const bestSpliceAi = computed(() => {
-  const keys = ['SpliceAI-acc-gain', 'SpliceAi-acc-loss', 'SpliceAi-don-gain', 'SpliceAi-don-loss']
-  return bestOf(props.varAnnos?.cadd, keys)
+  return bestOf(props.varAnnos?.cadd, SpliceAiKeys)
 })
 
 const bestMMSplice = computed(() => {
-  const keys = [
-    'MMSp_acceptorIntron',
-    'MMSp_acceptor',
-    'MMSp_exon',
-    'MMSp_donor',
-    'MMSp_donorIntron'
-  ]
-  return bestOf(props.varAnnos?.cadd, keys)
+  return bestOf(props.varAnnos?.cadd, MMSpliceKeys)
 })
 
 const decodeMultiDbnsfp = (s: string): number | null => {
@@ -332,7 +330,36 @@ const polyphenScore = computed((): number | null =>
               </td>
             </tr>
 
-            <tr>
+            <div v-if="expandMMSplice">
+              <tr>
+                <th class="align-middle">MMSplice</th>
+                <template v-if="bestMMSplice.key && bestMMSplice.score !== Infinity">
+                  <td class="text-center align-middle">
+                    {{ bestMMSplice.score }}
+                    <span class="text-muted ml-2">({{ bestMMSplice.key }})</span>
+                  </td>
+                  <td class="text-center align-middle">
+                    <ScoreDisplay
+                      :range-lower="0"
+                      :range-upper="1"
+                      :height="12"
+                      font-size="10px"
+                      :value="bestMMSplice.score"
+                    />
+                  </td>
+                  <td class="text-center align-middle">&mdash;</td>
+                </template>
+                <td v-else colspan="4" class="text-muted text-center font-italic">
+                  MMSplice prediction not available.
+                </td>
+              </tr>
+              <tr v-for="key in MMSpliceKeys" :key="key">
+                <th class="text-center align-middle">{{ key }}</th>
+                <td>{{ props.varAnnos?.cadd[key] }}</td>
+              </tr>
+            </div>
+
+            <tr v-else>
               <th class="align-middle">MMSplice</th>
               <template v-if="bestMMSplice.key && bestMMSplice.score !== Infinity">
                 <td class="text-center align-middle">
