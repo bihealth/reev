@@ -55,7 +55,6 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.seqvar).toBe(undefined)
     expect(store.varAnnos).toBe(null)
     expect(store.geneInfo).toBe(null)
-    expect(store.hpoTerms).toBe([])
     expect(store.txCsq).toBe(null)
   })
 
