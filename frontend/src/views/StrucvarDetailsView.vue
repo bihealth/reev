@@ -213,6 +213,22 @@ const svLocus = (strucvar: Strucvar | undefined): string | undefined => {
   return locus
 }
 
+/**
+ * Jump to the locus in the local IGV.
+ */
+const jumpToLocus = async () => {
+  const chrPrefixed = strucvar.value?.chrom.startsWith('chr')
+    ? strucvar.value?.chrom
+    : `chr${strucvar.value?.chrom}`
+  await fetch(
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${strucvar.value?.start}-${strucvar.value?.stop}`
+  ).catch((e) => {
+    const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
+    alert(msg)
+    console.error(msg, e)
+  })
+}
+
 // When the component is mounted or the search term is changed through
 // the router then we need to fetch the variant information from the backend
 // through the store.
@@ -271,6 +287,17 @@ const SECTIONS: { [key: string]: Section[] } = {
             <div v-if="strucvarInfoStore.storeState == StoreState.Active">
               <v-list v-model:opened="openedSection" density="compact" rounded="lg">
                 <BookmarkListItem :id="idForBookmark" type="strucvar" />
+
+                <!-- Jump to IGV -->
+                <v-btn
+                  variant="outlined"
+                  color=""
+                  class="ma-2"
+                  prepend-icon="mdi-launch"
+                  @click.prevent="jumpToLocus()"
+                >
+                  Jump in Local IGV
+                </v-btn>
 
                 <v-list-item
                   v-for="section in SECTIONS.TOP"
