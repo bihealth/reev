@@ -134,7 +134,7 @@ const SECTIONS: Section[] = [
   <v-app>
     <PageHeader />
     <v-main :class="mainBackgroundColor">
-      <v-container>
+      <v-container fluid>
         <v-row>
           <v-col cols="2">
             <div v-if="geneInfoStore.storeState == StoreState.Active">
