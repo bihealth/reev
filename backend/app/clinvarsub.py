@@ -359,7 +359,7 @@ class _HandlerWithSession:
 
 
 class SubmissionActivityHandler:
-    """Broker for performing ClinVar submission activities."""
+    """Facade class for performing ClinVar submission activities."""
 
     def __init__(self, submissionactivity_id: str, engine: typing.Optional[AsyncEngine] = None):
         """Initialise the handler.
