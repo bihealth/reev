@@ -238,8 +238,8 @@ const SECTIONS: { [key: string]: Section[] } = {
     { id: 'seqvar-clinsig', title: 'Clinical Significance' },
     { id: 'seqvar-csq', title: 'Consequences' },
     { id: 'seqvar-clinvar', title: 'ClinVar' },
-    { id: 'seqvar-freqs', title: 'Frequencies' },
     { id: 'seqvar-scores', title: 'Scores' },
+    { id: 'seqvar-freqs', title: 'Frequencies' },
     { id: 'seqvar-tools', title: 'Tools' },
     { id: 'seqvar-ga4ghbeacon', title: 'Beacon Network' },
     { id: 'seqvar-variantvalidator', title: 'VariantValidator' }
@@ -399,14 +399,14 @@ const SECTIONS: { [key: string]: Section[] } = {
               <div id="seqvar-clinvar" class="mt-3">
                 <VariantDetailsClinvar :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
               </div>
+              <div id="seqvar-scores" class="mt-3">
+                <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
+              </div>
               <div id="seqvar-freqs" class="mt-3">
                 <VariantDetailsFreqs
                   :seqvar="seqvarInfoStore.seqvar"
                   :var-annos="seqvarInfoStore.varAnnos"
                 />
-              </div>
-              <div id="seqvar-scores" class="mt-3">
-                <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
               </div>
               <div id="seqvar-tools" class="mt-3">
                 <VariantToolsCard
