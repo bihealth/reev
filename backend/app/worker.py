@@ -28,7 +28,7 @@ def handle_submission_activity(submissionactivity: str):
     logger.debug("SubmissionActivityHandler(%s) - START", submissionactivity)
 
     # We must import the handler class locally here to prevent circular imports.
-    from app.clinvarsub import SubmissionActivityHandler
+    from app.clinvarsub import SubmissionActivityHandler, SubmissionException
 
     async def inner():
         """Inner async function so we can run everything for the task in the
@@ -36,6 +36,9 @@ def handle_submission_activity(submissionactivity: str):
 
         For example, we need our own engine here because the global one is
         in a different event loop when run in Celery.
+
+        All exceptions are caught and we log an error when handling them but
+        swallow them otherwise so the Celery task doesn't fail.
         """
         # Need our own engine so this is in our local event loop.
         engine = create_async_engine(
@@ -43,7 +46,12 @@ def handle_submission_activity(submissionactivity: str):
             pool_pre_ping=True,
             json_serializer=json_serializer,
         )
-        await SubmissionActivityHandler(submissionactivity, engine).run()
+        try:
+            await SubmissionActivityHandler(submissionactivity, engine).run()
+        except SubmissionException as e:
+            logger.error("Caught known exception of type %s: %s", type(e), e)
+        except Exception as e:
+            logger.error("Caught unknown exception of type %s: %s", type(e), e)
 
     # Run the inner async function and block until this is done.
     asyncio.run(inner())

@@ -156,10 +156,10 @@ class SubmissionThread(AsyncAttrs, Base):
 class SubmissionActivityKind(enum.Enum):
     """Type of the :ref:`SubmissionActivity`."""
 
-    #: Retrieve the currently submitted data from ClinVar.
-    RETRIEVE = "retrieve"
     #: Create a new submission.
     CREATE = "create"
+    #: Retrieve the information from an ongoing submission.
+    RETRIEVE = "retrieve"
     #: Update an existing submission.
     UPDATE = "update"
     #: Delete an existing submission.

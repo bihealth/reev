@@ -5,18 +5,15 @@ import datetime
 import logging
 import typing
 import uuid
-import xml.etree.ElementTree as ET
 
 import clinvar_api.client as clinvar_api_client
-import httpx
 from clinvar_api.models import Created
 from pydantic import SecretStr
-from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine, AsyncSession, AsyncTransaction
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from app import crud
 from app.core.config import settings
-from app.db import session
+from app.db import session as app_db_session
 from app.models.clinvarsub import (
     ResponseMessage,
     SubmissionActivity,
@@ -40,86 +37,150 @@ logger = logging.getLogger(__name__)
 RETRY_WAIT_SECONDS = 10 if settings.DEBUG else 10 * 60
 
 
-class SubmissionActivityHandler:
-    """Broker for performing ClinVar submission activities."""
+class SubmissionException(Exception):
+    """Base class for problems with the submission."""
 
-    def __init__(self, submissionactivity_id: str, engine: typing.Optional[AsyncEngine] = None):
-        """Initialise the handler.
+    def __init__(self, msg: str, *args, **kwargs):
+        super().__init__(msg, *args, **kwargs)
+        logger.warning(msg)
 
-        :param submissionactivity_id: String with UUID of the activity to process.
-        :param engine:
-            SQLAlchemy engine to use (for dependency injection), defaults to
-            ``app.db.session.engine``.
+
+class MissingRecord(SubmissionException):
+    """Exception on missing activity / thread."""
+
+
+class InvalidState(SubmissionException):
+    """Exception on invalid state of activity / thread."""
+
+
+class DatabaseProblem(SubmissionException):
+    """Exception on database problem."""
+
+
+class _KindHandlerBase:
+    """Base class for per-kind handler.
+
+    The main purpose of the existance is to encapsulate the session,
+    activity, and thread.
+    """
+
+    def __init__(
+        self, session: AsyncSession, activity: SubmissionActivity, thread: SubmissionThread
+    ):
+        """Initialise the handler."""
+        #: The session to use.
+        self.session = session
+        #: The activity to process.
+        self.activity = activity
+        #: The activity's thread.
+        self.thread = thread
+
+    async def run(self) -> None:
+        """perform the handler's work."""
+        raise NotImplementedError
+
+    async def make_clinvar_client(self) -> clinvar_api_client.AsyncClient:
+        """Construct and return a ClinVar API client."""
+        submittingorg_db = await crud.submittingorg.get(
+            self.session, id=await self.thread.awaitable_attrs.submittingorg_id
+        )
+        if not submittingorg_db:
+            raise ValueError("No submitting org found")
+        submittingorg = SubmittingOrgInDb.model_validate(submittingorg_db)
+        auth_token = SecretStr(submittingorg.clinvar_api_token)
+        clinvar_config = clinvar_api_client.Config(
+            auth_token=auth_token,
+            use_testing=not settings.CLINVAR_USE_PRODUCTION,
+        )
+        return clinvar_api_client.AsyncClient(clinvar_config)
+
+    async def schedule_next_retrieve(self) -> None:
+        """Schedule the next retrieval of the SCV."""
+        logger.debug("creating new activity for next retrieval of %s", self.thread.id)
+        create_obj = SubmissionActivityCreate(
+            submissionthread_id=self.thread.id,
+            kind=SubmissionActivityKind.RETRIEVE,
+            status=SubmissionActivityStatus.WAITING,
+            request_payload=None,
+            request_timestamp=None,
+            response_payload=None,
+            response_timestamp=None,
+        )
+        activity_next = await crud.submissionactivity.create(self.session, obj_in=create_obj)
+        logger.debug("scheduling next execution in %f sec", RETRY_WAIT_SECONDS)
+        res = handle_submission_activity.apply_async(
+            args=(str(activity_next.id),), countdown=RETRY_WAIT_SECONDS
+        )
+        logger.debug("res = %s", res)
+
+
+class _CreateHandler(_KindHandlerBase):
+    """Handle CREATE events."""
+
+    async def run(self) -> None:
+        """Submit a new submission to ClinVar.
+
+        This will try to submit the already prepared payload to ClinVar and
+        store the response or store an error message.  In the case of a
+        successful post, the SCV can be parsed from the ``Created`` response.
+
+        A RETRIEVE action must be performed periodically to eventually
+        retrieve the effective SCV once ClinVar has finished processing.
         """
-        #: UUID of :ref:`SubmissionActivity` to process.
-        self.uuid = uuid.UUID(submissionactivity_id)
-        #: SQLAlchemy engine to use.
-        self.engine = engine or session.engine
+        logger.debug("handling submission to ClinVar")
+        activity = SubmissionActivityInDb.model_validate(self.activity)
+        logger.debug("activity: %s", activity.model_dump(mode="json"))
+        if not activity.request_payload:
+            raise ValueError("No request payload found in activity record")
+        clinvar_client = await self.make_clinvar_client()
+        request_timestamp = datetime.datetime.utcnow()
+        response: ResponseMessage | Created
+        try:
+            logger.debug("submitting payload to ClinVar")
+            response = await clinvar_client.submit_data(activity.request_payload)
+            logger.debug("response: %s", response.model_dump(mode="json"))
+            response_timestamp = datetime.datetime.utcnow()
+            activity_status = SubmissionActivityStatus.WAITING
+            thread_status = SubmissionThreadStatus.WAITING
+        except Exception as err:
+            logger.debug("submission failed: %s", err)
+            response = ResponseMessage(text=f"Submission failed: {err}")
+            response_timestamp = datetime.datetime.utcnow()
+            activity_status = SubmissionActivityStatus.FAILED
+            thread_status = SubmissionThreadStatus.FAILED
+        logger.debug(
+            "updating submission activity and thread; activity status=%s, thread_status=%s",
+            activity_status,
+            thread_status,
+        )
+        activity_new = await crud.submissionactivity.update(
+            self.session,
+            db_obj=self.activity,
+            obj_in={
+                "status": activity_status,
+                "request_timestamp": request_timestamp,
+                "response_timestamp": response_timestamp,
+                "response_payload": response.model_dump(mode="json"),
+            },
+        )
+        thread_new = await crud.submissionthread.update(
+            self.session, db_obj=self.thread, obj_in={"status": thread_status}
+        )
+        # wait for all attributes to be present
+        await asyncio.gather(activity_new.awaitable_attrs.id, thread_new.awaitable_attrs.id)
+        logger.debug(
+            "after update; thread=%s, activity=%s",
+            SubmissionThreadInDb.model_validate(thread_new).model_dump(mode="json"),
+            SubmissionActivityInDb.model_validate(activity_new).model_dump(mode="json"),
+        )
+        # Create activity for the next retrieval.
+        await self.schedule_next_retrieve()
 
-    async def run(self):
-        """Kick-off the submission activity handling."""
-        async with AsyncSession(self.engine) as session:
-            activity = await crud.submissionactivity.get(session, id=self.uuid)
-            if not activity:
-                logger.warning("No submission activity found for %s", self.uuid)
-                return
-            thread = await crud.submissionthread.get(session, id=activity.submissionthread_id)
-            if not thread:
-                logger.warning("Submission thread not found for %s", activity.submissionthread)
-                return
-            # Ensure that the thread and activity are in the correct state.
-            if activity.status != SubmissionActivityStatus.WAITING:
-                logger.warning("Activity status is not submitted: %s", activity.status)
-                return
-            if not thread.status.is_waiting() and not thread.status.is_in_progress():
-                logger.warning("Thread status is not waiting/in progress: %s", thread.status)
-                return
-            # Update the activity and thread status to IN_PROGRESS.
-            # import pdb; pdb.set_trace()
-            thread_new, activity_new = await self._update_status(
-                session,
-                thread,
-                activity,
-                SubmissionThreadStatus.IN_PROGRESS,
-                SubmissionActivityStatus.IN_PROGRESS,
-            )
-            # Now perform the actual handling.
-            # import pdb; pdb.set_trace()
-            # await self._dispatch_run(session, activity_new, thread_new)
-            try:
-                await self._dispatch_run(session, activity_new, thread_new)
-            except Exception as err:
-                # Update the activity and thread status to FAILED.
-                logger.debug("Marking activity and thread as failed: %s", err)
-                await self._update_status(
-                    session,
-                    thread,
-                    activity,
-                    SubmissionThreadStatus.FAILED,
-                    SubmissionActivityStatus.FAILED,
-                    err_msg=str(err),
-                )
-                raise  # XXX dev / debug only
 
-    async def _dispatch_run(
-        self, session: AsyncSession, activity: SubmissionActivity, thread: SubmissionThread
-    ):
-        """Dispatch the activity to the appropriate handler."""
-        if activity.kind == SubmissionActivityKind.RETRIEVE:
-            await self._handle_retrieve(session, activity, thread)
-        elif activity.kind == SubmissionActivityKind.CREATE:
-            # import pdb; pdb.set_trace()
-            await self._handle_create(session, activity, thread)
-        elif activity.kind == SubmissionActivityKind.UPDATE:
-            await self._handle_update(session, activity, thread)
-        elif activity.kind == SubmissionActivityKind.DELETE:
-            await self._handle_delete(session, activity, thread)
-        else:
-            raise ValueError(f"Unknown activity kind: {activity.kind}")
+class _RetrieveHandler(_KindHandlerBase):
+    """Handle RETRIEVE events."""
 
-    async def _handle_retrieve(
-        self, session: AsyncSession, activity: SubmissionActivity, thread: SubmissionThread
-    ):
+    async def run(self) -> None:
         """Attempt to retrieve the ClinVar status for a previous CREATE.
 
         This will first attempt to get the latest ``SubmissionActivity``
@@ -136,9 +197,10 @@ class SubmissionActivityHandler:
         logger.debug("handling retrieval of ClinVar status")
         # Find the corresponding CREATE activity.
         query = crud.submissionactivity.query_by_submissionthread(
-            submissionthread_id=await thread.awaitable_attrs.id, kind=SubmissionActivityKind.CREATE
+            submissionthread_id=await self.thread.awaitable_attrs.id,
+            kind=SubmissionActivityKind.CREATE,
         ).limit(1)
-        activity_create_db = (await session.execute(query)).scalars().first()
+        activity_create_db = (await self.session.execute(query)).scalars().first()
         if not activity_create_db:
             raise ValueError("No CREATE activity found")
         logger.debug("found CREATE activity: %s", activity_create_db)
@@ -149,7 +211,7 @@ class SubmissionActivityHandler:
         created = Created.model_validate(activity_create.response_payload)
         logger.debug("parsed created payload: %s", created)
         # Now retrieve the status from ClinVar and store it in the result.
-        clinvar_client = await self._clinvar_client(session, thread)
+        clinvar_client = await self.make_clinvar_client()
         request_timestamp = datetime.datetime.utcnow()
         response: ResponseMessage | clinvar_api_client.RetrieveStatusResult
         try:
@@ -166,6 +228,7 @@ class SubmissionActivityHandler:
             # We could receive a response, so there has been no network error etc.
             # We need to look into the response itself to see if the ClinVar server
             # is still working on it, is done, or found an error.
+            assert isinstance(response, clinvar_api_client.RetrieveStatusResult)
             status_str = response.status.actions[0].status
             if status_str in ("submitted", "processing"):
                 # ClinVar is still working on it, so we need to try again later.
@@ -189,8 +252,8 @@ class SubmissionActivityHandler:
         # Update the database records.
         logger.debug("updating activity status to %s", activity_status)
         await crud.submissionactivity.update(
-            session,
-            db_obj=activity,
+            self.session,
+            db_obj=self.activity,
             obj_in={
                 "status": activity_status,
                 "request_timestamp": request_timestamp,
@@ -199,125 +262,72 @@ class SubmissionActivityHandler:
             },
         )
         logger.debug("updating thread status to %s", thread_status)
-        await crud.submissionthread.update(session, db_obj=thread, obj_in={"status": thread_status})
+        await crud.submissionthread.update(
+            self.session, db_obj=self.thread, obj_in={"status": thread_status}
+        )
         # When still waiting, create activity for the next retrieval.
         if thread_status == SubmissionThreadStatus.WAITING:
-            await self._schedule_next_retrieve(session, thread)
+            await self.schedule_next_retrieve()
         else:
             logger.debug("retrieval complete, no further job")
 
-    async def _handle_create(
-        self, session: AsyncSession, activity_db: SubmissionActivity, thread: SubmissionThread
-    ):
-        """Submit a new submission to ClinVar.
 
-        This will try to submit the already prepared payload to ClinVar and
-        store the response or store an error message.  In the case of a
-        successful post, the SCV can be parsed from the ``Created`` response.
+class _HandlerWithSession:
+    """Used by :ref:`SubmissionActivityHandler` once a session has been established."""
 
-        A RETRIEVE action must be performed periodically to eventually
-        retrieve the effective SCV once ClinVar has finished processing.
+    @classmethod
+    async def create(cls, session: AsyncSession, activity_uuid: str) -> "_HandlerWithSession":
+        """Create a new instance.
+
+        This has been put into a classmethod so we can have it async.
+
+        :raises MissingRecord: If the activity or thread is not found.
+        :raises InvalidState: If the activity or thread is in the wrong state.
         """
-        logger.debug("handling submission to ClinVar")
-        activity = SubmissionActivityInDb.model_validate(activity_db)
-        logger.debug("activity: %s", activity.model_dump(mode="json"))
-        if not activity.request_payload:
-            raise ValueError("No request payload found in activity record")
-        # import pdb; pdb.set_trace()
-        clinvar_client = await self._clinvar_client(session, thread)
-        request_timestamp = datetime.datetime.utcnow()
-        response: ResponseMessage | Created
-        try:
-            logger.debug("submitting payload to ClinVar")
-            response = await clinvar_client.submit_data(activity.request_payload)
-            logger.debug("response: %s", response.model_dump(mode="json"))
-            response_timestamp = datetime.datetime.utcnow()
-            activity_status = SubmissionActivityStatus.WAITING
-            thread_status = SubmissionThreadStatus.WAITING
-        except Exception as err:
-            logger.debug("submission failed: %s", err)
-            response = ResponseMessage(text=f"Submission failed: {err}")
-            response_timestamp = datetime.datetime.utcnow()
-            activity_status = SubmissionActivityStatus.FAILED
-            thread_status = SubmissionThreadStatus.FAILED
-        logger.debug(
-            "updating submission activity and thread; activity status=%s, thread_status=%s",
-            activity_status,
-            thread_status,
-        )
-        activity_new = await crud.submissionactivity.update(
-            session,
-            db_obj=activity_db,
-            obj_in={
-                "status": activity_status,
-                "request_timestamp": request_timestamp,
-                "response_timestamp": response_timestamp,
-                "response_payload": response.model_dump(mode="json"),
-            },
-        )
-        thread_new = await crud.submissionthread.update(
-            session, db_obj=thread, obj_in={"status": thread_status}
-        )
-        # wait for all attributes to be present
-        await asyncio.gather(activity_new.awaitable_attrs.id, thread_new.awaitable_attrs.id)
-        logger.debug(
-            "activity after update: %s",
-            SubmissionActivityInDb.model_validate(activity_new).model_dump(mode="json"),
-        )
-        logger.debug(
-            "thread after update: %s",
-            SubmissionThreadInDb.model_validate(thread_new).model_dump(mode="json"),
-        )
-        # Create activity for the next retrieval.
-        await self._schedule_next_retrieve(session, thread)
+        # Fetch activity and thread / verify that they are present.
+        activity = await crud.submissionactivity.get(session, id=activity_uuid)
+        if not activity:
+            raise MissingRecord(f"No submission activity found for {activity_uuid}")
+        thread = await crud.submissionthread.get(session, id=activity.submissionthread_id)
+        if not thread:
+            raise MissingRecord(f"Submission thread not found for {activity.submissionthread_id}")
+        # Ensure that the thread and activity are in the correct state.
+        if activity.status != SubmissionActivityStatus.WAITING:
+            raise InvalidState(f"Activity status is not submitted: {activity.status}")
+        if not thread.status.is_waiting() and not thread.status.is_in_progress():
+            raise InvalidState(f"Thread status is not waiting/in progress: {thread.status}")
+        # Actually perform the creation.
+        return cls(session, activity, thread)
 
-    async def _clinvar_client(
-        self, session: AsyncSession, thread: SubmissionThread
-    ) -> clinvar_api_client.AsyncClient:
-        submittingorg_db = await crud.submittingorg.get(
-            session, id=await thread.awaitable_attrs.submittingorg_id
-        )
-        if not submittingorg_db:
-            raise ValueError("No submitting org found")
-        submittingorg = SubmittingOrgInDb.model_validate(submittingorg_db)
-        auth_token = SecretStr(submittingorg.clinvar_api_token)
-        clinvar_config = clinvar_api_client.Config(
-            auth_token=auth_token,
-            use_testing=not settings.CLINVAR_USE_PRODUCTION,
-        )
-        return clinvar_api_client.AsyncClient(clinvar_config)
-
-    async def _handle_update(
+    def __init__(
         self, session: AsyncSession, activity: SubmissionActivity, thread: SubmissionThread
     ):
-        """Handle an update activity."""
-        raise NotImplementedError
+        """Initialise the handler."""
+        #: The session to use.
+        self.session = session
+        #: The activity to process.
+        self.activity = activity
+        #: The activity's thread.
+        self.thread = thread
 
-    async def _handle_delete(
-        self, session: AsyncSession, activity: SubmissionActivity, thread: SubmissionThread
-    ):
-        """Handle a delete activity."""
-        raise NotImplementedError
-
-    async def _update_status(
+    async def update_status(
         self,
-        session: AsyncSession,
-        thread: SubmissionThread,
-        activity: SubmissionActivity,
         thread_status: SubmissionThreadStatus,
         activity_status: SubmissionActivityStatus,
         err_msg: typing.Optional[str] = None,
-    ) -> typing.Tuple[SubmissionThread, SubmissionActivity]:
-        """Update the status of a thread and activity.
+    ):
+        """Update the status of a ``self.thread`` and ``self.activity``.
 
         In the future, this must be done in a transaction.
+
+        :param thread_status: The new thread status.
+        :param activity_status: The new activity status.
+        :raises DatabaseProblem: If there is a problem with the database.
         """
         try:
-            # import pdb; pdb.set_trace()
             thread_new = await crud.submissionthread.update(
-                session, db_obj=thread, obj_in={"status": thread_status}
+                self.session, db_obj=self.thread, obj_in={"status": thread_status}
             )
-            # import pdb; pdb.set_trace()
             if activity_status == SubmissionActivityStatus.FAILED:
                 update = {
                     "status": SubmissionActivityStatus.FAILED,
@@ -329,29 +339,65 @@ class SubmissionActivityHandler:
             else:
                 update = {"status": activity_status}
             activity_new = await crud.submissionactivity.update(
-                session, db_obj=activity, obj_in=update
+                self.session, db_obj=self.activity, obj_in=update
             )
-            # import pdb; pdb.set_trace()
-            return thread_new, activity_new
+            self.thread = thread_new
+            self.activity = activity_new
         except Exception as err:
-            # import pdb; pdb.set_trace()
-            logger.error("Failed to update thread and/or activity status: %s", err)
-            return thread, activity
+            raise DatabaseProblem(f"Failed to update thread and/or activity status: {err}") from err
 
-    async def _schedule_next_retrieve(self, session: AsyncSession, thread: SubmissionThread):
-        logger.debug("creating new activity for next retrieval of %s", thread.id)
-        create_obj = SubmissionActivityCreate(
-            submissionthread_id=thread.id,
-            kind=SubmissionActivityKind.RETRIEVE,
-            status=SubmissionActivityStatus.WAITING,
-            request_payload=None,
-            request_timestamp=None,
-            response_payload=None,
-            response_timestamp=None,
-        )
-        activity_next = await crud.submissionactivity.create(session, obj_in=create_obj)
-        logger.debug("scheduling next execution in %f sec", RETRY_WAIT_SECONDS)
-        res = handle_submission_activity.apply_async(
-            args=(str(activity_next.id),), countdown=RETRY_WAIT_SECONDS
-        )
-        logger.debug("res = %s", res)
+    async def run(self) -> None:
+        """Dispatch the activity to the appropriate handler."""
+        handler: _KindHandlerBase
+        if self.activity.kind == SubmissionActivityKind.CREATE:
+            handler = _CreateHandler(self.session, self.activity, self.thread)
+        elif self.activity.kind == SubmissionActivityKind.RETRIEVE:
+            handler = _RetrieveHandler(self.session, self.activity, self.thread)
+        else:
+            raise ValueError(f"Unknown activity kind: {self.activity.kind}")
+        await handler.run()
+
+
+class SubmissionActivityHandler:
+    """Broker for performing ClinVar submission activities."""
+
+    def __init__(self, submissionactivity_id: str, engine: typing.Optional[AsyncEngine] = None):
+        """Initialise the handler.
+
+        :param submissionactivity_id: String with UUID of the activity to process.
+        :param engine:
+            SQLAlchemy engine to use (for dependency injection), defaults to
+            ``app.db.session.engine``.
+        """
+        #: UUID of :ref:`SubmissionActivity` to process.
+        self.uuid = uuid.UUID(submissionactivity_id)
+        #: SQLAlchemy engine to use.
+        self.engine = engine or app_db_session.engine
+
+    async def run(self):
+        """Kick-off the submission activity handling.
+
+        :raises MissingRecord: If the activity or thread is not found.
+        :raises InvalidState: If the activity or thread is in the wrong state.
+        :raises DatabaseProblem: If there is a problem with the database.
+        """
+        async with AsyncSession(self.engine) as session:
+            # Construct the actual handler for doing the work.  This may raise
+            # and we will let it bubble up.
+            inner = await _HandlerWithSession.create(session, self.uuid)
+            # Update the activity and thread status to IN_PROGRESS.
+            await inner.update_status(
+                SubmissionThreadStatus.IN_PROGRESS,
+                SubmissionActivityStatus.IN_PROGRESS,
+            )
+            # Now perform the actual processing.
+            try:
+                await inner.run()
+            except Exception as err:
+                # Update the activity and thread status to FAILED.
+                logger.debug("Marking activity and thread as failed: %s", err)
+                await self.update_status(
+                    SubmissionThreadStatus.FAILED,
+                    SubmissionActivityStatus.FAILED,
+                    err_msg=str(err),
+                )
