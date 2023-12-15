@@ -130,3 +130,7 @@ def downgrade():
     op.drop_index(op.f("ix_clinvarsubuserorg_id"), table_name="clinvarsubuserorg")
     op.drop_table("clinvarsubuserorg")
     # ### end Alembic commands ###
+
+    sa.Enum(name="activitykind").drop(op.get_bind(), checkfirst=False)
+    sa.Enum(name="presence").drop(op.get_bind(), checkfirst=False)
+    sa.Enum(name="status").drop(op.get_bind(), checkfirst=False)
