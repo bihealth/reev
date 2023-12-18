@@ -6,6 +6,9 @@ Tutorial
 
 .. _doc_tutorial_seqvar:
 
+In this tutorial, we will walk through the analysis of a sequence and a structural variant and how to use REEV to interpret it step by step.
+If you want to get a brief overview of REEV, have a look at the :ref:`quickstart <doc_quickstart>` section.
+
 -----------------
 Sequence Variants
 -----------------
