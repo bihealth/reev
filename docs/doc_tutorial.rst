@@ -57,28 +57,14 @@ Go for the variant on cDNA level providing the respective RefSeq transcript vari
 
     NM_000168.6(GLI3):c.1880A>C
 
-.. container:: half-width-container
 
-   .. figure:: img/tutorial/seqvar-sidebar.png
-      :width: 60%
-      :align: left
+which then brings us to REEV's gene and variant information.
+We will go through this step-by-step but if you want to jump to a specific information you can also use the overview and links on the left: 
 
-.. container:: half-width-container
+.. figure:: img/tutorial/seqvar-sidebar.png
+   :width: 20%
+   :align: center
 
-   which then brings us to REEV's gene and variant information.
-   We will go through this step-by-step but if you want to jump to a specific information you can also use the overview and links on the left: 
-
-.. raw:: html
-
-    <br></br><br></br>
-
-.. raw:: html
-
-    <br></br><br></br>
-
-.. raw:: html
-
-    <br></br><br></br>
    
 Let's start with a look at the gene information provided in the first box:
 
@@ -285,39 +271,26 @@ Let's see what REEV tells us on this structural variant.
 The overview shows us that this deletion affects the PAX9 gene and that this gene shows haploinsufficiency according to ClinGen, Decipher and RCNV scores as well as the gnomAD LOEUF score:
 
 .. figure:: img/tutorial/strucvar-gene-list.png
-   :width: 100%
+   :width: 75%
    :align: center
 
 So, just one affected gene - but a potential candidate!
 
 Note, that if we had a larger SV affecting multiple genes, REEV could help us prioritize that larger set of genes by sorting by different criteria using the sort by selection box on the right (1):
 
-.. container:: half-width-container
+For deletions we could sort the gene list by the different haploinsufficiency scores to only look at genes that likely do not tolerate a heterozygous deletion. 
+Vice versa, for duplications it would be helpful to sort the gene list by triplosensitivity scores.
 
-   .. figure:: img/tutorial/strucvar-gene-sort.png
-      :width: 100%
-      :align: left
-
-.. container:: half-width-container
-
-    For deletions we could sort the gene list by the different haploinsufficiency scores to only look at genes that likely do not tolerate a heterozygous deletion. 
-    Vice versa, for duplications it would be helpful to sort the gene list by triplosensitivity scores.
-
-.. raw:: html
-
-    <br></br><br></br>
-
-.. raw:: html
-
-    <br></br><br></br>
-
+.. figure:: img/tutorial/strucvar-gene-sort.png
+   :width: 20%
+   :align: center
 
 For our deletion we now know that the gene it affects is intolerant for heterozygous loss of function variants, so it could be potentially pathogenic. 
 But is it a known disease gene? If so, does the disease fit our proband's phenotype? 
 To answer this question, let's have a look on the gene overview and gene-phenotype-associations provided by REEV:
 
 .. figure:: img/tutorial/strucvar-gene-overview.png
-   :width: 100%
+   :width: 75%
    :align: center
 
 Those of you who started with the sequence variant tutorial already know this view - those of you who did not may find the detailed explanation in this respective section above.
