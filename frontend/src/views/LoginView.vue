@@ -99,6 +99,14 @@ onMounted(async () => {
             </v-card-text>
           </v-card>
 
+          <v-sheet class="mb-5 mt-5 pa-3 bg-grey-lighten-2">
+            By logging in, you agree to our
+            <router-link to="/info#terms-of-use">
+              terms of use
+              <small> <v-icon>mdi-arrow-right-circle-outline</v-icon> </small> </router-link
+            >.
+          </v-sheet>
+
           <v-card v-if="userStore.oauth2Providers.length > 0" class="mb-5 mt-5" variant="tonal">
             <v-card-title> Login with... </v-card-title>
             <v-card-text class="text-medium-emphasis text-caption mt-3">

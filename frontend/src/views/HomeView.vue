@@ -64,6 +64,13 @@ const mainBackgroundColor = computed(() => {
                 <a href="https://reev.readthedocs.io/en/latest/doc_tutorial.html" target="_blank">
                   tutorial
                   <small><v-icon>mdi-launch</v-icon></small> </a
+                >. REEV is free to use for all users (see
+                <router-link to="/info#terms-of-use">
+                  terms of use
+                  <small> <v-icon>mdi-arrow-right-circle-outline</v-icon> </small> </router-link
+                >). The software itself open source and can be found at
+                <a href="https://github.com/bihealth/reev" target="_blank">
+                  GitHub <small><v-icon>mdi-launch</v-icon></small> </a
                 >.
               </p>
             </v-sheet>
