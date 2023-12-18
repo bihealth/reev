@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
 import Conservation from '@/components/SeqvarDetails/VariantScoresCard/UcscConservation.vue'
@@ -29,20 +29,45 @@ const bestOf = (obj: any, keys: string[]) => {
   }
 }
 
+const expandSpliceAi = ref(false)
+const expandMMSplice = ref(false)
+
+const SpliceAiKeys = [
+  'SpliceAI-acc-gain',
+  'SpliceAi-acc-loss',
+  'SpliceAi-don-gain',
+  'SpliceAi-don-loss'
+]
+const MMSpliceKeys = [
+  'MMSp_acceptorIntron',
+  'MMSp_acceptor',
+  'MMSp_exon',
+  'MMSp_donor',
+  'MMSp_donorIntron'
+]
+
 const bestSpliceAi = computed(() => {
-  const keys = ['SpliceAI-acc-gain', 'SpliceAi-acc-loss', 'SpliceAi-don-gain', 'SpliceAi-don-loss']
-  return bestOf(props.varAnnos?.cadd, keys)
+  return bestOf(props.varAnnos?.cadd, SpliceAiKeys)
+})
+
+const allSpliceAi = computed(() => {
+  const res: any = {}
+  for (const key of SpliceAiKeys) {
+    res[key] = props.varAnnos?.cadd[key]
+  }
+  return res
 })
 
 const bestMMSplice = computed(() => {
-  const keys = [
-    'MMSp_acceptorIntron',
-    'MMSp_acceptor',
-    'MMSp_exon',
-    'MMSp_donor',
-    'MMSp_donorIntron'
-  ]
-  return bestOf(props.varAnnos?.cadd, keys)
+  return bestOf(props.varAnnos?.cadd, MMSpliceKeys)
+})
+
+const allMMSplice = computed(() => {
+  const res: any = {}
+  for (const key of MMSpliceKeys) {
+    res[key] = props.varAnnos?.cadd[key]
+  }
+  return res
 })
 
 const decodeMultiDbnsfp = (s: string): number | null => {
@@ -333,7 +358,22 @@ const polyphenScore = computed((): number | null =>
             </tr>
 
             <tr>
-              <th class="align-middle">MMSplice</th>
+              <th class="align-middle">
+                MMSplice
+                <!-- Toggle Button -->
+                <v-btn
+                  variant="outlined"
+                  size="30"
+                  color=""
+                  icon
+                  :disabled="!bestMMSplice.key || bestMMSplice.score === Infinity"
+                  @click="expandMMSplice = !expandMMSplice"
+                >
+                  <v-icon>
+                    {{ expandMMSplice ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
+                  </v-icon>
+                </v-btn>
+              </th>
               <template v-if="bestMMSplice.key && bestMMSplice.score !== Infinity">
                 <td class="text-center align-middle">
                   {{ bestMMSplice.score }}
@@ -354,6 +394,23 @@ const polyphenScore = computed((): number | null =>
                 MMSplice prediction not available.
               </td>
             </tr>
+
+            <template v-if="expandMMSplice">
+              <tr v-for="(score, index) in allMMSplice" :key="index">
+                <th class="text-center align-middle">{{ index }}</th>
+                <td>{{ score }}</td>
+                <td class="text-center align-middle">
+                  <ScoreDisplay
+                    :range-lower="0"
+                    :range-upper="1"
+                    :height="12"
+                    font-size="10px"
+                    :value="score"
+                  />
+                </td>
+                <td class="text-center align-middle">&mdash;</td>
+              </tr>
+            </template>
 
             <tr>
               <th class="align-middle">MPC</th>
@@ -605,7 +662,22 @@ const polyphenScore = computed((): number | null =>
             </tr>
 
             <tr>
-              <th class="align-middle">SpliceAI</th>
+              <th class="align-middle">
+                SpliceAI
+                <!-- Toggle Button -->
+                <v-btn
+                  variant="outlined"
+                  size="30"
+                  color=""
+                  icon
+                  :disabled="!bestSpliceAi.key || bestSpliceAi.score === Infinity"
+                  @click="expandSpliceAi = !expandSpliceAi"
+                >
+                  <v-icon>
+                    {{ expandSpliceAi ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
+                  </v-icon>
+                </v-btn>
+              </th>
               <template v-if="bestSpliceAi.key && bestSpliceAi.score !== Infinity">
                 <td class="text-center align-middle">
                   {{ bestSpliceAi.score }}
@@ -626,6 +698,23 @@ const polyphenScore = computed((): number | null =>
                 SpliceAI prediction not available.
               </td>
             </tr>
+
+            <template v-if="expandSpliceAi">
+              <tr v-for="(score, index) in allSpliceAi" :key="index">
+                <th class="text-center align-middle">{{ index }}</th>
+                <td>{{ score }}</td>
+                <td class="text-center align-middle">
+                  <ScoreDisplay
+                    :range-lower="0"
+                    :range-upper="1"
+                    :height="12"
+                    font-size="10px"
+                    :value="score"
+                  />
+                </td>
+                <td class="text-center align-middle">&mdash;</td>
+              </tr>
+            </template>
 
             <tr>
               <th class="align-middle">REVEL</th>
