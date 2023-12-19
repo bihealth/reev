@@ -36,6 +36,7 @@ from app.schemas.clinvarsub import (
     SubmissionThreadCreate,
     SubmittingOrgCreate,
 )
+from tests.utils import FREEZE_TIME
 
 if os.environ.get("SQLALCHEMY_DEBUG", "0") == "1":
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
@@ -174,7 +175,7 @@ async def submittingorg(
     db_session: AsyncSession, submittingorg_create: SubmittingOrgCreate
 ) -> SubmittingOrg:
     """Create a new database record (tests use isolated databases)."""
-    with freeze_time("2023-12-14T09:01:19.452062"):
+    with freeze_time(FREEZE_TIME):
         return await crud.submittingorg.create(session=db_session, obj_in=submittingorg_create)
 
 
@@ -194,7 +195,7 @@ async def submissionthread(
     db_session: AsyncSession, submissionthread_create: SubmissionThreadCreate
 ) -> SubmissionThread:
     """Create a new schema object only."""
-    with freeze_time("2023-12-14T09:01:19.452062"):
+    with freeze_time(FREEZE_TIME):
         return await crud.submissionthread.create(
             session=db_session, obj_in=submissionthread_create
         )
@@ -219,7 +220,7 @@ async def submissionactivity(
     db_session: AsyncSession, submissionactivity_create: SubmissionActivityCreate
 ) -> SubmissionActivity:
     """Create a new schema object only."""
-    with freeze_time("2023-12-14T09:01:19.452062"):
+    with freeze_time(FREEZE_TIME):
         return await crud.submissionactivity.create(
             session=db_session, obj_in=submissionactivity_create
         )

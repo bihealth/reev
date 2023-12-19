@@ -40,7 +40,7 @@ RETRY_WAIT_SECONDS = 10 if settings.DEBUG else 10 * 60
 class SubmissionException(Exception):
     """Base class for problems with the submission."""
 
-    def __init__(self, msg: str, *args, **kwargs):
+    def __init__(self, msg: str, *args, **kwargs):  # pragma: no cover
         super().__init__(msg, *args, **kwargs)
         logger.warning(msg)
 
@@ -75,7 +75,7 @@ class _KindHandlerBase:
         #: The activity's thread.
         self.thread = thread
 
-    async def run(self) -> None:
+    async def run(self) -> None:  # pragma: no cover
         """perform the handler's work."""
         raise NotImplementedError
 
@@ -84,7 +84,7 @@ class _KindHandlerBase:
         submittingorg_db = await crud.submittingorg.get(
             self.session, id=await self.thread.awaitable_attrs.submittingorg_id
         )
-        if not submittingorg_db:
+        if not submittingorg_db:  # pragma: no cover
             raise ValueError("No submitting org found")
         submittingorg = SubmittingOrgInDb.model_validate(submittingorg_db)
         auth_token = SecretStr(submittingorg.clinvar_api_token)
@@ -108,10 +108,9 @@ class _KindHandlerBase:
         )
         activity_next = await crud.submissionactivity.create(self.session, obj_in=create_obj)
         logger.debug("scheduling next execution in %f sec", RETRY_WAIT_SECONDS)
-        res = handle_submission_activity.apply_async(
+        handle_submission_activity.apply_async(
             args=(str(activity_next.id),), countdown=RETRY_WAIT_SECONDS
         )
-        logger.debug("res = %s", res)
 
 
 class _CreateHandler(_KindHandlerBase):
@@ -130,7 +129,7 @@ class _CreateHandler(_KindHandlerBase):
         logger.debug("handling submission to ClinVar")
         activity = SubmissionActivityInDb.model_validate(self.activity)
         logger.debug("activity: %s", activity.model_dump(mode="json"))
-        if not activity.request_payload:
+        if not activity.request_payload:  # pragma: no cover
             raise ValueError("No request payload found in activity record")
         clinvar_client = await self.make_clinvar_client()
         request_timestamp = datetime.datetime.utcnow()
@@ -173,8 +172,9 @@ class _CreateHandler(_KindHandlerBase):
             SubmissionThreadInDb.model_validate(thread_new).model_dump(mode="json"),
             SubmissionActivityInDb.model_validate(activity_new).model_dump(mode="json"),
         )
-        # Create activity for the next retrieval.
-        await self.schedule_next_retrieve()
+        # Create activity for the next retrieval unless failed.
+        if thread_status != SubmissionThreadStatus.FAILED:
+            await self.schedule_next_retrieve()
 
 
 class _RetrieveHandler(_KindHandlerBase):
@@ -276,7 +276,9 @@ class _HandlerWithSession:
     """Used by :ref:`SubmissionActivityHandler` once a session has been established."""
 
     @classmethod
-    async def create(cls, session: AsyncSession, activity_uuid: str) -> "_HandlerWithSession":
+    async def create(
+        cls, session: AsyncSession, activity_uuid: uuid.UUID | str
+    ) -> "_HandlerWithSession":
         """Create a new instance.
 
         This has been put into a classmethod so we can have it async.
@@ -286,15 +288,17 @@ class _HandlerWithSession:
         """
         # Fetch activity and thread / verify that they are present.
         activity = await crud.submissionactivity.get(session, id=activity_uuid)
-        if not activity:
+        if not activity:  # pragma: no cover
             raise MissingRecord(f"No submission activity found for {activity_uuid}")
         thread = await crud.submissionthread.get(session, id=activity.submissionthread_id)
-        if not thread:
+        if not thread:  # pragma: no cover
             raise MissingRecord(f"Submission thread not found for {activity.submissionthread_id}")
         # Ensure that the thread and activity are in the correct state.
-        if activity.status != SubmissionActivityStatus.WAITING:
+        if activity.status != SubmissionActivityStatus.WAITING:  # pragma: no cover
             raise InvalidState(f"Activity status is not submitted: {activity.status}")
-        if not thread.status.is_waiting() and not thread.status.is_in_progress():
+        if (
+            not thread.status.is_waiting() and not thread.status.is_in_progress()
+        ):  # pragma: no cover
             raise InvalidState(f"Thread status is not waiting/in progress: {thread.status}")
         # Actually perform the creation.
         return cls(session, activity, thread)
@@ -343,7 +347,7 @@ class _HandlerWithSession:
             )
             self.thread = thread_new
             self.activity = activity_new
-        except Exception as err:
+        except Exception as err:  # pragma: no cover
             raise DatabaseProblem(f"Failed to update thread and/or activity status: {err}") from err
 
     async def run(self) -> None:
@@ -353,7 +357,7 @@ class _HandlerWithSession:
             handler = _CreateHandler(self.session, self.activity, self.thread)
         elif self.activity.kind == SubmissionActivityKind.RETRIEVE:
             handler = _RetrieveHandler(self.session, self.activity, self.thread)
-        else:
+        else:  # pragma: no cover
             raise ValueError(f"Unknown activity kind: {self.activity.kind}")
         await handler.run()
 

@@ -16,6 +16,7 @@ from app.schemas.clinvarsub import (
     SubmissionThreadCreate,
     SubmittingOrgCreate,
 )
+from tests.utils import FREEZE_TIME
 
 # == /api/v1/clinvarsub/submittingorgs ========================================
 
@@ -23,7 +24,7 @@ from app.schemas.clinvarsub import (
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 async def test_list_submittingorg(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -63,7 +64,7 @@ async def test_list_submittingorg(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 async def test_create_submittingorg(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -82,8 +83,8 @@ async def test_create_submittingorg(
         "owner": str(test_user.id),
         "label": "my-org",
         "id": response.json()["id"],
-        "created": "2023-12-14T09:01:19.452062",
-        "updated": "2023-12-14T09:01:19.452062",
+        "created": FREEZE_TIME,
+        "updated": FREEZE_TIME,
     }, "response should match expected"
     assert await crud.submittingorg.get(
         db_session, response.json()["id"]
@@ -94,7 +95,7 @@ async def test_create_submittingorg(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_read_submittingorg(
     db_session: AsyncSession,
@@ -126,7 +127,7 @@ async def test_read_submittingorg(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 async def test_update_submittingorg(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -157,7 +158,7 @@ async def test_update_submittingorg(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_delete_submittingorg(
     db_session: AsyncSession,
@@ -192,7 +193,7 @@ async def test_delete_submittingorg(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize(
     "is_owner, good_query", itertools.product((True, False), (None, True, False))
 )
@@ -233,8 +234,8 @@ async def test_list_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": str(submissionthread.id),
-            "created": "2023-12-14T09:01:19.452062",
-            "updated": "2023-12-14T09:01:19.452062",
+            "created": FREEZE_TIME,
+            "updated": FREEZE_TIME,
             "submittingorg_id": str(submittingorg.id),
             "primary_variant_desc": "grch37-1-1000-A-G",
         }
@@ -246,7 +247,7 @@ async def test_list_submissionthreads(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", (True, False))
 async def test_create_submissionthreads(
     db_session: AsyncSession,
@@ -274,8 +275,8 @@ async def test_create_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": response.json()["id"],
-            "created": "2023-12-14T09:01:19.452062",
-            "updated": "2023-12-14T09:01:19.452062",
+            "created": FREEZE_TIME,
+            "updated": FREEZE_TIME,
             "submittingorg_id": str(submittingorg.id),
             "primary_variant_desc": "grch37-1-1000-A-G",
         }
@@ -287,7 +288,7 @@ async def test_create_submissionthreads(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_read_submissionthreads(
     db_session: AsyncSession,
@@ -314,8 +315,8 @@ async def test_read_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": response.json()["id"],
-            "created": "2023-12-14T09:01:19.452062",
-            "updated": "2023-12-14T09:01:19.452062",
+            "created": FREEZE_TIME,
+            "updated": FREEZE_TIME,
             "submittingorg_id": str(submittingorg.id),
             "primary_variant_desc": "grch37-1-1000-A-G",
         }
@@ -327,7 +328,7 @@ async def test_read_submissionthreads(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_delete_submissionthreads(
     db_session: AsyncSession,
@@ -354,8 +355,8 @@ async def test_delete_submissionthreads(
             "desired_presence": "present",
             "status": "initial",
             "id": str(submissionthread.id),
-            "created": "2023-12-14T09:01:19.452062",
-            "updated": "2023-12-14T09:01:19.452062",
+            "created": FREEZE_TIME,
+            "updated": FREEZE_TIME,
             "submittingorg_id": str(submittingorg.id),
             "primary_variant_desc": "grch37-1-1000-A-G",
         }
@@ -369,7 +370,7 @@ async def test_delete_submissionthreads(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_list_submissionactivities(
     db_session: AsyncSession,
@@ -400,7 +401,7 @@ async def test_list_submissionactivities(
             "items": [
                 {
                     "id": str(submissionactivity.id),
-                    "created": "2023-12-14T09:01:19.452062",
+                    "created": FREEZE_TIME,
                     "kind": "create",
                     "request_payload": None,
                     "request_timestamp": None,
@@ -422,7 +423,7 @@ async def test_list_submissionactivities(
 
 
 @pytest.mark.anyio
-@freeze_time("2023-12-14T09:01:19.452062")
+@freeze_time(FREEZE_TIME)
 @pytest.mark.parametrize("is_owner", [True, False])
 async def test_create_submissionactivity(
     db_session: AsyncSession,
@@ -450,7 +451,7 @@ async def test_create_submissionactivity(
         assert response.status_code == 200
         assert response.json() == {
             "id": response.json()["id"],
-            "created": "2023-12-14T09:01:19.452062",
+            "created": FREEZE_TIME,
             "kind": "create",
             "request_payload": None,
             "request_timestamp": None,
