@@ -6,6 +6,7 @@ components when necessary.
 -->
 
 <script setup lang="ts">
+import DocsLink from '@/components/DocsLink.vue'
 import VariantDetailsFreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
 import { type Seqvar } from '@/lib/genomicVars'
@@ -21,7 +22,10 @@ const props = defineProps<{
 
 <template>
   <v-card>
-    <v-card-title class="mb-0">Population Frequencies</v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Population Frequencies
+      <DocsLink anchor="population-frequencies" />
+    </v-card-title>
     <v-card-text>
       <VariantDetailsFreqsMitochondrial
         v-if="isVariantMt(seqvar as Seqvar)"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import type { GenomeBuild } from '@/lib/genomeBuilds'
 import { type Strucvar } from '@/lib/genomicVars'
 
@@ -120,7 +121,10 @@ const resources = computed<Linkout[]>(() => {
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0"> Variant Tools </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Variant Tools
+      <DocsLink anchor="clinvar-information" />
+    </v-card-title>
 
     <v-card-subtitle class="text-overline"> Genome Browsers </v-card-subtitle>
     <v-card-text>

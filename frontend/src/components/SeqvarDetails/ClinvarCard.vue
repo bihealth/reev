@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import {
   CLINICAL_SIGNIFICANCE_LABEL,
   REVIEW_STATUS_LABEL,
@@ -22,7 +23,10 @@ const expand = ref<boolean>(false)
 
 <template>
   <v-card v-if="props.clinvar?.vcv">
-    <v-card-title> ClinVar </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      ClinVar
+      <DocsLink anchor="clinvar" />
+    </v-card-title>
     <v-card-text>
       <v-row no-gutters class="flex-nowrap">
         <v-col cols="1" class="font-weight-black"> Significance </v-col>

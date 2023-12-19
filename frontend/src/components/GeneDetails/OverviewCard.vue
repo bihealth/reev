@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import AlternativeIdentifiers from '@/components/GeneDetails/OverviewCard/AlternativeIdentifiers.vue'
 import ExternalResources from '@/components/GeneDetails/OverviewCard/ExternalResources.vue'
 import GeneRifs from '@/components/GeneDetails/OverviewCard/GeneRifs.vue'
@@ -59,8 +60,9 @@ const summaryText = computed<string>(() => {
   <!-- otherwise, display actual card -->
   <template v-else>
     <v-card>
-      <v-card-title class="pb-0">
+      <v-card-title class="pb-0 pr-2">
         {{ geneInfo?.hgnc?.symbol }}
+        <DocsLink anchor="basic-information" />
       </v-card-title>
       <v-card-subtitle class="text-overline"> Basic Information </v-card-subtitle>
       <v-card-text class="pt-3">
