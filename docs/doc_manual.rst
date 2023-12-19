@@ -19,6 +19,13 @@ Basic information
 
 .. _doc_manual_gene_pathogenicity:
 
+This card shows the basic information for a gen such as its symbol, name, and a short summary that we took from the NCBI gene overview.
+At the bottom of the card, you can find link-outs to other websites describing the gene, such as searching pubmed.
+
+Note that you can also click on "More" on the lower right of the card to show additional information on the gene:
+
+- Alternative identifiers with link-outs, e.g., to ENSEMBL, or RefSeq.
+
 Gene Pathogenicity
 ==================
 
