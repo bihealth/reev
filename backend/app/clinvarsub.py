@@ -9,6 +9,7 @@ import uuid
 import clinvar_api.client as clinvar_api_client
 from clinvar_api.models import Created
 from pydantic import SecretStr
+from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 
 from app import crud
@@ -410,3 +411,26 @@ class SubmissionActivityHandler:
                     SubmissionActivityStatus.FAILED,
                     err_msg=str(err),
                 )
+
+
+async def process_old_clinvarsub_retrieval_jobs(engine: AsyncEngine):
+    """Query for old clinvarsub RETRIEVE jobs and schedule them.
+
+    "Old" jobs are those more than 2 * ``RETRY_WAIT_SECONDS`` seconds old. such
+    that they should have been processed easily by now.
+    """
+    since = datetime.datetime.now() - datetime.timedelta(seconds=2 * RETRY_WAIT_SECONDS)
+    query = select(SubmissionActivity).filter(
+        and_(
+            SubmissionActivity.kind == SubmissionActivityKind.RETRIEVE,
+            SubmissionActivity.status == SubmissionActivityStatus.WAITING,
+            SubmissionActivity.request_timestamp != None,
+            SubmissionActivity.request_timestamp < since,
+        )
+    )
+
+    async with AsyncSession(engine) as session:
+        result = await session.execute(query)
+        for rows in result.fetchall():
+            for record in rows:
+                handle_submission_activity.delay(str(record.id))
