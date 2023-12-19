@@ -195,18 +195,21 @@ class _RetrieveHandler(_KindHandlerBase):
         try will be made in ``RETRY_WAIT_SECONDS`` seconds.
         """
         logger.debug("handling retrieval of ClinVar status")
+        # Ensure that the activity is a RETRIEVE one.
+        if self.activity.kind != SubmissionActivityKind.RETRIEVE:  # pragma: no cover
+            raise ValueError(f"Activity kind is not RETRIEVE: {self.activity.kind}")
         # Find the corresponding CREATE activity.
         query = crud.submissionactivity.query_by_submissionthread(
             submissionthread_id=await self.thread.awaitable_attrs.id,
             kind=SubmissionActivityKind.CREATE,
         ).limit(1)
         activity_create_db = (await self.session.execute(query)).scalars().first()
-        if not activity_create_db:
+        if not activity_create_db:  # pragma: no cover
             raise ValueError("No CREATE activity found")
         logger.debug("found CREATE activity: %s", activity_create_db)
         # Ensure that its status is WAITING and parse out the ``Created`` payload.
         activity_create = SubmissionActivityInDb.model_validate(activity_create_db)
-        if activity_create.status != SubmissionActivityStatus.WAITING:
+        if activity_create.status != SubmissionActivityStatus.WAITING:  # pragma: no cover
             raise ValueError(f"Activity is in wrong status: {activity_create.status}")
         created = Created.model_validate(activity_create.response_payload)
         logger.debug("parsed created payload: %s", created)
@@ -244,7 +247,7 @@ class _RetrieveHandler(_KindHandlerBase):
                 # the whole submission thread is failed.
                 thread_status = SubmissionThreadStatus.FAILED
                 activity_status = SubmissionActivityStatus.COMPLETE_FAILURE
-            else:
+            else:  # pragma: no cover
                 # This should never happen, but we'll be defensive.
                 logger.error("Unknown status: %s", status_str)
                 thread_status = SubmissionThreadStatus.FAILED

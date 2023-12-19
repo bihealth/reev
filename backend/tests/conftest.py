@@ -36,7 +36,7 @@ from app.schemas.clinvarsub import (
     SubmissionThreadCreate,
     SubmittingOrgCreate,
 )
-from tests.utils import FREEZE_TIME
+from tests.utils import FREEZE_TIME, FREEZE_TIME_1SEC
 
 if os.environ.get("SQLALCHEMY_DEBUG", "0") == "1":
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
@@ -203,10 +203,24 @@ async def submissionthread(
 
 @pytest.fixture
 def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
-    """Create a new schema object only."""
+    """Create a new schema object only with kind=CREATE."""
     return SubmissionActivityCreate(
         submissionthread_id=submissionthread.id,
         kind=SubmissionActivityKind.CREATE,
+        status=SubmissionActivityStatus.WAITING,
+        request_payload=None,
+        request_timestamp=None,
+        response_payload=None,
+        response_timestamp=None,
+    )
+
+
+@pytest.fixture
+def submissionactivity_create_kind_retrieve(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
+    """Create a new schema object only with kind=RETRIEVE."""
+    return SubmissionActivityCreate(
+        submissionthread_id=submissionthread.id,
+        kind=SubmissionActivityKind.RETRIEVE,
         status=SubmissionActivityStatus.WAITING,
         request_payload=None,
         request_timestamp=None,
@@ -223,4 +237,15 @@ async def submissionactivity(
     with freeze_time(FREEZE_TIME):
         return await crud.submissionactivity.create(
             session=db_session, obj_in=submissionactivity_create
+        )
+
+
+@pytest.fixture
+async def submissionactivity_kind_retrieve(
+    db_session: AsyncSession, submissionactivity_create_kind_retrieve: SubmissionActivityCreate
+) -> SubmissionActivity:
+    """Create a new schema object only."""
+    with freeze_time(FREEZE_TIME_1SEC):
+        return await crud.submissionactivity.create(
+            session=db_session, obj_in=submissionactivity_create_kind_retrieve
         )

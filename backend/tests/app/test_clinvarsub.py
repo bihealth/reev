@@ -28,13 +28,13 @@ import typing
 
 import pytest
 from clinvar_api.models import Created, SubmissionContainer
-from clinvar_api.exceptions import SubmissionFailed
+from clinvar_api.exceptions import SubmissionFailed, QueryFailed
 from freezegun import freeze_time
 from pytest_mock import MockerFixture
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
-from app.clinvarsub import RETRY_WAIT_SECONDS, _CreateHandler, _HandlerWithSession
+from app.clinvarsub import RETRY_WAIT_SECONDS, _CreateHandler, _HandlerWithSession, _RetrieveHandler
 from app.models.clinvarsub import (
     ResponseMessage,
     SubmissionActivity,
@@ -250,6 +250,117 @@ async def test_create_handler_run_success(
 async def test_create_handler_run_failure(
     db_session: AsyncSession,
     submissionthread: SubmissionThread,
+    submissionactivity: SubmissionActivity,  # kind=CREATE
+    submissionactivity_kind_retrieve: SubmissionActivity,  # kind=RETRIEVE
+    mocker: MockerFixture,
+):
+    # arrange:
+    # mock out clinvar_api_client.AsyncClient; raise on submit_data
+    mock_Client_obj = mocker.MagicMock()
+    mock_Client_obj.retrieve_status.side_effect = mocker.Mock(side_effect=QueryFailed('fail for testing'))
+    mock_Client = mocker.Mock(return_value=mock_Client_obj)
+    mocker.patch("app.clinvarsub.clinvar_api_client.AsyncClient", new=mock_Client)
+    # mock out worker.handle_submission_activity.apply_async
+    mock_apply_async = mocker.Mock()
+    mocker.patch("app.worker.handle_submission_activity.apply_async", new=mock_apply_async)
+    # adjust activity and thread to be in the right state
+    submissionactivity = await crud.submissionactivity.update(
+        db_session,
+        db_obj=submissionactivity,
+        obj_in={
+            "kind": SubmissionActivityKind.CREATE,
+            "status": SubmissionActivityStatus.WAITING,
+            "response_payload": {"id": "123"},
+        },
+    )
+    submissionactivity_kind_retrieve = await crud.submissionactivity.update(
+        db_session,
+        db_obj=submissionactivity_kind_retrieve,
+        obj_in={
+            "kind": SubmissionActivityKind.RETRIEVE,
+            "status": SubmissionActivityStatus.WAITING,
+        },
+    )
+    submissionthread = await crud.submissionthread.update(
+        db_session, db_obj=submissionthread, obj_in={"status": SubmissionThreadStatus.WAITING}
+    )
+
+    # act:
+    handler = _RetrieveHandler(db_session, submissionactivity_kind_retrieve, submissionthread)
+    with freeze_time(FREEZE_TIME_1SEC):  # new activity should have a different timestamp
+        await handler.run()
+
+    # assert:
+    # check call to submit_data
+    mock_Client_obj.retrieve_status.assert_called_once_with(
+        "123"
+    )
+    # check the activity and thread state
+    await db_session.refresh(submissionthread)
+    assert submissionthread.status == SubmissionThreadStatus.FAILED
+    await db_session.refresh(submissionactivity_kind_retrieve)
+    assert submissionactivity_kind_retrieve.status == SubmissionActivityStatus.FAILED
+    with freeze_time(FREEZE_TIME_1SEC):
+        assert submissionactivity_kind_retrieve.response_timestamp == datetime.datetime.utcnow()
+    assert submissionactivity_kind_retrieve.response_payload == {'text': 'Retrieval failed: fail for testing'}
+    # check that we don't have a newly created activity
+    res = await db_session.execute(
+        crud.submissionactivity.query_by_submissionthread(submissionthread_id=submissionthread.id)
+    )
+    latest_activity = res.scalars().first()
+    assert latest_activity
+    assert await latest_activity.awaitable_attrs.id
+    assert latest_activity.id == submissionactivity_kind_retrieve.id
+    assert latest_activity.kind == SubmissionActivityKind.RETRIEVE
+    # check call to apply_async not performed
+    mock_apply_async.assert_not_called()
+
+
+
+# -- _RetrieveHandler ---------------------------------------------------------
+
+@pytest.mark.anyio
+@freeze_time(FREEZE_TIME)
+@pytest.mark.parametrize("status_str", ("submitted", "processing"))
+async def test_retrieve_handler_run_retrieval_worked_then_waiting(
+    db_session: AsyncSession,
+    submissionthread: SubmissionThread,
+    submissionactivity: SubmissionActivity,
+    mocker: MockerFixture,
+    status_str: typing.Literal["submitted", "processing"],
+):
+    pass
+
+
+@pytest.mark.anyio
+@freeze_time(FREEZE_TIME)
+async def test_retrieve_handler_run_retrieval_worked_then_success(
+    db_session: AsyncSession,
+    submissionthread: SubmissionThread,
+    submissionactivity: SubmissionActivity,
+    mocker: MockerFixture,
+):
+    status_str = "processed"
+    pass
+
+
+@pytest.mark.anyio
+@freeze_time(FREEZE_TIME)
+async def test_retrieve_handler_run_retrieval_worked_then_failure(
+    db_session: AsyncSession,
+    submissionthread: SubmissionThread,
+    submissionactivity: SubmissionActivity,
+    mocker: MockerFixture,
+):
+    status_str = "errro"
+    pass
+
+
+@pytest.mark.anyio
+@freeze_time(FREEZE_TIME)
+async def test_retrieve_handler_run_retrieval_failed(
+    db_session: AsyncSession,
+    submissionthread: SubmissionThread,
     submissionactivity: SubmissionActivity,
     mocker: MockerFixture,
 ):
@@ -314,11 +425,6 @@ async def test_create_handler_run_failure(
     # check call to apply_async not performed
     mock_apply_async.assert_not_called()
 
-
-
-# -- _RetrieveHandler ---------------------------------------------------------
-
-# missing create activity on retrieve
 
 # -- SubmissionActivityHandler ------------------------------------------------
 
