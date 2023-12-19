@@ -216,7 +216,9 @@ def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionA
 
 
 @pytest.fixture
-def submissionactivity_create_kind_retrieve(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
+def submissionactivity_create_kind_retrieve(
+    submissionthread: SubmissionThread,
+) -> SubmissionActivityCreate:
     """Create a new schema object only with kind=RETRIEVE."""
     return SubmissionActivityCreate(
         submissionthread_id=submissionthread.id,

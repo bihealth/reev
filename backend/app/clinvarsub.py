@@ -231,7 +231,7 @@ class _RetrieveHandler(_KindHandlerBase):
             # We could receive a response, so there has been no network error etc.
             # We need to look into the response itself to see if the ClinVar server
             # is still working on it, is done, or found an error.
-            assert isinstance(response, clinvar_api_client.RetrieveStatusResult)
+            assert isinstance(response, clinvar_api_client.RetrieveStatusResult), f"{response}"
             status_str = response.status.actions[0].status
             if status_str in ("submitted", "processing"):
                 # ClinVar is still working on it, so we need to try again later.
@@ -247,7 +247,7 @@ class _RetrieveHandler(_KindHandlerBase):
                 # the whole submission thread is failed.
                 thread_status = SubmissionThreadStatus.FAILED
                 activity_status = SubmissionActivityStatus.COMPLETE_FAILURE
-            else:  # pragma: no cover
+            else:
                 # This should never happen, but we'll be defensive.
                 logger.error("Unknown status: %s", status_str)
                 thread_status = SubmissionThreadStatus.FAILED
@@ -368,7 +368,9 @@ class _HandlerWithSession:
 class SubmissionActivityHandler:
     """Facade class for performing ClinVar submission activities."""
 
-    def __init__(self, submissionactivity_id: str, engine: typing.Optional[AsyncEngine] = None):
+    def __init__(
+        self, submissionactivity_id: uuid.UUID | str, engine: typing.Optional[AsyncEngine] = None
+    ):
         """Initialise the handler.
 
         :param submissionactivity_id: String with UUID of the activity to process.
@@ -377,7 +379,7 @@ class SubmissionActivityHandler:
             ``app.db.session.engine``.
         """
         #: UUID of :ref:`SubmissionActivity` to process.
-        self.uuid = uuid.UUID(submissionactivity_id)
+        self.uuid = uuid.UUID(str(submissionactivity_id))
         #: SQLAlchemy engine to use.
         self.engine = engine or app_db_session.engine
 
@@ -403,7 +405,7 @@ class SubmissionActivityHandler:
             except Exception as err:
                 # Update the activity and thread status to FAILED.
                 logger.debug("Marking activity and thread as failed: %s", err)
-                await self.update_status(
+                await inner.update_status(
                     SubmissionThreadStatus.FAILED,
                     SubmissionActivityStatus.FAILED,
                     err_msg=str(err),
