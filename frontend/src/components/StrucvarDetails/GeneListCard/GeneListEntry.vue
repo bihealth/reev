@@ -94,7 +94,7 @@ const sortIcon = computed<string>(() => {
         </div>
       </v-col>
       <v-col cols="10" class="d-flex flex-column pa-0">
-        <v-row no-gutter class="bg-grey-lighten-3 ma-0">
+        <v-row no-gutter class="ma-0">
           <v-col cols="3" class="pr-3 align-self-end pa-1">
             <table style="width: 280px">
               <tr>

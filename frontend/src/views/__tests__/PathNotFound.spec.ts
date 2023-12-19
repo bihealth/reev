@@ -6,10 +6,7 @@ import PathNotFound from '../PathNotFound.vue'
 
 describe.concurrent('PathNotFound', async () => {
   it('renders the main content', async () => {
-    const { wrapper } = await setupMountedComponents(
-      { component: PathNotFound, template: false },
-      {}
-    )
+    const { wrapper } = await setupMountedComponents({ component: PathNotFound, template: false })
 
     const mainContent = wrapper.find('.not-found')
     expect(mainContent.exists()).toBe(true)

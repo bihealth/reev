@@ -195,7 +195,7 @@ onMounted(() => selectFirst(props.storeState))
         item-key="dbnsfp.geneName"
       >
         <template #header>
-          <v-toolbar class="px-2 rounded-t-lg border bg-grey-lighten-2">
+          <v-toolbar class="px-2 rounded-t-lg border" color="background">
             <v-spacer></v-spacer>
             <div style="width: 220px">
               <v-select
@@ -244,9 +244,11 @@ onMounted(() => selectFirst(props.storeState))
         </template>
 
         <template #footer="{ pageCount }">
-          <div
-            class="d-flex align-center justify-center pa-3 mt-1 rounded-b-lg border bg-grey-lighten-2"
+          <v-toolbar
+            class="d-flex align-center justify-center pa-3 mt-1 rounded-b-lg border"
+            color="background"
           >
+            <v-spacer />
             <v-select
               v-model="itemsPerPage"
               class="d-inline-flex flex-grow-0"
@@ -262,7 +264,7 @@ onMounted(() => selectFirst(props.storeState))
               :total-visible="7"
               density="compact"
             ></v-pagination>
-          </div>
+          </v-toolbar>
         </template>
       </v-data-iterator>
     </v-card-text>

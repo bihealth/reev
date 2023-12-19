@@ -16,6 +16,7 @@ may fail in which case the view will display an error.
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
@@ -79,6 +80,9 @@ const router = useRouter()
 /** The global Route object. */
 const route = useRoute()
 
+/** The global theme. */
+const theme = useTheme()
+
 /** Information about the strucvar, used to fetch information on load. */
 const strucvarInfoStore = useStrucVarInfoStore()
 /** Information about the genes. */
@@ -105,6 +109,11 @@ const handleDisplayError = async (msg: string) => {
   errSnackbarMsg.value = msg
   errSnackbarShow.value = true
 }
+
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
 
 /** The user's original input from the query, if given. */
 const orig = computed<string | undefined>(() => (route.query.orig as string) || undefined)
@@ -204,6 +213,22 @@ const svLocus = (strucvar: Strucvar | undefined): string | undefined => {
   return locus
 }
 
+/**
+ * Jump to the locus in the local IGV.
+ */
+const jumpToLocus = async () => {
+  const chrPrefixed = strucvar.value?.chrom.startsWith('chr')
+    ? strucvar.value?.chrom
+    : `chr${strucvar.value?.chrom}`
+  await fetch(
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${strucvar.value?.start}-${strucvar.value?.stop}`
+  ).catch((e) => {
+    const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
+    alert(msg)
+    console.error(msg, e)
+  })
+}
+
 // When the component is mounted or the search term is changed through
 // the router then we need to fetch the variant information from the backend
 // through the store.
@@ -255,13 +280,24 @@ const SECTIONS: { [key: string]: Section[] } = {
 <template>
   <v-app>
     <PageHeader />
-    <v-main>
-      <v-container>
+    <v-main :class="mainBackgroundColor">
+      <v-container fluid>
         <v-row>
           <v-col cols="2">
             <div v-if="strucvarInfoStore.storeState == StoreState.Active">
               <v-list v-model:opened="openedSection" density="compact" rounded="lg">
                 <BookmarkListItem :id="idForBookmark" type="strucvar" />
+
+                <!-- Jump to IGV -->
+                <v-btn
+                  variant="outlined"
+                  color=""
+                  class="ma-2"
+                  prepend-icon="mdi-launch"
+                  @click.prevent="jumpToLocus()"
+                >
+                  Jump in Local IGV
+                </v-btn>
 
                 <v-list-item
                   v-for="section in SECTIONS.TOP"

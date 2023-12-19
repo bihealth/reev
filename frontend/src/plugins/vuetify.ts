@@ -15,7 +15,14 @@ import 'vuetify/styles'
 const customLightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    background: '#eeeeee'
+    primary: '#757ce8',
+    secondary: '#3f50b5',
+    tertiary: '#002884',
+    background: '#eeeeee',
+    success: '#4caf50',
+    warning: '#ff9800',
+    error: '#f44336',
+    info: '#f0f2f5'
   }
 }
 

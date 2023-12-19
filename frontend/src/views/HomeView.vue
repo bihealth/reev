@@ -5,8 +5,9 @@ Implements the search bar for variants and genes.
 -->
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -17,6 +18,9 @@ import { EXAMPLES, type Example } from '@/views/HomeView.c'
 
 /** The current router. */
 const router = useRouter()
+
+/** The global theme. */
+const theme = useTheme()
 
 /** Component state; current search term. */
 const searchTerm = ref<string>('')
@@ -29,12 +33,17 @@ const performExampleSearch = (example: Example) => {
   genomeBuild.value = example.genomeBuild ?? 'grch37'
   performSearch(router, searchTerm.value, genomeBuild.value)
 }
+
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
 </script>
 
 <template>
   <v-app>
     <PageHeader :hide-search-bar="true" />
-    <v-main>
+    <v-main :class="mainBackgroundColor">
       <v-container>
         <v-row>
           <v-spacer></v-spacer>
@@ -55,6 +64,13 @@ const performExampleSearch = (example: Example) => {
                 <a href="https://reev.readthedocs.io/en/latest/doc_tutorial.html" target="_blank">
                   tutorial
                   <small><v-icon>mdi-launch</v-icon></small> </a
+                >. REEV is free to use for all users (see
+                <router-link to="/info#terms-of-use">
+                  terms of use
+                  <small> <v-icon>mdi-arrow-right-circle-outline</v-icon> </small> </router-link
+                >). The software itself open source and can be found at
+                <a href="https://github.com/bihealth/reev" target="_blank">
+                  GitHub <small><v-icon>mdi-launch</v-icon></small> </a
                 >.
               </p>
             </v-sheet>
@@ -116,3 +132,9 @@ const performExampleSearch = (example: Example) => {
     </v-main>
   </v-app>
 </template>
+
+<style scoped>
+.v-main {
+  background-color: #f5f5f5;
+}
+</style>

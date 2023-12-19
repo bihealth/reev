@@ -16,6 +16,7 @@ may fail in which case the view will display an error.
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useTheme } from 'vuetify'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
 import FooterDefault from '@/components/FooterDefault.vue'
@@ -88,6 +89,9 @@ const router = useRouter()
 /** The global Route object. */
 const route = useRoute()
 
+/** The global theme. */
+const theme = useTheme()
+
 /** Information about the sequence variant, used to fetch information on load. */
 const seqvarInfoStore = useSeqVarInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
@@ -125,6 +129,11 @@ const handleDisplayError = async (msg: string) => {
   errSnackbarMsg.value = msg
   errSnackbarShow.value = true
 }
+
+/** Return backgorund color for v-main based on current theme. */
+const mainBackgroundColor = computed(() => {
+  return theme.global.current.value.dark ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'
+})
 
 /**
  * Helper that reads the props and initializes the stores.
@@ -181,6 +190,24 @@ const loadDataToStore = async () => {
   await scrollToSection(route)
 }
 
+/**
+ * Jump to the locus in the local IGV.
+ */
+const jumpToLocus = async () => {
+  const chrPrefixed = seqvarInfoStore.seqvar?.chrom.startsWith('chr')
+    ? seqvarInfoStore.seqvar?.chrom
+    : `chr${seqvarInfoStore.seqvar?.chrom}`
+  await fetch(
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${seqvarInfoStore.seqvar?.pos}-${
+      (seqvarInfoStore.seqvar?.pos ?? 0) + (seqvarInfoStore.seqvar?.del?.length ?? 0)
+    }`
+  ).catch((e) => {
+    const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
+    alert(msg)
+    console.error(msg, e)
+  })
+}
+
 // When the component is mounted or the search term is changed through
 // the router then we need to fetch the variant information from the backend
 // through the store.
@@ -211,8 +238,8 @@ const SECTIONS: { [key: string]: Section[] } = {
     { id: 'seqvar-clinsig', title: 'Clinical Significance' },
     { id: 'seqvar-csq', title: 'Consequences' },
     { id: 'seqvar-clinvar', title: 'ClinVar' },
-    { id: 'seqvar-freqs', title: 'Frequencies' },
     { id: 'seqvar-scores', title: 'Scores' },
+    { id: 'seqvar-freqs', title: 'Frequencies' },
     { id: 'seqvar-tools', title: 'Tools' },
     { id: 'seqvar-ga4ghbeacon', title: 'Beacon Network' },
     { id: 'seqvar-variantvalidator', title: 'VariantValidator' }
@@ -223,13 +250,24 @@ const SECTIONS: { [key: string]: Section[] } = {
 <template>
   <v-app>
     <PageHeader />
-    <v-main>
-      <v-container>
+    <v-main :class="mainBackgroundColor">
+      <v-container fluid>
         <v-row>
           <v-col cols="2">
             <div v-if="seqvarInfoStore.storeState == StoreState.Active">
               <v-list v-model:opened="openedSection" density="compact" rounded="lg">
                 <BookmarkListItem :id="idForBookmark" type="seqvar" />
+
+                <!-- Jump to IGV -->
+                <v-btn
+                  color=""
+                  variant="outlined"
+                  class="ma-2"
+                  prepend-icon="mdi-launch"
+                  @click.prevent="jumpToLocus()"
+                >
+                  Jump in Local IGV
+                </v-btn>
 
                 <template v-if="geneInfoStore.hgncId?.length">
                   <v-list-group value="gene">
@@ -321,7 +359,10 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo" />
               </div>
               <div id="gene-conditions">
-                <GeneConditionsCard :gene-info="seqvarInfoStore?.geneInfo" :hpo-terms="[]" />
+                <GeneConditionsCard
+                  :gene-info="seqvarInfoStore?.geneInfo"
+                  :hpo-terms="seqvarInfoStore.hpoTerms"
+                />
               </div>
               <div id="gene-expression">
                 <GeneExpressionCard
@@ -358,14 +399,14 @@ const SECTIONS: { [key: string]: Section[] } = {
               <div id="seqvar-clinvar" class="mt-3">
                 <VariantDetailsClinvar :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
               </div>
+              <div id="seqvar-scores" class="mt-3">
+                <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
+              </div>
               <div id="seqvar-freqs" class="mt-3">
                 <VariantDetailsFreqs
                   :seqvar="seqvarInfoStore.seqvar"
                   :var-annos="seqvarInfoStore.varAnnos"
                 />
-              </div>
-              <div id="seqvar-scores" class="mt-3">
-                <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
               </div>
               <div id="seqvar-tools" class="mt-3">
                 <VariantToolsCard

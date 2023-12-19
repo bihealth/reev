@@ -37,6 +37,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.seqvar).toBe(undefined)
     expect(store.varAnnos).toBe(null)
     expect(store.geneInfo).toBe(null)
+    expect(store.hpoTerms).toEqual([])
     expect(store.txCsq).toBe(null)
   })
 
@@ -218,6 +219,6 @@ describe.concurrent('geneInfo Store', () => {
 
     await store.loadData(deepCopy(seqvarInfo))
 
-    expect(fetchMocker.mock.calls.length).toBe(4)
+    expect(fetchMocker.mock.calls.length).toBe(5)
   })
 })
