@@ -8,6 +8,7 @@ component via the `errorDisplay` event and are handled there.
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import {
   ACMG_CRITERIA_CNV_DEFS,
   AcmgCriteriaCNVGain,
@@ -123,7 +124,10 @@ const switchCriteria = (
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0"> Clinical Significance </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Clinical Significance
+      <DocsLink anchor="doc-manual-strucvar-clinical-significance" />
+    </v-card-title>
     <v-card-subtitle class="text-overline">
       Semi-Automated Pathogenicity Prediction
     </v-card-subtitle>

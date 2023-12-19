@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar } from '@/lib/genomicVars'
 
 export interface Props {
@@ -154,7 +155,10 @@ const resources = computed<Linkout[]>(() => {
 
 <template>
   <v-card>
-    <v-card-title class="pb-0"> Variant Tools </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Variant Tools
+      <DocsLink anchor="variant-tools" />
+    </v-card-title>
 
     <v-card-subtitle class="text-overline"> Genome Browsers </v-card-subtitle>
     <v-card-text class="pt-3">

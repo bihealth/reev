@@ -47,6 +47,7 @@ It provides the following features as a central resource:
     doc_tutorial
     doc_queries
     doc_urls
+    doc_manual
 
 .. toctree::
     :hidden:

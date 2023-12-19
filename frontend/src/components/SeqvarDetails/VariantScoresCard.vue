@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
 import Conservation from '@/components/SeqvarDetails/VariantScoresCard/UcscConservation.vue'
 import { roundIt } from '@/lib/utils'
@@ -133,7 +134,10 @@ const polyphenScore = computed((): number | null =>
 
 <template>
   <v-card>
-    <v-card-title> Scores </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Scores
+      <DocsLink anchor="scores" />
+    </v-card-title>
     <v-card-subtitle class="text-overline"> Precomputed Sequence Variant Scores </v-card-subtitle>
     <v-card-text>
       <div v-if="props.varAnnos?.dbnsfp">

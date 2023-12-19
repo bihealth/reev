@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { onMounted } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import GeneListEntry from '@/components/StrucvarDetails/GeneListCard/GeneListEntry.vue'
 import { type Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
@@ -175,7 +176,10 @@ onMounted(() => selectFirst(props.storeState))
 
 <template>
   <v-card>
-    <v-card-title class="pb-0"> Gene List </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Gene List
+      <DocsLink anchor="gene-list" />
+    </v-card-title>
     <v-card-subtitle class="text-overline"> Overlapping and Contained Genes </v-card-subtitle>
     <v-card-text>
       <v-data-iterator
