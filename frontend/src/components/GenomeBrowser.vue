@@ -2,6 +2,7 @@
 import igv from 'igv'
 import { onMounted, ref, watch } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import { publicTracks } from '@/components/GenomeBrowser.c'
 import type { GenomeBuild } from '@/lib/genomeBuilds'
 
@@ -94,7 +95,10 @@ onMounted(() => {
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0"> Genome Browser </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Genome Browser
+      <DocsLink anchor="genome-browser" />
+    </v-card-title>
     <v-card-text>
       <div ref="genomeBrowserDivRef" style="margin: 5px" />
     </v-card-text>

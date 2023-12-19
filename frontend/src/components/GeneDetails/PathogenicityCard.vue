@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import DocsLink from '@/components/DocsLink.vue'
 import { CLINGEN_DOSAGE_LABELS_SHORT } from '@/components/GeneDetails/PathogenicityCard.c'
 import { roundIt } from '@/lib/utils'
 
@@ -15,7 +16,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0"> Gene Pathogenicity </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Gene Pathogenicity
+      <DocsLink anchor="gene-pathogenicity" />
+    </v-card-title>
     <v-card-subtitle class="text-overline">
       Intolerance Constraints and Annotations
     </v-card-subtitle>

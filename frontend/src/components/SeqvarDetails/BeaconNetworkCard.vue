@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar } from '@/lib/genomicVars'
 
 interface Props {
@@ -31,7 +32,10 @@ const loadBeacon = () => {
 
 <template>
   <v-card>
-    <v-card-title> Beacon Network </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Beacon Network
+      <DocsLink anchor="variant-tools" />
+    </v-card-title>
     <v-card-subtitle class="text-overline">
       Lookup Variant in GA4GH Beacon Network
     </v-card-subtitle>

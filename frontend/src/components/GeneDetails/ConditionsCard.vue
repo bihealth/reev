@@ -3,6 +3,7 @@ import { titleCase } from 'title-case'
 import { computed, ref } from 'vue'
 
 import type { HpoTerm } from '@/api/viguno'
+import DocsLink from '@/components/DocsLink.vue'
 import CadaRanking from '@/components/GeneDetails/ConditionsCard/CadaRanking.vue'
 import { extractDbnsfpMimDiseaseId, transformDbnsfpMimDiseaseId } from '@/lib/utils'
 
@@ -56,7 +57,10 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
   <!-- otherwise, display actual card -->
   <template v-else>
     <v-card class="mt-3">
-      <v-card-title class="pb-0"> Associated Conditions </v-card-title>
+      <v-card-title class="pb-0 pr-2">
+        Associated Conditions
+        <DocsLink anchor="associated-conditions" />
+      </v-card-title>
       <v-card-subtitle class="text-overline">
         Phenotypes and Disorders Associated with Gene
       </v-card-subtitle>

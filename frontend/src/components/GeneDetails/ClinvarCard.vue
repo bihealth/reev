@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import ClinvarFreqPlot from '@/components/GeneDetails/ClinvarCard/ClinvarFreqPlot.vue'
 import ClinvarImpact from '@/components/GeneDetails/ClinvarCard/ClinvarImpact.vue'
 import type { GenomeBuild } from '@/lib/genomeBuilds'
@@ -23,7 +24,7 @@ const props = defineProps<Props>()
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0">
+    <v-card-title class="pb-0 pr-2">
       ClinVar Information
       <small>
         <a
@@ -33,6 +34,7 @@ const props = defineProps<Props>()
           <v-icon>mdi-launch</v-icon>
         </a>
       </small>
+      <DocsLink anchor="clinvar-information" />
     </v-card-title>
     <v-card-text class="pt-0">
       <v-row no-gutters>

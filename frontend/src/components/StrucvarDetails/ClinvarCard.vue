@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import {
   CLINICAL_SIGNIFICANCE_COLOR,
   CLINICAL_SIGNIFICANCE_LABEL,
@@ -54,7 +55,10 @@ const expanded = ref<string[]>([])
 
 <template>
   <v-card class="mt-3">
-    <v-card-title class="pb-0"> ClinVar </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      ClinVar
+      <DocsLink anchor="doc-manual-strucvar-clinvar" />
+    </v-card-title>
     <v-card-subtitle class="text-overline"> Matching Variants in ClinVar </v-card-subtitle>
     <v-card-text>
       <v-data-table

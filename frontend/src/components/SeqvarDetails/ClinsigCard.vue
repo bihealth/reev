@@ -8,6 +8,7 @@ component via the `errorDisplay` event and are handled there.
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import CriterionSwitch from '@/components/SeqvarDetails/ClinsigCard/CriterionSwitch.vue'
 import SummarySheet from '@/components/SeqvarDetails/ClinsigCard/SummarySheet.vue'
 import {
@@ -134,7 +135,10 @@ onMounted(async () => {
 
 <template>
   <v-card>
-    <v-card-title class="pb-0"> Clinical Significance </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Clinical Significance
+      <DocsLink anchor="clinical-significance" />
+    </v-card-title>
     <v-card-subtitle class="text-overline">
       Semi-Automated Pathogenicity Prediction
     </v-card-subtitle>

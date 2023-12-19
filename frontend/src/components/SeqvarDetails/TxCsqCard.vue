@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import DocsLink from '@/components/DocsLink.vue'
+
 interface Props {
   txCsq: any
 }
@@ -13,7 +15,10 @@ const props = defineProps<Props>()
   </template>
   <template v-else>
     <v-card>
-      <v-card-title class="pb-0"> Consequences</v-card-title>
+      <v-card-title class="pb-0 pr-2">
+        Consequences
+        <DocsLink anchor="consequences" />
+      </v-card-title>
       <v-card-subtitle class="text-overline">
         Variant Consequences on Overlapping Transcripts
       </v-card-subtitle>

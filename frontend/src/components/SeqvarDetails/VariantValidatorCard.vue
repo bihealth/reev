@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 
 import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
+import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar } from '@/lib/genomicVars'
 
 const API_BASE_URL = API_INTERNAL_BASE_PREFIX
@@ -66,7 +67,10 @@ const queryVariantValidatorApi = async () => {
     <v-skeleton-loader type="card" />
   </template>
   <v-card v-else>
-    <v-card-title> Variant Validator </v-card-title>
+    <v-card-title class="pb-0 pr-2">
+      Variant Validator
+      <DocsLink anchor="variant-validator" />
+    </v-card-title>
     <v-card-subtitle class="text-overline">
       Retrieve Predictions from VariantValidator.org
     </v-card-subtitle>

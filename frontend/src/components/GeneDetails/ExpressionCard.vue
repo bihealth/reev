@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
+import DocsLink from '@/components/DocsLink.vue'
 import VegaPlot from '@/components/VegaPlot.vue'
 
 import { TISSUE_DETAILED_LABELS, TISSUE_LABELS } from './ExpressionCard.c'
@@ -158,7 +159,10 @@ const vegaLayer = [
   <!-- otherwise, display actual card -->
   <template v-else>
     <v-card class="mt-3">
-      <v-card-title class="pb-0"> Expression </v-card-title>
+      <v-card-title class="pb-0 pr-2">
+        Expression
+        <DocsLink anchor="expression" />
+      </v-card-title>
       <v-card-subtitle class="text-overline">
         Tissue-Specific Gene Expression from GTeX
       </v-card-subtitle>
