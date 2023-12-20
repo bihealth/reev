@@ -91,6 +91,19 @@ Clinical Significance
 
 .. _doc_manual_seqvar_consequences:
 
+This card shows the semi-automated pathogenicity prediction based on InterVar. 
+Using the buttons on the left you can...
+- hide/show the terse mode of ACMG criteria display. On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
+- hide/show failed criteria (not set to "active" by the little switch displayed left to every criterion)
+
+Tipp: you can also see are brief description of every ACMG criterion in the terse mode when moving your curser of the little "i" in the upper right corner of every ACMG criterion box.
+
+On default you will see the automated selection of ACMG criteria. You can individually select and deselect every ACMG criterion using the little switch displayed left to every criterion and also select the respective level of evidence (very strong, strong, moderate, supporting) using the button below the respective ACMG criterion.
+
+Note that you can also clear all selected ACMG criteria or reset them to auto using the respective buttons below the pathogenicity prediction box on the top of the card. Here, you can also find a link-out to the detailed REEV documentation on ACMG criteria.
+
+@Manuel: need your help: ?? Finally, you can save your ACMG rating, load a preexisting one or delete it from the server ??
+
 Consequences
 ============
 
