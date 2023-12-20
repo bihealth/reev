@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Any, Optional, Tuple
 from uuid import UUID
 
 from sqlalchemy import Select
@@ -26,6 +26,19 @@ class CrudClinvarSubmittingOrg(CrudBase[SubmittingOrg, SubmittingOrgCreate, Subm
     def query_by_owner(self, *, user_id: str | UUID) -> Select[Tuple[SubmittingOrg]]:
         """Return query filtered by owner (order by label)."""
         return select(self.model).filter(self.model.owner == user_id).order_by(self.model.label)
+
+    async def update(
+        self, session: AsyncSession, *, db_obj: SubmittingOrg, obj_in: SubmittingOrgUpdate | dict[str, Any]
+    ) -> SubmittingOrg:
+        """Override to prevent updating token if not set."""
+        if isinstance(obj_in, dict):
+            update_data = obj_in
+        else:
+            update_data = obj_in.model_dump(exclude_unset=True)
+        if "token" in update_data and not update_data.get("token"):
+            update_data.pop("token")
+        super().update(session, db_obj=db_obj, obj_in=update_data)
+
 
 
 class CrudSubmissionThread(

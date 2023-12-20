@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { DateTime } from 'luxon'
 import { onMounted, ref, watch } from 'vue'
+import { useVuelidate } from '@vuelidate/core'
+import { email, required } from '@vuelidate/validators'
 
 import { ClinvarsubClient, type SubmittingOrgRead } from '@/api/clinvarsub'
 
@@ -114,12 +116,46 @@ watch(deleteDialogOpen, () => {
   }
 })
 
-// -- code supporting the edit dialog ------------------------------------------
+// -- code supporting the create/edit dialog ----------------------------------
+
+/** Enumeration for the editor mode. */
+enum EditorMode {
+  Create,
+  Edit
+}
+
+/** The editor mode. */
+const editorMode = ref<EditorMode>(EditorMode.Create)
+/** Whether the editor dialog is open. */
+const editorDialogOpen = ref<boolean>(false)
+/** Validation */
+const validationRules = {
+  label: [
+    value => {
+      if (value) {
+        return true
+      }
+    }
+  ]
+}
+
+/** Open the editor in create mode. */
+
+/** Open the editor in update mode. */
+
+
 </script>
 
 <template>
   <v-card>
-    <v-card-title> ClinVar Organisations </v-card-title>
+    <v-card-title>
+      ClinVar Organisations
+      <div class="float-right">
+        <v-btn color="success" variant="outlined" rounded="xs" prepend-icon="mdi-plus-box-outline">
+          New
+        </v-btn>
+      </div>
+    </v-card-title>
     <v-card-subtitle class="text-overline"> Register ClinVar API Keys Here </v-card-subtitle>
 
     <v-card-text class="mt-3">
