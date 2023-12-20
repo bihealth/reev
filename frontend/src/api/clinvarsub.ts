@@ -322,7 +322,7 @@ export interface SubmissionClinvarDeletionAccessionSet {
   reason?: string
 }
 
-export interface SubmisisonClinvarDelete {
+export interface SubmissionClinvarDelete {
   accession_set: SubmissionClinvarDeletionAccessionSet[]
 }
 
@@ -398,7 +398,7 @@ export enum ConditionDb {
 export interface SubmissionCondition {
   db?: ConditionDb
   id?: string
-  url?: string
+  name?: string
 }
 
 export interface SubmissionConditionSet {
@@ -588,7 +588,7 @@ export enum ReleaseStatus {
 export interface SubmissionContainer {
   assertion_criteria?: SubmissionAssertionCriteria
   behalf_org_id?: number
-  clinvar_deletion: SubmisisonClinvarDelete
+  clinvar_deletion?: SubmissionClinvarDelete
   clinvar_submission?: SubmissionClinvarSubmission
   clinvar_submission_release_status?: ReleaseStatus
   submission_name?: string

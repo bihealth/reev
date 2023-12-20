@@ -28,7 +28,11 @@ class CrudClinvarSubmittingOrg(CrudBase[SubmittingOrg, SubmittingOrgCreate, Subm
         return select(self.model).filter(self.model.owner == user_id).order_by(self.model.label)
 
     async def update(
-        self, session: AsyncSession, *, db_obj: SubmittingOrg, obj_in: SubmittingOrgUpdate | dict[str, Any]
+        self,
+        session: AsyncSession,
+        *,
+        db_obj: SubmittingOrg,
+        obj_in: SubmittingOrgUpdate | dict[str, Any]
     ) -> SubmittingOrg:
         """Override to prevent updating token if not set."""
         if isinstance(obj_in, dict):
@@ -38,7 +42,6 @@ class CrudClinvarSubmittingOrg(CrudBase[SubmittingOrg, SubmittingOrgCreate, Subm
         if "token" in update_data and not update_data.get("token"):
             update_data.pop("token")
         return await super().update(session, db_obj=db_obj, obj_in=update_data)
-
 
 
 class CrudSubmissionThread(

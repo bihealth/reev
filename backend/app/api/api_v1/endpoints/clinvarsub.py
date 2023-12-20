@@ -3,8 +3,8 @@
 from typing import Generic, Optional, TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi_pagination.cursor import CursorPage, CursorParams, decode_cursor
 from fastapi_pagination.bases import CursorRawParams
+from fastapi_pagination.cursor import CursorPage, CursorParams, decode_cursor
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,6 +20,7 @@ T = TypeVar("T")
 
 class TotalCursorParams(CursorParams):
     """Cursor params with total count."""
+
     def to_raw_params(self) -> CursorRawParams:
         params = super().to_raw_params()
         params.include_total = True
@@ -29,6 +30,7 @@ class TotalCursorParams(CursorParams):
 
 class TotalCursorPage(CursorPage[T], Generic[T]):
     """Cursor page with total count."""
+
     __params_type__ = TotalCursorParams
 
 

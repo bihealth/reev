@@ -2,18 +2,33 @@
 ClinVar submission of seqvars/strucvars.
 -->
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import {
   ClinvarsubClient,
   type SubmissionThreadRead,
   type SubmittingOrgRead,
-  VariantPresence
+  VariantPresence,
+type SubmissionContainer,
+CitationDb,
+ReleaseStatus,
+RecordStatus,
+AffectedStatus,
+AlleleOrigin,
+CollectionMethod,
+ClinicalFeaturesAffectedStatus,
+ClinicalFeaturesDb,
+ModeOfInheritance,
+ClinicalSignificanceDescription,
+type SubmissionCondition,
+type SubmissionClinicalFeature
 } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
 import { StoreState } from '@/stores/misc'
+import { getModeForFileReference } from 'typescript'
+import { deepCopy } from '@/lib/test-utils'
 
 /** Data type used for component's props. */
 interface Props {
@@ -102,6 +117,104 @@ const prepareModel = ref<PrepareModel>({
   scv: undefined
 })
 
+/** Interface for creationg and update of submissions. */
+interface CreateUpdateModel {
+  // -- clinical significance ---------------------------------------------------
+
+  /** Clinical significance description. */
+  clinical_significance_description: ClinicalSignificanceDescription
+  /** Optional comment. */
+  comment?: string
+  /** Date of last evaluation. */
+  date_last_evaluated: string
+  /** Mode of inheritance. */
+  mode_of_inheritance: ModeOfInheritance
+
+  // -- patient-related --------------------------------------------------------
+
+  /** Condition set. */
+  case_conditions: SubmissionCondition[]
+  /** Patient information. */
+  case_affected_status: AffectedStatus,
+  /** Allele origin. */
+  case_allele_origin: AlleleOrigin,
+  /** Collection method. */
+  case_collection_method: CollectionMethod,
+  /** Clinical features. */
+  case_clinical_features: SubmissionClinicalFeature[]
+}
+/** Default value for the create/update model. */
+const defaultCreateUpdateModel: CreateUpdateModel = {
+  // -- clinical significance ---------------------------------------------------
+
+  clinical_significance_description: ClinicalSignificanceDescription.Pathogenic,
+  comment: undefined,
+  date_last_evaluated: new Date().toISOString().slice(0, 10),
+  mode_of_inheritance: ModeOfInheritance.UnknownMechanism,
+
+  // -- patient-related --------------------------------------------------------
+
+  case_conditions: [{"name": "not provided"}],
+  case_affected_status: AffectedStatus.Yes,
+  case_allele_origin: AlleleOrigin.Germline,
+  case_collection_method: CollectionMethod.NotProvided,
+  case_clinical_features: [],
+}
+/** The model for the create/update data. */
+const createUpdateModel = ref<CreateUpdateModel>(deepCopy(defaultCreateUpdateModel))
+
+/** Construct a `SubmissionContainer` for a creation. */
+const constructCreateUpdatePayload = (prepareModel: PrepareModel, model: CreateUpdateModel): SubmissionContainer => {
+  const modelCopy: CreateUpdateModel = deepCopy(model)
+
+  return {
+    assertion_criteria: {
+      db: CitationDb.Pubmed,
+      id: "25741868", // ACMG 2015
+    },
+    clinvar_submission: {
+      clinical_significance: {
+        clinical_significance_description: modelCopy.clinical_significance_description,
+        comment: modelCopy.comment,
+        date_last_evaluated: modelCopy.date_last_evaluated,
+        mode_of_inheritance: modelCopy.mode_of_inheritance,
+      },
+      condition_set: {
+        condition: modelCopy.case_conditions
+      },
+      observed_in: [
+        {
+          affected_status: modelCopy.case_affected_status,
+          allele_origin: modelCopy.case_allele_origin,
+          collection_method: modelCopy.case_collection_method,
+          clinical_features: modelCopy.case_clinical_features,
+        }
+      ],
+      record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update,
+    },
+    clinvar_submission_release_status: ReleaseStatus.Public,
+  }
+}
+/** Interface for deletion of submissions. */
+interface DeleteModel {
+  /** Optional free-text reason. */
+  reason?: string,
+}
+/** The model for the create/update data. */
+const deleteModel = ref<DeleteModel>({})
+
+/** Construct a `SubmissionContainer` given an accession and reason. */
+const constructDeletePayload = (deleteModel: DeleteModel): SubmissionContainer => ({
+  clinvar_deletion: {
+    accession_set: [
+      {
+        accession: prepareModel.value.scv ?? 'UNDEFINED',
+        reason: deleteModel.reason
+      }
+    ],
+  }
+})
+
 /** Select the first submitting org from the store as currently selected. */
 const selectFirstSubmittingOrg = () => {
   const submittingOrgs = Object.values(clinvarsubStore.submittingOrgs)
@@ -187,7 +300,7 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                   class="pt-6"
                   inset
                   :hide-details="true"
-                  label="I want to update/delete with an existing submission an I have an SCV"
+                  label="I want to update/delete with an existing submission and I have an SCV"
                 >
                 </v-switch>
 
