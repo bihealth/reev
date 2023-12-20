@@ -19,19 +19,19 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.User)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.Default]
-    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.Default]).length).toEqual(28)
+    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.Default]).length).toEqual(26)
     expect(AcmgCriteriaState.criteriaStates[StateSource.Default]).toHaveProperty(AcmgCriteria.PVS1)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.InterVar]
-    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.InterVar]).length).toEqual(28)
+    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.InterVar]).length).toEqual(26)
     expect(AcmgCriteriaState.criteriaStates[StateSource.InterVar]).toHaveProperty(AcmgCriteria.PVS1)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.Server]
-    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.Server]).length).toEqual(28)
+    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.Server]).length).toEqual(26)
     expect(AcmgCriteriaState.criteriaStates[StateSource.Server]).toHaveProperty(AcmgCriteria.PVS1)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.User]
-    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.User]).length).toEqual(28)
+    expect(Object.keys(AcmgCriteriaState.criteriaStates[StateSource.User]).length).toEqual(26)
     expect(AcmgCriteriaState.criteriaStates[StateSource.User]).toHaveProperty(AcmgCriteria.PVS1)
   })
 
@@ -319,19 +319,19 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     expect(criteriaStates).toHaveProperty(StateSource.User)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.Default]
-    expect(Object.keys(criteriaStates[StateSource.Default]).length).toEqual(28)
+    expect(Object.keys(criteriaStates[StateSource.Default]).length).toEqual(26)
     expect(criteriaStates[StateSource.Default]).toHaveProperty(AcmgCriteria.PVS1)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.InterVar]
-    expect(Object.keys(criteriaStates[StateSource.InterVar]).length).toEqual(28)
+    expect(Object.keys(criteriaStates[StateSource.InterVar]).length).toEqual(26)
     expect(criteriaStates[StateSource.InterVar]).toHaveProperty(AcmgCriteria.PVS1)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.Server]
-    expect(Object.keys(criteriaStates[StateSource.Server]).length).toEqual(28)
+    expect(Object.keys(criteriaStates[StateSource.Server]).length).toEqual(26)
     expect(criteriaStates[StateSource.Server]).toHaveProperty(AcmgCriteria.PVS1)
 
     // Check keys of AcmgCriteriaState.criteriaStates[StateSource.User]
-    expect(Object.keys(criteriaStates[StateSource.User]).length).toEqual(28)
+    expect(Object.keys(criteriaStates[StateSource.User]).length).toEqual(26)
     expect(criteriaStates[StateSource.User]).toHaveProperty(AcmgCriteria.PVS1)
   })
 

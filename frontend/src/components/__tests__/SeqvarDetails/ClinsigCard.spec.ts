@@ -60,7 +60,7 @@ describe.concurrent('AcmgRating', async () => {
     const summarySheet = wrapper.findComponent(SummarySheet)
     expect(summarySheet.exists()).toBe(true)
     const switchers = wrapper.findAllComponents({ name: 'CriterionSwitch' })
-    expect(switchers.length).toBe(56)
+    expect(switchers.length).toBe(52)
 
     // click show failed button
     const btnShowFailed = wrapper.findAll('.show-failed')

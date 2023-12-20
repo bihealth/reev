@@ -42,7 +42,6 @@ enum AcmgCriteria {
   PP2 = 'PP2',
   PP3 = 'PP3',
   PP4 = 'PP4',
-  PP5 = 'PP5',
   BA1 = 'BA1',
   BS1 = 'BS1',
   BS2 = 'BS2',
@@ -53,7 +52,6 @@ enum AcmgCriteria {
   BP3 = 'BP3',
   BP4 = 'BP4',
   BP5 = 'BP5',
-  BP6 = 'BP6',
   BP7 = 'BP7'
 }
 
@@ -74,7 +72,6 @@ const ALL_ACMG_CRITERIA = [
   AcmgCriteria.PP2,
   AcmgCriteria.PP3,
   AcmgCriteria.PP4,
-  AcmgCriteria.PP5,
   AcmgCriteria.BA1,
   AcmgCriteria.BS1,
   AcmgCriteria.BS2,
@@ -85,7 +82,6 @@ const ALL_ACMG_CRITERIA = [
   AcmgCriteria.BP3,
   AcmgCriteria.BP4,
   AcmgCriteria.BP5,
-  AcmgCriteria.BP6,
   AcmgCriteria.BP7
 ]
 
@@ -225,15 +221,6 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         genetic etiology.`
     },
     {
-      criteria: AcmgCriteria.PP5,
-      defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
-      label: 'PP5',
-      hint: 'reliable source: pathogenic',
-      description: `Reputable source recently reports variant as pathogenic, but the evidence is not available 
-        to the laboratoryto perform an independent evaluation. Note: Not recommended to use anymore, 
-        use PS3 and PS4 at different levels of evidence.`
-    },
-    {
       criteria: AcmgCriteria.BA1,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStandalone,
       label: 'BA1',
@@ -308,14 +295,6 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BP5',
       hint: 'different gene in other case',
       description: 'Variant found in a case with an alternate molecular basis for disease'
-    },
-    {
-      criteria: AcmgCriteria.BP6,
-      defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
-      label: 'BP6',
-      hint: 'reputable source: benign',
-      description:
-        'Reputable source recently reports variant as benign, but the evidence is not available to the laboratory to perform an independent evaluation'
     },
     {
       criteria: AcmgCriteria.BP7,
@@ -470,11 +449,6 @@ class MultiSourceAcmgCriteriaState {
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
       },
-      PP5: {
-        criteria: AcmgCriteria.PP5,
-        presence: Presence.Unknown,
-        evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
-      },
       BA1: {
         criteria: AcmgCriteria.BA1,
         presence: Presence.Unknown,
@@ -522,11 +496,6 @@ class MultiSourceAcmgCriteriaState {
       },
       BP5: {
         criteria: AcmgCriteria.BP5,
-        presence: Presence.Unknown,
-        evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
-      },
-      BP6: {
-        criteria: AcmgCriteria.BP6,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
