@@ -21,7 +21,7 @@ def acmgseqvar_post_data() -> dict[str, Any]:
             "comment": "No comment",
             "criterias": [
                 {
-                    "criteria": "Pm4",
+                    "criteria": "PM4",
                     "presence": "Absent",
                     "evidence": "Pathogenic Moderate",
                 }
@@ -482,7 +482,7 @@ def acmgseqvar_update_data() -> dict[str, Any]:
             "comment": "Update",
             "criterias": [
                 {
-                    "criteria": "Pm4",
+                    "criteria": "PM4",
                     "presence": "Present",
                     "evidence": "Pathogenic Moderate",
                 }

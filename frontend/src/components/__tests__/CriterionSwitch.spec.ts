@@ -9,8 +9,8 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ClinsigCard', async () => {
   it('renders the AcmgRating info', async () => {
     const acmgRating = new MultiSourceAcmgCriteriaState()
-    acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
-    const criteria = AcmgCriteria.Pvs1
+    acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+    const criteria = AcmgCriteria.PVS1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
     const { wrapper } = await setupMountedComponents(
@@ -24,10 +24,10 @@ describe.concurrent('ClinsigCard', async () => {
       }
     )
     expect(wrapper.text()).toContain('Pathogenic')
-    expect(wrapper.text()).toContain('Pvs1')
+    expect(wrapper.text()).toContain('PVS1')
 
     const switcher = wrapper.find('.v-switch')
-    expect(switcher.text()).toContain('Pvs1')
+    expect(switcher.text()).toContain('PVS1')
 
     const selection = wrapper.find('.v-select')
     expect(selection.text()).toContain('Pathogenic')
@@ -35,8 +35,8 @@ describe.concurrent('ClinsigCard', async () => {
 
   it('should correctly update the ClinsigCard info', async () => {
     const acmgRating = new MultiSourceAcmgCriteriaState()
-    acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
-    const criteria = AcmgCriteria.Pvs1
+    acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+    const criteria = AcmgCriteria.PVS1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
     const { wrapper } = await setupMountedComponents(

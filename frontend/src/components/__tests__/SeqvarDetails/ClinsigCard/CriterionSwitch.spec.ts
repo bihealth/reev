@@ -13,15 +13,15 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('CriterionSwitch', async () => {
   it('renders the CriterionSwitch', async () => {
     const acmgRating = new MultiSourceAcmgCriteriaState()
-    acmgRating.setPresence(StateSource.User, AcmgCriteria.Pm1, Presence.Present)
+    acmgRating.setPresence(StateSource.User, AcmgCriteria.PM1, Presence.Present)
     const { wrapper } = await setupMountedComponents(
       { component: CriterionSwitch, template: false },
       {
         props: {
           acmgRating: acmgRating,
-          criteria: AcmgCriteria.Pm1,
+          criteria: AcmgCriteria.PM1,
           criteriaState: {
-            criteria: AcmgCriteria.Pm1,
+            criteria: AcmgCriteria.PM1,
             presence: Presence.Present,
             evidenceLevel: AcmgEvidenceLevel.PathogenicModerate
           }
@@ -29,7 +29,7 @@ describe.concurrent('CriterionSwitch', async () => {
       }
     )
 
-    expect(wrapper.text()).contains('Pm1')
+    expect(wrapper.text()).contains('PM1')
     expect(wrapper.text()).contains('Pathogenic Moderate')
     const vSwitch = wrapper.findComponent({ name: 'VSwitch' })
     const vTooltip = wrapper.findComponent({ name: 'VTooltip' })

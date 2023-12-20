@@ -27,66 +27,66 @@ const ACMG_EVIDENCE_LEVELS_BENIGN = [
 
 /** The predefined ACMG criteria. */
 enum AcmgCriteria {
-  Pvs1 = 'Pvs1',
-  Ps1 = 'Ps1',
-  Ps2 = 'Ps2',
-  Ps3 = 'Ps3',
-  Ps4 = 'Ps4',
-  Pm1 = 'Pm1',
-  Pm2 = 'Pm2',
-  Pm3 = 'Pm3',
-  Pm4 = 'Pm4',
-  Pm5 = 'Pm5',
-  Pm6 = 'Pm6',
-  Pp1 = 'Pp1',
-  Pp2 = 'Pp2',
-  Pp3 = 'Pp3',
-  Pp4 = 'Pp4',
-  Pp5 = 'Pp5',
-  Ba1 = 'Ba1',
-  Bs1 = 'Bs1',
-  Bs2 = 'Bs2',
-  Bs3 = 'Bs3',
-  Bs4 = 'Bs4',
-  Bp1 = 'Bp1',
-  Bp2 = 'Bp2',
-  Bp3 = 'Bp3',
-  Bp4 = 'Bp4',
-  Bp5 = 'Bp5',
-  Bp6 = 'Bp6',
-  Bp7 = 'Bp7'
+  PVS1 = 'PVS1',
+  PS1 = 'PS1',
+  PS2 = 'PS2',
+  PS3 = 'PS3',
+  PS4 = 'PS4',
+  PM1 = 'PM1',
+  PM2 = 'PM2',
+  PM3 = 'PM3',
+  PM4 = 'PM4',
+  PM5 = 'PM5',
+  PM6 = 'PM6',
+  PP1 = 'PP1',
+  PP2 = 'PP2',
+  PP3 = 'PP3',
+  PP4 = 'PP4',
+  PP5 = 'PP5',
+  BA1 = 'BA1',
+  BS1 = 'BS1',
+  BS2 = 'BS2',
+  BS3 = 'BS3',
+  BS4 = 'BS4',
+  BP1 = 'BP1',
+  BP2 = 'BP2',
+  BP3 = 'BP3',
+  BP4 = 'BP4',
+  BP5 = 'BP5',
+  BP6 = 'BP6',
+  BP7 = 'BP7'
 }
 
 /** Array of all ACMG criteria. */
 const ALL_ACMG_CRITERIA = [
-  AcmgCriteria.Pvs1,
-  AcmgCriteria.Ps1,
-  AcmgCriteria.Ps2,
-  AcmgCriteria.Ps3,
-  AcmgCriteria.Ps4,
-  AcmgCriteria.Pm1,
-  AcmgCriteria.Pm2,
-  AcmgCriteria.Pm3,
-  AcmgCriteria.Pm4,
-  AcmgCriteria.Pm5,
-  AcmgCriteria.Pm6,
-  AcmgCriteria.Pp1,
-  AcmgCriteria.Pp2,
-  AcmgCriteria.Pp3,
-  AcmgCriteria.Pp4,
-  AcmgCriteria.Pp5,
-  AcmgCriteria.Ba1,
-  AcmgCriteria.Bs1,
-  AcmgCriteria.Bs2,
-  AcmgCriteria.Bs3,
-  AcmgCriteria.Bs4,
-  AcmgCriteria.Bp1,
-  AcmgCriteria.Bp2,
-  AcmgCriteria.Bp3,
-  AcmgCriteria.Bp4,
-  AcmgCriteria.Bp5,
-  AcmgCriteria.Bp6,
-  AcmgCriteria.Bp7
+  AcmgCriteria.PVS1,
+  AcmgCriteria.PS1,
+  AcmgCriteria.PS2,
+  AcmgCriteria.PS3,
+  AcmgCriteria.PS4,
+  AcmgCriteria.PM1,
+  AcmgCriteria.PM2,
+  AcmgCriteria.PM3,
+  AcmgCriteria.PM4,
+  AcmgCriteria.PM5,
+  AcmgCriteria.PM6,
+  AcmgCriteria.PP1,
+  AcmgCriteria.PP2,
+  AcmgCriteria.PP3,
+  AcmgCriteria.PP4,
+  AcmgCriteria.PP5,
+  AcmgCriteria.BA1,
+  AcmgCriteria.BS1,
+  AcmgCriteria.BS2,
+  AcmgCriteria.BS3,
+  AcmgCriteria.BS4,
+  AcmgCriteria.BP1,
+  AcmgCriteria.BP2,
+  AcmgCriteria.BP3,
+  AcmgCriteria.BP4,
+  AcmgCriteria.BP5,
+  AcmgCriteria.BP6,
+  AcmgCriteria.BP7
 ]
 
 /** Detailed definition of one ACMG criteria such as PVS1. */
@@ -102,7 +102,7 @@ interface CriteriaDefinition {
 const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
   [
     {
-      criteria: AcmgCriteria.Pvs1,
+      criteria: AcmgCriteria.PVS1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
       label: 'PVS1',
       hint: 'Very strong evidence of pathogenicity',
@@ -112,7 +112,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         are affected.`
     },
     {
-      criteria: AcmgCriteria.Ps1,
+      criteria: AcmgCriteria.PS1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS1',
       hint: 'same amino acid change',
@@ -121,7 +121,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         change use PS4.`
     },
     {
-      criteria: AcmgCriteria.Ps2,
+      criteria: AcmgCriteria.PS2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS2',
       hint: 'de novo (both maternity and paternity confirmed)',
@@ -129,7 +129,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         family history.`
     },
     {
-      criteria: AcmgCriteria.Ps3,
+      criteria: AcmgCriteria.PS3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS3',
       hint: 'well-established in vitro or in vivo functional studies',
@@ -137,7 +137,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         the gene or gene product.`
     },
     {
-      criteria: AcmgCriteria.Ps4,
+      criteria: AcmgCriteria.PS4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS4',
       hint: 'prevalence in disease controls',
@@ -145,7 +145,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         with the prevalence in controls.`
     },
     {
-      criteria: AcmgCriteria.Pm1,
+      criteria: AcmgCriteria.PM1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM1',
       hint: 'variant in hotspot (missense)',
@@ -153,7 +153,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         (e.g., active site of an enzyme) without benign variation.`
     },
     {
-      criteria: AcmgCriteria.Pm2,
+      criteria: AcmgCriteria.PM2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM2',
       hint: 'absent from controls (or at extremely low frequency if recessive)',
@@ -162,14 +162,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         supporting only.`
     },
     {
-      criteria: AcmgCriteria.Pm3,
+      criteria: AcmgCriteria.PM3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM3',
       hint: 'AR: trans with known pathogenic',
       description: `For recessive disorders, detected in trans with a pathogenic variant.`
     },
     {
-      criteria: AcmgCriteria.Pm4,
+      criteria: AcmgCriteria.PM4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM4',
       hint: 'protein length change',
@@ -177,7 +177,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         or stop-loss variants. Do not use in combination with PVS1 or PP3.`
     },
     {
-      criteria: AcmgCriteria.Pm5,
+      criteria: AcmgCriteria.PM5,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM5',
       hint: 'literature: AA exchange same pos',
@@ -185,14 +185,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         to be pathogenic has been seen before.`
     },
     {
-      criteria: AcmgCriteria.Pm6,
+      criteria: AcmgCriteria.PM6,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM6',
       hint: 'assumed de novo',
       description: `Assumed de novo, but without confirmation of paternity and maternity.`
     },
     {
-      criteria: AcmgCriteria.Pp1,
+      criteria: AcmgCriteria.PP1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP1',
       hint: 'cosegregates in family',
@@ -200,7 +200,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         to cause the disease.`
     },
     {
-      criteria: AcmgCriteria.Pp2,
+      criteria: AcmgCriteria.PP2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP2',
       hint: 'few missense in gene',
@@ -208,7 +208,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         missense variants are a common mechanism of disease.`
     },
     {
-      criteria: AcmgCriteria.Pp3,
+      criteria: AcmgCriteria.PP3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP3',
       hint: 'predicted pathogenic',
@@ -217,7 +217,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         PVS1 or PM4.`
     },
     {
-      criteria: AcmgCriteria.Pp4,
+      criteria: AcmgCriteria.PP4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP4',
       hint: 'phenotype/pedigree match gene',
@@ -225,7 +225,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         genetic etiology.`
     },
     {
-      criteria: AcmgCriteria.Pp5,
+      criteria: AcmgCriteria.PP5,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP5',
       hint: 'reliable source: pathogenic',
@@ -234,7 +234,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         use PS3 and PS4 at different levels of evidence.`
     },
     {
-      criteria: AcmgCriteria.Ba1,
+      criteria: AcmgCriteria.BA1,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStandalone,
       label: 'BA1',
       hint: 'AF > 5% in ExAC, 1000G, or ESP',
@@ -242,14 +242,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Allele frequency is >5% in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium'
     },
     {
-      criteria: AcmgCriteria.Bs1,
+      criteria: AcmgCriteria.BS1,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStrong,
       label: 'BS1',
       hint: 'disease: allele freq. too high',
       description: 'Allele frequency is greater than expected for disorder'
     },
     {
-      criteria: AcmgCriteria.Bs2,
+      criteria: AcmgCriteria.BS2,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStrong,
       label: 'BS2',
       hint: 'observed in healthy individual',
@@ -257,7 +257,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Observed in a healthy adult individual for a recessive (homozygous), dominant (heterozygous), or X-linked (hemizygous) disorder, with full penetrance expected at an early age'
     },
     {
-      criteria: AcmgCriteria.Bs3,
+      criteria: AcmgCriteria.BS3,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStrong,
       label: 'BS3',
       hint: 'functional studies: benign',
@@ -265,14 +265,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Well-established in vitro or in vivo functional studies show no damaging effect on protein function or splicing'
     },
     {
-      criteria: AcmgCriteria.Bs4,
+      criteria: AcmgCriteria.BS4,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStrong,
       label: 'BS4',
       hint: 'lack of segregation',
       description: 'Lack of segregation in affected members of a family'
     },
     {
-      criteria: AcmgCriteria.Bp1,
+      criteria: AcmgCriteria.BP1,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP1',
       hint: 'missense in gene with truncating',
@@ -280,7 +280,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Missense variant in a gene for which primarily truncating variants are known to cause disease'
     },
     {
-      criteria: AcmgCriteria.Bp2,
+      criteria: AcmgCriteria.BP2,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP2',
       hint: 'other variant is causative',
@@ -288,14 +288,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Observed in trans with a pathogenic variant for a fully penetrant dominant gene/disorder or observed in cis with a pathogenic variant in any inheritance pattern'
     },
     {
-      criteria: AcmgCriteria.Bp3,
+      criteria: AcmgCriteria.BP3,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP3',
       hint: 'in-frame indel',
       description: 'In-frame deletions/insertions in a repetitive region without a known function'
     },
     {
-      criteria: AcmgCriteria.Bp4,
+      criteria: AcmgCriteria.BP4,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP4',
       hint: 'prediction: benign',
@@ -303,14 +303,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary,splicing impact, etc.)'
     },
     {
-      criteria: AcmgCriteria.Bp5,
+      criteria: AcmgCriteria.BP5,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP5',
       hint: 'different gene in other case',
       description: 'Variant found in a case with an alternate molecular basis for disease'
     },
     {
-      criteria: AcmgCriteria.Bp6,
+      criteria: AcmgCriteria.BP6,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP6',
       hint: 'reputable source: benign',
@@ -318,7 +318,7 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
         'Reputable source recently reports variant as benign, but the evidence is not available to the laboratory to perform an independent evaluation'
     },
     {
-      criteria: AcmgCriteria.Bp7,
+      criteria: AcmgCriteria.BP7,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP7',
       hint: 'silent, no splicing/conservation',
@@ -395,143 +395,143 @@ class MultiSourceAcmgCriteriaState {
   protected createCriteriaStateMap(source: StateSource): CriteriaToState {
     const isDefault = source === StateSource.Default
     return {
-      Pvs1: {
-        criteria: AcmgCriteria.Pvs1,
+      PVS1: {
+        criteria: AcmgCriteria.PVS1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicVeryStrong : AcmgEvidenceLevel.NotSet
       },
-      Ps1: {
-        criteria: AcmgCriteria.Ps1,
+      PS1: {
+        criteria: AcmgCriteria.PS1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicStrong : AcmgEvidenceLevel.NotSet
       },
-      Ps2: {
-        criteria: AcmgCriteria.Ps2,
+      PS2: {
+        criteria: AcmgCriteria.PS2,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicStrong : AcmgEvidenceLevel.NotSet
       },
-      Ps3: {
-        criteria: AcmgCriteria.Ps3,
+      PS3: {
+        criteria: AcmgCriteria.PS3,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicStrong : AcmgEvidenceLevel.NotSet
       },
-      Ps4: {
-        criteria: AcmgCriteria.Ps4,
+      PS4: {
+        criteria: AcmgCriteria.PS4,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicStrong : AcmgEvidenceLevel.NotSet
       },
-      Pm1: {
-        criteria: AcmgCriteria.Pm1,
+      PM1: {
+        criteria: AcmgCriteria.PM1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicModerate : AcmgEvidenceLevel.NotSet
       },
-      Pm2: {
-        criteria: AcmgCriteria.Pm2,
+      PM2: {
+        criteria: AcmgCriteria.PM2,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicModerate : AcmgEvidenceLevel.NotSet
       },
-      Pm3: {
-        criteria: AcmgCriteria.Pm3,
+      PM3: {
+        criteria: AcmgCriteria.PM3,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicModerate : AcmgEvidenceLevel.NotSet
       },
-      Pm4: {
-        criteria: AcmgCriteria.Pm4,
+      PM4: {
+        criteria: AcmgCriteria.PM4,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicModerate : AcmgEvidenceLevel.NotSet
       },
-      Pm5: {
-        criteria: AcmgCriteria.Pm5,
+      PM5: {
+        criteria: AcmgCriteria.PM5,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicModerate : AcmgEvidenceLevel.NotSet
       },
-      Pm6: {
-        criteria: AcmgCriteria.Pm6,
+      PM6: {
+        criteria: AcmgCriteria.PM6,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicModerate : AcmgEvidenceLevel.NotSet
       },
-      Pp1: {
-        criteria: AcmgCriteria.Pp1,
+      PP1: {
+        criteria: AcmgCriteria.PP1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
       },
-      Pp2: {
-        criteria: AcmgCriteria.Pp2,
+      PP2: {
+        criteria: AcmgCriteria.PP2,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
       },
-      Pp3: {
-        criteria: AcmgCriteria.Pp3,
+      PP3: {
+        criteria: AcmgCriteria.PP3,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
       },
-      Pp4: {
-        criteria: AcmgCriteria.Pp4,
+      PP4: {
+        criteria: AcmgCriteria.PP4,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
       },
-      Pp5: {
-        criteria: AcmgCriteria.Pp5,
+      PP5: {
+        criteria: AcmgCriteria.PP5,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.PathogenicSupporting : AcmgEvidenceLevel.NotSet
       },
-      Ba1: {
-        criteria: AcmgCriteria.Ba1,
+      BA1: {
+        criteria: AcmgCriteria.BA1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignStandalone : AcmgEvidenceLevel.NotSet
       },
-      Bs1: {
-        criteria: AcmgCriteria.Bs1,
+      BS1: {
+        criteria: AcmgCriteria.BS1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignStrong : AcmgEvidenceLevel.NotSet
       },
-      Bs2: {
-        criteria: AcmgCriteria.Bs2,
+      BS2: {
+        criteria: AcmgCriteria.BS2,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignStrong : AcmgEvidenceLevel.NotSet
       },
-      Bs3: {
-        criteria: AcmgCriteria.Bs3,
+      BS3: {
+        criteria: AcmgCriteria.BS3,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignStrong : AcmgEvidenceLevel.NotSet
       },
-      Bs4: {
-        criteria: AcmgCriteria.Bs4,
+      BS4: {
+        criteria: AcmgCriteria.BS4,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignStrong : AcmgEvidenceLevel.NotSet
       },
-      Bp1: {
-        criteria: AcmgCriteria.Bp1,
+      BP1: {
+        criteria: AcmgCriteria.BP1,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
-      Bp2: {
-        criteria: AcmgCriteria.Bp2,
+      BP2: {
+        criteria: AcmgCriteria.BP2,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
-      Bp3: {
-        criteria: AcmgCriteria.Bp3,
+      BP3: {
+        criteria: AcmgCriteria.BP3,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
-      Bp4: {
-        criteria: AcmgCriteria.Bp4,
+      BP4: {
+        criteria: AcmgCriteria.BP4,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
-      Bp5: {
-        criteria: AcmgCriteria.Bp5,
+      BP5: {
+        criteria: AcmgCriteria.BP5,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
-      Bp6: {
-        criteria: AcmgCriteria.Bp6,
+      BP6: {
+        criteria: AcmgCriteria.BP6,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       },
-      Bp7: {
-        criteria: AcmgCriteria.Bp7,
+      BP7: {
+        criteria: AcmgCriteria.BP7,
         presence: Presence.Unknown,
         evidenceLevel: isDefault ? AcmgEvidenceLevel.BenignSupporting : AcmgEvidenceLevel.NotSet
       }
