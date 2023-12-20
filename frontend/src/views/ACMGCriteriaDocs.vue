@@ -149,16 +149,6 @@ const mainBackgroundColor = computed(() => {
                 </p>
                 <p>Hint: Phenotype/pedigree match gene</p>
               </li>
-              <li>
-                <h3>PP5 - Reputable source reports variant as pathogenic</h3>
-                <p>
-                  Description: Reputable source recently reports variant as pathogenic, but the
-                  evidence is not available to the laboratory to perform an independent evaluation.
-                  Note: Not recommended to use anymore, use PS3 and PS4 at different levels of
-                  evidence.
-                </p>
-                <p>Hint: Reliable source: pathogenic</p>
-              </li>
             </ul>
           </div>
 
@@ -240,14 +230,6 @@ const mainBackgroundColor = computed(() => {
                   Description: Variant found in a case with an alternate molecular basis for disease
                 </p>
                 <p>Hint: Different gene in other case</p>
-              </li>
-              <li>
-                <h3>BP6 - Reputable source reports variant as benign</h3>
-                <p>
-                  Description: Reputable source recently reports variant as benign, but the evidence
-                  is not available to the laboratory to perform an independent evaluation
-                </p>
-                <p>Hint: Reputable source: benign</p>
               </li>
               <li>
                 <h3>BP7 - Synonymous variant with no splicing impact</h3>
