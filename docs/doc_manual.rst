@@ -17,10 +17,8 @@ Genes
 Basic information
 =================
 
-.. _doc_manual_gene_pathogenicity:
-
 This card shows the basic information for a gene such as its symbol, name, and a short summary that we took from the NCBI gene overview.
-At the bottom of the card, you can find link-outs to other websites describing the gene, such as searching pubmed, ENSEMBK, NCBI, UniProt and MGI. At the very right of this link-outs you find a link to REEV's gene detail view (detailed view of a gene's properties without any specific variant information).
+At the bottom of the card, you can find link-outs to other websites describing the gene, such as searching pubmed, ENSEMBL, NCBI, UniProt and MGI. At the very right of this link-outs you find a link to REEV's gene detail view (detailed view of a gene's properties without any specific variant information).
 
 Note that you can also click on "More" on the lower right of the card to show additional information on the gene:
 
@@ -29,20 +27,21 @@ Note that you can also click on "More" on the lower right of the card to show ad
 - Link-outs to locus specific databases if available for the respective gene of interest, e.g. LOVD, NIH-BIC database (for BRCA1/2 variants), Leiden Muscular Dystrophy pages (for TTN variants), etc.
 - NCBI GeneRIFs
 
+
+.. _doc_manual_gene_pathogenicity:
+
 Gene Pathogenicity
 ==================
-
-.. _doc_manual_gene_conditions:
 
 This card shows the avaible gene pathogenicity scores for a gene such as:
 - ClinGen haploinsufficiency and triplosensitivity scores
 - gnomAD pLI and LOEUF scores (for loss of function variants) and Z-score (for missense variants)
 - DECIPHER haploinsufficiency and triplosensitivity scores as well as sHet (Selection coefficient of heterozygous loss-of-function variants) scores
 
+.. _doc_manual_gene_conditions:
+
 Associated Conditions
 =====================
-
-.. _doc_manual_gene_expression:
 
 This card shows the avaible information on the phenotypes associated to the respective gene as HPO terms and known OMIM phenotypes. Note than you can use the button "numeric terms" in the lower left corner to show or hide the corresponding numeric HPO term and OMIM phenotype IDs; with the button "show links" right next you can activate and deactivate the corresponding link-outs of the displayed HPO terms and OMIM phenotypes.
 At the bottom of the card you can also find more link-outs to further websites with gene-phenotype information, such as JAX and Orphanet.
@@ -50,15 +49,18 @@ Note that you can also use the "More" button on the lower right of the card to s
 
 If you have logged in and provided case specific phenotype information with HPO terms you can find the gene-to-phenotype rank (i.e. how well your case's HPO terms fit the gene's associated HPO terms) in the grey box on the right.
 
+
+.. _doc_manual_gene_expression:
+
 Expression
 ==========
-
-.. _doc_manual_gene_clinvar_information:
 
 This card shows the tissue specific information for a gene as provided by GTEX. Below the plot you also find the corresponding link-out to the GTEX portal. 
 Note that you can also use the little "..." button in the upper right corner of the plot to
 - save the plot as .svg or .png
 - view the corresponding vega source code and open in vega editor
+
+.. _doc_manual_gene_clinvar_information:
 
 ClinVar Information
 ===================
@@ -89,8 +91,6 @@ Sequence Variants
 Clinical Significance
 =====================
 
-.. _doc_manual_seqvar_consequences:
-
 This card shows the semi-automated pathogenicity prediction based on InterVar. 
 Using the buttons on the left you can...
 - hide/show the terse mode of ACMG criteria display. On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
@@ -104,27 +104,31 @@ Note that you can also clear all selected ACMG criteria or reset them to auto us
 
 @Manuel: need your help: ?? Finally, you can save your ACMG rating, load a preexisting one or delete it from the server ??
 
+
+.. _doc_manual_seqvar_consequences:
+
 Consequences
 ============
 
-.. _doc_manual_seqvar_clinvar:
 This cards shows the consequences of your variant of interest by providing information on
 - the gene affected
 - the different transcript variants (RefSeq)
 - the respective consequence as type of the variant (missense, nonsense, frameshift, splice, etc.) and the change on cDNA an protein level in the corresponding transcript
 - which of how many exons is affected by this variant in the corresponding transcript
 
+
+.. _doc_manual_seqvar_clinvar:
+
 ClinVar
 =======
 
-.. _doc_manual_seqvar_scores:
-
 This card shows information on the variant available in the ClinVar database such as the annotated interpretation (benign, likely benign, uncertain significance, likely pathogenic, pathogenic), the evidence level / review status (1 to 5 stars) and a link-out to this entry in ClinVar. Using the button in the lower right corner of the card you can expand this ClinVar information, e.g. to the associated condition linked to this variant.
+
+
+.. _doc_manual_seqvar_scores:
 
 Scores
 ======
-
-.. _doc_manual_seqvar_population_frequencies:
 
 This card shows a variety of precomputed sequence variant scores, e.g. CADD, PolyPhen2, SIFT, REVEL etc.
 Note that REEV also provides the precomputed splice predictions scores MMSplice and SpliceAI for the assessment of potential splice site variants. By default the most pathogenic prediction is displayed. Using the button next to the tool on the left you can also expand both predictions to all the different splice site change scores calculated (e.g. acceptor-gain, acceptor-loss, donor-gain, ...).
@@ -136,27 +140,39 @@ On the bottom of this card you can also find information on conservation (UCSC 1
 
 Note, that if there are more than one transcript variant for gene, on the bottom right of this card you can choose and switch between the different transcript variants and the corresponding predictions for this respective transcript variant will be provided above. 
 
+
+.. _doc_manual_seqvar_population_frequencies:
+
 Population Frequencies
 ======================
 
+This card shows the variant's occurence in the control database gnomAD and also provides the respective link-out to gnomAD.
+
 .. _doc_manual_seqvar_variant_tools:
 
-This card shows the variant's occurence in the control database gnomAD and also provides the respective link-out to gnomAD.
 
 Variant Tools
 =============
 
-.. _doc_manual_seqvar_beacon_network:
-
 This card provides useful further link-outs on variant level to the genome browesers ENSEMBL and UCSC as well as to further resources such as MutationTaster, Varsome, etc.
+By clicking on the “Jump in local IGV” button on the bottom, you can also look at the variant in IGV when you have the respective bam-file opened in your local IGV.
+
+
+.. _doc_manual_seqvar_beacon_network:
 
 Beacon Network
 ==============
+
+In this card you can connect to others users via the beacon network to search for your variant of interest and associated information at other sites.
+
 
 .. _doc_manual_seqvar_variant_validator:
 
 Variant Validator
 =================
+
+In this last card you can submit the variant to VariantValidator to obtain gold standard HGVS description to make short to report the variant correctly in your lab report or paper.
+
 
 .. _doc_manual_strucvar:
 
@@ -167,14 +183,18 @@ Structural Variants
 Gene List
 =========
 
-...
-
+In this first card you find an overiew in the form of a gene list of all genes overlapping and contained in the region affected by you structural variant of interest.
+In this overview you find the Gene symbol, RefSeq MANE transcript ID as well as important scores on haploinsufficiency and triplosensitivity of the respective gene (see also :ref:`doc_manual_gene`)
 For the currently selected gene, the information described in the section :ref:`doc_manual_gene` is displayed.
+
+Note, that if you investigate a larger SV affecting multiple genes, REEV can help you prioritize that larger set of genes by sorting by different criteria using the "sort by" selection box on the upper right corner of the card to sort the gene list by different (e.g. haploinsufficiency or triplosensitivity) scores.
 
 .. _doc_manual_strucvar_clinvar:
 
 ClinVar
 =======
+
+
 
 .. _doc_manual_strucvar_variant_tools:
 
