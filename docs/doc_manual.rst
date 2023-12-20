@@ -126,6 +126,12 @@ Scores
 
 .. _doc_manual_seqvar_population_frequencies:
 
+This card shows a variety of precomputed sequence variant scores, e.g. CADD, PolyPhen2, SIFT, REVEL etc.
+Note that REEV also provides the precomputed splice predictions scores MMSplice and SpliceAI for the assessment of potential splice site variants. By default the most pathogenic prediction is displayed. Using the button next to the tool on the left you can also expand both predictions to all the different splice site change scores calculated (e.g. acceptor-gain, acceptor-loss, donor-gain,...).
+
+REEV provides not only the raw scores but also an interpretation of the respective score. To this end, a color visualization of each score is shown with green color indicating a benign and red color indicating a pathogenic prediction. On the right REEV provides you with the respective evidence level you can use on the ACMG PP3 criterion according to recent ClinGen recommendations by Pejaver et al. (https://doi.org/10.1016/j.ajhg.2022.10.013) who advice that "For missense variants, to determine evidence for codes PP3 and BP4, we recommend that, for most situations, clinical laboratories use a single tool, genome-wide, that can reach the strong level of evidence for pathogenicity and moderate for benignity (BayesDel, MutPred2, REVEL, or VEST4)"
+The interpretation given by REEV follows the respective thresholds for each score published in these guidelines (Table 2).
+
 Population Frequencies
 ======================
 
