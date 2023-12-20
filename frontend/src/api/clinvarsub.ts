@@ -299,9 +299,299 @@ export interface SubmissionActivityRead {
   /** Timestamp of request. */
   request_timestamp: string | null
   /** The response payload. */
-  response_payload: ResponseMessage | ResponseCreated
+  response_payload: ResponseMessage | ResponseCreated | RetrieveStatusResult | null
   /** Timestamp of response. */
   response_timestamp: string | null
+}
+
+export enum CitationDb {
+  Pubmed = 'PubMed',
+  Bookshelf = 'BookShelf',
+  Doi = 'DOI',
+  Pmc = 'pmc'
+}
+
+export interface SubmissionAssertionCriteria {
+  db: CitationDb | null
+  id: string | null
+  url: string | null
+}
+
+export interface SubmissionClinvarDeletionAccessionSet {
+  accession: string
+  reason: string | null
+}
+
+export interface SubmisisonClinvarDelete {
+  accession_set: SubmissionClinvarDeletionAccessionSet[]
+}
+
+export enum ClinicalSignificanceDescription {
+  Pathogenic = 'Pathogenic',
+  LikelyPathogenic = 'Likely pathogenic',
+  UncertainSignificance = 'Uncertain significance',
+  LikelyBenign = 'Likely benign',
+  Benign = 'Benign',
+  PathogenicLowPenetrance = 'Pathogenic, low penetrance',
+  UncertainRiskAllele = 'Uncertain risk allele',
+  LikelyPathogenicLowPenetrance = 'Likely pathogenic, low penetrance',
+  EstablishedRiskAllele = 'Established risk allele',
+  LikelyRiskAllele = 'Likely risk allele',
+  Affects = 'affects',
+  Association = 'association',
+  DrugResponse = 'drug response',
+  ConfersSensitivity = 'confers sensitivity',
+  Protective = 'protective',
+  Other = 'other',
+  NotProvided = 'not provided'
+}
+
+export interface SubmissionCitation {
+  db: CitationDb | null
+  id: string | null
+  url: string | null
+}
+
+export enum ModeOfInheritance {
+  AutosomalDominantInheritance = 'Autosomal dominant inheritance',
+  AutosomalRecessiveInheritance = 'Autosomal recessive inheritance',
+  MitochondrialInheritance = 'Mitochondrial inheritance',
+  SomaticMutation = 'Somatic mutation',
+  GeneticAnticipation = 'Genetic anticipation',
+  Sporadic = 'Sporadic',
+  SexLimitedAutosomalDominant = 'Sex-limited autosomal dominant',
+  XLinkedRecessiveInheritance = 'X-linked recessive inheritance',
+  XLinkedDominantInheritance = 'X-linked dominant inheritance',
+  YLinkedInheritance = 'Y-linked inheritance',
+  Other = 'Other',
+  XLinkedInheritance = 'X-linked inheritance',
+  Codominant = 'Codominant',
+  SemidominantInheritance = 'Semidominant inheritance',
+  AutosomalUnknown = 'Autosomal unknown',
+  AutosomalDominantInheritanceWithMaternalImprinting = 'Autosomal dominant inheritance with maternal imprinting',
+  AutosomalDominantInheritanceWithPaternalImprinting = 'Autosomal dominant inheritance with paternal imprinting',
+  MultifactorialInheritance = 'Multifactorial inheritance',
+  UnknownMechanism = 'Unknown mechanism',
+  OligogenicInheritance = 'Oligogenic inheritance'
+}
+
+export interface SubmissionClinicalSignificance {
+  clinical_significance_description: ClinicalSignificanceDescription
+  citation: SubmissionCitation[] | null
+  comment: string | null
+  custom_assertion_score: number | null
+  date_last_evaluated: string | null
+  explanation_of_drug_response: string | null
+  explanation_of_other_clinical_significance: string | null
+  mode_of_inheritance: ModeOfInheritance | null
+}
+
+export enum ConditionDb {
+  Omim = 'OMIM',
+  Medgen = 'MedGen',
+  Orphanet = 'Orphanet',
+  Mesh = 'MeSH',
+  Hp = 'HP',
+  Mondo = 'MONDO'
+}
+
+export interface SubmissionCondition {
+  db: ConditionDb | null
+  id: string | null
+  url: string | null
+}
+
+export interface SubmissionConditionSet {
+  condition: SubmissionCondition[] | null
+  // drug_response?: SubmissionDrugResponse[]
+  // multiple_condition_explanation?: MultipleConditionexplanation
+}
+
+export enum AffectedStatus {
+  Yes = 'yes',
+  No = 'no',
+  Unknown = 'unknown',
+  NotProvided = 'not provided',
+  NotApplicable = 'not applicable'
+}
+
+export enum AlleleOrigin {
+  Germline = 'germline',
+  Somatic = 'somatic',
+  DeNovo = 'de novo',
+  Unknown = 'unknown',
+  Inherited = 'inherited',
+  Maternal = 'maternal',
+  Paternal = 'paternal',
+  Biparental = 'biparental',
+  NotApplicable = 'not applicable'
+}
+
+export enum CollectionMethod {
+  Curation = 'curation',
+  LiteratureOnly = 'literature only',
+  ReferencePopulation = 'reference population',
+  ProviderInterpretation = 'provider interpretation',
+  PhenotypingOnly = 'phenotyping only',
+  CaseControl = 'case-control',
+  ClinicalTesting = 'clinical testing',
+  InVitro = 'in vitro',
+  InVivo = 'in vivo',
+  Research = 'research',
+  NotProvided = 'not provided'
+}
+
+export enum ClinicalFeaturesAffectedStatus {
+  Present = 'present',
+  Absent = 'absent',
+  NotTested = 'not tested'
+}
+
+export enum ClinicalFeaturesDb {
+  Hp = 'HP'
+}
+
+export interface SubmissionClinicalFeature {
+  clinical_features_affected_status: ClinicalFeaturesAffectedStatus
+  db: ClinicalFeaturesDb | null
+  id: string | null
+  name: string | null
+}
+
+export enum StructVarMethodType {
+  SnpArray = 'SNP array',
+  OligoArray = 'Oligo array',
+  ReadDepth = 'Read depth',
+  PairedEndMapping = 'Paired-end mapping',
+  OneEndAnchoredAssembly = 'One end anchored assembly',
+  SequenceAlignment = 'Sequence alignment',
+  OpticalMapping = 'Optical mapping',
+  CuratedPcr = 'Curated,PCR'
+}
+
+export interface SubmissionObservedIn {
+  affected_status: AffectedStatus
+  allele_origin: AlleleOrigin
+  collection_method: CollectionMethod
+  clinical_features: SubmissionClinicalFeature[] | null
+  clinical_features_comment: string | null
+  number_of_individuals: number | null
+  struct_var_method: StructVarMethodType | null
+}
+
+export enum RecordStatus {
+  Novel = 'novel',
+  Update = 'update'
+}
+
+export enum Assembly {
+  Grch38 = 'GRCh38',
+  Hg38 = 'hg38',
+  Grch37 = 'GRCh37',
+  Hg19 = 'hg19',
+  Ncbi36 = 'NCBI36',
+  Hg18 = 'hg18'
+}
+
+export enum Chromosome {
+  Chr1 = '1',
+  Chr2 = '2',
+  Chr3 = '3',
+  Chr4 = '4',
+  Chr5 = '5',
+  Chr6 = '6',
+  Chr7 = '7',
+  Chr8 = '8',
+  Chr9 = '9',
+  Chr10 = '10',
+  Chr11 = '11',
+  Chr12 = '12',
+  Chr13 = '13',
+  Chr14 = '14',
+  Chr15 = '15',
+  Chr16 = '16',
+  Chr17 = '17',
+  Chr18 = '18',
+  Chr19 = '19',
+  Chr20 = '20',
+  Chr21 = '21',
+  Chr22 = '22',
+  ChrX = 'X',
+  ChrY = 'Y',
+  ChrM = 'MT'
+}
+
+export interface SubmissionChromosomeCoordinates {
+  accession: string | null
+  alternate_allele: string | null
+  assembly: Assembly | null
+  chromosome: string | null
+  inner_start: number | null
+  inner_stop: number | null
+  outer_start: number | null
+  outer_stop: number | null
+  reference_allele: string | null
+  start: number | null
+  stop: number | null
+  variant_length: number | null
+}
+
+export interface SubmissionVariantGene {
+  gene_id: number | null
+  gene_symbol: string | null
+}
+
+export enum VariantType {
+  Insertion = 'Insertion',
+  Deletion = 'Deletion',
+  Duplication = 'Duplication',
+  TandemDuplication = 'Tandem duplication',
+  CopyNumberLoss = 'copy number loss',
+  CopyNumberGain = 'copy number gain',
+  Inversion = 'Inversion',
+  Translocation = 'Translocation',
+  Complex = 'Complex'
+}
+
+export interface SubmissionVariant {
+  chromosome_coordinates: SubmissionChromosomeCoordinates | null
+  copy_number: string | null
+  gene: SubmissionVariantGene[] | null
+  hgvs: string | null
+  reference_copy_number: number | null
+  variant_type: VariantType | null
+}
+
+export interface SubmissionVariantSet {
+  variant: SubmissionVariant[]
+}
+
+/**
+ * ClinVar submission data.
+ *
+ * Note that we only added the data structures that we need to for REEV.
+ */
+export interface SubmissionClinvarSubmission {
+  clinical_significance: SubmissionClinicalSignificance
+  condition_set: SubmissionConditionSet
+  observed_in: SubmissionObservedIn[]
+  record_status: RecordStatus
+  clinvar_accession: string | null
+  variant_set: SubmissionVariantSet | null
+}
+
+export enum ReleaseStatus {
+  Public = 'public',
+  HoldUntilPublished = 'hold until published'
+}
+
+export interface SubmissionContainer {
+  assertion_criteria: SubmissionAssertionCriteria | null
+  behalf_org_id: number | null
+  clinvar_deletion: SubmisisonClinvarDelete
+  clinvar_submission: SubmissionClinvarSubmission | null
+  clinvar_submission_release_status: ReleaseStatus | null
+  submission_name: string | null
 }
 
 /** Interface for updating submission activities. */
@@ -313,7 +603,7 @@ export interface SubmissionActivityWrite {
   /** The activity status. */
   status: SubmissionActivityStatus
   /** The request payload. */
-  request_payload: any | null
+  request_payload: SubmissionContainer | null
 }
 
 export class ClinvarsubClient {
