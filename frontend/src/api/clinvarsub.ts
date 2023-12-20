@@ -35,10 +35,8 @@ export interface SubmittingOrgWrite {
   id?: string
   /** A user-facing label. */
   label: string
-  /** Timestamp of creation. */
-  created: string
-  /** Timestamp of last update. */
-  updated: string
+  /** The token to set; optional */
+  clinvar_api_token?: string
 }
 
 export class ClinvarsubClient {
@@ -71,7 +69,52 @@ export class ClinvarsubClient {
   }
 
   /**
+   * Create a new submitting organization.
+   *
+   * @param submittingOrg The submitting organization to create.
+   * @returns The created submitting organization.
+   */
+  async createSubmittingOrg(submittingOrg: SubmittingOrgWrite): Promise<SubmittingOrgRead> {
+    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submittingorgs`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(submittingOrg)
+    })
+    return await response.json()
+  }
+
+  /**
+   * Update a submitting organization.
+   *
+   * @param submittingOrg The submitting organization to update.
+   * @returns The updated submitting organization.
+   */
+  async updateSubmittingOrg(submittingOrg: SubmittingOrgWrite): Promise<SubmittingOrgRead> {
+    const response = await fetch(
+      `${this.apiBaseUrl}clinvarsub/submittingorgs/${submittingOrg.id}`,
+      {
+        method: 'PUT',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submittingOrg)
+      }
+    )
+    return await response.json()
+  }
+
+  /**
    * Delete a submitting organization.
+   *
+   * @param id The UUID of the submitting organization to delete.
    */
   async deleteSubmittingOrg(id: string): Promise<void> {
     const response = await fetch(`${this.apiBaseUrl}clinvarsub/submittingorgs/${id}`, {

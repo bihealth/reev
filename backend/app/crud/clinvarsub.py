@@ -37,7 +37,7 @@ class CrudClinvarSubmittingOrg(CrudBase[SubmittingOrg, SubmittingOrgCreate, Subm
             update_data = obj_in.model_dump(exclude_unset=True)
         if "token" in update_data and not update_data.get("token"):
             update_data.pop("token")
-        super().update(session, db_obj=db_obj, obj_in=update_data)
+        return await super().update(session, db_obj=db_obj, obj_in=update_data)
 
 
 

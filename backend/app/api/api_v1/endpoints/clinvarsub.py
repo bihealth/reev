@@ -1,7 +1,6 @@
 """Endpoints for the ClinVar submission API."""
 
-from typing import Optional
-from uuid import UUID
+from typing import Generic, Optional, TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_pagination.cursor import CursorPage, CursorParams, decode_cursor
@@ -16,20 +15,27 @@ from app.models.user import User
 
 router = APIRouter()
 
-class CursorParamsWithTotal(CursorParams):
-    """Custom params that also fill the total field."""
+T = TypeVar("T")
 
+
+class TotalCursorParams(CursorParams):
+    """Cursor params with total count."""
     def to_raw_params(self) -> CursorRawParams:
-        return CursorRawParams(
-            cursor=decode_cursor(self.cursor, to_str=self.str_cursor),
-            size=self.size,
-            include_total=True,
-        )
+        params = super().to_raw_params()
+        params.include_total = True
+
+        return params
+
+
+class TotalCursorPage(CursorPage[T], Generic[T]):
+    """Cursor page with total count."""
+    __params_type__ = TotalCursorParams
+
 
 # -- SumbmittingOrg -----------------------------------------------------------
 
 
-@router.get("/submittingorgs", response_model=CursorPage[schemas.SubmittingOrgRead])
+@router.get("/submittingorgs", response_model=TotalCursorPage[schemas.SubmittingOrgRead])
 async def list_submittingorgs(
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
@@ -40,7 +46,7 @@ async def list_submittingorgs(
     :return: Paginated list of results.
     """
     query = crud.submittingorg.query_by_owner(user_id=user.id)
-    return await paginate(db, query, CursorParamsWithTotal())
+    return await paginate(db, query)
 
 
 @router.post("/submittingorgs", response_model=schemas.SubmittingOrgRead)
@@ -133,7 +139,7 @@ async def delete_submittingorg(
 # -- SubmissionThread ---------------------------------------------------------
 
 
-@router.get("/submissionthreads", response_model=CursorPage[schemas.SubmissionThreadRead])
+@router.get("/submissionthreads", response_model=TotalCursorPage[schemas.SubmissionThreadRead])
 async def list_submissionthreads(
     primary_variant_desc: Optional[str] = None,
     db: AsyncSession = Depends(deps.get_db),
@@ -147,7 +153,7 @@ async def list_submissionthreads(
     query = crud.submissionthread.query_by_user(
         user_id=user.id, primary_variant_desc=primary_variant_desc
     )
-    return await paginate(db, query, CursorParamsWithTotal())
+    return await paginate(db, query)
 
 
 @router.post("/submissionthreads", response_model=schemas.SubmissionThreadRead)
@@ -235,7 +241,7 @@ async def delete_submissionthread(
 
 @router.get(
     "/submissionthreads/{submissionthread_id}/activities",
-    response_model=CursorPage[schemas.SubmissionActivityRead],
+    response_model=TotalCursorPage[schemas.SubmissionActivityRead],
 )
 async def list_submissionactivities(
     submissionthread_id: str,
@@ -261,7 +267,7 @@ async def list_submissionactivities(
     query = crud.submissionactivity.query_by_submissionthread(
         submissionthread_id=submissionthread_id
     )
-    return await paginate(db, query, CursorParamsWithTotal())
+    return await paginate(db, query)
 
 
 @router.post(

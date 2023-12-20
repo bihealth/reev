@@ -50,7 +50,7 @@ enum ClinvarsubSection {
   SubmittingOrgs = 'clinvar-submittingorgs'
 }
 
-const CLINVARSUB_PAGES = [{ id: ClinvarsubSection.SubmittingOrgs, title: 'Organisations' }]
+const CLINVARSUB_PAGES = [{ id: ClinvarsubSection.SubmittingOrgs, title: 'Orgs / Keys' }]
 
 enum AdminSection {
   SendTestEmail = 'admin-email-test'
