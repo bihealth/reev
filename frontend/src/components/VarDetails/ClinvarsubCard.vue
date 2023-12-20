@@ -2,33 +2,29 @@
 ClinVar submission of seqvars/strucvars.
 -->
 <script setup lang="ts">
+import { useVuelidate } from '@vuelidate/core'
+import { helpers, maxLength, minLength, required, requiredIf } from '@vuelidate/validators'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import {
-  ClinvarsubClient,
-  type SubmissionThreadRead,
-  type SubmittingOrgRead,
-  VariantPresence,
-type SubmissionContainer,
-CitationDb,
-ReleaseStatus,
-RecordStatus,
-AffectedStatus,
-AlleleOrigin,
-CollectionMethod,
-ClinicalFeaturesAffectedStatus,
-ClinicalFeaturesDb,
-ModeOfInheritance,
-ClinicalSignificanceDescription,
-type SubmissionCondition,
-type SubmissionClinicalFeature
+  AffectedStatus,
+  AlleleOrigin,
+  CitationDb,
+  ClinicalSignificanceDescription,
+  CollectionMethod,
+  ModeOfInheritance,
+  RecordStatus,
+  ReleaseStatus,
+  type SubmissionClinicalFeature,
+  type SubmissionCondition,
+  type SubmissionContainer,
+  VariantPresence
 } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
+import { deepCopy } from '@/lib/utils'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
 import { StoreState } from '@/stores/misc'
-import { getModeForFileReference } from 'typescript'
-import { deepCopy } from '@/lib/test-utils'
 
 /** Data type used for component's props. */
 interface Props {
@@ -87,16 +83,48 @@ enum Steps {
   Review = 'Review & Submit'
 }
 
-/** Current display state. */
+/** Component state; Current step. */
+const currentStep = ref<number>(1)
+/** Component state; current display state. */
 const display = ref<Display>(Display.List)
-/** The current stepper items. */
-const stepperItems = computed<string[]>(() => {
-  if (prepareModel.value?.desiredPresence === VariantPresence.Present) {
-    return Object.values(Steps)
-  } else {
-    return [Steps.Prepare, Steps.Review]
+
+/** Handler for click on "previous" */
+const onClickPrevious = async () => {
+  console.log('click previous')
+  const currentStep$ = Object.values(Steps)[currentStep.value - 1]
+  switch (currentStep$) {
+    case Steps.Prepare:
+      console.error('unreachable')
+      break
+    case Steps.DataEntry:
+      currentStep.value = Object.values(Steps).indexOf(Steps.Prepare) + 1
+      break
+    case Steps.Review:
+      currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
+      break
   }
-})
+}
+/** Handler for click on "next" */
+const onClickNext = async () => {
+  const currentStep$ = Object.values(Steps)[currentStep.value - 1]
+  switch (currentStep$) {
+    case Steps.Prepare:
+      console.log('validate prepare')
+      if (!await v$prepareModel.value.$validate()) {
+        console.log('bad')
+        v$prepareModel.value.$touch()
+      } else {
+        currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
+      }
+      break
+    case Steps.DataEntry:
+      currentStep.value = Object.values(Steps).indexOf(Steps.Review) + 1
+      break
+    case Steps.Review:
+      console.error('unreachable')
+      break
+  }
+}
 
 /** Interface for editing in preparation step. */
 interface PrepareModel {
@@ -110,12 +138,30 @@ interface PrepareModel {
   scv: string | undefined
 }
 /** Current state of preparation step. */
-const prepareModel = ref<PrepareModel>({
+const prepareModelState = ref<PrepareModel>({
   submittingorgId: undefined,
   hasScv: false,
   desiredPresence: VariantPresence.Present,
   scv: undefined
 })
+/** Rules for the prepare model state. */
+const prepareModelRules = {
+  scv: {
+    required: helpers.withMessage(
+      'Must be provided if you say you have a SCV',
+      (value: string | undefined): boolean => !prepareModelState.value.hasScv || !!value
+    ),
+    mustBeValid: helpers.withMessage('Must be a valid SCV', (value: string): boolean => {
+      if (!prepareModelState.value.hasScv) {
+        return true
+      } else {
+        return !helpers.req(value) || value.match(/^SCV[0-9]{9,9}$/) !== null
+      }
+    })
+  }
+}
+/** Vuelidate instance for `prepareModel`. */
+const v$prepareModel = useVuelidate<PrepareModel>(prepareModelRules, prepareModelState)
 
 /** Interface for creationg and update of submissions. */
 interface CreateUpdateModel {
@@ -135,11 +181,11 @@ interface CreateUpdateModel {
   /** Condition set. */
   case_conditions: SubmissionCondition[]
   /** Patient information. */
-  case_affected_status: AffectedStatus,
+  case_affected_status: AffectedStatus
   /** Allele origin. */
-  case_allele_origin: AlleleOrigin,
+  case_allele_origin: AlleleOrigin
   /** Collection method. */
-  case_collection_method: CollectionMethod,
+  case_collection_method: CollectionMethod
   /** Clinical features. */
   case_clinical_features: SubmissionClinicalFeature[]
 }
@@ -154,30 +200,33 @@ const defaultCreateUpdateModel: CreateUpdateModel = {
 
   // -- patient-related --------------------------------------------------------
 
-  case_conditions: [{"name": "not provided"}],
+  case_conditions: [{ name: 'not provided' }],
   case_affected_status: AffectedStatus.Yes,
   case_allele_origin: AlleleOrigin.Germline,
   case_collection_method: CollectionMethod.NotProvided,
-  case_clinical_features: [],
+  case_clinical_features: []
 }
 /** The model for the create/update data. */
 const createUpdateModel = ref<CreateUpdateModel>(deepCopy(defaultCreateUpdateModel))
 
 /** Construct a `SubmissionContainer` for a creation. */
-const constructCreateUpdatePayload = (prepareModel: PrepareModel, model: CreateUpdateModel): SubmissionContainer => {
+const constructCreateUpdatePayload = (
+  prepareModel: PrepareModel,
+  model: CreateUpdateModel
+): SubmissionContainer => {
   const modelCopy: CreateUpdateModel = deepCopy(model)
 
   return {
     assertion_criteria: {
       db: CitationDb.Pubmed,
-      id: "25741868", // ACMG 2015
+      id: '25741868' // ACMG 2015
     },
     clinvar_submission: {
       clinical_significance: {
         clinical_significance_description: modelCopy.clinical_significance_description,
         comment: modelCopy.comment,
         date_last_evaluated: modelCopy.date_last_evaluated,
-        mode_of_inheritance: modelCopy.mode_of_inheritance,
+        mode_of_inheritance: modelCopy.mode_of_inheritance
       },
       condition_set: {
         condition: modelCopy.case_conditions
@@ -187,18 +236,18 @@ const constructCreateUpdatePayload = (prepareModel: PrepareModel, model: CreateU
           affected_status: modelCopy.case_affected_status,
           allele_origin: modelCopy.case_allele_origin,
           collection_method: modelCopy.case_collection_method,
-          clinical_features: modelCopy.case_clinical_features,
+          clinical_features: modelCopy.case_clinical_features
         }
       ],
-      record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update,
+      record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update
     },
-    clinvar_submission_release_status: ReleaseStatus.Public,
+    clinvar_submission_release_status: ReleaseStatus.Public
   }
 }
 /** Interface for deletion of submissions. */
 interface DeleteModel {
   /** Optional free-text reason. */
-  reason?: string,
+  reason?: string
 }
 /** The model for the create/update data. */
 const deleteModel = ref<DeleteModel>({})
@@ -208,10 +257,10 @@ const constructDeletePayload = (deleteModel: DeleteModel): SubmissionContainer =
   clinvar_deletion: {
     accession_set: [
       {
-        accession: prepareModel.value.scv ?? 'UNDEFINED',
+        accession: prepareModelState.value.scv ?? 'UNDEFINED',
         reason: deleteModel.reason
       }
-    ],
+    ]
   }
 })
 
@@ -219,7 +268,7 @@ const constructDeletePayload = (deleteModel: DeleteModel): SubmissionContainer =
 const selectFirstSubmittingOrg = () => {
   const submittingOrgs = Object.values(clinvarsubStore.submittingOrgs)
   if (submittingOrgs.length > 0) {
-    prepareModel.value.submittingorgId = submittingOrgs[0].id
+    prepareModelState.value.submittingorgId = submittingOrgs[0].id
   }
 }
 // Select the first submitting org when mounted.
@@ -277,7 +326,30 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
       </template>
 
       <template v-else-if="display === Display.Stepper">
-        <v-stepper alt-labels :items="stepperItems" :flat="true" :elevation="0">
+        <v-stepper alt-labels :items="Object.values(Steps)" :flat="true" :elevation="0" v-model="currentStep">
+          <template #[`prev`]>
+            <v-btn color="primary" @click="() => onClickPrevious()">
+              Previous
+            </v-btn>
+          </template>
+          <template #[`next`]>
+            <template v-if="currentStep === Object.values(Steps).indexOf(Steps.Review) + 1">
+              <v-btn color="primary" disabled>
+                Next
+              </v-btn>
+            </template>
+            <template v-if="v$prepareModel.$errors.length > 0">
+              <v-btn color="error" @click="() => onClickNext()">
+                Fix Errors
+              </v-btn>
+            </template>
+            <template v-else>
+              <v-btn color="primary" @click="() => onClickNext()">
+                Next
+              </v-btn>
+            </template>
+          </template>
+
           <template #[`item.1`]>
             <v-sheet>
               <p class="pb-6 text-body-1">
@@ -285,9 +357,9 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                 you want to use. Also, you can configure whether you want to create a new submission
                 or update/delete an existing one.
               </p>
-              <v-form>
+              <form>
                 <v-select
-                  v-model="prepareModel.submittingorgId"
+                  v-model="prepareModelState.submittingorgId"
                   label="Submitting Organisation"
                   item-title="label"
                   item-value="id"
@@ -296,7 +368,7 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                 ></v-select>
 
                 <v-switch
-                  v-model="prepareModel.hasScv"
+                  v-model="prepareModelState.hasScv"
                   class="pt-6"
                   inset
                   :hide-details="true"
@@ -305,34 +377,53 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                 </v-switch>
 
                 <v-text-field
-                  v-model="prepareModel.scv"
-                  class="pt-6"
-                  :disabled="!prepareModel.hasScv"
+                  v-model="prepareModelState.scv"
+                  :error-messages="v$prepareModel.scv.$errors.map((e: any) => e.$message)"
                   label="SCV of existing submission"
-                  :hide-details="true"
+                  class="pt-6"
+                  :disabled="!prepareModelState.hasScv"
+                  @input="v$prepareModel.scv.$touch"
+                  @blur="v$prepareModel.scv.$touch"
                 ></v-text-field>
 
                 <v-switch
-                  v-model="prepareModel.desiredPresence"
+                  v-model="prepareModelState.desiredPresence"
                   class="pt-6"
                   inset
-                  :disabled="!prepareModel.hasScv"
+                  :disabled="!prepareModelState.hasScv"
                   true-icon="mdi-pencil"
                   false-icon="mdi-delete-forever"
                   :true-value="VariantPresence.Present"
                   :false-value="VariantPresence.Absent"
                   :label="
-                    prepareModel.desiredPresence === VariantPresence.Present
+                    prepareModelState.desiredPresence === VariantPresence.Present
                       ? 'Update Variant'
                       : 'Delete Variant'
                   "
                   :hide-details="true"
                 ></v-switch>
-              </v-form>
+              </form>
             </v-sheet>
           </template>
           <template #[`item.2`]>
-            <v-card title="Enter Data" flat>...</v-card>
+            <template
+              v-if="
+                prepareModelState.hasScv &&
+                prepareModelState.desiredPresence == VariantPresence.Absent
+              "
+            >
+              <p class="pb-6 text-body-1">
+                Below, you may provide an optional free-text reason for removing the variant.
+              </p>
+              <v-form>
+                <v-textarea
+                  v-model="deleteModel.reason"
+                  label="Free-text reason"
+                  :hide-details="true"
+                ></v-textarea>
+              </v-form>
+            </template>
+            <template v-else> update </template>
           </template>
           <template #[`item.3`]>
             <v-card title="Review & Submit" flat>...</v-card>

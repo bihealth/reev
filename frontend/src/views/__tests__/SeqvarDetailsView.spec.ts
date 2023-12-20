@@ -24,7 +24,7 @@ import VariantValidatorCard from '@/components/SeqvarDetails/VariantValidatorCar
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/test-utils'
+import { deepCopy } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
 import { useSeqVarInfoStore } from '@/stores/seqVarInfo'
