@@ -112,6 +112,210 @@ export interface SubmissionThreadWrite {
   primary_variant_desc?: string
 }
 
+/** Enum for the submission activity kind. */
+export enum SubmissionActivityKind {
+  /** Create a new submission. */
+  Create = 'create',
+  /** Retrieve the information from an ongoing submission. */
+  Retrieve = 'retrieve',
+  /** Update an existing submission. */
+  Update = 'update',
+  /** Delete an existing submission. */
+  Delete = 'delete'
+}
+
+/** Enum for the submission activity status. */
+export enum SubmissionActivityStatus {
+  /** The submission activity is waiting to be picked up by the worker. */
+  Waiting = 'waiting',
+  /** The submission activity is in progress. */
+  InProgress = 'in_progress',
+  /** The submission activity is complete with result success. */
+  CompleteSuccess = 'complete_success',
+  /** The submission activity is complete with result "submission failure". */
+  CompleteFailure = 'complete_failure',
+  /** The submission activity is complete with result "submission in progress". */
+  CompleteInProgress = 'complete_in_progress',
+  /** The submission activity has failed. */
+  Failed = 'failed',
+  /** The submission activity has failed because of a timeout. */
+  Timeout = 'timeout'
+}
+
+/** Simple error message from ClinVar. */
+export interface ResponseMessage {
+  /** Error message text. */
+  text: string
+}
+
+/** Response for successful creation by ClinVar. */
+export interface ResponseCreated {
+  /** The ClinVar SCV. */
+  id: string
+}
+
+export interface SubmissionStatusFile {
+  url: string
+}
+
+export enum ErrorCode {
+  Success = '0',
+  PartialSuccess = '1',
+  AllFailure = '2'
+}
+
+export interface SubmissionStatusResponseMessage {
+  error_code: ErrorCode | null
+  severity: string
+  text: string
+}
+
+export interface SubmissionStatusObjectContent {
+  clinvar_processing_status: string
+  clinvar_release_status: string
+}
+
+export interface SubmissionStatusObject {
+  accession: string | null
+  content: SubmissionStatusObjectContent
+  target_db: string
+}
+
+export interface SubmissionStatusResponse {
+  status: string
+  files: SubmissionStatusFile[]
+  message: SubmissionStatusResponseMessage | null
+  objects: SubmissionStatusObject[]
+}
+
+/** Submission status actions. */
+export interface SubmissionStatusActions {
+  id: string
+  response: SubmissionStatusResponse[]
+  status: string
+  target_db: string
+  updated: string
+}
+
+/** Submission status response. */
+export interface SubmissionStatus {
+  /** List of actions, one element only by the docs. */
+  actions: SubmissionStatusActions[]
+}
+
+export enum BatchProcessingStatus {
+  InProcessing = 'In processing',
+  Success = 'Success',
+  Error = 'Error',
+  PartialSuccess = 'Partial success'
+}
+
+export enum BatchReleaseStatus {
+  Released = 'Released',
+  PartialReleased = 'Partial released',
+  NotReleased = 'Not released'
+}
+
+export interface SummaryResponseDeletionIdentifier {
+  clinvar_accession: string
+  clinvar_local_key: string | null
+}
+
+export interface SummaryResponseErrorInput {
+  value: string | null
+  field: string | null
+}
+
+export interface SummaryResponseErrorOutput {
+  user_message: string
+}
+
+export interface SummaryResponseError {
+  input: SummaryResponseErrorInput[]
+  output: SummaryResponseErrorOutput
+}
+
+export interface SummaryResponseDeletion {
+  identifiers: SummaryResponseDeletionIdentifier
+  processing_status: string
+  delete_date: string | null
+  delete_status: string | null
+  errors: SummaryResponseError[] | null
+}
+
+export interface SummaryResponseSubmissionIdentifiers {
+  clinvar_local_key: string
+  clinvar_accession: string | null
+  local_id: string | null
+  local_key: string | null
+}
+
+export interface SummaryResponseSubmission {
+  identifiers: SummaryResponseSubmissionIdentifiers
+  processing_status: string
+  clinvar_accession_version: string | null
+  errors: SummaryResponseError[] | null
+  release_date: string | null
+  release_status: string | null
+}
+
+export interface SummaryResponse {
+  batch_processing_status: BatchProcessingStatus
+  batch_release_status: BatchReleaseStatus
+  submission_date: string
+  submission_name: string
+  total_count: number
+  total_errors: number
+  total_public: number
+  total_success: number
+  deletions: SummaryResponseDeletion[] | null
+  submissions: SummaryResponseSubmission[] | null
+  total_delete_count: number | null
+  total_deleted: number | null
+  total_delete_errors: number | null
+  total_delete_success: number | null
+}
+
+/** Result of a successful status retrieval. */
+export interface RetrieveStatusResult {
+  /** Submission status. */
+  status: SubmissionStatus
+  /** Summaries, by file URL. */
+  summaries: { [key: string]: SummaryResponse }
+}
+
+/** Interface for reading submission activities. */
+export interface SubmissionActivityRead {
+  /** The internal UUID. */
+  id: string
+  /** The submission thread's UUID. */
+  submissionthread_id: string
+  /** The activity kind. */
+  kind: SubmissionActivityKind
+  /** The activity status. */
+  status: SubmissionActivityStatus
+  /** The request payload. */
+  request_payload: any | null
+  /** Timestamp of request. */
+  request_timestamp: string | null
+  /** The response payload. */
+  response_payload: ResponseMessage | ResponseCreated
+  /** Timestamp of response. */
+  response_timestamp: string | null
+}
+
+/** Interface for updating submission activities. */
+export interface SubmissionActivityWrite {
+  /** The submission thread's UUID. */
+  submissionthread_id: string
+  /** The activity kind. */
+  kind: SubmissionActivityKind
+  /** The activity status. */
+  status: SubmissionActivityStatus
+  /** The request payload. */
+  request_payload: any | null
+}
+
 export class ClinvarsubClient {
   private apiBaseUrl: string
   private csrfToken: string | null

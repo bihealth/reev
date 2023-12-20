@@ -192,7 +192,7 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                 </v-switch>
 
                 <v-text-field
-                class="pt-6"
+                  class="pt-6"
                   :disabled="!prepareModel.hasScv"
                   v-model="prepareModel.scv"
                   label="SCV of existing submission"
@@ -208,7 +208,11 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                   v-model="prepareModel.desiredPresence"
                   :true-value="VariantPresence.Present"
                   :false-value="VariantPresence.Absent"
-                  :label="prepareModel.desiredPresence === VariantPresence.Present ? 'Update Variant' : 'Delete Variant'"
+                  :label="
+                    prepareModel.desiredPresence === VariantPresence.Present
+                      ? 'Update Variant'
+                      : 'Delete Variant'
+                  "
                   :hide-details="true"
                 ></v-switch>
               </v-form>
