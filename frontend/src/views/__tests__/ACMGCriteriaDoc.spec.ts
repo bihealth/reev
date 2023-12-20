@@ -40,6 +40,6 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
     expect(mainContent.exists()).toBe(true)
     expect(mainContent.html()).toMatch('PVS1')
     expect(mainContent.html()).toMatch('Benign Criteria')
-    expect(mainContent.html()).toMatch('BP6')
+    expect(mainContent.html()).toMatch('BP1')
   })
 })
