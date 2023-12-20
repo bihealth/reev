@@ -150,8 +150,8 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
       <template v-if="display === Display.List">
         <template v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0">
           <div
-            class="text-center font-italic text-grey-darken-2"
             v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0"
+            class="text-center font-italic text-grey-darken-2"
           >
             No submissions for this variant yet. Do you want to create one?
           </div>
@@ -165,7 +165,7 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
 
       <template v-else-if="display === Display.Stepper">
         <v-stepper alt-labels :items="stepperItems" :flat="true" :elevation="0">
-          <template v-slot:item.1>
+          <template #[`item.1`]>
             <v-sheet>
               <p class="pb-6 text-body-1">
                 Below, select the submitting organisation (and corresponding ClinVar API key) that
@@ -183,29 +183,29 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                 ></v-select>
 
                 <v-switch
+                  v-model="prepareModel.hasScv"
                   class="pt-6"
                   inset
-                  v-model="prepareModel.hasScv"
                   :hide-details="true"
                   label="I want to update/delete with an existing submission an I have an SCV"
                 >
                 </v-switch>
 
                 <v-text-field
+                  v-model="prepareModel.scv"
                   class="pt-6"
                   :disabled="!prepareModel.hasScv"
-                  v-model="prepareModel.scv"
                   label="SCV of existing submission"
                   :hide-details="true"
                 ></v-text-field>
 
                 <v-switch
+                  v-model="prepareModel.desiredPresence"
                   class="pt-6"
                   inset
                   :disabled="!prepareModel.hasScv"
                   true-icon="mdi-pencil"
                   false-icon="mdi-delete-forever"
-                  v-model="prepareModel.desiredPresence"
                   :true-value="VariantPresence.Present"
                   :false-value="VariantPresence.Absent"
                   :label="
@@ -218,10 +218,10 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
               </v-form>
             </v-sheet>
           </template>
-          <template v-slot:item.2>
+          <template #[`item.2`]>
             <v-card title="Enter Data" flat>...</v-card>
           </template>
-          <template v-slot:item.3>
+          <template #[`item.3`]>
             <v-card title="Review & Submit" flat>...</v-card>
           </template>
         </v-stepper>

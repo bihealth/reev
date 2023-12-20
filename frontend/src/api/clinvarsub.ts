@@ -165,7 +165,7 @@ export enum ErrorCode {
 }
 
 export interface SubmissionStatusResponseMessage {
-  error_code: ErrorCode | null
+  error_code?: ErrorCode
   severity: string
   text: string
 }
@@ -176,7 +176,7 @@ export interface SubmissionStatusObjectContent {
 }
 
 export interface SubmissionStatusObject {
-  accession: string | null
+  accession?: string
   content: SubmissionStatusObjectContent
   target_db: string
 }
@@ -184,7 +184,7 @@ export interface SubmissionStatusObject {
 export interface SubmissionStatusResponse {
   status: string
   files: SubmissionStatusFile[]
-  message: SubmissionStatusResponseMessage | null
+  message?: SubmissionStatusResponseMessage
   objects: SubmissionStatusObject[]
 }
 
@@ -218,12 +218,12 @@ export enum BatchReleaseStatus {
 
 export interface SummaryResponseDeletionIdentifier {
   clinvar_accession: string
-  clinvar_local_key: string | null
+  clinvar_local_key?: string
 }
 
 export interface SummaryResponseErrorInput {
-  value: string | null
-  field: string | null
+  value?: string
+  field?: string
 }
 
 export interface SummaryResponseErrorOutput {
@@ -238,25 +238,25 @@ export interface SummaryResponseError {
 export interface SummaryResponseDeletion {
   identifiers: SummaryResponseDeletionIdentifier
   processing_status: string
-  delete_date: string | null
-  delete_status: string | null
-  errors: SummaryResponseError[] | null
+  delete_date?: string
+  delete_status?: string
+  errors?: SummaryResponseError[]
 }
 
 export interface SummaryResponseSubmissionIdentifiers {
   clinvar_local_key: string
-  clinvar_accession: string | null
-  local_id: string | null
-  local_key: string | null
+  clinvar_accession?: string
+  local_id?: string
+  local_key?: string
 }
 
 export interface SummaryResponseSubmission {
   identifiers: SummaryResponseSubmissionIdentifiers
   processing_status: string
-  clinvar_accession_version: string | null
-  errors: SummaryResponseError[] | null
-  release_date: string | null
-  release_status: string | null
+  clinvar_accession_version?: string
+  errors?: SummaryResponseError[]
+  release_date?: string
+  release_status?: string
 }
 
 export interface SummaryResponse {
@@ -268,12 +268,12 @@ export interface SummaryResponse {
   total_errors: number
   total_public: number
   total_success: number
-  deletions: SummaryResponseDeletion[] | null
-  submissions: SummaryResponseSubmission[] | null
-  total_delete_count: number | null
-  total_deleted: number | null
-  total_delete_errors: number | null
-  total_delete_success: number | null
+  deletions?: SummaryResponseDeletion[]
+  submissions?: SummaryResponseSubmission[]
+  total_delete_count?: number
+  total_deleted?: number
+  total_delete_errors?: number
+  total_delete_success?: number
 }
 
 /** Result of a successful status retrieval. */
@@ -295,13 +295,13 @@ export interface SubmissionActivityRead {
   /** The activity status. */
   status: SubmissionActivityStatus
   /** The request payload. */
-  request_payload: any | null
+  request_payload?: any
   /** Timestamp of request. */
-  request_timestamp: string | null
+  request_timestamp?: string
   /** The response payload. */
-  response_payload: ResponseMessage | ResponseCreated | RetrieveStatusResult | null
+  response_payload?: ResponseMessage | ResponseCreated | RetrieveStatusResult
   /** Timestamp of response. */
-  response_timestamp: string | null
+  response_timestamp?: string
 }
 
 export enum CitationDb {
@@ -312,14 +312,14 @@ export enum CitationDb {
 }
 
 export interface SubmissionAssertionCriteria {
-  db: CitationDb | null
-  id: string | null
-  url: string | null
+  db?: CitationDb
+  id?: string
+  url?: string
 }
 
 export interface SubmissionClinvarDeletionAccessionSet {
   accession: string
-  reason: string | null
+  reason?: string
 }
 
 export interface SubmisisonClinvarDelete {
@@ -347,9 +347,9 @@ export enum ClinicalSignificanceDescription {
 }
 
 export interface SubmissionCitation {
-  db: CitationDb | null
-  id: string | null
-  url: string | null
+  db?: CitationDb
+  id?: string
+  url?: string
 }
 
 export enum ModeOfInheritance {
@@ -377,13 +377,13 @@ export enum ModeOfInheritance {
 
 export interface SubmissionClinicalSignificance {
   clinical_significance_description: ClinicalSignificanceDescription
-  citation: SubmissionCitation[] | null
-  comment: string | null
-  custom_assertion_score: number | null
-  date_last_evaluated: string | null
-  explanation_of_drug_response: string | null
-  explanation_of_other_clinical_significance: string | null
-  mode_of_inheritance: ModeOfInheritance | null
+  citation?: SubmissionCitation[]
+  comment?: string
+  custom_assertion_score?: number
+  date_last_evaluated?: string
+  explanation_of_drug_response?: string
+  explanation_of_other_clinical_significance?: string
+  mode_of_inheritance?: ModeOfInheritance
 }
 
 export enum ConditionDb {
@@ -396,13 +396,13 @@ export enum ConditionDb {
 }
 
 export interface SubmissionCondition {
-  db: ConditionDb | null
-  id: string | null
-  url: string | null
+  db?: ConditionDb
+  id?: string
+  url?: string
 }
 
 export interface SubmissionConditionSet {
-  condition: SubmissionCondition[] | null
+  condition?: SubmissionCondition[]
   // drug_response?: SubmissionDrugResponse[]
   // multiple_condition_explanation?: MultipleConditionexplanation
 }
@@ -453,9 +453,9 @@ export enum ClinicalFeaturesDb {
 
 export interface SubmissionClinicalFeature {
   clinical_features_affected_status: ClinicalFeaturesAffectedStatus
-  db: ClinicalFeaturesDb | null
-  id: string | null
-  name: string | null
+  db?: ClinicalFeaturesDb
+  id?: string
+  name?: string
 }
 
 export enum StructVarMethodType {
@@ -473,10 +473,10 @@ export interface SubmissionObservedIn {
   affected_status: AffectedStatus
   allele_origin: AlleleOrigin
   collection_method: CollectionMethod
-  clinical_features: SubmissionClinicalFeature[] | null
-  clinical_features_comment: string | null
-  number_of_individuals: number | null
-  struct_var_method: StructVarMethodType | null
+  clinical_features?: SubmissionClinicalFeature[]
+  clinical_features_comment?: string
+  number_of_individuals?: number
+  struct_var_method?: StructVarMethodType
 }
 
 export enum RecordStatus {
@@ -522,23 +522,23 @@ export enum Chromosome {
 }
 
 export interface SubmissionChromosomeCoordinates {
-  accession: string | null
-  alternate_allele: string | null
-  assembly: Assembly | null
-  chromosome: string | null
-  inner_start: number | null
-  inner_stop: number | null
-  outer_start: number | null
-  outer_stop: number | null
-  reference_allele: string | null
-  start: number | null
-  stop: number | null
-  variant_length: number | null
+  accession?: string
+  alternate_allele?: string
+  assembly?: Assembly
+  chromosome?: string
+  inner_start?: number
+  inner_stop?: number
+  outer_start?: number
+  outer_stop?: number
+  reference_allele?: string
+  start?: number
+  stop?: number
+  variant_length?: number
 }
 
 export interface SubmissionVariantGene {
-  gene_id: number | null
-  gene_symbol: string | null
+  gene_id?: number
+  gene_symbol?: string
 }
 
 export enum VariantType {
@@ -554,12 +554,12 @@ export enum VariantType {
 }
 
 export interface SubmissionVariant {
-  chromosome_coordinates: SubmissionChromosomeCoordinates | null
-  copy_number: string | null
-  gene: SubmissionVariantGene[] | null
-  hgvs: string | null
-  reference_copy_number: number | null
-  variant_type: VariantType | null
+  chromosome_coordinates?: SubmissionChromosomeCoordinates
+  copy_number?: string
+  gene?: SubmissionVariantGene[]
+  hgvs?: string
+  reference_copy_number?: number
+  variant_type?: VariantType
 }
 
 export interface SubmissionVariantSet {
@@ -576,8 +576,8 @@ export interface SubmissionClinvarSubmission {
   condition_set: SubmissionConditionSet
   observed_in: SubmissionObservedIn[]
   record_status: RecordStatus
-  clinvar_accession: string | null
-  variant_set: SubmissionVariantSet | null
+  clinvar_accession?: string
+  variant_set?: SubmissionVariantSet
 }
 
 export enum ReleaseStatus {
@@ -586,12 +586,12 @@ export enum ReleaseStatus {
 }
 
 export interface SubmissionContainer {
-  assertion_criteria: SubmissionAssertionCriteria | null
-  behalf_org_id: number | null
+  assertion_criteria?: SubmissionAssertionCriteria
+  behalf_org_id?: number
   clinvar_deletion: SubmisisonClinvarDelete
-  clinvar_submission: SubmissionClinvarSubmission | null
-  clinvar_submission_release_status: ReleaseStatus | null
-  submission_name: string | null
+  clinvar_submission?: SubmissionClinvarSubmission
+  clinvar_submission_release_status?: ReleaseStatus
+  submission_name?: string
 }
 
 /** Interface for updating submission activities. */
@@ -603,16 +603,16 @@ export interface SubmissionActivityWrite {
   /** The activity status. */
   status: SubmissionActivityStatus
   /** The request payload. */
-  request_payload: SubmissionContainer | null
+  request_payload?: SubmissionContainer
 }
 
 export class ClinvarsubClient {
   private apiBaseUrl: string
-  private csrfToken: string | null
+  private csrfToken?: string
 
   constructor(apiBaseUrl?: string, csrfToken?: string) {
     this.apiBaseUrl = apiBaseUrl ?? API_V1_BASE_PREFIX
-    this.csrfToken = csrfToken ?? null
+    this.csrfToken = csrfToken ?? undefined
   }
 
   /**
