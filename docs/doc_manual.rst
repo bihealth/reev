@@ -34,10 +34,21 @@ Gene Pathogenicity
 
 .. _doc_manual_gene_conditions:
 
+This card shows the avaible gene pathogenicity scores for a gene such as:
+- ClinGen haploinsufficiency and triplosensitivity scores
+- gnomAD pLI and LOEUF scores (for loss of function variants) and Z-score (for missense variants)
+- DECIPHER haploinsufficiency and triplosensitivity scores as well as sHet (Selection coefficient of heterozygous loss-of-function variants) scores
+
 Associated Conditions
 =====================
 
 .. _doc_manual_gene_expression:
+
+This card shows the avaible information on the phenotypes associated to the respective gene as HPO terms and known OMIM phenotypes. Note than you can use the button "numeric terms" in the lower left corner to show or hide the corresponding numeric HPO term and OMIM phenotype IDs; with the button "show links" right next you can activate and deactivate the corresponding link-outs of the displayed HPO terms and OMIM phenotypes.
+At the bottom of the card you can also find more link-outs to further websites with gene-phenotype information, such as JAX and Orphanet.
+Note that you can also use the "More" button on the lower right of the card to show associated Orphanet disorders and their respective link-outs.
+
+If you have logged in and provided case specific phenotype information with HPO terms you can find the gene-to-phenotype rank (i.e. how well your case's HPO terms fit the gene's associated HPO terms) in the grey box on the right.
 
 Expression
 ==========
