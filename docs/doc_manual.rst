@@ -189,11 +189,14 @@ For the currently selected gene, the information described in the section :ref:`
 
 Note, that if you investigate a larger SV affecting multiple genes, REEV can help you prioritize that larger set of genes by sorting by different criteria using the "sort by" selection box on the upper right corner of the card to sort the gene list by different (e.g. haploinsufficiency or triplosensitivity) scores.
 
+
 .. _doc_manual_strucvar_clinvar:
 
 ClinVar
 =======
 
+This card shows information on overlapping variants listed in the ClinVar database, their annotated interpretation (benign, likely benign, uncertain significance, likely pathogenic, pathogenic), the evidence level / review status (1 to 5 stars), the associated condition linked to this variant and the size of the respective overlap of this ClinVar variant with your SV of interest.
+Note, that you can expand every row to show more information on the respective ClinVar variant and that you can sort the list of ClinVar variants by size of their overlap to your SV. 
 
 
 .. _doc_manual_strucvar_variant_tools:
@@ -201,12 +204,25 @@ ClinVar
 Variant Tools
 =============
 
+This card provides useful further link-outs on variant level to the genome browesers ENSEMBL and UCSC as well as to further resources such as MutationTaster, Varsome, etc.
+By clicking on the “Jump in local IGV” button on the bottom, you can also look at the variant in IGV when you have the respective bam-file opened in your local IGV.
+
+
 .. _doc_manual_strucvar_clinical_significance:
 
 Clinical Significance
 =====================
 
+This card shows the semi-automated pathogenicity prediction based on AutoCNV.
+Using the buttons to the left of each criterion you can select or deselect every ACMG CNV criterion. The semi-automated prediction is providing an automated scoring for criteria 1-3 while you always have to select criteria 4 and 5 manually based on your clinical information on the case. On default you will see the automated selection of ACMG criteria. You can individually select and deselect every ACMG CNV criterion using the little switch displayed left to every criterion and also select the individual points you score on this criterion.
+
+To help you with your manual ACMG assessment, you find a description next to every ACMG CNV criterion and a summary of the points suggested to use for this criterion as well as the maximum score allowed for this criterion.
+
+Note, that you can also reset all selected ACMG criteria  to auto using the respective button below the pathogenicity prediction box on the top of the card. Here, you can also find a link-out to the detailed REEV documentation on ACMG criteria.
+
+
 .. _doc_manual_strucvar_genome_browser:
 
 Genome Browser
 ==============
+
