@@ -39,6 +39,79 @@ export interface SubmittingOrgWrite {
   clinvar_api_token?: string
 }
 
+/** Interface for reading submission thread. */
+export interface SubmissionThreadRead {
+  /** The internal UUID (unset when creating). */
+  id: string
+  /** Submitting organisation to use for submission. */
+  submittingorg_id: string
+  /** Primary variant description. */
+  primary_variant_desc: string
+  /** Timestamp of creation. */
+  created: string
+  /** Timestamp of last update. */
+  updated: string
+  /** Effective SCV. */
+  effective_scv: string | null
+  /** Effective presence in ClinVar. */
+  effective_presence: VariantPresence | null
+  /** Desired presence in ClinVar. */
+  desired_presence: VariantPresence | null
+  /** Current thread status. */
+  status: SubmissionThreadStatus
+}
+
+/** Interface for one page of submitting orgs. */
+export interface SubmissionThreadPage {
+  /** The payload. */
+  items: SubmissionThreadRead[]
+  /** Total number of items. */
+  total: number | null
+  /** Cursor for current page. */
+  current_page: string | null
+  /** Cursor for previous page. */
+  previous_page: string | null
+  /** Cursor for next page. */
+  next_page: string | null
+}
+
+/** Enumeration for variant presence. */
+export enum VariantPresence {
+  /** The variant is present. */
+  Present = 'present',
+  /** The variant is absent. */
+  Absent = 'absent'
+}
+
+/** Enumeration for submission thread status. */
+export enum SubmissionThreadStatus {
+  // Initial state while being edited by the user.
+  Initial = 'initial',
+  // Waiting in the queue to be picked up by the worker.
+  Waiting = 'waiting',
+  // At least one activity has been picked up by the worker and
+  // there is at least one activity that is not complete yet.
+  InProgress = 'in_progress',
+  // The submission thread has been processed with final result of success.
+  Success = 'success',
+  // The submission thread has terminated with final result of failure.
+  Error = 'error'
+}
+
+/** Interface for updating submission threads. */
+export interface SubmissionThreadWrite {
+  /** The internal UUID (unset when creating). */
+  id?: string
+  /** Effective SCV. */
+  effective_scv?: string
+  /** Effective presence in ClinVar. */
+  effective_presence?: VariantPresence
+  /** The submitting org (only when creating). */
+  submitting_org_id?: string
+  /** The variant description (only when creating). */
+  primary_variant_desc?: string
+}
+
 export class ClinvarsubClient {
   private apiBaseUrl: string
   private csrfToken: string | null
@@ -55,8 +128,17 @@ export class ClinvarsubClient {
    * @param pageSize The page size to use for enumerating.
    * @returns One page of submitting organizations.
    */
-  async fetchSubmittingOrgs(cursor?: string, pageSize: number = 50): Promise<SubmittingOrgPage> {
-    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submittingorgs?size=${pageSize}`, {
+  async fetchSubmittingOrgs(
+    cursor?: string | undefined,
+    pageSize: number = 50
+  ): Promise<SubmittingOrgPage> {
+    let query: string
+    if (cursor) {
+      query = `cursor=${cursor}&size=${pageSize}`
+    } else {
+      query = `size=${pageSize}`
+    }
+    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submittingorgs?${query}`, {
       method: 'GET',
       mode: 'cors',
       credentials: 'include',
@@ -129,5 +211,36 @@ export class ClinvarsubClient {
     if (!response.ok) {
       throw new Error(`Failed to delete submitting org ${id}`)
     }
+  }
+
+  /**
+   * Fetch submission threads for the given variant owned by the current user.
+   *
+   * @param primaryVariantDesc Primary description of variant to fetch for.
+   * @param cursor The optional cursor to use for fetching.
+   * @param pageSize The page size to use for enumerating.
+   * @returns One page of submission threads.
+   */
+  async fetchSubmissionThreads(
+    primaryVariantDesc: string,
+    cursor?: string | undefined,
+    pageSize: number = 50
+  ): Promise<SubmissionThreadPage> {
+    let query: string
+    if (cursor) {
+      query = `primary_variant_desc=${primaryVariantDesc}&cursor=${cursor}&size=${pageSize}`
+    } else {
+      query = `primary_variant_desc=${primaryVariantDesc}&size=${pageSize}`
+    }
+    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submissionthreads?${query}`, {
+      method: 'GET',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    return await response.json()
   }
 }

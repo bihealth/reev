@@ -16,6 +16,10 @@ import { DateTime } from 'luxon'
 import { onMounted, reactive, ref, watch } from 'vue'
 
 import { ClinvarsubClient, type SubmittingOrgRead, type SubmittingOrgWrite } from '@/api/clinvarsub'
+import { useClinvarsubStore } from '@/stores/clinvarsub'
+
+/** Store with ClinVar submission related information. */
+const clinvarsubStore = useClinvarsubStore()
 
 // -- code supporting v-data-table-server --------------------------------------
 
@@ -85,7 +89,7 @@ const loadData = async () => {
 }
 
 // Load the data on load and change of the `v:model`'s of the v-data-table-server.
-onMounted(() => loadData())
+onMounted(() => Promise.all([loadData(), clinvarsubStore.initialize()]))
 watch(
   () => [page, itemsPerPage],
   () => loadData()
@@ -111,7 +115,7 @@ const deleteOnConfirmed = async () => {
   }
   await clinvarsubClient.deleteSubmittingOrg(deleteId.value)
   deleteCloseDialog()
-  loadData()
+  await Promise.all([loadData(), clinvarsubStore.loadSubmittingOrgs()])
 }
 
 /** Close delete dialog and unset `deleteId`. */
@@ -193,7 +197,7 @@ const editorSubmit = async () => {
   }
   editorClear()
   editorDialogOpen.value = false
-  loadData()
+  await Promise.all([loadData(), clinvarsubStore.loadSubmittingOrgs()])
 }
 
 /** Close editor. */
