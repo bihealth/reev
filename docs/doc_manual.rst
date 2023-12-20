@@ -108,11 +108,18 @@ Consequences
 ============
 
 .. _doc_manual_seqvar_clinvar:
+This cards shows the consequences of your variant of interest by providing information on
+- the gene affected
+- the different transcript variants (RefSeq)
+- the respective consequence as type of the variant (missense, nonsense, frameshift, splice, etc.) and the change on cDNA an protein level in the corresponding transcript
+- which of how many exons is affected by this variant in the corresponding transcript
 
 ClinVar
 =======
 
 .. _doc_manual_seqvar_scores:
+
+This card shows information on the variant available in the ClinVar database such as the annotated interpretation (benign, likely benign, uncertain significance, likely pathogenic, pathogenic), the evidence level / review status (one to 5 stars) and a link-out to this entry in ClinVar. Using the button in the lower right corner of the card you can expand this ClinVar information, e.g. to the associated condition linked to this variant.
 
 Scores
 ======
