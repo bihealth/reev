@@ -17,6 +17,9 @@ const SeqVarsACMGCard = defineAsyncComponent(
 const StrucVarsACMGCard = defineAsyncComponent(
   () => import('@/components/Profile/StrucVarsACMGCard.vue')
 )
+const ClinvarsubSubmittingOrgsCard = defineAsyncComponent(
+  () => import('@/components/Profile/ClinvarsubSubmittingOrgsCard.vue')
+)
 const TestEmailCard = defineAsyncComponent(() => import('@/components/Profile/TestEmailCard.vue'))
 
 const userStore = useUserStore()
@@ -43,15 +46,23 @@ const PROFILE_PAGES = [
   { id: ProfileSection.AcmgStrucvar, title: 'ACMG Structure Variant' }
 ]
 
+enum ClinvarsubSection {
+  SubmittingOrgs = 'clinvar-submittingorgs'
+}
+
+const CLINVARSUB_PAGES = [{ id: ClinvarsubSection.SubmittingOrgs, title: 'Organisations' }]
+
 enum AdminSection {
   SendTestEmail = 'admin-email-test'
 }
 
 const ADMIN_PAGES = [{ id: AdminSection.SendTestEmail, title: 'Test Email' }]
 
-const currentSection = ref<ProfileSection | AdminSection>(ProfileSection.GeneralInfo)
+const currentSection = ref<ProfileSection | ClinvarsubSection | AdminSection>(
+  ProfileSection.GeneralInfo
+)
 
-const updateCurrentSection = (section: ProfileSection | AdminSection) => {
+const updateCurrentSection = (section: ProfileSection | ClinvarsubSection | AdminSection) => {
   currentSection.value = section
   router.push({ hash: `#${section}` })
 }
@@ -89,6 +100,16 @@ const mainBackgroundColor = computed(() => {
                 <v-list-subheader>PROFILE</v-list-subheader>
                 <v-list-item
                   v-for="section in PROFILE_PAGES"
+                  :id="`${section.id}-nav`"
+                  :key="section.id"
+                  density="compact"
+                  @click="updateCurrentSection(section.id)"
+                >
+                  <v-list-item-title>{{ section.title }}</v-list-item-title>
+                </v-list-item>
+                <v-list-subheader> CLINVAR SUBMISSIONS </v-list-subheader>
+                <v-list-item
+                  v-for="section in CLINVARSUB_PAGES"
                   :id="`${section.id}-nav`"
                   :key="section.id"
                   density="compact"
@@ -140,6 +161,12 @@ const mainBackgroundColor = computed(() => {
                 :id="ProfileSection.AcmgStrucvar"
               >
                 <StrucVarsACMGCard />
+              </div>
+              <div
+                v-if="currentSection === ClinvarsubSection.SubmittingOrgs"
+                :id="ClinvarsubSection.SubmittingOrgs"
+              >
+                <ClinvarsubSubmittingOrgsCard />
               </div>
               <div
                 v-if="currentSection === AdminSection.SendTestEmail"

@@ -4,7 +4,8 @@ from typing import Optional
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi_pagination.cursor import CursorPage
+from fastapi_pagination.cursor import CursorPage, CursorParams, decode_cursor
+from fastapi_pagination.bases import CursorRawParams
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,6 +16,15 @@ from app.models.user import User
 
 router = APIRouter()
 
+class CursorParamsWithTotal(CursorParams):
+    """Custom params that also fill the total field."""
+
+    def to_raw_params(self) -> CursorRawParams:
+        return CursorRawParams(
+            cursor=decode_cursor(self.cursor, to_str=self.str_cursor),
+            size=self.size,
+            include_total=True,
+        )
 
 # -- SumbmittingOrg -----------------------------------------------------------
 
@@ -30,7 +40,7 @@ async def list_submittingorgs(
     :return: Paginated list of results.
     """
     query = crud.submittingorg.query_by_owner(user_id=user.id)
-    return await paginate(db, query)
+    return await paginate(db, query, CursorParamsWithTotal())
 
 
 @router.post("/submittingorgs", response_model=schemas.SubmittingOrgRead)
@@ -137,7 +147,7 @@ async def list_submissionthreads(
     query = crud.submissionthread.query_by_user(
         user_id=user.id, primary_variant_desc=primary_variant_desc
     )
-    return await paginate(db, query)
+    return await paginate(db, query, CursorParamsWithTotal())
 
 
 @router.post("/submissionthreads", response_model=schemas.SubmissionThreadRead)
@@ -251,7 +261,7 @@ async def list_submissionactivities(
     query = crud.submissionactivity.query_by_submissionthread(
         submissionthread_id=submissionthread_id
     )
-    return await paginate(db, query)
+    return await paginate(db, query, CursorParamsWithTotal())
 
 
 @router.post(
