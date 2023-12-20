@@ -4,6 +4,7 @@ ClinVar submission of seqvars/strucvars.
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core'
 import { helpers, maxLength, minLength, required, requiredIf } from '@vuelidate/validators'
+import _ from 'lodash'
 import { computed, onMounted, reactive, ref, watch } from 'vue'
 
 import {
@@ -25,6 +26,7 @@ import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/utils'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
 import { StoreState } from '@/stores/misc'
+import { useTermsStore } from '@/stores/terms'
 
 /** Data type used for component's props. */
 interface Props {
@@ -90,14 +92,17 @@ const display = ref<Display>(Display.List)
 
 /** Handler for click on "previous" */
 const onClickPrevious = async () => {
-  console.log('click previous')
   const currentStep$ = Object.values(Steps)[currentStep.value - 1]
   switch (currentStep$) {
     case Steps.Prepare:
       console.error('unreachable')
       break
     case Steps.DataEntry:
-      currentStep.value = Object.values(Steps).indexOf(Steps.Prepare) + 1
+      if (!(await v$createUpdateModel.value.$validate())) {
+        v$createUpdateModel.value.$touch()
+      } else {
+        currentStep.value = Object.values(Steps).indexOf(Steps.Prepare) + 1
+      }
       break
     case Steps.Review:
       currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
@@ -109,16 +114,18 @@ const onClickNext = async () => {
   const currentStep$ = Object.values(Steps)[currentStep.value - 1]
   switch (currentStep$) {
     case Steps.Prepare:
-      console.log('validate prepare')
-      if (!await v$prepareModel.value.$validate()) {
-        console.log('bad')
+      if (!(await v$prepareModel.value.$validate())) {
         v$prepareModel.value.$touch()
       } else {
         currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
       }
       break
     case Steps.DataEntry:
-      currentStep.value = Object.values(Steps).indexOf(Steps.Review) + 1
+      if (!(await v$createUpdateModel.value.$validate())) {
+        v$createUpdateModel.value.$touch()
+      } else {
+        currentStep.value = Object.values(Steps).indexOf(Steps.Review) + 1
+      }
       break
     case Steps.Review:
       console.error('unreachable')
@@ -168,46 +175,92 @@ interface CreateUpdateModel {
   // -- clinical significance ---------------------------------------------------
 
   /** Clinical significance description. */
-  clinical_significance_description: ClinicalSignificanceDescription
+  clinicalSignificanceDescription: ClinicalSignificanceDescription
   /** Optional comment. */
   comment?: string
   /** Date of last evaluation. */
-  date_last_evaluated: string
+  dateLastEvaluated: string
   /** Mode of inheritance. */
-  mode_of_inheritance: ModeOfInheritance
+  modeOfInheritance: ModeOfInheritance
 
   // -- patient-related --------------------------------------------------------
 
   /** Condition set. */
-  case_conditions: SubmissionCondition[]
+  caseCondition?: SubmissionCondition
   /** Patient information. */
-  case_affected_status: AffectedStatus
+  caseAffectedStatus: AffectedStatus
   /** Allele origin. */
-  case_allele_origin: AlleleOrigin
+  caseAlleleOrigin: AlleleOrigin
   /** Collection method. */
-  case_collection_method: CollectionMethod
+  caseCollectionMethod: CollectionMethod
   /** Clinical features. */
-  case_clinical_features: SubmissionClinicalFeature[]
+  caseClinicalFeatures: SubmissionClinicalFeature[]
 }
 /** Default value for the create/update model. */
 const defaultCreateUpdateModel: CreateUpdateModel = {
   // -- clinical significance ---------------------------------------------------
 
-  clinical_significance_description: ClinicalSignificanceDescription.Pathogenic,
+  clinicalSignificanceDescription: ClinicalSignificanceDescription.UncertainSignificance,
   comment: undefined,
-  date_last_evaluated: new Date().toISOString().slice(0, 10),
-  mode_of_inheritance: ModeOfInheritance.UnknownMechanism,
+  dateLastEvaluated: new Date().toISOString().slice(0, 10),
+  modeOfInheritance: ModeOfInheritance.UnknownMechanism,
 
   // -- patient-related --------------------------------------------------------
 
-  case_conditions: [{ name: 'not provided' }],
-  case_affected_status: AffectedStatus.Yes,
-  case_allele_origin: AlleleOrigin.Germline,
-  case_collection_method: CollectionMethod.NotProvided,
-  case_clinical_features: []
+  caseCondition: undefined,
+  caseAffectedStatus: AffectedStatus.Yes,
+  caseAlleleOrigin: AlleleOrigin.Germline,
+  caseCollectionMethod: CollectionMethod.ClinicalTesting,
+  caseClinicalFeatures: []
 }
 /** The model for the create/update data. */
-const createUpdateModel = ref<CreateUpdateModel>(deepCopy(defaultCreateUpdateModel))
+const createUpdateModelState = ref<CreateUpdateModel>(deepCopy(defaultCreateUpdateModel))
+/** Rules for the prepare model state. */
+const createUpdateModelRules = {
+  dateLastEvaluated: {
+    required,
+    mustBeValid: helpers.withMessage(
+      'Must be a valid date',
+      (value: string): boolean => !helpers.req(value) || !isNaN(Date.parse(value))
+    )
+  }
+}
+/** Vuelidate instance for `createUpdateModel`. */
+const v$createUpdateModel = useVuelidate<CreateUpdateModel>(
+  createUpdateModelRules,
+  createUpdateModelState
+)
+
+/** Store to use for querying HPO/OMIM terms. */
+const termsStore = useTermsStore()
+/** Model for entering the diseases search query. */
+const omimSearchQuery = ref<string>('')
+/** Whether the search query for diseases is running. */
+const omimIsLoading = ref<boolean>(false)
+/** Debounced search for OMIM terms. */
+const debouncedOmimFetchTerms = _.debounce(async (query: string) => {
+  if (!query) return
+  omimIsLoading.value = true
+  try {
+    await termsStore.fetchOmimTerms(query)
+  } finally {
+    omimIsLoading.value = false
+  }
+}, 250)
+/** Model for entering the clinical features search query. */
+const hpoSearchQuery = ref<string>('')
+/** Whether the search query for clinical features is running. */
+const hpoIsLoading = ref<boolean>(false)
+/** Debounced search for OMIM terms. */
+const debouncedHpoFetchTerms = _.debounce(async (query: string) => {
+  if (!query) return
+  omimIsLoading.value = true
+  try {
+    await termsStore.fetchHpoTerms(query)
+  } finally {
+    omimIsLoading.value = false
+  }
+}, 250)
 
 /** Construct a `SubmissionContainer` for a creation. */
 const constructCreateUpdatePayload = (
@@ -223,20 +276,20 @@ const constructCreateUpdatePayload = (
     },
     clinvar_submission: {
       clinical_significance: {
-        clinical_significance_description: modelCopy.clinical_significance_description,
+        clinical_significance_description: modelCopy.clinicalSignificanceDescription,
         comment: modelCopy.comment,
-        date_last_evaluated: modelCopy.date_last_evaluated,
-        mode_of_inheritance: modelCopy.mode_of_inheritance
+        date_last_evaluated: modelCopy.dateLastEvaluated,
+        mode_of_inheritance: modelCopy.modeOfInheritance
       },
       condition_set: {
-        condition: modelCopy.case_conditions
+        condition: modelCopy.caseCondition ? [modelCopy.caseCondition] : [{ name: 'not provided' }]
       },
       observed_in: [
         {
-          affected_status: modelCopy.case_affected_status,
-          allele_origin: modelCopy.case_allele_origin,
-          collection_method: modelCopy.case_collection_method,
-          clinical_features: modelCopy.case_clinical_features
+          affected_status: modelCopy.caseAffectedStatus,
+          allele_origin: modelCopy.caseAlleleOrigin,
+          collection_method: modelCopy.caseCollectionMethod,
+          clinical_features: modelCopy.caseClinicalFeatures
         }
       ],
       record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update
@@ -326,27 +379,36 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
       </template>
 
       <template v-else-if="display === Display.Stepper">
-        <v-stepper alt-labels :items="Object.values(Steps)" :flat="true" :elevation="0" v-model="currentStep">
+        <v-stepper
+          alt-labels
+          :items="Object.values(Steps)"
+          :flat="true"
+          :elevation="0"
+          v-model="currentStep"
+        >
           <template #[`prev`]>
-            <v-btn color="primary" @click="() => onClickPrevious()">
-              Previous
-            </v-btn>
+            <template
+              v-if="v$prepareModel.$errors.length > 0 || v$createUpdateModel.$errors.length > 0"
+            >
+              <v-btn color="error" @click="() => onClickNext()"> Fix Errors </v-btn>
+            </template>
+            <template v-else>
+              <v-btn color="primary" @click="() => onClickPrevious()"> Previous </v-btn>
+            </template>
           </template>
           <template #[`next`]>
             <template v-if="currentStep === Object.values(Steps).indexOf(Steps.Review) + 1">
-              <v-btn color="primary" disabled>
-                Next
-              </v-btn>
+              <v-btn color="primary" disabled> Next </v-btn>
             </template>
-            <template v-if="v$prepareModel.$errors.length > 0">
-              <v-btn color="error" @click="() => onClickNext()">
-                Fix Errors
-              </v-btn>
+            <template
+              v-else-if="
+                v$prepareModel.$errors.length > 0 || v$createUpdateModel.$errors.length > 0
+              "
+            >
+              <v-btn color="error" @click="() => onClickNext()"> Fix Errors </v-btn>
             </template>
             <template v-else>
-              <v-btn color="primary" @click="() => onClickNext()">
-                Next
-              </v-btn>
+              <v-btn color="primary" @click="() => onClickNext()"> Next </v-btn>
             </template>
           </template>
 
@@ -423,7 +485,111 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
                 ></v-textarea>
               </v-form>
             </template>
-            <template v-else> update </template>
+            <template v-else>
+              <p class="pb-6 text-body-1">
+                Below, you may enter the details of the submission. The fields marked with an
+                asterisk are required.
+              </p>
+              <form>
+                <div class="text-overline pb-3">Case Conditions</div>
+                <p class="pb-3 text-body-2">
+                  Together with the variant, the <strong>Condition</strong> will identity your
+                  submission. For example, you could submit a variant as pathogenic for disease A
+                  while it may be benign for disease B. In addition, you can specify a number of
+                  fine-grained Human Phenotype Ontology (HPO) terms that describe the patient's
+                  condition.
+                </p>
+                <v-autocomplete
+                  v-model="createUpdateModelState.caseCondition"
+                  v-model:search="omimSearchQuery"
+                  :items="termsStore.omimTerms"
+                  :loading="omimIsLoading"
+                  label="Condition"
+                  item-title="name"
+                  :item-value="(item) => item"
+                  clearable
+                  hint="You may specify an OMIM disease. Otherwise, we will submit with 'not provided'."
+                  persistent-hint
+                  @update:search="debouncedOmimFetchTerms"
+                  class="pb-6"
+                />
+
+                <!-- HPO Terms -->
+                <v-autocomplete
+                  v-model="createUpdateModelState.caseClinicalFeatures"
+                  v-model:search="hpoSearchQuery"
+                  :items="termsStore.hpoTerms"
+                  :loading="hpoIsLoading"
+                  label="HPO Terms"
+                  item-title="name"
+                  :item-value="(item) => item"
+                  multiple
+                  chips
+                  closable-chips
+                  deletable-chips
+                  hint="You can specify zero or multiple HPO terms. Submitting good clinical features will make your submission more useful for others."
+                  @update:search="debouncedHpoFetchTerms"
+                />
+
+                <div class="text-overline pb-3">Clinical Significance</div>
+                <v-row>
+                  <v-col cols="9">
+                    <v-select
+                      v-model="createUpdateModelState.clinicalSignificanceDescription"
+                      label="Clinical Significance*"
+                      :items="Object.values(ClinicalSignificanceDescription)"
+                      :hide-details="true"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="3">
+                    <v-text-field
+                      v-model="createUpdateModelState.dateLastEvaluated"
+                      :error-messages="
+                        v$createUpdateModel.dateLastEvaluated.$errors.map((e: any) => e.$message)
+                      "
+                      label="Last Evaluated*"
+                      @input="v$createUpdateModel.dateLastEvaluated.$touch"
+                      @blur="v$createUpdateModel.dateLastEvaluated.$touch"
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-textarea
+                  v-model="createUpdateModelState.comment"
+                  label="Optional Comment"
+                  :hide-details="true"
+                  class="pb-6"
+                ></v-textarea>
+                <div class="text-overline pb-3">Allele Information</div>
+                <v-row>
+                  <v-col cols="4">
+                    <v-select
+                      v-model="createUpdateModelState.caseAlleleOrigin"
+                      label="Allele Origin*"
+                      :items="Object.values(AlleleOrigin)"
+                      :hide-details="true"
+                      class="pb-6"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      v-model="createUpdateModelState.modeOfInheritance"
+                      label="Mode of Inheritance*"
+                      :items="Object.values(ModeOfInheritance)"
+                      :hide-details="true"
+                      class="pb-6"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-select
+                      v-model="createUpdateModelState.caseCollectionMethod"
+                      label="Collection Method**"
+                      :items="Object.values(CollectionMethod)"
+                      :hide-details="true"
+                    ></v-select>
+                  </v-col>
+                </v-row>
+              </form>
+            </template>
           </template>
           <template #[`item.3`]>
             <v-card title="Review & Submit" flat>...</v-card>
