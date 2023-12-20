@@ -55,6 +55,11 @@ Expression
 
 .. _doc_manual_gene_clinvar_information:
 
+This card shows the tissue specific information for a gene as provided by GTEX. Below the plot you also find the corresponding link-out to the GTEX portal. 
+Note that you can also use the little "..." button in the upper right corner of the plot to
+- save the plot as .svg or .png
+- view the corresponding vega source code and open in vega editor
+
 ClinVar Information
 ===================
 
