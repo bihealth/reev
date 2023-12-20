@@ -119,7 +119,7 @@ ClinVar
 
 .. _doc_manual_seqvar_scores:
 
-This card shows information on the variant available in the ClinVar database such as the annotated interpretation (benign, likely benign, uncertain significance, likely pathogenic, pathogenic), the evidence level / review status (one to 5 stars) and a link-out to this entry in ClinVar. Using the button in the lower right corner of the card you can expand this ClinVar information, e.g. to the associated condition linked to this variant.
+This card shows information on the variant available in the ClinVar database such as the annotated interpretation (benign, likely benign, uncertain significance, likely pathogenic, pathogenic), the evidence level / review status (1 to 5 stars) and a link-out to this entry in ClinVar. Using the button in the lower right corner of the card you can expand this ClinVar information, e.g. to the associated condition linked to this variant.
 
 Scores
 ======
@@ -127,20 +127,28 @@ Scores
 .. _doc_manual_seqvar_population_frequencies:
 
 This card shows a variety of precomputed sequence variant scores, e.g. CADD, PolyPhen2, SIFT, REVEL etc.
-Note that REEV also provides the precomputed splice predictions scores MMSplice and SpliceAI for the assessment of potential splice site variants. By default the most pathogenic prediction is displayed. Using the button next to the tool on the left you can also expand both predictions to all the different splice site change scores calculated (e.g. acceptor-gain, acceptor-loss, donor-gain,...).
+Note that REEV also provides the precomputed splice predictions scores MMSplice and SpliceAI for the assessment of potential splice site variants. By default the most pathogenic prediction is displayed. Using the button next to the tool on the left you can also expand both predictions to all the different splice site change scores calculated (e.g. acceptor-gain, acceptor-loss, donor-gain, ...).
 
 REEV provides not only the raw scores but also an interpretation of the respective score. To this end, a color visualization of each score is shown with green color indicating a benign and red color indicating a pathogenic prediction. On the right REEV provides you with the respective evidence level you can use on the ACMG PP3 criterion according to recent ClinGen recommendations by Pejaver et al. (https://doi.org/10.1016/j.ajhg.2022.10.013) who advice that "For missense variants, to determine evidence for codes PP3 and BP4, we recommend that, for most situations, clinical laboratories use a single tool, genome-wide, that can reach the strong level of evidence for pathogenicity and moderate for benignity (BayesDel, MutPred2, REVEL, or VEST4)"
 The interpretation given by REEV follows the respective thresholds for each score published in these guidelines (Table 2).
+
+On the bottom of this card you can also find information on conservation (UCSC 100 vertebrate vonservation) for the position affected by the variant of interest.
+
+Note, that if there are more than one transcript variant for gene, on the bottom right of this card you can choose and switch between the different transcript variants and the corresponding predictions for this respective transcript variant will be provided above. 
 
 Population Frequencies
 ======================
 
 .. _doc_manual_seqvar_variant_tools:
 
+This card shows the variant's occurence in the control database gnomAD and also provides the respective link-out to gnomAD.
+
 Variant Tools
 =============
 
 .. _doc_manual_seqvar_beacon_network:
+
+This card provides useful further link-outs on variant level to the genome browesers ENSEMBL and UCSC as well as to further resources such as MutationTaster, Varsome, etc.
 
 Beacon Network
 ==============
