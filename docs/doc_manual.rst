@@ -19,12 +19,15 @@ Basic information
 
 .. _doc_manual_gene_pathogenicity:
 
-This card shows the basic information for a gen such as its symbol, name, and a short summary that we took from the NCBI gene overview.
-At the bottom of the card, you can find link-outs to other websites describing the gene, such as searching pubmed.
+This card shows the basic information for a gene such as its symbol, name, and a short summary that we took from the NCBI gene overview.
+At the bottom of the card, you can find link-outs to other websites describing the gene, such as searching pubmed, ENSEMBK, NCBI, UniProt and MGI. At the very right of this link-outs you find a link to REEV's gene detail view (detailed view of a gene's properties without any specific variant information).
 
 Note that you can also click on "More" on the lower right of the card to show additional information on the gene:
 
 - Alternative identifiers with link-outs, e.g., to ENSEMBL, or RefSeq.
+- Further external resources such as DECIPHER, OMIM, etc.
+- Link-outs to locus specific databases if available for the respective gene of interest, e.g. LOVD, NIH-BIC database (for BRCA1/2 variants), Leiden Muscular Dystrophy pages (for TTN variants), etc.
+- NCBI GeneRIFs
 
 Gene Pathogenicity
 ==================
