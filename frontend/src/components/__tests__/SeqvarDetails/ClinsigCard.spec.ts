@@ -27,7 +27,7 @@ const makeWrapper = () => {
     store.storeState = StoreState.Active
     store.seqvar = deepCopy(seqvarInfo)
     store.acmgRating = new MultiSourceAcmgCriteriaState()
-    store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
+    store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
     store.acmgRatingStatus = true
   })
   store.fetchAcmgRating = mockRetrieveAcmgRating
@@ -35,7 +35,7 @@ const makeWrapper = () => {
   store.storeState = StoreState.Active
   store.seqvar = deepCopy(seqvarInfo)
   store.acmgRating = new MultiSourceAcmgCriteriaState()
-  store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.Pvs1, Presence.Present)
+  store.acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
   store.acmgRatingStatus = true
 
   return setupMountedComponents(

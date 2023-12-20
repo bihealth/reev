@@ -52,10 +52,6 @@ const ExampleInterVarResponse = {
   bp7: false
 }
 
-function capitalizeFirstLetter(string: string): string {
-  return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 describe.concurrent('geneInfo Store', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -101,7 +97,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
     for (const [key, value] of Object.entries(ExampleInterVarResponse)) {
-      const acmgCriteriaKey = capitalizeFirstLetter(key) as AcmgCriteria
+      const acmgCriteriaKey = key.toUpperCase() as AcmgCriteria
       expectedAcmgRating.setPresence(
         StateSource.InterVar,
         AcmgCriteria[acmgCriteriaKey],
@@ -156,7 +152,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
     for (const [key, value] of Object.entries(ExampleInterVarResponse)) {
-      const acmgCriteriaKey = capitalizeFirstLetter(key) as AcmgCriteria
+      const acmgCriteriaKey = key.toUpperCase() as AcmgCriteria
       expectedAcmgRating.setPresence(
         StateSource.InterVar,
         AcmgCriteria[acmgCriteriaKey],

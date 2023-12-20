@@ -57,16 +57,6 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
   }
 
   /**
-   * Capitalize the first letter of a string.
-   *
-   * @param string The string to capitalize.
-   * @returns The capitalized string.
-   */
-  function capitalizeFirstLetter(string: string): string {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-  }
-
-  /**
    * Transform the ACMG rating to the ACMG rating used in the
    * backend API.
    */
@@ -120,7 +110,7 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
       const acmgRatingInterVarData = await response.json()
       // Go through the data and setPresense for each criteria
       for (const [criteriaId, value] of Object.entries(acmgRatingInterVarData)) {
-        const criteriaIdKey = capitalizeFirstLetter(criteriaId) as keyof typeof AcmgCriteria
+        const criteriaIdKey = criteriaId.toUpperCase() as keyof typeof AcmgCriteria
         if (value === true) {
           acmgRating.value.setPresence(
             StateSource.InterVar,
@@ -152,11 +142,12 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
       const acmgRatingBackend = await acmgSeqVarClient.fetchAcmgRating(
         seqvar$.chrom + ':' + seqvar$.pos + ':' + seqvar$.del + ':' + seqvar$.ins
       )
+      console.log(acmgRatingBackend)
       if (acmgRatingBackend.acmg_rank?.criterias) {
         acmgRatingStatus.value = true
         // Go through the data and setPresense for each criteria
         for (const criteria of acmgRatingBackend.acmg_rank.criterias) {
-          const criteriaKey = capitalizeFirstLetter(criteria.criteria) as keyof typeof AcmgCriteria
+          const criteriaKey = criteria.criteria as keyof typeof AcmgCriteria
           acmgRating.value.setPresence(
             StateSource.Server,
             AcmgCriteria[criteriaKey],

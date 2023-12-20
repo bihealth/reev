@@ -18,7 +18,7 @@ from app.schemas.acmgseqvar import (
 def acmgseqvar_create() -> AcmgSeqVarCreate:
     """Create a AcmgSeqVarCreate object."""
     pm4 = SeqVarCriteria(
-        criteria=Criteria.Pm4,
+        criteria=Criteria.PM4,
         presence=Presence.Absent,
         evidence=Evidence.PathogenicModerate,
     )

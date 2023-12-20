@@ -70,7 +70,7 @@ const makeWrapper = () => {
     seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     seqvarAcmgStore.acmgRating.setPresence(
       StateSource.InterVar,
-      AcmgCriteria.Pvs1,
+      AcmgCriteria.PVS1,
       Presence.Present
     )
   })
