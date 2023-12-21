@@ -16,6 +16,7 @@ import {
   ACMG_EVIDENCE_LEVELS_BENIGN,
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   ALL_ACMG_CRITERIA,
+  AcmgCriteria,
   Presence
 } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
@@ -88,16 +89,42 @@ const calculatedAcmgClass = computed((): string => {
   let [acmgClass, isConflicting] = acmgRatingStore.acmgRating.getAcmgClass()
   if (isConflicting) {
     acmgClass = 'Uncertain significance'
-  } else {
   }
   return acmgClass
 })
 
-/** Whether to show conflict warning */
-const acmgRatingConflicting = computed((): boolean => {
-  // eslint-disable-next-line prefer-const
-  let [, isConflicting] = acmgRatingStore.acmgRating.getAcmgClass()
-  return isConflicting
+/** Enumeration for all conflicts. */
+enum Conflict {
+  /** Benign vs. pathogenic. */
+  BenignPathogenic = 'benign_pathogenic',
+  /** PVS1 vs. PM4. */
+  Pvs1Pm4 = 'pvs1_pm4',
+  /** PVS1 vs. PP3. */
+  Pvs1Pp3 = 'pvs1_pp3'
+}
+
+/** Currently detected conflicts. */
+const currentConflicts = computed<Conflict[]>(() => {
+  const result: Conflict[] = []
+  // Check for pathogenic vs. benign conflict.
+  const [, conflictBenignPathogenic] = acmgRatingStore.acmgRating.getAcmgClass()
+  if (conflictBenignPathogenic) {
+    result.push(Conflict.BenignPathogenic)
+  }
+  // Check for PVS1 being applied at the same time as PM4 or PP3.
+  if (
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PVS1).presence === Presence.Present &&
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PM4).presence === Presence.Present
+  ) {
+    result.push(Conflict.Pvs1Pm4)
+  }
+  if (
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PVS1).presence === Presence.Present &&
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PP3).presence === Presence.Present
+  ) {
+    result.push(Conflict.Pvs1Pp3)
+  }
+  return result
 })
 
 /** Re-compute ACMG rating from InterVar when the sequence variant changed. */
@@ -219,8 +246,19 @@ onMounted(async () => {
         </v-col>
       </v-row>
       <!-- Warning in case of conflicts -->
-      <v-alert v-if="acmgRatingConflicting" type="warning">
-        Conflicting interpretation of variant.
+      <v-alert v-if="currentConflicts.length" type="warning">
+        <p class="mb-3"><strong>Warning:</strong> The following conflicts were detected:</p>
+        <ul>
+          <li v-if="currentConflicts.includes(Conflict.BenignPathogenic)">
+            Conflicting interpretation of variant (benign vs. pathogenic).
+          </li>
+          <li v-if="currentConflicts.includes(Conflict.Pvs1Pm4)">
+            PVS1 and PM4 cannot be applied at the same time.
+          </li>
+          <li v-if="currentConflicts.includes(Conflict.Pvs1Pp3)">
+            PVS1 and PP3 cannot be applied at the same time.
+          </li>
+        </ul>
       </v-alert>
       <!-- Actual criteria-->
       <v-row v-show="showTerse" class="ml-3 mb-3">
@@ -323,5 +361,9 @@ onMounted(async () => {
   flex-direction: row;
   justify-content: space-between;
   margin: 12px;
+}
+
+ul {
+  list-style-position: inside;
 }
 </style>

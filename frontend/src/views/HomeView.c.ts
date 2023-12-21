@@ -127,7 +127,7 @@ export const EXAMPLES: Section[] = [
   {
     title: 'Sequence Variants',
     text: 'Provide variants in HGSV notation, gnomAD, or SPDI-style',
-    examples: import.meta.env.MODE !== 'development' ? SEQVARS_DEV : SEQVARS_PROD
+    examples: import.meta.env.MODE === 'development' ? SEQVARS_DEV : SEQVARS_PROD
   },
   {
     title: 'Structural Variants',

@@ -100,7 +100,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     const exampleTermsCard = wrapper.find('#examples')
     expect(exampleTermsCard.exists()).toBe(true)
     const exampleTerms = exampleTermsCard.findAll('.v-btn')
-    expect(exampleTerms.length).toBe(12)
+    expect(exampleTerms.length).toBe(13)
   })
 
   it('searches for example by click', async () => {
