@@ -3,23 +3,27 @@ ClinVar submission of seqvars/strucvars.
 -->
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core'
-import { helpers, required } from '@vuelidate/validators'
+import { helpers, integer, minValue, required } from '@vuelidate/validators'
 import _ from 'lodash'
 import { computed, onMounted, ref, watch } from 'vue'
 
 import {
   AffectedStatus,
   AlleleOrigin,
+  Assembly,
   CitationDb,
   ClinicalSignificanceDescription,
   CollectionMethod,
   ModeOfInheritance,
   RecordStatus,
   ReleaseStatus,
+  StructVarMethodType,
   type SubmissionClinicalFeature,
   type SubmissionCondition,
   type SubmissionContainer,
-  VariantPresence
+  type SubmissionVariant,
+  VariantPresence,
+  VariantType
 } from '@/api/clinvarsub'
 import { type SubmittingOrgRead } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
@@ -181,6 +185,15 @@ interface CreateUpdateModel {
   caseCollectionMethod: CollectionMethod
   /** Clinical features. */
   caseClinicalFeatures: SubmissionClinicalFeature[]
+
+  // -- strucvar-related -------------------------------------------------------
+
+  /** Observed copy number (for form: as string). */
+  copyNumber: string
+  /** Reference copy number (for form: as string). */
+  referenceCopyNumber: string
+  /** Method for structural variant calling. */
+  structVarMethod: StructVarMethodType | null
 }
 /** Default value for the create/update model. */
 const createDefaultModelStateDefault: CreateUpdateModel = {
@@ -197,7 +210,13 @@ const createDefaultModelStateDefault: CreateUpdateModel = {
   caseAffectedStatus: AffectedStatus.Yes,
   caseAlleleOrigin: AlleleOrigin.Germline,
   caseCollectionMethod: CollectionMethod.ClinicalTesting,
-  caseClinicalFeatures: []
+  caseClinicalFeatures: [],
+
+  // -- strucvar-related -------------------------------------------------------
+
+  copyNumber: '',
+  referenceCopyNumber: '',
+  structVarMethod: null
 }
 /** The model for the create/update data. */
 const createUpdateModelState = ref<CreateUpdateModel>(deepCopy(createDefaultModelStateDefault))
@@ -209,6 +228,14 @@ const createUpdateModelRules = {
       'Must be a valid date',
       (value: string): boolean => !helpers.req(value) || !isNaN(Date.parse(value))
     )
+  },
+  referenceCopyNumber: {
+    integer,
+    minValue: minValue(0)
+  },
+  copyNumber: {
+    integer,
+    minValue: minValue(0)
   }
 }
 /** Vuelidate instance for `createUpdateModel`. */
@@ -248,12 +275,70 @@ const debouncedHpoFetchTerms = _.debounce(async (query: string) => {
   }
 }, 250)
 
+/** Construct a `SubmissionVariant` for a seqvar/ */
+const constructSeqvarVariant = (seqvar: Seqvar): SubmissionVariant => {
+  const { genomeBuild, chrom, pos, del, ins } = seqvar
+  const assembly = genomeBuild === 'grch37' ? Assembly.Grch37 : Assembly.Grch38
+  return {
+    chromosome_coordinates: {
+      assembly,
+      chromosome: chrom,
+      start: pos,
+      reference_allele: del,
+      alternate_allele: ins
+    }
+  }
+}
+
+/** Construct a `SubmissionVariant` for a strucvar/ */
+const constructStrucvarVariant = (
+  strucvar: Strucvar,
+  model: CreateUpdateModel
+): SubmissionVariant => {
+  const { svType, genomeBuild, chrom, start, stop } = strucvar
+  const assembly = genomeBuild === 'grch37' ? Assembly.Grch37 : Assembly.Grch38
+  let referenceCopyNumber: number | undefined = undefined
+  if (model.referenceCopyNumber !== undefined) {
+    referenceCopyNumber = parseInt(model.referenceCopyNumber)
+  }
+  let variantType: VariantType | undefined
+  switch (svType) {
+    case 'DEL':
+      variantType = VariantType.Deletion
+      break
+    case 'DUP':
+      variantType = VariantType.Duplication
+      break
+    default:
+      throw new Error(`Unknown SV type: ${svType}`)
+  }
+  return {
+    chromosome_coordinates: {
+      assembly,
+      chromosome: chrom,
+      start,
+      stop
+    },
+    copy_number: model.copyNumber,
+    reference_copy_number: referenceCopyNumber,
+    variant_type: variantType
+  }
+}
+
 /** Construct a `SubmissionContainer` for a creation. */
 const constructCreateUpdatePayload = (
   prepareModel: PrepareModel,
   createUpdateModel: CreateUpdateModel
 ): SubmissionContainer => {
   const modelCopy: CreateUpdateModel = deepCopy(createUpdateModel)
+  let submissionVariant: SubmissionVariant
+  if (props.seqvar) {
+    submissionVariant = constructSeqvarVariant(props.seqvar)
+  } else if (props.strucvar) {
+    submissionVariant = constructStrucvarVariant(props.strucvar, createUpdateModel)
+  } else {
+    throw new Error('Attempt to construct payload without seqvar or strucvar')
+  }
 
   return {
     assertion_criteria: {
@@ -281,7 +366,11 @@ const constructCreateUpdatePayload = (
             clinical_features: modelCopy.caseClinicalFeatures
           }
         ],
-        record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update
+        record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update,
+        clinvar_accession: prepareModel.scv,
+        variant_set: {
+          variant: [submissionVariant]
+        }
       }
     ],
     clinvar_submission_release_status: ReleaseStatus.Public
@@ -683,6 +772,39 @@ const onSubmitRequest = async () => {
                     ></v-select>
                   </v-col>
                 </v-row>
+                <v-row v-if="strucvar">
+                  <v-col cols="3">
+                    <v-text-field
+                      v-model="createUpdateModelState.referenceCopyNumber"
+                      :error-messages="
+                        v$createUpdateModel.referenceCopyNumber.$errors.map((e: any) => e.$message)
+                      "
+                      label="Reference Copy Number"
+                      @input="v$createUpdateModel.referenceCopyNumber.$touch"
+                      @blur="v$createUpdateModel.referenceCopyNumber.$touch"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="3">
+                    <v-text-field
+                      v-model="createUpdateModelState.copyNumber"
+                      :error-messages="
+                        v$createUpdateModel.copyNumber.$errors.map((e: any) => e.$message)
+                      "
+                      label="Observed Copy Number"
+                      @input="v$createUpdateModel.copyNumber.$touch"
+                      @blur="v$createUpdateModel.copyNumber.$touch"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-select
+                      v-model="createUpdateModelState.structVarMethod"
+                      label="Method for Structural Variant Calling"
+                      :items="Object.values(StructVarMethodType)"
+                      hide-details
+                      clearable
+                    ></v-select>
+                  </v-col>
+                </v-row>
               </form>
             </template>
           </template>
@@ -727,12 +849,6 @@ const onSubmitRequest = async () => {
               </div>
             </v-sheet>
             <v-sheet v-else>
-              <p class="pb-6 text-body-1">
-                Below, you see a summary of your submission. Please review it carefully before
-                clicking "Send to ClinVar".
-              </p>
-            </v-sheet>
-            <v-sheet v-else>
               <p class="pb-3 text-body-1">
                 Please confirm to request ClinVar to
                 <template v-if="prepareModelState.hasScv"> update </template>
@@ -744,8 +860,9 @@ const onSubmitRequest = async () => {
               </p>
 
               <v-row>
-                <v-col cols="6">
-                  <div class="pt-3 text-caption">Submitting Organisation</div>
+                <v-col cols="4">
+                  <div class="text-overline">Meta Information</div>
+                  <div class="text-caption">Submitting Organisation</div>
                   <div class="text-body-1">
                     {{ currSubmittingOrg?.label }}
                   </div>
@@ -759,7 +876,7 @@ const onSubmitRequest = async () => {
                     <template v-if="prepareModelState.hasScv">
                       {{ prepareModelState.scv }}
                     </template>
-                    <span class="text-grey-darken-2" v-else> assigned after creation </span>
+                    <span v-else class="text-grey-darken-2"> assigned after creation </span>
                   </div>
 
                   <div class="text-overline pt-6">Case Conditions</div>
@@ -774,11 +891,11 @@ const onSubmitRequest = async () => {
                         createUpdateModelState.caseClinicalFeatures.map((f) => f.name).join(', ')
                       }}
                     </template>
-                    <span class="text-grey-darken-2" v-else> not provided </span>
+                    <span v-else class="text-grey-darken-2"> not provided </span>
                   </div>
                 </v-col>
-                <v-col cols="6">
-                  <div class="text-overline pt-6">Clinical Signficance</div>
+                <v-col cols="4">
+                  <div class="text-overline">Clinical Signficance</div>
                   <div class="text-caption">Last Evaluated</div>
                   <div class="text-body-1">
                     {{ createUpdateModelState.dateLastEvaluated }}
@@ -792,7 +909,7 @@ const onSubmitRequest = async () => {
                     <template v-if="createUpdateModelState.comment?.length">
                       {{ createUpdateModelState.comment }}
                     </template>
-                    <span class="text-grey-darken-2" v-else> not provided </span>
+                    <span v-else class="text-grey-darken-2"> not provided </span>
                   </div>
 
                   <div class="text-overline">Allele Information</div>
@@ -807,6 +924,40 @@ const onSubmitRequest = async () => {
                   <div class="pt-3 text-caption">Collection Method</div>
                   <div class="text-body-1">
                     {{ createUpdateModelState.caseCollectionMethod }}
+                  </div>
+                </v-col>
+                <v-col v-if="strucvar" cols="4">
+                  <div class="text-overline">Structural Variant Information</div>
+                  <div class="text-caption">Reference Copy Number</div>
+                  <div
+                    class="text-body-1"
+                    :class="{
+                      'text-grey-darken-1': !createUpdateModelState.referenceCopyNumber?.length
+                    }"
+                  >
+                    <template v-if="createUpdateModelState.referenceCopyNumber?.length">
+                      {{ createUpdateModelState.referenceCopyNumber }}
+                    </template>
+                    <template v-else>N/A</template>
+                  </div>
+                  <div class="pt-3 text-caption">Observed Copy Number</div>
+                  <div
+                    class="text-body-1"
+                    :class="{ 'text-grey-darken-1': !createUpdateModelState.copyNumber?.length }"
+                  >
+                    <template v-if="createUpdateModelState.copyNumber?.length">
+                      {{ createUpdateModelState.copyNumber }}
+                    </template>
+                    <template v-else>N/A</template>
+                  </div>
+                  <div class="pt-3 text-caption">Structural Variant Detection Method</div>
+                  <div
+                    class="text-body-1"
+                    :class="{
+                      'text-grey-darken-1': createUpdateModelState.structVarMethod === null
+                    }"
+                  >
+                    {{ createUpdateModelState.structVarMethod ?? 'N/A' }}
                   </div>
                 </v-col>
               </v-row>

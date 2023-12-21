@@ -364,7 +364,7 @@ async def update_submissionactivity(
         result = await crud.submissionactivity.update(
             db, db_obj=submissionactivity_db, obj_in=submissionactivity
         )
-        logger.info('%s %s', old_status, submissionactivity.status)
+        logger.info("%s %s", old_status, submissionactivity.status)
         if (
             old_status != SubmissionActivityStatus.WAITING
             and submissionactivity.status == SubmissionActivityStatus.WAITING

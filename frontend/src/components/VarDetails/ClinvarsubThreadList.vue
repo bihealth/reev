@@ -2,7 +2,6 @@
 This component allows to list the ClinVar submission threads in a data table.
 -->
 <script setup lang="ts">
-import _ from 'lodash'
 import { DateTime } from 'luxon'
 import { onMounted, ref, watch } from 'vue'
 
@@ -18,11 +17,14 @@ import { ClinvarsubClient } from '@/api/clinvarsub'
 interface Props {
   /** Whether to display links for the variants.s */
   showVariantLinks?: boolean
+  /** The primary variant description to list for, if any. */
+  primaryVariantDesc?: string
 }
 
 /** The component's props. */
 const props: Props = withDefaults(defineProps<Props>(), {
-  showVariantLinks: false
+  showVariantLinks: false,
+  primaryVariantDesc: undefined
 })
 
 /** Interface for header; to make type checker happy. */
@@ -62,7 +64,7 @@ const THREAD_STATUS_LABELS: { [key in SubmissionThreadStatus]: string } = {
   waiting: 'Submission is waiting to be processed.',
   in_progress: 'Work on submission is in progress.',
   success: 'Submission has been processed successfully.',
-  error: 'There was an error in processing the submission.'
+  failed: 'There was an error in processing the submission.'
 }
 
 /** The client to use for retrieving information from clinvarsub API. */
@@ -89,7 +91,7 @@ const listLoadData = async () => {
   listActivities.value = {}
   // Fetch the submitting organisations.
   const submissionThreadsPage = await clinvarsubClient.fetchSubmissionThreads(
-    undefined,
+    props.primaryVariantDesc,
     listPageToToken.value[listPage.value],
     listItemsPerPage.value
   )
@@ -153,8 +155,8 @@ watch(
     :items="listItems"
     :loading="listItems === null"
     item-value="id"
-    @update:expanded="listOnExpanded"
     show-expand
+    @update:expanded="listOnExpanded"
   >
     <template #[`item.primary_variant_desc`]="{ item }">
       <template v-if="props.showVariantLinks">
@@ -173,9 +175,7 @@ watch(
     </template>
     <template #[`item.operation`]="{ item }">
       <template v-if="item.desired_presence == VariantPresence.Absent"> delete </template>
-      <template v-else-if="item.desired_presence == VariantPresence.Present">
-        create
-      </template>
+      <template v-else-if="item.desired_presence == VariantPresence.Present"> create </template>
       <template v-else> update </template>
     </template>
     <template #[`item.status`]="{ item }">
@@ -184,15 +184,15 @@ watch(
       </abbr>
     </template>
 
-    <template v-slot:expanded-row="{ columns, item }">
+    <template #expanded-row="{ columns, item }">
       <tr>
         <td :colspan="columns.length">
           <v-sheet flat color="background" class="pa-3 mt-3">
             <div class="text-overline">Activities</div>
-            <div class="text-center" v-if="!listActivities[item.id]">
+            <div v-if="!listActivities[item.id]" class="text-center">
               <v-progress-circular indeterminate></v-progress-circular>
             </div>
-            <v-table class="bg-background" v-else>
+            <v-table v-else class="bg-background">
               <thead>
                 <tr>
                   <th>Kind</th>
@@ -205,32 +205,24 @@ watch(
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="activity in listActivities[item.id]" :key="item.id">
+                <tr v-for="activity in listActivities[item.id]" :key="activity.id">
                   <td>{{ activity.kind }}</td>
                   <td>{{ activity.status }}</td>
                   <td class="text-no-wrap">
                     {{ DateTime.fromISO(activity.created).toFormat('yyyy-MM-dd HH:mm') }}
                   </td>
-                  <td class="text-no-wrap" v-if="activity.request_timestamp">
-                    {{
-                      DateTime.fromISO(activity.request_timestamp).toFormat(
-                        'yyyy-MM-dd HH:mm'
-                      )
-                    }}
+                  <td v-if="activity.request_timestamp" class="text-no-wrap">
+                    {{ DateTime.fromISO(activity.request_timestamp).toFormat('yyyy-MM-dd HH:mm') }}
                   </td>
-                  <td class="text-grey-darken-2" v-else>N/A</td>
+                  <td v-else class="text-grey-darken-2">N/A</td>
                   <td v-if="activity.request_payload">{{ activity.request_payload }}</td>
-                  <td class="text-grey-darken-2" v-else>N/A</td>
-                  <td class="text-no-wrap" v-if="activity.response_timestamp">
-                    {{
-                      DateTime.fromISO(activity.response_timestamp).toFormat(
-                        'yyyy-MM-dd HH:mm'
-                      )
-                    }}
+                  <td v-else class="text-grey-darken-2">N/A</td>
+                  <td v-if="activity.response_timestamp" class="text-no-wrap">
+                    {{ DateTime.fromISO(activity.response_timestamp).toFormat('yyyy-MM-dd HH:mm') }}
                   </td>
-                  <td class="text-grey-darken-2" v-else>N/A</td>
+                  <td v-else class="text-grey-darken-2">N/A</td>
                   <td v-if="activity.response_payload">{{ activity.response_payload }}</td>
-                  <td class="text-grey-darken-2" v-else>N/A</td>
+                  <td v-else class="text-grey-darken-2">N/A</td>
                 </tr>
               </tbody>
             </v-table>

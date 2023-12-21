@@ -3,8 +3,8 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import { useUserStore } from '@/stores/user'
 import FooterDefault from '@/components/FooterDefault.vue'
+import { useUserStore } from '@/stores/user'
 
 const CaseCard = defineAsyncComponent(() => import('@/components/Profile/CaseCard.vue'))
 const BookmarksCard = defineAsyncComponent(() => import('@/components/Profile/BookmarksCard.vue'))

@@ -130,11 +130,11 @@ async def test_handler_with_session_update_status_in_progress_then_run(
     kind: typing.Literal["create", "retrieve"],
 ):
     # arrange:
-    # mock out the _CreateHandler
-    mock_CreateHandler_obj = mocker.MagicMock()
-    mock_CreateHandler_obj.run.return_value = async_return(None)
-    mock_CreateHandler = mocker.Mock(return_value=mock_CreateHandler_obj)
-    mocker.patch("app.clinvarsub._CreateHandler", new=mock_CreateHandler)
+    # mock out the _ModifyHandler
+    mock_ModifyHandler_obj = mocker.MagicMock()
+    mock_ModifyHandler_obj.run.return_value = async_return(None)
+    mock_ModifyHandler = mocker.Mock(return_value=mock_ModifyHandler_obj)
+    mocker.patch("app.clinvarsub._ModifyHandler", new=mock_ModifyHandler)
     # mock out the _RetrieveHandler
     mock_RetrieveHandler_obj = mocker.MagicMock()
     mock_RetrieveHandler_obj.run.return_value = async_return(None)
@@ -165,10 +165,10 @@ async def test_handler_with_session_update_status_in_progress_then_run(
 
     # assert:
     if kind == "create":
-        mock_CreateHandler_obj.run.assert_called_once()
+        mock_ModifyHandler_obj.run.assert_called_once()
         mock_RetrieveHandler_obj.run.assert_not_called()
     else:
-        mock_CreateHandler_obj.run.assert_not_called()
+        mock_ModifyHandler_obj.run.assert_not_called()
         mock_RetrieveHandler_obj.run.assert_called_once()
     await db_session.refresh(submissionthread)
     assert submissionthread.status == SubmissionThreadStatus.IN_PROGRESS
@@ -176,7 +176,7 @@ async def test_handler_with_session_update_status_in_progress_then_run(
     assert submissionactivity.status == SubmissionActivityStatus.IN_PROGRESS
 
 
-# -- _CreateHandler -----------------------------------------------------------
+# -- _ModifyHandler -----------------------------------------------------------
 
 
 @pytest.mark.anyio

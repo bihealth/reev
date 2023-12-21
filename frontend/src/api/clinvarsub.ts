@@ -87,7 +87,7 @@ export enum SubmissionThreadStatus {
   // The submission thread has been processed with final result of success.
   Success = 'success',
   // The submission thread has terminated with final result of failure.
-  Error = 'error'
+  Failed = 'failed'
 }
 
 /** Interface for updating submission threads. */
@@ -732,7 +732,7 @@ export class ClinvarsubClient {
     cursor?: string | undefined,
     pageSize: number = 50
   ): Promise<SubmissionThreadPage> {
-    let queries: string[] = []
+    const queries: string[] = []
     if (primaryVariantDesc?.length) {
       queries.push(`primary_variant_desc=${primaryVariantDesc}`)
     }

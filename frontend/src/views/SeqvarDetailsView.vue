@@ -355,7 +355,7 @@ const SECTIONS: { [key: string]: Section[] } = {
               </v-btn>
             </v-alert>
 
-            <!-- <template v-if="seqvarInfoStore?.geneInfo">
+            <template v-if="seqvarInfoStore?.geneInfo">
               <div id="gene-overview">
                 <GeneOverviewCard :gene-info="seqvarInfoStore?.geneInfo" />
               </div>
@@ -384,7 +384,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                   :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
                 />
               </div>
-            </template> -->
+            </template>
             <div>
               <div class="text-h4 mt-6 mb-3 ml-1">
                 Variant Details
@@ -394,7 +394,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                   </small>
                 </template>
               </div>
-              <!-- <div id="seqvar-clinsig">
+              <div id="seqvar-clinsig">
                 <ClinsigCard :seqvar="seqvarInfoStore.seqvar" @error-display="handleDisplayError" />
               </div>
               <div id="seqvar-csq" class="mt-3">
@@ -423,7 +423,7 @@ const SECTIONS: { [key: string]: Section[] } = {
               </div>
               <div id="seqvar-variantvalidator" class="mt-3">
                 <VariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
-              </div> -->
+              </div>
               <div id="seqvar-clinvarsub" class="mt-3">
                 <ClinvarsubCard :seqvar="seqvarInfoStore.seqvar" />
               </div>
