@@ -41,7 +41,7 @@ export interface SubmittingOrgWrite {
 
 /** Interface for reading submission thread. */
 export interface SubmissionThreadRead {
-  /** The internal UUID (unset when creating). */
+  /** The internal UUID. */
   id: string
   /** Submitting organisation to use for submission. */
   submittingorg_id: string
@@ -54,9 +54,9 @@ export interface SubmissionThreadRead {
   /** Effective SCV. */
   effective_scv: string | null
   /** Effective presence in ClinVar. */
-  effective_presence: VariantPresence | null
+  effective_presence: VariantPresence
   /** Desired presence in ClinVar. */
-  desired_presence: VariantPresence | null
+  desired_presence: VariantPresence
   /** Current thread status. */
   status: SubmissionThreadStatus
 }
@@ -102,14 +102,18 @@ export enum SubmissionThreadStatus {
 export interface SubmissionThreadWrite {
   /** The internal UUID (unset when creating). */
   id?: string
+  /** The submitting org (only when creating). */
+  submittingorg_id?: string
   /** Effective SCV. */
-  effective_scv?: string
+  effective_scv?: string | null
   /** Effective presence in ClinVar. */
   effective_presence?: VariantPresence
-  /** The submitting org (only when creating). */
-  submitting_org_id?: string
   /** The variant description (only when creating). */
   primary_variant_desc?: string
+  /** Desired presence in ClinVar. */
+  desired_presence?: VariantPresence
+  /** Current thread status. */
+  status: SubmissionThreadStatus
 }
 
 /** Enum for the submission activity kind. */
@@ -126,6 +130,8 @@ export enum SubmissionActivityKind {
 
 /** Enum for the submission activity status. */
 export enum SubmissionActivityStatus {
+  /** The submission activity is initial. */
+  Initial = 'initial',
   /** The submission activity is waiting to be picked up by the worker. */
   Waiting = 'waiting',
   /** The submission activity is in progress. */
@@ -596,6 +602,8 @@ export interface SubmissionContainer {
 
 /** Interface for updating submission activities. */
 export interface SubmissionActivityWrite {
+  /** The internal UUID (unset when creating). */
+  id?: string
   /** The submission thread's UUID. */
   submissionthread_id: string
   /** The activity kind. */
@@ -641,6 +649,9 @@ export class ClinvarsubClient {
         'Content-Type': 'application/json'
       }
     })
+    if (!response.ok) {
+      throw new Error(`Failed to fetch submitting org: ${await response.text()}`)
+    }
     return await response.json()
   }
 
@@ -661,6 +672,9 @@ export class ClinvarsubClient {
       },
       body: JSON.stringify(submittingOrg)
     })
+    if (!response.ok) {
+      throw new Error(`Failed to create submitting org: ${await response.text()}`)
+    }
     return await response.json()
   }
 
@@ -684,6 +698,9 @@ export class ClinvarsubClient {
         body: JSON.stringify(submittingOrg)
       }
     )
+    if (!response.ok) {
+      throw new Error(`Failed to updating submitting org: ${await response.text()}`)
+    }
     return await response.json()
   }
 
@@ -735,6 +752,115 @@ export class ClinvarsubClient {
         'Content-Type': 'application/json'
       }
     })
+    if (!response.ok) {
+      throw new Error(`Failed to fetch submission thread: ${await response.text()}`)
+    }
+    return await response.json()
+  }
+
+  /**
+   * Create a new submission thread.
+   *
+   * @param submissionThread The submission thread to create.
+   * @returns The created submission thread.
+   */
+  async createSubmissionThread(
+    submissionThread: SubmissionThreadWrite
+  ): Promise<SubmissionThreadRead> {
+    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submissionthreads`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(submissionThread)
+    })
+    if (!response.ok) {
+      throw new Error(`Failed to create submission thread: ${await response.text()}`)
+    }
+    return await response.json()
+  }
+
+  /**
+   * Update a submission thread.
+   *
+   * @param submissionThread The submission thread to update.
+   * @returns The updated submission thread.
+   */
+  async updateSubmissionThread(
+    submissionThread: SubmissionThreadWrite
+  ): Promise<SubmissionThreadRead> {
+    const response = await fetch(
+      `${this.apiBaseUrl}clinvarsub/submissionthreads/${submissionThread.id}`,
+      {
+        method: 'PUT',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submissionThread)
+      }
+    )
+    if (!response.ok) {
+      throw new Error(`Failed to update submission thread: ${await response.text()}`)
+    }
+    return await response.json()
+  }
+
+  /**
+   * Create a new submission activity.
+   *
+   * @param submissionActivity The submission activity to create.
+   * @returns The created submission activity.
+   */
+  async createSubmissionActivity(
+    submissionActivity: SubmissionActivityWrite
+  ): Promise<SubmissionActivityRead> {
+    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submissionthreads/${submissionActivity.submissionthread_id}/activities`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(submissionActivity)
+    })
+    if (!response.ok) {
+      throw new Error(`Failed to create submission activity: ${await response.text()}`)
+    }
+    return await response.json()
+  }
+
+  /**
+   * Update a submission activity.
+   *
+   * @param submissionActivity The submission activity to update.
+   * @returns The updated submission activity.
+   */
+  async updateSubmissionActivity(
+    submissionActivity: SubmissionActivityWrite
+  ): Promise<SubmissionActivityRead> {
+    const response = await fetch(
+      `${this.apiBaseUrl}clinvarsub/submissionactivities/${submissionActivity.id}`,
+      {
+        method: 'PUT',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submissionActivity)
+      }
+    )
+    if (!response.ok) {
+      throw new Error(`Failed to update submission activity: ${await response.text()}`)
+    }
     return await response.json()
   }
 }

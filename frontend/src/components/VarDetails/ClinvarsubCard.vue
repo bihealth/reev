@@ -19,8 +19,10 @@ import {
   type SubmissionClinicalFeature,
   type SubmissionCondition,
   type SubmissionContainer,
+  type SubmissionThreadStatus,
   VariantPresence
 } from '@/api/clinvarsub'
+import { type ClinvarsubClient, type SubmittingOrgRead } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/utils'
@@ -39,6 +41,19 @@ interface Props {
 /** Define component's props. */
 const props = defineProps<Props>()
 
+/** Primary variant description as inferred from the props. */
+const primaryVariantDesc = computed<string | undefined>(() => {
+  if (props.seqvar) {
+    const { genomeBuild, chrom, pos, del, ins } = props.seqvar
+    return `${genomeBuild}-${chrom}-${pos}-${del}-${ins}`
+  } else if (props.strucvar) {
+    const { svType, genomeBuild, chrom, start, stop } = props.strucvar
+    return `${svType}-${genomeBuild}-${chrom}-${start}-${stop}`
+  } else {
+    return ''
+  }
+})
+
 // -- clinvarsub store ---------------------------------------------------------
 
 /** Store with ClinVar submission related information. */
@@ -47,23 +62,23 @@ const clinvarsubStore = useClinvarsubStore()
 /** Initialize the store an load the data for the current variant. */
 const loadData = async () => {
   await clinvarsubStore.initialize()
-  let primaryVariantDesc: string | null
-  if (props.seqvar) {
-    const { genomeBuild, chrom, pos, del, ins } = props.seqvar
-    primaryVariantDesc = `${genomeBuild}-${chrom}-${pos}-${del}-${ins}`
-  } else if (props.strucvar) {
-    const { svType, genomeBuild, chrom, start, stop } = props.strucvar
-    primaryVariantDesc = `${svType}-${genomeBuild}-${chrom}-${start}-${stop}`
-  } else {
-    primaryVariantDesc = null
-  }
-  await clinvarsubStore.loadSubmissionThreads(primaryVariantDesc)
+  await clinvarsubStore.loadSubmissionThreads(primaryVariantDesc.value)
 }
 
 // Ensure the store is initialized when the card is mounted.
 onMounted(() => loadData)
 // Handle changes to the variant.
 watch(() => [props.seqvar, props.strucvar], loadData)
+
+/** The currently selected submitting org from prepareModelState (see below). */
+const currSubmittingOrg = computed<SubmittingOrgRead | undefined>(() => {
+  const submittingOrgId = prepareModelState.value.submittingorgId
+  if (submittingOrgId === undefined) {
+    return undefined
+  } else {
+    return clinvarsubStore.submittingOrgs[submittingOrgId]
+  }
+})
 
 // -- submission threads -------------------------------------------------------
 
@@ -90,49 +105,6 @@ const currentStep = ref<number>(1)
 /** Component state; current display state. */
 const display = ref<Display>(Display.List)
 
-/** Handler for click on "previous" */
-const onClickPrevious = async () => {
-  const currentStep$ = Object.values(Steps)[currentStep.value - 1]
-  switch (currentStep$) {
-    case Steps.Prepare:
-      console.error('unreachable')
-      break
-    case Steps.DataEntry:
-      if (!(await v$createUpdateModel.value.$validate())) {
-        v$createUpdateModel.value.$touch()
-      } else {
-        currentStep.value = Object.values(Steps).indexOf(Steps.Prepare) + 1
-      }
-      break
-    case Steps.Review:
-      currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
-      break
-  }
-}
-/** Handler for click on "next" */
-const onClickNext = async () => {
-  const currentStep$ = Object.values(Steps)[currentStep.value - 1]
-  switch (currentStep$) {
-    case Steps.Prepare:
-      if (!(await v$prepareModel.value.$validate())) {
-        v$prepareModel.value.$touch()
-      } else {
-        currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
-      }
-      break
-    case Steps.DataEntry:
-      if (!(await v$createUpdateModel.value.$validate())) {
-        v$createUpdateModel.value.$touch()
-      } else {
-        currentStep.value = Object.values(Steps).indexOf(Steps.Review) + 1
-      }
-      break
-    case Steps.Review:
-      console.error('unreachable')
-      break
-  }
-}
-
 /** Interface for editing in preparation step. */
 interface PrepareModel {
   /** Submitting oragnisation UUID. */
@@ -144,13 +116,15 @@ interface PrepareModel {
   /** Selected SCV. */
   scv: string | undefined
 }
-/** Current state of preparation step. */
-const prepareModelState = ref<PrepareModel>({
+/** Default state of preparation step. */
+const prepareModelStateDefaults: PrepareModel = {
   submittingorgId: undefined,
   hasScv: false,
   desiredPresence: VariantPresence.Present,
   scv: undefined
-})
+}
+/** Current state of preparation step. */
+const prepareModelState = ref<PrepareModel>(deepCopy(prepareModelStateDefaults))
 /** Rules for the prepare model state. */
 const prepareModelRules = {
   scv: {
@@ -169,6 +143,18 @@ const prepareModelRules = {
 }
 /** Vuelidate instance for `prepareModel`. */
 const v$prepareModel = useVuelidate<PrepareModel>(prepareModelRules, prepareModelState)
+
+/** Select the first submitting org from the store as currently selected. */
+const selectFirstSubmittingOrg = () => {
+  const submittingOrgs = Object.values(clinvarsubStore.submittingOrgs)
+  if (submittingOrgs.length > 0) {
+    prepareModelState.value.submittingorgId = submittingOrgs[0].id
+  }
+}
+// Select the first submitting org when mounted.
+onMounted(selectFirstSubmittingOrg)
+// Select the first submitting org when the submitting orgs are reloaded
+watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
 
 /** Interface for creationg and update of submissions. */
 interface CreateUpdateModel {
@@ -197,7 +183,7 @@ interface CreateUpdateModel {
   caseClinicalFeatures: SubmissionClinicalFeature[]
 }
 /** Default value for the create/update model. */
-const defaultCreateUpdateModel: CreateUpdateModel = {
+const createDefaultModelStateDefault: CreateUpdateModel = {
   // -- clinical significance ---------------------------------------------------
 
   clinicalSignificanceDescription: ClinicalSignificanceDescription.UncertainSignificance,
@@ -214,7 +200,7 @@ const defaultCreateUpdateModel: CreateUpdateModel = {
   caseClinicalFeatures: []
 }
 /** The model for the create/update data. */
-const createUpdateModelState = ref<CreateUpdateModel>(deepCopy(defaultCreateUpdateModel))
+const createUpdateModelState = ref<CreateUpdateModel>(deepCopy(createDefaultModelStateDefault))
 /** Rules for the prepare model state. */
 const createUpdateModelRules = {
   dateLastEvaluated: {
@@ -265,9 +251,9 @@ const debouncedHpoFetchTerms = _.debounce(async (query: string) => {
 /** Construct a `SubmissionContainer` for a creation. */
 const constructCreateUpdatePayload = (
   prepareModel: PrepareModel,
-  model: CreateUpdateModel
+  createUpdateModel: CreateUpdateModel
 ): SubmissionContainer => {
-  const modelCopy: CreateUpdateModel = deepCopy(model)
+  const modelCopy: CreateUpdateModel = deepCopy(createUpdateModel)
 
   return {
     assertion_criteria: {
@@ -306,32 +292,119 @@ interface DeleteModel {
 const deleteModel = ref<DeleteModel>({})
 
 /** Construct a `SubmissionContainer` given an accession and reason. */
-const constructDeletePayload = (deleteModel: DeleteModel): SubmissionContainer => ({
+const constructDeletePayload = (
+  prepareModel: PrepareModel,
+  deleteModel: DeleteModel
+): SubmissionContainer => ({
   clinvar_deletion: {
     accession_set: [
       {
-        accession: prepareModelState.value.scv ?? 'UNDEFINED',
+        accession: prepareModel.scv ?? 'UNDEFINED',
         reason: deleteModel.reason
       }
     ]
   }
 })
 
-/** Select the first submitting org from the store as currently selected. */
-const selectFirstSubmittingOrg = () => {
-  const submittingOrgs = Object.values(clinvarsubStore.submittingOrgs)
-  if (submittingOrgs.length > 0) {
-    prepareModelState.value.submittingorgId = submittingOrgs[0].id
+/** Handler for click on "cancel". */
+const onClickCancel = async () => {
+  display.value = Display.List
+  currentStep.value = 1
+  prepareModelState.value = deepCopy(prepareModelStateDefaults)
+  createUpdateModelState.value = deepCopy(createDefaultModelStateDefault)
+}
+/** Handler for click on "previous". */
+const onClickPrevious = async () => {
+  const currentStep$ = Object.values(Steps)[currentStep.value - 1]
+  switch (currentStep$) {
+    case Steps.Prepare:
+      console.error('unreachable')
+      break
+    case Steps.DataEntry:
+      if (!(await v$createUpdateModel.value.$validate())) {
+        v$createUpdateModel.value.$touch()
+      } else {
+        currentStep.value = Object.values(Steps).indexOf(Steps.Prepare) + 1
+      }
+      break
+    case Steps.Review:
+      currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
+      break
   }
 }
-// Select the first submitting org when mounted.
-onMounted(selectFirstSubmittingOrg)
-// Select the first submitting org when the submitting orgs are reloaded
-watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
+/** Handler for click on "next". */
+const onClickNext = async () => {
+  const currentStep$ = Object.values(Steps)[currentStep.value - 1]
+  switch (currentStep$) {
+    case Steps.Prepare:
+      if (!(await v$prepareModel.value.$validate())) {
+        v$prepareModel.value.$touch()
+      } else {
+        currentStep.value = Object.values(Steps).indexOf(Steps.DataEntry) + 1
+      }
+      break
+    case Steps.DataEntry:
+      if (!(await v$createUpdateModel.value.$validate())) {
+        v$createUpdateModel.value.$touch()
+      } else {
+        currentStep.value = Object.values(Steps).indexOf(Steps.Review) + 1
+      }
+      break
+    case Steps.Review:
+      console.error('unreachable')
+      break
+  }
+}
+
+/** Component state; whether the submission is currently running. */
+const isSubmitting = ref<boolean>(false)
+/** Whether to display the alert. */
+const messageType = ref<'success' | 'error'>('success')
+/** Any error message to display to the user. */
+const messageText = ref<string>('')
+
+/** Handler for "Submit Create/Update/Delete Request". */
+const onSubmitRequest = async () => {
+  isSubmitting.value = true
+  // Construct appropriate payload.
+  let payload: SubmissionContainer
+  if (prepareModelState.value.desiredPresence == VariantPresence.Absent) {
+    payload = constructDeletePayload(prepareModelState.value, deleteModel.value)
+  } else {
+    payload = constructCreateUpdatePayload(prepareModelState.value, createUpdateModelState.value)
+  }
+  // Attempt to create the new submission and handle error and success.
+  try {
+    await clinvarsubStore.createSubmissionThread(
+      prepareModelState.value.submittingorgId!,
+      primaryVariantDesc.value!,
+      prepareModelState.value.scv,
+      prepareModelState.value.scv ? VariantPresence.Present : VariantPresence.Absent,
+      prepareModelState.value.desiredPresence,
+      payload
+    )
+    messageType.value = 'success'
+    messageText.value = 'Your submission request has been saved on our server and will be processed shortly.'
+  } catch (err) {
+    messageType.value = "error"
+    messageText.value = `Something went wrong: ${err}`
+  } finally {
+    isSubmitting.value = false
+  }
+  if (messageType.value === 'success') {
+    await onClickCancel()
+  }
+}
 </script>
 
 <template>
   <v-card class="mt-3">
+    <v-card-text v-if="messageText.length > 0">
+      <v-alert :type="messageType" closable @click:close="messageText = ''">
+        {{ messageText }}
+      </v-alert>
+    </v-card-text>
+
     <v-card-title class="pb-0 pr-2">
       ClinVar Submission
       <DocsLink anchor="clinvar-submission" />
@@ -341,9 +414,29 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
           variant="outlined"
           rounded="xs"
           prepend-icon="mdi-close-box-outline"
-          @click="display = Display.List"
+          @click="onClickCancel()"
         >
           Cancel
+        </v-btn>
+      </template>
+      <template
+        v-else-if="
+          display === Display.List
+          &&
+          Object.keys(clinvarsubStore.submittingOrgs).length !== 0
+          &&
+          Object.keys(clinvarsubStore.submissionThreads).length !== 0
+        "
+      >
+        <v-btn
+          class="float-right px-3 py-1 mr-3"
+          color="success"
+          variant="outlined"
+          rounded="xs"
+          prepend-icon="mdi-plus-box-outline"
+          @click="display = Display.Stepper"
+        >
+          New
         </v-btn>
       </template>
     </v-card-title>
@@ -365,7 +458,6 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
       <template v-if="display === Display.List">
         <template v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0">
           <div
-            v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0"
             class="text-center font-italic text-grey-darken-2"
           >
             No submissions for this variant yet. Do you want to create one?
@@ -468,12 +560,7 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
             </v-sheet>
           </template>
           <template #[`item.2`]>
-            <template
-              v-if="
-                prepareModelState.hasScv &&
-                prepareModelState.desiredPresence == VariantPresence.Absent
-              "
-            >
+            <template v-if="prepareModelState.desiredPresence == VariantPresence.Absent">
               <p class="pb-6 text-body-1">
                 Below, you may provide an optional free-text reason for removing the variant.
               </p>
@@ -592,7 +679,51 @@ watch(() => clinvarsubStore.storeState, selectFirstSubmittingOrg)
             </template>
           </template>
           <template #[`item.3`]>
-            <v-card title="Review & Submit" flat>...</v-card>
+            <v-sheet
+              v-if="
+                prepareModelState.hasScv &&
+                prepareModelState.desiredPresence == VariantPresence.Absent
+              "
+            >
+              <p class="pb-3 text-body-1">
+                Please confirm to request ClinVar to delete your submission given the folllowing
+                information. Note that the selected submitting organisation and associated ClinVar
+                API key must be the submitter of the original submission.
+              </p>
+
+              <div class="pt-3 text-caption">Submitting Organisation</div>
+              <div class="text-body-1">
+                {{ currSubmittingOrg?.label }}
+              </div>
+              <div class="pt-3 text-caption">SCV</div>
+              <div class="text-body-1">
+                {{ prepareModelState.scv }}
+              </div>
+              <div class="pt-3 text-caption">Reason</div>
+              <div
+                class="text-body-1"
+                :class="{ 'text-grey-darken-1': !deleteModel.reason?.length }"
+              >
+                {{ deleteModel.reason || 'N/A' }}
+              </div>
+
+              <div class="text-center pt-9">
+                <v-btn
+                  color="error"
+                  prepend-icon="mdi-cloud-upload-outline"
+                  :loading="isSubmitting"
+                  @click="onSubmitRequest()"
+                >
+                  Submit Deletion Request
+                </v-btn>
+              </div>
+            </v-sheet>
+            <v-sheet v-else>
+              <p class="pb-6 text-body-1">
+                Below, you see a summary of your submission. Please review it carefully before
+                clicking "Send to ClinVar".
+              </p>
+            </v-sheet>
           </template>
         </v-stepper>
       </template>

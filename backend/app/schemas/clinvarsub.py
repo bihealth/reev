@@ -87,15 +87,15 @@ class SubmissionThreadInDb(SubmissionThreadInDbBase):
 class SubmissionActivityBase(BaseModel):
     kind: SubmissionActivityKind
     status: SubmissionActivityStatus
-    request_payload: Optional[clinvar_api_models.SubmissionContainer]
-    request_timestamp: Optional[datetime.datetime]
+    request_payload: Optional[clinvar_api_models.SubmissionContainer] = None
+    request_timestamp: Optional[datetime.datetime] = None
     response_payload: Union[
         ResponseMessage,
         clinvar_api_models.Created,
         clinvar_api_client.RetrieveStatusResult,
         None,
-    ]
-    response_timestamp: Optional[datetime.datetime]
+    ] = None
+    response_timestamp: Optional[datetime.datetime] = None
 
 
 class SubmissionActivityCreate(SubmissionActivityBase):

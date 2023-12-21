@@ -61,7 +61,6 @@ def upgrade():
         ),
         sa.ForeignKeyConstraint(["submittingorg_id"], ["clinvarsubuserorg.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),
-        sa.UniqueConstraint("submittingorg_id", "primary_variant_desc"),
     )
     op.create_index(
         "clinvarsubthread_variantid", "clinvarsubthread", ["primary_variant_desc"], unique=False
@@ -82,6 +81,7 @@ def upgrade():
         sa.Column(
             "status",
             sa.Enum(
+                "INITIAL",
                 "WAITING",
                 "IN_PROGRESS",
                 "COMPLETE_SUCCESS",

@@ -9,8 +9,15 @@ import { ref } from 'vue'
 
 import {
   ClinvarsubClient,
+  VariantPresence,
   type SubmissionThreadRead,
-  type SubmittingOrgRead
+  type SubmissionThreadWrite,
+  type SubmittingOrgRead,
+  SubmissionThreadStatus,
+  type SubmissionActivityWrite,
+  SubmissionActivityStatus,
+  SubmissionActivityKind,
+  type SubmissionContainer
 } from '@/api/clinvarsub'
 import { StoreState } from '@/stores/misc'
 
@@ -52,8 +59,23 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
    * Load all submission threads given the primary variant description.
    *
    * Clear by calling with `null`/`undefined`.
+   *
+   * Will not attempt to load the submision thread for the same primary variant
+   * description unless `force` is set to `true`.
+   *
+   * Will set `storeState` to `StoreState.Error` in case of errors.
+   *
+   * @param primaryVariantDesc$ The primary variant description to load the submission threads for.
+   * @param force Whether to force reloading the submission threads.
    */
-  const loadSubmissionThreads = async (primaryVariantDesc$: string | null | undefined) => {
+  const loadSubmissionThreads = async (
+    primaryVariantDesc$: string | null | undefined,
+    force: boolean = false
+  ) => {
+    if (!force && primaryVariantDesc.value === primaryVariantDesc$) {
+      return // already loaded
+    }
+
     primaryVariantDesc.value = undefined
     submissionThreads.value = {}
     if (!primaryVariantDesc$) {
@@ -76,6 +98,82 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
     } catch (err) {
       storeState.value = StoreState.Error
     }
+  }
+
+  /**
+   * Create a new submission thread for the current variant via the API.
+   *
+   * Will update the store state with the newly created submission thread.
+   *
+   * In case of errors creating, will throw an error but not set the store
+   * state.  Will call `loadSubmissionThreads()` that may set the store state
+   * to error.
+   *
+   * @param submittingOrgId The submitting org ID to create the submission thread for.
+   * @param primaryVariantDesc$ The primary variant description to create the submission thread for.
+   * @param effectiveScv The effective SCV to create the submission thread for.
+   * @param effectivePresence The effective presence to create the submission thread for.
+   * @param desiredPresence The desired presence to create the submission thread for.
+   * @param payload The payload to create the submission thread for.
+   * @throws {Error} In case of errors creating the submission thread.
+   */
+  const createSubmissionThread = async (
+    submittingOrgId: string,
+    primaryVariantDesc$: string,
+    effectiveScv: string | undefined,
+    effectivePresence: VariantPresence,
+    desiredPresence: VariantPresence,
+    payload: SubmissionContainer,
+  ): Promise<SubmissionThreadRead> => {
+    const client = new ClinvarsubClient()
+
+    // Create submission thread with status 'initial'.
+    const submissionThreadCreate: SubmissionThreadWrite = {
+      submittingorg_id: submittingOrgId,
+      primary_variant_desc: primaryVariantDesc$,
+      effective_scv: effectiveScv,
+      effective_presence: effectivePresence,
+      desired_presence: desiredPresence,
+      status: SubmissionThreadStatus.Initial,
+    }
+    let submissionThread = await client.createSubmissionThread(submissionThreadCreate)
+    // Determine activity kind for activity, then create activity.
+    let kind: SubmissionActivityKind
+    if (desiredPresence === VariantPresence.Absent) {
+      kind = SubmissionActivityKind.Delete
+    } else if (desiredPresence === VariantPresence.Present) {
+      if (effectiveScv === undefined) {
+        kind = SubmissionActivityKind.Create
+      } else {
+        kind = SubmissionActivityKind.Update
+      }
+    } else {
+      throw new Error(`unexpected kind: ${desiredPresence}/${effectiveScv}`)
+    }
+    const submissionActivityCreate: SubmissionActivityWrite = {
+      submissionthread_id: submissionThread.id,
+      kind,
+      status: SubmissionActivityStatus.Initial,
+      request_payload: payload,
+    }
+    let submissionActivity = await client.createSubmissionActivity(submissionActivityCreate)
+    // Now that thread/activity are on the server, submit both to the worker by
+    // marking them as `WAITING`.
+    const submissionThreadUpdate: SubmissionThreadWrite = {
+      ...submissionThread,
+      status: SubmissionThreadStatus.Waiting,
+    }
+    submissionThread = await client.updateSubmissionThread(submissionThreadUpdate)
+    const submissionActivityUpdate: SubmissionActivityWrite = {
+      ...submissionActivity,
+      status: SubmissionActivityStatus.Waiting,
+    }
+    submissionActivity = await client.updateSubmissionActivity(submissionActivityUpdate)
+
+    // Finally, reload submission threads.
+    loadSubmissionThreads(primaryVariantDesc$, true)
+
+    return submissionThread
   }
 
   /**
@@ -115,6 +213,7 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
     clear,
     initialize,
     loadSubmittingOrgs,
-    loadSubmissionThreads
+    loadSubmissionThreads,
+    createSubmissionThread
   }
 })

@@ -6,17 +6,7 @@ from datetime import datetime
 
 import pydantic  # noqa
 from fastapi_users_db_sqlalchemy.generics import GUID
-from sqlalchemy import (
-    JSON,
-    Column,
-    DateTime,
-    Enum,
-    ForeignKey,
-    Index,
-    Integer,
-    String,
-    UniqueConstraint,
-)
+from sqlalchemy import JSON, Column, DateTime, Enum, ForeignKey, Index, String
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -122,10 +112,7 @@ class SubmissionThread(AsyncAttrs, Base):
 
     __tablename__ = "clinvarsubthread"
 
-    __table_args__ = (
-        Index("clinvarsubthread_variantid", "primary_variant_desc"),
-        UniqueConstraint("submittingorg_id", "primary_variant_desc"),
-    )
+    __table_args__ = (Index("clinvarsubthread_variantid", "primary_variant_desc"),)
 
     #: UUID of the submission thread.
     id: Mapped[UUID_ID] = mapped_column(
@@ -185,6 +172,8 @@ class SubmissionActivityStatus(enum.Enum):
     or failed.  An activity can also end up being in a timeout state.
     """
 
+    #: Initial state while being edited by the user.
+    INITIAL = "initial"
     #: Waiting in the queue to be picked up by the worker.
     WAITING = "waiting"
     #: Activity is in progress.
@@ -199,6 +188,10 @@ class SubmissionActivityStatus(enum.Enum):
     FAILED = "failed"
     #: Activity failed because of a timeout.
     TIMEOUT = "timeout"
+
+    def is_initial(self):
+        """Return whether the status is initial."""
+        return self is SubmissionActivityStatus.INITIAL
 
     def is_waiting(self):
         """Return whether the status is waiting."""

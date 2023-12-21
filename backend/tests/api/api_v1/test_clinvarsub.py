@@ -9,7 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
 from app.core.config import settings
-from app.models.clinvarsub import SubmissionActivity, SubmissionThread, SubmittingOrg
+from app.models.clinvarsub import (
+    SubmissionActivity,
+    SubmissionActivityStatus,
+    SubmissionThread,
+    SubmissionThreadStatus,
+    SubmittingOrg,
+)
 from app.models.user import User
 from app.schemas.clinvarsub import (
     SubmissionActivityCreate,
@@ -284,6 +290,51 @@ async def test_create_submissionthreads(
         assert response.status_code == 403
 
 
+# -- PUT /api/v1/clinvarsub/submissionthreads/{id} ----------------------------
+
+
+@pytest.mark.anyio
+@freeze_time(FREEZE_TIME)
+@pytest.mark.parametrize("is_owner", [True, False])
+async def test_update_submissionthreads(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread: SubmissionThread,
+    is_owner: bool,
+):
+    if not is_owner:
+        # make submittingorg owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the tests
+    response = client_user.put(
+        f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}",
+        json={
+            "effective_scv": submissionthread.effective_scv,
+            "desired_presence": submissionthread.desired_presence.value,
+            "status": SubmissionThreadStatus.WAITING.value,
+        },
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "effective_scv": None,
+            "effective_presence": None,
+            "desired_presence": "present",
+            "status": "waiting",
+            "id": response.json()["id"],
+            "created": FREEZE_TIME,
+            "updated": FREEZE_TIME,
+            "submittingorg_id": str(submittingorg.id),
+            "primary_variant_desc": "grch37-1-1000-A-G",
+        }
+    else:
+        assert response.status_code == 403
+
+
 # -- GET /api/v1/clinvarsub/submissionthreads/{id} ----------------------------
 
 
@@ -413,7 +464,7 @@ async def test_list_submissionactivities(
             ],
             "next_page": None,
             "previous_page": None,
-            "total": None,
+            "total": 1,
         }
     else:
         assert response.status_code == 403
@@ -458,6 +509,58 @@ async def test_create_submissionactivity(
             "response_payload": None,
             "response_timestamp": None,
             "status": "waiting",
+            "submissionthread_id": str(submissionthread.id),
+        }
+    else:
+        assert response.status_code == 403
+
+
+# -- PUT /api/v1/clinvarsub/submissionactivities/{id} --------------------------
+
+
+@pytest.mark.anyio
+@freeze_time(FREEZE_TIME)
+@pytest.mark.parametrize("is_owner", [True, False])
+async def test_update_submissionactivity(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    submittingorg: SubmittingOrg,
+    submissionthread: SubmissionThread,
+    submissionactivity: SubmissionActivity,
+    is_owner: bool,
+):
+    """
+    :param is_owner: test case where ``client_user`` is owner or not
+    """
+    if not is_owner:
+        # make submitting org owned by different user
+        await crud.submittingorg.update(
+            db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
+        )
+
+    # run the test
+    response = client_user.put(
+        f"{settings.API_V1_STR}/clinvarsub/submissionactivities/{submissionactivity.id}",
+        json={
+            "kind": submissionactivity.kind.value,
+            "status": SubmissionActivityStatus.INITIAL.value,
+            "request_payload": submissionactivity.request_payload,
+            "request_timestamp": submissionactivity.request_timestamp,
+            "response_payload": submissionactivity.response_payload,
+            "response_timestamp": submissionactivity.response_timestamp,
+        },
+    )
+    if is_owner:
+        assert response.status_code == 200
+        assert response.json() == {
+            "id": response.json()["id"],
+            "created": FREEZE_TIME,
+            "kind": "create",
+            "request_payload": None,
+            "request_timestamp": None,
+            "response_payload": None,
+            "response_timestamp": None,
+            "status": "initial",
             "submissionthread_id": str(submissionthread.id),
         }
     else:

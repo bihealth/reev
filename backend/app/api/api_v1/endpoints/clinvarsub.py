@@ -175,14 +175,38 @@ async def create_submissionthread(
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
-    elif await crud.submissionthread.get_by_primaryvariantid(
-        db,
-        submittingorg_id=submissionthread.submittingorg_id,
-        primary_variant_desc=submissionthread.primary_variant_desc,
-    ):
-        raise HTTPException(status_code=409, detail="submission thread already exists")
     else:
         return await crud.submissionthread.create(db, obj_in=submissionthread)
+
+
+@router.put(
+    "/submissionthreads/{submissionthread_id}",
+    response_model=schemas.SubmissionThreadRead,
+)
+async def update_submissionthread(
+    submissionthread_id: str,
+    submissionthread: schemas.SubmissionThreadUpdate,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    Update submission thread (current user must be owner).
+
+    :param id: Submission thread UUID.
+    :return: Submission tread data.
+    """
+    submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
+    if not submissionthread_db:
+        raise HTTPException(status_code=404, detail="submission thread not found")
+    submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
+    if not submittingorg:
+        raise HTTPException(status_code=404, detail="submitting org not found")
+    elif submittingorg.owner != user.id:
+        raise HTTPException(status_code=403, detail="user not owner of submitting org")
+    else:
+        return await crud.submissionthread.update(
+            db, db_obj=submissionthread_db, obj_in=submissionthread
+        )
 
 
 @router.get(
@@ -298,3 +322,38 @@ async def create_submissionactivity(
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
     else:
         return await crud.submissionactivity.create(db, obj_in=submissionactivity)
+
+
+@router.put(
+    "/submissionactivities/{submissionactivity_id}",
+    response_model=schemas.SubmissionActivityRead,
+)
+async def update_submissionactivity(
+    submissionactivity_id: str,
+    submissionactivity: schemas.SubmissionActivityUpdate,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+):
+    """
+    Create a new submission activity in the given thread.
+
+    :param submissionthread_id: Submission thread UUID.
+    :return: Created submission activity.
+    """
+    submissionactivity_db = await crud.submissionactivity.get(db, id=submissionactivity_id)
+    if not submissionactivity_db:
+        raise HTTPException(status_code=404, detail="submission activity not found")
+    submissionthread_db = await crud.submissionthread.get(
+        db, id=submissionactivity_db.submissionthread_id
+    )
+    if not submissionthread_db:
+        raise HTTPException(status_code=404, detail="submission thread not found")
+    submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
+    if not submittingorg:
+        raise HTTPException(status_code=404, detail="submitting org not found")
+    elif submittingorg.owner != user.id:
+        raise HTTPException(status_code=403, detail="user not owner of submitting org")
+    else:
+        return await crud.submissionactivity.update(
+            db, db_obj=submissionactivity_db, obj_in=submissionactivity
+        )
