@@ -1,9 +1,12 @@
 import asyncio
+import logging
+import os
 from typing import AsyncGenerator, Iterator
 
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from fastapi.testclient import TestClient
+from freezegun import freeze_time
 from sqlalchemy import StaticPool
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -12,12 +15,31 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
+from app import crud
 from app.api import deps
 from app.api.deps import current_active_superuser, current_active_user
 from app.db import init_db, session
 from app.db.base import Base
 from app.main import app
+from app.models.clinvarsub import (
+    SubmissionActivity,
+    SubmissionActivityKind,
+    SubmissionActivityStatus,
+    SubmissionThread,
+    SubmissionThreadStatus,
+    SubmittingOrg,
+    VariantPresence,
+)
 from app.models.user import User
+from app.schemas.clinvarsub import (
+    SubmissionActivityCreate,
+    SubmissionThreadCreate,
+    SubmittingOrgCreate,
+)
+from tests.utils import FREEZE_TIME, FREEZE_TIME_1SEC
+
+if os.environ.get("SQLALCHEMY_DEBUG", "0") == "1":
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
 @pytest.fixture
@@ -140,3 +162,92 @@ def client_user(test_user: User, request):
     app.dependency_overrides.pop(current_active_user, None)
     if superuser:
         app.dependency_overrides.pop(current_active_superuser, None)
+
+
+@pytest.fixture
+def submittingorg_create(test_user: User) -> SubmittingOrgCreate:
+    """Create a new schema object only, owned by `test_user`."""
+    return SubmittingOrgCreate(label="test", clinvar_api_token="le-token", owner=test_user.id)
+
+
+@pytest.fixture
+async def submittingorg(
+    db_session: AsyncSession, submittingorg_create: SubmittingOrgCreate
+) -> SubmittingOrg:
+    """Create a new database record (tests use isolated databases)."""
+    with freeze_time(FREEZE_TIME):
+        return await crud.submittingorg.create(session=db_session, obj_in=submittingorg_create)
+
+
+@pytest.fixture
+def submissionthread_create(submittingorg: SubmittingOrg) -> SubmissionThreadCreate:
+    """Create a new schema object only."""
+    return SubmissionThreadCreate(
+        desired_presence=VariantPresence.PRESENT,
+        status=SubmissionThreadStatus.INITIAL,
+        submittingorg_id=submittingorg.id,
+        primary_variant_desc="grch37-1-1000-A-G",
+    )
+
+
+@pytest.fixture
+async def submissionthread(
+    db_session: AsyncSession, submissionthread_create: SubmissionThreadCreate
+) -> SubmissionThread:
+    """Create a new schema object only."""
+    with freeze_time(FREEZE_TIME):
+        return await crud.submissionthread.create(
+            session=db_session, obj_in=submissionthread_create
+        )
+
+
+@pytest.fixture
+def submissionactivity_create(submissionthread: SubmissionThread) -> SubmissionActivityCreate:
+    """Create a new schema object only with kind=CREATE."""
+    return SubmissionActivityCreate(
+        submissionthread_id=submissionthread.id,
+        kind=SubmissionActivityKind.CREATE,
+        status=SubmissionActivityStatus.WAITING,
+        request_payload=None,
+        request_timestamp=None,
+        response_payload=None,
+        response_timestamp=None,
+    )
+
+
+@pytest.fixture
+def submissionactivity_create_kind_retrieve(
+    submissionthread: SubmissionThread,
+) -> SubmissionActivityCreate:
+    """Create a new schema object only with kind=RETRIEVE."""
+    return SubmissionActivityCreate(
+        submissionthread_id=submissionthread.id,
+        kind=SubmissionActivityKind.RETRIEVE,
+        status=SubmissionActivityStatus.WAITING,
+        request_payload=None,
+        request_timestamp=None,
+        response_payload=None,
+        response_timestamp=None,
+    )
+
+
+@pytest.fixture
+async def submissionactivity(
+    db_session: AsyncSession, submissionactivity_create: SubmissionActivityCreate
+) -> SubmissionActivity:
+    """Create a new schema object only."""
+    with freeze_time(FREEZE_TIME):
+        return await crud.submissionactivity.create(
+            session=db_session, obj_in=submissionactivity_create
+        )
+
+
+@pytest.fixture
+async def submissionactivity_kind_retrieve(
+    db_session: AsyncSession, submissionactivity_create_kind_retrieve: SubmissionActivityCreate
+) -> SubmissionActivity:
+    """Create a new schema object only."""
+    with freeze_time(FREEZE_TIME_1SEC):
+        return await crud.submissionactivity.create(
+            session=db_session, obj_in=submissionactivity_create_kind_retrieve
+        )

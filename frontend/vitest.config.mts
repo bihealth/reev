@@ -22,7 +22,8 @@ export default mergeConfig(
       root: fileURLToPath(new URL('./', import.meta.url)),
       transformMode: {
         web: [/\.[jt]sx$/]
-      }
+      },
+      testTimeout: 10000
     }
   }) as typeof viteConfig
 )

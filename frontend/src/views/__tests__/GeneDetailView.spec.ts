@@ -126,7 +126,11 @@ describe.concurrent('GeneDetailView', async () => {
     await searchBar.setValue('grch37', 'genomeRelease')
     expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
     expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
-    expect(searchBar.vm.$props).toContain({ searchTerm: 'HGNC:1100', genomeRelease: 'grch37' })
+    expect(searchBar.vm.$props).toStrictEqual({
+      density: 'compact',
+      searchTerm: 'HGNC:1100',
+      genomeRelease: 'grch37'
+    })
   })
 
   it('emits scroll to section', async () => {

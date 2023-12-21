@@ -61,6 +61,9 @@ const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrow
 const ClinsigCard = defineAsyncComponent(
   () => import('@/components/StrucvarDetails/ClinsigCard.vue')
 )
+const ClinvarsubCard = defineAsyncComponent(
+  () => import('@/components/VarDetails/ClinvarsubCard.vue')
+)
 
 /** Type for this component's props. */
 export interface Props {
@@ -428,6 +431,9 @@ const SECTIONS: { [key: string]: Section[] } = {
               </div>
               <div id="strucvar-clinsig">
                 <ClinsigCard :strucvar="strucvar" @error-display="handleDisplayError" />
+              </div>
+              <div id="seqvar-clinvarsub" class="mt-3">
+                <ClinvarsubCard :strucvar="strucvarInfoStore.strucvar" />
               </div>
               <div id="strucvar-genomebrowser">
                 <GenomeBrowser

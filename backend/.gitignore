@@ -1,3 +1,10 @@
+/dev-*.py
+/*.ipynb
+
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
+
 .env
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

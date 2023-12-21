@@ -14,6 +14,8 @@ help:
 	@echo "  ci      Install dependencies, run lints and tests"
 	@echo "  docs    Generate the documentation"
 	@echo "  serve   Run the (development) server"
+	@echo "  jupyterlab Run jupyterlab"
+	@echo "  celery  Run celery"
 	@echo "  migrate Create alembic versions and upgrade"
 	@echo ""
 	@echo "  alembic-check        Run alembic check"
@@ -63,6 +65,15 @@ lint-mypy:
 .PHONY: test
 test:
 	pipenv run pytest \
+		-n auto \
+		--cov-report term-missing \
+		--cov-report lcov \
+		--cov=app \
+		tests/
+
+.PHONY: test-ci
+test-ci:
+	pipenv run pytest \
 		--cov-report term-missing \
 		--cov-report lcov \
 		--cov=app \
@@ -72,7 +83,7 @@ test:
 ci: \
 	deps \
 	lint \
-	test
+	test-ci
 
 .PHONY: docs
 docs:
@@ -81,6 +92,20 @@ docs:
 .PHONY: serve
 serve:
 	pipenv run uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload --workers 8
+
+.PHONY: celery
+celery:
+	PYTHONPATH=. pipenv run \
+		watchmedo auto-restart --directory=./ --pattern=*.py --recursive -- \
+		celery -A app.worker worker --loglevel=debug --beat -Q main-queue
+
+.PHONY: jupyterlab
+jupyterlab:
+	cp utils/minimal.ipynb tmp.ipynb && \
+	PYTHON=. pipenv run \
+		jupyter lab \
+			--ip=0.0.0.0 --allow-root --NotebookApp.custom_display_url=http://127.0.0.1:8888 \
+			tmp.ipynb
 
 .PHONY: alembic-check
 alembic-check:

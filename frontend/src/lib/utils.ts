@@ -244,3 +244,8 @@ export const transformDbnsfpMimDiseaseId = (id: string, showTermIds: boolean) =>
     return id.split(']').splice(1).join(']').trim()
   }
 }
+
+/** Create a deep copy using JSON stringify. */
+export function deepCopy<T>(obj: any): T {
+  return JSON.parse(JSON.stringify(obj)) as T
+}

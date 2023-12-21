@@ -37,7 +37,7 @@ describe.concurrent('Variant lookup with dotty', () => {
     )
 
     const result = await lookupWithDotty(seqVar.userRepr, seqVar.genomeBuild)
-    expect(result).toContain(seqVar)
+    expect(result).toStrictEqual(seqVar)
   })
 
   it('should throw an error if dotty fails', async () => {
@@ -77,7 +77,7 @@ describe.concurrent('Resolve seqvar from the given query', () => {
     )
 
     const result = await resolveSeqvar(seqVar.userRepr, seqVar.genomeBuild)
-    expect(result).toContain(seqVar)
+    expect(result).toStrictEqual(seqVar)
   })
 })
 
@@ -101,10 +101,10 @@ describe.concurrent('Resolve strucvar from the given query', () => {
   it('should return a gene', async () => {
     fetchMocker.mockResponseOnce(JSON.stringify({ success: true, value: strucVar }))
 
-    const result = await resolveStrucvar(strucVar.userRepr, strucVar.genomeBuild)
+    const result = resolveStrucvar(strucVar.userRepr, strucVar.genomeBuild)
     const expected = structuredClone(strucVar)
     expected.userRepr = 'DEL-GRCh37-17-41176312-41277500'
-    expect(result).toContain(expected)
+    expect(result).toStrictEqual(expected)
   })
 })
 

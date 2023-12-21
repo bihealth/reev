@@ -49,6 +49,9 @@ const GeneClinvarCard = defineAsyncComponent(
 )
 
 const ClinsigCard = defineAsyncComponent(() => import('@/components/SeqvarDetails/ClinsigCard.vue'))
+const ClinvarsubCard = defineAsyncComponent(
+  () => import('@/components/VarDetails/ClinvarsubCard.vue')
+)
 const BeaconNetworkCard = defineAsyncComponent(
   () => import('@/components/SeqvarDetails/BeaconNetworkCard.vue')
 )
@@ -242,7 +245,8 @@ const SECTIONS: { [key: string]: Section[] } = {
     { id: 'seqvar-freqs', title: 'Frequencies' },
     { id: 'seqvar-tools', title: 'Tools' },
     { id: 'seqvar-ga4ghbeacon', title: 'Beacon Network' },
-    { id: 'seqvar-variantvalidator', title: 'VariantValidator' }
+    { id: 'seqvar-variantvalidator', title: 'VariantValidator' },
+    { id: 'seqvar-clinvarsub', title: 'ClinVar Submission' }
   ]
 }
 </script>
@@ -419,6 +423,9 @@ const SECTIONS: { [key: string]: Section[] } = {
               </div>
               <div id="seqvar-variantvalidator" class="mt-3">
                 <VariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
+              </div>
+              <div id="seqvar-clinvarsub" class="mt-3">
+                <ClinvarsubCard :seqvar="seqvarInfoStore.seqvar" />
               </div>
             </div>
           </v-col>

@@ -38,7 +38,7 @@ test:
 # two cores only and some tests run into timeouts otherwise.
 .PHONY: test-ci
 test-ci:
-	npm run -- test:unit --run --single-thread
+	npm run -- test:unit --run --poolOptions.threads.maxThreads=1 --poolOptions.threads.minThreads=1
 
 .PHONY: test-nocov
 test-nocov:
