@@ -9,15 +9,15 @@ import { ref } from 'vue'
 
 import {
   ClinvarsubClient,
-  VariantPresence,
+  SubmissionActivityKind,
+  SubmissionActivityStatus,
+  type SubmissionActivityWrite,
+  type SubmissionContainer,
   type SubmissionThreadRead,
+  SubmissionThreadStatus,
   type SubmissionThreadWrite,
   type SubmittingOrgRead,
-  SubmissionThreadStatus,
-  type SubmissionActivityWrite,
-  SubmissionActivityStatus,
-  SubmissionActivityKind,
-  type SubmissionContainer
+  VariantPresence
 } from '@/api/clinvarsub'
 import { StoreState } from '@/stores/misc'
 
@@ -123,7 +123,7 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
     effectiveScv: string | undefined,
     effectivePresence: VariantPresence,
     desiredPresence: VariantPresence,
-    payload: SubmissionContainer,
+    payload: SubmissionContainer
   ): Promise<SubmissionThreadRead> => {
     const client = new ClinvarsubClient()
 
@@ -134,7 +134,7 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
       effective_scv: effectiveScv,
       effective_presence: effectivePresence,
       desired_presence: desiredPresence,
-      status: SubmissionThreadStatus.Initial,
+      status: SubmissionThreadStatus.Initial
     }
     let submissionThread = await client.createSubmissionThread(submissionThreadCreate)
     // Determine activity kind for activity, then create activity.
@@ -154,19 +154,19 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
       submissionthread_id: submissionThread.id,
       kind,
       status: SubmissionActivityStatus.Initial,
-      request_payload: payload,
+      request_payload: payload
     }
     let submissionActivity = await client.createSubmissionActivity(submissionActivityCreate)
     // Now that thread/activity are on the server, submit both to the worker by
     // marking them as `WAITING`.
     const submissionThreadUpdate: SubmissionThreadWrite = {
       ...submissionThread,
-      status: SubmissionThreadStatus.Waiting,
+      status: SubmissionThreadStatus.Waiting
     }
     submissionThread = await client.updateSubmissionThread(submissionThreadUpdate)
     const submissionActivityUpdate: SubmissionActivityWrite = {
       ...submissionActivity,
-      status: SubmissionActivityStatus.Waiting,
+      status: SubmissionActivityStatus.Waiting
     }
     submissionActivity = await client.updateSubmissionActivity(submissionActivityUpdate)
 

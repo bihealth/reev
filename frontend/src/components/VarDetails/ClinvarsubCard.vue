@@ -3,9 +3,10 @@ ClinVar submission of seqvars/strucvars.
 -->
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core'
-import { helpers, maxLength, minLength, required, requiredIf } from '@vuelidate/validators'
+import { helpers, required } from '@vuelidate/validators'
 import _ from 'lodash'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { DateTime } from 'luxon'
 
 import {
   AffectedStatus,
@@ -18,12 +19,12 @@ import {
   ReleaseStatus,
   type SubmissionClinicalFeature,
   type SubmissionCondition,
-  type SubmissionContainer,
-  type SubmissionThreadStatus,
-  VariantPresence
+  type SubmissionContainer, type SubmissionThreadStatus,
+  VariantPresence,
+type SubmissionThreadRead
 } from '@/api/clinvarsub'
-import { type ClinvarsubClient, type SubmittingOrgRead } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
+import { ClinvarsubClient, type SubmittingOrgRead } from '@/api/clinvarsub'
 import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/utils'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
@@ -60,15 +61,15 @@ const primaryVariantDesc = computed<string | undefined>(() => {
 const clinvarsubStore = useClinvarsubStore()
 
 /** Initialize the store an load the data for the current variant. */
-const loadData = async () => {
+const loadStoreData = async () => {
   await clinvarsubStore.initialize()
   await clinvarsubStore.loadSubmissionThreads(primaryVariantDesc.value)
 }
 
 // Ensure the store is initialized when the card is mounted.
-onMounted(() => loadData)
+onMounted(() => loadStoreData)
 // Handle changes to the variant.
-watch(() => [props.seqvar, props.strucvar], loadData)
+watch(() => [props.seqvar, props.strucvar], loadStoreData)
 
 /** The currently selected submitting org from prepareModelState (see below). */
 const currSubmittingOrg = computed<SubmittingOrgRead | undefined>(() => {
@@ -80,7 +81,7 @@ const currSubmittingOrg = computed<SubmittingOrgRead | undefined>(() => {
   }
 })
 
-// -- submission threads -------------------------------------------------------
+// -- submission threads editor ------------------------------------------------
 
 /** State of the submission thread display. */
 enum Display {
@@ -395,6 +396,90 @@ const onSubmitRequest = async () => {
     await onClickCancel()
   }
 }
+
+// -- submission threads list --------------------------------------------------
+
+/** Interface for header; to make type checker happy. */
+interface ListHeader {
+  title?: string
+  value?: string
+  align?: 'start' | 'center' | 'end'
+}
+
+/** The headers for the data table.*/
+const LIST_HEADERS: ListHeader[] = [
+  {
+    title: 'Variant',
+    value: 'primary_variant_desc',
+  },
+  {
+    title: 'Update',
+    value: 'updated',
+  },
+  {
+    title: 'SCV',
+    value: 'effective_scv',
+  },
+  {
+    title: 'Operation',
+    value: 'operation',
+  },
+  {
+    title: 'Status',
+    value: 'status',
+  },
+]
+
+/** Label for different status values. */
+const THREAD_STATUS_LABELS: { [key in SubmissionThreadStatus]: string } = {
+  "initial": 'Submission has been created but not submitted yet.',
+  "waiting": 'Submission is waiting to be processed.',
+  "in_progress": 'Work on submission is in progress.',
+  "success": 'Submission has been processed successfully.',
+  "error": "There was an error in processing the submission.",
+}
+
+/** The client to use for retrieving information from clinvarsub API. */
+const clinvarsubClient = new ClinvarsubClient()
+/** The data read from the API. */
+const listItems = ref<SubmissionThreadRead[] | undefined>(undefined)
+/** The number of items per page. */
+const listItemsPerPage = ref<number>(10)
+/** The total number of items on the server. */
+const listTotalItems = ref<number>(0)
+/** The current page. */
+const listPage = ref<number>(1)
+/** A mapping from page number to token. */
+const listPageToToken = ref<{ [key: number]: string | undefined }>({ 1: undefined })
+
+/** Load all data. */
+const listLoadData = async () => {
+  // Reset the items to undefined to show the loading indicator.
+  listItems.value = undefined
+  // Fetch the submitting organisations.
+  const submissionThreadsPage = await clinvarsubClient.fetchSubmissionThreads(
+    primaryVariantDesc.value!,
+    listPageToToken.value[listPage.value],
+    listItemsPerPage.value
+  )
+  // Update the items and total items.
+  listItems.value = submissionThreadsPage.items
+  listTotalItems.value = submissionThreadsPage.total ?? 0
+  // Update the page to token mapping for next and previous page.
+  if (submissionThreadsPage.previous_page !== null) {
+    listPageToToken.value[listPage.value - 1] = submissionThreadsPage.previous_page
+  }
+  if (submissionThreadsPage.next_page !== null) {
+    listPageToToken.value[listPage.value + 1] = submissionThreadsPage.next_page
+  }
+}
+
+// Load the data on load and change of the `v:model`'s of the v-data-table-server.
+onMounted(() => Promise.all([listLoadData(), clinvarsubStore.initialize()]))
+watch(
+  () => [listPage, listItemsPerPage],
+  () => listLoadData()
+)
 </script>
 
 <template>
@@ -454,7 +539,7 @@ const onSubmitRequest = async () => {
       </p>
     </v-card-text>
 
-    <v-card-text>
+    <v-card-text class="mt-3">
       <template v-if="display === Display.List">
         <template v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0">
           <div
@@ -468,15 +553,48 @@ const onSubmitRequest = async () => {
             </v-btn>
           </div>
         </template>
+        <template v-else>
+          <v-data-table-server
+            v-model:page="listPage"
+            v-model:items-per-page="listItemsPerPage"
+            :headers="LIST_HEADERS"
+            :items-length="listTotalItems"
+            :items="listItems"
+            :loading="listItems === null"
+            item-value="name"
+            @update:options="loadStoreData"
+          >
+            <template #[`item.updated`]="{ item }">
+              {{ DateTime.fromISO(item.created).toFormat('yyyy-MM-dd HH:mm') }}
+            </template>
+            <template #[`item.effective_scv`]="{ item }"> {{ item.effective_scv ?? 'N/A' }} </template>
+            <template #[`item.operation`]="{ item }">
+              <template v-if="item.desired_presence == VariantPresence.Absent">
+                delete
+              </template>
+              <template v-else-if="item.desired_presence == VariantPresence.Present">
+                create
+              </template>
+              <template v-else>
+                update
+              </template>
+            </template>
+            <template #[`item.status`]="{ item }">
+              <abbr :title="THREAD_STATUS_LABELS[item.status]">
+                {{  item.status }}
+              </abbr>
+            </template>
+          </v-data-table-server>
+        </template>
       </template>
 
       <template v-else-if="display === Display.Stepper">
         <v-stepper
+          v-model="currentStep"
           alt-labels
           :items="Object.values(Steps)"
           :flat="true"
           :elevation="0"
-          v-model="currentStep"
         >
           <template #[`prev`]>
             <template
@@ -597,8 +715,8 @@ const onSubmitRequest = async () => {
                   clearable
                   hint="You may specify an OMIM disease. Otherwise, we will submit with 'not provided'."
                   persistent-hint
-                  @update:search="debouncedOmimFetchTerms"
                   class="pb-6"
+                  @update:search="debouncedOmimFetchTerms"
                 />
 
                 <!-- HPO Terms -->

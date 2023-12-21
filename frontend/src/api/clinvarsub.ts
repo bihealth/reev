@@ -820,16 +820,19 @@ export class ClinvarsubClient {
   async createSubmissionActivity(
     submissionActivity: SubmissionActivityWrite
   ): Promise<SubmissionActivityRead> {
-    const response = await fetch(`${this.apiBaseUrl}clinvarsub/submissionthreads/${submissionActivity.submissionthread_id}/activities`, {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'include',
-      headers: {
-        accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(submissionActivity)
-    })
+    const response = await fetch(
+      `${this.apiBaseUrl}clinvarsub/submissionthreads/${submissionActivity.submissionthread_id}/activities`,
+      {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(submissionActivity)
+      }
+    )
     if (!response.ok) {
       throw new Error(`Failed to create submission activity: ${await response.text()}`)
     }
