@@ -37,7 +37,6 @@ class Criteria(str, Enum):
     PP2 = "PP2"
     PP3 = "PP3"
     PP4 = "PP4"
-    PP5 = "PP5"
     BA1 = "BA1"
     BS1 = "BS1"
     BS2 = "BS2"
@@ -48,7 +47,6 @@ class Criteria(str, Enum):
     BP3 = "BP3"
     BP4 = "BP4"
     BP5 = "BP5"
-    BP6 = "BP6"
     BP7 = "BP7"
 
 

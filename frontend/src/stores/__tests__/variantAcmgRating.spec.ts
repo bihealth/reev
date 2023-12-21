@@ -37,7 +37,6 @@ const ExampleInterVarResponse = {
   pp2: false,
   pp3: false,
   pp4: false,
-  pp5: false,
   ba1: false,
   bs1: false,
   bs2: false,
@@ -48,7 +47,6 @@ const ExampleInterVarResponse = {
   bp3: false,
   bp4: false,
   bp5: false,
-  bp6: false,
   bp7: false
 }
 

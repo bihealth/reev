@@ -110,6 +110,10 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
       const acmgRatingInterVarData = await response.json()
       // Go through the data and setPresense for each criteria
       for (const [criteriaId, value] of Object.entries(acmgRatingInterVarData)) {
+        // Skip pp5 and bp6 criteria as they are not used anymore
+        if (criteriaId === 'pp5' || criteriaId === 'bp6') {
+          continue
+        }
         const criteriaIdKey = criteriaId.toUpperCase() as keyof typeof AcmgCriteria
         if (value === true) {
           acmgRating.value.setPresence(
@@ -142,7 +146,6 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
       const acmgRatingBackend = await acmgSeqVarClient.fetchAcmgRating(
         seqvar$.chrom + ':' + seqvar$.pos + ':' + seqvar$.del + ':' + seqvar$.ins
       )
-      console.log(acmgRatingBackend)
       if (acmgRatingBackend.acmg_rank?.criterias) {
         acmgRatingStatus.value = true
         // Go through the data and setPresense for each criteria
