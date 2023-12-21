@@ -4,7 +4,7 @@ import createFetchMock from 'vitest-fetch-mock'
 
 import * as geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import type { Strucvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/test-utils'
+import { deepCopy } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
 

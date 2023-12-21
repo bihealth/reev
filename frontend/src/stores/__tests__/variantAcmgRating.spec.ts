@@ -5,7 +5,7 @@ import createFetchMock from 'vitest-fetch-mock'
 import * as ServerResponse from '@/assets/__tests__/ExampleAcmgSeqVarRank.json'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/test-utils'
+import { deepCopy } from '@/lib/utils'
 
 import { StoreState } from '../misc'
 import { useSeqVarAcmgRatingStore } from '../seqVarAcmgRating'
