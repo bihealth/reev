@@ -52,16 +52,6 @@ It provides the following features as a central resource:
 .. toctree::
     :hidden:
     :maxdepth: 1
-    :caption: Contents
-
-    acmg_seqvars_criteria
-    acmg_seqvars_details
-    acmg_cnvs_criteria
-    acmg_cnvs_details
-
-.. toctree::
-    :hidden:
-    :maxdepth: 1
     :caption: Developer's Manual
 
     dev_quickstart
