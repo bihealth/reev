@@ -1,17 +1,21 @@
 """Endpoints for the ClinVar submission API."""
 
+import logging
 from typing import Generic, Optional, TypeVar
 
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi_pagination.bases import CursorRawParams
-from fastapi_pagination.cursor import CursorPage, CursorParams, decode_cursor
+from fastapi_pagination.cursor import CursorPage, CursorParams
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app import crud, schemas
+from app import crud, schemas, worker
 from app.api import deps
 from app.api.deps import current_active_user
+from app.models.clinvarsub import SubmissionActivityStatus
 from app.models.user import User
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -354,6 +358,17 @@ async def update_submissionactivity(
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
     else:
-        return await crud.submissionactivity.update(
+        # Create submission activity and schedule it to be executed by the worker
+        # if it changed from any state to `WAITING`.
+        old_status = submissionactivity_db.status
+        result = await crud.submissionactivity.update(
             db, db_obj=submissionactivity_db, obj_in=submissionactivity
         )
+        logger.info('%s %s', old_status, submissionactivity.status)
+        if (
+            old_status != SubmissionActivityStatus.WAITING
+            and submissionactivity.status == SubmissionActivityStatus.WAITING
+        ):
+            logger.info('submitting submission activity "%s" to worker', submissionactivity_id)
+            worker.handle_submission_activity.delay(submissionactivity_id)
+        return result

@@ -114,8 +114,8 @@ class _KindHandlerBase:
         )
 
 
-class _CreateHandler(_KindHandlerBase):
-    """Handle CREATE events."""
+class _ModifyHandler(_KindHandlerBase):
+    """Handle CREATE, UPDATE, DELETE activities."""
 
     async def run(self) -> None:
         """Submit a new submission to ClinVar.
@@ -153,6 +153,7 @@ class _CreateHandler(_KindHandlerBase):
             activity_status,
             thread_status,
         )
+        await self.activity.awaitable_attrs.id
         activity_new = await crud.submissionactivity.update(
             self.session,
             db_obj=self.activity,
@@ -163,6 +164,7 @@ class _CreateHandler(_KindHandlerBase):
                 "response_payload": response.model_dump(mode="json"),
             },
         )
+        await self.thread.awaitable_attrs.id
         thread_new = await crud.submissionthread.update(
             self.session, db_obj=self.thread, obj_in={"status": thread_status}
         )
@@ -185,8 +187,8 @@ class _RetrieveHandler(_KindHandlerBase):
         """Attempt to retrieve the ClinVar status for a previous CREATE.
 
         This will first attempt to get the latest ``SubmissionActivity``
-        with kind ``CREATE``.  The activity must be in status ``WAITING``.
-        Otherwise, processing the activity will fail.
+        with kind ``CREATE``/``UPDATE``/``DELETE``.  The activity must be
+        in status ``WAITING``. Otherwise, processing the activity will fail.
 
         After the corresponding ``SubmissionActivity`` has been found, the
         submission ID is extracted from its response payload.  This is then
@@ -202,11 +204,15 @@ class _RetrieveHandler(_KindHandlerBase):
         # Find the corresponding CREATE activity.
         query = crud.submissionactivity.query_by_submissionthread(
             submissionthread_id=await self.thread.awaitable_attrs.id,
-            kind=SubmissionActivityKind.CREATE,
+            kinds=[
+                SubmissionActivityKind.CREATE,
+                SubmissionActivityKind.UPDATE,
+                SubmissionActivityKind.DELETE,
+            ],
         ).limit(1)
         activity_create_db = (await self.session.execute(query)).scalars().first()
         if not activity_create_db:  # pragma: no cover
-            raise ValueError("No CREATE activity found")
+            raise ValueError("No CREATE/UPDATE/DELETE activity found")
         logger.debug("found CREATE activity: %s", activity_create_db)
         # Ensure that its status is WAITING and parse out the ``Created`` payload.
         activity_create = SubmissionActivityInDb.model_validate(activity_create_db)
@@ -266,6 +272,7 @@ class _RetrieveHandler(_KindHandlerBase):
             },
         )
         logger.debug("updating thread status to %s", thread_status)
+        await self.thread.awaitable_attrs.id  # ensure it is here
         await crud.submissionthread.update(
             self.session, db_obj=self.thread, obj_in={"status": thread_status}
         )
@@ -357,8 +364,12 @@ class _HandlerWithSession:
     async def run(self) -> None:
         """Dispatch the activity to the appropriate handler."""
         handler: _KindHandlerBase
-        if self.activity.kind == SubmissionActivityKind.CREATE:
-            handler = _CreateHandler(self.session, self.activity, self.thread)
+        if self.activity.kind in (
+            SubmissionActivityKind.CREATE,
+            SubmissionActivityKind.UPDATE,
+            SubmissionActivityKind.DELETE,
+        ):
+            handler = _ModifyHandler(self.session, self.activity, self.thread)
         elif self.activity.kind == SubmissionActivityKind.RETRIEVE:
             handler = _RetrieveHandler(self.session, self.activity, self.thread)
         else:  # pragma: no cover
@@ -413,8 +424,8 @@ class SubmissionActivityHandler:
                 )
 
 
-async def process_old_clinvarsub_retrieval_jobs(engine: AsyncEngine):
-    """Query for old clinvarsub RETRIEVE jobs and schedule them.
+async def process_old_clinvarsub_jobs(engine: AsyncEngine):
+    """Query for old clinvarsub jobs and schedule them.
 
     "Old" jobs are those more than 2 * ``RETRY_WAIT_SECONDS`` seconds old. such
     that they should have been processed easily by now.
@@ -422,10 +433,8 @@ async def process_old_clinvarsub_retrieval_jobs(engine: AsyncEngine):
     since = datetime.datetime.now() - datetime.timedelta(seconds=2 * RETRY_WAIT_SECONDS)
     query = select(SubmissionActivity).filter(
         and_(
-            SubmissionActivity.kind == SubmissionActivityKind.RETRIEVE,
             SubmissionActivity.status == SubmissionActivityStatus.WAITING,
-            SubmissionActivity.request_timestamp != None,
-            SubmissionActivity.request_timestamp < since,
+            SubmissionActivity.created < since,
         )
     )
 

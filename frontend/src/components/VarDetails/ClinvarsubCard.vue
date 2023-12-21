@@ -6,7 +6,6 @@ import { useVuelidate } from '@vuelidate/core'
 import { helpers, required } from '@vuelidate/validators'
 import _ from 'lodash'
 import { computed, onMounted, ref, watch } from 'vue'
-import { DateTime } from 'luxon'
 
 import {
   AffectedStatus,
@@ -19,12 +18,12 @@ import {
   ReleaseStatus,
   type SubmissionClinicalFeature,
   type SubmissionCondition,
-  type SubmissionContainer, type SubmissionThreadStatus,
-  VariantPresence,
-type SubmissionThreadRead
+  type SubmissionContainer,
+  VariantPresence
 } from '@/api/clinvarsub'
+import { type SubmittingOrgRead } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
-import { ClinvarsubClient, type SubmittingOrgRead } from '@/api/clinvarsub'
+import ClinvarsubThreadList from '@/components/VarDetails/ClinvarsubThreadList.vue'
 import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
 import { deepCopy } from '@/lib/utils'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
@@ -261,26 +260,30 @@ const constructCreateUpdatePayload = (
       db: CitationDb.Pubmed,
       id: '25741868' // ACMG 2015
     },
-    clinvar_submission: {
-      clinical_significance: {
-        clinical_significance_description: modelCopy.clinicalSignificanceDescription,
-        comment: modelCopy.comment,
-        date_last_evaluated: modelCopy.dateLastEvaluated,
-        mode_of_inheritance: modelCopy.modeOfInheritance
-      },
-      condition_set: {
-        condition: modelCopy.caseCondition ? [modelCopy.caseCondition] : [{ name: 'not provided' }]
-      },
-      observed_in: [
-        {
-          affected_status: modelCopy.caseAffectedStatus,
-          allele_origin: modelCopy.caseAlleleOrigin,
-          collection_method: modelCopy.caseCollectionMethod,
-          clinical_features: modelCopy.caseClinicalFeatures
-        }
-      ],
-      record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update
-    },
+    clinvar_submission: [
+      {
+        clinical_significance: {
+          clinical_significance_description: modelCopy.clinicalSignificanceDescription,
+          comment: modelCopy.comment,
+          date_last_evaluated: modelCopy.dateLastEvaluated,
+          mode_of_inheritance: modelCopy.modeOfInheritance
+        },
+        condition_set: {
+          condition: modelCopy.caseCondition
+            ? [modelCopy.caseCondition]
+            : [{ name: 'not provided' }]
+        },
+        observed_in: [
+          {
+            affected_status: modelCopy.caseAffectedStatus,
+            allele_origin: modelCopy.caseAlleleOrigin,
+            collection_method: modelCopy.caseCollectionMethod,
+            clinical_features: modelCopy.caseClinicalFeatures
+          }
+        ],
+        record_status: prepareModel.scv === undefined ? RecordStatus.Novel : RecordStatus.Update
+      }
+    ],
     clinvar_submission_release_status: ReleaseStatus.Public
   }
 }
@@ -385,9 +388,10 @@ const onSubmitRequest = async () => {
       payload
     )
     messageType.value = 'success'
-    messageText.value = 'Your submission request has been saved on our server and will be processed shortly.'
+    messageText.value =
+      'Your submission request has been saved on our server and will be processed shortly.'
   } catch (err) {
-    messageType.value = "error"
+    messageType.value = 'error'
     messageText.value = `Something went wrong: ${err}`
   } finally {
     isSubmitting.value = false
@@ -396,90 +400,6 @@ const onSubmitRequest = async () => {
     await onClickCancel()
   }
 }
-
-// -- submission threads list --------------------------------------------------
-
-/** Interface for header; to make type checker happy. */
-interface ListHeader {
-  title?: string
-  value?: string
-  align?: 'start' | 'center' | 'end'
-}
-
-/** The headers for the data table.*/
-const LIST_HEADERS: ListHeader[] = [
-  {
-    title: 'Variant',
-    value: 'primary_variant_desc',
-  },
-  {
-    title: 'Update',
-    value: 'updated',
-  },
-  {
-    title: 'SCV',
-    value: 'effective_scv',
-  },
-  {
-    title: 'Operation',
-    value: 'operation',
-  },
-  {
-    title: 'Status',
-    value: 'status',
-  },
-]
-
-/** Label for different status values. */
-const THREAD_STATUS_LABELS: { [key in SubmissionThreadStatus]: string } = {
-  "initial": 'Submission has been created but not submitted yet.',
-  "waiting": 'Submission is waiting to be processed.',
-  "in_progress": 'Work on submission is in progress.',
-  "success": 'Submission has been processed successfully.',
-  "error": "There was an error in processing the submission.",
-}
-
-/** The client to use for retrieving information from clinvarsub API. */
-const clinvarsubClient = new ClinvarsubClient()
-/** The data read from the API. */
-const listItems = ref<SubmissionThreadRead[] | undefined>(undefined)
-/** The number of items per page. */
-const listItemsPerPage = ref<number>(10)
-/** The total number of items on the server. */
-const listTotalItems = ref<number>(0)
-/** The current page. */
-const listPage = ref<number>(1)
-/** A mapping from page number to token. */
-const listPageToToken = ref<{ [key: number]: string | undefined }>({ 1: undefined })
-
-/** Load all data. */
-const listLoadData = async () => {
-  // Reset the items to undefined to show the loading indicator.
-  listItems.value = undefined
-  // Fetch the submitting organisations.
-  const submissionThreadsPage = await clinvarsubClient.fetchSubmissionThreads(
-    primaryVariantDesc.value!,
-    listPageToToken.value[listPage.value],
-    listItemsPerPage.value
-  )
-  // Update the items and total items.
-  listItems.value = submissionThreadsPage.items
-  listTotalItems.value = submissionThreadsPage.total ?? 0
-  // Update the page to token mapping for next and previous page.
-  if (submissionThreadsPage.previous_page !== null) {
-    listPageToToken.value[listPage.value - 1] = submissionThreadsPage.previous_page
-  }
-  if (submissionThreadsPage.next_page !== null) {
-    listPageToToken.value[listPage.value + 1] = submissionThreadsPage.next_page
-  }
-}
-
-// Load the data on load and change of the `v:model`'s of the v-data-table-server.
-onMounted(() => Promise.all([listLoadData(), clinvarsubStore.initialize()]))
-watch(
-  () => [listPage, listItemsPerPage],
-  () => listLoadData()
-)
 </script>
 
 <template>
@@ -506,10 +426,8 @@ watch(
       </template>
       <template
         v-else-if="
-          display === Display.List
-          &&
-          Object.keys(clinvarsubStore.submittingOrgs).length !== 0
-          &&
+          display === Display.List &&
+          Object.keys(clinvarsubStore.submittingOrgs).length !== 0 &&
           Object.keys(clinvarsubStore.submissionThreads).length !== 0
         "
       >
@@ -542,9 +460,7 @@ watch(
     <v-card-text class="mt-3">
       <template v-if="display === Display.List">
         <template v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0">
-          <div
-            class="text-center font-italic text-grey-darken-2"
-          >
+          <div class="text-center font-italic text-grey-darken-2">
             No submissions for this variant yet. Do you want to create one?
           </div>
           <div class="text-center">
@@ -554,37 +470,11 @@ watch(
           </div>
         </template>
         <template v-else>
-          <v-data-table-server
-            v-model:page="listPage"
-            v-model:items-per-page="listItemsPerPage"
-            :headers="LIST_HEADERS"
-            :items-length="listTotalItems"
-            :items="listItems"
-            :loading="listItems === null"
-            item-value="name"
-            @update:options="loadStoreData"
-          >
-            <template #[`item.updated`]="{ item }">
-              {{ DateTime.fromISO(item.created).toFormat('yyyy-MM-dd HH:mm') }}
-            </template>
-            <template #[`item.effective_scv`]="{ item }"> {{ item.effective_scv ?? 'N/A' }} </template>
-            <template #[`item.operation`]="{ item }">
-              <template v-if="item.desired_presence == VariantPresence.Absent">
-                delete
-              </template>
-              <template v-else-if="item.desired_presence == VariantPresence.Present">
-                create
-              </template>
-              <template v-else>
-                update
-              </template>
-            </template>
-            <template #[`item.status`]="{ item }">
-              <abbr :title="THREAD_STATUS_LABELS[item.status]">
-                {{  item.status }}
-              </abbr>
-            </template>
-          </v-data-table-server>
+          <ClinvarsubThreadList
+            :seqvar="seqvar"
+            :strucvar="strucvar"
+            :primary-variant-desc="primaryVariantDesc"
+          ></ClinvarsubThreadList>
         </template>
       </template>
 
@@ -828,7 +718,7 @@ watch(
               <div class="text-center pt-9">
                 <v-btn
                   color="error"
-                  prepend-icon="mdi-cloud-upload-outline"
+                  prepend-icon="mdi-cloud-remove-outline"
                   :loading="isSubmitting"
                   @click="onSubmitRequest()"
                 >
@@ -841,6 +731,102 @@ watch(
                 Below, you see a summary of your submission. Please review it carefully before
                 clicking "Send to ClinVar".
               </p>
+            </v-sheet>
+            <v-sheet v-else>
+              <p class="pb-3 text-body-1">
+                Please confirm to request ClinVar to
+                <template v-if="prepareModelState.hasScv"> update </template>
+                <template v-else> create </template> your submission with the following data.
+                <template v-if="prepareModelState.hasScv">
+                  Note that the selected submitting organisation and associated ClinVar API key must
+                  be the submitter of the original submission.
+                </template>
+              </p>
+
+              <v-row>
+                <v-col cols="6">
+                  <div class="pt-3 text-caption">Submitting Organisation</div>
+                  <div class="text-body-1">
+                    {{ currSubmittingOrg?.label }}
+                  </div>
+                  <div class="pt-3 text-caption">Operation</div>
+                  <div class="text-body-1">
+                    <template v-if="prepareModelState.hasScv"> update </template>
+                    <span v-else> create </span>
+                  </div>
+                  <div class="pt-3 text-caption">SCV Submission Identifier</div>
+                  <div class="text-body-1">
+                    <template v-if="prepareModelState.hasScv">
+                      {{ prepareModelState.scv }}
+                    </template>
+                    <span class="text-grey-darken-2" v-else> assigned after creation </span>
+                  </div>
+
+                  <div class="text-overline pt-6">Case Conditions</div>
+                  <div class="text-caption">Condition</div>
+                  <div class="text-body-1">
+                    {{ createUpdateModelState.caseCondition?.name || 'not provided' }}
+                  </div>
+                  <div class="pt-3 text-caption">HPO Terms</div>
+                  <div class="text-body-1">
+                    <template v-if="createUpdateModelState.caseClinicalFeatures.length > 0">
+                      {{
+                        createUpdateModelState.caseClinicalFeatures.map((f) => f.name).join(', ')
+                      }}
+                    </template>
+                    <span class="text-grey-darken-2" v-else> not provided </span>
+                  </div>
+                </v-col>
+                <v-col cols="6">
+                  <div class="text-overline pt-6">Clinical Signficance</div>
+                  <div class="text-caption">Last Evaluated</div>
+                  <div class="text-body-1">
+                    {{ createUpdateModelState.dateLastEvaluated }}
+                  </div>
+                  <div class="pt-3 text-caption">Clinical Significance</div>
+                  <div class="text-body-1">
+                    {{ createUpdateModelState.clinicalSignificanceDescription }}
+                  </div>
+                  <div class="pt-3 text-caption">Comment</div>
+                  <div class="text-body-1">
+                    <template v-if="createUpdateModelState.comment?.length">
+                      {{ createUpdateModelState.comment }}
+                    </template>
+                    <span class="text-grey-darken-2" v-else> not provided </span>
+                  </div>
+
+                  <div class="text-overline">Allele Information</div>
+                  <div class="text-caption">Allele Origin</div>
+                  <div class="text-body-1">
+                    {{ createUpdateModelState.caseAlleleOrigin }}
+                  </div>
+                  <div class="pt-3 text-caption">Mode of Inheritance</div>
+                  <div class="text-body-1">
+                    {{ createUpdateModelState.modeOfInheritance }}
+                  </div>
+                  <div class="pt-3 text-caption">Collection Method</div>
+                  <div class="text-body-1">
+                    {{ createUpdateModelState.caseCollectionMethod }}
+                  </div>
+                </v-col>
+              </v-row>
+              <div class="text-center pt-9">
+                <v-btn
+                  color="primary"
+                  :prepend-icon="
+                    prepareModelState.hasScv
+                      ? 'mdi-cloud-refresh-variant-outline'
+                      : 'mdi-cloud-upload-outline'
+                  "
+                  :loading="isSubmitting"
+                  @click="onSubmitRequest()"
+                >
+                  Submit
+                  <template v-if="prepareModelState.hasScv"> Update </template>
+                  <template v-else> Creation </template>
+                  Request
+                </v-btn>
+              </div>
             </v-sheet>
           </template>
         </v-stepper>

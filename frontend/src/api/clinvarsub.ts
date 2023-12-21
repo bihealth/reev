@@ -3,6 +3,20 @@
  */
 import { API_V1_BASE_PREFIX } from '@/api/common'
 
+/** Generic type for a page. */
+export interface Page<T> {
+  /** The payload. */
+  items: T[]
+  /** Total number of items. */
+  total: number | null
+  /** Cursor for current page. */
+  current_page: string | null
+  /** Cursor for previous page. */
+  previous_page: string | null
+  /** Cursor for next page. */
+  next_page: string | null
+}
+
 /** Interface for reading submitting orgs. */
 export interface SubmittingOrgRead {
   /** The internal UUID. */
@@ -16,18 +30,7 @@ export interface SubmittingOrgRead {
 }
 
 /** Interface for one page of submitting orgs. */
-export interface SubmittingOrgPage {
-  /** The payload. */
-  items: SubmittingOrgRead[]
-  /** Total number of items. */
-  total: number | null
-  /** Cursor for current page. */
-  current_page: string | null
-  /** Cursor for previous page. */
-  previous_page: string | null
-  /** Cursor for next page. */
-  next_page: string | null
-}
+export type SubmittingOrgPage = Page<SubmittingOrgRead>
 
 /** Interface for updating/creating submitting orgs. */
 export interface SubmittingOrgWrite {
@@ -62,18 +65,7 @@ export interface SubmissionThreadRead {
 }
 
 /** Interface for one page of submitting orgs. */
-export interface SubmissionThreadPage {
-  /** The payload. */
-  items: SubmissionThreadRead[]
-  /** Total number of items. */
-  total: number | null
-  /** Cursor for current page. */
-  current_page: string | null
-  /** Cursor for previous page. */
-  previous_page: string | null
-  /** Cursor for next page. */
-  next_page: string | null
-}
+export type SubmissionThreadPage = Page<SubmissionThreadRead>
 
 /** Enumeration for variant presence. */
 export enum VariantPresence {
@@ -147,6 +139,9 @@ export enum SubmissionActivityStatus {
   /** The submission activity has failed because of a timeout. */
   Timeout = 'timeout'
 }
+
+/** Interface for one page of submission activities. */
+export type SubmissionActivityPage = Page<SubmissionActivityRead>
 
 /** Simple error message from ClinVar. */
 export interface ResponseMessage {
@@ -595,7 +590,7 @@ export interface SubmissionContainer {
   assertion_criteria?: SubmissionAssertionCriteria
   behalf_org_id?: number
   clinvar_deletion?: SubmissionClinvarDelete
-  clinvar_submission?: SubmissionClinvarSubmission
+  clinvar_submission?: SubmissionClinvarSubmission[]
   clinvar_submission_release_status?: ReleaseStatus
   submission_name?: string
 }
@@ -733,16 +728,19 @@ export class ClinvarsubClient {
    * @returns One page of submission threads.
    */
   async fetchSubmissionThreads(
-    primaryVariantDesc: string,
+    primaryVariantDesc?: string | undefined,
     cursor?: string | undefined,
     pageSize: number = 50
   ): Promise<SubmissionThreadPage> {
-    let query: string
-    if (cursor) {
-      query = `primary_variant_desc=${primaryVariantDesc}&cursor=${cursor}&size=${pageSize}`
-    } else {
-      query = `primary_variant_desc=${primaryVariantDesc}&size=${pageSize}`
+    let queries: string[] = []
+    if (primaryVariantDesc?.length) {
+      queries.push(`primary_variant_desc=${primaryVariantDesc}`)
     }
+    if (cursor) {
+      queries.push(`cursor=${cursor}`)
+    }
+    queries.push(`size=${pageSize}`)
+    const query = queries.join('&')
     const response = await fetch(`${this.apiBaseUrl}clinvarsub/submissionthreads?${query}`, {
       method: 'GET',
       mode: 'cors',
@@ -863,6 +861,43 @@ export class ClinvarsubClient {
     )
     if (!response.ok) {
       throw new Error(`Failed to update submission activity: ${await response.text()}`)
+    }
+    return await response.json()
+  }
+
+  /**
+   * Fetch submission activities for the given thread.
+   *
+   * @param submissionThreadId The submission thread ID to fetch for.
+   * @param cursor The optional cursor to use for fetching.
+   * @param pageSize The page size to use for enumerating.
+   * @returns One page of submission activities.
+   */
+  async fetchSubmissionActivities(
+    submissionThreadId: string,
+    cursor?: string | undefined,
+    pageSize: number = 50
+  ): Promise<SubmissionActivityPage> {
+    let query: string
+    if (cursor) {
+      query = `cursor=${cursor}&size=${pageSize}`
+    } else {
+      query = `size=${pageSize}`
+    }
+    const response = await fetch(
+      `${this.apiBaseUrl}clinvarsub/submissionthreads/${submissionThreadId}/activities?${query}`,
+      {
+        method: 'GET',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+    if (!response.ok) {
+      throw new Error(`Failed to fetch submission activity: ${await response.text()}`)
     }
     return await response.json()
   }

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
 import { useUserStore } from '@/stores/user'
+import FooterDefault from '@/components/FooterDefault.vue'
 
 const CaseCard = defineAsyncComponent(() => import('@/components/Profile/CaseCard.vue'))
 const BookmarksCard = defineAsyncComponent(() => import('@/components/Profile/BookmarksCard.vue'))
@@ -19,6 +20,9 @@ const StrucVarsACMGCard = defineAsyncComponent(
 )
 const ClinvarsubSubmittingOrgsCard = defineAsyncComponent(
   () => import('@/components/Profile/ClinvarsubSubmittingOrgsCard.vue')
+)
+const ClinvarsubSubmissionThreadCard = defineAsyncComponent(
+  () => import('@/components/Profile/ClinvarsubSubmissionThreadCard.vue')
 )
 const TestEmailCard = defineAsyncComponent(() => import('@/components/Profile/TestEmailCard.vue'))
 
@@ -47,10 +51,14 @@ const PROFILE_PAGES = [
 ]
 
 enum ClinvarsubSection {
-  SubmittingOrgs = 'clinvar-submittingorgs'
+  SubmittingOrgs = 'clinvar-submittingorgs',
+  SubmissionThread = 'clinvar-submissionthreads'
 }
 
-const CLINVARSUB_PAGES = [{ id: ClinvarsubSection.SubmittingOrgs, title: 'Orgs / Keys' }]
+const CLINVARSUB_PAGES = [
+  { id: ClinvarsubSection.SubmittingOrgs, title: 'Orgs / Keys' },
+  { id: ClinvarsubSection.SubmissionThread, title: 'Submission Activity' }
+]
 
 enum AdminSection {
   SendTestEmail = 'admin-email-test'
@@ -169,6 +177,12 @@ const mainBackgroundColor = computed(() => {
                 <ClinvarsubSubmittingOrgsCard />
               </div>
               <div
+                v-if="currentSection === ClinvarsubSection.SubmissionThread"
+                :id="ClinvarsubSection.SubmissionThread"
+              >
+                <ClinvarsubSubmissionThreadCard />
+              </div>
+              <div
                 v-if="currentSection === AdminSection.SendTestEmail"
                 :id="AdminSection.SendTestEmail"
               >
@@ -201,6 +215,7 @@ const mainBackgroundColor = computed(() => {
             <v-spacer></v-spacer>
           </v-row>
         </div>
+        <FooterDefault />
       </v-container>
     </v-main>
   </v-app>

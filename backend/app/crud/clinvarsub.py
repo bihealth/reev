@@ -1,4 +1,4 @@
-from typing import Any, Optional, Tuple
+from typing import Any, Iterable, Optional, Tuple
 from uuid import UUID
 
 from sqlalchemy import Select
@@ -81,14 +81,17 @@ class CrudSubmissionActivity(
     CrudBase[SubmissionActivity, SubmissionActivityCreate, SubmissionActivityUpdate]
 ):
     def query_by_submissionthread(
-        self, *, submissionthread_id: str | UUID, kind: Optional[SubmissionActivityKind] = None
+        self,
+        *,
+        submissionthread_id: str | UUID,
+        kinds: Optional[Iterable[SubmissionActivityKind]] = None
     ) -> Select[Tuple[SubmissionActivity]]:
         """Return query filtered by submission thread (ordered by timestamp).
 
         :param user_id: User ID.
-        :param kind: Optionally, an ``ActivyKind`` to filter by
+        :param kind: Optionally, ``ActivyKind``s to filter by
         """
         query = select(self.model).filter(self.model.submissionthread_id == submissionthread_id)
-        if kind:
-            query = query.filter(self.model.kind == kind)
+        if kinds:
+            query = query.filter(self.model.kind.in_(kinds))
         return query.order_by(self.model.created.desc())

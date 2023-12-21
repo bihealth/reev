@@ -37,8 +37,8 @@ from app import crud
 from app.clinvarsub import (
     RETRY_WAIT_SECONDS,
     SubmissionActivityHandler,
-    _CreateHandler,
     _HandlerWithSession,
+    _ModifyHandler,
     _RetrieveHandler,
 )
 from app.models.clinvarsub import (
@@ -212,7 +212,7 @@ async def test_create_handler_run_success(
     )
 
     # act:
-    handler = _CreateHandler(db_session, submissionactivity, submissionthread)
+    handler = _ModifyHandler(db_session, submissionactivity, submissionthread)
     with freeze_time(FREEZE_TIME_1SEC):  # new activity should have a different timestamp
         await handler.run()
 
@@ -287,7 +287,7 @@ async def test_create_handler_run_failure(
     )
 
     # act:
-    handler = _CreateHandler(db_session, submissionactivity, submissionthread)
+    handler = _ModifyHandler(db_session, submissionactivity, submissionthread)
     with freeze_time(FREEZE_TIME_1SEC):  # new activity should have a different timestamp
         await handler.run()
 
