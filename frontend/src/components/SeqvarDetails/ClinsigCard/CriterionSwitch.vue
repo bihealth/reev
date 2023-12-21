@@ -2,8 +2,6 @@
 /** The component for the Acmg Criteria Card. */
 import {
   ACMG_CRITERIA_DEFS,
-  ACMG_EVIDENCE_LEVELS_BENIGN,
-  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   AcmgCriteria,
   AcmgEvidenceLevel,
   type CriteriaState,
@@ -68,7 +66,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
         class="switch"
         @update:model-value="switchCriteria(props.criteria, props.criteriaState.presence)"
       />
-      <v-tooltip :text="ACMG_CRITERIA_DEFS.get(props.criteria)?.hint">
+      <v-tooltip :text="ACMG_CRITERIA_DEFS.get(props.criteria)!.hint">
         <template #activator="{ props: vProps }">
           <v-icon style="margin: 10px" v-bind="vProps"> mdi-information </v-icon>
         </template>
@@ -76,11 +74,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
     </div>
     <v-select
       :model-value="props.criteriaState.evidenceLevel"
-      :items="
-        ACMG_EVIDENCE_LEVELS_PATHOGENIC.includes(props.criteriaState.evidenceLevel)
-          ? ACMG_EVIDENCE_LEVELS_PATHOGENIC
-          : ACMG_EVIDENCE_LEVELS_BENIGN
-      "
+      :items="ACMG_CRITERIA_DEFS.get(props.criteria)!.evidenceLevels"
       hide-details="auto"
       density="compact"
       class="select"
