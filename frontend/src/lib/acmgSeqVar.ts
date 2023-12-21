@@ -1,5 +1,5 @@
 /** The evidence level. */
-enum AcmgEvidenceLevel {
+export enum AcmgEvidenceLevel {
   PathogenicVeryStrong = 'Pathogenic Very Strong',
   PathogenicStrong = 'Pathogenic Strong',
   PathogenicModerate = 'Pathogenic Moderate',
@@ -11,7 +11,7 @@ enum AcmgEvidenceLevel {
 }
 
 /** Array of pathogenic evidence levels. */
-const ACMG_EVIDENCE_LEVELS_PATHOGENIC = [
+export const ACMG_EVIDENCE_LEVELS_PATHOGENIC = [
   AcmgEvidenceLevel.PathogenicVeryStrong,
   AcmgEvidenceLevel.PathogenicStrong,
   AcmgEvidenceLevel.PathogenicModerate,
@@ -19,14 +19,66 @@ const ACMG_EVIDENCE_LEVELS_PATHOGENIC = [
 ]
 
 /** Array of benign evidence levels. */
-const ACMG_EVIDENCE_LEVELS_BENIGN = [
+export const ACMG_EVIDENCE_LEVELS_BENIGN = [
   AcmgEvidenceLevel.BenignStandalone,
   AcmgEvidenceLevel.BenignStrong,
   AcmgEvidenceLevel.BenignSupporting
 ]
 
+/** Array of pathogenic evidence levels VS, S, M. */
+const ACMG_EVIDENCE_LEVELS_PATHOGENIC_VS_S_M = [
+  AcmgEvidenceLevel.PathogenicVeryStrong,
+  AcmgEvidenceLevel.PathogenicStrong,
+  AcmgEvidenceLevel.PathogenicModerate
+]
+
+/** Array of pathogenic evidence levels S, M, P. */
+const ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P = [
+  AcmgEvidenceLevel.PathogenicStrong,
+  AcmgEvidenceLevel.PathogenicModerate,
+  AcmgEvidenceLevel.PathogenicSupporting
+]
+
+/** Array of pathogenic evidence levels P. */
+const ACMG_EVIDENCE_LEVELS_PATHOGENIC_P = [AcmgEvidenceLevel.PathogenicSupporting]
+
+/** Array of pathogenic evidence levels VS, S, M, P */
+const ACMG_EVIDENCE_LEVELS_PATHOGENIC_VS_S_M_P = [
+  AcmgEvidenceLevel.PathogenicVeryStrong,
+  AcmgEvidenceLevel.PathogenicStrong,
+  AcmgEvidenceLevel.PathogenicModerate,
+  AcmgEvidenceLevel.PathogenicSupporting
+]
+
+/** Array of pathogenic evidence levels M, P. */
+const ACMG_EVIDENCE_LEVELS_PATHOGENIC_M_P = [
+  AcmgEvidenceLevel.PathogenicModerate,
+  AcmgEvidenceLevel.PathogenicSupporting
+]
+
+/** Array of benign evidence levels SA. */
+const ACMG_EVIDENCE_LEVELS_BENIGN_SA = [AcmgEvidenceLevel.BenignStandalone]
+
+/** Array of benign evidence levels SA, P. */
+const ACMG_EVIDENCE_LEVELS_BENIGN_SA_P = [
+  AcmgEvidenceLevel.BenignStandalone,
+  AcmgEvidenceLevel.BenignSupporting
+]
+
+/** Array of benign evidence levels SA, S. */
+const ACMG_EVIDENCE_LEVELS_BENIGN_SA_S = [
+  AcmgEvidenceLevel.BenignStandalone,
+  AcmgEvidenceLevel.BenignStrong
+]
+
+/** Array of benign evidence levels S. */
+const ACMG_EVIDENCE_LEVELS_BENIGN_S = [AcmgEvidenceLevel.BenignStrong]
+
+/** Array of benign evidence levels P. */
+const ACMG_EVIDENCE_LEVELS_BENIGN_P = [AcmgEvidenceLevel.BenignSupporting]
+
 /** The predefined ACMG criteria. */
-enum AcmgCriteria {
+export enum AcmgCriteria {
   PVS1 = 'PVS1',
   PS1 = 'PS1',
   PS2 = 'PS2',
@@ -56,7 +108,7 @@ enum AcmgCriteria {
 }
 
 /** Array of all ACMG criteria. */
-const ALL_ACMG_CRITERIA = [
+export const ALL_ACMG_CRITERIA = [
   AcmgCriteria.PVS1,
   AcmgCriteria.PS1,
   AcmgCriteria.PS2,
@@ -86,139 +138,155 @@ const ALL_ACMG_CRITERIA = [
 ]
 
 /** Detailed definition of one ACMG criteria such as PVS1. */
-interface CriteriaDefinition {
+export interface CriteriaDefinition {
   criteria: AcmgCriteria
   defaultEvidenceLevel: AcmgEvidenceLevel
   label: string
   hint: string
   description: string
+  evidenceLevels: AcmgEvidenceLevel[]
 }
 
 /** Predefined ACMG criteria. */
-const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
+export const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
   [
     {
       criteria: AcmgCriteria.PVS1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
       label: 'PVS1',
       hint: 'Very strong evidence of pathogenicity',
-      description: `Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon, 
-        single or multi-exon deletion) in a gene where LOF is a known mechanism of disease. Caution! 
-        PVS1 confronts with PM4 and PP3! Use as strong if not subject to NMD but >10% of the protein 
-        are affected.`
+      description: `Null variant (nonsense, frameshift, canonical ±1 or 2 splice sites, initiation codon,
+        single or multi-exon deletion) in a gene where LOF is a known mechanism of disease. Caution!
+        PVS1 confronts with PM4 and PP3! Use as strong if not subject to NMD but >10% of the protein
+        are affected.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_VS_S_M
     },
     {
       criteria: AcmgCriteria.PS1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS1',
       hint: 'same amino acid change',
-      description: `Same amino acid change as a previously established pathogenic variant regardless of 
-        nucleotide change. CAVE not applicable for same nucleotide change, for same nucleotide 
-        change use PS4.`
+      description: `Same amino acid change as a previously established pathogenic variant regardless of
+        nucleotide change. CAVE not applicable for same nucleotide change, for same nucleotide
+        change use PS4.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PS2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS2',
       hint: 'de novo (both maternity and paternity confirmed)',
-      description: `De novo (both maternity and paternity confirmed) in a patient with the disease and no 
-        family history.`
+      description: `De novo (both maternity and paternity confirmed) in a patient with the disease and no
+        family history.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_VS_S_M_P
     },
     {
       criteria: AcmgCriteria.PS3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS3',
       hint: 'well-established in vitro or in vivo functional studies',
-      description: `Well-established in vitro or in vivo functional studies supportive of a damaging effect on 
-        the gene or gene product.`
+      description: `Well-established in vitro or in vivo functional studies supportive of a damaging effect on
+        the gene or gene product.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PS4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicStrong,
       label: 'PS4',
       hint: 'prevalence in disease controls',
-      description: `The prevalence of the variant in affected individuals is significantly increased compared 
-        with the prevalence in controls.`
+      description: `The prevalence of the variant in affected individuals is significantly increased compared
+        with the prevalence in controls.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PM1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM1',
       hint: 'variant in hotspot (missense)',
-      description: `Located in a mutational hot spot and/or critical and well-established functional domain 
-        (e.g., active site of an enzyme) without benign variation.`
+      description: `Located in a mutational hot spot and/or critical and well-established functional domain
+        (e.g., active site of an enzyme) without benign variation.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PM2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM2',
       hint: 'absent from controls (or at extremely low frequency if recessive)',
-      description: `Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing 
-        Project, 1000 Genomes Project, or Exome Aggregation Consortium. New recommendation: use on 
-        supporting only.`
+      description: `Absent from controls (or at extremely low frequency if recessive) in Exome Sequencing
+        Project, 1000 Genomes Project, or Exome Aggregation Consortium. New recommendation: use on
+        supporting only.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_P
     },
     {
       criteria: AcmgCriteria.PM3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM3',
       hint: 'AR: trans with known pathogenic',
-      description: `For recessive disorders, detected in trans with a pathogenic variant.`
+      description: `For recessive disorders, detected in trans with a pathogenic variant.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PM4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM4',
       hint: 'protein length change',
-      description: `Protein length changes as a result of in-frame deletions/insertions in a nonrepeat region 
-        or stop-loss variants. Do not use in combination with PVS1 or PP3.`
+      description: `Protein length changes as a result of in-frame deletions/insertions in a nonrepeat region
+        or stop-loss variants. Do not use in combination with PVS1 or PP3.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_M_P
     },
     {
       criteria: AcmgCriteria.PM5,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM5',
       hint: 'literature: AA exchange same pos',
-      description: `Novel missense change at an amino acid residue where a different missense change determined 
-        to be pathogenic has been seen before.`
+      description: `Novel missense change at an amino acid residue where a different missense change determined
+        to be pathogenic has been seen before.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PM6,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicModerate,
       label: 'PM6',
       hint: 'assumed de novo',
-      description: `Assumed de novo, but without confirmation of paternity and maternity.`
+      description: `Assumed de novo, but without confirmation of paternity and maternity.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_VS_S_M_P
     },
     {
       criteria: AcmgCriteria.PP1,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP1',
       hint: 'cosegregates in family',
-      description: `Cosegregation with disease in multiple affected family members in a gene definitively known 
-        to cause the disease.`
+      description: `Cosegregation with disease in multiple affected family members in a gene definitively known
+        to cause the disease.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PP2,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP2',
       hint: 'few missense in gene',
-      description: `Missense variant in a gene that has a low rate of benign missense variation and in which 
-        missense variants are a common mechanism of disease.`
+      description: `Missense variant in a gene that has a low rate of benign missense variation and in which
+        missense variants are a common mechanism of disease.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_P
     },
     {
       criteria: AcmgCriteria.PP3,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP3',
       hint: 'predicted pathogenic',
-      description: `Multiple lines of computational evidence support a deleterious effect on the gene or gene 
-        product (conservation, evolutionary, splicing impact, etc.). Do not use in combination with 
-        PVS1 or PM4.`
+      description: `Multiple lines of computational evidence support a deleterious effect on the gene or gene
+        product (conservation, evolutionary, splicing impact, etc.). Do not use in combination with
+        PVS1 or PM4.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.PP4,
       defaultEvidenceLevel: AcmgEvidenceLevel.PathogenicSupporting,
       label: 'PP4',
       hint: 'phenotype/pedigree match gene',
-      description: `Patient's phenotype or family history is highly specific for a disease with a single 
-        genetic etiology.`
+      description: `Patient's phenotype or family history is highly specific for a disease with a single
+        genetic etiology.`,
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_PATHOGENIC_S_M_P
     },
     {
       criteria: AcmgCriteria.BA1,
@@ -226,14 +294,16 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BA1',
       hint: 'AF > 5% in ExAC, 1000G, or ESP',
       description:
-        'Allele frequency is >5% in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium'
+        'Allele frequency is >5% in Exome Sequencing Project, 1000 Genomes Project, or Exome Aggregation Consortium',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_SA
     },
     {
       criteria: AcmgCriteria.BS1,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStrong,
       label: 'BS1',
       hint: 'disease: allele freq. too high',
-      description: 'Allele frequency is greater than expected for disorder'
+      description: 'Allele frequency is greater than expected for disorder',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_SA_S
     },
     {
       criteria: AcmgCriteria.BS2,
@@ -241,7 +311,8 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BS2',
       hint: 'observed in healthy individual',
       description:
-        'Observed in a healthy adult individual for a recessive (homozygous), dominant (heterozygous), or X-linked (hemizygous) disorder, with full penetrance expected at an early age'
+        'Observed in a healthy adult individual for a recessive (homozygous), dominant (heterozygous), or X-linked (hemizygous) disorder, with full penetrance expected at an early age',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_S
     },
     {
       criteria: AcmgCriteria.BS3,
@@ -249,14 +320,16 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BS3',
       hint: 'functional studies: benign',
       description:
-        'Well-established in vitro or in vivo functional studies show no damaging effect on protein function or splicing'
+        'Well-established in vitro or in vivo functional studies show no damaging effect on protein function or splicing',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_S
     },
     {
       criteria: AcmgCriteria.BS4,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignStrong,
       label: 'BS4',
       hint: 'lack of segregation',
-      description: 'Lack of segregation in affected members of a family'
+      description: 'Lack of segregation in affected members of a family',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_S
     },
     {
       criteria: AcmgCriteria.BP1,
@@ -264,7 +337,8 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BP1',
       hint: 'missense in gene with truncating',
       description:
-        'Missense variant in a gene for which primarily truncating variants are known to cause disease'
+        'Missense variant in a gene for which primarily truncating variants are known to cause disease',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_P
     },
     {
       criteria: AcmgCriteria.BP2,
@@ -272,14 +346,16 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BP2',
       hint: 'other variant is causative',
       description:
-        'Observed in trans with a pathogenic variant for a fully penetrant dominant gene/disorder or observed in cis with a pathogenic variant in any inheritance pattern'
+        'Observed in trans with a pathogenic variant for a fully penetrant dominant gene/disorder or observed in cis with a pathogenic variant in any inheritance pattern',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_SA_P
     },
     {
       criteria: AcmgCriteria.BP3,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP3',
       hint: 'in-frame indel',
-      description: 'In-frame deletions/insertions in a repetitive region without a known function'
+      description: 'In-frame deletions/insertions in a repetitive region without a known function',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_P
     },
     {
       criteria: AcmgCriteria.BP4,
@@ -287,14 +363,16 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BP4',
       hint: 'prediction: benign',
       description:
-        'Multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary,splicing impact, etc.)'
+        'Multiple lines of computational evidence suggest no impact on gene or gene product (conservation, evolutionary,splicing impact, etc.)',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_P
     },
     {
       criteria: AcmgCriteria.BP5,
       defaultEvidenceLevel: AcmgEvidenceLevel.BenignSupporting,
       label: 'BP5',
       hint: 'different gene in other case',
-      description: 'Variant found in a case with an alternate molecular basis for disease'
+      description: 'Variant found in a case with an alternate molecular basis for disease',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_P
     },
     {
       criteria: AcmgCriteria.BP7,
@@ -302,13 +380,14 @@ const ACMG_CRITERIA_DEFS: Map<AcmgCriteria, CriteriaDefinition> = new Map(
       label: 'BP7',
       hint: 'silent, no splicing/conservation',
       description:
-        'A synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensus sequence nor the creation of a new splice site AND the nucleotide is not highly conserved'
+        'A synonymous (silent) variant for which splicing prediction algorithms predict no impact to the splice consensus sequence nor the creation of a new splice site AND the nucleotide is not highly conserved',
+      evidenceLevels: ACMG_EVIDENCE_LEVELS_BENIGN_P
     }
   ].map((def: CriteriaDefinition) => [def.criteria, def])
 )
 
 /** The presence of a criteria. */
-enum Presence {
+export enum Presence {
   Present = 'Present',
   Absent = 'Absent',
   Unknown = 'Unknown'
@@ -319,7 +398,7 @@ enum Presence {
  * Could stem from the default definition (e.g., from the ACMG guidelines paper),
  * user input, or automated prediction tools.
  */
-interface CriteriaState {
+export interface CriteriaState {
   /** Criteria referred to. */
   criteria: AcmgCriteria
   /** Whether it's present (true), absent (false), or unknown (null) */
@@ -333,7 +412,7 @@ interface CriteriaState {
 }
 
 /** Define where a given selection state comes from. */
-enum StateSource {
+export enum StateSource {
   Default = 'Default',
   InterVar = 'InterVar',
   Server = 'Server',
@@ -341,7 +420,7 @@ enum StateSource {
 }
 
 /** All state sources from lowest to highest priority. */
-const ALL_STATE_SOURCES = [
+export const ALL_STATE_SOURCES = [
   StateSource.Default,
   StateSource.InterVar,
   StateSource.Server,
@@ -349,16 +428,16 @@ const ALL_STATE_SOURCES = [
 ]
 
 /** Mapping from `AcmgCriteria` to `CriteriaState`. */
-type CriteriaToState = { [key in AcmgCriteria]: CriteriaState }
+export type CriteriaToState = { [key in AcmgCriteria]: CriteriaState }
 
 /** Mapping from `StateSource` to `CriteriaState` */
-type SourceToCriteriaToState = { [key in StateSource]: CriteriaToState }
+export type SourceToCriteriaToState = { [key in StateSource]: CriteriaToState }
 
 /**
  * Contains the ACMG selection states from different sources and handles the
  * logic of merging / overrides.
  */
-class MultiSourceAcmgCriteriaState {
+export class MultiSourceAcmgCriteriaState {
   criteriaStates: SourceToCriteriaToState
 
   constructor() {
@@ -662,20 +741,4 @@ class MultiSourceAcmgCriteriaState {
       return ['Uncertain significance', isConflicting]
     }
   }
-}
-
-export {
-  AcmgCriteria,
-  AcmgEvidenceLevel,
-  ACMG_CRITERIA_DEFS,
-  ALL_ACMG_CRITERIA,
-  ALL_STATE_SOURCES,
-  ACMG_EVIDENCE_LEVELS_PATHOGENIC,
-  ACMG_EVIDENCE_LEVELS_BENIGN,
-  type CriteriaDefinition,
-  type CriteriaState,
-  type CriteriaToState,
-  MultiSourceAcmgCriteriaState,
-  Presence,
-  StateSource
 }
