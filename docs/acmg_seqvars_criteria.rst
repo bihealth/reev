@@ -80,7 +80,7 @@ If mapping either MANE or any of the MANE Plus Clinical transcripts fails then w
 Pathogenicity Predictions
 -------------------------
 
-We currently use the thresholds from Pejaver et al. (2022) only.
+We currently use the thresholds from :footcite:t:`pejaver:2022` only.
 
 Once we have our own calibration, we can extend our predictions to novel tools such as AlphaMissense.
 
@@ -704,12 +704,12 @@ An initial prediction is fist done using the general purpose pathogenicity predi
 
 - If we have a score from the following, then the prediction is used (in descending order of priority):
     - REVEL, MutPred2, CADD, BayesDel, VEST4, ..., PhyloP
-    - we will use the modifiers from Pejaver et al. (2022)
+    - we will use the modifiers from :footcite:t:`pejaver:2022`
 - If predictions are missing then then PhyloP of the position of the variant is used as a fallback.
 
 Then, for splicing the following is done.
 
-- If a SpliceAI prediction is performed then it is interpreted according to Walker et al. (2023).
+- If a SpliceAI prediction is performed then it is interpreted according to :footsite:t:`walker:2023`.
 
 The highest-scoring variant is used for the final prediction.
 
@@ -717,12 +717,6 @@ User Report
 -----------
 
 - The scores and predictions from the predictors.
-
-Literature
-----------
-
-- Pejaver et al. (2022) has our thresholds for general variants
-- Walker et al. (2023) has the threshold for splicing
 
 Caveats
 -------
