@@ -34,7 +34,8 @@ export class DottyClient {
   }
 
   async toSpdi(q: string, assembly: 'GRCh37' | 'GRCh38' = 'GRCh38'): Promise<DottyResponse | null> {
-    const url = `${API_INTERNAL_BASE_PREFIX_DOTTY}/api/v1/to-spdi?q=${q}&assembly=${assembly}`
+    const escapedQ = encodeURIComponent(q)
+    const url = `${API_INTERNAL_BASE_PREFIX_DOTTY}/api/v1/to-spdi?q=${escapedQ}&assembly=${assembly}`
     const response = await fetch(url, {
       method: 'GET'
     })
