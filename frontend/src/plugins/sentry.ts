@@ -13,7 +13,8 @@ export async function setupSentry(app: App, router: Router) {
   }
 
   Sentry.init({
-    debug: true,
+    // Debugging can be helpful at times.
+    // debug: true,
     environment: import.meta.env.SENTRY_ENVIRONMENT ?? 'production',
     release: __APP_VERSION__,
     app,
@@ -22,7 +23,8 @@ export async function setupSentry(app: App, router: Router) {
       new Sentry.BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router)
       }),
-      new Sentry.Feedback(),
+      // Feedback handling not working in our server, so we disable it for now.
+      // new Sentry.Feedback(),
       new Sentry.Replay(),
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
