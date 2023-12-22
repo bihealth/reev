@@ -190,6 +190,15 @@ export async function lookupGene(
 ): Promise<string> {
   const annonarsClient = new AnnonarsClient()
   const data = (await annonarsClient.fetchGenes(queryTerm)) as GeneLookupResult
+  // Handle case of a single match.
+  if (data.genes.length === 1) {
+    if (field == 'geneSymbol') {
+      return data.genes[0].data.symbol
+    } else {
+      return data.genes[0].data.hgnc_id
+    }
+  }
+  // Handle case of multiple matches.
   for (const { data: gene } of data.genes) {
     if (gene.symbol.toLowerCase() === queryTerm.toLowerCase()) {
       if (field == 'geneSymbol') {
