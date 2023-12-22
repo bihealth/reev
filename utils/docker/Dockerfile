@@ -64,10 +64,11 @@ ARG version_file=utils/docker/empty-file-dont-remove
 ENV REEV_SERVE_FRONTEND=/home/reev/ui
 
 COPY --from=backend-deps /.venv /.venv
-COPY utils/docker/entrypoint-backend.sh /entrypoint-backend.sh
-COPY utils/docker/entrypoint-celery.sh /entrypoint-celery.sh
-COPY utils/docker/entrypoint-celerybeat.sh /entrypoint-celerybeat.sh
-RUN chmod +x /entrypoint.sh
+COPY utils/docker/entrypoint-backend.sh \
+    utils/docker/entrypoint-celery.sh \
+    utils/docker/entrypoint-celerybeat.sh \
+    /
+RUN chmod +x /entrypoint-backend.sh /entrypoint-celery.sh /entrypoint-celerybeat.sh
 
 ENV PATH="/.venv/bin:$PATH"
 
