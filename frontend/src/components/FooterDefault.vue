@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const rawAppVersion = __APP_VERSION__;
-const arr = rawAppVersion.split("@");
-const appVersion = arr[arr.length - 1];
+const rawAppVersion = __APP_VERSION__
+const arr = rawAppVersion.split('@')
+const appVersion = arr[arr.length - 1]
 </script>
 
 <template>

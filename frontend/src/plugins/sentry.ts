@@ -3,8 +3,8 @@
  *
  * Integration of sentry into our frontend.
  */
+import { HttpClient } from '@sentry/integrations'
 import * as Sentry from '@sentry/vue'
-import { HttpClient } from "@sentry/integrations";
 import { type App } from 'vue'
 import { type Router } from 'vue-router'
 

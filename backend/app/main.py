@@ -29,7 +29,7 @@ if settings.SENTRY_DSN:  # pragma: no cover
         environment=os.environ.get("ENVIRONMENT", "production"),
         dsn=str(settings.SENTRY_DSN),
         enable_tracing=True,
-        release=f"reev-backend@{settings.REEV_VERSION}"
+        release=f"reev-backend@{settings.REEV_VERSION}",
     )
 
 app = FastAPI(

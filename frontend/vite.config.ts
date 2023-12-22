@@ -7,7 +7,7 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 // https://vitejs.dev/config/
 export default defineConfig({
   define: {
-    '__APP_VERSION__': JSON.stringify(`reev-frontend@${process.env.REEV_VERSION}`)
+    __APP_VERSION__: JSON.stringify(`reev-frontend@${process.env.REEV_VERSION}`)
   },
   plugins: [
     vue({
