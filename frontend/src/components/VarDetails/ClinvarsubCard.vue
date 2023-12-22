@@ -33,6 +33,7 @@ import { deepCopy } from '@/lib/utils'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
 import { StoreState } from '@/stores/misc'
 import { useTermsStore } from '@/stores/terms'
+import { useUserStore } from '@/stores/user'
 
 /** Data type used for component's props. */
 interface Props {
@@ -58,6 +59,9 @@ const primaryVariantDesc = computed<string | undefined>(() => {
   }
 })
 
+/** Store with the user information, for checking login information. */
+const userStore = useUserStore()
+
 // -- clinvarsub store ---------------------------------------------------------
 
 /** Store with ClinVar submission related information. */
@@ -70,7 +74,7 @@ const loadStoreData = async () => {
 }
 
 // Ensure the store is initialized when the card is mounted.
-onMounted(() => loadStoreData)
+onMounted(() => Promise.all([userStore.initialize(), loadStoreData()]))
 // Handle changes to the variant.
 watch(() => [props.seqvar, props.strucvar], loadStoreData)
 
@@ -534,7 +538,14 @@ const onSubmitRequest = async () => {
     </v-card-title>
     <v-card-subtitle class="text-overline"> Submit Your Variants To ClinVar </v-card-subtitle>
 
-    <v-card-text v-if="clinvarsubStore.storeState !== StoreState.Active">
+    <v-card-text v-if="!userStore.currentUser">
+      <p class="text-center text-grey-darken-2">
+        ClinVar submission is only enabled for logged in users because you need to store your
+        ClinVar API key.
+      </p>
+    </v-card-text>
+
+    <v-card-text v-else-if="clinvarsubStore.storeState !== StoreState.Active">
       <v-skeleton-loader type="card" />
     </v-card-text>
 
