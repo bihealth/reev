@@ -10,11 +10,11 @@ import {
   InheritanceLabels,
   Sex,
   SexLabels,
+  StorageMode,
   Zygosity,
   ZygosityLabels,
   ethinicityLabels,
-  useCaseStore,
-  StorageMode
+  useCaseStore
 } from '@/stores/case'
 import { useTermsStore } from '@/stores/terms'
 
