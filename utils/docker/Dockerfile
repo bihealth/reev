@@ -49,12 +49,13 @@ RUN apt-get clean autoclean && \
 FROM backend-base AS backend-deps
 
 RUN pip install pipenv
-RUN apt-get update && apt-get install -y --no-install-recommends gcc
+RUN apt-get update && apt-get install -y --no-install-recommends gcc wget
 
 COPY backend/Pipfile .
 COPY backend/Pipfile.lock .
 RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy
 
+RUN wget https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for -O /usr/local/bin/wait-for
 
 # ---------------------------------------------------------------------------
 # Backend Runtime
@@ -66,9 +67,18 @@ ARG version_file=utils/docker/empty-file-dont-remove
 
 ENV REEV_SERVE_FRONTEND=/home/reev/ui
 
+COPY --from=backend-deps /usr/local/bin/wait-for /usr/local/bin/wait-for
+
 COPY --from=backend-deps /.venv /.venv
-COPY utils/docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY utils/docker/entrypoint-backend.sh \
+    utils/docker/entrypoint-celery-worker.sh \
+    utils/docker/entrypoint-celery-beat.sh \
+    /
+RUN chmod +x \
+    /usr/local/bin/wait-for \
+    /entrypoint-backend.sh \
+    /entrypoint-celery-worker.sh \
+    /entrypoint-celery-beat.sh
 
 ENV PATH="/.venv/bin:$PATH"
 
@@ -80,5 +90,5 @@ COPY ${version_file} /VERSION
 COPY backend/. .
 COPY --from=frontend-build /dist /home/reev/ui
 
-CMD ["/entrypoint.sh"]
+CMD ["/entrypoint-backend.sh"]
 EXPOSE 8080

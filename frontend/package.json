@@ -12,8 +12,8 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "format": "prettier --write src/ *.ts *.json",
-    "format:check": "prettier --list-different src/ *.ts *.json"
+    "format": "prettier --write src/ *.ts *.mts *.json",
+    "format:check": "prettier --list-different src/ *.ts *.mts *.json"
   },
   "dependencies": {
     "@mdi/font": "^7.3.67",

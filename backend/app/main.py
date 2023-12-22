@@ -27,9 +27,10 @@ logging.getLogger("passlib.handlers.bcrypt").setLevel(logging.ERROR)
 if settings.SENTRY_DSN:  # pragma: no cover
     sentry_sdk.init(
         environment=os.environ.get("ENVIRONMENT", "production"),
+        release=f"reev-backend@{settings.REEV_VERSION}",
         dsn=str(settings.SENTRY_DSN),
         enable_tracing=True,
-        release=f"reev-backend@{settings.REEV_VERSION}",
+        traces_sample_rate=1.0,
     )
 
 app = FastAPI(

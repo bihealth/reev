@@ -16,4 +16,4 @@ HTTP_PORT=${HTTP_PORT-8080}
 cd /home/reev && \
 PYTHONPATH=. python app/backend_pre_start.py
 
-uvicorn app.main:app --host $HTTP_HOST --port $HTTP_PORT
+exec uvicorn app.main:app --host $HTTP_HOST --port $HTTP_PORT
