@@ -557,7 +557,7 @@ const onSubmitRequest = async () => {
       </p>
     </v-card-text>
 
-    <v-card-text class="mt-3" v-else>
+    <v-card-text v-else class="mt-3">
       <template v-if="display === Display.List">
         <template v-if="Object.keys(clinvarsubStore.submissionThreads).length === 0">
           <div class="text-center font-italic text-grey-darken-2">
