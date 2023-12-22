@@ -14,6 +14,7 @@ export async function setupSentry(app: App, router: Router) {
   }
 
   Sentry.init({
+    debug: true,
     environment: import.meta.env.SENTRY_ENVIRONMENT ?? 'production',
     app,
     dsn: 'https://ee06fe1f4715e740256c7b762fe0e162@sentry.cubi.bihealth.org/3',
