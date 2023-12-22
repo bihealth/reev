@@ -74,7 +74,7 @@ function toggleTheme() {
       </template>
       <v-spacer></v-spacer>
 
-      <v-btn variant="text" @click="toggleTheme">
+      <v-btn variant="text" @click="toggleTheme" title="Toggle between dark and light theme.">
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
 

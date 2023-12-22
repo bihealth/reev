@@ -18,6 +18,8 @@
   "dependencies": {
     "@mdi/font": "^7.3.67",
     "@reactgular/chunks": "^1.0.1",
+    "@sentry/browser": "^7.90.0",
+    "@sentry/integrations": "^7.90.0",
     "@sentry/tracing": "^7.89.0",
     "@sentry/vue": "^7.89.0",
     "@types/luxon": "^3.3.7",
