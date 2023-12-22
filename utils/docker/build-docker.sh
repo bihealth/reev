@@ -7,7 +7,8 @@ set -euo pipefail
 
 GIT_DESCRIBE=$((git describe --tags || echo 0.0.0) | cut -d - -f 1)
 GIT_TAG=${GIT_TAG-$GIT_DESCRIBE}
-DOCKER_VERSION=$(echo $GIT_TAG | sed -e 's/^v//')
+_DOCKER_VERSION=$(echo $GIT_TAG | sed -e 's/^v//')
+DOCKER_VERSION=${DOCKER_VERSION-$_DOCKER_VERSION}
 
 ORG=bihealth
 REPO=reev

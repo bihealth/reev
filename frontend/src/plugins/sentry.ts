@@ -3,6 +3,7 @@
  *
  * Integration of sentry into our frontend.
  */
+import { HttpClient } from '@sentry/integrations'
 import * as Sentry from '@sentry/vue'
 import { type App } from 'vue'
 import { type Router } from 'vue-router'
@@ -13,13 +14,16 @@ export async function setupSentry(app: App, router: Router) {
   }
 
   Sentry.init({
+    environment: import.meta.env.SENTRY_ENVIRONMENT ?? 'production',
     app,
     dsn: 'https://ee06fe1f4715e740256c7b762fe0e162@sentry.cubi.bihealth.org/3',
     integrations: [
       new Sentry.BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router)
       }),
-      new Sentry.Replay()
+      new Sentry.Feedback(),
+      new Sentry.Replay(),
+      new HttpClient() as any
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.

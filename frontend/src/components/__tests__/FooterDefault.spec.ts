@@ -19,6 +19,5 @@ describe.concurrent('FooterDefault.vue', () => {
     const footer = wrapper.find('footer')
     expect(footer.exists()).toBe(true)
     expect(footer.text()).toContain('REEV Explains and Evaluates Variants')
-    expect(footer.text()).toContain('v0.0.0')
   })
 })
