@@ -127,7 +127,7 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://redis:6379"
 
     #: URL to RabbitMQ service.
-    RABBITMQ_URL: str = "amqp://guest@rabbitmq:6379"
+    RABBITMQ_URL: str = "amqp://guest@rabbitmq:5672"
 
     # -- User-Related Configuration ---------------------------------------------
 
