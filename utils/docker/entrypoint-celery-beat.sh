@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
 set -x
-set -euo pipefail
 
 # Interpreted environment variables.
 #
@@ -13,6 +12,8 @@ if [[ $NO_WAIT_FOR -eq 0 ]]; then
     &>2 echo "Waiting for RabbitMQ..."
     &>2 /usr/local/bin/wait-for rabbitmq:5672 -t 60 -- echo "... RabbitMQ is ready"
 fi
+
+set -euo pipefail
 
 rm -f celerybeat.pid
 
