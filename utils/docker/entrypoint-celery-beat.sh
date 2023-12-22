@@ -23,4 +23,5 @@ PYTHONPATH=. python app/celerybeat_pre_start.py
 exec celery \
     --app app.worker \
     beat \
-    --loglevel info
+    --loglevel info \
+    -s /tmp/celerybeat-schedule
