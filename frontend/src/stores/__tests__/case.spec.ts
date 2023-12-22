@@ -1,151 +1,389 @@
-import { createPinia, setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
+import { setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { type Case, Ethnicity, Inheritance, Sex, Zygosity, useCaseStore } from '@/stores/case'
+import { DEFAULT_CASE_INFO, StorageMode, useCaseStore, type APIResponse, Inheritance, Sex, Ethnicity, Zygosity, LOCAL_STORAGE_PREFIX } from '@/stores/case'
 import { StoreState } from '@/stores/misc'
+
+const MOCK_RESPONSE: APIResponse = {
+  pseudonym: '',
+  diseases: [],
+  hpo_terms: [],
+  inheritance: Inheritance.Unknown,
+  affected_family_members: null,
+  sex: Sex.Unknown,
+  age_of_onset_month: null,
+  ethinicity: Ethnicity.Unknown,
+  zygosity: Zygosity.Unknown,
+  family_segregation: null
+}
 
 const fetchMocker = createFetchMock(vi)
 
-const CaseInfo: Case = {
-  pseudonym: '',
-  diseases: [],
-  hpoTerms: [],
-  inheritance: Inheritance.Unknown,
-  affectedFamilyMembers: null,
-  sex: Sex.Unknown,
-  ageOfOnsetMonths: null,
-  ethnicity: Ethnicity.Unknown,
-  zygosity: Zygosity.Unknown,
-  familySegregation: null
-}
+const ITEM_KEY = `${LOCAL_STORAGE_PREFIX}.caseInfo`
 
-describe.concurrent('Case Store', () => {
+describe.concurrent('case store with logged in user', () => {
   beforeEach(() => {
-    setActivePinia(createPinia())
+    setActivePinia(
+      createTestingPinia({
+        stubActions: false,
+        initialState: {
+          user: {
+            storeState: StoreState.Active,
+            currentUser: {
+              id: 'test',
+              email: 'test@example.com',
+              is_active: true,
+              is_superuser: false,
+              is_verified: true,
+              oauth_accounts: []
+            }
+          },
+          case: {
+            storageMode: StorageMode.Server,
+            storeState: StoreState.Initial
+          }
+        }
+      })
+    )
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()
   })
 
-  it('should clear data', () => {
+  it('clearData() should clear data', () => {
+    // arrange:
     const store = useCaseStore()
-    // Set a non-initial state to check if clearData works properly
-    store.caseInfo = { ...CaseInfo, pseudonym: 'TestPseudonym' }
+    store.storeState = StoreState.Active
+    store.caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
 
+    // act:
     store.clearData()
 
-    expect(store.caseInfo).toStrictEqual(CaseInfo)
+    // assert:
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
   })
 
-  it('should handle unauthorized access when loading case', async () => {
+  it('initialize() should handle unauthorized access when loading case', async () => {
+    // arrange:
     const store = useCaseStore()
+    store.storageMode = StorageMode.Server
+    store.storeState = StoreState.Initial
     fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Unauthorized' }), { status: 401 })
 
-    await store.loadCase()
+    // act:
+    await store.initialize()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
     expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
   })
 
-  it('should handle not found when loading case', async () => {
+  it('initialize() should handle not found when loading case', async () => {
+    // arrange:
     const store = useCaseStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Case Information not found' }), {
       status: 404
     })
 
-    await store.loadCase()
+    // act:
+    await store.initialize()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
     expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
   })
 
-  it('should handle server error when loading case', async () => {
+  it('initialize() should handle server error when loading case', async () => {
+    // arrange:
     const store = useCaseStore()
     fetchMocker.mockReject(new Error('Internal Server Error'))
 
-    await store.loadCase()
+    // act:
+    await store.initialize()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
     expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
   })
 
-  it('should handle unauthorized access when updating case', async () => {
+  it('initialize() should handle unauthorized access when updating case', async () => {
+    // arrange:
     const store = useCaseStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Unauthorized' }), { status: 401 })
 
-    await store.updateCase(CaseInfo)
+    // act:
+    await store.updateCase(DEFAULT_CASE_INFO)
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
     expect(store.storeState).toBe(StoreState.Error)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
   })
 
-  it('should handle server error when updating case', async () => {
+  it('initialize() should handle server error when updating case', async () => {
+    // arrange:
     const store = useCaseStore()
     fetchMocker.mockReject(new Error('Internal Server Error'))
 
-    await store.updateCase(CaseInfo)
+    // act:
+    await store.updateCase(DEFAULT_CASE_INFO)
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
     expect(store.storeState).toBe(StoreState.Error)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
   })
 
-  it('should delete case information', async () => {
+  it('deleteCase() should delete case information', async () => {
+    // arrange:
     const store = useCaseStore()
-    fetchMocker.mockResponseOnce(JSON.stringify({}))
+    fetchMocker.mockResponseOnce(JSON.stringify(MOCK_RESPONSE))
 
+    // act:
     await store.deleteCase()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/delete', {
+      method: 'DELETE',
+      credentials: 'include',
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json",
+      },
+    })
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.caseInfo).toStrictEqual(CaseInfo) // assuming clearData is called in deleteCase
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO) // assuming clearData is called in deleteCase
   })
 
-  it('should handle unauthorized access when deleting case', async () => {
+  it('deleteCase() should handle unauthorized access when deleting case', async () => {
+    // arrange:
     const store = useCaseStore()
+    store.caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
     fetchMocker.mockResponseOnce(JSON.stringify({ detail: 'Unauthorized' }), { status: 401 })
 
+    // act:
     await store.deleteCase()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/delete', {
+      method: 'DELETE',
+      credentials: 'include',
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json",
+      },
+    })
     expect(store.storeState).toBe(StoreState.Error)
+    expect(store.caseInfo).toStrictEqual({ ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' })
   })
 
   it('should handle server error when deleting case', async () => {
+    // arrange:
     const store = useCaseStore()
+    store.caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
     fetchMocker.mockReject(new Error('Internal Server Error'))
 
+    // act:
     await store.deleteCase()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/delete', {
+      method: 'DELETE',
+      credentials: 'include',
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json",
+        "accept": "application/json",
+      },
+    })
     expect(store.storeState).toBe(StoreState.Error)
-  })
-
-  it('should have initial state', () => {
-    const store = useCaseStore()
-
-    expect(store.storeState).toBe(StoreState.Initial)
-    expect(store.caseInfo).toStrictEqual(CaseInfo)
+    expect(store.caseInfo).toStrictEqual({ ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' })
   })
 
   it('should load case information', async () => {
+    // arrange:
     const store = useCaseStore()
-    fetchMocker.mockResponse(JSON.stringify(CaseInfo))
+    fetchMocker.mockResponse(JSON.stringify({ ...MOCK_RESPONSE, pseudonym: 'TestPseudonym' }))
 
-    await store.loadCase()
+    // act:
+    await store.initialize()
 
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(1)
+    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.caseInfo).toEqual(CaseInfo)
+    expect(store.caseInfo).toEqual({ ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' })
   })
 
-  it.skip('should update case information', async () => {
+  it('should update case information', async () => {
+    // arrange:
     const store = useCaseStore()
-    const updatedCaseInfo = { ...CaseInfo, pseudonym: 'test' }
-    fetchMocker.mockResponse((req) => {
-      if (req.url.includes('get')) {
-        return Promise.resolve(JSON.stringify(CaseInfo))
-      } else if (req.url.includes('update')) {
-        return Promise.resolve(JSON.stringify(updatedCaseInfo))
-      } else {
-        return Promise.resolve(JSON.stringify({ status: 400 }))
-      }
-    })
-
+    const updatedCaseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'test' }
     expect(store.storeState).toBe(StoreState.Initial)
-    expect(store.caseInfo).toStrictEqual(CaseInfo)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
+    fetchMocker.mockResponseOnce(JSON.stringify({ ...MOCK_RESPONSE, pseudonym: 'test' }))
+    fetchMocker.mockResponseOnce(JSON.stringify({ ...MOCK_RESPONSE, pseudonym: 'test' }))
+
+    // act:
     await store.updateCase(updatedCaseInfo)
+
+    // assert:
+    expect(fetchMocker).toBeCalledTimes(2)
+    expect(fetchMock).toHaveBeenNthCalledWith(1, '/api/v1/caseinfo/get', {
+      method: 'GET',
+      credentials: 'include',
+      mode: 'cors'
+    })
+    expect(fetchMock).toHaveBeenNthCalledWith(2, '/api/v1/caseinfo/update', {
+      "headers": {
+        "Content-Type": "application/json",
+        "accept": "application/json",
+      },
+      "method": "PATCH",
+      credentials: 'include',
+      mode: 'cors',
+      "body": "{\n\
+      \"pseudonym\": \"test\", \n\
+      \"diseases\": [], \n\
+      \"hpo_terms\": [], \n\
+      \"inheritance\": \"reev:unknown_inheritance\", \n\
+      \"affected_family_members\": null, \n\
+      \"sex\": \"reev:unknown_sex\", \n\
+      \"age_of_onset_month\": null, \n\
+      \"ethincity\": \"reev:unknown_ethnicity\", \n\
+      \"zygosity\": \"reev:unknown_zygosity\", \n\
+      \"family_segregation\": null\n\
+    }",
+    })
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toEqual(updatedCaseInfo)
   })
+})
+
+describe.concurrent('case store with local storage', () => {
+  beforeEach(() => {
+    setActivePinia(createTestingPinia({
+      stubActions: false,
+      initialState: {
+        user: {
+          storeState: StoreState.Active,
+          currentUser: undefined
+        },
+        case: {
+          storageMode: StorageMode.Local,
+          state: StoreState.Initial,
+        }
+      }
+    }))
+    fetchMocker.enableMocks()
+    fetchMocker.resetMocks()
+  })
+
+  it('clearData() should clear data', () => {
+    // arrange:
+    const store = useCaseStore()
+    store.caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
+
+    // act:
+    store.clearData()
+
+    // assert:
+    expect(fetchMocker).not.toBeCalled()
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
+  })
+
+  it('deleteCase() should delete case information', async () => {
+    // arrange:
+    const caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
+    localStorage.setItem(ITEM_KEY, JSON.stringify(caseInfo))
+    const store = useCaseStore()
+    store.caseInfo = caseInfo
+
+    // act:
+    await store.deleteCase()
+
+    // assert:
+    expect(fetchMocker).not.toBeCalled()
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO) // assuming clearData is called in deleteCase
+    expect(localStorage.getItem(ITEM_KEY)).toBeNull()
+  })
+
+
+  it('initialize() should load case information', async () => {
+    // arrange:
+    const caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
+    const store = useCaseStore()
+    localStorage.setItem(ITEM_KEY, JSON.stringify(caseInfo))
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
+
+    // act:
+    await store.initialize()
+
+    expect(fetchMocker).not.toBeCalled()
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toStrictEqual(caseInfo)
+  })
+
+//   it.skip('should update case information', async () => {
+//     // arrange:
+//     const store = useCaseStore()
+//     const updatedCaseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'test' }
+//     fetchMocker.mockResponse((req) => {
+//       if (req.url.includes('get')) {
+//         return Promise.resolve(JSON.stringify(DEFAULT_CASE_INFO))
+//       } else if (req.url.includes('update')) {
+//         return Promise.resolve(JSON.stringify(updatedCaseInfo))
+//       } else {
+//         return Promise.resolve(JSON.stringify({ status: 400 }))
+//       }
+//     })
+//     expect(store.storeState).toBe(StoreState.Initial)
+//     expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
+
+//     // act:
+//     await store.updateCase(updatedCaseInfo)
+
+//     // assert:
+//     expect(store.storeState).toBe(StoreState.Active)
+//     expect(store.caseInfo).toEqual(updatedCaseInfo)
+//   })
 })

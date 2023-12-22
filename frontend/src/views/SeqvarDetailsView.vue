@@ -187,7 +187,7 @@ const loadDataToStore = async () => {
         return Promise.resolve()
       }
     }),
-    caseStore.loadCase()
+    caseStore.initialize()
   ])
   // Once all data has been loaded, scroll to the given section.
   await scrollToSection(route)

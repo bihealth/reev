@@ -1,3 +1,4 @@
+import mitt from 'mitt'
 import { type RouteLocationNormalizedLoaded, type RouteLocationRaw, type Router } from 'vue-router'
 
 import { type GenomeBuild } from '@/lib/genomeBuilds'
@@ -249,3 +250,6 @@ export const transformDbnsfpMimDiseaseId = (id: string, showTermIds: boolean) =>
 export function deepCopy<T>(obj: any): T {
   return JSON.parse(JSON.stringify(obj)) as T
 }
+
+/** Global pubsub instance. */
+export const MITT = mitt()

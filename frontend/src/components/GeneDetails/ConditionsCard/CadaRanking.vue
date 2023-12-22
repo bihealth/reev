@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 
 import { roundIt, separateIt } from '@/lib/utils'
 import { type GeneRank, useCadaPrioStore } from '@/stores/cadaprio'
@@ -22,6 +22,9 @@ const geneRank = computed<GeneRank | null>(() => {
     }) ?? null
   )
 })
+
+// Load case store when mounted.
+onMounted(async () => await caseStore.initialize())
 </script>
 
 <template>

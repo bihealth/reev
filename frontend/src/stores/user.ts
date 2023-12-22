@@ -6,8 +6,18 @@ import { computed, ref } from 'vue'
 
 import { AuthClient, type OAuth2Provider } from '@/api/auth'
 import { UnauthenticatedError, UsersClient } from '@/api/users'
+import { MITT } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 
+/** Definition of "mitt" events emitted by the user store. */
+export enum Events {
+  /** User logged in; args: none */
+  Login = 'userStore.login',
+  /** User logged out; args: none */
+  Logout = 'userStore.logout'
+}
+
+/** Interface for storing OAuth account information. */
 export interface OAuthAccount {
   id: string
   oauth_name: string
@@ -15,6 +25,7 @@ export interface OAuthAccount {
   account_email: string
 }
 
+/** Interface for the representation of a user. */
 export interface UserData {
   id: string
   email: string
@@ -54,6 +65,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const loadCurrentUser = async () => {
+    const oldCurrentUser = currentUser.value
     storeState.value = StoreState.Loading
     try {
       const client = new UsersClient()
@@ -68,6 +80,13 @@ export const useUserStore = defineStore('user', () => {
       } else {
         console.error('There was an error loading the currently loaded user.', e)
         storeState.value = StoreState.Error
+      }
+    } finally {
+      // Emit login/logout events
+      if (!oldCurrentUser && currentUser.value) {
+        MITT.emit(Events.Login)
+      } else if (oldCurrentUser && !currentUser.value) {
+        MITT.emit(Events.Logout)
       }
     }
   }

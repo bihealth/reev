@@ -93,7 +93,7 @@ const loadDataToStore = async () => {
     return
   }
   await geneInfoStore.loadData(hgncId, genomeBuild.value)
-  await caseStore.loadCase()
+  await caseStore.initialize()
   await scrollToSection(route)
 }
 
