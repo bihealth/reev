@@ -3,7 +3,6 @@
  *
  * Integration of sentry into our frontend.
  */
-import { HttpClient } from '@sentry/integrations'
 import * as Sentry from '@sentry/vue'
 import { type App } from 'vue'
 import { type Router } from 'vue-router'
@@ -25,7 +24,6 @@ export async function setupSentry(app: App, router: Router) {
       }),
       new Sentry.Feedback(),
       new Sentry.Replay(),
-      new HttpClient() as any
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
