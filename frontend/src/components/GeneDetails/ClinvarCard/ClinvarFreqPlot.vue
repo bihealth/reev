@@ -137,6 +137,7 @@ const vegaEncoding = {
       :layer="vegaLayer"
       :height="200"
       :width="550"
+      background="#eeeeee"
       renderer="svg"
     />
   </v-sheet>

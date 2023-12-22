@@ -28,6 +28,7 @@ interface Props {
   mark?: boolean
   renderer?: string
   transform?: any[]
+  background?: string
 }
 
 /** Define the props. */
@@ -46,7 +47,7 @@ const vegaLiteSpec = computed(() => {
     height: props.height,
     description: props.description,
     params: props.params,
-    background: 'transparent',
+    background: props.background ?? 'transparent',
     data: {
       values: props.dataValues,
       name: props.dataName

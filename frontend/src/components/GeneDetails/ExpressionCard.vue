@@ -176,6 +176,7 @@ const vegaLayer = [
             :mark="false"
             :height="300"
             :width="1200"
+            background="#eeeeee"
             renderer="svg"
           />
         </v-sheet>
