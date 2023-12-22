@@ -6,6 +6,7 @@ export enum AcmgEvidenceLevel {
   PathogenicSupporting = 'Pathogenic Supporting',
   BenignStandalone = 'Benign Standalone',
   BenignStrong = 'Benign Strong',
+  BenignModerate = 'Benign Moderate',
   BenignSupporting = 'Benign Supporting',
   NotSet = 'Not Set'
 }
@@ -21,6 +22,7 @@ export const ACMG_EVIDENCE_LEVELS_PATHOGENIC = [
 /** Array of benign evidence levels. */
 export const ACMG_EVIDENCE_LEVELS_BENIGN = [
   AcmgEvidenceLevel.BenignStandalone,
+  AcmgEvidenceLevel.BenignModerate,
   AcmgEvidenceLevel.BenignStrong,
   AcmgEvidenceLevel.BenignSupporting
 ]

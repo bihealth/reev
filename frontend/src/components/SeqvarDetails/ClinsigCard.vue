@@ -17,6 +17,7 @@ import {
   ACMG_EVIDENCE_LEVELS_PATHOGENIC,
   ALL_ACMG_CRITERIA,
   AcmgCriteria,
+  AcmgEvidenceLevel,
   Presence
 } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
@@ -100,7 +101,9 @@ enum Conflict {
   /** PVS1 vs. PM4. */
   Pvs1Pm4 = 'pvs1_pm4',
   /** PVS1 vs. PP3. */
-  Pvs1Pp3 = 'pvs1_pp3'
+  Pvs1Pp3 = 'pvs1_pp3',
+  /** PP3_strong vs. PM1_strong. */
+  Pp3StrongPm1Strong = 'pp3_strong_pm1_strong'
 }
 
 /** Currently detected conflicts. */
@@ -123,6 +126,17 @@ const currentConflicts = computed<Conflict[]>(() => {
     acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PP3).presence === Presence.Present
   ) {
     result.push(Conflict.Pvs1Pp3)
+  }
+  // Check for combination of PP3_strong and PM1_strong which is discouraged by Pejaver et al. (2022).
+  if (
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PP3).presence === Presence.Present &&
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PP3).evidenceLevel ===
+      AcmgEvidenceLevel.Strong &&
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PM1).presence === Presence.Present &&
+    acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PM1).evidenceLevel ===
+      AcmgEvidenceLevel.Strong
+  ) {
+    result.push(Conflict.Pp3StrongPm1Strong)
   }
   return result
 })
@@ -286,6 +300,9 @@ onMounted(async () => {
           </li>
           <li v-if="currentConflicts.includes(Conflict.Pvs1Pp3)">
             PVS1 and PP3 cannot be applied at the same time.
+          </li>
+          <li v-if="currentConflicts.includes(Conflict.Pp3StrongPm1Strong)">
+            PP3_strong and PM1_strong should not be applied at the same time.
           </li>
         </ul>
       </v-alert>
