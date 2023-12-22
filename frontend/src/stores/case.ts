@@ -204,7 +204,10 @@ export const useCaseStore = defineStore('case', () => {
   /** Refresh the `cadaPrioStore` when the current case's terms change. */
   const refreshCadaPrioStore = async () => {
     const cadaPrioStore = useCadaPrioStore()
-    cadaPrioStore.clearData()
+    await cadaPrioStore.loadData(
+      caseInfo.value.hpoTerms.map((item) => item.term_id),
+      { skipClear: true }
+    )
   }
 
   /**

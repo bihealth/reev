@@ -17,6 +17,14 @@ export interface GeneRank {
   hgnc_id: string
 }
 
+/** Options for `loadData()` */
+export interface LoadDataOptions {
+  /** HGNC IDs to use for querying. */
+  hgncIds?: string[]
+  /** Whether to skip Clearing */
+  skipClear?: boolean
+}
+
 export const useCadaPrioStore = defineStore('cadaPrio', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
@@ -33,18 +41,26 @@ export const useCadaPrioStore = defineStore('cadaPrio', () => {
    * Run prioritization and return results for the given HPO terms and HGNC IDs.
    *
    * @param hpoTerms HPO terms to use for querying.
-   * @param geneSymbols HGNC gene identifiers to use for querying.
+   * @param options Options for the query.
    */
-  const loadData = async (hpoTerms: string[], hgncIds?: string[]) => {
-    // Clear against artifact
-    clearData()
+  const loadData = async (hpoTerms: string[], options?: LoadDataOptions) => {
+    // Clear against artifact unless skipped.
+    if (!options?.skipClear) {
+      clearData()
+    } else {
+      // also clear if hpoTerms is empty, then exit
+      if (hpoTerms.length === 0) {
+        clearData()
+        return
+      }
+    }
 
     // Load data via API
     storeState.value = StoreState.Loading
     try {
       const client = new CadaPrioClient()
-      const data = await client.predictGeneImpact(hpoTerms, hgncIds)
-      if (data.lenght === 0) {
+      const data = await client.predictGeneImpact(hpoTerms, options?.hgncIds)
+      if (data.length === 0) {
         geneRanking.value = null
       } else {
         geneRanking.value = data

@@ -3,10 +3,22 @@ import { setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { DEFAULT_CASE_INFO, StorageMode, useCaseStore, type APIResponse, Inheritance, Sex, Ethnicity, Zygosity, LOCAL_STORAGE_PREFIX } from '@/stores/case'
+import {
+  type APIResponse,
+  DEFAULT_CASE_INFO,
+  Ethnicity,
+  Inheritance,
+  LOCAL_STORAGE_PREFIX,
+  Sex,
+  StorageMode,
+  Zygosity,
+  useCaseStore
+} from '@/stores/case'
 import { StoreState } from '@/stores/misc'
 
 const MOCK_RESPONSE: APIResponse = {
+  id: 'iduuid',
+  user: 'useruuid',
   pseudonym: '',
   diseases: [],
   hpo_terms: [],
@@ -173,14 +185,14 @@ describe.concurrent('case store with logged in user', () => {
 
     // assert:
     expect(fetchMocker).toBeCalledTimes(1)
-    expect(fetchMock).toBeCalledWith('/api/v1/caseinfo/delete', {
+    expect(fetchMock).toHaveBeenCalledWith('/api/v1/caseinfo/delete', {
       method: 'DELETE',
       credentials: 'include',
       mode: 'cors',
       headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-      },
+        'Content-Type': 'application/json',
+        accept: 'application/json'
+      }
     })
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO) // assuming clearData is called in deleteCase
@@ -202,9 +214,9 @@ describe.concurrent('case store with logged in user', () => {
       credentials: 'include',
       mode: 'cors',
       headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-      },
+        'Content-Type': 'application/json',
+        accept: 'application/json'
+      }
     })
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.caseInfo).toStrictEqual({ ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' })
@@ -226,9 +238,9 @@ describe.concurrent('case store with logged in user', () => {
       credentials: 'include',
       mode: 'cors',
       headers: {
-        "Content-Type": "application/json",
-        "accept": "application/json",
-      },
+        'Content-Type': 'application/json',
+        accept: 'application/json'
+      }
     })
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.caseInfo).toStrictEqual({ ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' })
@@ -273,48 +285,62 @@ describe.concurrent('case store with logged in user', () => {
       mode: 'cors'
     })
     expect(fetchMock).toHaveBeenNthCalledWith(2, '/api/v1/caseinfo/update', {
-      "headers": {
-        "Content-Type": "application/json",
-        "accept": "application/json",
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json'
       },
-      "method": "PATCH",
+      method: 'PATCH',
       credentials: 'include',
       mode: 'cors',
-      "body": "{\n\
-      \"pseudonym\": \"test\", \n\
-      \"diseases\": [], \n\
-      \"hpo_terms\": [], \n\
-      \"inheritance\": \"reev:unknown_inheritance\", \n\
-      \"affected_family_members\": null, \n\
-      \"sex\": \"reev:unknown_sex\", \n\
-      \"age_of_onset_month\": null, \n\
-      \"ethincity\": \"reev:unknown_ethnicity\", \n\
-      \"zygosity\": \"reev:unknown_zygosity\", \n\
-      \"family_segregation\": null\n\
-    }",
+      body: '{\n\
+      "pseudonym": "test", \n\
+      "diseases": [], \n\
+      "hpo_terms": [], \n\
+      "inheritance": "reev:unknown_inheritance", \n\
+      "affected_family_members": null, \n\
+      "sex": "reev:unknown_sex", \n\
+      "age_of_onset_month": null, \n\
+      "ethincity": "reev:unknown_ethnicity", \n\
+      "zygosity": "reev:unknown_zygosity", \n\
+      "family_segregation": null\n\
+    }'
     })
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toEqual(updatedCaseInfo)
   })
 })
 
-describe.concurrent('case store with local storage', () => {
+// NB: we cannot run in parallel as local storage is currently shared
+describe('case store with local storage', () => {
+  const getItemSpy = vi.spyOn(Storage.prototype, 'getItem')
+  const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
+  const removeItemSpy = vi.spyOn(Storage.prototype, 'removeItem')
+  const clearSpy = vi.spyOn(Storage.prototype, 'clear')
+
   beforeEach(() => {
-    setActivePinia(createTestingPinia({
-      stubActions: false,
-      initialState: {
-        user: {
-          storeState: StoreState.Active,
-          currentUser: undefined
-        },
-        case: {
-          storageMode: StorageMode.Local,
-          state: StoreState.Initial,
+    setActivePinia(
+      createTestingPinia({
+        stubActions: false,
+        initialState: {
+          user: {
+            storeState: StoreState.Active,
+            currentUser: undefined
+          },
+          case: {
+            storageMode: StorageMode.Local,
+            state: StoreState.Initial
+          }
         }
-      }
-    }))
+      })
+    )
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()
+
+    localStorage.clear()
+    getItemSpy.mockClear()
+    setItemSpy.mockClear()
+    removeItemSpy.mockClear()
+    clearSpy.mockClear()
   })
 
   it('clearData() should clear data', () => {
@@ -328,6 +354,10 @@ describe.concurrent('case store with local storage', () => {
     // assert:
     expect(fetchMocker).not.toBeCalled()
     expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
+    expect(getItemSpy).not.toBeCalled()
+    expect(setItemSpy).not.toBeCalled()
+    expect(removeItemSpy).not.toBeCalled()
+    expect(clearSpy).not.toBeCalled()
   })
 
   it('deleteCase() should delete case information', async () => {
@@ -345,8 +375,12 @@ describe.concurrent('case store with local storage', () => {
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO) // assuming clearData is called in deleteCase
     expect(localStorage.getItem(ITEM_KEY)).toBeNull()
+    expect(getItemSpy).toBeCalled()
+    expect(setItemSpy).toBeCalled()
+    expect(removeItemSpy).toHaveBeenCalledOnce()
+    expect(removeItemSpy).toHaveBeenCalledWith(ITEM_KEY)
+    expect(clearSpy).not.toBeCalled()
   })
-
 
   it('initialize() should load case information', async () => {
     // arrange:
@@ -358,32 +392,36 @@ describe.concurrent('case store with local storage', () => {
     // act:
     await store.initialize()
 
+    // assert:
     expect(fetchMocker).not.toBeCalled()
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toStrictEqual(caseInfo)
+    expect(localStorage.getItem(ITEM_KEY)).toStrictEqual(JSON.stringify(caseInfo))
+    expect(getItemSpy).toBeCalled()
+    expect(setItemSpy).toBeCalled()
+    expect(removeItemSpy).not.toHaveBeenCalled()
+    expect(clearSpy).not.toBeCalled()
   })
 
-//   it.skip('should update case information', async () => {
-//     // arrange:
-//     const store = useCaseStore()
-//     const updatedCaseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'test' }
-//     fetchMocker.mockResponse((req) => {
-//       if (req.url.includes('get')) {
-//         return Promise.resolve(JSON.stringify(DEFAULT_CASE_INFO))
-//       } else if (req.url.includes('update')) {
-//         return Promise.resolve(JSON.stringify(updatedCaseInfo))
-//       } else {
-//         return Promise.resolve(JSON.stringify({ status: 400 }))
-//       }
-//     })
-//     expect(store.storeState).toBe(StoreState.Initial)
-//     expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
+  it('updateCase() should update case information', async () => {
+    // arrange:
+    localStorage.setItem(ITEM_KEY, JSON.stringify(DEFAULT_CASE_INFO))
+    const store = useCaseStore()
+    const updatedCaseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'test' }
+    expect(store.storeState).toBe(StoreState.Initial)
+    expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
 
-//     // act:
-//     await store.updateCase(updatedCaseInfo)
+    // act:
+    await store.updateCase(updatedCaseInfo)
 
-//     // assert:
-//     expect(store.storeState).toBe(StoreState.Active)
-//     expect(store.caseInfo).toEqual(updatedCaseInfo)
-//   })
+    // assert:
+    expect(fetchMocker).not.toBeCalled()
+    expect(store.storeState).toBe(StoreState.Active)
+    expect(store.caseInfo).toEqual(updatedCaseInfo)
+    expect(localStorage.getItem(ITEM_KEY)).toStrictEqual(JSON.stringify(updatedCaseInfo))
+    expect(getItemSpy).toBeCalled()
+    expect(setItemSpy).toBeCalled()
+    expect(removeItemSpy).not.toHaveBeenCalled()
+    expect(clearSpy).not.toBeCalled()
+  })
 })

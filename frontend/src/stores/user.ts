@@ -52,7 +52,7 @@ export const useUserStore = defineStore('user', () => {
 
   // Initialize store, load version
   const initialize = async (force: boolean = false) => {
-    if (currentUser.value !== undefined && !force) {
+    if (storeState.value !== StoreState.Initial && !force) {
       return // do not initialize twice
     }
 
