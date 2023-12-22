@@ -64,7 +64,9 @@ ARG version_file=utils/docker/empty-file-dont-remove
 ENV REEV_SERVE_FRONTEND=/home/reev/ui
 
 COPY --from=backend-deps /.venv /.venv
-COPY utils/docker/entrypoint.sh /entrypoint.sh
+COPY utils/docker/entrypoint-backend.sh /entrypoint-backend.sh
+COPY utils/docker/entrypoint-celery.sh /entrypoint-celery.sh
+COPY utils/docker/entrypoint-celerybeat.sh /entrypoint-celerybeat.sh
 RUN chmod +x /entrypoint.sh
 
 ENV PATH="/.venv/bin:$PATH"
@@ -77,5 +79,5 @@ COPY ${version_file} /VERSION
 COPY backend/. .
 COPY --from=frontend-build /dist /home/reev/ui
 
-CMD ["/entrypoint.sh"]
+CMD ["/entrypoint-backend.sh"]
 EXPOSE 8080
