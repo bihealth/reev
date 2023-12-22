@@ -65,10 +65,13 @@ ENV REEV_SERVE_FRONTEND=/home/reev/ui
 
 COPY --from=backend-deps /.venv /.venv
 COPY utils/docker/entrypoint-backend.sh \
-    utils/docker/entrypoint-celery.sh \
-    utils/docker/entrypoint-celerybeat.sh \
+    utils/docker/entrypoint-celery-worker.sh \
+    utils/docker/entrypoint-celery-beat.sh \
     /
-RUN chmod +x /entrypoint-backend.sh /entrypoint-celery.sh /entrypoint-celerybeat.sh
+RUN chmod +x \
+    /entrypoint-backend.sh \
+    /entrypoint-celery-worker.sh \
+    /entrypoint-celery-beat.sh
 
 ENV PATH="/.venv/bin:$PATH"
 
