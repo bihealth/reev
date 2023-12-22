@@ -367,6 +367,7 @@ const vegaLayer = [
         :layer="vegaLayer"
         :width="1200"
         :height="300"
+        background="#eeeeee"
         renderer="canvas"
       />
       <div>
