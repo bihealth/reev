@@ -1,5 +1,66 @@
 # Changelog
 
+## [0.3.0](https://github.com/bihealth/reev/compare/v0.2.0...v0.3.0) (2023-12-22)
+
+
+### Features
+
+* add conflict display between PVS1 and PM4/PP3 ([#290](https://github.com/bihealth/reev/issues/290)) ([#320](https://github.com/bihealth/reev/issues/320)) ([223d904](https://github.com/bihealth/reev/commit/223d904b3d17e2c283ff4cb580ef42561870100b))
+* additional `Jump to IGV` button ([#297](https://github.com/bihealth/reev/issues/297)) ([#299](https://github.com/bihealth/reev/issues/299)) ([38c5668](https://github.com/bihealth/reev/commit/38c5668385a1bf596ec94132525e8e0dfdb2d65c))
+* adjust landing and static pages to NAR WSI requirements ([#303](https://github.com/bihealth/reev/issues/303)) ([#306](https://github.com/bihealth/reev/issues/306)) ([39aad72](https://github.com/bihealth/reev/commit/39aad72eaef7e1f2555a824f4cde7e6b0cd0b7ab))
+* allow storing case information in local storage ([#247](https://github.com/bihealth/reev/issues/247)) ([#339](https://github.com/bihealth/reev/issues/339)) ([bec6084](https://github.com/bihealth/reev/commit/bec60842d66e5bbaf70057cffdcc75312e7f055f))
+* Allow users to save acmg criteria on the server ([#98](https://github.com/bihealth/reev/issues/98)) ([#237](https://github.com/bihealth/reev/issues/237)) ([8738ca4](https://github.com/bihealth/reev/commit/8738ca4f86a3d897359f81768fff48d787bb1503))
+* change default presentation of ACMG criteria ([#287](https://github.com/bihealth/reev/issues/287)) ([#300](https://github.com/bihealth/reev/issues/300)) ([454135f](https://github.com/bihealth/reev/commit/454135ff969097203f2b300ceedbd5e983bc79f4))
+* Consistency in UI design on static pages ([#219](https://github.com/bihealth/reev/issues/219)) ([#283](https://github.com/bihealth/reev/issues/283)) ([2bafecb](https://github.com/bihealth/reev/commit/2bafecb25a753daf1413e9df7b5d00b7e5e7d893))
+* Display all MMSplice and SpliceAI Scores ([#296](https://github.com/bihealth/reev/issues/296)) ([#310](https://github.com/bihealth/reev/issues/310)) ([2ebb15b](https://github.com/bihealth/reev/commit/2ebb15b3e897d4540b0f7183cf6391cfd6a0f902))
+* document acmg seq vars ([#248](https://github.com/bihealth/reev/issues/248)) ([#249](https://github.com/bihealth/reev/issues/249)) ([ae73ca7](https://github.com/bihealth/reev/commit/ae73ca76a3d97c24da08dc65386dca3112edaa0f))
+* enable sentry user feedback and releases ([#329](https://github.com/bihealth/reev/issues/329)) ([#331](https://github.com/bihealth/reev/issues/331)) ([8be007c](https://github.com/bihealth/reev/commit/8be007c0e4a4e960e60276f6f7d7929dab1928b2))
+* implementing ClinVar upload ([#99](https://github.com/bihealth/reev/issues/99)) ([#270](https://github.com/bihealth/reev/issues/270)) ([d4d949e](https://github.com/bihealth/reev/commit/d4d949ec947a61c3caf6bbae6ebb2f5bf5fa51f5))
+* Integrate cada prio web service ([#213](https://github.com/bihealth/reev/issues/213)) ([#220](https://github.com/bihealth/reev/issues/220)) ([283209f](https://github.com/bihealth/reev/commit/283209fb693dac25076d054e9c30364283bb7ae4))
+* integrating sentry ([#240](https://github.com/bihealth/reev/issues/240)) ([#246](https://github.com/bihealth/reev/issues/246)) ([732cff6](https://github.com/bihealth/reev/commit/732cff6c3cca786af8f5b823303cd4d7e11fe84f))
+* link out from app to documentation ([#308](https://github.com/bihealth/reev/issues/308)) ([#311](https://github.com/bihealth/reev/issues/311)) ([bb630a0](https://github.com/bihealth/reev/commit/bb630a065feaeb337004ef677a90f53ce94ecf4d))
+* Merge all static information pages into one view ([#263](https://github.com/bihealth/reev/issues/263)) ([#264](https://github.com/bihealth/reev/issues/264)) ([61bab0b](https://github.com/bihealth/reev/commit/61bab0b77d2672f70325d8e22587b6536698d6e8))
+* more consistent UI design on gene details page ([#216](https://github.com/bihealth/reev/issues/216)) ([#278](https://github.com/bihealth/reev/issues/278)) ([52c8a45](https://github.com/bihealth/reev/commit/52c8a457b4389f07ccff6a2abbaa823783b6e4bf))
+* more consistent UI design on seqvar details page ([#217](https://github.com/bihealth/reev/issues/217)) ([#279](https://github.com/bihealth/reev/issues/279)) ([b040108](https://github.com/bihealth/reev/commit/b040108154280abcfcbfe399257be2b460d16c58))
+* more consistent UI design on strucvar details page ([#218](https://github.com/bihealth/reev/issues/218)) ([#280](https://github.com/bihealth/reev/issues/280)) ([b5330af](https://github.com/bihealth/reev/commit/b5330af907d75f76571b3e0901512a9401a92b95))
+* more integrated search component ([#258](https://github.com/bihealth/reev/issues/258)) ([120128f](https://github.com/bihealth/reev/commit/120128fc8379c5610164889e7953ee0d9c2e8956))
+* more streamlined query parsing ([#257](https://github.com/bihealth/reev/issues/257)) ([#259](https://github.com/bihealth/reev/issues/259)) ([374377a](https://github.com/bihealth/reev/commit/374377aa7098afb3cccd13f2652ea638d715da2b))
+* Move scores card above population frequencies card ([#294](https://github.com/bihealth/reev/issues/294)) ([#301](https://github.com/bihealth/reev/issues/301)) ([2db9647](https://github.com/bihealth/reev/commit/2db96478d1a914bebd194dc55ed498a0f155d401))
+* Refurbishing design of Profile page ([#214](https://github.com/bihealth/reev/issues/214)) ([#256](https://github.com/bihealth/reev/issues/256)) ([61a59d3](https://github.com/bihealth/reev/commit/61a59d3d40119d706c189e0df67fc0cf3d609c2d))
+* refurbishing gene details page ([#229](https://github.com/bihealth/reev/issues/229)) ([#230](https://github.com/bihealth/reev/issues/230)) ([40daa26](https://github.com/bihealth/reev/commit/40daa26480d9de3d8648a879d598752f525e55b0))
+* refurbishing sequence variant details page ([#244](https://github.com/bihealth/reev/issues/244)) ([#255](https://github.com/bihealth/reev/issues/255)) ([8f67c86](https://github.com/bihealth/reev/commit/8f67c86a53eb16acb1aa273c3ea56d52fba5508a))
+* refurbishing SV details page ([#236](https://github.com/bihealth/reev/issues/236)) ([#239](https://github.com/bihealth/reev/issues/239)) ([0d8dd34](https://github.com/bihealth/reev/commit/0d8dd34af7239842c2868687204aba1fc40cc874))
+* restrict upgrade/downgrade of AMCG seqvar criteria ([#291](https://github.com/bihealth/reev/issues/291)) ([#321](https://github.com/bihealth/reev/issues/321)) ([fabc262](https://github.com/bihealth/reev/commit/fabc262742eeec882503b9a53355348825ce32d1))
+* updating profile to comply with OrcID requirements ([#225](https://github.com/bihealth/reev/issues/225)) ([#226](https://github.com/bihealth/reev/issues/226)) ([23053f3](https://github.com/bihealth/reev/commit/23053f330d1f53c7904caf4f1705598711d6500e))
+
+
+### Bug Fixes
+
+* adjusting front-end to latest annonars changes ([#224](https://github.com/bihealth/reev/issues/224)) ([#228](https://github.com/bihealth/reev/issues/228)) ([ce8ab52](https://github.com/bihealth/reev/commit/ce8ab522f610135f8fdbef48be3984b93d548343))
+* Drop PP5 and BP6 criteria ([#289](https://github.com/bihealth/reev/issues/289)) ([#319](https://github.com/bihealth/reev/issues/319)) ([a328f3a](https://github.com/bihealth/reev/commit/a328f3aabbf9b7e24b9ef59dfb5166d8a7796e4a))
+* fix blipping seqvar ACMG card ([#266](https://github.com/bihealth/reev/issues/266)) ([#269](https://github.com/bihealth/reev/issues/269)) ([aa186c3](https://github.com/bihealth/reev/commit/aa186c3ad623de5c2dfe2824e459412d3ea34526))
+* make clinvar impact table more robust, ignore labels ([#234](https://github.com/bihealth/reev/issues/234)) ([d3df9d7](https://github.com/bihealth/reev/commit/d3df9d7247ad02c25c8d80c170d84d4bdf9bf203))
+* make gray backround also work with dark theme ([#276](https://github.com/bihealth/reev/issues/276)) ([#282](https://github.com/bihealth/reev/issues/282)) ([2b161f7](https://github.com/bihealth/reev/commit/2b161f790b6ed51e9c234da06cc02074019ac98f))
+* make querying for HGNC ID go to the gene ([#327](https://github.com/bihealth/reev/issues/327)) ([#333](https://github.com/bihealth/reev/issues/333)) ([e73cf71](https://github.com/bihealth/reev/commit/e73cf718b7760dbabcef1e7cc389b08e0e7a776b))
+* Make seqvar ACMG criterias upper case ([#288](https://github.com/bihealth/reev/issues/288)) ([#317](https://github.com/bihealth/reev/issues/317)) ([0bfd3c0](https://github.com/bihealth/reev/commit/0bfd3c01a9658a2d2100268a0a1252a8b85c4cf6))
+* make UI consistent on homepage ([#215](https://github.com/bihealth/reev/issues/215)) ([#277](https://github.com/bihealth/reev/issues/277)) ([f81a48f](https://github.com/bihealth/reev/commit/f81a48f39109835d6bdfdbf914a7c8e5fead91d0))
+* message when SpliceAI prediction unavailable ([#268](https://github.com/bihealth/reev/issues/268)) ([c2516e0](https://github.com/bihealth/reev/commit/c2516e0754891e470094e67affc5000949f48aa4))
+* OMIM id extraction for link-out ([#260](https://github.com/bihealth/reev/issues/260)) ([#267](https://github.com/bihealth/reev/issues/267)) ([f394b00](https://github.com/bihealth/reev/commit/f394b00724e8cf7142a4a1a885b32476610f943d))
+* Present hpo terms on seqvar page ([#286](https://github.com/bihealth/reev/issues/286)) ([#298](https://github.com/bihealth/reev/issues/298)) ([a61b57e](https://github.com/bihealth/reev/commit/a61b57e5a64d125e88aa8a8737be4c5c7012c2ec))
+* properly handle anonymous sessions in clinvarsub card ([#328](https://github.com/bihealth/reev/issues/328)) ([#335](https://github.com/bihealth/reev/issues/335)) ([a61f864](https://github.com/bihealth/reev/commit/a61f864b23b5ffee8283e945c93c9b674e61a5ef))
+* properly handler errors / empty results from InterVar ([#322](https://github.com/bihealth/reev/issues/322)) ([#336](https://github.com/bihealth/reev/issues/336)) ([6782a4f](https://github.com/bihealth/reev/commit/6782a4f20fdd51cd18327003d2842da463706bcb))
+* properly urlencode arguments to dotty API call ([#323](https://github.com/bihealth/reev/issues/323)) ([#325](https://github.com/bihealth/reev/issues/325)) ([699c654](https://github.com/bihealth/reev/commit/699c65404d7ab1185ca9b05e46e8d86ec1e39fea))
+* Support for low-res displays ([#285](https://github.com/bihealth/reev/issues/285)) ([#295](https://github.com/bihealth/reev/issues/295)) ([bdf7583](https://github.com/bihealth/reev/commit/bdf7583ca1b18997e00e255e78ad8bee25201603))
+* using text-no-wrap on ClinvarImpact table ([#233](https://github.com/bihealth/reev/issues/233)) ([e7cbaa7](https://github.com/bihealth/reev/commit/e7cbaa7127b5663ee684c6c81d457c0ffa31c868))
+* vega plot background colors in dark mode ([#284](https://github.com/bihealth/reev/issues/284)) ([#337](https://github.com/bihealth/reev/issues/337)) ([cb0cac1](https://github.com/bihealth/reev/commit/cb0cac17c4436b72d92c0af42e09f41674eebffc))
+
+
+### Documentation
+
+* Documentation of tutorial ([#305](https://github.com/bihealth/reev/issues/305)) ([3bc8312](https://github.com/bihealth/reev/commit/3bc8312ff2bef13d6b4bd07700992d8f31ecb9a0))
+* filling the application's manual ([#309](https://github.com/bihealth/reev/issues/309)) ([#315](https://github.com/bihealth/reev/issues/315)) ([c21e888](https://github.com/bihealth/reev/commit/c21e888e2d39fe288d6c7acd7c86f4984d943c05))
+* initial version of quickstart tutorial ([#274](https://github.com/bihealth/reev/issues/274)) ([#275](https://github.com/bihealth/reev/issues/275)) ([51c6d4f](https://github.com/bihealth/reev/commit/51c6d4fa8b5851d620f5931d4445fee902e010ce))
+
 ## [0.2.0](https://github.com/bihealth/reev/compare/v0.1.0...v0.2.0) (2023-11-15)
 
 
