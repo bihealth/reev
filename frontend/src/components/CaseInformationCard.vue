@@ -10,12 +10,12 @@ import {
   InheritanceLabels,
   Sex,
   SexLabels,
+  StorageMode,
   Zygosity,
   ZygosityLabels,
   ethinicityLabels,
   useCaseStore
 } from '@/stores/case'
-import { StoreState } from '@/stores/misc'
 import { useTermsStore } from '@/stores/terms'
 
 const caseStore = useCaseStore()
@@ -66,7 +66,7 @@ const zygosityOptions = computed(() => {
 })
 
 const loadDataToStore = async () => {
-  await caseStore.loadCase()
+  await caseStore.initialize()
   if (caseStore.caseInfo.hpoTerms.length > 0) {
     const hpoTermsList: string[] = caseStore.caseInfo.hpoTerms.map((term) => term.term_id)
     await cadaPrioStore.loadData(hpoTermsList)
@@ -133,182 +133,191 @@ watch(
 </script>
 
 <template>
-  <div v-if="caseStore.storeState === StoreState.Active">
-    <v-card class="case-card">
-      <v-row no-gutters>
-        <v-col>
-          <v-card-title>Case Information</v-card-title>
-          <v-card-text>
-            <v-form ref="form">
-              <v-text-field
-                v-model="caseStore.caseInfo.pseudonym"
-                variant="outlined"
-                label="Pseudonym"
-              />
+  <div>
+    <v-row no-gutters>
+      <v-col>
+        <v-card>
+          <v-responsive min-width="300">
+            <v-card-title>Case Information</v-card-title>
+            <v-card-text>
+              <p class="text-body-2 pb-3">
+                You can store information about your current case here. The HPO terms will be used
+                to prioritize genes using the CADA algorithm. On the right, you will see all known
+                disease genes ranked by their CADA score. Also, you will see the rank in the details
+                section of each gene.
+              </p>
+              <p class="text-body-2 pb-3" v-if="caseStore.storageMode === StorageMode.Local">
+                As you are not logged in, we will store the case information in the local browser
+                storage.
+              </p>
+              <v-form ref="form">
+                <v-text-field
+                  v-model="caseStore.caseInfo.pseudonym"
+                  class="pb-3"
+                  label="Pseudonym"
+                  density="default"
+                  hide-details
+                />
 
-              <!-- Diseases -->
-              <v-autocomplete
-                v-model="caseStore.caseInfo.diseases"
-                v-model:search="omimSearchQuery"
-                :items="termsStore.omimTerms"
-                :loading="omimIsLoading"
-                label="Disease"
-                item-title="name"
-                :item-value="(item) => item"
-                multiple
-                chips
-                closable-chips
-                deletable-chips
-                variant="outlined"
-                prepend-icon="mdi-database-search"
-                hint="Select one or more diseases"
-                @update:search="debouncedOmimFetchTerms"
-              />
+                <!-- Diseases -->
+                <v-autocomplete
+                  v-show="false"
+                  v-model="caseStore.caseInfo.diseases"
+                  v-model:search="omimSearchQuery"
+                  class="pb-3"
+                  :items="termsStore.omimTerms"
+                  :loading="omimIsLoading"
+                  label="Disease"
+                  item-title="name"
+                  :item-value="(item) => item"
+                  multiple
+                  chips
+                  closable-chips
+                  deletable-chips
+                  hint="Start typing to search for OMIM diseases"
+                  persistent-hint
+                  @update:search="debouncedOmimFetchTerms"
+                />
 
-              <!-- HPO Terms -->
-              <v-autocomplete
-                v-model="caseStore.caseInfo.hpoTerms"
-                v-model:search="hpoSearchQuery"
-                :items="termsStore.hpoTerms"
-                :loading="hpoIsLoading"
-                label="HPO Terms"
-                item-title="name"
-                :item-value="(item) => item"
-                multiple
-                chips
-                closable-chips
-                deletable-chips
-                variant="outlined"
-                prepend-icon="mdi-database-search"
-                hint="Select one or more HPO terms"
-                @update:search="debouncedHpoFetchTerms"
-              />
+                <!-- HPO Terms -->
+                <v-autocomplete
+                  v-model="caseStore.caseInfo.hpoTerms"
+                  v-model:search="hpoSearchQuery"
+                  class="pb-3"
+                  :items="termsStore.hpoTerms"
+                  :loading="hpoIsLoading"
+                  label="HPO Terms"
+                  item-title="name"
+                  :item-value="(item) => item"
+                  multiple
+                  chips
+                  closable-chips
+                  deletable-chips
+                  hint="Start typing to search for OMIM diseases"
+                  persistent-hint
+                  @update:search="debouncedHpoFetchTerms"
+                />
 
-              <!-- Inheritance -->
-              <v-select
-                v-model="caseStore.caseInfo.inheritance"
-                variant="outlined"
-                label="Inheritance"
-                :items="inheritanceOptions"
-                item-title="text"
-                item-value="value"
-              />
+                <!-- Inheritance -->
+                <v-select
+                  v-show="false"
+                  v-model="caseStore.caseInfo.inheritance"
+                  label="Inheritance"
+                  :items="inheritanceOptions"
+                  item-title="text"
+                  item-value="value"
+                />
 
-              <!-- Affected Family Members -->
-              <v-switch
-                v-model="caseStore.caseInfo.affectedFamilyMembers"
-                variant="outlined"
-                label="Affected Family Members"
-                color="primary"
-              />
+                <v-row v-show="false" no-gutters>
+                  <v-col cols="6">
+                    <!-- Affected Family Members -->
+                    <v-switch
+                      v-model="caseStore.caseInfo.affectedFamilyMembers"
+                      class="pl-3"
+                      label="Affected Family Members"
+                      color="primary"
+                      density="compact"
+                    />
+                  </v-col>
+                  <v-col cols="6">
+                    <!-- Family Segregation -->
+                    <v-switch
+                      v-model="caseStore.caseInfo.familySegregation"
+                      label="Family Segregation"
+                      color="primary"
+                      density="compact"
+                    />
+                  </v-col>
+                </v-row>
 
-              <!-- Sex -->
-              <v-select
-                v-model="caseStore.caseInfo.sex"
-                variant="outlined"
-                label="Sex"
-                :items="sexOptions"
-                item-title="text"
-                item-value="value"
-              />
+                <!-- Sex -->
+                <v-select
+                  v-show="false"
+                  v-model="caseStore.caseInfo.sex"
+                  class="pb-3"
+                  label="Sex"
+                  :items="sexOptions"
+                  item-title="text"
+                  item-value="value"
+                  hide-details
+                />
 
-              <!-- Age of Onset -->
-              <v-text-field
-                v-model.number="caseStore.caseInfo.ageOfOnsetMonths"
-                variant="outlined"
-                label="Age of Onset"
-                :rules="[validateAgeOfOnset]"
-              />
+                <!-- Age of Onset -->
+                <v-text-field
+                  v-show="false"
+                  v-model.number="caseStore.caseInfo.ageOfOnsetMonths"
+                  class="pb-3"
+                  label="Age of Onset (Months)"
+                  :rules="[validateAgeOfOnset]"
+                />
 
-              <!-- Ethnicity -->
-              <v-select
-                v-model="caseStore.caseInfo.ethnicity"
-                variant="outlined"
-                label="Ethnicity"
-                :items="ethnicityOptions"
-                item-title="text"
-                item-value="value"
-              />
+                <!-- Ethnicity -->
+                <v-select
+                  v-show="false"
+                  v-model="caseStore.caseInfo.ethnicity"
+                  label="Ethnicity"
+                  :items="ethnicityOptions"
+                  item-title="text"
+                  item-value="value"
+                />
 
-              <!-- Zygosity -->
-              <v-select
-                v-model="caseStore.caseInfo.zygosity"
-                variant="outlined"
-                label="Zygosity"
-                :items="zygosityOptions"
-                item-title="text"
-                item-value="value"
-              />
+                <!-- Zygosity -->
+                <v-select
+                  v-show="false"
+                  v-model="caseStore.caseInfo.zygosity"
+                  label="Zygosity"
+                  :items="zygosityOptions"
+                  item-title="text"
+                  item-value="value"
+                />
 
-              <!-- Family Segregation -->
-              <v-switch
-                v-model="caseStore.caseInfo.familySegregation"
-                label="Family Segregation"
-                color="primary"
-              />
+                <!-- Buttons -->
+                <v-btn class="ml-2" @click="saveChanges"> Save Changes </v-btn>
+                <v-btn class="ml-2" color="secondary" @click="deleteCaseInformation">
+                  Delete Case info
+                </v-btn>
+              </v-form>
+            </v-card-text>
+          </v-responsive>
+        </v-card>
+      </v-col>
 
-              <!-- Buttons -->
-              <v-btn class="ml-2" @click="saveChanges"> Save Changes </v-btn>
-              <v-btn class="ml-2" color="secondary" @click="deleteCaseInformation">
-                Delete Case info
-              </v-btn>
-            </v-form>
-          </v-card-text>
-        </v-col>
+      <v-col>
+        <v-card>
+          <v-responsive min-width="300">
+            <v-card-title>Cada-prio gene ranking for current HPO:</v-card-title>
+            <v-card-text>
+              <p v-if="!cadaPrioStore.geneRanking?.length" class="text-body-1 pb-3">
+                Gene ranking results will appear once you have selected at least one HPO term.
+              </p>
+              <v-data-table
+                :headers="cadaPrioRankingFields as any"
+                :items="cadaPrioStore.geneRanking ?? []"
+                :items-per-page="10"
+                density="compact"
+              >
+                <template #[`item.gene_symbol`]="{ item }">
+                  <router-link
+                    :to="{
+                      name: 'gene-details',
+                      params: { gene: item.hgnc_id }
+                    }"
+                    target="_blank"
+                  >
+                    {{ item.gene_symbol }}
+                  </router-link>
+                </template>
 
-        <v-col v-if="cadaPrioStore.geneRanking">
-          <v-card-title>Cada-prio gene ranking for current HPO:</v-card-title>
-          <v-card-text>
-            <v-data-table
-              :headers="cadaPrioRankingFields as any"
-              :items="cadaPrioStore.geneRanking"
-              :items-per-page="10"
-              density="compact"
-            >
-              <template #[`item.gene_symbol`]="{ item }">
-                <router-link
-                  :to="{
-                    name: 'gene-details',
-                    params: { gene: item.hgnc_id }
-                  }"
-                  target="_blank"
-                >
-                  {{ item.gene_symbol }}
-                </router-link>
-              </template>
-
-              <template #[`item.score`]="{ item }">
-                <!-- eslint-disable vue/no-v-html -->
-                <span v-html="roundIt(item.score, 2)" />
-                <!-- eslint-enable -->
-              </template>
-            </v-data-table>
-          </v-card-text>
-        </v-col>
-      </v-row>
-    </v-card>
-  </div>
-  <div v-else-if="caseStore.storeState === StoreState.Loading">
-    <v-card>
-      <v-progress-circular indeterminate />
-    </v-card>
-  </div>
-  <div v-else-if="caseStore.storeState === StoreState.Error">
-    <v-card>
-      <v-alert type="error"> Error loading data. </v-alert>
-    </v-card>
-  </div>
-  <div v-else>
-    <v-card>
-      <v-card-text>
-        <p>Initial State</p>
-      </v-card-text>
-    </v-card>
+                <template #[`item.score`]="{ item }">
+                  <!-- eslint-disable vue/no-v-html -->
+                  <span v-html="roundIt(item.score, 2)" />
+                  <!-- eslint-enable -->
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-responsive>
+        </v-card>
+      </v-col>
+    </v-row>
   </div>
 </template>
-
-<style scoped>
-.case-card {
-  min-width: 600px;
-}
-</style>

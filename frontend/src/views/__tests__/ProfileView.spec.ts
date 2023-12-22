@@ -38,7 +38,7 @@ describe.concurrent('Profile view', async () => {
 
     expect(wrapper.html()).toMatch('User Profile')
     expect(wrapper.text()).toMatch('Bookmarks')
-    expect(wrapper.text()).toMatch('Update Case')
+    expect(wrapper.text()).toMatch('Case Info')
 
     const profileInformationCard = wrapper.findComponent(ProfileInformationCard)
     expect(profileInformationCard.exists()).toBe(true)

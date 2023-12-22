@@ -173,7 +173,7 @@ const loadDataToStore = async () => {
   }
 
   // Finally, load structural variant and case information.
-  await Promise.all([strucvarInfoStore.loadData(strucvar.value), caseStore.loadCase()])
+  await Promise.all([strucvarInfoStore.loadData(strucvar.value), caseStore.initialize()])
   await scrollToSection(route)
 }
 

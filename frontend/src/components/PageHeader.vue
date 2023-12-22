@@ -80,7 +80,7 @@ function toggleTheme() {
 
       <v-dialog scrollable width="auto" location="top">
         <template #activator="{ props: vProps }">
-          <v-btn class="mr-4" prepend-icon="mdi-account-group" v-bind="vProps"> Update Case </v-btn>
+          <v-btn class="mr-4" prepend-icon="mdi-account-group" v-bind="vProps"> Case Info </v-btn>
         </template>
         <v-card>
           <CaseInformationCard />
