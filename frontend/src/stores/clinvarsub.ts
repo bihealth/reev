@@ -20,8 +20,12 @@ import {
   VariantPresence
 } from '@/api/clinvarsub'
 import { StoreState } from '@/stores/misc'
+import { useUserStore } from '@/stores/user'
 
 export const useClinvarsubStore = defineStore('clinvarsub', () => {
+  /** The user store, to check for the user having logged in. */
+  const userStore = useUserStore()
+
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 
@@ -36,6 +40,10 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
 
   /** Load all submitting orgs of the current user. */
   const loadSubmittingOrgs = async () => {
+    if (!userStore.currentUser) {
+      return // not logged in
+    }
+
     submittingOrgs.value = {}
 
     const client = new ClinvarsubClient()
@@ -72,6 +80,9 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
     primaryVariantDesc$: string | null | undefined,
     force: boolean = false
   ) => {
+    if (!userStore.currentUser) {
+      return // not logged in
+    }
     if (!force && primaryVariantDesc.value === primaryVariantDesc$) {
       return // already loaded
     }
@@ -182,6 +193,14 @@ export const useClinvarsubStore = defineStore('clinvarsub', () => {
    * When forced, this will reload all data.
    */
   const initialize = async (force: boolean = false) => {
+    // guard against not being logged in
+    await userStore.initialize()
+    if (!userStore.currentUser) {
+      // clear all data but mark as active
+      clear()
+      storeState.value = StoreState.Active
+    }
+
     // guard against initializing multiple times
     if (storeState.value !== StoreState.Initial && !force) {
       return
