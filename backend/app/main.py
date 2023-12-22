@@ -1,4 +1,5 @@
 import logging
+import os
 import pathlib
 from contextlib import asynccontextmanager
 
@@ -25,8 +26,10 @@ logging.getLogger("passlib.handlers.bcrypt").setLevel(logging.ERROR)
 
 if settings.SENTRY_DSN:  # pragma: no cover
     sentry_sdk.init(
+        environment=os.environ.get("ENVIRONMENT", "production"),
         dsn=str(settings.SENTRY_DSN),
         enable_tracing=True,
+        release=f"reev-backend@{settings.REEV_VERSION}",
     )
 
 app = FastAPI(

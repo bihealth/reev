@@ -17,9 +17,12 @@ RUN npm install
 
 FROM frontend-deps AS frontend-build
 
-COPY frontend/. .
+ARG version_file=utils/docker/empty-file-dont-remove
 
-RUN npm run build
+COPY frontend/. .
+COPY ${version_file} /VERSION
+
+RUN REEV_VERSION=$(cat /VERSION) npm run build
 
 
 # ---------------------------------------------------------------------------
