@@ -131,10 +131,10 @@ const currentConflicts = computed<Conflict[]>(() => {
   if (
     acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PP3).presence === Presence.Present &&
     acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PP3).evidenceLevel ===
-      AcmgEvidenceLevel.Strong &&
+      AcmgEvidenceLevel.PathogenicStrong &&
     acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PM1).presence === Presence.Present &&
     acmgRatingStore.acmgRating.getCriteriaState(AcmgCriteria.PM1).evidenceLevel ===
-      AcmgEvidenceLevel.Strong
+      AcmgEvidenceLevel.PathogenicStrong
   ) {
     result.push(Conflict.Pp3StrongPm1Strong)
   }

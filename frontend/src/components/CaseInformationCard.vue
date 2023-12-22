@@ -146,7 +146,7 @@ watch(
                 disease genes ranked by their CADA score. Also, you will see the rank in the details
                 section of each gene.
               </p>
-              <p class="text-body-2 pb-3" v-if="caseStore.storageMode === StorageMode.Local">
+              <p v-if="caseStore.storageMode === StorageMode.Local" class="text-body-2 pb-3">
                 As you are not logged in, we will store the case information in the local browser
                 storage.
               </p>
