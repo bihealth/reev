@@ -132,6 +132,12 @@ const switchCriteria = (
       Semi-Automated Pathogenicity Prediction
     </v-card-subtitle>
     <v-card-text>
+      Classification of CNVs is based on AutoCNV
+      <a href="https://europepmc.org/article/MED/34615484" target="_blank"> (Fan et al., 2021) </a>
+      which follows the ACMG 2020 criteria
+      <a href="https://europepmc.org/article/MED/31690835" target="_blank">(Riggs et al., 2020)</a>.
+    </v-card-text>
+    <v-card-text>
       <div>
         <v-row>
           <v-col cols="3"></v-col>
@@ -159,6 +165,9 @@ const switchCriteria = (
       </div>
     </v-card-text>
     <v-card-actions>
+      <v-btn href="https://phoenix.bgi.com/autocnv/" target="_blank" prepend-icon="mdi-launch">
+        wAutoCNV
+      </v-btn>
       <v-switch
         v-model="showConflictingSections"
         color="primary"

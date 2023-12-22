@@ -40,7 +40,7 @@ const emit = defineEmits(['clearAll', 'resetToAuto'])
         prepend-icon="mdi-file-restore-outline"
         @click="emit('resetToAuto')"
       >
-        Reset to Auto
+        Reset to InterVar
       </v-btn>
       <v-btn
         href="/docs/acmg-docs"

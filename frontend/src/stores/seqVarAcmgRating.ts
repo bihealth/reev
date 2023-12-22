@@ -43,6 +43,9 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
   /** All ACMG ratings for a user. */
   const acmgRatings = ref<any>([])
 
+  /** Whether the ACMG rating could be loaded form InterVar. */
+  const acmgRatingIntervarLoaded = ref<boolean>(false)
+
   /** Status of the ACMG Rating on the server. */
   const acmgRatingStatus = ref<boolean>(false)
 
@@ -54,6 +57,8 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
     acmgRating.value = new MultiSourceAcmgCriteriaState()
     seqvar.value = null
     acmgRatings.value = []
+    acmgRatingIntervarLoaded.value = false
+    acmgRatingStatus.value = false
   }
 
   /**
@@ -131,17 +136,18 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
       }
       seqvar.value = seqvar$
       storeState.value = StoreState.Active
+      // Flag AMCG rating as coming from the server.
+      acmgRatingIntervarLoaded.value = true
     } catch (e) {
-      clearData()
-      storeState.value = StoreState.Error
-      throw new Error(`There was an error loading the ACMG data: ${e}`)
+      // In case of errors, we do not want to block the user from doing anything.
+      // We just do not set `acmgRatingIntervarLoaded` to true.
     }
 
     // Fetch the ACMG rating from the server
     try {
       const acmgSeqVarClient = new AcmgSeqVarClient()
       if (!seqvar$) {
-        throw new Error('There was an error loading the ACMG data.')
+        throw new Error('There was an error loading the ACMG data from the server.')
       }
       const acmgRatingBackend = await acmgSeqVarClient.fetchAcmgRating(
         seqvar$.chrom + ':' + seqvar$.pos + ':' + seqvar$.del + ':' + seqvar$.ins
@@ -167,7 +173,7 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
     } catch (e) {
       clearData()
       storeState.value = StoreState.Error
-      throw new Error(`There was an error loading the ACMG data: ${e}`)
+      throw new Error(`There was an error loading the ACMG data from the server: ${e}`)
     }
   }
 
@@ -244,6 +250,7 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
     acmgRating,
     acmgRatings,
     acmgRatingStatus,
+    acmgRatingIntervarLoaded,
     saveAcmgRating,
     deleteAcmgRating,
     clearData,

@@ -181,10 +181,39 @@ onMounted(async () => {
       </v-card>
     </v-card-text>
     <v-card-text v-else>
+      <p class="mb-6">
+        Classification of variants is based on InterVar
+        <a href="https://europepmc.org/article/MED/28132688" target="_blank">
+          (Li &amp; Wang, 2017)
+        </a>
+        which follows the ACMG 2015 criteria
+        <a href="https://europepmc.org/article/MED/25741868" target="_blank"
+          >(Richards et al., 2015)</a
+        >.
+      </p>
+
       <!-- Top summary sheet and server storage buttons -->
       <v-row>
         <v-col cols="3">
           <div class="d-flex flex-column">
+            <div
+              color="black"
+              variant="text"
+              class="d-block pa-3 text-center text-body-1"
+              :class="{
+                'text-success': acmgRatingStore.acmgRatingIntervarLoaded,
+                'text-error': !acmgRatingStore.acmgRatingIntervarLoaded
+              }"
+            >
+              <template v-if="acmgRatingStore.acmgRatingIntervarLoaded">
+                <v-icon>mdi-check-circle-outline</v-icon>
+                InterVar provides prediction
+              </template>
+              <template v-else>
+                <v-icon>mdi-close-circle</v-icon>
+                No InterVar prediction
+              </template>
+            </div>
             <v-btn
               color="black"
               variant="text"
@@ -346,6 +375,11 @@ onMounted(async () => {
         </v-col>
       </v-row>
     </v-card-text>
+    <v-card-actions>
+      <v-btn href="http://wintervar.wglab.org/" target="_blank" prepend-icon="mdi-launch">
+        wInterVar
+      </v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 
