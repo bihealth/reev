@@ -48,6 +48,7 @@ It provides the following features as a central resource:
     doc_queries
     doc_urls
     doc_manual
+    doc_clinvarsub
 
 .. toctree::
     :hidden:
