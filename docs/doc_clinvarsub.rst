@@ -72,29 +72,96 @@ The process is then as follows:
 ClinVar API Keys in Profile
 ---------------------------
 
-TODO
+After logging in, click "Profile" on the top right of the REEV website.
+Then, select "Orgs / Keys" menu on the left below "ClinVar Submissions".
+You will be shown the following screen.
+Here, you can find all of your organisations for which you have stored an API key in REEV.
+Most users, will not have more than one entry here.
 
-.. _doc_clinvarsub_deletion:
+.. figure:: img/clinvarsub/org-list-empty.png
+    :align: center
 
-----------------
-Variant Deletion
-----------------
+To create a new entry, click on the green "New" button on the top right.
+A modal will be shown where you can register a new organisation.
+You have to provide a label (only used for display purposes) and the ClinVar API key.
+Click "Create" to store the new entry.
 
-TODO
+.. figure:: img/clinvarsub/org-editor.png
+    :width: 50%
+    :align: center
 
-.. _doc_clinvarsub_deletion_create:
+You now have successfully registered your ClinVar API key and can start create submissions.
 
-----------------
-Variant Creation
-----------------
+.. _doc_clinvarsub_variant_novel:
 
-TODO
+-------------------
+Submit Novel Record
+-------------------
 
-.. _doc_clinvarsub_deletion_update:
+Submitting a *novel* record means that a given variant has not been submitted to ClinVar before.
+In this case, simply navigate to the given sequence or structural variant in REEV.
+Click "ClinVar Submission" in the navigation or scroll down to the corresponding box.
+
+.. figure:: img/clinvarsub/clinvarsub-novel-1.png
+    :width: 50%
+    :align: center
+
+Here, click the "Create Submission" button.
+A step by step wizard will guide you through the process.
+First, select the organisation for which you want to submit the record.
+The screenshots below show the prcoess for sequence variants but the process is the same for structural variants.
+Here, we focus on new submissions, in :ref:`doc_clinvarsub_variant_update` we will discuss updates and in :ref:`doc_clinvarsub_variant_delete` we will discuss deletions.
+Click "Next".
+
+.. figure:: img/clinvarsub/clinvarsub-novel-2.png
+    :width: 50%
+    :align: center
+
+On the next screen, you can enter the information that you want to submit.
+The most important fields are the clinical significance and the condition.
+Also, you might want to assign some HPO phenotype terms of your patient.
+When you are done, click "Next".
+
+.. figure:: img/clinvarsub/clinvarsub-novel-3.png
+    :width: 50%
+    :align: center
+
+In this screen, you can review your submission.
+In the case that you want to adjust something, click "previous" to go back.
+Otherwise, click "submit creation request" to start the submission.
+By this, you create a submission job in REEV and a request will be sent to ClinVar.
+
+.. figure:: img/clinvarsub/clinvarsub-novel-4.png
+    :width: 50%
+    :align: center
+
+This job will be shown in the following overview table.
+It can take some time for ClinVar to process your request, and updates will be shown in the table below.
+
+.. figure:: img/clinvarsub/clinvarsub-novel-5.png
+    :width: 50%
+    :align: center
+
+You can also go to your profile and the click "Submission Activity" on the left.
+You can see all of your past and current submission activity.
+
+.. figure:: img/clinvarsub/clinvarsub-list.png
+    :width: 50%
+    :align: center
+
+.. _doc_clinvarsub_variant_update:
 
 --------------
 Variant Update
 --------------
+
+TODO
+
+.. _doc_clinvarsub_variant_delete:
+
+----------------
+Variant Deletion
+----------------
 
 TODO
 
