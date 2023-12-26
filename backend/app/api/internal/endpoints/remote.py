@@ -171,3 +171,33 @@ async def cnv_acmg(request: Request):
     if backend_resp.status_code != 200:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
     return JSONResponse(backend_resp.json())
+
+
+@router.get("/pubtator3-api/{path:path}")
+async def pubtator3_api(request: Request, path: str):
+    """
+    Proxy requests to the `PubTator 3 <https://www.ncbi.nlm.nih.gov/research/pubtator3-api/>`_ backend.
+
+    :param request: request
+    :type request: :class:`fastapi.Request`
+    :param path: path to append to the backend URL
+    :type path: str
+    :return: response
+    :rtype: :class:`fastapi.responses.StreamingResponse`
+    """
+    url = request.url
+    backend_url = "https://www.ncbi.nlm.nih.gov/research/pubtator3-api/" + path
+    backend_url = backend_url + (f"?{url.query}" if url.query else "")
+    client = httpx.AsyncClient()
+    backend_req = client.build_request(
+        method=request.method,
+        url=backend_url,
+        content=await request.body(),
+    )
+    backend_resp = await client.send(backend_req, stream=True)
+    return StreamingResponse(
+        backend_resp.aiter_raw(),
+        status_code=backend_resp.status_code,
+        headers=backend_resp.headers,
+        background=BackgroundTasks([BackgroundTask(backend_resp.aclose)]),
+    )
