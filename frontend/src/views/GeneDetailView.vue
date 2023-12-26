@@ -34,6 +34,9 @@ const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails
 const PathogenicityCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/PathogenicityCard.vue')
 )
+const LiteratureCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/LiteratureCard.vue')
+)
 const ConditionsCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/ConditionsCard.vue')
 )
@@ -187,7 +190,11 @@ const SECTIONS: Section[] = [
               <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
             </div>
 
-            <div id="gene-pathogenicity">
+            <div id="gene-literature">
+              <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
+            </div>
+
+            <!-- <div id="gene-pathogenicity">
               <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
             </div>
 
@@ -214,7 +221,7 @@ const SECTIONS: Section[] = [
                 :gene-info="geneInfoStore?.geneInfo"
                 :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
               />
-            </div>
+            </div> -->
           </v-col>
         </v-row>
         <FooterDefault />
