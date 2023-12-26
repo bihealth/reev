@@ -32,9 +32,9 @@ Please note that the REEV authors are not affiliated with ClinVar, NCBI, or NIH.
 
 .. _doc_clinvarsub_overview:
 
-========
+--------
 Overview
-========
+--------
 
 Now that you have an account with REEV, access to a group account at ClinVar and your ClinVar API key (64 character long token), we can get started.
 The overall process will be as follows:
@@ -155,7 +155,9 @@ You can see all of your past and current submission activity.
 Variant Update
 --------------
 
-TODO
+Variant updates work the same as variant creations.
+However, in the first step you have to enable "I want to update/delete an existing submission and I have an SCV", enter the SCV accession, and keep the third switch as "Update Variant".
+Note that you will currently have to re-fill the data in the "Enter Data" step.
 
 .. _doc_clinvarsub_variant_delete:
 
@@ -163,13 +165,30 @@ TODO
 Variant Deletion
 ----------------
 
-TODO
+Deleting a submission is even simpler.
+In the first step, check "I want to update/delete an existing submission and I have an SCV", enter the SCV accession, and change the third switch to "Delete Variant".
+You can optionally provide a free-text reason for removing the variant submission.
 
 .. _doc_clinvarsub_commonerrors:
 
 -------------
 Common Errors
 -------------
+
+.. _doc_clinvarsub_commonerrors_invalidapikey:
+
+Invalid API Key
+===============
+
+Message
+    No valid API key provided.
+
+Explanation
+    The API key that you provided is not valid.
+    Please check that you have entered the correct key.
+
+Resolution
+    Correct the value that you provided in the REEV profile.
 
 .. _doc_clinvarsub_commonerrors_recordisnotnovel:
 
