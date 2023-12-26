@@ -1,3 +1,5 @@
+*:Zone.Identifier
+
 # Root Pipfile
 /Pipfile
 /Pipfile.lock
