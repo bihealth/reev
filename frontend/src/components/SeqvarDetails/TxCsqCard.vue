@@ -41,18 +41,22 @@ const props = defineProps<Props>()
                 <td>
                   {{ oneTxCsq.feature_id }}
                   <small> ({{ oneTxCsq.feature_biotype }}) </small>
-                  <span
+                  <v-chip
                     v-if="(oneTxCsq.feature_tag ?? []).includes('ManeSelect')"
-                    class="badge badge-primary"
+                    color="primary"
+                    rounded="xl"
+                    class="ml-3"
                   >
                     MANE Select
-                  </span>
-                  <span
+                  </v-chip>
+                  <v-chip
                     v-if="(oneTxCsq.feature_tag ?? []).includes('ManePlusClinical')"
-                    class="badge badge-secondary"
+                    color="primary"
+                    rounded="xl"
+                    class="ml-3"
                   >
                     MANE Plus Clinical
-                  </span>
+                  </v-chip>
                 </td>
                 <td>{{ (oneTxCsq.consequences ?? []).join(', ') }}</td>
                 <td>{{ oneTxCsq.hgvs_t }}</td>
