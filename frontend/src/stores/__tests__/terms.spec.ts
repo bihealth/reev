@@ -32,7 +32,7 @@ describe.concurrent('Terms Store', () => {
   })
 
   it('fetches HPO terms by name', async () => {
-    const mockHpoTerms = [{ term_id: 'HP:0000118', name: 'Phenotypic abnormality' }]
+    const mockHpoTerms = { term_id: 'HP:0000118', name: 'Phenotypic abnormality' }
     fetchMocker.mockResponseOnce(JSON.stringify({ result: mockHpoTerms }))
 
     const store = useTermsStore()
