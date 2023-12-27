@@ -32,7 +32,7 @@ describe.concurrent('Terms Store', () => {
   })
 
   it('fetches HPO terms by name', async () => {
-    const mockHpoTerms = { term_id: 'HP:0000118', name: 'Phenotypic abnormality' }
+    const mockHpoTerms = [{ term_id: 'HP:0000118', name: 'Phenotypic abnormality' }]
     fetchMocker.mockResponseOnce(JSON.stringify({ result: mockHpoTerms }))
 
     const store = useTermsStore()
@@ -43,14 +43,14 @@ describe.concurrent('Terms Store', () => {
   })
 
   it('fetches HPO term by ID', async () => {
-    const mockHpoTerm = { term_id: 'HP:0000118', name: 'Phenotypic abnormality' }
-    fetchMocker.mockResponseOnce(JSON.stringify({ result: mockHpoTerm }))
+    const mockHpoTerms = [{ term_id: 'HP:0000118', name: 'Phenotypic abnormality' }]
+    fetchMocker.mockResponseOnce(JSON.stringify({ result: mockHpoTerms }))
 
     const store = useTermsStore()
     await store.fetchHpoTerms('HP:0000118')
 
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.hpoTerms).toEqual([mockHpoTerm])
+    expect(store.hpoTerms).toEqual(mockHpoTerms)
   })
 
   it('handles error when fetching HPO terms', async () => {
