@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.4.0](https://github.com/bihealth/reev/compare/v0.3.0...v0.4.0) (2023-12-27)
+
+
+### Features
+
+* deprecation warning for PP3_strong + PM1_strong ([#324](https://github.com/bihealth/reev/issues/324)) ([#341](https://github.com/bihealth/reev/issues/341)) ([09129ae](https://github.com/bihealth/reev/commit/09129aecf631c64205022b2fae3068424f8344ed))
+* enable Sentry user feedback ([#343](https://github.com/bihealth/reev/issues/343)) ([f4af00d](https://github.com/bihealth/reev/commit/f4af00d2dbaaa8366ccd7c215b219afbf0f051ce))
+* improve HPO lookup result quality with latest viguno ([#338](https://github.com/bihealth/reev/issues/338)) ([#346](https://github.com/bihealth/reev/issues/346)) ([84d2c7b](https://github.com/bihealth/reev/commit/84d2c7ba0bf7ac72f9c5a368084ee93186a7abd4))
+* integrate with PubTator 3 API ([#312](https://github.com/bihealth/reev/issues/312)) ([#347](https://github.com/bihealth/reev/issues/347)) ([096cc85](https://github.com/bihealth/reev/commit/096cc8516bb673ca9fa06900878beb721cb277f8))
+
+
+### Bug Fixes
+
+* properly display MANE transcripts ([#293](https://github.com/bihealth/reev/issues/293)) ([#348](https://github.com/bihealth/reev/issues/348)) ([7eb5085](https://github.com/bihealth/reev/commit/7eb50855623a24628eefa87cfc3bd459fd4ab90d))
+
+
+### Reverts
+
+* disable sentry feedback again ([#344](https://github.com/bihealth/reev/issues/344)) ([50129d6](https://github.com/bihealth/reev/commit/50129d60a7c2a319fc2f849ac7d28747b338a9c7))
+
+
+### Documentation
+
+* documenting ClinVar submission feature ([#334](https://github.com/bihealth/reev/issues/334)) ([#345](https://github.com/bihealth/reev/issues/345)) ([0bdeba6](https://github.com/bihealth/reev/commit/0bdeba6f4bc74ef4008bdd2592dd98843593a2bb))
+
 ## [0.3.0](https://github.com/bihealth/reev/compare/v0.2.0...v0.3.0) (2023-12-22)
 
 
