@@ -129,7 +129,8 @@ const SECTIONS: Section[] = [
   { id: 'gene-pathogenicity', title: 'Pathogenicity' },
   { id: 'gene-conditions', title: 'Conditions' },
   { id: 'gene-expression', title: 'Expression' },
-  { id: 'gene-clinvar', title: 'ClinVar' }
+  { id: 'gene-clinvar', title: 'ClinVar' },
+  { id: 'gene-literature', title: 'Literature' }
 ]
 </script>
 
@@ -190,11 +191,7 @@ const SECTIONS: Section[] = [
               <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
             </div>
 
-            <div id="gene-literature">
-              <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
-            </div>
-
-            <!-- <div id="gene-pathogenicity">
+            <div id="gene-pathogenicity">
               <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
             </div>
 
@@ -221,7 +218,11 @@ const SECTIONS: Section[] = [
                 :gene-info="geneInfoStore?.geneInfo"
                 :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
               />
-            </div> -->
+            </div>
+
+            <div id="gene-literature">
+              <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
+            </div>
           </v-col>
         </v-row>
         <FooterDefault />

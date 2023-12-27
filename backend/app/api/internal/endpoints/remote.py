@@ -195,6 +195,8 @@ async def pubtator3_api(request: Request, path: str):
         content=await request.body(),
     )
     backend_resp = await client.send(backend_req, stream=True)
+    if "set-cookie" in backend_resp.headers:
+        backend_resp.headers.pop("set-cookie")
     return StreamingResponse(
         backend_resp.aiter_raw(),
         status_code=backend_resp.status_code,
