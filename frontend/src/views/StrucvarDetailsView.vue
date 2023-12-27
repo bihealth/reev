@@ -50,6 +50,9 @@ const GeneExpressionCard = defineAsyncComponent(
 const GeneClinvarCard = defineAsyncComponent(
   () => import('@/components/GeneDetails/ClinvarCard.vue')
 )
+const LiteratureCard = defineAsyncComponent(
+  () => import('@/components/GeneDetails/LiteratureCard.vue')
+)
 
 const StrucvarClinvarCard = defineAsyncComponent(
   () => import('@/components/StrucvarDetails/ClinvarCard.vue')
@@ -269,7 +272,8 @@ const SECTIONS: { [key: string]: Section[] } = {
     { id: 'gene-pathogenicity', title: 'Pathogenicity' },
     { id: 'gene-conditions', title: 'Conditions' },
     { id: 'gene-expression', title: 'Expression' },
-    { id: 'gene-clinvar', title: 'ClinVar' }
+    { id: 'gene-clinvar', title: 'ClinVar' },
+    { id: 'gene-literature', title: 'Literature' }
   ],
   STRUCVAR: [
     { id: 'strucvar-clinvar', title: 'ClinVar' },
@@ -417,6 +421,9 @@ const SECTIONS: { [key: string]: Section[] } = {
                   :gene-info="geneInfoStore?.geneInfo"
                   :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
                 />
+              </div>
+              <div id="gene-literature">
+                <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
               </div>
             </template>
 

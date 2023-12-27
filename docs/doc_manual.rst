@@ -51,6 +51,13 @@ Note that you can also use the "More" button on the lower right of the card to s
 
 If you have logged in and provided case specific phenotype information with HPO terms you can find the gene-to-phenotype rank (i.e. how well your case's HPO terms fit the gene's associated HPO terms) in the grey box on the right.
 
+.. _doc_manual_literature:
+
+Literature
+==========
+
+This card displays the latest ten publications in PubMed related to this gene.
+For more genes, follow the link-out to `PubTator <https://www.ncbi.nlm.nih.gov/research/pubtator3>`__.
 
 .. _doc_manual_gene_expression:
 

@@ -104,18 +104,6 @@ const summaryText = computed<string>(() => {
           </a>
         </template>
       </v-card-text>
-      <!-- <a
-              style="cursor: pointer"
-              title="go to Gene details page"
-              @click.prevent="
-                router.push({
-                  name: 'gene',
-                  params: { searchTerm: item.raw.hgnc.agr, genomeRelease: genomeRelease }
-                })
-              "
-            >
-              <v-icon>mdi-arrow-right-circle-outline</v-icon>
-            </a> -->
 
       <v-expand-transition>
         <div v-if="isExpanded">
@@ -146,6 +134,13 @@ const summaryText = computed<string>(() => {
           prepend-icon="mdi-launch"
         >
           PubMed
+        </v-btn>
+        <v-btn
+          :href="`https://www.ncbi.nlm.nih.gov/research/pubtator3/docsum?text=@GENE_${geneInfo?.hgnc?.symbol}`"
+          target="_blank"
+          prepend-icon="mdi-launch"
+        >
+          PubTator 3
         </v-btn>
         <v-btn
           :href="`https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=${geneInfo?.hgnc?.ensemblGeneId}`"

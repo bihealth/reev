@@ -16,6 +16,7 @@ import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/test-utils'
 import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
+import { usePubtatorStore } from '@/stores/pubtator'
 import GeneDetailView from '@/views/GeneDetailView.vue'
 
 const geneData = {
@@ -43,6 +44,10 @@ const makeWrapper = () => {
   geneInfoStore.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
   geneInfoStore.geneClinvar = JSON.parse(JSON.stringify(geneData.geneClinvar))
   geneInfoStore.transcripts = JSON.parse(JSON.stringify(geneData.transcripts))
+
+  const pubtatorStore = usePubtatorStore(pinia)
+  pubtatorStore.storeState = StoreState.Active
+  pubtatorStore.hgncSymbol = geneData.geneSymbol
 
   return setupMountedComponents(
     {

@@ -634,7 +634,7 @@ const onSubmitRequest = async () => {
                   class="pt-6"
                   inset
                   :hide-details="true"
-                  label="I want to update/delete with an existing submission and I have an SCV"
+                  label="I want to update/delete an existing submission and I have an SCV"
                 >
                 </v-switch>
 
