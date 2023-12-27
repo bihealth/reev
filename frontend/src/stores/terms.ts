@@ -33,10 +33,8 @@ export const useTermsStore = defineStore('terms', () => {
     try {
       // Check if query matches the pattern for HPO ID
       if (hpoIdPattern.test(query)) {
-        // Extract only the digits part if "HPO:" is present
-        const hpoId = query.replace(/^HP:/, '')
-        const response = await vigunoClient.resolveHpoTermById(hpoId)
-        hpoTerms.value = [response.result as HpoTerm]
+        const response = await vigunoClient.resolveHpoTermById(query)
+        hpoTerms.value = response.result as HpoTerm[]
       } else {
         const response = await vigunoClient.queryHpoTermsByName(query)
         hpoTerms.value = response.result.map((item: any) => item as HpoTerm)

@@ -69,8 +69,8 @@ export class VigunoClient {
     return await response.json()
   }
 
-  async queryHpoTermsByName(query: string, matchType: string = 'contains'): Promise<any> {
-    const url = `${this.apiBaseUrl}hpo/terms?name=${query}&match=${matchType}`
+  async queryHpoTermsByName(query: string): Promise<any> {
+    const url = `${this.apiBaseUrl}hpo/terms?name=${query}`
     const response = await fetch(url, {
       method: 'GET'
     })
