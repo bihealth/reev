@@ -168,7 +168,7 @@ watch(
                   :items="termsStore.omimTerms"
                   :loading="omimIsLoading"
                   label="Disease"
-                  item-title="name"
+                  :item-title="(item) => item.name"
                   :item-value="(item) => item"
                   multiple
                   chips
@@ -187,8 +187,14 @@ watch(
                   :items="termsStore.hpoTerms"
                   :loading="hpoIsLoading"
                   label="HPO Terms"
-                  item-title="name"
+                  :item-title="(item) => `${item.name} (${item.term_id})`"
                   :item-value="(item) => item"
+                  :item-props="
+                    (item) => ({
+                      subtitle: item.definition
+                    })
+                  "
+                  :no-filter="true"
                   multiple
                   chips
                   closable-chips

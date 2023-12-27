@@ -105,6 +105,7 @@ export const ZygosityLabels = new Map<Zygosity, string>([
 export interface HpoTerm {
   term_id: string
   name: string
+  definition?: string
 }
 
 /** Interface for storing one OMIM term, for storage and API. */
