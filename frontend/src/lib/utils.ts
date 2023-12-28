@@ -107,6 +107,23 @@ export const scrollToSection = async (route: RouteLocationNormalizedLoaded) => {
   }
 }
 
+/**
+ * Helper that returns the `RouteLocationRaw` for the given search term.
+ *
+ * @param searchTerm The search term to use.
+ * @param genomeBuild The genome build to use.
+ * @returns The `RouteLocationRaw` to use with a vue-router `Router`.
+ */
+export const searchTo = (searchTerm: string, genomeBuild: GenomeBuild): RouteLocationRaw => {
+  return {
+    name: 'query',
+    query: {
+      q: searchTerm,
+      genomeBuild: genomeBuild
+    }
+  }
+}
+
 /** Helper that launches a search through the router.
  *
  * @param router The {Router} to use.
@@ -118,13 +135,7 @@ export const performSearch = async (
   searchTerm: string,
   genomeBuild: GenomeBuild
 ) => {
-  router.push({
-    name: 'query',
-    query: {
-      q: searchTerm,
-      genomeBuild: genomeBuild
-    }
-  })
+  router.push(searchTo(searchTerm, genomeBuild))
 }
 
 /**
