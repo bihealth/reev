@@ -46,7 +46,7 @@ const SEQVARS_PROD: Example[] = [
     hint: 'splicing variant in SPDI notation'
   },
   {
-    query: 'NM_001267039.1(LARP7)>c.855dup',
+    query: 'NM_001267039.1(LARP7):c.855dup',
     hint: 'frameshift variant in HGVS notation'
   },
   {
