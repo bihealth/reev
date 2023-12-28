@@ -515,7 +515,7 @@ describe.concurrent('parseIscnCnv', () => {
       genomeBuild: 'grch37',
       start: 107132950,
       stop: 110427254,
-      svType: 'DUP',
+      svType: 'DEL',
       userRepr: 'GRCh37 2q12.2q13 (107132950_110427254)x1'
     })
     expect(parseIscnCnv('GRCh37 2q12.2q13(107132950_110427254)x3')).toEqual({
@@ -534,7 +534,7 @@ describe.concurrent('parseIscnCnv', () => {
       genomeBuild: 'grch37',
       start: 123,
       stop: 456,
-      svType: 'DUP',
+      svType: 'DEL',
       userRepr: 'GRCh37 Xq12.Xq13 (123_456)x1'
     })
     expect(parseIscnCnv('GRCh37 Yq12.Yq13(123_456)x2')).toEqual({
@@ -562,7 +562,7 @@ describe.concurrent('parseIscnCnv', () => {
       genomeBuild: 'grch37',
       start: 72650,
       stop: 74154,
-      svType: 'DUP',
+      svType: 'DEL',
       userRepr: 'GRCh37 7q11 (72650_74154)x1'
     })
   })

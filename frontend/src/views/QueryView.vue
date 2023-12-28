@@ -131,9 +131,11 @@ onMounted(queryExecutionOnMounted)
             </template>
             <template v-else>
               <v-card-text>
-                <div class="text-center color-grey-darken-2 font-italic">
-                  No genes found for query
-                  <span class="font-italic">{{ router.currentRoute.value.query.q }}</span>
+                <div class="text-center color-grey-darken-2">
+                  No results for query "<span class="font-italic">{{
+                    router.currentRoute.value.query.q
+                  }}</span
+                  >". Do you have a typo in your HGVS description?
                 </div>
               </v-card-text>
             </template>

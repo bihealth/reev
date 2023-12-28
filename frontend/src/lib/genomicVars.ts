@@ -422,13 +422,13 @@ export function parseIscnCnv(
 
   let svType: SvType
   if (chrom == 'Y') {
-    if (copyNumber < 2) {
+    if (copyNumber == 0) {
       svType = 'DEL'
     } else {
       svType = 'DUP'
     }
   } else {
-    if (copyNumber == 0) {
+    if (copyNumber < 2) {
       svType = 'DEL'
     } else {
       svType = 'DUP'
