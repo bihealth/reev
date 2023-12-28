@@ -103,7 +103,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     expect(exampleTerms.length).toBe(13)
   })
 
-  it('searches for example by click', async () => {
+  it('examples have correct href', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
     )
@@ -127,7 +127,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     const exampleTermsCard = wrapper.find('#examples')
     expect(exampleTermsCard.exists()).toBe(true)
     const exampleTerm = exampleTermsCard.find('.example')
-    await exampleTerm.trigger('click')
+    expect(exampleTerm.attributes().href).toEqual('/query?q=BRCA1&genomeBuild=grch37')
   })
 
   it.skip('correctly uses the router', async () => {

@@ -6,14 +6,14 @@ Implements the search bar for variants and genes.
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { type RouteLocationRaw, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import { type GenomeBuild } from '@/lib/genomeBuilds'
-import { performSearch } from '@/lib/utils'
+import { performSearch, searchTo } from '@/lib/utils'
 import { EXAMPLES, type Example } from '@/views/HomeView.c'
 
 /** The current router. */
@@ -28,10 +28,8 @@ const searchTerm = ref<string>('')
 const genomeBuild = ref<GenomeBuild>('grch37')
 
 /** Launches a search for one of the examples. */
-const performExampleSearch = (example: Example) => {
-  searchTerm.value = example.query
-  genomeBuild.value = example.genomeBuild ?? 'grch37'
-  performSearch(router, searchTerm.value, genomeBuild.value)
+const exampleSearchTo = (example: Example): RouteLocationRaw => {
+  return searchTo(example.query, example.genomeBuild ?? genomeBuild.value)
 }
 
 /** Return backgorund color for v-main based on current theme. */
@@ -110,13 +108,13 @@ const mainBackgroundColor = computed(() => {
                   </div>
                   <div class="mt-2">
                     <v-btn
-                      v-for="example in section.examples"
-                      :key="example.query"
+                      v-for="(example, idx) in section.examples"
+                      :key="idx"
                       class="mx-1 mb-1 example text-none px-2"
                       variant="text"
                       :rounded="false"
                       prepend-icon="mdi-arrow-right-circle-outline"
-                      @click="performExampleSearch(example)"
+                      :to="exampleSearchTo(example)"
                     >
                       {{ example.query }}
                       <template v-if="example.hint">({{ example.hint }})</template>
