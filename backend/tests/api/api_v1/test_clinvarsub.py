@@ -215,21 +215,22 @@ async def test_list_submissionthreads(
     :param is_owner: test case where ``client_user`` is owner or not
     :param good_query: unless ``None``, use query with or without entries
     """
+    # arrange:
     if not is_owner:
         # make thread owned by different user
         await crud.submissionthread.update(
             db_session, db_obj=submissionthread, obj_in={"submittingorg_id": uuid.uuid4()}
         )
-
-    # run the test
     if good_query is None:
         query = ""
     else:
         val = submissionthread.primary_variant_desc if good_query else "BOGUS"
         query = f"?primary_variant_desc={val}"
+    # act:
     response = client_user.get(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads{query}",
     )
+    # assert:
     assert response.status_code == 200
     pages = response.json()
     if is_owner and good_query is not False:
@@ -262,17 +263,18 @@ async def test_create_submissionthreads(
     submissionthread_create: SubmissionThreadCreate,
     is_owner: bool,
 ):
+    # arrange:
     if not is_owner:
         # make submission org owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the test
+    # act:
     response = client_user.post(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads",
         json=submissionthread_create.model_dump(mode="json"),
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {
@@ -303,13 +305,13 @@ async def test_update_submissionthreads(
     submissionthread: SubmissionThread,
     is_owner: bool,
 ):
+    # arrange:
     if not is_owner:
         # make submittingorg owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the tests
+    # act:
     response = client_user.put(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}",
         json={
@@ -318,6 +320,7 @@ async def test_update_submissionthreads(
             "status": SubmissionThreadStatus.WAITING.value,
         },
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {
@@ -348,16 +351,17 @@ async def test_read_submissionthreads(
     submissionthread: SubmissionThread,
     is_owner: bool,
 ):
+    # arrange:
     if not is_owner:
         # make submittingorg owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the tests
+    # act:
     response = client_user.get(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}",
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {
@@ -388,16 +392,17 @@ async def test_delete_submissionthreads(
     submissionthread: SubmissionThread,
     is_owner: bool,
 ):
+    # arrange:
     if not is_owner:
         # make submittingorg owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the tests
+    # act:
     response = client_user.delete(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}",
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {
@@ -434,16 +439,17 @@ async def test_list_submissionactivities(
     """
     :param is_owner: test case where ``client_user`` is owner or not
     """
+    # arrange:
     if not is_owner:
         # make submitting org owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the test
+    # act:
     response = client_user.get(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}/activities",
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {
@@ -487,17 +493,18 @@ async def test_create_submissionactivity(
     """
     :param is_owner: test case where ``client_user`` is owner or not
     """
+    # arrange:
     if not is_owner:
         # make submitting org owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the test
+    # act:
     response = client_user.post(
         f"{settings.API_V1_STR}/clinvarsub/submissionthreads/{submissionthread.id}/activities",
         json=submissionactivity_create.model_dump(mode="json"),
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {
@@ -532,13 +539,13 @@ async def test_update_submissionactivity(
     """
     :param is_owner: test case where ``client_user`` is owner or not
     """
+    # arrange:
     if not is_owner:
         # make submitting org owned by different user
         await crud.submittingorg.update(
             db_session, db_obj=submittingorg, obj_in={"owner": uuid.uuid4()}
         )
-
-    # run the test
+    # act:
     response = client_user.put(
         f"{settings.API_V1_STR}/clinvarsub/submissionactivities/{submissionactivity.id}",
         json={
@@ -550,6 +557,7 @@ async def test_update_submissionactivity(
             "response_timestamp": submissionactivity.response_timestamp,
         },
     )
+    # assert:
     if is_owner:
         assert response.status_code == 200
         assert response.json() == {

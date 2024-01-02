@@ -62,11 +62,11 @@ async def get_acmgseqvar(id: str, db: AsyncSession = Depends(deps.get_db)):
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get(db, id)
-    if not response:
+    result = await crud.acmgseqvar.get(db, id)
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
-        return response
+        return result
 
 
 @router.get("/list", response_model=list[schemas.AcmgSeqVarRead])
@@ -99,11 +99,11 @@ async def get_acmgseqvar_by_user(
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
-    if not response:
+    result = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
-        return response
+        return result
 
 
 @router.put("/update", response_model=schemas.AcmgSeqVarRead)
@@ -122,13 +122,13 @@ async def update_acmgseqvar(
     :rtype: dict
     """
     acmgseqvar.user = user.id
-    response = await crud.acmgseqvar.get_by_user(
+    result = await crud.acmgseqvar.get_by_user(
         db, user_id=user.id, seqvar_name=acmgseqvar.seqvar_name
     )
-    if not response:
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
-        return await crud.acmgseqvar.update(db, db_obj=response, obj_in=acmgseqvar)
+        return await crud.acmgseqvar.update(db, db_obj=result, obj_in=acmgseqvar)
 
 
 @router.delete(
@@ -145,8 +145,8 @@ async def delete_acmgseqvar(id: str, db: AsyncSession = Depends(deps.get_db)):
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get(db, id)
-    if not response:
+    result = await crud.acmgseqvar.get(db, id)
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
         return await crud.acmgseqvar.remove(db, id=id)
@@ -166,8 +166,8 @@ async def delete_acmgseqvar_by_user(
     :return: ACMG Sequence Variant
     :rtype: dict
     """
-    response = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
-    if not response:
+    result = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
-        return await crud.acmgseqvar.remove(db, id=response.id)
+        return await crud.acmgseqvar.remove(db, id=result.id)

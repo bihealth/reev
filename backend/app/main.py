@@ -12,6 +12,7 @@ from starlette.responses import FileResponse
 
 from app.api.api_v1.api import api_router as api_v1_router
 from app.api.internal.api import api_router as internal_router
+from app.api.internal.endpoints.remote import httpx_client_wrapper
 from app.core.config import settings
 from app.db.init_db import create_superuser
 
@@ -33,10 +34,19 @@ if settings.SENTRY_DSN:  # pragma: no cover
         traces_sample_rate=1.0,
     )
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    httpx_client_wrapper.start()
+    yield
+    await httpx_client_wrapper.stop()
+
+
 app = FastAPI(
     title="REEV",
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url=f"{settings.API_V1_STR}/docs",
+    lifespan=lifespan,
     debug=settings.DEBUG,
 )
 

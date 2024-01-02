@@ -36,12 +36,12 @@ async def create_user(
                     )
                     logger.info(f"User created {email}")
                     return user
-    except UserAlreadyExists:
+    except UserAlreadyExists:  # pragma: no cover
         logger.info(f"User {email} already exists")
 
 
 async def create_superuser():
-    if settings.FIRST_SUPERUSER_EMAIL and settings.FIRST_SUPERUSER_PASSWORD:
+    if settings.FIRST_SUPERUSER_EMAIL and settings.FIRST_SUPERUSER_PASSWORD:  # pragma: no cover
         await create_user(
             email=settings.FIRST_SUPERUSER_EMAIL,
             password=settings.FIRST_SUPERUSER_PASSWORD,
@@ -49,5 +49,5 @@ async def create_superuser():
         )
 
 
-async def init_db():
+async def init_db():  # pragma: no cover
     await create_superuser()

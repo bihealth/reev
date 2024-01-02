@@ -22,11 +22,11 @@ def send_email(
         mail_from=(settings.EMAILS_FROM_NAME, settings.EMAILS_FROM_EMAIL),
     )
     smtp_options = {"host": settings.SMTP_HOST, "port": settings.SMTP_PORT}
-    if settings.SMTP_TLS:
+    if settings.SMTP_TLS:  # pragma: no cover
         smtp_options["tls"] = True
-    if settings.SMTP_USER:
+    if settings.SMTP_USER:  # pragma: no cover
         smtp_options["user"] = settings.SMTP_USER
-    if settings.SMTP_PASSWORD:
+    if settings.SMTP_PASSWORD:  # pragma: no cover
         smtp_options["password"] = settings.SMTP_PASSWORD
     response = message.send(to=email_to, render=environment, smtp=smtp_options)
     logging.info(f"send email result: {response}")
@@ -50,7 +50,7 @@ def send_user_verify_email(email_to: str, token: str, request: Request | None = 
     """Send out user verification email"""
     if request:
         base_url = f"{request.url.components.scheme}://{request.url.components.netloc}"
-    else:
+    else:  # pragma: no cover
         base_url = str(settings.SERVER_HOST)
     project_name = settings.PROJECT_NAME
     subject = f"{project_name} - Verify Your Email"

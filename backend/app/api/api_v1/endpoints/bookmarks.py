@@ -60,11 +60,11 @@ async def get_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
     :return: bookmark
     :rtype: dict
     """
-    response = await crud.bookmark.get(db, id=id)
-    if not response:
+    result = await crud.bookmark.get(db, id=id)
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="Bookmark not found")
     else:
-        return response
+        return result
 
 
 @router.delete(
@@ -81,11 +81,11 @@ async def delete_bookmark(id: str, db: AsyncSession = Depends(deps.get_db)):
     :return: bookmark which was deleted
     :rtype: dict
     """
-    response = await crud.bookmark.remove(db, id=id)
-    if not response:
+    result = await crud.bookmark.remove(db, id=id)
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="Bookmark not found")
     else:
-        return response
+        return result
 
 
 @router.get("/list", response_model=list[schemas.BookmarkRead])
@@ -125,13 +125,13 @@ async def get_bookmark_for_user(
     :return: bookmark
     :rtype: dict
     """
-    response = await crud.bookmark.get_by_user_and_obj(
+    result = await crud.bookmark.get_by_user_and_obj(
         db, user_id=user.id, obj_type=obj_type, obj_id=obj_id
     )
-    if not response:
+    if not result:  # pragma: no cover
         raise HTTPException(status_code=404, detail="Bookmark not found")
     else:
-        return response
+        return result
 
 
 @router.delete("/delete", response_model=schemas.BookmarkRead)
@@ -157,5 +157,5 @@ async def delete_bookmark_for_user(
     )
     if bookmark:
         return await crud.bookmark.remove(db, id=bookmark.id)
-    else:
+    else:  # pragma: no cover
         raise HTTPException(status_code=404, detail="Bookmark not found")

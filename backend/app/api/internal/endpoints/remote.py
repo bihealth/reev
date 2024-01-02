@@ -1,10 +1,6 @@
 """Reverse proxies to external/remote services."""
 
-import ssl
-
 import httpx
-import requests
-import urllib3
 from fastapi import APIRouter, BackgroundTasks, Request, Response
 from fastapi.responses import JSONResponse, StreamingResponse
 from starlette.background import BackgroundTask
@@ -46,28 +42,30 @@ def default_acmg_rating() -> dict[str, bool]:
     return {k: False for k in ACMG_RATING_KEYS}
 
 
-class CustomHttpAdapter(requests.adapters.HTTPAdapter):
-    # "Transport adapter" that allows us to use custom ssl_context.
-
-    def __init__(self, ssl_context=None, **kwargs):
-        self.ssl_context = ssl_context
-        super().__init__(**kwargs)
-
-    def init_poolmanager(self, connections, maxsize, block=False):
-        self.poolmanager = urllib3.poolmanager.PoolManager(
-            num_pools=connections, maxsize=maxsize, block=block, ssl_context=self.ssl_context
-        )
-
-
-def get_legacy_session():
-    ctx = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
-    ctx.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
-    session = requests.session()
-    session.mount("https://", CustomHttpAdapter(ctx))
-    return session
-
-
 router = APIRouter()
+
+
+class HTTPXClientWrapper:
+    """Wrapper around HTTPX AsyncClient to for graceful startup/shutdown within FastAPI."""
+
+    transport: httpx.AsyncHTTPTransport | None = None
+    async_client: httpx.AsyncClient | None = None
+
+    def start(self):
+        self.transport = httpx.AsyncHTTPTransport(retries=1)
+        self.transport._pool._ssl_context.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
+        self.async_client = httpx.AsyncClient(transport=self.transport)
+
+    async def stop(self):
+        await self.async_client.aclose()
+        self.async_client = None
+
+    def __call__(self):
+        assert self.async_client is not None
+        return self.async_client
+
+
+httpx_client_wrapper = HTTPXClientWrapper()
 
 
 @router.get("/variantvalidator/{path:path}")
@@ -90,7 +88,7 @@ async def variantvalidator(request: Request, path: str):
     backend_url = "https://rest.variantvalidator.org/VariantValidator/variantvalidator/" + path
 
     backend_url = backend_url + (f"?{url.query}" if url.query else "")
-    client = httpx.AsyncClient()
+    client = httpx_client_wrapper()
     backend_req = client.build_request(
         method=request.method,
         url=backend_url,
@@ -131,7 +129,7 @@ async def acmg(request: Request):
         f"queryType=position&chr={chromosome}&pos={position}"
         f"&ref={reference}&alt={alternative}&build={build}"
     )
-    client = httpx.AsyncClient()
+    client = httpx_client_wrapper()
     backend_req = client.build_request(method="GET", url=url)
     backend_resp = await client.send(backend_req)
     if backend_resp.status_code != 200:
@@ -148,7 +146,7 @@ async def acmg(request: Request):
 async def cnv_acmg(request: Request):
     """
     Implement searching for ACMG classification for CNVs.
-    Proxy requests to the `WinterVar <http://wintervar.wglab.org/>`_ backend.
+    Proxy requests to the `wAutoCNV <https://phoenix.bgi.com/>`_ backend.
 
     :param request: request
     :type request: :class:`fastapi.Request`
@@ -164,10 +162,16 @@ async def cnv_acmg(request: Request):
     if not chromosome or not start or not end or not func:
         return Response(status_code=400, content="Missing query parameters")
 
-    backend_resp = get_legacy_session().post(
-        "https://phoenix.bgi.com/api/acit/jobs/",
+    client = httpx_client_wrapper()
+    backend_req = client.build_request(
+        method="POST",
+        url="https://phoenix.bgi.com/api/acit/jobs/",
         data={"chromosome": chromosome, "start": start, "end": end, "func": func, "error": 0},
     )
+    backend_resp = await client.send(backend_req)
+    if backend_resp.status_code != 200:
+        return Response(status_code=backend_resp.status_code, content=backend_resp.content)
+
     if backend_resp.status_code != 200:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
     return JSONResponse(backend_resp.json())
@@ -188,7 +192,8 @@ async def pubtator3_api(request: Request, path: str):
     url = request.url
     backend_url = "https://www.ncbi.nlm.nih.gov/research/pubtator3-api/" + path
     backend_url = backend_url + (f"?{url.query}" if url.query else "")
-    client = httpx.AsyncClient()
+
+    client = httpx_client_wrapper()
     backend_req = client.build_request(
         method=request.method,
         url=backend_url,
