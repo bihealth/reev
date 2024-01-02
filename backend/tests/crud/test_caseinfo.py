@@ -35,8 +35,10 @@ def case_create() -> CaseInfoCreate:
 @pytest.mark.anyio
 async def test_create_get_caseinfo(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test creating and retrieving a caseinfo."""
+    # act:
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
     stored_item = await crud.caseinfo.get(session=db_session, id=caseinfo_postcreate.id)
+    # assert:
     assert stored_item
     assert caseinfo_postcreate.id == stored_item.id
     assert caseinfo_postcreate.pseudonym == stored_item.pseudonym
@@ -54,17 +56,21 @@ async def test_create_get_caseinfo(db_session: AsyncSession, case_create: CaseIn
 @pytest.mark.anyio
 async def test_delete_caseinfo(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test deleting a caseinfo."""
+    # act:
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
+    # assert:
     await crud.caseinfo.remove(session=db_session, id=caseinfo_postcreate.id)
 
 
 @pytest.mark.anyio
 async def test_get_multi_by_user(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test retrieving multiple caseinfos by user."""
+    # act:
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
     stored_items = await crud.caseinfo.get_multi_by_user(
         session=db_session, user_id=caseinfo_postcreate.user
     )
+    # assert:
     assert stored_items
     assert len(stored_items) == 1
     assert caseinfo_postcreate.id == stored_items[0].id
@@ -83,11 +89,13 @@ async def test_get_multi_by_user(db_session: AsyncSession, case_create: CaseInfo
 @pytest.mark.anyio
 async def test_get_by_user(db_session: AsyncSession, case_create: CaseInfoCreate):
     """Test retrieving a caseinfo by user."""
+    # act:
     caseinfo_postcreate = await crud.caseinfo.create(session=db_session, obj_in=case_create)
     stored_item = await crud.caseinfo.get_by_user(
         session=db_session,
         user_id=caseinfo_postcreate.user,
     )
+    # assert:
     assert stored_item
     assert caseinfo_postcreate.id == stored_item.id
     assert caseinfo_postcreate.pseudonym == stored_item.pseudonym

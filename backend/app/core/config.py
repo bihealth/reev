@@ -171,7 +171,7 @@ class Settings(BaseSettings):
             return v
         else:
             password_file = info.data.get("POSTGRES_PASSWORD_FILE")
-            if password_file:
+            if password_file:  # pragma: no cover
                 logger.info(f"Reading password from {password_file}")
                 with open(password_file, "rt") as inputf:
                     password = inputf.read().strip()

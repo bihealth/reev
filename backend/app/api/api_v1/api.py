@@ -90,7 +90,8 @@ class OrcidOpenId(OpenID):
             base_scopes=base_scopes,
         )
 
-    async def get_id_email(self, token: str) -> Tuple[str, Optional[str]]:
+    # Note: It is OK to not epect coverage here as this integrates with upstream API.
+    async def get_id_email(self, token: str) -> Tuple[str, Optional[str]]:  # pragma: no cover
         """Custom implementation that returns the user ID and email."""
         async with self.get_httpx_client() as client:
             response_user = await client.get(
@@ -103,7 +104,7 @@ class OrcidOpenId(OpenID):
             data_user: Dict[str, Any] = response_user.json()
 
             response_record = await client.get(
-                f"https://api.sandbox.orcid.org/v3.0/{data_user['sub']}/record",
+                f"https://api.orcid.org/v3.0/{data_user['sub']}/record",
                 headers={**self.request_headers, "Authorization": f"Bearer {token}"},
             )
             if response_user.status_code >= 400:

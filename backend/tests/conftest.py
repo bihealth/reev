@@ -1,4 +1,5 @@
 import asyncio
+import enum
 import logging
 import os
 from typing import AsyncGenerator, Iterator
@@ -105,20 +106,28 @@ def non_mocked_hosts(client: TestClient) -> list[str]:
     return [client._base_url.host]
 
 
+@enum.unique
+class UserChoice(enum.Enum):
+    """Enum for test users."""
+
+    #: Anonymous user
+    NONE = "anonymous"
+    #: Regular user
+    REGULAR = "regular"
+    #: Superuser
+    SUPERUSER = "superuser"
+
+
 @pytest.fixture()
-def test_user(db_session: AsyncSession, request) -> User | None:
+def test_user(db_session: AsyncSession, request: pytest.FixtureRequest) -> User | None:
     """Create a test user and return it.
 
-    Special handling for ``request.param``:
-    If ``request.param`` is ``None``, return ``None``.
-    If ``request.param`` is ``True``, return a superuser.
-    If ``request.param`` is ``False``, return a regular user.
+    Special handling for ``request.param`` (type ``TestUser``).
     """
-    if hasattr(request, "param") and request.param is None:
-        # Return None for anonymous user tests
+    # Get the user type from the request, defaulting to regular and early return for anonymous.
+    user_choice: UserChoice = getattr(request, "param", UserChoice.REGULAR)
+    if user_choice == UserChoice.NONE:
         return None
-
-    superuser: bool = request.param if hasattr(request, "param") else False
 
     async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
         yield db_session
@@ -127,7 +136,7 @@ def test_user(db_session: AsyncSession, request) -> User | None:
         init_db.create_user(
             email="test@example.com",
             password="password123",
-            is_superuser=superuser,
+            is_superuser=user_choice == UserChoice.SUPERUSER,
             get_async_session=get_db_session,
         )
     )
@@ -135,32 +144,27 @@ def test_user(db_session: AsyncSession, request) -> User | None:
 
 
 @pytest.fixture()
-def client_user(test_user: User, request):
+def client_user(test_user: User | None, request: pytest.FixtureRequest):
     """Create a test client with a test user.
 
-    Special handling for ``request.param``:
-    If ``request.param`` is ``None``, return a client with no user.
-    If ``request.param`` is ``True``, return a client with a superuser.
-    If ``request.param`` is ``False``, return a client with a regular user.
+    Special handling for ``request.param`` (type ``TestUser``).
     """
-    superuser: bool = request.param if hasattr(request, "param") else False
+    # Get the user type from the request, defaulting to regular and early return for anonymous.
+    user: UserChoice = getattr(request, "param", UserChoice.REGULAR)
 
-    old_current_active_user = app.dependency_overrides.get(current_active_user)
     app.dependency_overrides[current_active_user] = lambda: test_user
 
     if test_user is not None:
-        old_current_active_user = app.dependency_overrides.get(current_active_user)
         app.dependency_overrides[current_active_user] = lambda: test_user
 
-        if superuser:
-            old_current_active_superuser = app.dependency_overrides.get(current_active_superuser)
+        if user == UserChoice.SUPERUSER:
             app.dependency_overrides[current_active_superuser] = lambda: test_user
 
     client = TestClient(app)
     yield client
 
     app.dependency_overrides.pop(current_active_user, None)
-    if superuser:
+    if user == UserChoice.SUPERUSER:
         app.dependency_overrides.pop(current_active_superuser, None)
 
 

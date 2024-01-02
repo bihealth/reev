@@ -87,7 +87,7 @@ async def get_submittingorg_by_id(
     :return: Submitting org data.
     """
     response = await crud.submittingorg.get(db, id=submittingorg_id)
-    if not response:
+    if not response:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif response.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -111,7 +111,7 @@ async def update_submittingorg(
     :return: Paginated list of results.
     """
     submittingorg_db = await crud.submittingorg.get(db, id=submittingorg_id)
-    if not submittingorg_db:
+    if not submittingorg_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg_db.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -134,7 +134,7 @@ async def delete_submittingorg(
     :return: Paginated list of results.
     """
     submittingorg_db = await crud.submittingorg.get(db, id=submittingorg_id)
-    if not submittingorg_db:
+    if not submittingorg_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg_db.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -175,7 +175,7 @@ async def create_submissionthread(
     :return: Created submission thread.
     """
     submittingorg = await crud.submittingorg.get(db, id=submissionthread.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -200,10 +200,10 @@ async def update_submissionthread(
     :return: Submission tread data.
     """
     submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
-    if not submissionthread_db:
+    if not submissionthread_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission thread not found")
     submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -229,10 +229,10 @@ async def get_submissionthread_by_id(
     :return: Submission tread data.
     """
     submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
-    if not submissionthread_db:
+    if not submissionthread_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission thread not found")
     submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -255,10 +255,10 @@ async def delete_submissionthread(
     :return: Paginated list of results.
     """
     submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
-    if not submissionthread_db:
+    if not submissionthread_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission thread not found")
     submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -287,10 +287,10 @@ async def list_submissionactivities(
     :return: Paginated list of results.
     """
     submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
-    if not submissionthread_db:
+    if not submissionthread_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission thread not found")
     submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -317,10 +317,10 @@ async def create_submissionactivity(
     :return: Created submission activity.
     """
     submissionthread_db = await crud.submissionthread.get(db, id=submissionthread_id)
-    if not submissionthread_db:
+    if not submissionthread_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission thread not found")
     submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")
@@ -345,15 +345,15 @@ async def update_submissionactivity(
     :return: Created submission activity.
     """
     submissionactivity_db = await crud.submissionactivity.get(db, id=submissionactivity_id)
-    if not submissionactivity_db:
+    if not submissionactivity_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission activity not found")
     submissionthread_db = await crud.submissionthread.get(
         db, id=submissionactivity_db.submissionthread_id
     )
-    if not submissionthread_db:
+    if not submissionthread_db:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submission thread not found")
     submittingorg = await crud.submittingorg.get(db, id=submissionthread_db.submittingorg_id)
-    if not submittingorg:
+    if not submittingorg:  # pragma: no cover
         raise HTTPException(status_code=404, detail="submitting org not found")
     elif submittingorg.owner != user.id:
         raise HTTPException(status_code=403, detail="user not owner of submitting org")

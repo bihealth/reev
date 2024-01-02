@@ -22,10 +22,12 @@ def adminmessage_create(faker: typing.Any) -> AdminMessageCreate:
 async def test_create_get_adminmessage(
     db_session: AsyncSession, adminmessage_create: AdminMessageCreate
 ):
+    # act:
     adminmessage_postcreate = await crud.adminmessage.create(
         session=db_session, obj_in=adminmessage_create
     )
     stored_item = await crud.adminmessage.get(session=db_session, id=adminmessage_postcreate.id)
+    # assert:
     assert stored_item
     assert adminmessage_postcreate.id == stored_item.id
     assert adminmessage_postcreate.text == stored_item.text
@@ -37,6 +39,7 @@ async def test_create_get_adminmessage(
 async def test_create_update_adminmessage(
     db_session: AsyncSession, faker: typing.Any, adminmessage_create: AdminMessageCreate
 ) -> None:
+    # act:
     adminmessage_update = AdminMessageUpdate(
         title=faker.sentence(),
     )
@@ -46,6 +49,7 @@ async def test_create_update_adminmessage(
     adminmessage_postupdate = await crud.adminmessage.update(
         session=db_session, db_obj=adminmessage_postcreate, obj_in=adminmessage_update
     )
+    # assert:
     assert adminmessage_postupdate
     assert adminmessage_postupdate.title == adminmessage_update.title
 
@@ -54,6 +58,7 @@ async def test_create_update_adminmessage(
 async def test_delete_adminmessage(
     db_session: AsyncSession, adminmessage_create: AdminMessageCreate
 ):
+    # act:
     adminmessage_postcreate = await crud.adminmessage.create(
         session=db_session, obj_in=adminmessage_create
     )
@@ -61,4 +66,5 @@ async def test_delete_adminmessage(
     adminmessage_postdelete = await crud.adminmessage.get(
         session=db_session, id=adminmessage_postcreate.id
     )
+    # assert:
     assert adminmessage_postdelete is None

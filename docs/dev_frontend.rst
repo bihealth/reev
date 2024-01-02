@@ -28,6 +28,7 @@ Consider the following structure, an example is given below.
 - define fixture data
     - put larger fixture data into ``.json`` files within the ``__tests__`` folders (will go to LFS by our ``.gitattributes`` configuration)
 - define the tests
+- use assemble, act, assert structure e.g., `as described here <http://wiki.c2.com/?AssembleActivateAssert>`__
 - use ``describe.concurrent`` to describe the tests, usually one block per ``.spec.ts`` file
 - use ``it`` to define the tests
     - use ``async () => { ... }`` only when necessary, e.g., for ``await nextTick()``
