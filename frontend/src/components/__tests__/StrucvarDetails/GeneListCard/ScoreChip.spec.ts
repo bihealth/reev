@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ScoreChip', async () => {
   it('renders the ScoreChip info with specified link', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ScoreChip, template: false },
+      { component: ScoreChip },
       {
         props: {
           value: 0,
@@ -20,7 +20,7 @@ describe.concurrent('ScoreChip', async () => {
 
   it('renders the ScoreChip info without link', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ScoreChip, template: false },
+      { component: ScoreChip },
       {
         props: {
           value: 0,

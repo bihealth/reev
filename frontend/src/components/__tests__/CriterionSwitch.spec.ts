@@ -14,7 +14,7 @@ describe.concurrent('ClinsigCard', async () => {
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
     const { wrapper } = await setupMountedComponents(
-      { component: CriterionSwitch, template: false },
+      { component: CriterionSwitch },
       {
         props: {
           acmgRating: acmgRating,
@@ -40,7 +40,7 @@ describe.concurrent('ClinsigCard', async () => {
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
     const { wrapper } = await setupMountedComponents(
-      { component: CriterionSwitch, template: false },
+      { component: CriterionSwitch },
       {
         props: {
           acmgRating: acmgRating,

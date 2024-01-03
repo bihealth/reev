@@ -11,7 +11,6 @@ import {
   StateSourceCNV
 } from '@/components/StrucvarDetails/ClinsigCard.c'
 import type { Strucvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/utils'
 
 import { StoreState } from '../misc'
 import { useStrucVarAcmgRatingStore } from '../strucVarAcmgRating'
@@ -110,7 +109,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useStrucVarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
-    store.strucvar = deepCopy(strucvarInfo)
+    store.strucvar = structuredClone(strucvarInfo)
 
     store.clearData()
 
@@ -123,7 +122,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useStrucVarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify(ExampleAutoCNVResponse))
 
-    await store.fetchAcmgRating(deepCopy(strucvarInfo))
+    await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
@@ -165,7 +164,7 @@ describe.concurrent('geneInfo Store', () => {
       expectedAcmgRating.setUserToAutoCNV()
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.strucvar).toStrictEqual(deepCopy(strucvarInfo))
+    expect(store.strucvar).toStrictEqual(structuredClone(strucvarInfo))
   })
 
   it('should fail to load data with invalid request', async () => {
@@ -174,7 +173,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useStrucVarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.fetchAcmgRating(deepCopy(strucvarInfo))
+    await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
@@ -184,7 +183,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should not load data if structure variant is the same', async () => {
     const store = useStrucVarAcmgRatingStore()
     fetchMocker.mockResponse(JSON.stringify(ExampleAutoCNVResponse))
-    await store.fetchAcmgRating(deepCopy(strucvarInfo))
+    await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
@@ -226,9 +225,9 @@ describe.concurrent('geneInfo Store', () => {
       expectedAcmgRating.setUserToAutoCNV()
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.strucvar).toStrictEqual(deepCopy(strucvarInfo))
+    expect(store.strucvar).toStrictEqual(structuredClone(strucvarInfo))
 
-    await store.fetchAcmgRating(deepCopy(strucvarInfo))
+    await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
     expect(fetchMocker.mock.calls.length).toBe(1)
   })

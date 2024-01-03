@@ -13,7 +13,7 @@ describe.concurrent('SearchBar.vue', () => {
 
   it('renders the search bar with the correct default props', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: SearchBar, template: false },
+      { component: SearchBar },
       {
         props: {
           searchTerm: 'BRCA1',
@@ -35,7 +35,7 @@ describe.concurrent('SearchBar.vue', () => {
 
   it('correctly inputs data', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: SearchBar, template: false },
+      { component: SearchBar },
       {
         props: {
           searchTerm: 'BRCA1',
@@ -63,7 +63,7 @@ describe.concurrent('SearchBar.vue', () => {
     vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
 
     const { wrapper } = await setupMountedComponents(
-      { component: SearchBar, template: false },
+      { component: SearchBar },
       {
         props: {
           searchTerm: 'BRCA1',

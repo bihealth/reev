@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest'
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { type Strucvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/utils'
 
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
@@ -17,10 +16,10 @@ const strucvarInfo: Strucvar = {
 describe.concurrent('VariantToolsCard', async () => {
   it('renders the VariantToolsCard content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantToolsCard, template: false },
+      { component: VariantToolsCard },
       {
         props: {
-          strucvar: deepCopy(strucvarInfo),
+          strucvar: structuredClone(strucvarInfo),
           genomeBuild: 'grch37'
         }
       }

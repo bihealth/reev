@@ -8,7 +8,7 @@ import ACMGCriteriaDocs from '../ACMGCriteriaDocs.vue'
 describe.concurrent('ACMGCriteriaDocs', async () => {
   it('renders the header', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGCriteriaDocs, template: true },
+      { component: ACMGCriteriaDocs },
       {
         initialStoreState: {
           misc: {
@@ -26,7 +26,7 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
 
   it('renders the main content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGCriteriaDocs, template: true },
+      { component: ACMGCriteriaDocs },
       {
         initialStoreState: {
           misc: {

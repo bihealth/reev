@@ -7,7 +7,7 @@ import { StoreState } from '@/stores/misc'
 describe.concurrent('BookmarkListItem.vue', () => {
   it('renders information with StoreState Active', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: BookmarkListItem, template: false },
+      { component: BookmarkListItem },
       {
         props: {
           type: 'seqvar',
@@ -35,7 +35,7 @@ describe.concurrent('BookmarkListItem.vue', () => {
 
   it('renders information with StoreState Error', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: BookmarkListItem, template: false },
+      { component: BookmarkListItem },
       {
         props: {
           type: 'seqvar',

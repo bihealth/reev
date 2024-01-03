@@ -22,7 +22,7 @@ describe.concurrent('BookmarksCard', async () => {
     })
     bookmarkStore.fetchBookmark = mockFetchBookmark
     const { wrapper } = await setupMountedComponents(
-      { component: BookmarksCard, template: false },
+      { component: BookmarksCard },
       {
         initialStoreState: {
           bookmarks: {

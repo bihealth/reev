@@ -7,7 +7,7 @@ const TestComponent = { template: '<template><div>Test</div></template>', __name
 describe.concurrent('Test Utils - setupMountedComponents', async () => {
   it('should mount component with template', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: TestComponent, template: true },
+      { component: TestComponent },
       { initialStoreState: { state: { count: 42 } } }
     )
 
@@ -16,7 +16,7 @@ describe.concurrent('Test Utils - setupMountedComponents', async () => {
 
   it('should mount component without template', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: TestComponent, template: false },
+      { component: TestComponent },
       { initialStoreState: { count: 42 } }
     )
 
@@ -25,7 +25,7 @@ describe.concurrent('Test Utils - setupMountedComponents', async () => {
 
   it('should mock router push method', async () => {
     const { router } = await setupMountedComponents(
-      { component: TestComponent, template: true },
+      { component: TestComponent },
       { initialStoreState: { count: 42 } }
     )
 
@@ -35,7 +35,7 @@ describe.concurrent('Test Utils - setupMountedComponents', async () => {
 
   it('should create vuetify, router, and pinia instances', async () => {
     const { wrapper, router, pinia } = await setupMountedComponents(
-      { component: TestComponent, template: true },
+      { component: TestComponent },
       { initialStoreState: { count: 42 } }
     )
 
@@ -52,7 +52,7 @@ describe.concurrent('Test Utils - setupMountedComponents', async () => {
     }
 
     const { wrapper } = await setupMountedComponents(
-      { component: TestComponent, template: false },
+      { component: TestComponent },
       { props: { message: 'Hello, Props!' } }
     )
     expect(wrapper.text()).toBe('Hello, Props!')

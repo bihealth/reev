@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('GeneDosage', async () => {
   it('renders the GeneDosage info with CLINGEN_DOSAGE_SCORE_RECESSIVE', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneDosage, template: false },
+      { component: GeneDosage },
       {
         props: {
           geneSymbol: 'BRCA1',
@@ -22,7 +22,7 @@ describe.concurrent('GeneDosage', async () => {
 
   it('renders the GeneDosage info with CLINGEN_DOSAGE_SCORE_UNKNOWN', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneDosage, template: false },
+      { component: GeneDosage },
       {
         props: {
           geneSymbol: 'BRCA1',
@@ -36,7 +36,7 @@ describe.concurrent('GeneDosage', async () => {
 
   it('renders the GeneDosage info with CLINGEN_DOSAGE_SCORE_SUFFICIENT_EVIDENCE_AVAILABLE', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneDosage, template: false },
+      { component: GeneDosage },
       {
         props: {
           geneSymbol: 'BRCA1',

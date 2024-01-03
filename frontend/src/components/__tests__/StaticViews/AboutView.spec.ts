@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('AboutView', async () => {
   it('renders the main content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: AboutView, template: true },
+      { component: AboutView },
       {
         initialStoreState: {
           misc: {

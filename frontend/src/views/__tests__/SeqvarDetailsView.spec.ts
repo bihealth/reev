@@ -24,7 +24,6 @@ import VariantValidatorCard from '@/components/SeqvarDetails/VariantValidatorCar
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
 import { useSeqVarInfoStore } from '@/stores/seqVarInfo'
@@ -56,7 +55,7 @@ const makeWrapper = () => {
   const seqvarAcmgStore = useSeqVarAcmgRatingStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
     seqvarInfoStore.storeState = StoreState.Active
-    seqvarInfoStore.seqvar = deepCopy(seqvar)
+    seqvarInfoStore.seqvar = structuredClone(seqvar)
     seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
     seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
     seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
@@ -66,7 +65,7 @@ const makeWrapper = () => {
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     seqvarAcmgStore.storeState = StoreState.Active
-    seqvarInfoStore.seqvar = deepCopy(seqvarInfo)
+    seqvarInfoStore.seqvar = structuredClone(seqvarInfo)
     seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     seqvarAcmgStore.acmgRating.setPresence(
       StateSource.InterVar,
@@ -78,17 +77,17 @@ const makeWrapper = () => {
 
   // Initial load
   seqvarInfoStore.storeState = StoreState.Active
-  seqvarInfoStore.seqvar = deepCopy(seqvarInfo)
+  seqvarInfoStore.seqvar = structuredClone(seqvarInfo)
   seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
   seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
   seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
   seqvarInfoStore.txCsq = JSON.parse(JSON.stringify(seqvarData.txCsq))
   seqvarAcmgStore.storeState = StoreState.Active
-  seqvarInfoStore.seqvar = deepCopy(seqvarInfo)
+  seqvarInfoStore.seqvar = structuredClone(seqvarInfo)
   seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
   return setupMountedComponents(
-    { component: SeqvarDetailsView, template: true },
+    { component: SeqvarDetailsView },
     {
       props: {
         searchTerm: 'chr17:43044295:G:A',
@@ -198,26 +197,25 @@ describe.concurrent('SeqvarDetailsView', async () => {
 
     const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
       seqvarAcmgStore.storeState = StoreState.Active
-      seqvarAcmgStore.seqvar = deepCopy(seqvarInfo)
+      seqvarAcmgStore.seqvar = structuredClone(seqvarInfo)
       seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
     })
     seqvarAcmgStore.fetchAcmgRating = mockRetrieveAcmgRating
 
     // Initial load
     seqvarInfoStore.storeState = StoreState.Active
-    seqvarAcmgStore.seqvar = deepCopy(seqvarInfo)
+    seqvarAcmgStore.seqvar = structuredClone(seqvarInfo)
     seqvarInfoStore.varAnnos = JSON.parse(JSON.stringify(seqvarData.varAnnos))
     seqvarInfoStore.geneInfo = JSON.parse(JSON.stringify(seqvarData.geneInfo))
     seqvarInfoStore.geneClinvar = JSON.parse(JSON.stringify(seqvarData.geneClinvar))
     seqvarInfoStore.txCsq = JSON.parse(JSON.stringify(seqvarData.txCsq))
     seqvarAcmgStore.storeState = StoreState.Active
-    seqvarAcmgStore.seqvar = deepCopy(seqvarInfo)
+    seqvarAcmgStore.seqvar = structuredClone(seqvarInfo)
     seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
     const { wrapper } = await setupMountedComponents(
       {
-        component: SeqvarDetailsView,
-        template: true
+        component: SeqvarDetailsView
       },
       {
         props: {

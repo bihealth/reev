@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('PrivacyView', async () => {
   it('renders the privacy policy link', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: PrivacyView, template: true },
+      { component: PrivacyView },
       {
         initialStoreState: {
           misc: {
@@ -23,7 +23,7 @@ describe.concurrent('PrivacyView', async () => {
 
   it('renders the main content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: PrivacyView, template: true },
+      { component: PrivacyView },
       {
         initialStoreState: {
           misc: {

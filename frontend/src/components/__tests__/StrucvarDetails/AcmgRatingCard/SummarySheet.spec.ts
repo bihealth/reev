@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('SummarySheet', async () => {
   it('renders the SummarySheet info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: SummarySheet, template: false },
+      { component: SummarySheet },
       {
         props: {
           calculatedAcmgClass: 'Pathogenic',

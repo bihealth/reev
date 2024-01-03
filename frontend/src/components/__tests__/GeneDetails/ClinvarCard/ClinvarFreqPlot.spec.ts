@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ClinVarFreqPlot', async () => {
   it('renders the ClinVarFreqPlot info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ClinVarFreqPlot, template: false },
+      { component: ClinVarFreqPlot },
       {
         props: {
           geneSymbol: 'BRCA1',

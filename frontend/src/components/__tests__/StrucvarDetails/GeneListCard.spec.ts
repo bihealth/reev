@@ -10,7 +10,7 @@ import { StoreState } from '@/stores/misc'
 describe.concurrent('GeneListCard', async () => {
   it('renders the GeneListCard table', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneListCard, template: false },
+      { component: GeneListCard },
       {
         props: {
           genesInfos: JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']])),
@@ -28,7 +28,7 @@ describe.concurrent('GeneListCard', async () => {
 
   it('shows the gene info on row click', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneListCard, template: false },
+      { component: GeneListCard },
       {
         props: {
           genesInfos: JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']])),

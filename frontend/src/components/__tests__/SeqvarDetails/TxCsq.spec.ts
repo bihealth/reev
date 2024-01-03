@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('TxCsq', async () => {
   it('renders the TxCsq info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: TxCsq, template: false },
+      { component: TxCsq },
       {
         props: {
           txCsq: BRCA1TxInfo

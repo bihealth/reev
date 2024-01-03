@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('VariantTools', async () => {
   it('renders the Variant Tools info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantTools, template: false },
+      { component: VariantTools },
       {
         props: {
           varAnnos: BRCA1VariantInfo['result']
@@ -20,7 +20,7 @@ describe.concurrent('VariantTools', async () => {
 
   it('renders the Variant Tools info with empty variance information', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantTools, template: false },
+      { component: VariantTools },
       {
         props: {
           varAnnos: undefined

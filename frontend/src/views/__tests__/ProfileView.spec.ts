@@ -18,7 +18,7 @@ const adminUser: UserData = {
 
 describe.concurrent('Profile view', async () => {
   it('renders the header', async () => {
-    const { wrapper } = await setupMountedComponents({ component: ProfileView, template: true }, {})
+    const { wrapper } = await setupMountedComponents({ component: ProfileView }, {})
 
     const header = wrapper.findComponent(PageHeader)
     expect(header.exists()).toBe(true)
@@ -26,7 +26,7 @@ describe.concurrent('Profile view', async () => {
 
   it('renders the main content if logged in', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ProfileView, template: true },
+      { component: ProfileView },
       {
         initialStoreState: {
           user: {
@@ -46,7 +46,7 @@ describe.concurrent('Profile view', async () => {
 
   it('renders the main content if not logged in', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ProfileView, template: true },
+      { component: ProfileView },
       {
         initialStoreState: {
           user: {

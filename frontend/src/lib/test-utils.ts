@@ -1,6 +1,7 @@
 import { type TestingPinia, createTestingPinia } from '@pinia/testing'
 import { type VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { vi } from 'vitest'
+import { h } from 'vue'
 import { type Router, createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
@@ -36,10 +37,12 @@ export interface MountedComponents {
  */
 export const setupMountedComponents = async (
   componentOptions: {
-    /** The component itself */
+    /** The component itself. */
     component: any
-    /** Mode of mounting */
-    template: boolean
+    /** Whether to perform shallow mounting, default: `false`. */
+    shallow?: boolean
+    /** Possibly some exceptions to stubbing. */
+    stubs?: { [key: string]: boolean }
   },
   options?: {
     /** Initial Store instances */
@@ -82,17 +85,34 @@ export const setupMountedComponents = async (
   knownComponents[componentOptions.component.__name] = componentOptions.component
 
   // Setup mounting option of component
-  const componentMount = componentOptions.template
-    ? { template: `<v-app><${componentOptions.component.__name} /></v-app>` }
-    : componentOptions.component
+  const componentMount = h(
+    components.VApp,
+    // props
+    {},
+    // children
+    () => [h(componentOptions.component, options?.props ?? {})]
+  )
 
   const wrapper = mount(componentMount, {
     query: options?.query,
-    props: options?.props,
     global: {
       plugins: [vuetify, router, options?.pinia ?? pinia],
-      components: knownComponents
-    }
+      components: knownComponents,
+      stubs: {
+        // never stub out these central components for convenience
+        VApp: false,
+        VContainer: false,
+        VList: false,
+        VListGroup: false,
+        VListChildren: false,
+        VMain: false,
+        VRow: false,
+        VCol: false,
+        // use more stubs options
+        ...(componentOptions.stubs ?? {})
+      }
+    },
+    shallow: componentOptions.shallow ?? false
   })
 
   await flushPromises()

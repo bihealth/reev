@@ -7,7 +7,7 @@ import GenomeBrowser from '../GenomeBrowser.vue'
 describe.concurrent('GenomeBrowser', async () => {
   it('renders the GenomeBrowser with the hg19 genome', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GenomeBrowser, template: false },
+      { component: GenomeBrowser },
       {
         props: {
           genomeRelease: 'grch37',
@@ -20,7 +20,7 @@ describe.concurrent('GenomeBrowser', async () => {
 
   it('renders the GenomeBrowser with the hg38 genome', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GenomeBrowser, template: false },
+      { component: GenomeBrowser },
       {
         props: {
           genomeRelease: 'grch38',

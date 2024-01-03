@@ -8,7 +8,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ConditionsCard', async () => {
   it('renders the ConditionsCard information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ConditionsCard, template: false },
+      { component: ConditionsCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100'],
@@ -24,7 +24,7 @@ describe.concurrent('ConditionsCard', async () => {
 
   it('expands the Orphanet Disorders information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ConditionsCard, template: false },
+      { component: ConditionsCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100'],
@@ -41,7 +41,7 @@ describe.concurrent('ConditionsCard', async () => {
 
   it.skip('shows numerical values for HPO terms.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ConditionsCard, template: false },
+      { component: ConditionsCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100'],
@@ -77,7 +77,7 @@ describe.concurrent('ConditionsCard', async () => {
 
   it.skip('shows links for HPO terms.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ConditionsCard, template: false },
+      { component: ConditionsCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100'],

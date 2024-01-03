@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { CaseInfoClient } from '@/api/caseinfo'
-import { MITT, deepCopy } from '@/lib/utils'
+import { MITT } from '@/lib/utils'
 import { useCadaPrioStore } from '@/stores/cadaprio'
 import { StoreState } from '@/stores/misc'
 import { Events as UserStoreEvents, useUserStore } from '@/stores/user'
@@ -195,11 +195,11 @@ export const useCaseStore = defineStore('case', () => {
   const storeState = ref<StoreState>(StoreState.Initial)
 
   /** Currently stored case information. */
-  const caseInfo = ref<Case>(deepCopy(DEFAULT_CASE_INFO))
+  const caseInfo = ref<Case>(structuredClone(DEFAULT_CASE_INFO))
 
   /** Clear all data from store. */
   const clearData = () => {
-    caseInfo.value = deepCopy(DEFAULT_CASE_INFO)
+    caseInfo.value = structuredClone(DEFAULT_CASE_INFO)
   }
 
   /** Refresh the `cadaPrioStore` when the current case's terms change. */

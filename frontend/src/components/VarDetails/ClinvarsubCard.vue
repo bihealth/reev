@@ -29,7 +29,6 @@ import { type SubmittingOrgRead } from '@/api/clinvarsub'
 import DocsLink from '@/components/DocsLink.vue'
 import ClinvarsubThreadList from '@/components/VarDetails/ClinvarsubThreadList.vue'
 import { type Seqvar, type Strucvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/utils'
 import { useClinvarsubStore } from '@/stores/clinvarsub'
 import { StoreState } from '@/stores/misc'
 import { useTermsStore } from '@/stores/terms'
@@ -132,7 +131,7 @@ const prepareModelStateDefaults: PrepareModel = {
   scv: undefined
 }
 /** Current state of preparation step. */
-const prepareModelState = ref<PrepareModel>(deepCopy(prepareModelStateDefaults))
+const prepareModelState = ref<PrepareModel>(structuredClone(prepareModelStateDefaults))
 /** Rules for the prepare model state. */
 const prepareModelRules = {
   scv: {
@@ -223,7 +222,9 @@ const createDefaultModelStateDefault: CreateUpdateModel = {
   structVarMethod: null
 }
 /** The model for the create/update data. */
-const createUpdateModelState = ref<CreateUpdateModel>(deepCopy(createDefaultModelStateDefault))
+const createUpdateModelState = ref<CreateUpdateModel>(
+  structuredClone(createDefaultModelStateDefault)
+)
 /** Rules for the prepare model state. */
 const createUpdateModelRules = {
   dateLastEvaluated: {
@@ -334,7 +335,7 @@ const constructCreateUpdatePayload = (
   prepareModel: PrepareModel,
   createUpdateModel: CreateUpdateModel
 ): SubmissionContainer => {
-  const modelCopy: CreateUpdateModel = deepCopy(createUpdateModel)
+  const modelCopy: CreateUpdateModel = structuredClone(createUpdateModel)
   let submissionVariant: SubmissionVariant
   if (props.seqvar) {
     submissionVariant = constructSeqvarVariant(props.seqvar)
@@ -407,8 +408,8 @@ const constructDeletePayload = (
 const onClickCancel = async () => {
   display.value = Display.List
   currentStep.value = 1
-  prepareModelState.value = deepCopy(prepareModelStateDefaults)
-  createUpdateModelState.value = deepCopy(createDefaultModelStateDefault)
+  prepareModelState.value = structuredClone(prepareModelStateDefaults)
+  createUpdateModelState.value = structuredClone(createDefaultModelStateDefault)
 }
 /** Handler for click on "previous". */
 const onClickPrevious = async () => {

@@ -10,7 +10,6 @@ import {
 import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import type { Strucvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useStrucVarAcmgRatingStore } from '@/stores/strucVarAcmgRating'
 
@@ -69,7 +68,7 @@ const makeWrapper = () => {
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
-    store.strucvar = deepCopy(strucvarInfo)
+    store.strucvar = structuredClone(strucvarInfo)
     store.acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
     store.acmgRating.setPresence(
       StateSourceCNV.AutoCNV,
@@ -80,14 +79,13 @@ const makeWrapper = () => {
   store.fetchAcmgRating = mockRetrieveAcmgRating
 
   store.storeState = StoreState.Active
-  store.strucvar = deepCopy(strucvarInfo)
+  store.strucvar = structuredClone(strucvarInfo)
   store.acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
   store.acmgRating.setPresence(StateSourceCNV.AutoCNV, AcmgCriteriaCNVLoss.Loss1A, Presence.Present)
 
   return setupMountedComponents(
     {
-      component: ClinsigCard,
-      template: true
+      component: ClinsigCard
     },
     {
       props: {

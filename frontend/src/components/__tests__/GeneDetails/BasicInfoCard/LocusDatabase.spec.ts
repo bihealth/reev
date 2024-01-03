@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('LocusDatabases', async () => {
   it('renders the LocusDatabases information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: LocusDatabases, template: false },
+      { component: LocusDatabases },
       {
         props: {
           hgnc: BRCA1GeneInfo['genes']['HGNC:1100']['hgnc']

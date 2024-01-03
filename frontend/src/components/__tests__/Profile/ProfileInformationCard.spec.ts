@@ -17,7 +17,7 @@ const adminUser: UserData = {
 describe.concurrent('ProfileInformationCard', async () => {
   it('renders the ProfileInformationCard information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ProfileInformationCard, template: false },
+      { component: ProfileInformationCard },
       {
         initialStoreState: {
           user: {
@@ -37,7 +37,7 @@ describe.concurrent('ProfileInformationCard', async () => {
 
   it('renders the ProfileInformationCard information with no user.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ProfileInformationCard, template: false },
+      { component: ProfileInformationCard },
       {
         initialStoreState: {
           user: {

@@ -42,7 +42,7 @@ const makeWrapper = () => {
   svInfoStore.genesInfos = JSON.parse(JSON.stringify([BRCA1GeneInfo['genes']['HGNC:1100']]))
 
   return setupMountedComponents(
-    { component: StrucvarDetailsView, template: false },
+    { component: StrucvarDetailsView },
     {
       props: {
         strucvarDesc: 'DEL-grch37-17-41176312-41277500'

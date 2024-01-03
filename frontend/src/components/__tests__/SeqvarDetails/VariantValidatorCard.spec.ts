@@ -5,7 +5,6 @@ import * as VariantValidatorInfo from '@/assets/__tests__/BRCA1VariantValidator.
 import VariantValidator from '@/components/SeqvarDetails/VariantValidatorCard.vue'
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/utils'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
@@ -23,10 +22,10 @@ describe.concurrent('VariantValidator', async () => {
       Promise.resolve({ ok: true, json: () => Promise.resolve(VariantValidatorInfo) })
     )
     const { wrapper } = await setupMountedComponents(
-      { component: VariantValidator, template: false },
+      { component: VariantValidator },
       {
         props: {
-          seqvar: deepCopy(seqvarInfo)
+          seqvar: structuredClone(seqvarInfo)
         }
       }
     )
@@ -48,10 +47,10 @@ describe.concurrent('VariantValidator', async () => {
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
     )
     const { wrapper } = await setupMountedComponents(
-      { component: VariantValidator, template: false },
+      { component: VariantValidator },
       {
         props: {
-          seqvar: deepCopy(seqvarInfo)
+          seqvar: structuredClone(seqvarInfo)
         }
       }
     )
@@ -73,10 +72,10 @@ describe.concurrent('VariantValidator', async () => {
       Promise.resolve({ ok: true, json: () => Promise.resolve({ foo: 'foo' }) })
     )
     const { wrapper } = await setupMountedComponents(
-      { component: VariantValidator, template: false },
+      { component: VariantValidator },
       {
         props: {
-          seqvar: deepCopy(seqvarInfo)
+          seqvar: structuredClone(seqvarInfo)
         }
       }
     )

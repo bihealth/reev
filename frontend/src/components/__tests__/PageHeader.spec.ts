@@ -28,7 +28,7 @@ describe.concurrent('PageHeader', async () => {
 
   it('renders the gene symbol and nav links', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: PageHeader, template: true },
+      { component: PageHeader },
       {
         initialStoreState: geneData
       }
@@ -47,7 +47,7 @@ describe.concurrent('PageHeader', async () => {
 
   it('renders the search bar', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: PageHeader, template: true },
+      { component: PageHeader },
       {
         initialStoreState: geneData
       }
@@ -69,7 +69,7 @@ describe.concurrent('PageHeader', async () => {
     )
 
     const { wrapper, router } = await setupMountedComponents(
-      { component: PageHeader, template: true },
+      { component: PageHeader },
       {
         initialStoreState: geneData
       }

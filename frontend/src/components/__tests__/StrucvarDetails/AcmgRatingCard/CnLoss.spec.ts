@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('CnLoss', async () => {
   it('renders the CnLoss info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: CnLoss, template: false },
+      { component: CnLoss },
       {
         props: {
           showConflictingSections: false

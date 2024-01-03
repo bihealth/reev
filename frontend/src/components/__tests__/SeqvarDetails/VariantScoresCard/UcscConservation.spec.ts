@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('VariantConservation', async () => {
   it('renders the VariantConservation info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: Conservation, template: false },
+      { component: Conservation },
       {
         props: {
           varAnnos: BRCA1VariantInfo['result']

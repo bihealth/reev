@@ -25,8 +25,7 @@ describe.concurrent('ClinvarsubSubmittingOrgsCard', async () => {
 
     // act:
     const { wrapper } = await setupMountedComponents({
-      component: ClinvarsubSubmittingOrgsCard,
-      template: false
+      component: ClinvarsubSubmittingOrgsCard
     })
 
     // assert:

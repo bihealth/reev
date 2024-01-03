@@ -8,7 +8,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('VariationLandscape', async () => {
   it('renders the VariationLandscape plot', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariationLandscape, template: false },
+      { component: VariationLandscape },
       {
         props: {
           clinvar: BRCA1Clinvar['genes']['HGNC:1100'],
