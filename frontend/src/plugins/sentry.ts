@@ -23,12 +23,10 @@ export async function setupSentry(app: App, router: Router) {
       new Sentry.BrowserTracing({
         routingInstrumentation: Sentry.vueRouterInstrumentation(router)
       }),
-      // Feedback handling not working in our server, so we disable it for now.
-      // new Sentry.Feedback(),
-      new Sentry.Replay()
-      // new Sentry.Feedback({
-      //   colorScheme: 'light'
-      // })
+      new Sentry.Replay(),
+      new Sentry.Feedback({
+        colorScheme: 'light'
+      })
     ],
     // Set tracesSampleRate to 1.0 to capture 100%
     // of transactions for performance monitoring.
