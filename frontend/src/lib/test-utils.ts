@@ -37,8 +37,12 @@ export interface MountedComponents {
  */
 export const setupMountedComponents = async (
   componentOptions: {
-    /** The component itself */
+    /** The component itself. */
     component: any
+    /** Whether to perform shallow mounting, default: `false`. */
+    shallow?: boolean
+    /** Possibly some exceptions to stubbing. */
+    stubs?: { [key: string]: boolean }
   },
   options?: {
     /** Initial Store instances */
@@ -93,8 +97,22 @@ export const setupMountedComponents = async (
     query: options?.query,
     global: {
       plugins: [vuetify, router, options?.pinia ?? pinia],
-      components: knownComponents
-    }
+      components: knownComponents,
+      stubs: {
+        // never stub out these central components for convenience
+        VApp: false,
+        VContainer: false,
+        VList: false,
+        VListGroup: false,
+        VListChildren: false,
+        VMain: false,
+        VRow: false,
+        VCol: false,
+        // use more stubs options
+        ...(componentOptions.stubs ?? {})
+      }
+    },
+    shallow: componentOptions.shallow ?? false
   })
 
   await flushPromises()
