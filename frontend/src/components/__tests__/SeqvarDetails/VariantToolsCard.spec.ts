@@ -17,7 +17,7 @@ const seqvarInfo: Seqvar = {
 describe.concurrent('VariantTools', async () => {
   it('renders the Variant Tools info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantTools, template: false },
+      { component: VariantTools },
       {
         props: {
           seqvar: seqvarInfo,
@@ -34,7 +34,7 @@ describe.concurrent('VariantTools', async () => {
 
   it('renders the Variant Tools info with empty Seqvar', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantTools, template: false },
+      { component: VariantTools },
       {
         props: {
           seqvar: undefined,

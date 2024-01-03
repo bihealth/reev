@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ExternalResources', async () => {
   it('renders the ExternalResources information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ExternalResources, template: false },
+      { component: ExternalResources },
       {
         props: {
           hgnc: BRCA1GeneInfo['genes']['HGNC:1100']['hgnc']

@@ -8,7 +8,7 @@ import CaseInformationCard from '../CaseInformationCard.vue'
 describe.concurrent('CaseInformationCard.vue', () => {
   it('renders information', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: CaseInformationCard, template: false },
+      { component: CaseInformationCard },
       {
         initialStoreState: {
           case: {

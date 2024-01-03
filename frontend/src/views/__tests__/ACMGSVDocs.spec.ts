@@ -8,7 +8,7 @@ import ACMGSVDocs from '../ACMGSVDocs.vue'
 describe.concurrent('ACMGSVDocs', async () => {
   it('renders the header', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGSVDocs, template: true },
+      { component: ACMGSVDocs },
       {
         initialStoreState: {
           misc: {
@@ -26,7 +26,7 @@ describe.concurrent('ACMGSVDocs', async () => {
 
   it('renders the main content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGSVDocs, template: true },
+      { component: ACMGSVDocs },
       {
         initialStoreState: {
           misc: {

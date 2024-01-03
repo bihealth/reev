@@ -28,7 +28,7 @@ const seqvarInfoMitochondrial = {
 describe.concurrent('Freqs', async () => {
   it('renders the Freqs info for Autosonmal Variants', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: Freqs, template: false },
+      { component: Freqs },
       {
         props: {
           seqvar: seqvarInfo,
@@ -42,7 +42,7 @@ describe.concurrent('Freqs', async () => {
 
   it('renders the Freqs info for Mitochondrial Variants', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: Freqs, template: false },
+      { component: Freqs },
       {
         props: {
           seqvar: seqvarInfoMitochondrial,

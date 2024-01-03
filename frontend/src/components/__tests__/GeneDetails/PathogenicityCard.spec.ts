@@ -8,7 +8,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('PathogenicityCard', async () => {
   it('renders the Pathogenicity information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: PathogenicityCard, template: false },
+      { component: PathogenicityCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100']

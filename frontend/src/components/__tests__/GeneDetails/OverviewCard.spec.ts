@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('OverviewCard', async () => {
   it('renders the OverviewCard information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: OverviewCard, template: false },
+      { component: OverviewCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100']
@@ -21,7 +21,7 @@ describe.concurrent('OverviewCard', async () => {
 
   it('expands the OverviewCard information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: OverviewCard, template: false },
+      { component: OverviewCard },
       {
         props: {
           geneInfo: BRCA1GeneInfo['genes']['HGNC:1100']

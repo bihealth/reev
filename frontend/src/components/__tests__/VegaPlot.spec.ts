@@ -56,7 +56,7 @@ describe.concurrent('VegaPlot', async () => {
   // DataCloneError: #<Object> could not be cloned.
   it.skip('renders the VegaPlot info', async () => {
     await setupMountedComponents(
-      { component: VegaPlot, template: false },
+      { component: VegaPlot },
       {
         props: {
           description: 'Example description',

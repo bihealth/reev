@@ -51,8 +51,7 @@ const makeWrapper = () => {
 
   return setupMountedComponents(
     {
-      component: GeneDetailView,
-      template: true
+      component: GeneDetailView
     },
     {
       props: {
@@ -186,8 +185,7 @@ describe.concurrent('GeneDetailView', async () => {
 
     const { wrapper } = await setupMountedComponents(
       {
-        component: GeneDetailView,
-        template: true
+        component: GeneDetailView
       },
       {
         props: {

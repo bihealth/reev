@@ -29,7 +29,7 @@ describe.concurrent('SeqVarACMGCard', async () => {
     })
     acmgRatingStore.listAcmgRatings = mockListAcmgRatings
     const { wrapper } = await setupMountedComponents(
-      { component: SeqVarACMGCard, template: false },
+      { component: SeqVarACMGCard },
       {
         initialStoreState: {
           seqVarAcmgRating: {
@@ -52,7 +52,7 @@ describe.concurrent('SeqVarACMGCard', async () => {
     })
     acmgRatingStore.listAcmgRatings = mockListAcmgRatings
     const { wrapper } = await setupMountedComponents(
-      { component: SeqVarACMGCard, template: false },
+      { component: SeqVarACMGCard },
       {
         initialStoreState: {
           seqVarAcmgRating: {

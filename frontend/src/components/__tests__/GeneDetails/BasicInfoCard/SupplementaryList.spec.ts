@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('SupplementaryList', async () => {
   it('renders the SupplementaryList information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: SupplementaryList, template: false },
+      { component: SupplementaryList },
       {
         props: {
           acmgSf: BRCA1GeneInfo['genes']['HGNC:1100']['acmgSf']

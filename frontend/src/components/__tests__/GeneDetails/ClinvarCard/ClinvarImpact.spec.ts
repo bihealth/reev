@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ClinvarImpact', async () => {
   it('renders the ClinvarImpact information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ClinvarImpact, template: false },
+      { component: ClinvarImpact },
       {
         props: {
           geneClinvar: BRCA1ClinVar['genes']['HGNC:1100']

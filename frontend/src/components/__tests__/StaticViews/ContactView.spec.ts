@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ContactView', async () => {
   it('renders the main content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ContactView, template: true },
+      { component: ContactView },
       {
         initialStoreState: {
           misc: {

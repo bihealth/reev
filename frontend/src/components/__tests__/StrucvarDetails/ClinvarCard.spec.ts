@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('ClinvarCard', async () => {
   it('renders the ClinvarCard info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: ClinvarCard, template: false },
+      { component: ClinvarCard },
       {
         props: {
           genomeRelease: 'grch37'

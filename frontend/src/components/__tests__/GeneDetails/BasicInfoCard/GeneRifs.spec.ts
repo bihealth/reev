@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('GeneRifs', async () => {
   it('renders the GeneRifs information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneRifs, template: false },
+      { component: GeneRifs },
       {
         props: {
           ncbi: BRCA1GeneInfo['genes']['HGNC:1100']['ncbi']

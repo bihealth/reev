@@ -7,7 +7,7 @@ import { StoreState } from '@/stores/misc'
 describe.concurrent('CaseCard', async () => {
   it('renders the CaseCard information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: CaseCard, template: false },
+      { component: CaseCard },
       {
         initialStoreState: {
           case: {
@@ -31,7 +31,7 @@ describe.concurrent('CaseCard', async () => {
 
   it('renders the CaseCard while loading', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: CaseCard, template: false },
+      { component: CaseCard },
       {
         initialStoreState: {
           case: {
@@ -53,7 +53,7 @@ describe.concurrent('CaseCard', async () => {
 
   it('renders the CaseCard with error State.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: CaseCard, template: false },
+      { component: CaseCard },
       {
         initialStoreState: {
           case: {

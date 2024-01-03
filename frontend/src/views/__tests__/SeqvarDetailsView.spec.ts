@@ -87,7 +87,7 @@ const makeWrapper = () => {
   seqvarAcmgStore.acmgRating = new MultiSourceAcmgCriteriaState()
 
   return setupMountedComponents(
-    { component: SeqvarDetailsView, template: true },
+    { component: SeqvarDetailsView },
     {
       props: {
         searchTerm: 'chr17:43044295:G:A',
@@ -215,8 +215,7 @@ describe.concurrent('SeqvarDetailsView', async () => {
 
     const { wrapper } = await setupMountedComponents(
       {
-        component: SeqvarDetailsView,
-        template: true
+        component: SeqvarDetailsView
       },
       {
         props: {

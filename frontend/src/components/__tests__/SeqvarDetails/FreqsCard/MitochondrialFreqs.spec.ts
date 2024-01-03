@@ -34,7 +34,7 @@ const seqVarInfo = {
 describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: FreqsMitochondrial, template: false },
+      { component: FreqsMitochondrial },
       {
         props: {
           seqVar: seqvarInfo,
@@ -52,7 +52,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
     const variantInfoNoHelixmtdb: any = structuredClone(seqVarInfo)
     variantInfoNoHelixmtdb.helixmtdb = {}
     const { wrapper } = await setupMountedComponents(
-      { component: FreqsMitochondrial, template: false },
+      { component: FreqsMitochondrial },
       {
         props: {
           seqVar: seqvarInfo,
@@ -70,7 +70,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
     const variantInfoNoGnomad: any = structuredClone(seqVarInfo)
     variantInfoNoGnomad['gnomad-mtdna'] = {}
     const { wrapper } = await setupMountedComponents(
-      { component: FreqsMitochondrial, template: false },
+      { component: FreqsMitochondrial },
       {
         props: {
           seqVar: seqvarInfo,
@@ -86,7 +86,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
 
   it.skip('renders the FreqsMitochondrial info with invalid data', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: FreqsMitochondrial, template: false },
+      { component: FreqsMitochondrial },
       {
         props: {
           seqVar: seqvarInfo,

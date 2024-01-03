@@ -8,7 +8,7 @@ describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ClinVar, template: false },
+      { component: ClinVar },
       {
         props: {
           clinvar: clinVarInfo
@@ -33,7 +33,7 @@ describe.concurrent('ClinVar', async () => {
     clinVarInfoStars.referenceAssertions[0].reviewStatus =
       'REVIEW_STATUS_NO_ASSERTION_CRITERIA_PROVIDED'
     const { wrapper } = await setupMountedComponents(
-      { component: ClinVar, template: false },
+      { component: ClinVar },
       {
         props: {
           clinvar: clinVarInfoStars
@@ -54,7 +54,7 @@ describe.concurrent('ClinVar', async () => {
   it('renders the ClinVar info (not found)', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ClinVar, template: false },
+      { component: ClinVar },
       {
         props: {
           clinvar: null

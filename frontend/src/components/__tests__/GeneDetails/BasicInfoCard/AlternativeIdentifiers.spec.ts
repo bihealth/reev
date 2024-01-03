@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('AlternativeIdentifiers', async () => {
   it('renders the AlternativeIdentifiers information.', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: AlternativeIdentifiers, template: false },
+      { component: AlternativeIdentifiers },
       {
         props: {
           hgnc: BRCA1GeneInfo['genes']['HGNC:1100']['hgnc']

@@ -17,7 +17,7 @@ const seqvarInfo: Seqvar = {
 describe.concurrent('FreqsAutosomal', async () => {
   it('renders the FreqsAutosomal info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: FreqsAutosomal, template: false },
+      { component: FreqsAutosomal },
       {
         props: {
           seqvar: structuredClone(seqvarInfo),
@@ -33,7 +33,7 @@ describe.concurrent('FreqsAutosomal', async () => {
 
   it('renders the FreqsAutosomal info with no data', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: FreqsAutosomal, template: false },
+      { component: FreqsAutosomal },
       {
         props: {
           seqvar: structuredClone(seqvarInfo),

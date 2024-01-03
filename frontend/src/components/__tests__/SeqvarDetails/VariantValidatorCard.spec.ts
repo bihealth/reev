@@ -22,7 +22,7 @@ describe.concurrent('VariantValidator', async () => {
       Promise.resolve({ ok: true, json: () => Promise.resolve(VariantValidatorInfo) })
     )
     const { wrapper } = await setupMountedComponents(
-      { component: VariantValidator, template: false },
+      { component: VariantValidator },
       {
         props: {
           seqvar: structuredClone(seqvarInfo)
@@ -47,7 +47,7 @@ describe.concurrent('VariantValidator', async () => {
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
     )
     const { wrapper } = await setupMountedComponents(
-      { component: VariantValidator, template: false },
+      { component: VariantValidator },
       {
         props: {
           seqvar: structuredClone(seqvarInfo)
@@ -72,7 +72,7 @@ describe.concurrent('VariantValidator', async () => {
       Promise.resolve({ ok: true, json: () => Promise.resolve({ foo: 'foo' }) })
     )
     const { wrapper } = await setupMountedComponents(
-      { component: VariantValidator, template: false },
+      { component: VariantValidator },
       {
         props: {
           seqvar: structuredClone(seqvarInfo)

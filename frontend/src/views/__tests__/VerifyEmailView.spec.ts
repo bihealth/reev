@@ -40,7 +40,7 @@ describe.concurrent('VerifyView', async () => {
   it('calls sendVerifyPost on mount', async () => {
     const token = 'mock-token'
     const { wrapper, router } = await setupMountedComponents(
-      { component: VerifyView, template: true },
+      { component: VerifyView },
       {
         query: { token }
       }
@@ -60,7 +60,7 @@ describe.concurrent('VerifyView', async () => {
     // Mock a delay in verification
     vi.useFakeTimers()
     const { wrapper } = await setupMountedComponents(
-      { component: VerifyView, template: true },
+      { component: VerifyView },
       {
         query: { token: 'mock-token' }
       }

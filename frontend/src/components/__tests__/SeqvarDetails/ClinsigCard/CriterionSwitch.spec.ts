@@ -15,7 +15,7 @@ describe.concurrent('CriterionSwitch', async () => {
     const acmgRating = new MultiSourceAcmgCriteriaState()
     acmgRating.setPresence(StateSource.User, AcmgCriteria.PM1, Presence.Present)
     const { wrapper } = await setupMountedComponents(
-      { component: CriterionSwitch, template: false },
+      { component: CriterionSwitch },
       {
         props: {
           acmgRating: acmgRating,

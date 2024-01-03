@@ -30,7 +30,7 @@ describe.concurrent('HomeView with mocked router', async () => {
 
   it('renders the header and the footer', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: HomeView, template: true },
+      { component: HomeView },
       {
         initialStoreState: {
           geneInfo: {
@@ -57,7 +57,7 @@ describe.concurrent('HomeView with mocked router', async () => {
 
   it('renders the search bar', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: HomeView, template: true },
+      { component: HomeView },
       {
         initialStoreState: {
           geneInfo: {
@@ -82,7 +82,7 @@ describe.concurrent('HomeView with mocked router', async () => {
 
   it('renders example search terms', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: HomeView, template: true },
+      { component: HomeView },
       {
         initialStoreState: {
           geneInfo: {
@@ -109,7 +109,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     )
 
     const { wrapper } = await setupMountedComponents(
-      { component: HomeView, template: true },
+      { component: HomeView },
       {
         initialStoreState: {
           geneInfo: {
@@ -136,7 +136,7 @@ describe.concurrent('HomeView with mocked router', async () => {
     )
 
     const { wrapper, router } = await setupMountedComponents(
-      { component: HomeView, template: true },
+      { component: HomeView },
       {
         initialStoreState: {
           geneInfo: {

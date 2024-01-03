@@ -16,7 +16,7 @@ const strucvarInfo: Strucvar = {
 describe.concurrent('VariantToolsCard', async () => {
   it('renders the VariantToolsCard content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: VariantToolsCard, template: false },
+      { component: VariantToolsCard },
       {
         props: {
           strucvar: structuredClone(strucvarInfo),

@@ -25,7 +25,7 @@ const adminUser: UserData = {
 describe.concurrent('UserProfileButton', () => {
   it('displays Login button without any user', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: UserProfileButton, template: true },
+      { component: UserProfileButton },
       {
         initialStoreState: {
           user: {
@@ -43,7 +43,7 @@ describe.concurrent('UserProfileButton', () => {
 
   it('displays Profile button with a user', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: UserProfileButton, template: true },
+      { component: UserProfileButton },
       {
         initialStoreState: {
           user: {
@@ -63,7 +63,7 @@ describe.concurrent('UserProfileButton', () => {
     // Note that we use an `async` test here as we need `await nextTick()` for the DOM
     // update to bubble through when updating the state property.
     const { wrapper } = await setupMountedComponents(
-      { component: UserProfileButton, template: true },
+      { component: UserProfileButton },
       {
         initialStoreState: {
           user: {

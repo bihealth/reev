@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('CadaRanking', async () => {
   it('renders the CadaRanking info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: CadaRanking, template: false },
+      { component: CadaRanking },
       {
         props: {
           hgncId: 'HGNC:1100'

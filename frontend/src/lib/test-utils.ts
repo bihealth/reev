@@ -39,8 +39,6 @@ export const setupMountedComponents = async (
   componentOptions: {
     /** The component itself */
     component: any
-    /** Mode of mounting (DEPRECATED: TO REMOVE) */
-    template: boolean
   },
   options?: {
     /** Initial Store instances */

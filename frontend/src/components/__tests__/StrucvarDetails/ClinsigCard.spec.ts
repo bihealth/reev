@@ -85,8 +85,7 @@ const makeWrapper = () => {
 
   return setupMountedComponents(
     {
-      component: ClinsigCard,
-      template: true
+      component: ClinsigCard
     },
     {
       props: {

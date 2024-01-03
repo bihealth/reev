@@ -26,8 +26,7 @@ const makeWrapper = async () => {
 
   return await setupMountedComponents(
     {
-      component: ClinsigCard,
-      template: false
+      component: ClinsigCard
     },
     {
       initialStoreState: {

@@ -18,7 +18,7 @@ describe.concurrent('BeaconNetworkCard', async () => {
   it('renders the BeaconNetwork info without iframe', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: BeaconNetwork, template: false },
+      { component: BeaconNetwork },
       {
         props: {
           seqvar: seqvarInfo
@@ -38,7 +38,7 @@ describe.concurrent('BeaconNetworkCard', async () => {
   it('correctly loads the BeaconNetwork iframe', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: BeaconNetwork, template: false },
+      { component: BeaconNetwork },
       {
         props: {
           seqvar: seqvarInfo

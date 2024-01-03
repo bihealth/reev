@@ -6,7 +6,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('TermsView', async () => {
   it('renders the terms of use content', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: TermsView, template: true },
+      { component: TermsView },
       {
         initialStoreState: {
           misc: {

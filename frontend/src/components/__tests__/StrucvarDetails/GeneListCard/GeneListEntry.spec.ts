@@ -7,7 +7,7 @@ import { setupMountedComponents } from '@/lib/test-utils'
 describe.concurrent('GeneListEntry', async () => {
   it('renders the GeneListEntry info', async () => {
     const { wrapper } = await setupMountedComponents(
-      { component: GeneListEntry, template: false },
+      { component: GeneListEntry },
       {
         props: {
           item: JSON.parse(JSON.stringify({ raw: BRCA1GeneInfo['genes']['HGNC:1100'] })),
