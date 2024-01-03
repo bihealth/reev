@@ -1,5 +1,7 @@
 """Reverse proxies to external/remote services."""
 
+import json
+
 import httpx
 from fastapi import APIRouter, BackgroundTasks, Request, Response
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -135,8 +137,13 @@ async def acmg(request: Request):
     if backend_resp.status_code != 200:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
 
+    try:
+        backend_json = backend_resp.json()
+    except json.JSONDecodeError:
+        return Response(status_code=500, content="Invalid response from InterVar backend")
+
     acmg_rating = default_acmg_rating()
-    for key, value in backend_resp.json().items():
+    for key, value in backend_json.items():
         if key.lower() in acmg_rating:
             acmg_rating[key.lower()] = value == 1
     return JSONResponse(acmg_rating)
