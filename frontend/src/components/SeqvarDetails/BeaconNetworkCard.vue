@@ -1,17 +1,26 @@
+<!--
+This component allows to trigger a query to the Beacon Network for a given variant.
+
+The query is performed using the `<iframe>` feature of `beacon-network.org`.
+-->
 <script setup lang="ts">
 import { ref } from 'vue'
 
 import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar } from '@/lib/genomicVars'
 
+/** Interface for this component's props. */
 interface Props {
   seqvar?: Seqvar
 }
 
+/** This component's props. */
 const props = defineProps<Props>()
 
-const beaconAddress = ref('')
+/** The beacon iframe address; when set the iframe is loaded. */
+const beaconAddress = ref<string>('')
 
+/** Update `beaconAddress.value` to the URL indicated by `props.seqvar`. */
 const loadBeacon = () => {
   if (!props.seqvar) {
     return

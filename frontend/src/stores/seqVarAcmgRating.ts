@@ -7,6 +7,7 @@ import { ref } from 'vue'
 
 import { AcmgSeqVarClient } from '@/api/acmgseqvar'
 import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
+import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
   AcmgCriteria,
@@ -102,17 +103,8 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
 
     // Fetch the ACMG rating from InterVar
     try {
-      const { genomeBuild, chrom, pos, del, ins } = seqvar$
-      const release = genomeBuild === 'grch37' ? 'hg19' : 'hg38'
-      const response = await fetch(
-        `${API_BASE_URL}remote/acmg/?release=${release}&chromosome=${chrom}` +
-          `&position=${pos}&reference=${del}&alternative=${ins}`,
-        { method: 'GET' }
-      )
-      if (!response.ok) {
-        throw new Error('The server responded with an error.')
-      }
-      const acmgRatingInterVarData = await response.json()
+      const client = new InterVarClient()
+      const acmgRatingInterVarData = await client.fetchAcmgRating(seqvar$)
       // Go through the data and setPresense for each criteria
       for (const [criteriaId, value] of Object.entries(acmgRatingInterVarData)) {
         // Skip pp5 and bp6 criteria as they are not used anymore

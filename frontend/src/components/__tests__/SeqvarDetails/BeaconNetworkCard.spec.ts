@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { VBtn } from 'vuetify/components'
 
 import BeaconNetwork from '@/components/SeqvarDetails/BeaconNetworkCard.vue'
 import type { Seqvar } from '@/lib/genomicVars'
@@ -13,8 +14,9 @@ const seqvarInfo: Seqvar = {
   userRepr: 'grch37-17-43044295-G-A'
 }
 
-describe.concurrent('BeaconNetwork', async () => {
-  it('renders the BeaconNetwork info', async () => {
+describe.concurrent('BeaconNetworkCard', async () => {
+  it('renders the BeaconNetwork info without iframe', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: BeaconNetwork, template: false },
       {
@@ -23,12 +25,18 @@ describe.concurrent('BeaconNetwork', async () => {
         }
       }
     )
+    // act: nothing
+    // assert:
+    // look for the search button
     expect(wrapper.text()).toContain('Query Beacon')
-    const refreshButton = wrapper.find('.mdi-cloud-search')
+    const refreshButton = wrapper.findComponent(VBtn)
     expect(refreshButton.exists()).toBe(true)
+    // no iframe yet
+    expect(wrapper.html()).not.toContain('<iframe')
   })
 
-  it('correctly loads the BeaconNetwork info', async () => {
+  it('correctly loads the BeaconNetwork iframe', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: BeaconNetwork, template: false },
       {
@@ -37,7 +45,15 @@ describe.concurrent('BeaconNetwork', async () => {
         }
       }
     )
-    const refreshButton = wrapper.find('button')
+    // act:
+    const refreshButton = wrapper.findComponent(VBtn)
     await refreshButton.trigger('click')
+    await wrapper.vm.$nextTick()
+    // assert:
+    // look for the search button
+    expect(wrapper.text()).not.toContain('Query Beacon')
+    expect(refreshButton.exists()).not.toBe(true)
+    // iframe after click
+    expect(wrapper.html()).toContain('<iframe')
   })
 })

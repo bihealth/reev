@@ -1,6 +1,7 @@
 import { type TestingPinia, createTestingPinia } from '@pinia/testing'
 import { type VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { vi } from 'vitest'
+import { h } from 'vue'
 import { type Router, createRouter, createWebHistory } from 'vue-router'
 import { createVuetify } from 'vuetify'
 import { md3 } from 'vuetify/blueprints'
@@ -38,7 +39,7 @@ export const setupMountedComponents = async (
   componentOptions: {
     /** The component itself */
     component: any
-    /** Mode of mounting */
+    /** Mode of mounting (DEPRECATED: TO REMOVE) */
     template: boolean
   },
   options?: {
@@ -82,13 +83,16 @@ export const setupMountedComponents = async (
   knownComponents[componentOptions.component.__name] = componentOptions.component
 
   // Setup mounting option of component
-  const componentMount = componentOptions.template
-    ? { template: `<v-app><${componentOptions.component.__name} /></v-app>` }
-    : componentOptions.component
+  const componentMount = h(
+    components.VApp,
+    // props
+    {},
+    // children
+    () => [h(componentOptions.component, options?.props ?? {})]
+  )
 
   const wrapper = mount(componentMount, {
     query: options?.query,
-    props: options?.props,
     global: {
       plugins: [vuetify, router, options?.pinia ?? pinia],
       components: knownComponents
