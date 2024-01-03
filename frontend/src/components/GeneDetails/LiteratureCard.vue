@@ -74,7 +74,7 @@ const extractPassageAnnotations = (passage: any): Annotation[] => {
 const extractAnnotations = (abstract: any): Annotation[] => {
   const seen: Set<string> = new Set()
   const annotations: Annotation[] = []
-  for (const passage of abstract.passages) {
+  for (const passage of abstract?.passages ?? []) {
     for (const annotation of extractPassageAnnotations(passage)) {
       if (seen.has(annotation.name ?? annotation.text ?? '')) {
         continue
@@ -223,7 +223,7 @@ watch(() => props.geneInfo?.hgnc?.symbol, loadPubTator)
                   <!-- eslint-enable -->
                 </div>
                 <div class="text-body-2 text-grey-darken-1">
-                  {{ pubtatorStore.searchResults[pmid]?.abstract.authors.join(', ') }}
+                  {{ pubtatorStore.searchResults[pmid]?.abstract?.authors.join(', ') }}
                 </div>
               </div>
               <div v-else-if="passage.infons.type === 'abstract'">
@@ -239,10 +239,10 @@ watch(() => props.geneInfo?.hgnc?.symbol, loadPubTator)
               </div>
             </div>
 
-            <div v-if="extractAnnotations(pubtatorStore.searchResults[pmid].abstract).length > 0">
+            <div v-if="extractAnnotations(pubtatorStore.searchResults[pmid]?.abstract).length > 0">
               <template
                 v-for="(annotation, idxInner) in extractAnnotations(
-                  pubtatorStore.searchResults[pmid].abstract
+                  pubtatorStore.searchResults[pmid]?.abstract
                 )"
                 :key="idxInner"
               >
