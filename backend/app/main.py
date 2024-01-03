@@ -15,6 +15,7 @@ from app.api.internal.api import api_router as internal_router
 from app.api.internal.endpoints.remote import httpx_client_wrapper
 from app.core.config import settings
 from app.db.init_db import create_superuser
+from app.db.session import engine
 
 if settings.DEBUG:
     logging.basicConfig(level=logging.DEBUG)
@@ -40,6 +41,7 @@ async def lifespan(app: FastAPI):
     httpx_client_wrapper.start()
     yield
     await httpx_client_wrapper.stop()
+    await engine.dispose()
 
 
 app = FastAPI(
