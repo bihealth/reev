@@ -6,7 +6,6 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { AcmgSeqVarClient } from '@/api/acmgseqvar'
-import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
 import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
@@ -17,8 +16,6 @@ import {
 } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-
-const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
 export interface AcmgRatingBackendCriteria {
   criteria: string

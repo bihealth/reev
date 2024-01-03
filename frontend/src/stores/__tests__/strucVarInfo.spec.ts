@@ -4,7 +4,6 @@ import createFetchMock from 'vitest-fetch-mock'
 
 import * as geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import type { Strucvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
 
@@ -37,7 +36,7 @@ describe.concurrent('svInfo Store', () => {
   it('should clear state', () => {
     const store = useStrucVarInfoStore()
     store.storeState = StoreState.Active
-    store.strucvar = deepCopy(strucvarInfo)
+    store.strucvar = structuredClone(strucvarInfo)
     store.genesInfos = JSON.parse(JSON.stringify([geneInfo['genes']['HGNC:1100']]))
 
     store.clearData()
@@ -56,7 +55,7 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify(geneInfo))
       }
     })
-    await store.loadData(deepCopy(strucvarInfo))
+    await store.loadData(structuredClone(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.strucvar).toStrictEqual(strucvarInfo)
@@ -76,7 +75,7 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-    await store.loadData(deepCopy(strucvarInfo))
+    await store.loadData(structuredClone(strucvarInfo))
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.strucvar).toBe(undefined)

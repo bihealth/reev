@@ -4,7 +4,6 @@ import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import FreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/utils'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
@@ -21,7 +20,7 @@ describe.concurrent('FreqsAutosomal', async () => {
       { component: FreqsAutosomal, template: false },
       {
         props: {
-          seqvar: deepCopy(seqvarInfo),
+          seqvar: structuredClone(seqvarInfo),
           varAnnos: BRCA1VariantInfo['result'],
           dataset: 'gnomad_exomes'
         }
@@ -37,7 +36,7 @@ describe.concurrent('FreqsAutosomal', async () => {
       { component: FreqsAutosomal, template: false },
       {
         props: {
-          seqvar: deepCopy(seqvarInfo),
+          seqvar: structuredClone(seqvarInfo),
           varAnnos: null,
           dataset: 'gnomad_genomes'
         }

@@ -5,7 +5,6 @@ import createFetchMock from 'vitest-fetch-mock'
 import * as ServerResponse from '@/assets/__tests__/ExampleAcmgSeqVarRank.json'
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import { type Seqvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/utils'
 
 import { StoreState } from '../misc'
 import { useSeqVarAcmgRatingStore } from '../seqVarAcmgRating'
@@ -70,7 +69,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useSeqVarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
-    store.seqvar = deepCopy(seqvarInfo)
+    store.seqvar = structuredClone(seqvarInfo)
 
     store.clearData()
 
@@ -90,7 +89,7 @@ describe.concurrent('geneInfo Store', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
-    await store.fetchAcmgRating(deepCopy(seqvarInfo))
+    await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
@@ -119,7 +118,7 @@ describe.concurrent('geneInfo Store', () => {
       )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
-    expect(store.seqvar).toStrictEqual(deepCopy(seqvarInfo))
+    expect(store.seqvar).toStrictEqual(structuredClone(seqvarInfo))
   })
 
   it('should fail to load data with invalid request', async () => {
@@ -128,7 +127,9 @@ describe.concurrent('geneInfo Store', () => {
     const store = useSeqVarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await expect(async () => await store.fetchAcmgRating(deepCopy(seqvarInfo))).rejects.toThrow()
+    await expect(
+      async () => await store.fetchAcmgRating(structuredClone(seqvarInfo))
+    ).rejects.toThrow()
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
@@ -145,7 +146,7 @@ describe.concurrent('geneInfo Store', () => {
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
-    await store.fetchAcmgRating(deepCopy(seqvarInfo))
+    await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
@@ -176,7 +177,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
 
-    await store.fetchAcmgRating(deepCopy(store.seqvar))
+    await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
     expect(fetchMocker.mock.calls.length).toBe(2)
   })

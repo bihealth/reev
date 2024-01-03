@@ -7,7 +7,6 @@ import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import { type Seqvar } from '@/lib/genomicVars'
-import { deepCopy } from '@/lib/utils'
 
 import { StoreState } from '../misc'
 import { useSeqVarInfoStore } from '../seqVarInfo'
@@ -44,7 +43,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should clear state', () => {
     const store = useSeqVarInfoStore()
     store.storeState = StoreState.Active
-    store.seqvar = deepCopy(seqvarInfo)
+    store.seqvar = structuredClone(seqvarInfo)
     store.varAnnos = JSON.parse(JSON.stringify(BRCA1VariantInfo))
     store.geneInfo = JSON.parse(JSON.stringify(BRCA1GeneInfo))
     store.txCsq = JSON.parse(JSON.stringify(BRCA1TxInfo))
@@ -74,7 +73,7 @@ describe.concurrent('geneInfo Store', () => {
       }
     })
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
@@ -89,7 +88,7 @@ describe.concurrent('geneInfo Store', () => {
     const store = useSeqVarInfoStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.seqvar).toBe(undefined)
@@ -118,7 +117,7 @@ describe.concurrent('geneInfo Store', () => {
       }
     })
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
@@ -151,7 +150,7 @@ describe.concurrent('geneInfo Store', () => {
       }
     })
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
@@ -179,7 +178,7 @@ describe.concurrent('geneInfo Store', () => {
       }
     })
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(console.error).toHaveBeenCalled()
     expect(console.error).toHaveBeenCalledWith(
@@ -209,7 +208,7 @@ describe.concurrent('geneInfo Store', () => {
       }
     })
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
@@ -217,7 +216,7 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.geneInfo).toEqual(BRCA1GeneInfo.genes['HGNC:1100'])
     expect(store.txCsq).toEqual(BRCA1TxInfo.result)
 
-    await store.loadData(deepCopy(seqvarInfo))
+    await store.loadData(structuredClone(seqvarInfo))
 
     expect(fetchMocker.mock.calls.length).toBe(5)
   })

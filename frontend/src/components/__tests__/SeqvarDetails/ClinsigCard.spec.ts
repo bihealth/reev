@@ -1,5 +1,5 @@
-import createFetchMock from 'vitest-fetch-mock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import createFetchMock from 'vitest-fetch-mock'
 import { nextTick } from 'vue'
 
 import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
@@ -8,7 +8,6 @@ import SummarySheet from '@/components/SeqvarDetails/ClinsigCard/SummarySheet.vu
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/test-utils'
-import { deepCopy } from '@/lib/utils'
 import { StoreState } from '@/stores/misc'
 
 const seqvarInfo: Seqvar = {
@@ -34,7 +33,7 @@ const makeWrapper = async () => {
       initialStoreState: {
         seqVarAcmgRating: {
           storeState: StoreState.Active,
-          seqvar: deepCopy(seqvarInfo),
+          seqvar: structuredClone(seqvarInfo),
           acmgRating,
           acmgRatingStatus: true
         }
