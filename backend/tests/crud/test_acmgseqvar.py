@@ -12,10 +12,11 @@ from app.schemas.acmgseqvar import (
     Presence,
     SeqVarCriteria,
 )
+from tests.conftest import ObjNames
 
 
 @pytest.fixture
-def acmgseqvar_create() -> AcmgSeqVarCreate:
+def acmgseqvar_create(obj_names: ObjNames) -> AcmgSeqVarCreate:
     """Create a AcmgSeqVarCreate object."""
     pm4 = SeqVarCriteria(
         criteria=Criteria.PM4,
@@ -28,7 +29,7 @@ def acmgseqvar_create() -> AcmgSeqVarCreate:
     )
     return AcmgSeqVarCreate(
         user=uuid.uuid4(),
-        seqvar_name="chr0:123:A:C",
+        seqvar_name=obj_names.seqvar[0],
         acmg_rank=rank,
     )
 

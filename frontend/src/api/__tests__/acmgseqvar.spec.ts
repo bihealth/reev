@@ -2,11 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import { AcmgSeqVarClient } from '@/api/acmgseqvar'
+import { SeqvarImpl } from '@/lib/genomicVars'
 import { type AcmgRatingBackend } from '@/stores/seqVarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
-const mockVariantName = 'chr0:1234:A:C'
+const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
 const mockAcmgRating: AcmgRatingBackend = {
   comment: 'exampleComment',
   criterias: [
@@ -51,7 +52,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.fetchAcmgRating(mockVariantName)
+    const result = await client.fetchAcmgRating(seqVar.toName())
 
     expect(result).toEqual(mockAcmgRating)
   })
@@ -65,7 +66,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.fetchAcmgRating(mockVariantName)
+    const result = await client.fetchAcmgRating(seqVar.toName())
 
     expect(result).toEqual({ status: 500 })
   })
@@ -74,7 +75,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.saveAcmgRating(mockVariantName, mockAcmgRating)
+    const result = await client.saveAcmgRating(seqVar.toName(), mockAcmgRating)
 
     expect(result).toEqual(mockAcmgRating)
   })
@@ -88,7 +89,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.saveAcmgRating(mockVariantName, mockAcmgRating)
+    const result = await client.saveAcmgRating(seqVar.toName(), mockAcmgRating)
 
     expect(result).toEqual({ status: 500 })
   })
@@ -97,7 +98,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.updateAcmgRating(mockVariantName, mockAcmgRating)
+    const result = await client.updateAcmgRating(seqVar.toName(), mockAcmgRating)
 
     expect(result).toEqual(mockAcmgRating)
   })
@@ -111,7 +112,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.updateAcmgRating(mockVariantName, mockAcmgRating)
+    const result = await client.updateAcmgRating(seqVar.toName(), mockAcmgRating)
 
     expect(result).toEqual({ status: 500 })
   })
@@ -120,7 +121,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify({}))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.deleteAcmgRating(mockVariantName)
+    const result = await client.deleteAcmgRating(seqVar.toName())
 
     expect(result).toEqual({})
   })
@@ -134,7 +135,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.deleteAcmgRating(mockVariantName)
+    const result = await client.deleteAcmgRating(seqVar.toName())
 
     expect(result).toEqual({ status: 500 })
   })

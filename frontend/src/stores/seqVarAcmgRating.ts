@@ -14,7 +14,7 @@ import {
   Presence,
   StateSource
 } from '@/lib/acmgSeqVar'
-import { type Seqvar } from '@/lib/genomicVars'
+import { type Seqvar, seqvarImplFromSeqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 
 export interface AcmgRatingBackendCriteria {
@@ -194,17 +194,16 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
     if (!seqvar.value) {
       throw new Error('Cannot save ACMG rating without a variant.')
     }
-    const { chrom, pos, del, ins } = seqvar.value
-    const variantName = `${chrom}:${pos}:${del}:${ins}`
+    const seqvarImpl = seqvarImplFromSeqvar(seqvar.value)
     const acmgRating = transformAcmgRating()
 
     try {
       const acmgSeqVarClient = new AcmgSeqVarClient()
-      const acmgSeqVar = await acmgSeqVarClient.fetchAcmgRating(variantName)
+      const acmgSeqVar = await acmgSeqVarClient.fetchAcmgRating(seqvarImpl.toName())
       if (acmgSeqVar && acmgSeqVar.detail !== 'ACMG Sequence Variant not found') {
-        await acmgSeqVarClient.updateAcmgRating(variantName, acmgRating)
+        await acmgSeqVarClient.updateAcmgRating(seqvarImpl.toName(), acmgRating)
       } else {
-        await acmgSeqVarClient.saveAcmgRating(variantName, acmgRating)
+        await acmgSeqVarClient.saveAcmgRating(seqvarImpl.toName(), acmgRating)
       }
       acmgRatingStatus.value = true
     } catch (e) {
@@ -222,11 +221,10 @@ export const useSeqVarAcmgRatingStore = defineStore('seqVarAcmgRating', () => {
     if (!seqvar.value) {
       throw new Error('Cannot delete ACMG rating without a variant.')
     }
-    const { chrom, pos, del, ins } = seqvar.value
-    const variantName = `${chrom}:${pos}:${del}:${ins}`
+    const seqvarImpl = seqvarImplFromSeqvar(seqvar.value)
     try {
       const acmgSeqVarClient = new AcmgSeqVarClient()
-      await acmgSeqVarClient.deleteAcmgRating(variantName)
+      await acmgSeqVarClient.deleteAcmgRating(seqvarImpl.toName())
       acmgRatingStatus.value = false
     } catch (e) {
       throw new Error(`There was an error deleting the ACMG data: ${e}`)

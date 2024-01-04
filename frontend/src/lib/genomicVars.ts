@@ -117,6 +117,54 @@ export interface Seqvar {
   userRepr: string
 }
 
+/**
+ * Implementation of the `Seqvar` interface.
+ */
+export class SeqvarImpl implements Seqvar {
+  genomeBuild: GenomeBuild
+  chrom: string
+  pos: number
+  del: string
+  ins: string
+  userRepr: string
+
+  constructor(
+    genomeBuild: GenomeBuild,
+    chrom: string,
+    pos: number,
+    del: string,
+    ins: string,
+    userRepr?: string
+  ) {
+    this.genomeBuild = genomeBuild
+    this.chrom = chrom
+    this.pos = pos
+    this.del = del
+    this.ins = ins
+    this.userRepr =
+      userRepr ?? `${this.genomeBuild}-${this.chrom}-${this.pos}-${this.del}-${this.ins}`
+  }
+
+  /** Return the "object name" to be used in the API to the backend etc. */
+  toName(): string {
+    return `${this.genomeBuild}-${this.chrom}-${this.pos}-${this.del}-${this.ins}`
+  }
+}
+
+/**
+ * Construct a `SeqvarImpl` from a `Seqvar`.
+ */
+export function seqvarImplFromSeqvar(variant: Seqvar): SeqvarImpl {
+  return new SeqvarImpl(
+    variant.genomeBuild,
+    variant.chrom,
+    variant.pos,
+    variant.del,
+    variant.ins,
+    variant.userRepr
+  )
+}
+
 /** Base class for exceptions when parsing variants. */
 export class InvalidVariant extends Error {
   constructor(message: string) {
@@ -293,6 +341,58 @@ export interface LinearStrucvar {
   copyNumber?: number
   /** The user-facing representation. */
   userRepr: string
+}
+
+/**
+ * Implementation of the `LinearStrucvar` interface.
+ */
+export class LinearStrucvarImpl implements LinearStrucvar {
+  svType: 'DEL' | 'DUP'
+  genomeBuild: GenomeBuild
+  chrom: string
+  start: number
+  stop: number
+  copyNumber?: number
+  userRepr: string
+
+  constructor(
+    svType: 'DEL' | 'DUP',
+    genomeBuild: GenomeBuild,
+    chrom: string,
+    start: number,
+    stop: number,
+    copyNumber?: number,
+    userRepr?: string
+  ) {
+    this.svType = svType
+    this.genomeBuild = genomeBuild
+    this.chrom = chrom
+    this.start = start
+    this.stop = stop
+    this.copyNumber = copyNumber
+    this.userRepr =
+      userRepr ?? `${this.svType}-${this.genomeBuild}-${this.chrom}-${this.start}-${this.stop}`
+  }
+
+  /** Return the "object name" to be used in the API to the backend etc. */
+  toName(): string {
+    return `${this.svType}-${this.genomeBuild}-${this.chrom}-${this.start}-${this.stop}`
+  }
+}
+
+/**
+ * Construct a `LinearStrucvarImpl` from a `LinearStrucvar`.
+ */
+export function linearStrucvarImplFromLinearStrucvar(variant: LinearStrucvar): LinearStrucvarImpl {
+  return new LinearStrucvarImpl(
+    variant.svType,
+    variant.genomeBuild,
+    variant.chrom,
+    variant.start,
+    variant.stop,
+    variant.copyNumber,
+    variant.userRepr
+  )
 }
 
 /** All supported structural variant types. */

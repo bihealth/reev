@@ -5,14 +5,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud
 from app.schemas.bookmark import BookmarkCreate, BookmarkTypes
+from tests.conftest import ObjNames
 
 
 @pytest.fixture
-def bookmark_create() -> BookmarkCreate:
+def bookmark_create(obj_names: ObjNames) -> BookmarkCreate:
     """Fixture for creating a bookmark."""
     return BookmarkCreate(
         obj_type=BookmarkTypes.gene,
-        obj_id=str(uuid.uuid4()),
+        obj_id=obj_names.gene[0],
         user=uuid.uuid4(),
     )
 

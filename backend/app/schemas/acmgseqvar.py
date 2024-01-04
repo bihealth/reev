@@ -3,6 +3,8 @@ from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
 
+from app.schemas.common import SeqvarName
+
 
 class Presence(str, Enum):
     Present = "Present"
@@ -63,8 +65,8 @@ class AcmgRank(BaseModel):
 
 class AcmgSeqVar(BaseModel):
     user: UUID | None = None
-    seqvar_name: str | None = None
-    acmg_rank: AcmgRank | None = None
+    seqvar_name: SeqvarName
+    acmg_rank: AcmgRank
 
 
 class AcmgSeqVarCreate(AcmgSeqVar):
