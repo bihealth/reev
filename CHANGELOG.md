@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.5.0](https://github.com/bihealth/reev/compare/v0.4.0...v0.5.0) (2024-01-04)
+
+
+### Features
+
+* cleanup front-end tests ([#355](https://github.com/bihealth/reev/issues/355)) ([#363](https://github.com/bihealth/reev/issues/363)) ([161da9e](https://github.com/bihealth/reev/commit/161da9e8e47c7cd230ca7b1d1ed2ceeab1ce6174))
+* enable user feedback after fixing it on the server ([#358](https://github.com/bihealth/reev/issues/358)) ([a6c436f](https://github.com/bihealth/reev/commit/a6c436f7fb05bd4728c94a521a8daca933507b5a))
+* improved validation for writing bookmarks etc. ([#365](https://github.com/bihealth/reev/issues/365)) ([#367](https://github.com/bihealth/reev/issues/367)) ([d6e0413](https://github.com/bihealth/reev/commit/d6e04137c1cb9d2e0161b50ef1f839b97d613d96))
+* more robust backend code and cleanup in tests ([#354](https://github.com/bihealth/reev/issues/354)) ([#356](https://github.com/bihealth/reev/issues/356)) ([5306196](https://github.com/bihealth/reev/commit/530619650757a48cbc82903b91494ca664006b1c))
+* using links for home view examples ([#349](https://github.com/bihealth/reev/issues/349)) ([#353](https://github.com/bihealth/reev/issues/353)) ([e0e73ee](https://github.com/bihealth/reev/commit/e0e73ee31e9a68d448218427a8ed83d47bf144d6))
+
+
+### Bug Fixes
+
+* more robust handling of async sessions ([#360](https://github.com/bihealth/reev/issues/360)) ([#361](https://github.com/bihealth/reev/issues/361)) ([86510e8](https://github.com/bihealth/reev/commit/86510e8dbcee899813766a494df0ad01b8ad5a62))
+* more robust handling of InterVar result ([#362](https://github.com/bihealth/reev/issues/362)) ([25c825f](https://github.com/bihealth/reev/commit/25c825ff20583d998336278b4000fb505905cd4b))
+* properly handle undefined pubtator abstracts ([#359](https://github.com/bihealth/reev/issues/359)) ([970b400](https://github.com/bihealth/reev/commit/970b400d8bf760b058cfb8acc2a5c50c42c6c1b3))
+* resolve issues with example links on home view ([#350](https://github.com/bihealth/reev/issues/350)) ([#351](https://github.com/bihealth/reev/issues/351)) ([714bcea](https://github.com/bihealth/reev/commit/714bcea733db4706ca2a6c6a4b5e5df8afc047b2))
+
 ## [0.4.0](https://github.com/bihealth/reev/compare/v0.3.0...v0.4.0) (2023-12-27)
 
 
