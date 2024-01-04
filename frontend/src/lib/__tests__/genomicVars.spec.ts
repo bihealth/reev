@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 
 import { GENOME_BUILD_LABELS, type GenomeBuild } from '@/lib/genomeBuilds'
 import {
+  type LinearStrucvar,
+  LinearStrucvarImpl,
   REGEX_CANONICAL_SPDI,
   REGEX_CLINVAR_ID,
   REGEX_CNV_COLON,
@@ -10,10 +12,14 @@ import {
   REGEX_DBSNP_ID,
   REGEX_GNOMAD_VARIANT,
   REGEX_RELAXED_SPDI,
+  type Seqvar,
+  SeqvarImpl,
+  linearStrucvarImplFromLinearStrucvar,
   parseCanonicalSpdiSeqvar,
   parseIscnCnv,
   parseSeparatedSeqvar,
   parseSeparatedStrucvar,
+  seqvarImplFromSeqvar,
   validateSeqvar
 } from '@/lib/genomicVars'
 
@@ -575,5 +581,45 @@ describe.concurrent('parseIscnCnv', () => {
 
   it('should throw on differing positions', () => {
     expect(() => parseSeparatedStrucvar('arr[GRCh37] 2q12.3q13 (100_200)x1')).toThrow()
+  })
+})
+
+describe.concurrent('SeqvarImpl', () => {
+  it('should work properly with toName()', () => {
+    const variant = new SeqvarImpl('grch37', '1', 100, 'AT', 'TG')
+    expect(variant.toName()).toEqual('grch37-1-100-AT-TG')
+  })
+
+  it('should be constructable with seqvarImplFromSeqvar()', () => {
+    const seqvar: Seqvar = {
+      genomeBuild: 'grch37',
+      chrom: '1',
+      pos: 100,
+      del: 'AT',
+      ins: 'TG',
+      userRepr: 'TEST'
+    }
+    const variant = seqvarImplFromSeqvar(seqvar)
+    expect(variant).toEqual(seqvar)
+  })
+})
+
+describe.concurrent('LinearStrucvarImpl', () => {
+  it('should work properly with toName()', () => {
+    const variant = new LinearStrucvarImpl('DEL', 'grch37', '1', 100, 200, undefined, undefined)
+    expect(variant.toName()).toEqual('DEL-grch37-1-100-200')
+  })
+
+  it('should be constructable with seqvarImplFromSeqvar()', () => {
+    const strucvar: LinearStrucvar = {
+      svType: 'DEL',
+      genomeBuild: 'grch37',
+      chrom: '1',
+      start: 100,
+      stop: 200,
+      userRepr: 'DEL-grch37-1-100-200'
+    }
+    const variant = linearStrucvarImplFromLinearStrucvar(strucvar)
+    expect(variant).toEqual(strucvar)
   })
 })

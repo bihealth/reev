@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.models.user import User
-from tests.conftest import UserChoice
+from tests.conftest import ObjNames, UserChoice
 
 #: Shortcut for regular user.
 REGUL = UserChoice.REGULAR
@@ -20,9 +20,9 @@ SUPER = UserChoice.SUPERUSER
 
 
 @pytest.fixture
-def acmgseqvar_post_data() -> dict[str, Any]:
+def acmgseqvar_post_data(obj_names: ObjNames) -> dict[str, Any]:
     return {
-        "seqvar_name": "chr0:123:A:C",
+        "seqvar_name": obj_names.seqvar[0],
         "acmg_rank": {
             "comment": "No comment",
             "criterias": [
@@ -104,6 +104,7 @@ async def test_create_acmgseqvar_invalid_data(
     db_session: AsyncSession,
     client_user: TestClient,
     test_user: User,
+    obj_names: ObjNames,
 ):
     """Test creating a acmgseqvar with invalid data."""
     _ = db_session
@@ -111,7 +112,7 @@ async def test_create_acmgseqvar_invalid_data(
     # act:
     response = client_user.post(
         f"{settings.API_V1_STR}/acmgseqvar/create",
-        json={"seqvar_name": "chr0:123:A:C", "acmg_rank": {"comment": "No comment"}},
+        json={"seqvar_name": obj_names.seqvar[0], "acmg_rank": {"comment": "No comment"}},
     )
     # assert:
     assert response.status_code == 422
@@ -526,9 +527,9 @@ async def test_get_no_acmgseqvar(
 
 
 @pytest.fixture
-def acmgseqvar_update_data() -> dict[str, Any]:
+def acmgseqvar_update_data(obj_names: ObjNames) -> dict[str, Any]:
     return {
-        "seqvar_name": "chr0:123:A:C",
+        "seqvar_name": obj_names.seqvar[0],
         "acmg_rank": {
             "comment": "Update",
             "criterias": [

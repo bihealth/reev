@@ -13,6 +13,7 @@ from app.models.clinvarsub import (
     SubmissionThreadStatus,
     VariantPresence,
 )
+from app.schemas.common import VarName
 
 
 class SubmittingOrgBase(BaseModel):
@@ -59,7 +60,7 @@ class SubmissionThreadCreate(SubmissionThreadBase):
     model_config = ConfigDict(from_attributes=True)
 
     submittingorg_id: UUID
-    primary_variant_desc: str
+    primary_variant_desc: VarName
 
 
 class SubmissionThreadUpdate(SubmissionThreadBase):
@@ -73,7 +74,7 @@ class SubmissionThreadInDbBase(SubmissionThreadBase):
     created: datetime.datetime
     updated: datetime.datetime
     submittingorg_id: UUID
-    primary_variant_desc: str
+    primary_variant_desc: VarName
 
 
 class SubmissionThreadRead(SubmissionThreadInDbBase):

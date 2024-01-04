@@ -4,6 +4,7 @@ import logging
 import os
 from typing import AsyncGenerator, Iterator
 
+import pydantic
 import pytest
 from _pytest.monkeypatch import MonkeyPatch
 from fastapi.testclient import TestClient
@@ -41,6 +42,39 @@ from tests.utils import FREEZE_TIME, FREEZE_TIME_1SEC
 
 if os.environ.get("SQLALCHEMY_DEBUG", "0") == "1":
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
+
+
+class ObjNames(pydantic.BaseModel):
+    """Namespace of valid object identifiers."""
+
+    #: Valid seqvar identifiers.
+    seqvar: list[str]
+    #: Valid strucvar identifiers.
+    strucvar: list[str]
+    #: Valid gene identifiers.
+    gene: list[str]
+
+
+@pytest.fixture
+def obj_names() -> ObjNames:
+    """Fixture with a namespace of valid object identifiers."""
+    return ObjNames(
+        seqvar=[
+            "grch37-1-123-A-C",
+            "grch37-1-123-AT-A",
+            "grch37-1-123-A-AT",
+        ],
+        strucvar=[
+            "DEL-grch37-1-123-456",
+            "DUP-grch37-1-123-456",
+            "DEL-grch38-1-123-456",
+        ],
+        gene=[
+            "HGNC:1100",
+            "HGNC:123",
+            "HGNC:456",
+        ],
+    )
 
 
 @pytest.fixture

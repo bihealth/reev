@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.models.user import User
-from tests.conftest import UserChoice
+from tests.conftest import ObjNames, UserChoice
 
 #: Shortcut for regular user.
 REGUL = UserChoice.REGULAR
@@ -21,53 +21,51 @@ SUPER = UserChoice.SUPERUSER
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
 async def test_create_bookmark(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test creating a bookmark as regular user."""
     _ = db_session
     # act:
     response = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     # assert:
     assert response.status_code == 200
     assert response.json()["obj_type"] == "gene"
-    assert response.json()["obj_id"] == "exampleGene"
+    assert response.json()["obj_id"] == obj_names.gene[0]
     assert response.json()["user"] == str(test_user.id)
 
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_create_bookmark_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test creating a bookmark as superuser."""
     _ = db_session
     # act:
     response = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     # assert:
     assert response.status_code == 200
     assert response.json()["obj_type"] == "gene"
-    assert response.json()["obj_id"] == "exampleGene"
+    assert response.json()["obj_id"] == obj_names.gene[0]
     assert response.json()["user"] == str(test_user.id)
 
 
 @pytest.mark.anyio
-async def test_create_bookmark_anon(db_session: AsyncSession, client: TestClient):
+async def test_create_bookmark_anon(
+    db_session: AsyncSession, client: TestClient, obj_names: ObjNames
+):
     """Test creating a bookmark as anonymous user."""
     _ = db_session
     # act:
     response = client.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     # assert:
     assert response.status_code == 401
@@ -77,9 +75,7 @@ async def test_create_bookmark_anon(db_session: AsyncSession, client: TestClient
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_create_bookmark_invalid_data(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test creating a bookmark with invalid data."""
     _ = db_session
@@ -101,9 +97,7 @@ async def test_create_bookmark_invalid_data(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
 async def test_list_all_bookmarks(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test listing all bookmarks as regular user."""
     _ = db_session
@@ -112,7 +106,7 @@ async def test_list_all_bookmarks(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_list_all = client_user.get(f"{settings.API_V1_STR}/bookmarks/list-all/")
     # assert:s
@@ -124,9 +118,7 @@ async def test_list_all_bookmarks(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_list_all_bookmarks_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test listing all bookmarks as superuser."""
     _ = db_session
@@ -134,14 +126,14 @@ async def test_list_all_bookmarks_superuser(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_list_all = client_user.get(f"{settings.API_V1_STR}/bookmarks/list-all/")
     # assert:
     assert response_create.status_code == 200
     assert response_list_all.status_code == 200
     assert response_list_all.json()[0]["obj_type"] == "gene"
-    assert response_list_all.json()[0]["obj_id"] == "exampleGene"
+    assert response_list_all.json()[0]["obj_id"] == obj_names.gene[0]
     assert response_list_all.json()[0]["user"] == str(test_user.id)
 
 
@@ -181,9 +173,7 @@ async def test_list_all_no_bookmarks(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
 async def test_get_bookmark_by_id(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test getting a bookmark by id as regular user."""
     _ = db_session
@@ -199,9 +189,7 @@ async def test_get_bookmark_by_id(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_get_bookmark_by_id_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test getting a bookmark by id as superuser."""
     _ = db_session
@@ -210,7 +198,7 @@ async def test_get_bookmark_by_id_superuser(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     # Get the bookmark id
     response_list = client_user.get(f"{settings.API_V1_STR}/bookmarks/list/")
@@ -264,9 +252,7 @@ async def test_get_bookmark_by_invalid_id(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
 async def test_delete_bookmark_by_id(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test deleting a bookmark by id as regular user."""
     _ = db_session
@@ -275,7 +261,7 @@ async def test_delete_bookmark_by_id(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     # Get the bookmark id
     response_list = client_user.get(f"{settings.API_V1_STR}/bookmarks/list/")
@@ -296,9 +282,7 @@ async def test_delete_bookmark_by_id(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_delete_bookmark_by_id_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test deleting a bookmark by id as superuser."""
     _ = db_session
@@ -307,7 +291,7 @@ async def test_delete_bookmark_by_id_superuser(
     # Create a bookmark
     response_creat = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     # Get the bookmark id
     response_list = client_user.get(f"{settings.API_V1_STR}/bookmarks/list/")
@@ -366,9 +350,7 @@ async def test_delete_bookmark_by_invalid_id(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
 async def test_list_bookmarks(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test listing bookmarks as regular user."""
     _ = db_session
@@ -376,23 +358,21 @@ async def test_list_bookmarks(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_list = client_user.get(f"{settings.API_V1_STR}/bookmarks/list/")
     # assert:
     assert response_create.status_code == 200
     assert response_list.status_code == 200
     assert response_list.json()[0]["obj_type"] == "gene"
-    assert response_list.json()[0]["obj_id"] == "exampleGene"
+    assert response_list.json()[0]["obj_id"] == obj_names.gene[0]
     assert response_list.json()[0]["user"] == str(test_user.id)
 
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_list_bookmarks_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test listing bookmarks as superuser."""
     _ = db_session
@@ -400,14 +380,14 @@ async def test_list_bookmarks_superuser(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_list = client_user.get(f"{settings.API_V1_STR}/bookmarks/list/")
     # assert:
     assert response_create.status_code == 200
     assert response_list.status_code == 200
     assert response_list.json()[0]["obj_type"] == "gene"
-    assert response_list.json()[0]["obj_id"] == "exampleGene"
+    assert response_list.json()[0]["obj_id"] == obj_names.gene[0]
     assert response_list.json()[0]["user"] == str(test_user.id)
 
 
@@ -448,6 +428,7 @@ async def test_get_bookmark(
     db_session: AsyncSession,
     client_user: TestClient,
     test_user: User,
+    obj_names: ObjNames,
 ):
     """Test getting a bookmark as regular user."""
     _ = db_session
@@ -455,25 +436,23 @@ async def test_get_bookmark(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_get = client_user.get(
-        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response_create.status_code == 200
     assert response_get.status_code == 200
     assert response_get.json()["obj_type"] == "gene"
-    assert response_get.json()["obj_id"] == "exampleGene"
+    assert response_get.json()["obj_id"] == obj_names.gene[0]
     assert response_get.json()["user"] == str(test_user.id)
 
 
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_get_bookmark_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test getting a bookmark as superuser."""
     _ = db_session
@@ -481,25 +460,27 @@ async def test_get_bookmark_superuser(
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_get = client_user.get(
-        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response_create.status_code == 200
     assert response_get.status_code == 200
     assert response_get.json()["obj_type"] == "gene"
-    assert response_get.json()["obj_id"] == "exampleGene"
+    assert response_get.json()["obj_id"] == obj_names.gene[0]
     assert response_get.json()["user"] == str(test_user.id)
 
 
 @pytest.mark.anyio
-async def test_get_bookmark_anon(db_session: AsyncSession, client: TestClient):
+async def test_get_bookmark_anon(db_session: AsyncSession, client: TestClient, obj_names: ObjNames):
     """Test getting a bookmark as anonymous user."""
     _ = db_session
     # act:
-    response = client.get(f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id=exampleGene")
+    response = client.get(
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
+    )
     # assert:
     assert response.status_code == 401
     assert response.json() == {"detail": "Unauthorized"}
@@ -508,14 +489,13 @@ async def test_get_bookmark_anon(db_session: AsyncSession, client: TestClient):
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_get_no_bookmarks(
-    db_session: AsyncSession,
-    client_user: TestClient,
+    db_session: AsyncSession, client_user: TestClient, obj_names: ObjNames
 ):
     """Test getting a bookmark as superuser when there are no bookmarks."""
     _ = db_session
     # act:
     response = client_user.get(
-        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response.status_code == 404
@@ -533,21 +513,23 @@ async def test_delete_bookmark(
     db_session: AsyncSession,
     client_user: TestClient,
     test_user: User,
+    obj_names: ObjNames,
 ):
     """Test deleting a bookmark as regular user."""
     _ = db_session
+    _ = test_user
     # act:
     # Create a bookmark
-    response_create = client_user.post(
+    _response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_delete = client_user.delete(
-        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # Verify that the bookmark is indeed deleted
     response_get = client_user.get(
-        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response_delete.status_code == 200
@@ -558,24 +540,23 @@ async def test_delete_bookmark(
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_delete_bookmark_superuser(
-    db_session: AsyncSession,
-    client_user: TestClient,
-    test_user: User,
+    db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
     """Test deleting a bookmark as superuser."""
     _ = db_session
+    _ = test_user
     # act:
     # Create a bookmark
     response_create = client_user.post(
         f"{settings.API_V1_STR}/bookmarks/create/",
-        json={"obj_type": "gene", "obj_id": "exampleGene"},
+        json={"obj_type": "gene", "obj_id": obj_names.gene[0]},
     )
     response_delete = client_user.delete(
-        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # Verify that the bookmark is indeed deleted
     response_get = client_user.get(
-        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response_delete.status_code == 200
@@ -584,12 +565,14 @@ async def test_delete_bookmark_superuser(
 
 
 @pytest.mark.anyio
-async def test_delete_bookmark_anon(db_session: AsyncSession, client: TestClient):
+async def test_delete_bookmark_anon(
+    db_session: AsyncSession, client: TestClient, obj_names: ObjNames
+):
     """Test deleting a bookmark as anonymous user."""
     _ = db_session
     # act:
     response = client.delete(
-        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response.status_code == 401
@@ -599,14 +582,13 @@ async def test_delete_bookmark_anon(db_session: AsyncSession, client: TestClient
 @pytest.mark.anyio
 @pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
 async def test_delete_no_bookmarks(
-    db_session: AsyncSession,
-    client_user: TestClient,
+    db_session: AsyncSession, client_user: TestClient, obj_names: ObjNames
 ):
     """Test deleting a bookmark as superuser when there are no bookmarks."""
     _ = db_session
     # act:
     response = client_user.delete(
-        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id=exampleGene"
+        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
     assert response.status_code == 404
