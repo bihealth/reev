@@ -709,7 +709,7 @@ An initial prediction is fist done using the general purpose pathogenicity predi
 
 Then, for splicing the following is done.
 
-- If a SpliceAI prediction is performed then it is interpreted according to :footsite:t:`walker:2023`.
+- If a SpliceAI prediction is performed then it is interpreted according to :footcite:t:`walker:2023`.
 
 The highest-scoring variant is used for the final prediction.
 

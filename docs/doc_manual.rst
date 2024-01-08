@@ -147,7 +147,7 @@ Clinical Significance
 This card shows the semi-automated pathogenicity prediction based on InterVar.
 Using the buttons on the left you can...
 - Hide/show the terse mode of ACMG criteria display.
-  On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
+On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
 - hide/show failed criteria (not set to "active" by the little switch displayed left to every criterion)
 
 Tipp: you can also see are brief description of every ACMG criterion in the terse mode when moving your curser of the little "i" in the upper right corner of every ACMG criterion box.
