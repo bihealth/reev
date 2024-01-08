@@ -32,7 +32,7 @@ click==8.1.7
 click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.3.0
-clinvar-this==0.14.6
+clinvar-this
 colorama==0.4.6
 comm==0.2.0
 coverage==7.4.0
@@ -64,8 +64,8 @@ gevent==23.9.1
 greenlet==3.0.3
 h11==0.14.0
 httpcore==1.0.2
-httpx==0.25.2
-httpx-oauth==0.13.1
+httpx
+httpx-oauth
 idna==3.6
 imagesize==1.4.1
 iniconfig==2.0.0
@@ -139,7 +139,7 @@ pytest-anyio==0.0.0
 pytest-asyncio==0.21.1
 pytest-cov==4.1.0
 pytest-faker==2.0.0
-pytest-httpx==0.28.0
+pytest-httpx
 pytest-mock==3.12.0
 pytest-subprocess==1.5.0
 pytest-xdist==3.5.0
