@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 import VegaPlot from '../VegaPlot.vue'
 

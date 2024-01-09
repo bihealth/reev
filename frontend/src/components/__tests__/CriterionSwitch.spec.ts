@@ -3,8 +3,8 @@ import { nextTick } from 'vue'
 import { VSwitch } from 'vuetify/components'
 
 import CriterionSwitch from '@/components/SeqvarDetails/ClinsigCard/CriterionSwitch.vue'
-import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqvar'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ClinsigCard', async () => {
   it('renders the AcmgRating info', async () => {

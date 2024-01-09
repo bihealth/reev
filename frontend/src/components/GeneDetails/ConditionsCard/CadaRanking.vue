@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 
 import { roundIt, separateIt } from '@/lib/utils'
-import { type GeneRank, useCadaPrioStore } from '@/stores/cadaprio'
+import { type GeneRank, useCadaPrioStore } from '@/stores/cadaPrio'
 import { useCaseStore } from '@/stores/case'
 
 export interface Props {

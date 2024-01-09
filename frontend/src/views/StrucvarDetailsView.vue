@@ -27,7 +27,7 @@ import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
 import { usegeneInfoStore as useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
+import { useStrucVarInfoStore } from '@/stores/strucvarInfo'
 
 // Define the async components to use in this view.
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))

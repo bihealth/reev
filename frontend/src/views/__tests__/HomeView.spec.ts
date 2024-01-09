@@ -5,7 +5,7 @@ import { VMenu } from 'vuetify/components'
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 

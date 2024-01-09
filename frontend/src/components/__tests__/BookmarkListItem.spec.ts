@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import BookmarkListItem from '@/components/BookmarkListItem.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
 
 describe.concurrent('BookmarkListItem.vue', () => {

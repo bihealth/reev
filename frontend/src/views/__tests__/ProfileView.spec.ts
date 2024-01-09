@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import PageHeader from '@/components/PageHeader.vue'
 import ProfileInformationCard from '@/components/Profile/ProfileInformationCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { type UserData } from '@/stores/user'
 
 import ProfileView from '../ProfileView.vue'

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { VMenu } from 'vuetify/components'
 
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 import ACMGCriteriaDocs from '../ACMGCriteriaDocs.vue'
 

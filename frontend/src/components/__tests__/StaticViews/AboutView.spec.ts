@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import AboutView from '@/components/StaticViews/AboutView.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('AboutView', async () => {
   it('renders the main content', async () => {

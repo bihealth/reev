@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 import FooterDefault from '../FooterDefault.vue'
 

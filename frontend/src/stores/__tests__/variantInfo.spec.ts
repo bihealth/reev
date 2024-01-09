@@ -9,7 +9,7 @@ import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import { type Seqvar } from '@/lib/genomicVars'
 
 import { StoreState } from '../misc'
-import { useSeqVarInfoStore } from '../seqVarInfo'
+import { useSeqVarInfoStore } from '../seqvarInfo'
 
 const fetchMocker = createFetchMock(vi)
 

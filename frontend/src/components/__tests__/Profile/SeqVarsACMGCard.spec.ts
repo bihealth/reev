@@ -2,9 +2,9 @@ import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 
 import SeqVarACMGCard from '@/components/Profile/SeqVarsACMGCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
+import { useSeqVarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
 
 // Example ACMG Rating data
 const exampleAcmgRating = {

@@ -13,7 +13,7 @@ import {
 import type { Strucvar } from '@/lib/genomicVars'
 
 import { StoreState } from '../misc'
-import { useStrucVarAcmgRatingStore } from '../strucVarAcmgRating'
+import { useStrucVarAcmgRatingStore } from '../strucvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 

@@ -5,7 +5,7 @@ import Freqs from '@/components/SeqvarDetails/FreqsCard.vue'
 import VariantDetailsFreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.vue'
 import VariantDetailsFreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
 import type { Seqvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',

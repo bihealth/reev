@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import OverviewCard from '@/components/GeneDetails/OverviewCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('OverviewCard', async () => {
   it('renders the OverviewCard information.', async () => {

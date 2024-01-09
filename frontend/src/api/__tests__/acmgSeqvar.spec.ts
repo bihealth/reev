@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { AcmgSeqVarClient } from '@/api/acmgseqvar'
+import { AcmgSeqVarClient } from '@/api/acmgSeqvar'
 import { SeqvarImpl } from '@/lib/genomicVars'
-import { type AcmgRatingBackend } from '@/stores/seqVarAcmgRating'
+import { type AcmgRatingBackend } from '@/stores/seqvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -36,7 +36,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
 
   it('fails to list ACMG ratings', async () => {
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgseqvar/list')) {
+      if (req.url.includes('acmgSeqvar/list')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -59,7 +59,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
 
   it('fails to fetch ACMG rating', async () => {
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgseqvar/get')) {
+      if (req.url.includes('acmgSeqvar/get')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -82,7 +82,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
 
   it('fails to save ACMG rating', async () => {
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgseqvar/create')) {
+      if (req.url.includes('acmgSeqvar/create')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -105,7 +105,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
 
   it('fails to update ACMG rating', async () => {
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgseqvar/update')) {
+      if (req.url.includes('acmgSeqvar/update')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -128,7 +128,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
 
   it('fails to delete ACMG rating', async () => {
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgseqvar/delete')) {
+      if (req.url.includes('acmgSeqvar/delete')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { setupMountedComponents } from '../test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const TestComponent = { template: '<template><div>Test</div></template>', __name: 'TestComponent' }
 

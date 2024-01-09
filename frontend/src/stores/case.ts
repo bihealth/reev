@@ -6,7 +6,7 @@ import { ref } from 'vue'
 
 import { CaseInfoClient } from '@/api/caseinfo'
 import { MITT } from '@/lib/utils'
-import { useCadaPrioStore } from '@/stores/cadaprio'
+import { useCadaPrioStore } from '@/stores/cadaPrio'
 import { StoreState } from '@/stores/misc'
 import { Events as UserStoreEvents, useUserStore } from '@/stores/user'
 

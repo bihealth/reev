@@ -3,11 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import * as ServerResponse from '@/assets/__tests__/ExampleAcmgSeqVarRank.json'
-import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqvar'
 import { type Seqvar } from '@/lib/genomicVars'
 
 import { StoreState } from '../misc'
-import { useSeqVarAcmgRatingStore } from '../seqVarAcmgRating'
+import { useSeqVarAcmgRatingStore } from '../seqvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -83,7 +83,7 @@ describe.concurrent('geneInfo Store', () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
-      } else if (req.url.includes('acmgseqvar')) {
+      } else if (req.url.includes('acmgSeqvar')) {
         return Promise.resolve(JSON.stringify(ServerResponse))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -141,7 +141,7 @@ describe.concurrent('geneInfo Store', () => {
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
-      } else if (req.url.includes('acmgseqvar')) {
+      } else if (req.url.includes('acmgSeqvar')) {
         return Promise.resolve(JSON.stringify(ServerResponse))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))

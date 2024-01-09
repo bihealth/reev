@@ -19,10 +19,10 @@ import {
   AcmgCriteria,
   AcmgEvidenceLevel,
   Presence
-} from '@/lib/acmgSeqVar'
+} from '@/lib/acmgSeqvar'
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
+import { useSeqVarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
 
 /** Data type used for component's props. */
 interface Props {

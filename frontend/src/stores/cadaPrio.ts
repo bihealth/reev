@@ -6,7 +6,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import { CadaPrioClient } from '@/api/cadaprio'
+import { CadaPrioClient } from '@/api/cadaPrio'
 import { StoreState } from '@/stores/misc'
 
 export interface GeneRank {

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import ContactView from '@/components/StaticViews/ContactView.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ContactView', async () => {
   it('renders the main content', async () => {

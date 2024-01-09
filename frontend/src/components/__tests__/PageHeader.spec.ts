@@ -3,7 +3,7 @@ import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
 import SearchBar from '@/components/SearchBar.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { usegeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 

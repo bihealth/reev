@@ -19,9 +19,9 @@ import StrucvarClinvarCard from '@/components/StrucvarDetails/ClinvarCard.vue'
 import GeneListCard from '@/components/StrucvarDetails/GeneListCard.vue'
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { type Strucvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
+import { useStrucVarInfoStore } from '@/stores/strucvarInfo'
 import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 
 const makeWrapper = () => {

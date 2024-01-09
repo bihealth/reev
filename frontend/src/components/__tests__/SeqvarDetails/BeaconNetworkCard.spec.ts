@@ -3,7 +3,7 @@ import { VBtn } from 'vuetify/components'
 
 import BeaconNetwork from '@/components/SeqvarDetails/BeaconNetworkCard.vue'
 import type { Seqvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',

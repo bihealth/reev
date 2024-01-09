@@ -21,7 +21,7 @@ import CnLoss from '@/components/StrucvarDetails/ClinsigCard/CnLoss.vue'
 import SummarySheet from '@/components/StrucvarDetails/ClinsigCard/SummarySheet.vue'
 import type { Strucvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarAcmgRatingStore } from '@/stores/strucVarAcmgRating'
+import { useStrucVarAcmgRatingStore } from '@/stores/strucvarAcmgRating'
 
 /** Data type used for component's props. */
 interface Props {

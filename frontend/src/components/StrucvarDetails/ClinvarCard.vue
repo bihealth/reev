@@ -10,7 +10,7 @@ import {
 } from '@/components/SeqvarDetails/ClinvarCard.c'
 import { type Strucvar } from '@/lib/genomicVars'
 import { roundIt } from '@/lib/utils'
-import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
+import { useStrucVarInfoStore } from '@/stores/strucvarInfo'
 
 /** Type for this component's props. */
 interface Props {

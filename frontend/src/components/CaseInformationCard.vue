@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { computed, onMounted, ref, watch } from 'vue'
 
 import { roundIt } from '@/lib/utils'
-import { useCadaPrioStore } from '@/stores/cadaprio'
+import { useCadaPrioStore } from '@/stores/cadaPrio'
 import {
   Ethnicity,
   Inheritance,

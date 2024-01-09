@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import GeneDosage from '@/components/StrucvarDetails/GeneListCard/GeneDosage.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('GeneDosage', async () => {
   it('renders the GeneDosage info with CLINGEN_DOSAGE_SCORE_RECESSIVE', async () => {

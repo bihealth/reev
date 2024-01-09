@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 
-import { useSeqVarAcmgRatingStore } from '@/stores/seqVarAcmgRating'
+import { useSeqVarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
 
 const acmgRatingStore = useSeqVarAcmgRatingStore()
 

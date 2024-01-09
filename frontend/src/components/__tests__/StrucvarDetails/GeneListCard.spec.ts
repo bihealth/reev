@@ -4,7 +4,7 @@ import { nextTick } from 'vue'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import GeneListCard from '@/components/StrucvarDetails/GeneListCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
 
 describe.concurrent('GeneListCard', async () => {

@@ -5,7 +5,7 @@ import { nextTick } from 'vue'
 import * as BRCA1ClinVar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1Transcripts from '@/assets/__tests__/BRCA1Transcripts.json'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
 import GeneDetailView from '@/views/GeneDetailView.vue'
 

@@ -9,9 +9,9 @@ import {
 } from '@/components/StrucvarDetails/ClinsigCard.c'
 import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import type { Strucvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarAcmgRatingStore } from '@/stores/strucVarAcmgRating'
+import { useStrucVarAcmgRatingStore } from '@/stores/strucvarAcmgRating'
 
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',

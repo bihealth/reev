@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import FreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/MitochondrialFreqs.vue'
 import { type Seqvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',

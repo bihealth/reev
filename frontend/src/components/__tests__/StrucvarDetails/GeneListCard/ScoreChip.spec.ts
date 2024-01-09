@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import ScoreChip from '@/components/StrucvarDetails/GeneListCard/ScoreChip.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ScoreChip', async () => {
   it('renders the ScoreChip info with specified link', async () => {
