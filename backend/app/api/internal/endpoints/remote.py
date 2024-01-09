@@ -56,7 +56,7 @@ class HTTPXClientWrapper:
     def start(self):
         self.transport = httpx.AsyncHTTPTransport(retries=1)
         self.transport._pool._ssl_context.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
-        self.async_client = httpx.AsyncClient(transport=self.transport)
+        self.async_client = httpx.AsyncClient(timeout=httpx.Timeout(60.0), transport=self.transport)
 
     async def stop(self):
         await self.async_client.aclose()

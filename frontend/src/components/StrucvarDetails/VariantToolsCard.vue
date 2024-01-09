@@ -88,6 +88,7 @@ const jumpToLocus = async () => {
   const chrPrefixed = props.strucvar?.chrom.startsWith('chr')
     ? props.strucvar?.chrom
     : `chr${props.strucvar?.chrom}`
+  // NB: we allow the call to fetch here as it goes to local IGV.
   await fetch(
     `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.strucvar?.start}-${props.strucvar?.stop}`
   ).catch((e) => {

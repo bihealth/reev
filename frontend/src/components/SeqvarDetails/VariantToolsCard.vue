@@ -118,6 +118,7 @@ const jumpToLocus = async () => {
   const chrPrefixed = props.seqvar?.chrom.startsWith('chr')
     ? props.seqvar?.chrom
     : `chr${props.seqvar?.chrom}`
+  // NB: we allow the call to fetch here as it goes to local IGV.
   await fetch(
     `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${props.seqvar?.pos}-${
       (props.seqvar?.pos ?? 0) + (props.seqvar?.del?.length ?? 0)
