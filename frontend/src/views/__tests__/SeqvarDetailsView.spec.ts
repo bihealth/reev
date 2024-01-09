@@ -25,8 +25,8 @@ import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } fro
 import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useSeqVarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
-import { useSeqVarInfoStore } from '@/stores/seqvarInfo'
+import { useSeqvarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
+import { useSeqvarInfoStore } from '@/stores/seqvarInfo'
 
 import SeqvarDetailsView from '../SeqvarDetailsView.vue'
 
@@ -51,8 +51,8 @@ const seqvarData = {
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
-  const seqvarInfoStore = useSeqVarInfoStore(pinia)
-  const seqvarAcmgStore = useSeqVarAcmgRatingStore(pinia)
+  const seqvarInfoStore = useSeqvarInfoStore(pinia)
+  const seqvarAcmgStore = useSeqvarAcmgRatingStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
     seqvarInfoStore.storeState = StoreState.Active
     seqvarInfoStore.seqvar = structuredClone(seqvar)
@@ -173,8 +173,8 @@ describe.concurrent('SeqvarDetailsView', async () => {
 
   it('redirects if mounting with storeState Error', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const seqvarInfoStore = useSeqVarInfoStore(pinia)
-    const seqvarAcmgStore = useSeqVarAcmgRatingStore(pinia)
+    const seqvarInfoStore = useSeqvarInfoStore(pinia)
+    const seqvarAcmgStore = useSeqvarAcmgRatingStore(pinia)
 
     const mockLoadData = vi.fn().mockImplementation(async (seqvar: Seqvar) => {
       seqvarInfoStore.storeState = StoreState.Error

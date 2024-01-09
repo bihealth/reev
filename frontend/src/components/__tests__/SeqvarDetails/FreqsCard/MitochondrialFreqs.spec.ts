@@ -13,7 +13,7 @@ const seqvarInfo: Seqvar = {
   userRepr: 'grch37-17-43044295-G-A'
 }
 
-const seqVarInfo = {
+const varAnnos = {
   helixmtdb: {
     num_total: 1,
     num_het: 1,
@@ -38,7 +38,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
       {
         props: {
           seqVar: seqvarInfo,
-          varAnnos: seqVarInfo
+          varAnnos
         }
       }
     )
@@ -49,7 +49,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   })
 
   it('renders the FreqsMitochondrial info with no helixmtdb', async () => {
-    const variantInfoNoHelixmtdb: any = structuredClone(seqVarInfo)
+    const variantInfoNoHelixmtdb: any = structuredClone(seqvarInfo)
     variantInfoNoHelixmtdb.helixmtdb = {}
     const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial },
@@ -67,7 +67,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   })
 
   it('renders the FreqsMitochondrial info with no gnomad-mtdna', async () => {
-    const variantInfoNoGnomad: any = structuredClone(seqVarInfo)
+    const variantInfoNoGnomad: any = structuredClone(seqvarInfo)
     variantInfoNoGnomad['gnomad-mtdna'] = {}
     const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial },

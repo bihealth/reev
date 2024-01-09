@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from 'vitest'
 import SeqVarACMGCard from '@/components/Profile/SeqVarsACMGCard.vue'
 import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useSeqVarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
+import { useSeqvarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
 
 // Example ACMG Rating data
 const exampleAcmgRating = {
@@ -23,7 +23,7 @@ const exampleAcmgRating = {
 describe.concurrent('SeqVarACMGCard', async () => {
   it('renders the SeqVarACMGCard information with ACMG ratings.', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const acmgRatingStore = useSeqVarAcmgRatingStore(pinia)
+    const acmgRatingStore = useSeqvarAcmgRatingStore(pinia)
     const mockListAcmgRatings = vi.fn().mockImplementation(() => {
       acmgRatingStore.acmgRatings = [exampleAcmgRating]
     })
@@ -32,7 +32,7 @@ describe.concurrent('SeqVarACMGCard', async () => {
       { component: SeqVarACMGCard },
       {
         initialStoreState: {
-          seqVarAcmgRating: {
+          seqvarAcmgRating: {
             storeState: StoreState.Active,
             acmgRatings: []
           }
@@ -46,7 +46,7 @@ describe.concurrent('SeqVarACMGCard', async () => {
 
   it('renders the SeqVarACMGCard information with no ACMG ratings.', async () => {
     const pinia = createTestingPinia({ createSpy: vi.fn })
-    const acmgRatingStore = useSeqVarAcmgRatingStore(pinia)
+    const acmgRatingStore = useSeqvarAcmgRatingStore(pinia)
     const mockListAcmgRatings = vi.fn().mockImplementation(() => {
       acmgRatingStore.acmgRatings = []
     })
@@ -55,7 +55,7 @@ describe.concurrent('SeqVarACMGCard', async () => {
       { component: SeqVarACMGCard },
       {
         initialStoreState: {
-          seqVarAcmgRating: {
+          seqvarAcmgRating: {
             storeState: StoreState.Active,
             acmgRatings: []
           }

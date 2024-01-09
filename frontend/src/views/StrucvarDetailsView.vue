@@ -25,9 +25,9 @@ import { type Strucvar } from '@/lib/genomicVars'
 import { resolveStrucvar } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
-import { usegeneInfoStore as useGeneInfoStore } from '@/stores/geneInfo'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarInfoStore } from '@/stores/strucvarInfo'
+import { useStrucvarInfoStore } from '@/stores/strucvarInfo'
 
 // Define the async components to use in this view.
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
@@ -90,7 +90,7 @@ const route = useRoute()
 const theme = useTheme()
 
 /** Information about the strucvar, used to fetch information on load. */
-const strucvarInfoStore = useStrucVarInfoStore()
+const strucvarInfoStore = useStrucvarInfoStore()
 /** Information about the genes. */
 const geneInfoStore = useGeneInfoStore()
 /** Currently active case - for HPO terms. */

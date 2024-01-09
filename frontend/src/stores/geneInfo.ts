@@ -11,7 +11,7 @@ import { DottyClient } from '@/api/dotty'
 import { type HpoTerm, VigunoClient } from '@/api/viguno'
 import { StoreState } from '@/stores/misc'
 
-export const usegeneInfoStore = defineStore('geneInfo', () => {
+export const useGeneInfoStore = defineStore('geneInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 

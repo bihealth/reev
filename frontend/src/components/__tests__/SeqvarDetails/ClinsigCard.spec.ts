@@ -30,7 +30,7 @@ const makeWrapper = async () => {
     },
     {
       initialStoreState: {
-        seqVarAcmgRating: {
+        seqvarAcmgRating: {
           storeState: StoreState.Active,
           seqvar: structuredClone(seqvarInfo),
           acmgRating,

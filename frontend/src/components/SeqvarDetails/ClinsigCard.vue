@@ -22,7 +22,7 @@ import {
 } from '@/lib/acmgSeqvar'
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
-import { useSeqVarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
+import { useSeqvarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
 
 /** Data type used for component's props. */
 interface Props {
@@ -39,7 +39,7 @@ const emit = defineEmits<{
 }>()
 
 /** Store to use for ACMG ratings of sequence variants. */
-const acmgRatingStore = useSeqVarAcmgRatingStore()
+const acmgRatingStore = useSeqvarAcmgRatingStore()
 
 /** Component state: error message to display, if any. */
 const errorMessage = ref<string>('')

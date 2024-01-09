@@ -25,7 +25,7 @@ import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
 import { lookupGene } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
-import { usegeneInfoStore as useGeneInfoStore } from '@/stores/geneInfo'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 // Define the async components to use in this view.

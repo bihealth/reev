@@ -11,7 +11,7 @@ import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import type { Strucvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarAcmgRatingStore } from '@/stores/strucvarAcmgRating'
+import { useStrucvarAcmgRatingStore } from '@/stores/strucvarAcmgRating'
 
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
@@ -64,7 +64,7 @@ const svRecord = {
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn() })
-  const store = useStrucVarAcmgRatingStore(pinia)
+  const store = useStrucvarAcmgRatingStore(pinia)
 
   const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
     store.storeState = StoreState.Active
