@@ -70,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
               <template v-if="geneInfo?.gnomadConstraints">
                 <div class="text-subtitle-1">
                   gnomAD
-                  <small> v2.1.1 </small>
+                  <small> v4.0 </small>
                   <small v-if="geneInfo?.hgnc?.ensemblGeneId?.length">
                     <a
                       :href="`https://gnomad.broadinstitute.org/gene/${geneInfo?.hgnc.ensemblGeneId}?dataset=gnomad_r4`"
