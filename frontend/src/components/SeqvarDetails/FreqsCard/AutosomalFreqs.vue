@@ -33,8 +33,8 @@ const noCohort = computed(() => {
 
 const byPop = computed(() => {
   const res: any = {}
-  for (const record of noCohort.value?.byPopulation ?? []) {
-    res[record.population] = record
+  for (const record of noCohort.value?.byPopulation ?? noCohort.value?.byAncestryGroup ?? []) {
+    res[record.population ?? record.ancestryGroup] = record
   }
   return res
 })
@@ -47,7 +47,8 @@ const allPopLabels = {
   nfe: 'European (North-Western)',
   amr: 'Latino/Admixed American',
   sas: 'South Asian',
-  oth: 'Other'
+  oth: 'Other',
+  remaining: 'Remaining'
 }
 
 const idKey = (token: string): string => {
@@ -81,7 +82,7 @@ const sexExpanded: any = ref({})
             v-if="seqvar.genomeBuild == 'grch38'"
             :href="`https://gnomad.broadinstitute.org/variant/${seqvar.chrom.replace(/^chr/, '')}-${
               seqvar.pos
-            }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r3`"
+            }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r4`"
             target="_blank"
           >
             <v-icon>mdi-launch</v-icon>
@@ -146,13 +147,12 @@ const sexExpanded: any = ref({})
                   {{ sep(byPop[key]?.counts?.xx?.an ?? 0) }}
                 </td>
                 <td class="text-right text-no-wrap">
-                  {{ sep(byPop[key]?.counts?.xx?.nhomal ?? 0) }}
+                  {{ sep(byPop[key]?.counts?.xx?.ac ?? 0) }}
+                </td>
+                <td class="text-right text-no-wrap">
+                  {{ sep(byPop[key]?.counts?.xx?.nhomhalt ?? 0) }}
                 </td>
                 <!-- eslint-disable vue/no-v-html -->
-                <td
-                  class="text-right text-no-wrap"
-                  v-html="roundIt(byPop[key]?.counts?.xx?.af ?? 0.0, FREQ_DIGITS)"
-                />
                 <td
                   class="text-right text-no-wrap"
                   v-html="roundIt(byPop[key]?.counts?.xx?.af, FREQ_DIGITS)"
@@ -259,7 +259,7 @@ const sexExpanded: any = ref({})
           v-if="seqvar.genomeBuild == 'grch38'"
           :href="`https://gnomad.broadinstitute.org/variant/${seqvar.chrom.replace(/^chr/, '')}-${
             seqvar.pos
-          }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r3`"
+          }-${seqvar.del}-${seqvar.ins}?dataset=gnomad_r4`"
         >
           <v-icon>mdi-launch</v-icon>
           gnomAD
