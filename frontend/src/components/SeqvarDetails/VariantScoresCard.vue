@@ -12,6 +12,28 @@ export interface Props {
 
 const props = defineProps<Props>()
 
+const alphaMissenseScoreList = computed<number[]>(() => {
+  if (!props.varAnnos?.dbnsfp?.AlphaMissense_score) {
+    return []
+  } else {
+    return props.varAnnos.dbnsfp.AlphaMissense_score.split(';').map(parseFloat)
+  }
+})
+
+const alphaMissenseScore = computed<number | null>(() => {
+  const scores = alphaMissenseScoreList.value
+  if (!scores.length) {
+    return null
+  } else {
+    const maxScore = Math.max(...scores)
+    if (maxScore > 0.5) {
+      return maxScore
+    } else {
+      return Math.min(...scores)
+    }
+  }
+})
+
 const bestOf = (obj: any, keys: string[]) => {
   if (!obj) {
     return { score: null, key: null }
@@ -156,6 +178,23 @@ const polyphenScore = computed((): number | null =>
           </thead>
           <tbody>
             <tr>
+              <th class="align-middle">AlphaMissense</th>
+              <template v-if="alphaMissenseScore">
+                <!-- eslint-disable vue/no-v-html -->
+                <td class="text-center align-middle" v-html="roundIt(alphaMissenseScore, 4)" />
+                <!-- eslint-enable -->
+                <td class="text-center align-middle">
+                  <span class="not-predictive"> &mdash; </span>
+                </td>
+                <td class="text-center align-middle">
+                  <span class="not-predictive"> (no Pejaver computation yet) </span>
+                </td>
+              </template>
+              <td v-else colspan="4" class="text-muted text-center font-italic">
+                AlphaMissense prediction not available.
+              </td>
+            </tr>
+            <tr>
               <th class="align-middle">BayesDel</th>
               <template
                 v-if="
@@ -213,7 +252,7 @@ const polyphenScore = computed((): number | null =>
                       props.varAnnos?.dbnsfp?.BayesDel_addAF_score >= 0.27 &&
                       props.varAnnos?.dbnsfp?.BayesDel_addAF_score < 0.5
                     "
-                    class="pathogenic-moderat"
+                    class="pathogenic-moderate"
                   >
                     pathogenic moderate
                   </span>
