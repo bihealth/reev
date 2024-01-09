@@ -46,6 +46,137 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
     return props.hpoTerms.slice(0, maxHpoTerms)
   }
 })
+
+// -- code for PanelApp conditions -------------------------------------------
+
+/** Enumeration for PanelApp confidence levels. */
+enum PanelAppConfidenceLevel {
+  Green = 'CONFIDENCE_LEVEL_GREEN',
+  Amber = 'CONFIDENCE_LEVEL_AMBER',
+  Red = 'CONFIDENCE_LEVEL_RED'
+}
+
+/** Compare `PanelAppConfidenceLevel` in a sort-compatible way */
+const comparePanelAppConfidenceLevel = (
+  lhs: PanelAppConfidenceLevel,
+  rhs: PanelAppConfidenceLevel
+): number => {
+  switch (lhs) {
+    case PanelAppConfidenceLevel.Green:
+      switch (rhs) {
+        case PanelAppConfidenceLevel.Green:
+          return 0
+        case PanelAppConfidenceLevel.Amber:
+        case PanelAppConfidenceLevel.Red:
+          return -1
+      }
+    case PanelAppConfidenceLevel.Amber:
+      switch (rhs) {
+        case PanelAppConfidenceLevel.Green:
+          return 1
+        case PanelAppConfidenceLevel.Amber:
+          return 0
+        case PanelAppConfidenceLevel.Red:
+          return -1
+      }
+    case PanelAppConfidenceLevel.Red:
+      switch (rhs) {
+        case PanelAppConfidenceLevel.Green:
+        case PanelAppConfidenceLevel.Amber:
+          return 1
+        case PanelAppConfidenceLevel.Red:
+          return 0
+      }
+  }
+}
+
+/** Return label for `PanelAppConfidenceLevel`. */
+const confidenceLabel = (level: PanelAppConfidenceLevel): string => {
+  switch (level) {
+    case PanelAppConfidenceLevel.Green:
+      return 'green'
+    case PanelAppConfidenceLevel.Amber:
+      return 'amber'
+    case PanelAppConfidenceLevel.Red:
+      return 'red'
+  }
+}
+
+/**
+ * Representation of a PanelApp.
+ */
+interface PanelAppCondition {
+  panelId: number
+  title: string
+  confidence: PanelAppConfidenceLevel
+}
+
+/**
+ * Return list of PanelApp conditions with reduced redundancy.
+ *
+ * Note that proper redundancy removal can only be done with proper named
+ * entity normalization which is on our TODO list.
+ */
+const panelAppConditions = computed<PanelAppCondition[]>(() => {
+  if (!props.geneInfo?.panelapp) {
+    return []
+  }
+
+  // seen conditions
+  const seen = new Map<string, PanelAppCondition>()
+
+  /** Normalize phenotype name. */
+  const normalizeName = (name: string): string => {
+    const match = [...name.matchAll(/\{(.*)\}/g)]
+    let result: string
+    if (match.length) {
+      result = match[0][1]
+    } else {
+      result = name
+    }
+
+    result = result
+      .replace(/,? \d{6,6}$/, '')
+      .replace(/,? MONDO:\d{6,6}/, '')
+      .replace(/,? O?MIM:\d{6,6}/, '')
+      .replace(/,? \(\d{6,6}\)/, '')
+
+    return result
+  }
+
+  // Collect phenotypes by panel in a somewhat non-redundant way.
+  for (const entry of props.geneInfo.panelapp) {
+    if (entry.phenotypes?.length) {
+      const phenotype = normalizeName(entry.phenotypes[0])
+      const seenEntry = seen.get(phenotype.toLowerCase())
+      let entryOverridesSeen = true
+      if (seenEntry) {
+        entryOverridesSeen =
+          comparePanelAppConfidenceLevel(entry.confidenceLevel, seenEntry.confidence) < 0
+      }
+      if (entryOverridesSeen) {
+        seen.set(phenotype.toLowerCase(), {
+          panelId: entry.panel?.id,
+          title: phenotype,
+          confidence: entry.confidenceLevel
+        })
+      }
+    }
+  }
+
+  // Obtain list of conditions, sorted by confidence level.
+  const result = Array.from(seen.values())
+  result.sort((lhs, rhs) => {
+    const tmp = comparePanelAppConfidenceLevel(lhs.confidence, rhs.confidence)
+    if (tmp == 0) {
+      return lhs.title.localeCompare(rhs.title)
+    } else {
+      return tmp
+    }
+  })
+
+  return result
+})
 </script>
 
 <template>
@@ -157,6 +288,34 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
               </template>
             </div>
             <div v-else class="text-grey font-italic">No OMIM diseases annotated in dbNSFP.</div>
+
+            <!--
+            == PanelApp Conditions ============================================
+          -->
+            <div class="text-subtitle-1 mt-3">
+              PanelApp Conditions
+              <small> ({{ panelAppConditions.length }}) </small>
+            </div>
+            <div v-if="panelAppConditions.length > 0">
+              <template v-for="(condition, idx) in panelAppConditions" :key="idx">
+                <template v-if="idx > 0"> , </template>
+                <template v-if="showTermLinks">
+                  <a
+                    :href="`https://panelapp.genomicsengland.co.uk/panels/${condition.panelId}/`"
+                    target="_blank"
+                  >
+                    <v-icon>mdi-launch</v-icon>
+                    {{ condition.title }}
+                    <small> ({{ confidenceLabel(condition.confidence) }}) </small>
+                  </a>
+                </template>
+                <template v-else>
+                  {{ condition.title }}
+                  <small> ({{ confidenceLabel(condition.confidence) }}) </small>
+                </template>
+              </template>
+            </div>
+            <div v-else class="text-grey font-italic">No PanelApp conditions found.</div>
           </v-col>
           <v-col cols="3">
             <CadaRanking :hgnc-id="geneInfo?.hgnc?.agr" />
