@@ -226,6 +226,7 @@ const jumpToLocus = async () => {
   const chrPrefixed = strucvar.value?.chrom.startsWith('chr')
     ? strucvar.value?.chrom
     : `chr${strucvar.value?.chrom}`
+  // NB: we allow the call to fetch here as it goes to local IGV.
   await fetch(
     `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${strucvar.value?.start}-${strucvar.value?.stop}`
   ).catch((e) => {

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
+import { VariantValidatorClient } from '@/api/variantValidator'
 import DocsLink from '@/components/DocsLink.vue'
 import { type Seqvar } from '@/lib/genomicVars'
-
-const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
 enum VariantValidatorStates {
   Initial = 0,
@@ -25,23 +23,25 @@ const variantValidatorResults = ref<any>(null)
 
 const primaryAssemblyLoci = ref<any | null>(null)
 
+const variantValidatorClient = new VariantValidatorClient()
+
 const queryVariantValidatorApi = async () => {
+  if (!props.seqvar) {
+    // Short-circuit unless `props.seqvar` is defined.
+    return
+  }
+
   variantValidatorState.value = VariantValidatorStates.Running
   variantValidatorResults.value = null
   primaryAssemblyLoci.value = null
-  const url =
-    API_BASE_URL +
-    `remote/variantvalidator/${props.seqvar?.genomeBuild}/` +
-    `${props.seqvar?.chrom}-${props.seqvar?.pos}-` +
-    `${props.seqvar?.del}-${props.seqvar?.ins}` +
-    `/all?content-type=application%2Fjson`
-  const res = await fetch(url)
-  if (res.ok) {
-    const resObj = await res.json()
+
+  try {
+    const res = await variantValidatorClient.fetchVvResults(props.seqvar)
+
     const items = []
     let metadata = null
-    for (const key in resObj) {
-      const value = resObj[key]
+    for (const key in res) {
+      const value = res[key]
       if (primaryAssemblyLoci.value === null) {
         primaryAssemblyLoci.value = value.primary_assembly_loci
       }
@@ -56,8 +56,9 @@ const queryVariantValidatorApi = async () => {
     }
     variantValidatorResults.value = { items, metadata }
     variantValidatorState.value = VariantValidatorStates.Done
-  } else {
+  } catch (err) {
     variantValidatorState.value = VariantValidatorStates.Error
+    return
   }
 }
 </script>
@@ -108,11 +109,20 @@ const queryVariantValidatorApi = async () => {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="{ key, value } in variantValidatorResults.items" :key="key">
-              <td>{{ value.gene_symbol }}</td>
-              <td>{{ value.hgvs_transcript_variant }}</td>
-              <td>{{ value.hgvs_predicted_protein_consequence?.slr || '&mdash;' }}</td>
-            </tr>
+            <template v-for="{ key, value } in variantValidatorResults.items" :key="key">
+              <template v-if="!value.gene_symbol?.length && value.validation_warnings?.length">
+                <tr>
+                  <td colspan="3" class="font-italic text-center">
+                    {{ value.validation_warnings.join(', ') }}
+                  </td>
+                </tr>
+              </template>
+              <tr>
+                <td>{{ value.gene_symbol }}</td>
+                <td>{{ value.hgvs_transcript_variant }}</td>
+                <td>{{ value.hgvs_predicted_protein_consequence?.slr || '&mdash;' }}</td>
+              </tr>
+            </template>
           </tbody>
         </v-table>
 
