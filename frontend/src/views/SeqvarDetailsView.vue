@@ -25,9 +25,9 @@ import { type Seqvar } from '@/lib/genomicVars'
 import { resolveSeqvar } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
 import { useCaseStore } from '@/stores/case'
-import { usegeneInfoStore } from '@/stores/geneInfo'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
-import { useSeqVarInfoStore } from '@/stores/seqVarInfo'
+import { useSeqvarInfoStore } from '@/stores/seqvarInfo'
 
 // Define the async components to use in this view.
 const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
@@ -99,9 +99,9 @@ const route = useRoute()
 const theme = useTheme()
 
 /** Information about the sequence variant, used to fetch information on load. */
-const seqvarInfoStore = useSeqVarInfoStore()
+const seqvarInfoStore = useSeqvarInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
-const geneInfoStore = usegeneInfoStore()
+const geneInfoStore = useGeneInfoStore()
 /** Currently active case - for HPO terms. */
 const caseStore = useCaseStore()
 

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import CnGain from '@/components/StrucvarDetails/ClinsigCard/CnGain.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('CnGain', async () => {
   it('renders the CnGain info', async () => {

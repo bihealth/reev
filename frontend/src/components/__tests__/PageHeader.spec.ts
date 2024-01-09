@@ -3,8 +3,8 @@ import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
 import SearchBar from '@/components/SearchBar.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
-import { usegeneInfoStore } from '@/stores/geneInfo'
+import { setupMountedComponents } from '@/lib/testUtils'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 import PageHeader from '../PageHeader.vue'
@@ -34,7 +34,7 @@ describe.concurrent('PageHeader', async () => {
       }
     )
 
-    const store = usegeneInfoStore()
+    const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
@@ -52,7 +52,7 @@ describe.concurrent('PageHeader', async () => {
         initialStoreState: geneData
       }
     )
-    const store = usegeneInfoStore()
+    const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
@@ -74,7 +74,7 @@ describe.concurrent('PageHeader', async () => {
         initialStoreState: geneData
       }
     )
-    const store = usegeneInfoStore()
+    const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))

@@ -5,9 +5,9 @@ import { nextTick } from 'vue'
 import ClinsigCard from '@/components/SeqvarDetails/ClinsigCard.vue'
 import CriterionSwitch from '@/components/SeqvarDetails/ClinsigCard/CriterionSwitch.vue'
 import SummarySheet from '@/components/SeqvarDetails/ClinsigCard/SummarySheet.vue'
-import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqvar'
 import type { Seqvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
 
 const seqvarInfo: Seqvar = {
@@ -30,7 +30,7 @@ const makeWrapper = async () => {
     },
     {
       initialStoreState: {
-        seqVarAcmgRating: {
+        seqvarAcmgRating: {
           storeState: StoreState.Active,
           seqvar: structuredClone(seqvarInfo),
           acmgRating,

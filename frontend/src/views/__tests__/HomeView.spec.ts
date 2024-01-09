@@ -5,8 +5,8 @@ import { VMenu } from 'vuetify/components'
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import SearchBar from '@/components/SearchBar.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
-import { usegeneInfoStore } from '@/stores/geneInfo'
+import { setupMountedComponents } from '@/lib/testUtils'
+import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
 
 import HomeView from '../HomeView.vue'
@@ -150,7 +150,7 @@ describe.concurrent('HomeView with mocked router', async () => {
         }
       }
     )
-    const store = usegeneInfoStore()
+    const store = useGeneInfoStore()
     store.storeState = StoreState.Active
     store.hgncId = geneData.geneSymbol
     store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))

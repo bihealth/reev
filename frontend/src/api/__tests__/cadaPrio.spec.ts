@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { CadaPrioClient } from '@/api/cadaprio'
+import { CadaPrioClient } from '@/api/cadaPrio'
 
 const fetchMocker = createFetchMock(vi)
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import CadaRanking from '@/components/GeneDetails/ConditionsCard/CadaRanking.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('CadaRanking', async () => {
   it('renders the CadaRanking info', async () => {

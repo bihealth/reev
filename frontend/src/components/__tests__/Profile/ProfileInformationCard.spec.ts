@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import ProfileInformationCard from '@/components/Profile/ProfileInformationCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
 import { type UserData } from '@/stores/user'
 

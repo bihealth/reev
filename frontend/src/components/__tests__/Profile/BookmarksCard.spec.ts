@@ -2,7 +2,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 
 import BookmarksCard from '@/components/Profile/BookmarksCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { type BookmarkData, useBookmarksStore } from '@/stores/bookmarks'
 import { StoreState } from '@/stores/misc'
 

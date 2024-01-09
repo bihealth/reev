@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import PageHeader from '@/components/PageHeader.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import StaticView from '@/views/StaticView.vue'
 
 describe.concurrent('StaticView', async () => {

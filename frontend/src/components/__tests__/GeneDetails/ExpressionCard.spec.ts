@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 
 import GtexGenePlotVue from '@/components/GeneDetails/ExpressionCard.vue'
 import VegaPlot from '@/components/VegaPlot.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('GtexGenePlotVue', async () => {
   it('renders the GtexGenePlotVue info', async () => {

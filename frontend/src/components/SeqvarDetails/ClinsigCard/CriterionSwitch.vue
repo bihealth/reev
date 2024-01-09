@@ -7,7 +7,7 @@ import {
   type CriteriaState,
   Presence,
   StateSource
-} from '@/lib/acmgSeqVar'
+} from '@/lib/acmgSeqvar'
 
 interface Props {
   /** The acmg rating. */

@@ -3,7 +3,7 @@ import { VSheet } from 'vuetify/components'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import PathogenicityCard from '@/components/GeneDetails/PathogenicityCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('PathogenicityCard', async () => {
   it('renders the Pathogenicity information.', async () => {

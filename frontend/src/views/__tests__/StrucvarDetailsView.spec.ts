@@ -19,14 +19,14 @@ import StrucvarClinvarCard from '@/components/StrucvarDetails/ClinvarCard.vue'
 import GeneListCard from '@/components/StrucvarDetails/GeneListCard.vue'
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { type Strucvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useStrucVarInfoStore } from '@/stores/strucVarInfo'
+import { useStrucvarInfoStore } from '@/stores/strucvarInfo'
 import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 
 const makeWrapper = () => {
   const pinia = createTestingPinia({ createSpy: vi.fn })
-  const svInfoStore = useStrucVarInfoStore(pinia)
+  const svInfoStore = useStrucvarInfoStore(pinia)
   const mockLoadData = vi.fn().mockImplementation(async (strucvar: Strucvar) => {
     svInfoStore.storeState = StoreState.Active
     svInfoStore.strucvar = strucvar
@@ -70,7 +70,7 @@ describe.concurrent('StrucvarDetailsView', async () => {
   it('renders the loading state', async () => {
     const { wrapper } = await makeWrapper()
 
-    const svInfoStore = useStrucVarInfoStore()
+    const svInfoStore = useStrucvarInfoStore()
     svInfoStore.storeState = StoreState.Loading
     await nextTick()
     const loading = wrapper.findComponent({ name: 'VProgressLinear' })

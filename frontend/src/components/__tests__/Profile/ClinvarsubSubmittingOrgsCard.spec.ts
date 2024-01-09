@@ -3,7 +3,7 @@ import createFetchMock from 'vitest-fetch-mock'
 
 import CLINVARSUB_PAGE from '@/api/__tests__/data/clinvarsub_page.json'
 import ClinvarsubSubmittingOrgsCard from '@/components/Profile/ClinvarsubSubmittingOrgsCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const fetchMocker = createFetchMock(vi)
 

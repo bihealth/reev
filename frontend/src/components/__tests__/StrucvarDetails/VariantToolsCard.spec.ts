@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { type Strucvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',

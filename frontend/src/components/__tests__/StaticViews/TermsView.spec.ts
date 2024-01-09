@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import TermsView from '@/components/StaticViews/TermsView.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('TermsView', async () => {
   it('renders the terms of use content', async () => {

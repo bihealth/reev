@@ -7,8 +7,8 @@ import {
   MultiSourceAcmgCriteriaState,
   Presence,
   StateSource
-} from '@/lib/acmgSeqVar'
-import { setupMountedComponents } from '@/lib/test-utils'
+} from '@/lib/acmgSeqvar'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('CriterionSwitch', async () => {
   it('renders the CriterionSwitch', async () => {

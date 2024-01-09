@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import TxCsq from '@/components/SeqvarDetails/TxCsqCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('TxCsq', async () => {
   it('renders the TxCsq info', async () => {

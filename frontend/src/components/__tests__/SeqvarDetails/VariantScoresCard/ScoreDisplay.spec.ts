@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
 import ScoreDisplay from '@/components/SeqvarDetails/VariantScoresCard/ScoreDisplay.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ScoreDisplay', async () => {
   it('renders the ScoreDisplay with default props', async () => {

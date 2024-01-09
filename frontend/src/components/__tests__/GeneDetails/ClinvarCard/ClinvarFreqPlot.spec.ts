@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import ClinVarFreqPlot from '@/components/GeneDetails/ClinvarCard/ClinvarFreqPlot.vue'
 import VegaPlot from '@/components/VegaPlot.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ClinVarFreqPlot', async () => {
   it('renders the ClinVarFreqPlot info', async () => {

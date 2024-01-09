@@ -21,7 +21,7 @@ import { StoreState } from '@/stores/misc'
 
 const API_BASE_URL = API_INTERNAL_BASE_PREFIX
 
-export const useStrucVarAcmgRatingStore = defineStore('strucVarAcmgRating', () => {
+export const useStrucvarAcmgRatingStore = defineStore('strucvarAcmgRating', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 

@@ -3,11 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import * as ServerResponse from '@/assets/__tests__/ExampleAcmgSeqVarRank.json'
-import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqVar'
+import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqvar'
 import { type Seqvar } from '@/lib/genomicVars'
 
 import { StoreState } from '../misc'
-import { useSeqVarAcmgRatingStore } from '../seqVarAcmgRating'
+import { useSeqvarAcmgRatingStore } from '../seqvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -57,7 +57,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
-    const store = useSeqVarAcmgRatingStore()
+    const store = useSeqvarAcmgRatingStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
@@ -66,7 +66,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
-    const store = useSeqVarAcmgRatingStore()
+    const store = useSeqvarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
     store.seqvar = structuredClone(seqvarInfo)
@@ -79,11 +79,11 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should correctly retrieve data for InterVar and Server', async () => {
-    const store = useSeqVarAcmgRatingStore()
+    const store = useSeqvarAcmgRatingStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
-      } else if (req.url.includes('acmgseqvar')) {
+      } else if (req.url.includes('acmgSeqvar')) {
         return Promise.resolve(JSON.stringify(ServerResponse))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -124,7 +124,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should fail to load data with invalid request', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useSeqVarAcmgRatingStore()
+    const store = useSeqvarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
     await expect(
@@ -137,11 +137,11 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should not load data if small variant is the same', async () => {
-    const store = useSeqVarAcmgRatingStore()
+    const store = useSeqvarAcmgRatingStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
-      } else if (req.url.includes('acmgseqvar')) {
+      } else if (req.url.includes('acmgSeqvar')) {
         return Promise.resolve(JSON.stringify(ServerResponse))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))

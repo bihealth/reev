@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import VariantTools from '@/components/SeqvarDetails/VariantToolsCard.vue'
 import type { Seqvar } from '@/lib/genomicVars'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',

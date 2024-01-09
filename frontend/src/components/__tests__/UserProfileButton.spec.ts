@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 import { type UserData, useUserStore } from '@/stores/user'
 
 import UserProfileButton from '../UserProfileButton.vue'

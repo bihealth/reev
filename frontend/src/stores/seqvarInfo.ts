@@ -13,7 +13,7 @@ import { type HpoTerm, VigunoClient } from '@/api/viguno'
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 
-export const useSeqVarInfoStore = defineStore('seqVarInfo', () => {
+export const useSeqvarInfoStore = defineStore('seqvarInfo', () => {
   /** The current store state. */
   const storeState = ref<StoreState>(StoreState.Initial)
 

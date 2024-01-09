@@ -1,5 +1,5 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
-import { type AcmgRatingBackend } from '@/stores/seqVarAcmgRating'
+import { type AcmgRatingBackend } from '@/stores/seqvarAcmgRating'
 
 /**
  * Access to the seqvar part of the API.
@@ -21,7 +21,7 @@ export class AcmgSeqVarClient {
    * @returns The list of ACMG ratings for the user.
    */
   async listAcmgRatings(): Promise<any> {
-    const url = `${this.apiBaseUrl}acmgseqvar/list`
+    const url = `${this.apiBaseUrl}acmgSeqvar/list`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -37,7 +37,7 @@ export class AcmgSeqVarClient {
    * @returns The ACMG rating for the variant.
    */
   async fetchAcmgRating(variantName: string): Promise<any> {
-    const url = `${this.apiBaseUrl}acmgseqvar/get?seqvar=${variantName}`
+    const url = `${this.apiBaseUrl}acmgSeqvar/get?seqvar=${variantName}`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -57,7 +57,7 @@ export class AcmgSeqVarClient {
       "seqvar_name": "${variantName}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
-    const response = await fetch(`${this.apiBaseUrl}acmgseqvar/create`, {
+    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/create`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -81,7 +81,7 @@ export class AcmgSeqVarClient {
       "seqvar_name": "${variantName}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
-    const response = await fetch(`${this.apiBaseUrl}acmgseqvar/update`, {
+    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/update`, {
       method: 'PUT',
       mode: 'cors',
       credentials: 'include',
@@ -98,7 +98,7 @@ export class AcmgSeqVarClient {
    * Delete the ACMG rating for a variant.
    */
   async deleteAcmgRating(variantName: string): Promise<AcmgRatingBackend> {
-    const response = await fetch(`${this.apiBaseUrl}acmgseqvar/delete?seqvar=${variantName}`, {
+    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/delete?seqvar=${variantName}`, {
       method: 'DELETE',
       mode: 'cors',
       credentials: 'include'

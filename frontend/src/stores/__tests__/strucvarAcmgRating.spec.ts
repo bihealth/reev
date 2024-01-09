@@ -13,7 +13,7 @@ import {
 import type { Strucvar } from '@/lib/genomicVars'
 
 import { StoreState } from '../misc'
-import { useStrucVarAcmgRatingStore } from '../strucVarAcmgRating'
+import { useStrucvarAcmgRatingStore } from '../strucvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
@@ -98,7 +98,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
-    const store = useStrucVarAcmgRatingStore()
+    const store = useStrucvarAcmgRatingStore()
 
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
@@ -106,7 +106,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
-    const store = useStrucVarAcmgRatingStore()
+    const store = useStrucvarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
     store.strucvar = structuredClone(strucvarInfo)
@@ -119,7 +119,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should correctly retrieve data', async () => {
-    const store = useStrucVarAcmgRatingStore()
+    const store = useStrucvarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify(ExampleAutoCNVResponse))
 
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
@@ -170,7 +170,7 @@ describe.concurrent('geneInfo Store', () => {
   it('should fail to load data with invalid request', async () => {
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useStrucVarAcmgRatingStore()
+    const store = useStrucvarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
 
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
@@ -181,7 +181,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should not load data if structure variant is the same', async () => {
-    const store = useStrucVarAcmgRatingStore()
+    const store = useStrucvarAcmgRatingStore()
     fetchMocker.mockResponse(JSON.stringify(ExampleAutoCNVResponse))
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
 

@@ -3,7 +3,7 @@ import { VSwitch } from 'vuetify/components'
 
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import ConditionsCard from '@/components/GeneDetails/ConditionsCard.vue'
-import { setupMountedComponents } from '@/lib/test-utils'
+import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ConditionsCard', async () => {
   it('renders the ConditionsCard information.', async () => {
