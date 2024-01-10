@@ -60,6 +60,7 @@ describe.concurrent('Annonars Client', () => {
   })
 
   it('fails to fetch variant info with wrong variant', async () => {
+    const seqVarInvalid = new SeqvarImpl('grch37', '1', 123, 'A', 'T')
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('alternative=G')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -68,7 +69,7 @@ describe.concurrent('Annonars Client', () => {
     })
 
     const client = new AnnonarsClient()
-    const result = await client.fetchVariantInfo(seqVar)
+    const result = await client.fetchVariantInfo(seqVarInvalid)
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 

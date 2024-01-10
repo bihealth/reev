@@ -34,11 +34,11 @@ export class AcmgSeqVarClient {
   /**
    * Obtains the ACMG rating for a variant.
    *
-   * @param seqVar The variant to retrieve the ACMG rating for.
+   * @param seqvar The variant to retrieve the ACMG rating for.
    * @returns The ACMG rating for the variant.
    */
-  async fetchAcmgRating(seqVar: SeqvarImpl): Promise<any> {
-    const url = `${this.apiBaseUrl}acmgSeqvar/get?seqvar=${seqVar.toName()}`
+  async fetchAcmgRating(seqvar: SeqvarImpl): Promise<any> {
+    const url = `${this.apiBaseUrl}acmgSeqvar/get?seqvar=${seqvar.toName()}`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
