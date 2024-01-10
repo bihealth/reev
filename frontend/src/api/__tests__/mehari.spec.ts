@@ -4,8 +4,13 @@ import createFetchMock from 'vitest-fetch-mock'
 import { MehariClient } from '@/api/mehari'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as SVInfo from '@/assets/__tests__/ExampleSVTxInfo.json'
+import { SeqvarImpl } from '@/lib/genomicVars'
+import { LinearStrucvarImpl } from '@/lib/genomicVars'
 
 const fetchMocker = createFetchMock(vi)
+
+const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
+const strucVar = new LinearStrucvarImpl('DEL', 'grch37', 'chr17', 43044295, 43044297)
 
 describe.concurrent('Mehari Client', () => {
   beforeEach(() => {
@@ -17,14 +22,7 @@ describe.concurrent('Mehari Client', () => {
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1TxInfo))
 
     const client = new MehariClient()
-    const result = await client.retrieveSeqvarsCsq(
-      'grch37',
-      'chr17',
-      43044295,
-      'A',
-      'G',
-      'HGNC:1100'
-    )
+    const result = await client.retrieveSeqvarsCsq(seqVar, 'HGNC:1100')
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1TxInfo))
   })
 
@@ -32,7 +30,7 @@ describe.concurrent('Mehari Client', () => {
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1TxInfo))
 
     const client = new MehariClient()
-    const result = await client.retrieveSeqvarsCsq('grch37', 'chr17', 43044295, 'A', 'G')
+    const result = await client.retrieveSeqvarsCsq(seqVar)
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1TxInfo))
   })
 
@@ -45,7 +43,7 @@ describe.concurrent('Mehari Client', () => {
     })
 
     const client = new MehariClient()
-    const result = await client.retrieveSeqvarsCsq('grch37', 'chr17', 43044295, 'A', 'T')
+    const result = await client.retrieveSeqvarsCsq(seqVar)
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 
@@ -53,7 +51,7 @@ describe.concurrent('Mehari Client', () => {
     fetchMocker.mockResponseOnce(JSON.stringify(SVInfo))
 
     const client = new MehariClient()
-    const result = await client.retrieveStrucvarsCsq('grch37', 'chr17', 43044295, 43044297, 'DEL')
+    const result = await client.retrieveStrucvarsCsq(strucVar)
     expect(JSON.stringify(result)).toEqual(JSON.stringify(SVInfo))
   })
 
@@ -66,7 +64,7 @@ describe.concurrent('Mehari Client', () => {
     })
 
     const client = new MehariClient()
-    const result = await client.retrieveStrucvarsCsq('grch37', 'chr17', 43044295, 43044297, 'INS')
+    const result = await client.retrieveStrucvarsCsq(strucVar)
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 })

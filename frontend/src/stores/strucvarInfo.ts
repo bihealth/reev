@@ -63,25 +63,13 @@ export const useStrucvarInfoStore = defineStore('strucvarInfo', () => {
 
     // Load data via API
     storeState.value = StoreState.Loading
-    const { svType, genomeBuild, chrom, start, stop } = strucvar$
     const annonarsClient = new AnnonarsClient()
     const mehariClient = new MehariClient()
     try {
       // Fetch SV record
-      const mehariResult = await mehariClient.retrieveStrucvarsCsq(
-        genomeBuild,
-        chrom,
-        start,
-        stop,
-        svType
-      )
+      const mehariResult = await mehariClient.retrieveStrucvarsCsq(strucvar$)
       // Fetch ClinVar SV records
-      const { records: responseRecords } = await annonarsClient.fetchClinvarStrucvars(
-        genomeBuild,
-        chrom,
-        start,
-        stop
-      )
+      const { records: responseRecords } = await annonarsClient.fetchClinvarStrucvars(strucvar$)
       clinvarSvRecords.value = responseRecords ?? []
 
       // Fetch gene infos

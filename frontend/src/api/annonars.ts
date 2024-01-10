@@ -1,6 +1,7 @@
 import { chunks } from '@reactgular/chunks'
 
 import { API_INTERNAL_BASE_PREFIX_ANNONARS } from '@/api/common'
+import type { LinearStrucvar, Seqvar } from '@/lib/genomicVars'
 
 const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_ANNONARS}/`
 
@@ -28,28 +29,19 @@ export class AnnonarsClient {
   /**
    * Fetch variant information via annonars and mehari REST APIs.
    *
-   * @param genomeRelease GRCh37 or GRCh38.
-   * @param chromosome Chromosome, e.g., `"chr1"`.
-   * @param pos Position of the variant.
-   * @param reference Reference nucleotide, e.g., `"A"`.
-   * @param alternative Alternative nucleotide, e.g., `"G"`.
+   * @param seqvar The variant to retrieve the information for.
    */
-  async fetchVariantInfo(
-    genomeRelease: string,
-    chromosome: string,
-    pos: number,
-    reference: string,
-    alternative: string
-  ): Promise<any> {
-    let chrom = chromosome.replace('chr', '')
-    if (genomeRelease !== 'grch37') {
-      chrom = `chr${chrom}`
+  async fetchVariantInfo(seqvar: Seqvar): Promise<any> {
+    const { genomeBuild, chrom, pos, del, ins } = seqvar
+    let chromosome = chrom.replace('chr', '')
+    if (genomeBuild !== 'grch37') {
+      chromosome = `chr${chrom}`
     }
 
     const url =
-      `${this.apiBaseUrl}annos/variant?genome_release=${genomeRelease}&` +
-      `chromosome=${chrom}&pos=${pos}&reference=${reference}&` +
-      `alternative=${alternative}`
+      `${this.apiBaseUrl}annos/variant?genome_release=${genomeBuild}&` +
+      `chromosome=${chromosome}&pos=${pos}&reference=${del}&` +
+      `alternative=${ins}`
 
     const response = await fetch(url, {
       method: 'GET'
@@ -105,16 +97,14 @@ export class AnnonarsClient {
    * Fetch overlapping ClinVar strucvars via annonars REST API.
    */
   async fetchClinvarStrucvars(
-    genomeRelease: string,
-    chromosome: string,
-    start: number,
-    end: number,
+    strucvar: LinearStrucvar,
     pageSize: number = 1000,
     minOverlap: number = 0.1
   ): Promise<any> {
+    const { genomeBuild, chrom, start, stop } = strucvar
     const url =
-      `${this.apiBaseUrl}clinvar-sv/query?genomeRelease=${genomeRelease}&` +
-      `chromosome=${chromosome}&start=${start}&stop=${end}&pageSize=${pageSize}&` +
+      `${this.apiBaseUrl}clinvar-sv/query?genomeRelease=${genomeBuild}&` +
+      `chromosome=${chrom}&start=${start}&stop=${stop}&pageSize=${pageSize}&` +
       `minOverlap=${minOverlap}`
 
     const response = await fetch(url, {

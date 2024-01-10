@@ -138,9 +138,8 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
       if (!seqvar$) {
         throw new Error('There was an error loading the ACMG data from the server.')
       }
-      const acmgRatingBackend = await acmgSeqvarClient.fetchAcmgRating(
-        seqvar$.chrom + ':' + seqvar$.pos + ':' + seqvar$.del + ':' + seqvar$.ins
-      )
+      const seqvarImpl = seqvarImplFromSeqvar(seqvar$)
+      const acmgRatingBackend = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
       if (acmgRatingBackend.acmg_rank?.criterias) {
         acmgRatingStatus.value = true
         // Go through the data and setPresense for each criteria
@@ -199,11 +198,11 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
 
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
-      const acmgSeqvar = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl.toName())
+      const acmgSeqvar = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
       if (acmgSeqvar && acmgSeqvar.detail !== 'ACMG Sequence Variant not found') {
-        await acmgSeqvarClient.updateAcmgRating(seqvarImpl.toName(), acmgRating)
+        await acmgSeqvarClient.updateAcmgRating(seqvarImpl, acmgRating)
       } else {
-        await acmgSeqvarClient.saveAcmgRating(seqvarImpl.toName(), acmgRating)
+        await acmgSeqvarClient.saveAcmgRating(seqvarImpl, acmgRating)
       }
       acmgRatingStatus.value = true
     } catch (e) {
@@ -224,7 +223,7 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     const seqvarImpl = seqvarImplFromSeqvar(seqvar.value)
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
-      await acmgSeqvarClient.deleteAcmgRating(seqvarImpl.toName())
+      await acmgSeqvarClient.deleteAcmgRating(seqvarImpl)
       acmgRatingStatus.value = false
     } catch (e) {
       throw new Error(`There was an error deleting the ACMG data: ${e}`)

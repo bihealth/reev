@@ -1,4 +1,5 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
+import type { SeqvarImpl } from '@/lib/genomicVars'
 import { type AcmgRatingBackend } from '@/stores/seqvarAcmgRating'
 
 /**
@@ -33,11 +34,11 @@ export class AcmgSeqVarClient {
   /**
    * Obtains the ACMG rating for a variant.
    *
-   * @param variantName The variant to retrieve the ACMG rating for.
+   * @param seqVar The variant to retrieve the ACMG rating for.
    * @returns The ACMG rating for the variant.
    */
-  async fetchAcmgRating(variantName: string): Promise<any> {
-    const url = `${this.apiBaseUrl}acmgSeqvar/get?seqvar=${variantName}`
+  async fetchAcmgRating(seqVar: SeqvarImpl): Promise<any> {
+    const url = `${this.apiBaseUrl}acmgSeqvar/get?seqvar=${seqVar.toName()}`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -50,11 +51,11 @@ export class AcmgSeqVarClient {
    * Save the ACMG rating for a variant.
    */
   async saveAcmgRating(
-    variantName: string,
+    seqVar: SeqvarImpl,
     acmgRating: AcmgRatingBackend
   ): Promise<AcmgRatingBackend> {
     const postData = `{
-      "seqvar_name": "${variantName}",
+      "seqvar_name": "${seqVar.toName()}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
     const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/create`, {
@@ -74,11 +75,11 @@ export class AcmgSeqVarClient {
    * Update the ACMG rating for a variant.
    */
   async updateAcmgRating(
-    variantName: string,
+    seqVar: SeqvarImpl,
     acmgRating: AcmgRatingBackend
   ): Promise<AcmgRatingBackend> {
     const postData = `{
-      "seqvar_name": "${variantName}",
+      "seqvar_name": "${seqVar.toName()}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
     const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/update`, {
@@ -97,8 +98,8 @@ export class AcmgSeqVarClient {
   /**
    * Delete the ACMG rating for a variant.
    */
-  async deleteAcmgRating(variantName: string): Promise<AcmgRatingBackend> {
-    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/delete?seqvar=${variantName}`, {
+  async deleteAcmgRating(seqVar: SeqvarImpl): Promise<AcmgRatingBackend> {
+    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/delete?seqvar=${seqVar.toName()}`, {
       method: 'DELETE',
       mode: 'cors',
       credentials: 'include'

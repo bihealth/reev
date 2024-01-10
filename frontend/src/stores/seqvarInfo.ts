@@ -71,14 +71,12 @@ export const useSeqvarInfoStore = defineStore('seqvarInfo', () => {
     const vigunoClient = new VigunoClient()
     let hgncId = ''
 
-    const { genomeBuild, chrom, pos, del, ins } = seqvar$
-
     // Retrieve variant information from annonars and mehari.
     loadDataRes.value = Promise.all([
-      annonarsClient.fetchVariantInfo(genomeBuild, chrom, pos, del, ins).then((data) => {
+      annonarsClient.fetchVariantInfo(seqvar$).then((data) => {
         varAnnos.value = data.result
       }),
-      mehariClient.retrieveSeqvarsCsq(genomeBuild, chrom, pos, del, ins).then((data) => {
+      mehariClient.retrieveSeqvarsCsq(seqvar$).then((data) => {
         txCsq.value = data.result ?? []
       })
     ])

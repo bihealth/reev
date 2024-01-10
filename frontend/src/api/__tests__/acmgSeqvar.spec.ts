@@ -52,7 +52,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.fetchAcmgRating(seqVar.toName())
+    const result = await client.fetchAcmgRating(seqVar)
 
     expect(result).toEqual(mockAcmgRating)
   })
@@ -66,7 +66,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.fetchAcmgRating(seqVar.toName())
+    const result = await client.fetchAcmgRating(seqVar)
 
     expect(result).toEqual({ status: 500 })
   })
@@ -75,7 +75,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.saveAcmgRating(seqVar.toName(), mockAcmgRating)
+    const result = await client.saveAcmgRating(seqVar, mockAcmgRating)
 
     expect(result).toEqual(mockAcmgRating)
   })
@@ -89,7 +89,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.saveAcmgRating(seqVar.toName(), mockAcmgRating)
+    const result = await client.saveAcmgRating(seqVar, mockAcmgRating)
 
     expect(result).toEqual({ status: 500 })
   })
@@ -98,7 +98,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify(mockAcmgRating))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.updateAcmgRating(seqVar.toName(), mockAcmgRating)
+    const result = await client.updateAcmgRating(seqVar, mockAcmgRating)
 
     expect(result).toEqual(mockAcmgRating)
   })
@@ -112,7 +112,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.updateAcmgRating(seqVar.toName(), mockAcmgRating)
+    const result = await client.updateAcmgRating(seqVar, mockAcmgRating)
 
     expect(result).toEqual({ status: 500 })
   })
@@ -121,7 +121,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     fetchMocker.mockResponse(JSON.stringify({}))
 
     const client = new AcmgSeqVarClient()
-    const result = await client.deleteAcmgRating(seqVar.toName())
+    const result = await client.deleteAcmgRating(seqVar)
 
     expect(result).toEqual({})
   })
@@ -135,7 +135,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
     })
 
     const client = new AcmgSeqVarClient()
-    const result = await client.deleteAcmgRating(seqVar.toName())
+    const result = await client.deleteAcmgRating(seqVar)
 
     expect(result).toEqual({ status: 500 })
   })
