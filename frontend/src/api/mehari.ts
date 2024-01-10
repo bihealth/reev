@@ -1,4 +1,5 @@
 import { API_INTERNAL_BASE_PREFIX_MEHARI } from '@/api/common'
+import type { LinearStrucvar, Seqvar } from '@/lib/genomicVars'
 
 const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_MEHARI}/`
 
@@ -11,19 +12,13 @@ export class MehariClient {
     this.csrfToken = csrfToken ?? null
   }
 
-  async retrieveSeqvarsCsq(
-    genomeRelease: string,
-    chromosome: string,
-    pos: number,
-    reference: string,
-    alternative: string,
-    hgnc_id?: string
-  ): Promise<any> {
+  async retrieveSeqvarsCsq(seqvar: Seqvar, hgnc_id?: string): Promise<any> {
+    const { genomeBuild, chrom, pos, del, ins } = seqvar
     const hgncSuffix = hgnc_id ? `&hgnc_id=${hgnc_id}` : ''
     const url =
-      `${this.apiBaseUrl}seqvars/csq?genome_release=${genomeRelease}&` +
-      `chromosome=${chromosome}&position=${pos}&reference=${reference}&` +
-      `alternative=${alternative}${hgncSuffix}`
+      `${this.apiBaseUrl}seqvars/csq?genome_release=${genomeBuild}&` +
+      `chromosome=${chrom}&position=${pos}&reference=${del}&` +
+      `alternative=${ins}${hgncSuffix}`
 
     const response = await fetch(url, {
       method: 'GET'
@@ -31,16 +26,11 @@ export class MehariClient {
     return await response.json()
   }
 
-  async retrieveStrucvarsCsq(
-    genomeRelease: string,
-    chromosome: string,
-    start: number,
-    stop: number,
-    sv_type: string
-  ): Promise<any> {
+  async retrieveStrucvarsCsq(strucvar: LinearStrucvar): Promise<any> {
+    const { genomeBuild, chrom, start, stop, svType } = strucvar
     const url =
-      `${this.apiBaseUrl}strucvars/csq?genome_release=${genomeRelease}&` +
-      `chromosome=${chromosome}&start=${start}&stop=${stop}&sv_type=${sv_type}`
+      `${this.apiBaseUrl}strucvars/csq?genome_release=${genomeBuild}&` +
+      `chromosome=${chrom}&start=${start}&stop=${stop}&sv_type=${svType}`
     const response = await fetch(url, {
       method: 'GET'
     })

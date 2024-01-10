@@ -5,8 +5,11 @@ import { AnnonarsClient } from '@/api/annonars'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import * as EMPSearchInfo from '@/assets/__tests__/EMPSearchInfo.json'
+import { SeqvarImpl } from '@/lib/genomicVars'
 
 const fetchMocker = createFetchMock(vi)
+
+const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
 
 describe.concurrent('Annonars Client', () => {
   beforeEach(() => {
@@ -39,7 +42,7 @@ describe.concurrent('Annonars Client', () => {
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1VariantInfo))
 
     const client = new AnnonarsClient()
-    const result = await client.fetchVariantInfo('grch37', 'chr17', 43044295, 'A', 'G')
+    const result = await client.fetchVariantInfo(seqVar)
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1VariantInfo))
   })
 
@@ -52,11 +55,12 @@ describe.concurrent('Annonars Client', () => {
     })
 
     const client = new AnnonarsClient()
-    const result = await client.fetchVariantInfo('grch38', 'chr17', 43044295, 'A', 'G')
+    const result = await client.fetchVariantInfo(seqVar)
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1VariantInfo))
   })
 
   it('fails to fetch variant info with wrong variant', async () => {
+    const seqVarInvalid = new SeqvarImpl('grch37', '1', 123, 'A', 'T')
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('alternative=G')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -65,7 +69,7 @@ describe.concurrent('Annonars Client', () => {
     })
 
     const client = new AnnonarsClient()
-    const result = await client.fetchVariantInfo('grch37', 'chr17', 43044295, 'A', 'T')
+    const result = await client.fetchVariantInfo(seqVarInvalid)
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 
