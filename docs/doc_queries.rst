@@ -15,7 +15,7 @@ Genes
 Gene queries in REEV allow users to search by HGNC symbol or NCBI/ENSEMBL/HGNC ID. Examples of gene queries include:
 
 - `BRCA1`: Search by HGNC symbol.
-- `HGNC:1100`: This refers to the BRCA1 gene.
+- `HGNC:1100`: This refers to the HGNC ID for the BRCA1 gene.
 - `7273`: This is the NCBI ID for the TTN gene.
 
 .. _doc_queries_seqvar:
@@ -26,7 +26,6 @@ Sequence Variants
 
 Sequence variant queries in REEV can be provided in HGVS notation, gnomAD style, or SPDI-style. Examples include:
 
-Development Environment Examples:
 - `NM_007294.4(BRCA1):c.5123C>A`: HGVS transcript SNV.
 - `NM_000179.3:c.4082del`: HGVS transcript deletion.
 - `NC_000017.10:g.41197728G>T`: HGVS genomic SNV.
