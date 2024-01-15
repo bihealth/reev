@@ -12,6 +12,7 @@ describe.concurrent('DottyClient', () => {
   })
 
   it('should resolve to SPDI successfully', async () => {
+    // arrange:
     const mockData: DottyResponse = {
       success: true,
       value: {
@@ -24,13 +25,16 @@ describe.concurrent('DottyClient', () => {
     }
     fetchMocker.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
 
+    // act:
     const client = new DottyClient()
     const result = await client.toSpdi('NM_000059.3:c.274G>A')
 
+    // assert:
     expect(result).toEqual(mockData)
   })
 
   it('should load transcripts successfully', async () => {
+    // arrange:
     const mockData = {
       transcripts: {
         'HGNC:1100': {
@@ -40,9 +44,11 @@ describe.concurrent('DottyClient', () => {
     }
     fetchMocker.mockResponseOnce(JSON.stringify(mockData), { status: 200 })
 
+    // act:
     const client = new DottyClient()
     const result = await client.fetchTranscripts('HGNC:1100', 'GRCh37')
 
+    // assert:
     expect(result).toEqual(mockData)
   })
 })

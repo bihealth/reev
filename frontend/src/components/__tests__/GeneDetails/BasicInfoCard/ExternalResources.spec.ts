@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ExternalResources', async () => {
   it('renders the ExternalResources information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ExternalResources },
       {
@@ -14,6 +15,10 @@ describe.concurrent('ExternalResources', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('External Resources')
   })
 })

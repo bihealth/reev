@@ -25,6 +25,10 @@ import {
 
 describe.concurrent('regular expression REGEX_GNOMAD_VARIANT', () => {
   it('should match variants with chromosome name only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('chr1-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
     expect('chr22-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
     expect('chrX-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
@@ -46,6 +50,10 @@ describe.concurrent('regular expression REGEX_GNOMAD_VARIANT', () => {
   })
 
   it('should match variants with valid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('hg19-chr1-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
     expect('hg19-chr22-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
     expect('hg38-chrX-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
@@ -67,6 +75,10 @@ describe.concurrent('regular expression REGEX_GNOMAD_VARIANT', () => {
   })
 
   it('should match variants with invalid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('T2T-Y-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
     expect('T2T-MT-100-AT-TG').toMatch(REGEX_GNOMAD_VARIANT)
 
@@ -82,6 +94,10 @@ describe.concurrent('regular expression REGEX_GNOMAD_VARIANT', () => {
 
 describe.concurrent('regular expression REGEX_CANONICAL_SPDI', () => {
   it('should match correctly formatted variants only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('NC_000001.11:100:AT:TG').toMatch(REGEX_CANONICAL_SPDI)
     expect('NC_999999.999:100:AT:TG').toMatch(REGEX_CANONICAL_SPDI)
     expect('NC_000000.0:100:AT:TG').toMatch(REGEX_CANONICAL_SPDI)
@@ -103,6 +119,10 @@ describe.concurrent('regular expression REGEX_CANONICAL_SPDI', () => {
 
 describe.concurrent('regular expression REGEX_RELAXED_SPDI', () => {
   it('should match variants with chromosome name only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('chr1:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
     expect('chr22:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
     expect('chrX:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
@@ -124,6 +144,10 @@ describe.concurrent('regular expression REGEX_RELAXED_SPDI', () => {
   })
 
   it('should match variants with valid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('hg19:chr1:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
     expect('hg19:chr22:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
     expect('hg38:chrX:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
@@ -145,6 +169,10 @@ describe.concurrent('regular expression REGEX_RELAXED_SPDI', () => {
   })
 
   it('should match variants with invalid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('T2T:Y:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
     expect('T2T:MT:100:AT:TG').toMatch(REGEX_RELAXED_SPDI)
 
@@ -160,6 +188,10 @@ describe.concurrent('regular expression REGEX_RELAXED_SPDI', () => {
 
 describe.concurrent('regular expression REGEX_DBSNP_ID', () => {
   it('should match correctly formatted rs IDs only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('rs1').toMatch(REGEX_DBSNP_ID)
     expect('rs99999999999').toMatch(REGEX_DBSNP_ID)
     expect('sr1').not.toMatch(REGEX_DBSNP_ID)
@@ -169,6 +201,10 @@ describe.concurrent('regular expression REGEX_DBSNP_ID', () => {
 
 describe.concurrent('regular expression REGEX_CLINVAR_ID', () => {
   it('should match correctly formatted IDs only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('VCV000148363.2').toMatch(REGEX_CLINVAR_ID)
     expect('VCV000000000.0').toMatch(REGEX_CLINVAR_ID)
     expect('RCV000148363.2').toMatch(REGEX_CLINVAR_ID)
@@ -194,6 +230,10 @@ describe.concurrent('regular expression REGEX_CLINVAR_ID', () => {
 
 describe.concurrent('regular expression REGEX_CNV_COLON', () => {
   it('should match variants with chromosome name only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL:chr1:100:200').toMatch(REGEX_CNV_COLON)
     expect('DEL:1:100:200').toMatch(REGEX_CNV_COLON)
     expect('DUP:chr1:100:200').toMatch(REGEX_CNV_COLON)
@@ -210,6 +250,10 @@ describe.concurrent('regular expression REGEX_CNV_COLON', () => {
   })
 
   it('should match variants with valid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL:GRCh37:chr1:100:200').toMatch(REGEX_CNV_COLON)
     expect('DEL:GRCh38:1:100:200').toMatch(REGEX_CNV_COLON)
     expect('DUP:hg19:chr1:100:200').toMatch(REGEX_CNV_COLON)
@@ -226,6 +270,10 @@ describe.concurrent('regular expression REGEX_CNV_COLON', () => {
   })
 
   it('should match variants with RefSeq identifiers', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL:NC_000001.10:100:200').toMatch(REGEX_CNV_COLON)
     expect('DEL:NC_000001.11:100:200').toMatch(REGEX_CNV_COLON)
     expect('DUP:NC_000001.10:100:200').toMatch(REGEX_CNV_COLON)
@@ -242,6 +290,10 @@ describe.concurrent('regular expression REGEX_CNV_COLON', () => {
   })
 
   it('should match variants with invalid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL:T2T:chr1:100:200').toMatch(REGEX_CNV_COLON)
 
     expect('DEL:T2T:chr1:100:200'.match(REGEX_CNV_COLON)?.groups).toEqual({
@@ -257,6 +309,10 @@ describe.concurrent('regular expression REGEX_CNV_COLON', () => {
 
 describe.concurrent('regular expression REGEX_CNV_HYPEN', () => {
   it('should match variants with chromosome name only', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL-chr1-100-200').toMatch(REGEX_CNV_HYPHEN)
     expect('DEL-1-100-200').toMatch(REGEX_CNV_HYPHEN)
     expect('DUP-chr1-100-200').toMatch(REGEX_CNV_HYPHEN)
@@ -273,6 +329,10 @@ describe.concurrent('regular expression REGEX_CNV_HYPEN', () => {
   })
 
   it('should match variants with valid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL-GRCh37-chr1-100-200').toMatch(REGEX_CNV_HYPHEN)
     expect('DEL-GRCh38-1-100-200').toMatch(REGEX_CNV_HYPHEN)
     expect('DUP-hg19-chr1-100-200').toMatch(REGEX_CNV_HYPHEN)
@@ -289,6 +349,10 @@ describe.concurrent('regular expression REGEX_CNV_HYPEN', () => {
   })
 
   it('should match variants with RefSeq identifiers', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL-NC_000001.10-100-200').toMatch(REGEX_CNV_HYPHEN)
     expect('DEL-NC_000001.11-100-200').toMatch(REGEX_CNV_HYPHEN)
     expect('DUP-NC_000001.10-100-200').toMatch(REGEX_CNV_HYPHEN)
@@ -305,6 +369,10 @@ describe.concurrent('regular expression REGEX_CNV_HYPEN', () => {
   })
 
   it('should match variants with invalid genome releases name', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('DEL-T2T-chr1-100-200').toMatch(REGEX_CNV_HYPHEN)
 
     expect('DEL-T2T-chr1-100-200'.match(REGEX_CNV_HYPHEN)?.groups).toEqual({
@@ -320,6 +388,10 @@ describe.concurrent('regular expression REGEX_CNV_HYPEN', () => {
 
 describe.concurrent('regular expression REGEX_CNV_ISCN_2020', () => {
   it('should match valid strings', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect('arr[GRCh37] 2q12.2q13 (107132950_110427254)x1').toMatch(REGEX_CNV_ISCN_2020)
     expect(
       'arr[GRCh37] 2q12.2q13 (107132950_110427254)x1'.match(REGEX_CNV_ISCN_2020)?.groups
@@ -368,6 +440,7 @@ describe.concurrent('validateSequenceVariant()', () => {
     ['1', 249250621, 'AT'],
     ['1', 249250622, 'A']
   ])('throws on %s-%d-%s', (chrom, pos, del) => {
+    // arrange:
     const variant = {
       genomeBuild: 'grch37' as GenomeBuild,
       chrom,
@@ -376,6 +449,10 @@ describe.concurrent('validateSequenceVariant()', () => {
       ins: 'TG',
       userRepr: 'TEST'
     }
+
+    // act: nothing to do
+
+    // assert:
     expect(() => validateSeqvar(variant)).toThrow()
   })
 
@@ -383,6 +460,7 @@ describe.concurrent('validateSequenceVariant()', () => {
     ['1', 249250620, 'AT'],
     ['1', 249250621, 'A']
   ])('work on %s-%d-%s', (chrom, pos, del) => {
+    // arrange:
     const variant = {
       genomeBuild: 'grch37' as GenomeBuild,
       chrom,
@@ -391,6 +469,10 @@ describe.concurrent('validateSequenceVariant()', () => {
       ins: 'TG',
       userRepr: 'TEST'
     }
+
+    // act: nothing to do
+
+    // assert:
     expect(validateSeqvar(variant)).toEqual(variant)
   })
 })
@@ -404,6 +486,10 @@ describe.concurrent('parseSeparatedSeqvar()', () => {
     ['m-100-at-tg', 'grch37', 'MT'],
     ['mt-100-at-tg', 'grch37', 'MT']
   ])('hyphen-separated result for %s', (variant, expectedGenomeRelease, expectedChrom) => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseSeparatedSeqvar(variant)).toEqual({
       genomeBuild: expectedGenomeRelease,
       chrom: expectedChrom,
@@ -422,6 +508,10 @@ describe.concurrent('parseSeparatedSeqvar()', () => {
     ['m:100:at:tg', 'grch37', 'MT'],
     ['mt:100:at:tg', 'grch37', 'MT']
   ])('colon-separated result for %s', (variant, expectedGenomeRelease, expectedChrom) => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseSeparatedSeqvar(variant)).toEqual({
       genomeBuild: expectedGenomeRelease,
       chrom: expectedChrom,
@@ -440,6 +530,10 @@ describe.concurrent('parseCanonicalSpdiSeqvar()', () => {
     ['NC_000023.10:100:AT:TG', 'grch37', 'X'],
     ['NC_012920.1:100:at:tg', 'grch37', 'MT']
   ])('result for %s', (variant, expectedGenomeRelease, expectedChrom) => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseCanonicalSpdiSeqvar(variant)).toEqual({
       genomeBuild: expectedGenomeRelease,
       chrom: expectedChrom,
@@ -453,6 +547,10 @@ describe.concurrent('parseCanonicalSpdiSeqvar()', () => {
 
 describe.concurrent('parseSeparatedStrucvar()', () => {
   it('parse DEL:1:100:200', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseSeparatedStrucvar('DEL:1:100:200')).toEqual({
       chrom: '1',
       copyNumber: undefined,
@@ -465,6 +563,10 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
   })
 
   it('parse DEL:GRCh37:1:100:200', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseSeparatedStrucvar('DEL:1:100:200')).toEqual({
       chrom: '1',
       copyNumber: undefined,
@@ -477,6 +579,10 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
   })
 
   it('parse DEL:NC_000001.11:100:200', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseSeparatedStrucvar('DEL:NC_000001.11:100:200')).toEqual({
       chrom: '1',
       copyNumber: undefined,
@@ -489,6 +595,10 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
   })
 
   it('parse DUP-NC_000001.11-100-200', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseSeparatedStrucvar('DUP-NC_000001.11-100-200')).toEqual({
       chrom: '1',
       copyNumber: undefined,
@@ -501,20 +611,36 @@ describe.concurrent('parseSeparatedStrucvar()', () => {
   })
 
   it('throws when start > stop', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(() => parseSeparatedStrucvar('DEL:NC_000001.11:200:100')).toThrow()
   })
 
   it('throws when start > length', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(() => parseSeparatedStrucvar('DEL:NC_000001.11:249250621:249250621')).toThrow()
   })
 
   it('throws when stop > length', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(() => parseSeparatedStrucvar('DEL:NC_000001.11:1:249250623')).toThrow()
   })
 })
 
 describe.concurrent('parseIscnCnv', () => {
   it('should match valid strings', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(parseIscnCnv('arr[GRCh37] 2q12.2q13 (107132950_110427254)x1')).toEqual({
       chrom: '2',
       copyNumber: 1,
@@ -574,6 +700,10 @@ describe.concurrent('parseIscnCnv', () => {
   })
 
   it('should throw on invalid positions', () => {
+    // arrange: nothing to do
+    // act: nothing to do
+
+    // assert:
     expect(() => parseSeparatedStrucvar('arr[GRCh37] 2q12.2q13 (200_100)x1')).toThrow()
     expect(() => parseSeparatedStrucvar('arr[GRCh37] 2q12.2q13 (243199374_243199374)x1')).toThrow()
     expect(() => parseSeparatedStrucvar('arr[GRCh37] 2q12.2q13 (1_243199374)x1')).toThrow()
@@ -586,11 +716,17 @@ describe.concurrent('parseIscnCnv', () => {
 
 describe.concurrent('SeqvarImpl', () => {
   it('should work properly with toName()', () => {
+    // arrange:
     const variant = new SeqvarImpl('grch37', '1', 100, 'AT', 'TG')
+
+    // act: nothing to do
+
+    // assert:
     expect(variant.toName()).toEqual('grch37-1-100-AT-TG')
   })
 
   it('should be constructable with seqvarImplFromSeqvar()', () => {
+    // arrange:
     const seqvar: Seqvar = {
       genomeBuild: 'grch37',
       chrom: '1',
@@ -600,17 +736,27 @@ describe.concurrent('SeqvarImpl', () => {
       userRepr: 'TEST'
     }
     const variant = seqvarImplFromSeqvar(seqvar)
+
+    // act: nothing to do
+
+    // assert:
     expect(variant).toEqual(seqvar)
   })
 })
 
 describe.concurrent('LinearStrucvarImpl', () => {
   it('should work properly with toName()', () => {
+    // arrange:
     const variant = new LinearStrucvarImpl('DEL', 'grch37', '1', 100, 200, undefined, undefined)
+
+    // act: nothing to do
+
+    // assert:
     expect(variant.toName()).toEqual('DEL-grch37-1-100-200')
   })
 
   it('should be constructable with seqvarImplFromSeqvar()', () => {
+    // arrange:
     const strucvar: LinearStrucvar = {
       svType: 'DEL',
       genomeBuild: 'grch37',
@@ -620,6 +766,10 @@ describe.concurrent('LinearStrucvarImpl', () => {
       userRepr: 'DEL-grch37-1-100-200'
     }
     const variant = linearStrucvarImplFromLinearStrucvar(strucvar)
+
+    // act: nothing to do
+
+    // assert:
     expect(variant).toEqual(strucvar)
   })
 })

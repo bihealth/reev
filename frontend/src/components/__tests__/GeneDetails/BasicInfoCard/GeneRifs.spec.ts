@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('GeneRifs', async () => {
   it('renders the GeneRifs information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: GeneRifs },
       {
@@ -14,6 +15,10 @@ describe.concurrent('GeneRifs', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('NCBI References Into Function')
   })
 })

@@ -15,14 +15,19 @@ describe.concurrent('User Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useUserStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.currentUser).toBe(undefined)
     expect(store.isAuthenticated).toBe(false)
   })
 
   it('should load current user', async () => {
+    // arrange:
     const mockUser: UserData = {
       id: '1',
       email: 'test@example.com',
@@ -31,40 +36,48 @@ describe.concurrent('User Store', () => {
       is_verified: true,
       oauth_accounts: []
     }
-
-    const store = useUserStore()
     fetchMocker.mockResponse(JSON.stringify(mockUser))
+    const store = useUserStore()
 
+    // act:
     await store.loadCurrentUser()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.currentUser).toEqual(mockUser)
     expect(store.isAuthenticated).toBe(true)
   })
 
   it('should handle unauthenticated error when loading current user', async () => {
-    const store = useUserStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Unauthenticated' }), { status: 401 })
+    const store = useUserStore()
 
+    // act:
     await store.loadCurrentUser()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.currentUser).toBe(null)
     expect(store.isAuthenticated).toBe(false)
   })
 
   it('should handle other errors when loading current user', async () => {
-    const store = useUserStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify({ detail: 'Internal Server Error' }), { status: 500 })
+    const store = useUserStore()
 
+    // act:
     await store.loadCurrentUser()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.currentUser).toBe(null)
     expect(store.isAuthenticated).toBe(false)
   })
 
   it('should initialize store', async () => {
+    // arrange:
     const mockUser: UserData = {
       id: '1',
       email: 'test@example.com',
@@ -73,18 +86,20 @@ describe.concurrent('User Store', () => {
       is_verified: true,
       oauth_accounts: []
     }
-
-    const store = useUserStore()
     fetchMocker.mockResponse(JSON.stringify(mockUser))
+    const store = useUserStore()
 
+    // act:
     await store.initialize()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.currentUser).toEqual(mockUser)
     expect(store.isAuthenticated).toBe(true)
   })
 
   it('should not initialize store twice', async () => {
+    // arrange:
     const mockUser: UserData = {
       id: '1',
       email: 'test@example.com',
@@ -93,15 +108,15 @@ describe.concurrent('User Store', () => {
       is_verified: true,
       oauth_accounts: []
     }
-
-    const store = useUserStore()
     fetchMocker.mockResponse(JSON.stringify(mockUser))
+    const store = useUserStore()
 
+    // act:
     await store.initialize()
     const initialState = { ...store }
-
     await store.initialize()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.currentUser).toEqual(mockUser)
     expect(store.isAuthenticated).toBe(true)

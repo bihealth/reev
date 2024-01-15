@@ -12,10 +12,14 @@ describe.concurrent('Misc Client', () => {
   })
 
   it('fetches version info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce('v0.0.0')
 
+    // act:
     const client = new MiscClient()
     const result = await client.fetchVersion()
+
+    // assert:
     expect(result).toEqual('v0.0.0')
   })
 })

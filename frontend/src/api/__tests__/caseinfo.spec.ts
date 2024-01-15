@@ -6,6 +6,7 @@ import { type Case, Ethnicity, Inheritance, Sex, Zygosity } from '@/stores/case'
 
 const fetchMocker = createFetchMock(vi)
 
+/** Example Case data */
 const mockCaseInfo: Case = {
   pseudonym: '',
   diseases: [],
@@ -26,15 +27,19 @@ describe.concurrent('CaseInfo Client', () => {
   })
 
   it('fetches case info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(mockCaseInfo))
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.fetchCaseInfo()
 
+    // assert:
     expect(result).toEqual(mockCaseInfo)
   })
 
   it('fails to fetch case info', async () => {
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('caseinfo/get')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
@@ -42,22 +47,28 @@ describe.concurrent('CaseInfo Client', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.fetchCaseInfo()
 
+    // assert:
     expect(result).toEqual({ status: 500 })
   })
 
   it('creates case info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(mockCaseInfo))
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.createCaseInfo(mockCaseInfo)
 
+    // assert:
     expect(result).toEqual(mockCaseInfo)
   })
 
   it('fails to create case info', async () => {
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('caseinfo/create')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
@@ -65,22 +76,28 @@ describe.concurrent('CaseInfo Client', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.createCaseInfo(mockCaseInfo)
 
+    // assert:
     expect(result).toEqual({ status: 500 })
   })
 
   it('updates case info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(mockCaseInfo))
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.updateCaseInfo(mockCaseInfo)
 
+    // assert:
     expect(result).toEqual(mockCaseInfo)
   })
 
   it('fails to update case info', async () => {
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('caseinfo/update')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
@@ -88,22 +105,28 @@ describe.concurrent('CaseInfo Client', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.updateCaseInfo(mockCaseInfo)
 
+    // assert:
     expect(result).toEqual({ status: 500 })
   })
 
   it('deletes case info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify({}))
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.deleteCaseInfo()
 
+    // assert:
     expect(result).toEqual({})
   })
 
   it('fails to delete case info', async () => {
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('caseinfo/delete')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
@@ -111,9 +134,11 @@ describe.concurrent('CaseInfo Client', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
+    // act:
     const client = new CaseInfoClient()
     const result = await client.deleteCaseInfo()
 
+    // assert:
     expect(result).toEqual({ status: 500 })
   })
 })

@@ -4,6 +4,7 @@ import VariantToolsCard from '@/components/StrucvarDetails/VariantToolsCard.vue'
 import { type Strucvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 
+/** Example stucture Variant */
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
   svType: 'DEL',
@@ -15,6 +16,7 @@ const strucvarInfo: Strucvar = {
 
 describe.concurrent('VariantToolsCard', async () => {
   it('renders the VariantToolsCard content', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: VariantToolsCard },
       {
@@ -25,6 +27,9 @@ describe.concurrent('VariantToolsCard', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Variant Tools')
     const vButtons = wrapper.findAllComponents({ name: 'VBtn' })
     expect(vButtons.length).toBe(7)

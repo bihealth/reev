@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('TxCsq', async () => {
   it('renders the TxCsq info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: TxCsq },
       {
@@ -14,6 +15,10 @@ describe.concurrent('TxCsq', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)
     const headers = table.findAll('th')

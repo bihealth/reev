@@ -6,6 +6,7 @@ import VariantValidator from '@/components/SeqvarDetails/VariantValidatorCard.vu
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -17,6 +18,7 @@ const seqvarInfo: Seqvar = {
 
 describe.concurrent('VariantValidator', async () => {
   it('renders the VariantValidator info', async () => {
+    // arrange:
     // Mock fetch
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve(VariantValidatorInfo) })
@@ -29,19 +31,22 @@ describe.concurrent('VariantValidator', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org')
 
+    // act:
+    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org') // guard
     const submitButton = wrapper.find('button')
-    expect(submitButton.exists()).toBe(true)
+    expect(submitButton.exists()).toBe(true) // guard
     submitButton.trigger('click')
     await nextTick()
+
+    // assert:
     expect(wrapper.text()).toContain('Loading...')
     const icon = wrapper.find('.v-progress-circular')
     expect(icon.exists()).toBe(true)
-    await nextTick()
   })
 
   it('renders the VariantValidator info with error', async () => {
+    // arrange:
     // Mock fetch
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
@@ -54,19 +59,22 @@ describe.concurrent('VariantValidator', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org')
 
+    // act:
+    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org') // guard
     const submitButton = wrapper.find('button')
-    expect(submitButton.exists()).toBe(true)
+    expect(submitButton.exists()).toBe(true) // guard
     submitButton.trigger('click')
     await nextTick()
+
+    // assert:
     expect(wrapper.text()).toContain('Loading...')
     const icon = wrapper.find('.v-progress-circular')
     expect(icon.exists()).toBe(true)
-    await nextTick()
   })
 
   it('renders the VariantValidator info with empty data', async () => {
+    // arrange:
     // Mock fetch
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve({ foo: 'foo' }) })
@@ -79,15 +87,17 @@ describe.concurrent('VariantValidator', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org')
 
+    // act:
+    expect(wrapper.text()).toContain('Retrieve Predictions from VariantValidator.org') // guard
     const submitButton = wrapper.find('button')
-    expect(submitButton.exists()).toBe(true)
+    expect(submitButton.exists()).toBe(true) // guard
     submitButton.trigger('click')
     await nextTick()
+
+    // assert:
     expect(wrapper.text()).toContain('Loading...')
     const icon = wrapper.find('.v-progress-circular')
     expect(icon.exists()).toBe(true)
-    await nextTick()
   })
 })

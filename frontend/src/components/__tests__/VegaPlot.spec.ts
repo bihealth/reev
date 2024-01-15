@@ -1,9 +1,10 @@
-import { describe, it } from 'vitest'
+import { describe, expect, it } from 'vitest'
 
 import { setupMountedComponents } from '@/lib/testUtils'
 
 import VegaPlot from '../VegaPlot.vue'
 
+/** Example Vega plot data */
 const vegaData = [
   {
     tissue: 'Adipose Tissue',
@@ -25,10 +26,12 @@ const vegaData = [
   }
 ]
 
+/** Example Vega plot encoding */
 const vegaEncoding = {
   x: { field: 'tissueDetailed', type: 'nominal', title: null, axis: { labelAngle: 45 } }
 }
 
+/** Example Vega plot layer */
 const vegaLayer = [
   {
     mark: { type: 'rule', tooltip: { content: 'data' } },
@@ -54,8 +57,9 @@ const vegaLayer = [
 describe.concurrent('VegaPlot', async () => {
   // Skipping tests due to error with vega-embed
   // DataCloneError: #<Object> could not be cloned.
-  it.skip('renders the VegaPlot info', async () => {
-    await setupMountedComponents(
+  it('renders the VegaPlot info', async () => {
+    // arrange:
+    const { wrapper } = await setupMountedComponents(
       { component: VegaPlot },
       {
         props: {
@@ -72,5 +76,11 @@ describe.concurrent('VegaPlot', async () => {
         }
       }
     )
+    // act: nothing to do
+
+    // assert:
+    expect(wrapper.text()).toContain('Save as PNG')
+    expect(wrapper.text()).toContain('View Source')
+    expect(wrapper.text()).toContain('Open in Vega Editor')
   })
 })

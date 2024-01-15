@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ScoreDisplay', async () => {
   it('renders the ScoreDisplay with default props', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ScoreDisplay },
       {
@@ -15,6 +16,10 @@ describe.concurrent('ScoreDisplay', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     const svg = wrapper.find('svg')
     expect(svg.exists()).toBe(true)
   })

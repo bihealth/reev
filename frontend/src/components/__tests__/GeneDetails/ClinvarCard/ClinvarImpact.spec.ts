@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ClinvarImpact', async () => {
   it('renders the ClinvarImpact information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ClinvarImpact },
       {
@@ -14,6 +15,10 @@ describe.concurrent('ClinvarImpact', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Impact Counts')
   })
 })

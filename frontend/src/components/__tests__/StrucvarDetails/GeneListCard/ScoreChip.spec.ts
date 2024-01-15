@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ScoreChip', async () => {
   it('renders the ScoreChip info with specified link', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ScoreChip },
       {
@@ -15,10 +16,14 @@ describe.concurrent('ScoreChip', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('0')
   })
 
   it('renders the ScoreChip info without link', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ScoreChip },
       {
@@ -29,6 +34,9 @@ describe.concurrent('ScoreChip', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('0')
   })
 })

@@ -6,6 +6,7 @@ import { StoreState } from '@/stores/misc'
 
 describe.concurrent('BookmarkListItem.vue', () => {
   it('renders information with StoreState Active', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: BookmarkListItem },
       {
@@ -29,11 +30,15 @@ describe.concurrent('BookmarkListItem.vue', () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Bookmark')
     expect(wrapper.text()).not.toContain('Bookmark available after login')
   })
 
   it('renders information with StoreState Error', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: BookmarkListItem },
       {
@@ -57,6 +62,9 @@ describe.concurrent('BookmarkListItem.vue', () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Bookmarks available after login')
   })
 })

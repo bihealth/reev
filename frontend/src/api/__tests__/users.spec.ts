@@ -12,6 +12,7 @@ describe.concurrent('Users Client', () => {
   })
 
   it('should fetch current user profile successfully', async () => {
+    // arrange:
     const userData = {
       id: '1',
       email: 'test@example.com',
@@ -21,17 +22,22 @@ describe.concurrent('Users Client', () => {
     }
     fetchMocker.mockResponseOnce(JSON.stringify(userData), { status: 200 })
 
+    // act:
     const client = new UsersClient()
     const result = await client.fetchCurrentUserProfile()
 
+    // assert:
     expect(result).toEqual(userData)
   })
 
   it('should throw UnauthenticatedError when not authenticated', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce('', { status: 401 })
 
+    // act:
     const client = new UsersClient()
 
+    // assert:
     try {
       await client.fetchCurrentUserProfile()
       expect(true).toBe(false)
@@ -41,10 +47,13 @@ describe.concurrent('Users Client', () => {
   })
 
   it('should throw UnauthenticatedError on unexpected status', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce('', { status: 500 })
 
+    // act:
     const client = new UsersClient()
 
+    // assert:
     try {
       await client.fetchCurrentUserProfile()
       expect(true).toBe(false)

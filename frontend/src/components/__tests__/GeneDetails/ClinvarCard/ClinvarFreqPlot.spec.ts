@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ClinVarFreqPlot', async () => {
   it('renders the ClinVarFreqPlot info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ClinVarFreqPlot },
       {
@@ -18,8 +19,11 @@ describe.concurrent('ClinVarFreqPlot', async () => {
         }
       }
     )
-    expect(wrapper.text()).toContain('Impact / Frequency')
 
+    // act: nothing, only test rendering
+
+    // assert:
+    expect(wrapper.text()).toContain('Impact / Frequency')
     const vegaPlot = wrapper.findComponent(VegaPlot)
     expect(vegaPlot.exists()).toBe(true)
   })

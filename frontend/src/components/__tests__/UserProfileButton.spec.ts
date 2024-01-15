@@ -6,6 +6,7 @@ import { type UserData, useUserStore } from '@/stores/user'
 
 import UserProfileButton from '../UserProfileButton.vue'
 
+/** Example User data */
 const adminUser: UserData = {
   id: '2c0a153e-5e8c-11ee-8c99-0242ac120002',
   email: 'admin@example.com',
@@ -24,6 +25,7 @@ const adminUser: UserData = {
 
 describe.concurrent('UserProfileButton', () => {
   it('displays Login button without any user', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: UserProfileButton },
       {
@@ -35,6 +37,9 @@ describe.concurrent('UserProfileButton', () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const loginButton = wrapper.findComponent('#login')
     expect(loginButton.exists()).toBe(true)
     const logoutButton = wrapper.findComponent('#profile')
@@ -42,6 +47,7 @@ describe.concurrent('UserProfileButton', () => {
   })
 
   it('displays Profile button with a user', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: UserProfileButton },
       {
@@ -53,6 +59,9 @@ describe.concurrent('UserProfileButton', () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const loginButton = wrapper.findComponent('#login')
     expect(loginButton.exists()).toBe(false)
     const logoutButton = wrapper.findComponent('#profile')
@@ -60,6 +69,7 @@ describe.concurrent('UserProfileButton', () => {
   })
 
   it('switches from Login to Profile button when store changes', async () => {
+    // arrange:
     // Note that we use an `async` test here as we need `await nextTick()` for the DOM
     // update to bubble through when updating the state property.
     const { wrapper } = await setupMountedComponents(
@@ -73,6 +83,7 @@ describe.concurrent('UserProfileButton', () => {
       }
     )
 
+    // act:
     let loginButton = wrapper.findComponent('#login')
     expect(loginButton.exists()).toBe(true)
     let logoutButton = wrapper.findComponent('#profile')
@@ -83,6 +94,7 @@ describe.concurrent('UserProfileButton', () => {
 
     await nextTick()
 
+    // assert:
     loginButton = wrapper.findComponent('#login')
     expect(loginButton.exists()).toBe(false)
     logoutButton = wrapper.findComponent('#profile')

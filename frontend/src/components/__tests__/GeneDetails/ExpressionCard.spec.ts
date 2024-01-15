@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('GtexGenePlotVue', async () => {
   it('renders the GtexGenePlotVue info', async () => {
+    // arrange:
     // Disable warinings, because of invalid test data
     console.warn = vi.fn()
     const { wrapper } = await setupMountedComponents(
@@ -22,10 +23,12 @@ describe.concurrent('GtexGenePlotVue', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Tissue-Specific Gene Expression from GTeX')
     const vegaPlot = wrapper.findComponent(VegaPlot)
     expect(vegaPlot.exists()).toBe(true)
-
     // Find gtex linkout
     const gtexLink = wrapper.find('#expression-card-gtex-portal')
     expect(gtexLink.exists()).toBe(true)

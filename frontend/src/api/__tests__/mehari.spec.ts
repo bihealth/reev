@@ -9,7 +9,10 @@ import { LinearStrucvarImpl } from '@/lib/genomicVars'
 
 const fetchMocker = createFetchMock(vi)
 
+/** Example Sequence Variant */
 const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
+
+/** Example Structure Variant */
 const strucVar = new LinearStrucvarImpl('DEL', 'grch37', 'chr17', 43044295, 43044297)
 
 describe.concurrent('Mehari Client', () => {
@@ -19,22 +22,31 @@ describe.concurrent('Mehari Client', () => {
   })
 
   it('fetches TxCsq info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1TxInfo))
 
+    // act:
     const client = new MehariClient()
     const result = await client.retrieveSeqvarsCsq(seqVar, 'HGNC:1100')
+
+    // assert:
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1TxInfo))
   })
 
   it('fetches TxCsq info correctly without HGNC id', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify(BRCA1TxInfo))
 
+    // act:
     const client = new MehariClient()
     const result = await client.retrieveSeqvarsCsq(seqVar)
+
+    // assert:
     expect(JSON.stringify(result)).toEqual(JSON.stringify(BRCA1TxInfo))
   })
 
   it('fails to fetch variant info with wrong variant', async () => {
+    // arrange:
     const seqVarInvalid = new SeqvarImpl('grch37', '1', 123, 'A', 'T')
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('alternative=G')) {
@@ -43,20 +55,28 @@ describe.concurrent('Mehari Client', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
+    // act:
     const client = new MehariClient()
     const result = await client.retrieveSeqvarsCsq(seqVarInvalid)
+
+    // assert:
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 
   it('fetches Structur Variant info correctly', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify(SVInfo))
 
+    // act:
     const client = new MehariClient()
     const result = await client.retrieveStrucvarsCsq(strucVar)
+
+    // assert:
     expect(JSON.stringify(result)).toEqual(JSON.stringify(SVInfo))
   })
 
   it('fails to fetch variant info with wrong variant', async () => {
+    // arrange:
     const strucVarInvalid = new LinearStrucvarImpl('DUP', 'grch37', 'chr17', 43044295, 43044297)
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('DEL')) {
@@ -65,8 +85,11 @@ describe.concurrent('Mehari Client', () => {
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
 
+    // act:
     const client = new MehariClient()
     const result = await client.retrieveStrucvarsCsq(strucVarInvalid)
+
+    // assert:
     expect(JSON.stringify(result)).toEqual(JSON.stringify({ status: 400 }))
   })
 })

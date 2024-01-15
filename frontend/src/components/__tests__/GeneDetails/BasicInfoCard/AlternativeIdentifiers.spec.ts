@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('AlternativeIdentifiers', async () => {
   it('renders the AlternativeIdentifiers information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: AlternativeIdentifiers },
       {
@@ -14,6 +15,10 @@ describe.concurrent('AlternativeIdentifiers', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Alternative Identifiers')
   })
 })

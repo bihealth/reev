@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('LocusDatabases', async () => {
   it('renders the LocusDatabases information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: LocusDatabases },
       {
@@ -14,6 +15,10 @@ describe.concurrent('LocusDatabases', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Locus-Specific Databases')
   })
 })

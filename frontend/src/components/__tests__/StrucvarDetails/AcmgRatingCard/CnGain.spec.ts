@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('CnGain', async () => {
   it('renders the CnGain info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CnGain },
       {
@@ -20,6 +21,9 @@ describe.concurrent('CnGain', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const table = wrapper.findComponent({ name: 'VTable' })
     expect(table.exists()).toBe(true)
     expect(wrapper.text()).toContain('Evidence')

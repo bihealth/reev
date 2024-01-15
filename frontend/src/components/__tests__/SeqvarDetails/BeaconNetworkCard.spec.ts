@@ -5,6 +5,7 @@ import BeaconNetwork from '@/components/SeqvarDetails/BeaconNetworkCard.vue'
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',

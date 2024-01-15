@@ -22,11 +22,11 @@ describe.concurrent('ClinvarsubSubmittingOrgsCard', async () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
-
-    // act:
     const { wrapper } = await setupMountedComponents({
       component: ClinvarsubSubmittingOrgsCard
     })
+
+    // act: nothing, only test rendering
 
     // assert:
     expect(wrapper.text()).toMatch('ClinVar Organisations')

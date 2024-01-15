@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('GeneListEntry', async () => {
   it('renders the GeneListEntry info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: GeneListEntry },
       {
@@ -16,6 +17,9 @@ describe.concurrent('GeneListEntry', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('BRCA1')
     const dosage = wrapper.findComponent({ name: 'GeneDosage' })
     expect(dosage.exists()).toBe(true)

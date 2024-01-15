@@ -12,6 +12,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('CriterionSwitch', async () => {
   it('renders the CriterionSwitch', async () => {
+    // arrange:
     const acmgRating = new MultiSourceAcmgCriteriaState()
     acmgRating.setPresence(StateSource.User, AcmgCriteria.PM1, Presence.Present)
     const { wrapper } = await setupMountedComponents(
@@ -29,6 +30,9 @@ describe.concurrent('CriterionSwitch', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).contains('PM1')
     expect(wrapper.text()).contains('Pathogenic Moderate')
     const vSwitch = wrapper.findComponent({ name: 'VSwitch' })

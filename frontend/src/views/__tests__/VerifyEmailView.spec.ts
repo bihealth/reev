@@ -2,8 +2,7 @@ import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { setupMountedComponents } from '@/lib/testUtils'
-
-import VerifyView from '../VerifyEmailView.vue'
+import VerifyView from '@/views/VerifyEmailView.vue'
 
 // Mock the auth client
 vi.mock('@/api/auth', () => {
@@ -38,6 +37,7 @@ describe.concurrent('VerifyView', async () => {
   })
 
   it('calls sendVerifyPost on mount', async () => {
+    // arrange:
     const token = 'mock-token'
     const { wrapper, router } = await setupMountedComponents(
       { component: VerifyView },
@@ -46,9 +46,11 @@ describe.concurrent('VerifyView', async () => {
       }
     )
 
+    // act: nothing, just wait for flushPromises
     // expect(wrapper.vm.isVerifying).toBe(true)
     await flushPromises() // Wait for all promises to resolve
 
+    // assert:
     expect(mockLoadCurrentUser).toHaveBeenCalled()
     expect(router.push).toHaveBeenCalledWith('/')
     const progress = wrapper.findComponent({ name: 'VProgressCircular' })
@@ -57,6 +59,7 @@ describe.concurrent('VerifyView', async () => {
 
   // Additional test to check the loading state and the final state
   it.skip('renders the waiting message after verification', async () => {
+    // arrange:
     // Mock a delay in verification
     vi.useFakeTimers()
     const { wrapper } = await setupMountedComponents(
@@ -66,9 +69,11 @@ describe.concurrent('VerifyView', async () => {
       }
     )
 
+    // act: nothing, just wait for flushPromises
     await vi.runAllTimers()
     await flushPromises()
 
+    // assert:
     const progress = wrapper.findComponent({ name: 'VProgressCircular' })
     expect(progress.exists()).toBe(false)
     const waitingMessage = wrapper.find('div')

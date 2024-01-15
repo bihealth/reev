@@ -17,6 +17,7 @@ import { useStrucvarAcmgRatingStore } from '../strucvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
+/** Example Structure Variant */
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
   svType: 'DEL',
@@ -26,46 +27,7 @@ const strucvarInfo: Strucvar = {
   userRepr: 'DEL-grch37-17-41176312-41277500'
 }
 
-// const svRecord = {
-//   svType: 'DEL',
-//   chromosome: 'chr17',
-//   start: '41176312',
-//   end: '41277500',
-//   release: 'grch37',
-//   result: [
-//     {
-//       hgnc_id: 'HGNC:18315',
-//       transcript_effects: [
-//         'transcript_variant',
-//         'exon_variant',
-//         'splice_region_variant',
-//         'intron_variant',
-//         'upstream_variant',
-//         'downstream_variant'
-//       ]
-//     },
-//     {
-//       hgnc_id: 'HGNC:20691',
-//       transcript_effects: ['upstream_variant']
-//     },
-//     {
-//       hgnc_id: 'HGNC:1100',
-//       transcript_effects: [
-//         'transcript_variant',
-//         'exon_variant',
-//         'splice_region_variant',
-//         'intron_variant',
-//         'upstream_variant',
-//         'downstream_variant'
-//       ]
-//     },
-//     {
-//       hgnc_id: 'HGNC:16919',
-//       transcript_effects: ['upstream_variant']
-//     }
-//   ]
-// }
-
+/** Example AutoCNV Response */
 const ExampleAutoCNVResponse = {
   job: {
     result: {
@@ -98,32 +60,42 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useStrucvarAcmgRatingStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
     expect(store.strucvar).toBe(undefined)
   })
 
   it('should clear state', () => {
+    // arrange:
     const store = useStrucvarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
     store.strucvar = structuredClone(strucvarInfo)
 
+    // act:
     store.clearData()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
     expect(store.strucvar).toBe(undefined)
   })
 
   it('should correctly retrieve data', async () => {
-    const store = useStrucvarAcmgRatingStore()
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify(ExampleAutoCNVResponse))
+    const store = useStrucvarAcmgRatingStore()
 
+    // act:
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
     for (const criteria of ACMG_CRITERIA_CNV_LOSS) {
@@ -168,23 +140,30 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should fail to load data with invalid request', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useStrucvarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
+    const store = useStrucvarAcmgRatingStore()
 
+    // act:
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaCNVState('DEL'))
     expect(store.strucvar).toBe(undefined)
   })
 
   it('should not load data if structure variant is the same', async () => {
-    const store = useStrucvarAcmgRatingStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(ExampleAutoCNVResponse))
+    const store = useStrucvarAcmgRatingStore()
+
+    // act:
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
     for (const criteria of ACMG_CRITERIA_CNV_LOSS) {
@@ -227,8 +206,10 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.strucvar).toStrictEqual(structuredClone(strucvarInfo))
 
+    // act2:
     await store.fetchAcmgRating(structuredClone(strucvarInfo))
 
+    // assert2:
     expect(fetchMocker.mock.calls.length).toBe(1)
   })
 })

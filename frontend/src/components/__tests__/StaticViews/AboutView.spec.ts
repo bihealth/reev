@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('AboutView', async () => {
   it('renders the main content', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: AboutView },
       {
@@ -16,6 +17,9 @@ describe.concurrent('AboutView', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.html()).toMatch('REEV Explains and Evaluates Variants')
     // Acknowledgements
     expect(wrapper.html()).toMatch('ClinVar is a freely accessible, public archive')
