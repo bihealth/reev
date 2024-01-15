@@ -12,6 +12,7 @@ describe.concurrent('SearchBar.vue', () => {
   })
 
   it('renders the search bar with the correct default props', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: SearchBar },
       {
@@ -22,6 +23,9 @@ describe.concurrent('SearchBar.vue', () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const textField = wrapper.find('.v-text-field')
     const genomeReleaseMenu = wrapper.find('.genome-release-menu')
     const searchButton = wrapper.find('.start-search')
@@ -34,6 +38,7 @@ describe.concurrent('SearchBar.vue', () => {
   })
 
   it('correctly inputs data', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: SearchBar },
       {
@@ -44,21 +49,21 @@ describe.concurrent('SearchBar.vue', () => {
       }
     )
 
+    // act:
     const textField = wrapper.find('.search-term input') as any
     expect(textField.exists()).toBe(true)
     await textField.setValue('test')
     expect(textField.element.value).toBe('test')
 
+    // assert:
     const select = wrapper.find('.genome-release-menu') as any
     expect(select.exists()).toBe(true)
-
     const genomeReleaseMenu = wrapper.findComponent('.genome-release-menu') as any
     expect(genomeReleaseMenu.exists()).toBe(true)
-    await genomeReleaseMenu.trigger('click')
-    await nextTick()
   })
 
   it('correctly emits search', async () => {
+    // arrange:
     // we make `DottyClient.toSpdi` return null / fail
     vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
 
@@ -72,17 +77,41 @@ describe.concurrent('SearchBar.vue', () => {
       }
     )
 
+    // act:
     // search bar values are updated
     const searchBar = wrapper.findComponent(SearchBar)
     expect(searchBar.exists()).toBe(true)
     await searchBar.setValue('HGNC:1100', 'searchTerm')
     await searchBar.setValue('grch37', 'genomeRelease')
+
+    // assert:
     expect(searchBar.emitted()).toHaveProperty('update:searchTerm')
     expect(searchBar.emitted()).toHaveProperty('update:genomeRelease')
+  })
+
+  it('correctly clicks search button', async () => {
+    // arrange:
+    // we make `DottyClient.toSpdi` return null / fail
+    vi.spyOn(DottyClient.prototype, 'toSpdi').mockResolvedValue(null)
+
+    const { wrapper } = await setupMountedComponents(
+      { component: SearchBar },
+      {
+        props: {
+          searchTerm: 'BRCA1',
+          genomeRelease: 'grch37'
+        }
+      }
+    )
+
+    // act:
+    const searchBar = wrapper.findComponent(SearchBar)
     const searchButton = searchBar.findComponent('button.start-search') as any
     expect(searchButton.exists()).toBe(true)
     await searchButton.trigger('click')
     await nextTick()
+
+    // assert:
     expect(searchBar.emitted()).toHaveProperty('clickSearch')
   })
 })
