@@ -11,6 +11,7 @@ import { useSeqvarAcmgRatingStore } from '../seqvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
+// Test data
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -57,8 +58,12 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useSeqvarAcmgRatingStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
     expect(store.seqvar).toBe(null)
@@ -66,20 +71,23 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
+    // arrange:
     const store = useSeqvarAcmgRatingStore()
     store.storeState = StoreState.Active
     store.acmgRating = JSON.parse(JSON.stringify({ acmg: 'rating' }))
     store.seqvar = structuredClone(seqvarInfo)
 
+    // act:
     store.clearData()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
     expect(store.seqvar).toBe(null)
   })
 
   it('should correctly retrieve data for InterVar and Server', async () => {
-    const store = useSeqvarAcmgRatingStore()
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
@@ -88,9 +96,12 @@ describe.concurrent('geneInfo Store', () => {
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
+    const store = useSeqvarAcmgRatingStore()
 
+    // act:
     await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
     for (const [key, value] of Object.entries(ExampleInterVarResponse)) {
@@ -122,22 +133,25 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should fail to load data with invalid request', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useSeqvarAcmgRatingStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
+    const store = useSeqvarAcmgRatingStore()
 
+    // act:
     await expect(
       async () => await store.fetchAcmgRating(structuredClone(seqvarInfo))
     ).rejects.toThrow()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.acmgRating).toStrictEqual(new MultiSourceAcmgCriteriaState())
     expect(store.seqvar).toBe(null)
   })
 
   it('should not load data if small variant is the same', async () => {
-    const store = useSeqvarAcmgRatingStore()
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('remote/acmg')) {
         return Promise.resolve(JSON.stringify(ExampleInterVarResponse))
@@ -146,8 +160,12 @@ describe.concurrent('geneInfo Store', () => {
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
     })
+    const store = useSeqvarAcmgRatingStore()
+
+    // act:
     await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     const expectedAcmgRating = new MultiSourceAcmgCriteriaState()
     for (const [key, value] of Object.entries(ExampleInterVarResponse)) {
@@ -177,8 +195,10 @@ describe.concurrent('geneInfo Store', () => {
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
 
+    // act2:
     await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
+    // assert2:
     expect(fetchMocker.mock.calls.length).toBe(2)
   })
 })

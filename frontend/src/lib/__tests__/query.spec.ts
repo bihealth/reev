@@ -24,6 +24,7 @@ describe.concurrent('Variant lookup with dotty', () => {
   })
 
   it('should return a gene', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(
       JSON.stringify({
         success: true,
@@ -36,13 +37,20 @@ describe.concurrent('Variant lookup with dotty', () => {
       })
     )
 
+    // act:
     const result = await lookupWithDotty(seqVar.userRepr, seqVar.genomeBuild)
+
+    // assert:
     expect(result).toStrictEqual(seqVar)
   })
 
   it('should throw an error if dotty fails', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify({ success: false }))
 
+    // act: nothing to do
+
+    // assert:
     await expect(lookupWithDotty(seqVar.userRepr, seqVar.genomeBuild)).rejects.toThrow()
   })
 })
@@ -64,6 +72,7 @@ describe.concurrent('Resolve seqvar from the given query', () => {
   })
 
   it('should return a gene', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(
       JSON.stringify({
         success: true,
@@ -76,7 +85,10 @@ describe.concurrent('Resolve seqvar from the given query', () => {
       })
     )
 
+    // act:
     const result = await resolveSeqvar(seqVar.userRepr, seqVar.genomeBuild)
+
+    // assert:
     expect(result).toStrictEqual(seqVar)
   })
 })
@@ -99,11 +111,15 @@ describe.concurrent('Resolve strucvar from the given query', () => {
   })
 
   it('should return a gene', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify({ success: true, value: strucVar }))
 
+    // act:
     const result = resolveStrucvar(strucVar.userRepr, strucVar.genomeBuild)
     const expected = structuredClone(strucVar)
     expected.userRepr = 'DEL-GRCh37-17-41176312-41277500'
+
+    // assert:
     expect(result).toStrictEqual(expected)
   })
 })
@@ -115,6 +131,7 @@ describe.concurrent('Gene lookup', () => {
   })
 
   it('should return a gene', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(
       JSON.stringify({
         success: true,
@@ -135,13 +152,20 @@ describe.concurrent('Gene lookup', () => {
       })
     )
 
+    // act:
     const result = await lookupGene('BRCA1')
+
+    // assert:
     expect(result).toContain('BRCA1')
   })
 
   it('should throw an error if dotty fails', async () => {
+    // arrange:
     fetchMocker.mockResponseOnce(JSON.stringify({ success: false }))
 
+    // act: nothing to do
+
+    // assert:
     await expect(lookupGene('BRCA1')).rejects.toThrow()
   })
 })

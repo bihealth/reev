@@ -9,6 +9,7 @@ import { useStrucvarInfoStore } from '@/stores/strucvarInfo'
 
 const fetchMocker = createFetchMock(vi)
 
+// Test data
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
   svType: 'DEL',
@@ -26,28 +27,35 @@ describe.concurrent('svInfo Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useStrucvarInfoStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.strucvar).toBe(undefined)
     expect(store.genesInfos).toStrictEqual(undefined)
   })
 
   it('should clear state', () => {
+    // arrange:
     const store = useStrucvarInfoStore()
     store.storeState = StoreState.Active
     store.strucvar = structuredClone(strucvarInfo)
     store.genesInfos = JSON.parse(JSON.stringify([geneInfo['genes']['HGNC:1100']]))
 
+    // act:
     store.clearData()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.strucvar).toBe(undefined)
     expect(store.genesInfos).toStrictEqual(undefined)
   })
 
   it('should load data', async () => {
-    const store = useStrucvarInfoStore()
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('csq')) {
         return Promise.resolve(JSON.stringify({ result: [{ hgnc_id: 'HGNC:1100' }] }))
@@ -55,19 +63,22 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify(geneInfo))
       }
     })
+    const store = useStrucvarInfoStore()
+
+    // act:
     await store.loadData(structuredClone(strucvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.strucvar).toStrictEqual(strucvarInfo)
     expect(store.genesInfos).toStrictEqual([geneInfo['genes']['HGNC:1100']])
   })
 
   it('should correctly handle errors', async () => {
+    // arrange:
     // Disable console.error
     const spy = vi.spyOn(console, 'error')
     spy.mockImplementation(() => {})
-
-    const store = useStrucvarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('csq')) {
         return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -75,8 +86,12 @@ describe.concurrent('svInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
+    const store = useStrucvarInfoStore()
+
+    // act:
     await store.loadData(structuredClone(strucvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.strucvar).toBe(undefined)
     expect(store.genesInfos).toStrictEqual(undefined)

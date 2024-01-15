@@ -14,30 +14,40 @@ describe.concurrent('miscInfo Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useMiscStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.appVersion).toBe(null)
   })
 
   it('should load data', async () => {
-    const store = useMiscStore()
+    // arrange:
     fetchMocker.mockResponseOnce('v0.0.0')
+    const store = useMiscStore()
 
+    // act:
     await store.initialize()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.appVersion).toBe('v0.0.0')
   })
 
   it('should handle error', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useMiscStore()
     fetchMocker.mockRejectOnce(new Error('error'))
+    const store = useMiscStore()
 
+    // act:
     await store.initialize()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.appVersion).toBe(null)
   })

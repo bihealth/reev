@@ -15,31 +15,40 @@ describe.concurrent('Cada Prio Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useCadaPrioStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.geneRanking).toBe(null)
   })
 
   it('should predict gene impact', async () => {
-    const store = useCadaPrioStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify({ result: 'pathogenic' }))
+    const store = useCadaPrioStore()
 
+    // act:
     await store.loadData(['HP:0000001'])
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.geneRanking).toStrictEqual({ result: 'pathogenic' })
   })
 
   it('should handle error when predicting gene impact', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-
-    const store = useCadaPrioStore()
     fetchMocker.mockReject(new Error('Internal Server Error'))
+    const store = useCadaPrioStore()
 
+    // act:
     await store.loadData(['HP:0000001'])
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.geneRanking).toBe(null)
   })

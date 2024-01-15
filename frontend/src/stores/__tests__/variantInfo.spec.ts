@@ -13,6 +13,7 @@ import { useSeqvarInfoStore } from '../seqvarInfo'
 
 const fetchMocker = createFetchMock(vi)
 
+// Test data
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -30,8 +31,12 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useSeqvarInfoStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.seqvar).toBe(undefined)
     expect(store.varAnnos).toBe(null)
@@ -41,6 +46,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
+    // arrange:
     const store = useSeqvarInfoStore()
     store.storeState = StoreState.Active
     store.seqvar = structuredClone(seqvarInfo)
@@ -48,8 +54,10 @@ describe.concurrent('geneInfo Store', () => {
     store.geneInfo = JSON.parse(JSON.stringify(BRCA1GeneInfo))
     store.txCsq = JSON.parse(JSON.stringify(BRCA1TxInfo))
 
+    // act:
     store.clearData()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.seqvar).toBe(undefined)
     expect(store.varAnnos).toBe(null)
@@ -58,7 +66,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should load data', async () => {
-    const store = useSeqvarInfoStore()
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -72,9 +80,12 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
+    const store = useSeqvarInfoStore()
 
+    // act:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
     expect(store.varAnnos).toEqual(BRCA1VariantInfo.result)
@@ -83,13 +94,16 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should fail to load data with invalid request', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useSeqvarInfoStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
+    const store = useSeqvarInfoStore()
 
+    // act:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.seqvar).toBe(undefined)
     expect(store.varAnnos).toBe(null)
@@ -98,9 +112,9 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should handle loading data with invalid fetchVariantInfo response', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useSeqvarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(
@@ -116,9 +130,12 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
+    const store = useSeqvarInfoStore()
 
+    // act:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
     expect(store.varAnnos).toStrictEqual({
@@ -133,9 +150,9 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should handle loading data with invalid retrieveSeqvarsCsq response', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useSeqvarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -149,21 +166,23 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
+    const store = useSeqvarInfoStore()
 
+    // act:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
-
     expect(store.varAnnos).toStrictEqual(BRCA1VariantInfo.result)
     expect(store.geneInfo).toEqual(null)
     expect(store.txCsq).toStrictEqual([])
   })
 
   it('should fail to load data with invalid fetchGeneInfo response', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useSeqvarInfoStore()
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -177,9 +196,12 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
+    const store = useSeqvarInfoStore()
 
+    // act:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert:
     expect(console.error).toHaveBeenCalled()
     expect(console.error).toHaveBeenCalledWith(
       'There was an error loading the variant data.',
@@ -193,7 +215,7 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should not load data if variant is the same', async () => {
-    const store = useSeqvarInfoStore()
+    // arrange:
     fetchMocker.mockResponse((req) => {
       if (req.url.includes('annos/variant')) {
         return Promise.resolve(JSON.stringify(BRCA1VariantInfo))
@@ -207,17 +229,22 @@ describe.concurrent('geneInfo Store', () => {
         return Promise.resolve(JSON.stringify({ status: 400 }))
       }
     })
+    const store = useSeqvarInfoStore()
 
+    // act:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.seqvar).toStrictEqual(seqvarInfo)
     expect(store.varAnnos).toEqual(BRCA1VariantInfo.result)
     expect(store.geneInfo).toEqual(BRCA1GeneInfo.genes['HGNC:1100'])
     expect(store.txCsq).toEqual(BRCA1TxInfo.result)
 
+    // act2:
     await store.loadData(structuredClone(seqvarInfo))
 
+    // assert2:
     expect(fetchMocker.mock.calls.length).toBe(5)
   })
 })

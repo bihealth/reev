@@ -7,6 +7,7 @@ import { StoreState } from '../misc'
 
 const fetchMocker = createFetchMock(vi)
 
+// Test data
 const exampleGenesList = {
   genes: [
     {
@@ -39,8 +40,12 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should have initial state', () => {
+    // arrange:
     const store = useGenesListStore()
 
+    // act: nothing to do
+
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.query).toBe(null)
     expect(store.genesList).toBe(null)
@@ -48,50 +53,62 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should clear state', () => {
+    // arrange:
     const store = useGenesListStore()
     store.storeState = StoreState.Active
     store.query = 'q=BRCA1&fields=symbol'
     store.genesList = JSON.parse(JSON.stringify({ gene: 'info' }))
 
+    // act:
     store.clearData()
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Initial)
     expect(store.query).toBe(null)
     expect(store.genesList).toBe(null)
   })
 
   it('should load data', async () => {
-    const store = useGenesListStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.query).toBe('q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
     expect(store.genesList).toEqual(exampleGenesList.genes)
   })
 
   it('should fail to load data with invalid request', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useGenesListStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ foo: 'bar' }), { status: 400 })
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: 'XXX', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Error)
     expect(store.query).toBe(null)
     expect(store.genesList).toBe(null)
   })
 
   it('should fail to load data with invalid fetchGenes response', async () => {
+    // arrange:
     // Disable error logging
     vi.spyOn(console, 'error').mockImplementation(() => {})
-    const store = useGenesListStore()
     fetchMocker.mockResponseOnce(JSON.stringify({ genes: [] }))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(console.error).toHaveBeenCalled()
     expect(console.error).toHaveBeenCalledWith(
       'There was an error while searching for genes.',
@@ -103,76 +120,89 @@ describe.concurrent('geneInfo Store', () => {
   })
 
   it('should not load data if gene symbol is the same', async () => {
-    const store = useGenesListStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.query).toBe('q=EMP&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
     expect(store.genesList).toEqual(exampleGenesList.genes)
 
+    // act2:
     await store.loadData({ q: 'EMP', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert2:
     expect(fetchMocker.mock.calls.length).toBe(1)
   })
 
   it('should redirect if the searchTerm matched symbol', async () => {
-    const store = useGenesListStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: 'EMP1', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Redirect)
     expect(store.redirectHgncId).toBe('HGNC:3333')
     expect(store.query).toBe('q=EMP1&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
     expect(store.genesList).toEqual(exampleGenesList.genes)
-
     expect(fetchMocker.mock.calls.length).toBe(1)
   })
 
   it('should redirect if the searchTerm matched hgnc_id', async () => {
-    const store = useGenesListStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: 'HGNC:3333', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Redirect)
     expect(store.redirectHgncId).toBe('HGNC:3333')
     expect(store.query).toBe('q=HGNC:3333&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
     expect(store.genesList).toEqual(exampleGenesList.genes)
-
     expect(fetchMocker.mock.calls.length).toBe(1)
   })
 
   it('should redirect if the searchTerm matched ensembl_gene_id', async () => {
-    const store = useGenesListStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({
       q: 'ENSG00000134531',
       fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol'
     })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Redirect)
     expect(store.redirectHgncId).toBe('HGNC:3333')
     expect(store.query).toBe('q=ENSG00000134531&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
     expect(store.genesList).toEqual(exampleGenesList.genes)
-
     expect(fetchMocker.mock.calls.length).toBe(1)
   })
 
   it('should redirect if the searchTerm matched ncbi_gene_id', async () => {
-    const store = useGenesListStore()
+    // arrange:
     fetchMocker.mockResponse(JSON.stringify(exampleGenesList))
+    const store = useGenesListStore()
 
+    // act:
     await store.loadData({ q: '2012', fields: 'hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol' })
 
+    // assert:
     expect(store.storeState).toBe(StoreState.Redirect)
     expect(store.redirectHgncId).toBe('HGNC:3333')
     expect(store.query).toBe('q=2012&fields=hgnc_id,ensembl_gene_id,ncbi_gene_id,symbol')
     expect(store.genesList).toEqual(exampleGenesList.genes)
-
     expect(fetchMocker.mock.calls.length).toBe(1)
   })
 })

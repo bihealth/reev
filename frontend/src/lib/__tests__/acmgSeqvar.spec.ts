@@ -10,7 +10,12 @@ import {
 
 describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   it('should have correct default values', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     // Check keys of AcmgCriteriaState.criteriaStates
     expect(Object.keys(AcmgCriteriaState.criteriaStates).length).toEqual(4)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.Default)
@@ -36,119 +41,174 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly get criteria state', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     expect(AcmgCriteriaState.getCriteriaState(AcmgCriteria.PVS1)).toEqual(
       AcmgCriteriaState.criteriaStates[StateSource.Default][AcmgCriteria.PVS1]
     )
   })
 
   it('should correctly get criteria state from interVar', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
       evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(AcmgCriteriaState.getCriteriaState(AcmgCriteria.PVS1)).toStrictEqual(criteriaState)
   })
 
   it('should correctly get criteria state from server', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
       evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.Server, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(AcmgCriteriaState.getCriteriaState(AcmgCriteria.PVS1)).toStrictEqual(criteriaState)
   })
 
   it('should correctly get criteria state from server and InterVar', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Absent,
       evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
     AcmgCriteriaState.setPresence(StateSource.Server, AcmgCriteria.PVS1, Presence.Absent)
+
+    // assert:
     expect(AcmgCriteriaState.getCriteriaState(AcmgCriteria.PVS1)).toStrictEqual(criteriaState)
   })
 
   it('should correctly get criteria state with invalid request', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: 'invalid' as AcmgCriteria,
       presence: Presence.Unknown,
       evidenceLevel: AcmgEvidenceLevel.NotSet
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     expect(AcmgCriteriaState.getCriteriaState('invalid' as AcmgCriteria)).toStrictEqual(
       criteriaState
     )
   })
 
   it('should correctly get criteria state from default source', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Unknown,
       evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     expect(
       AcmgCriteriaState.getCriteriaStateFromSource(AcmgCriteria.PVS1, StateSource.Default)
     ).toStrictEqual(criteriaState)
   })
 
   it('should correctly get criteria state from interVar source', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
       evidenceLevel: AcmgEvidenceLevel.NotSet
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(
       AcmgCriteriaState.getCriteriaStateFromSource(AcmgCriteria.PVS1, StateSource.InterVar)
     ).toStrictEqual(criteriaState)
   })
 
   it('should correctly get criteria state from server source', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
       evidenceLevel: AcmgEvidenceLevel.NotSet
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.Server, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(
       AcmgCriteriaState.getCriteriaStateFromSource(AcmgCriteria.PVS1, StateSource.Server)
     ).toStrictEqual(criteriaState)
   })
 
   it('should correctly get criteria state from user source', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange:
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
       evidenceLevel: AcmgEvidenceLevel.NotSet
     }
+
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(
       AcmgCriteriaState.getCriteriaStateFromSource(AcmgCriteria.PVS1, StateSource.User)
     ).toStrictEqual(criteriaState)
   })
 
   it('should throw error if getting invalid criteria from source', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     expect(() =>
       AcmgCriteriaState.getCriteriaStateFromSource('invalid' as AcmgCriteria, StateSource.User)
     ).toThrowError()
   })
 
   it('should correctly set presence for InterVar', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(
       AcmgCriteriaState.criteriaStates[StateSource.InterVar][AcmgCriteria.PVS1].presence
     ).toEqual(Presence.Present)
@@ -162,8 +222,13 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly set presence for Server', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.Server, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(
       AcmgCriteriaState.criteriaStates[StateSource.Server][AcmgCriteria.PVS1].presence
     ).toEqual(Presence.Present)
@@ -177,8 +242,13 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly set presence for User', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.PVS1, Presence.Present)
+
+    // assert:
     expect(AcmgCriteriaState.criteriaStates[StateSource.User][AcmgCriteria.PVS1].presence).toEqual(
       Presence.Present
     )
@@ -192,13 +262,21 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should raise error for setting present for Default', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     expect(() =>
       AcmgCriteriaState.setPresence(StateSource.Default, AcmgCriteria.PVS1, Presence.Present)
     ).toThrowError()
   })
 
   it('should correctly set absent presence for User', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.PVS1, Presence.Absent)
     expect(AcmgCriteriaState.criteriaStates[StateSource.User][AcmgCriteria.PVS1].presence).toEqual(
@@ -206,12 +284,17 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     )
     // Set presence to absent
     AcmgCriteriaState.setUserPresenceAbsent()
+
+    // assert:
     expect(AcmgCriteriaState.criteriaStates[StateSource.User][AcmgCriteria.PVS1].presence).toEqual(
       Presence.Absent
     )
   })
 
   it('should correctly set interVar presence for User', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.PVS1, Presence.Absent)
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
@@ -220,12 +303,17 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     )
     // Set presence to unknown
     AcmgCriteriaState.setUserPresenceInterVar()
+
+    // assert:
     expect(AcmgCriteriaState.criteriaStates[StateSource.User][AcmgCriteria.PVS1].presence).toEqual(
       Presence.Present
     )
   })
 
   it('should correctly set server presence for User', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.PVS1, Presence.Absent)
     AcmgCriteriaState.setPresence(StateSource.Server, AcmgCriteria.PVS1, Presence.Present)
@@ -234,18 +322,25 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     )
     // Set presence to unknown
     AcmgCriteriaState.setUserPresenceServer()
+
+    // assert:
     expect(AcmgCriteriaState.criteriaStates[StateSource.User][AcmgCriteria.PVS1].presence).toEqual(
       Presence.Present
     )
   })
 
   it('should correctly set evidence level for user', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setEvidenceLevel(
       StateSource.User,
       AcmgCriteria.PVS1,
       AcmgEvidenceLevel.PathogenicModerate
     )
+
+    // assert:
     expect(
       AcmgCriteriaState.criteriaStates[StateSource.User][AcmgCriteria.PVS1].evidenceLevel
     ).toEqual(AcmgEvidenceLevel.PathogenicModerate)
@@ -259,12 +354,17 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly set evidence level for server', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setEvidenceLevel(
       StateSource.Server,
       AcmgCriteria.PVS1,
       AcmgEvidenceLevel.PathogenicModerate
     )
+
+    // assert:
     expect(
       AcmgCriteriaState.criteriaStates[StateSource.Server][AcmgCriteria.PVS1].evidenceLevel
     ).toEqual(AcmgEvidenceLevel.PathogenicModerate)
@@ -278,12 +378,17 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly set evidence level for interVar', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setEvidenceLevel(
       StateSource.InterVar,
       AcmgCriteria.PVS1,
       AcmgEvidenceLevel.PathogenicModerate
     )
+
+    // assert:
     expect(
       AcmgCriteriaState.criteriaStates[StateSource.InterVar][AcmgCriteria.PVS1].evidenceLevel
     ).toEqual(AcmgEvidenceLevel.PathogenicModerate)
@@ -297,7 +402,12 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should raise error for setting evidence level for Default', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+
+    // assert:
     expect(() =>
       AcmgCriteriaState.setEvidenceLevel(
         StateSource.Default,
@@ -308,9 +418,13 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly get States', () => {
-    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
+    // arrange: nothing, only test check
 
+    // act:
+    const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     const criteriaStates = AcmgCriteriaState.getStates()
+
+    // assert:
     // Check keys of AcmgCriteriaState.criteriaStates
     expect(Object.keys(criteriaStates).length).toEqual(4)
     expect(criteriaStates).toHaveProperty(StateSource.Default)
@@ -336,6 +450,9 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   })
 
   it('should correctly get evidence counts', () => {
+    // arrange: nothing, only test check
+
+    // act:
     const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PS1, Presence.Present)
@@ -349,6 +466,7 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS2, Presence.Present)
     AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS3, Presence.Present)
 
+    // assert:
     expect(
       AcmgCriteriaState.getActiveEvidenceCounts(AcmgEvidenceLevel.PathogenicVeryStrong)
     ).toEqual(1)
@@ -470,6 +588,9 @@ describe.concurrent(
       `should return 'Pathogenic' for 'PVS1: %s, PS1: %s, PS2: %s, PM1: %s, PM2: %s, PM3: %s, 
   PM4: %s, PP1: %s, PP2: %s, PP3: %s, PP4: %s' with no confclicts`,
       (pvs1, ps1, ps2, pm1, pm2, pm3, pp1, pp2, pp3, pp4) => {
+        // arrange: nothing, only test check
+
+        // act:
         const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, pvs1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PS1, ps1)
@@ -481,6 +602,8 @@ describe.concurrent(
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP2, pp2)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP3, pp3)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP4, pp4)
+
+        // assert:
         expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Pathogenic', false])
       }
     )
@@ -574,6 +697,9 @@ describe.concurrent(
       `should return 'Likely pathogenic' for 'PVS1: %s, PS1: %s, PS2: %s, PM1: %s, PM2: %s, PM3: %s,
   PM4: %s, PP1: %s, PP2: %s, PP3: %s, PP4: %s' with no confclicts`,
       (pvs1, ps1, ps2, pm1, pm2, pm3, pp1, pp2, pp3, pp4) => {
+        // arrange: nothing, only test check
+
+        // act:
         const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, pvs1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PS1, ps1)
@@ -585,6 +711,8 @@ describe.concurrent(
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP2, pp2)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP3, pp3)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP4, pp4)
+
+        // assert:
         expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Likely pathogenic', false])
       }
     )
@@ -598,12 +726,17 @@ describe.concurrent(
     ])(
       `should return 'Benign' for 'BA1: %s, BS1: %s, BS2: %s, BP1: %s, BP2: %s' with no confclicts`,
       (ba1, bs1, bs2, bp1, bp2) => {
+        // arrange: nothing, only test check
+
+        // act:
         const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BA1, ba1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS1, bs1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS2, bs2)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BP1, bp1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BP2, bp2)
+
+        // assert:
         expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Benign', false])
       }
     )
@@ -615,12 +748,17 @@ describe.concurrent(
       `should return 'Likely benign' for 'BA1: %s, BS1: %s, BS2: %s, BP1: %s, BP2: %s' with no 
     confclicts`,
       (ba1, bs1, bs2, bp1, bp2) => {
+        // arrange: nothing, only test check
+
+        // act:
         const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BA1, ba1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS1, bs1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS2, bs2)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BP1, bp1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BP2, bp2)
+
+        // assert:
         expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Likely benign', false])
       }
     )
@@ -638,12 +776,17 @@ describe.concurrent(
       `should return 'Uncertain significance' for 'PM1: %s, PP1: %s, PP2: %s, BS1: %s, BP1: %s' 
     with no confclicts`,
       (pm1, pp1, pp2, bs1, bp1) => {
+        // arrange: nothing, only test check
+
+        // act:
         const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PM1, pm1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP1, pp1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PP2, pp2)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS1, bs1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BP1, bp1)
+
+        // assert:
         expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Uncertain significance', false])
       }
     )
@@ -656,12 +799,17 @@ describe.concurrent(
       `should return 'Conflicting' for 'PVS1: %s, PS1: %s, PS2: %s, BA1: %s, BS1: %s'
     with confclicts`,
       (pvs1, ps1, ps2, ba1, bs1) => {
+        // arrange: nothing, only test check
+
+        // act:
         const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, pvs1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PS1, ps1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.PS2, ps2)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BA1, ba1)
         AcmgCriteriaState.setPresence(StateSource.InterVar, AcmgCriteria.BS1, bs1)
+
+        // assert:
         expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Conflicting', true])
       }
     )
@@ -672,6 +820,9 @@ describe.concurrent(
   'MultiSourceAcmgCriteriaState ACMG class computation with user override',
   () => {
     it(`should return 'Likely pathogenic' for PVS1 as Moderate and PS1`, () => {
+      // arrange: nothing, only test check
+
+      // act:
       const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
       // Set PVS1 and PS1 to present
       AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.PVS1, Presence.Present)
@@ -685,11 +836,15 @@ describe.concurrent(
         AcmgEvidenceLevel.PathogenicModerate
       )
 
+      // assert:
       // Expect to return 'Likely pathogenic'
       expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Likely pathogenic', false])
     })
 
     it(`should return 'Likely benign' for Ba1 as Strong and Bs1 as Supporting`, () => {
+      // arrange: nothing, only test check
+
+      // act:
       const AcmgCriteriaState = new MultiSourceAcmgCriteriaState()
       // Set Ba1 and Bs1 to present
       AcmgCriteriaState.setPresence(StateSource.User, AcmgCriteria.BA1, Presence.Present)
@@ -709,6 +864,7 @@ describe.concurrent(
         AcmgEvidenceLevel.BenignSupporting
       )
 
+      // assert:
       // Expect to return 'Likely benign'
       expect(AcmgCriteriaState.getAcmgClass()).toEqual(['Likely benign', false])
     })
