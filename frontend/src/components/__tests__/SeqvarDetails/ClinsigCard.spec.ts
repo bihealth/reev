@@ -10,6 +10,7 @@ import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
 
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',

@@ -4,6 +4,7 @@ import FreqsMitochondrial from '@/components/SeqvarDetails/FreqsCard/Mitochondri
 import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -13,6 +14,7 @@ const seqvarInfo: Seqvar = {
   userRepr: 'grch37-17-43044295-G-A'
 }
 
+/** Example Sequence Variant Data */
 const varAnnos = {
   helixmtdb: {
     num_total: 1,
@@ -33,6 +35,7 @@ const varAnnos = {
 
 describe.concurrent('FreqsMitochondrial', async () => {
   it('renders the FreqsMitochondrial info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial },
       {
@@ -42,6 +45,10 @@ describe.concurrent('FreqsMitochondrial', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
@@ -49,6 +56,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   })
 
   it('renders the FreqsMitochondrial info with no helixmtdb', async () => {
+    // arrange:
     const variantInfoNoHelixmtdb: any = structuredClone(seqvarInfo)
     variantInfoNoHelixmtdb.helixmtdb = {}
     const { wrapper } = await setupMountedComponents(
@@ -60,6 +68,10 @@ describe.concurrent('FreqsMitochondrial', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
@@ -67,6 +79,7 @@ describe.concurrent('FreqsMitochondrial', async () => {
   })
 
   it('renders the FreqsMitochondrial info with no gnomad-mtdna', async () => {
+    // arrange:
     const variantInfoNoGnomad: any = structuredClone(seqvarInfo)
     variantInfoNoGnomad['gnomad-mtdna'] = {}
     const { wrapper } = await setupMountedComponents(
@@ -78,13 +91,18 @@ describe.concurrent('FreqsMitochondrial', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.html()).toContain('HelixMTdb')
     expect(wrapper.html()).toContain('gnomAD-MT')
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)
   })
 
-  it.skip('renders the FreqsMitochondrial info with invalid data', async () => {
+  it('renders the FreqsMitochondrial info with invalid data', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: FreqsMitochondrial },
       {
@@ -94,7 +112,10 @@ describe.concurrent('FreqsMitochondrial', async () => {
         }
       }
     )
-    console.log(wrapper.html())
+
+    // act: nothing, only test rendering
+
+    // assert:
     const alertIcon = wrapper.find('.mdi-alert-circle-outline')
     expect(alertIcon.exists()).toBe(true)
   })

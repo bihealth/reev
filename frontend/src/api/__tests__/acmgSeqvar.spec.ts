@@ -7,8 +7,10 @@ import { type AcmgRatingBackend } from '@/stores/seqvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Sequence Variant */
 const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
+
+/** Example ACMG Rating data */
 const mockAcmgRating: AcmgRatingBackend = {
   comment: 'exampleComment',
   criterias: [

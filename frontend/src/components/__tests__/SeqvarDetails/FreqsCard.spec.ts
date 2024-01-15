@@ -7,6 +7,7 @@ import VariantDetailsFreqsMitochondrial from '@/components/SeqvarDetails/FreqsCa
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -16,6 +17,7 @@ const seqvarInfo: Seqvar = {
   userRepr: 'grch37-17-43044295-G-A'
 }
 
+/** Example Mitochondrial Sequence Variant */
 const seqvarInfoMitochondrial = {
   genomeBuild: 'grch37',
   chrom: 'chrM',
@@ -27,6 +29,7 @@ const seqvarInfoMitochondrial = {
 
 describe.concurrent('Freqs', async () => {
   it('renders the Freqs info for Autosonmal Variants', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: Freqs },
       {
@@ -36,11 +39,16 @@ describe.concurrent('Freqs', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     const freqsAutosomal = wrapper.findComponent(VariantDetailsFreqsAutosomal)
     expect(freqsAutosomal.exists()).toBe(true)
   })
 
   it('renders the Freqs info for Mitochondrial Variants', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: Freqs },
       {
@@ -50,6 +58,10 @@ describe.concurrent('Freqs', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     const freqsMitochondrial = wrapper.findComponent(VariantDetailsFreqsMitochondrial)
     expect(freqsMitochondrial.exists()).toBe(true)
   })

@@ -9,7 +9,7 @@ import { SeqvarImpl } from '@/lib/genomicVars'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Sequence Variant */
 const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
 
 describe.concurrent('Annonars Client', () => {

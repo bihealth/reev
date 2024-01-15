@@ -9,6 +9,7 @@ import { StoreState } from '@/stores/misc'
 
 describe.concurrent('GeneListCard', async () => {
   it('renders the GeneListCard table', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: GeneListCard },
       {
@@ -21,12 +22,16 @@ describe.concurrent('GeneListCard', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const table = wrapper.findComponent({ name: 'VDataIterator' })
     expect(table.exists()).toBe(true)
     expect(wrapper.text()).toContain('Overlapping and Contained Genes')
   })
 
   it('shows the gene info on row click', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: GeneListCard },
       {
@@ -39,11 +44,14 @@ describe.concurrent('GeneListCard', async () => {
       }
     )
 
+    // act:
     const table = wrapper.findComponent({ name: 'VDataIterator' })
     expect(table.exists()).toBe(true)
     // Click on the first gene
     await table.get('div.v-sheet div.v-row div.v-col').trigger('click')
     await nextTick()
+
+    // assert:
     expect(table.emitted('update:options')).toBeTruthy()
   })
 })

@@ -1,4 +1,3 @@
-import { createTestingPinia } from '@pinia/testing'
 import { describe, expect, it, vi } from 'vitest'
 
 import {
@@ -11,8 +10,8 @@ import ClinsigCard from '@/components/StrucvarDetails/ClinsigCard.vue'
 import type { Strucvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 import { StoreState } from '@/stores/misc'
-import { useStrucvarAcmgRatingStore } from '@/stores/strucvarAcmgRating'
 
+/** Example stucture Variant */
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
   svType: 'DEL',
@@ -22,6 +21,7 @@ const strucvarInfo: Strucvar = {
   userRepr: 'DEL-grch37-17-41176312-41277500'
 }
 
+/** Example structure Variant record */
 const svRecord = {
   svType: 'DEL',
   chromosome: 'chr17',
@@ -62,51 +62,52 @@ const svRecord = {
   ]
 }
 
+/** Local helper that performs store setup and selective stubbing. */
 const makeWrapper = () => {
-  const pinia = createTestingPinia({ createSpy: vi.fn() })
-  const store = useStrucvarAcmgRatingStore(pinia)
+  const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {})
 
-  const mockRetrieveAcmgRating = vi.fn().mockImplementation(async () => {
-    store.storeState = StoreState.Active
-    store.strucvar = structuredClone(strucvarInfo)
-    store.acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
-    store.acmgRating.setPresence(
-      StateSourceCNV.AutoCNV,
-      AcmgCriteriaCNVLoss.Loss1A,
-      Presence.Present
-    )
-  })
-  store.fetchAcmgRating = mockRetrieveAcmgRating
-
-  store.storeState = StoreState.Active
-  store.strucvar = structuredClone(strucvarInfo)
-  store.acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
-  store.acmgRating.setPresence(StateSourceCNV.AutoCNV, AcmgCriteriaCNVLoss.Loss1A, Presence.Present)
+  const acmgRating = new MultiSourceAcmgCriteriaCNVState('DEL')
+  acmgRating.setPresence(StateSourceCNV.AutoCNV, AcmgCriteriaCNVLoss.Loss1A, Presence.Present)
 
   return setupMountedComponents(
     {
       component: ClinsigCard
     },
     {
+      initialStoreState: {
+        strucvarAcmgRating: {
+          storeState: StoreState.Active,
+          strucvar: structuredClone(strucvarInfo),
+          acmgRating: acmgRating,
+          fetchAcmgRating: mockRetrieveAcmgRating
+        }
+      },
       props: {
         svRecord: svRecord
-      },
-      pinia: pinia
+      }
     }
   )
 }
 
 describe.concurrent('AcmgRating', async () => {
   it('renders the AcmgRating info', async () => {
+    // arrange:
     const { wrapper } = await makeWrapper()
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Uncertain significance')
     expect(wrapper.text()).toContain('Semi-Automated Pathogenicity Prediction')
   })
 
   it('shows swithces and buttons', async () => {
+    // arrange:
     const { wrapper } = await makeWrapper()
 
+    // act: nothing, only test rendering
+
+    // assert:
     const switches = wrapper.findAllComponents({ name: 'VSwitch' })
     expect(switches.length).toBe(1)
     expect(wrapper.text()).toContain('Reset')

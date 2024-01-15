@@ -7,6 +7,7 @@ import CaseInformationCard from '../CaseInformationCard.vue'
 
 describe.concurrent('CaseInformationCard.vue', () => {
   it('renders information', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CaseInformationCard },
       {
@@ -23,6 +24,10 @@ describe.concurrent('CaseInformationCard.vue', () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Case Information')
   })
 })

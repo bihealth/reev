@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('VariantConservation', async () => {
   it('renders the VariantConservation info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: Conservation },
       {
@@ -14,6 +15,10 @@ describe.concurrent('VariantConservation', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('ENST00000309486')
   })
 })

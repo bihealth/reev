@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('TermsView', async () => {
   it('renders the terms of use content', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: TermsView },
       {
@@ -16,6 +17,9 @@ describe.concurrent('TermsView', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('REEV is for research use only software')
     expect(wrapper.text()).toContain(
       'The software is provided "as is," without warranty of any kind'

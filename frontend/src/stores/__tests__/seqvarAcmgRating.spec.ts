@@ -11,7 +11,7 @@ import { useSeqvarAcmgRatingStore } from '../seqvarAcmgRating'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -21,6 +21,7 @@ const seqvarInfo: Seqvar = {
   userRepr: 'grch37-17-43044295-G-A'
 }
 
+/** Example InterVar Response */
 const ExampleInterVarResponse = {
   pvs1: true,
   ps1: false,

@@ -4,7 +4,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 import VegaPlot from '../VegaPlot.vue'
 
-// Test data
+/** Example Vega plot data */
 const vegaData = [
   {
     tissue: 'Adipose Tissue',
@@ -26,10 +26,12 @@ const vegaData = [
   }
 ]
 
+/** Example Vega plot encoding */
 const vegaEncoding = {
   x: { field: 'tissueDetailed', type: 'nominal', title: null, axis: { labelAngle: 45 } }
 }
 
+/** Example Vega plot layer */
 const vegaLayer = [
   {
     mark: { type: 'rule', tooltip: { content: 'data' } },

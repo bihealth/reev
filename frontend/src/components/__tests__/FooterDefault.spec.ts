@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
+import FooterDefault from '@/components/FooterDefault.vue'
 import { setupMountedComponents } from '@/lib/testUtils'
-
-import FooterDefault from '../FooterDefault.vue'
 
 describe.concurrent('FooterDefault.vue', () => {
   it('renders information', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: FooterDefault },
       {
@@ -16,6 +16,10 @@ describe.concurrent('FooterDefault.vue', () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     const footer = wrapper.find('footer')
     expect(footer.exists()).toBe(true)
     expect(footer.text()).toContain('REEV Explains and Evaluates Variants')

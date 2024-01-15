@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('SummarySheet', async () => {
   it('renders the SummarySheet info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: SummarySheet },
       {
@@ -15,10 +16,12 @@ describe.concurrent('SummarySheet', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Semi-Automated ACMG Pathogenicity Prediction')
     const sheet = wrapper.findComponent({ name: 'VSheet' })
     expect(sheet.exists()).toBe(true)
-
     // Buttons
     const buttons = wrapper.findAllComponents({ name: 'VBtn' })
     expect(buttons.length).toBe(2)

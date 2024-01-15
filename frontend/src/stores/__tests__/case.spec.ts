@@ -16,6 +16,7 @@ import {
 } from '@/stores/case'
 import { StoreState } from '@/stores/misc'
 
+/** Example API Response */
 const MOCK_RESPONSE: APIResponse = {
   id: 'iduuid',
   user: 'useruuid',
@@ -33,6 +34,7 @@ const MOCK_RESPONSE: APIResponse = {
 
 const fetchMocker = createFetchMock(vi)
 
+/** Example item key */
 const ITEM_KEY = `${LOCAL_STORAGE_PREFIX}.caseInfo`
 
 describe.concurrent('case store with logged in user', () => {

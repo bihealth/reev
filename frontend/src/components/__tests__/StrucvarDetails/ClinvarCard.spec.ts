@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ClinvarCard', async () => {
   it('renders the ClinvarCard info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ClinvarCard },
       {
@@ -20,6 +21,9 @@ describe.concurrent('ClinvarCard', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('ClinVar')
     const dataTable = wrapper.findComponent({ name: 'VDataTable' })
     expect(dataTable.exists()).toBe(true)

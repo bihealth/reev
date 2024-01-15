@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { setupMountedComponents } from '@/lib/testUtils'
 
-// Test data
+/** Example Component */
 const TestComponent = { template: '<template><div>Test</div></template>', __name: 'TestComponent' }
 
 describe.concurrent('Test Utils - setupMountedComponents', async () => {

@@ -7,6 +7,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('VariationLandscape', async () => {
   it('renders the VariationLandscape plot', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: VariationLandscape },
       {
@@ -19,6 +20,10 @@ describe.concurrent('VariationLandscape', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Variation Lanscape')
   })
 })

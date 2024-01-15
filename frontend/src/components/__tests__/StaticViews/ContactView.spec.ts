@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('ContactView', async () => {
   it('renders the main content', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ContactView },
       {
@@ -16,6 +17,9 @@ describe.concurrent('ContactView', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const githubLink = wrapper.find('.mdi-github')
     const emailLink = wrapper.find('.mdi-email')
     expect(wrapper.html()).toMatch(

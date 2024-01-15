@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
+import GenomeBrowser from '@/components/GenomeBrowser.vue'
 import { setupMountedComponents } from '@/lib/testUtils'
-
-import GenomeBrowser from '../GenomeBrowser.vue'
 
 describe.concurrent('GenomeBrowser', async () => {
   it('renders the GenomeBrowser with the hg19 genome', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: GenomeBrowser },
       {
@@ -15,10 +15,15 @@ describe.concurrent('GenomeBrowser', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.exists()).toBe(true)
   })
 
   it('renders the GenomeBrowser with the hg38 genome', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: GenomeBrowser },
       {
@@ -28,6 +33,10 @@ describe.concurrent('GenomeBrowser', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.exists()).toBe(true)
   })
 })

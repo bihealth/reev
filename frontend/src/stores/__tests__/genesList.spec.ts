@@ -7,7 +7,7 @@ import { StoreState } from '../misc'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example list of genes */
 const exampleGenesList = {
   genes: [
     {

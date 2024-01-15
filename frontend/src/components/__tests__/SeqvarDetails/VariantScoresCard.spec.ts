@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('VariantTools', async () => {
   it('renders the Variant Tools info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: VariantTools },
       {
@@ -14,11 +15,16 @@ describe.concurrent('VariantTools', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Scoring Method')
     expect(wrapper.text()).toContain('BayesDel')
   })
 
   it('renders the Variant Tools info with empty variance information', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: VariantTools },
       {
@@ -27,6 +33,10 @@ describe.concurrent('VariantTools', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('No UCSC conservation data available.')
   })
 })

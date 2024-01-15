@@ -9,7 +9,7 @@ import { useStrucvarInfoStore } from '@/stores/strucvarInfo'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Structure Variant */
 const strucvarInfo: Strucvar = {
   genomeBuild: 'grch37',
   svType: 'DEL',

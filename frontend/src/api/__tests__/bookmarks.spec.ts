@@ -7,7 +7,7 @@ import { BookmarksClient } from '../bookmarks'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Bookmark data */
 const mockBookmarks: BookmarkData[] = [
   {
     user: '2c0a153e-5e8c-11ee-8c99-0242ac120002',

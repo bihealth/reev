@@ -5,6 +5,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('CadaRanking', async () => {
   it('renders the CadaRanking info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CadaRanking },
       {
@@ -40,6 +41,10 @@ describe.concurrent('CadaRanking', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('Gene-to-Phenotype Rank')
     expect(wrapper.text()).toContain('1')
     expect(wrapper.text()).toContain('0.5')

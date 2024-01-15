@@ -5,6 +5,7 @@ import FreqsAutosomal from '@/components/SeqvarDetails/FreqsCard/AutosomalFreqs.
 import type { Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
 
+/** Example Sequece Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',
@@ -16,6 +17,7 @@ const seqvarInfo: Seqvar = {
 
 describe.concurrent('FreqsAutosomal', async () => {
   it('renders the FreqsAutosomal info', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: FreqsAutosomal },
       {
@@ -26,12 +28,17 @@ describe.concurrent('FreqsAutosomal', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('gnomAD Exomes')
     const table = wrapper.find('table')
     expect(table.exists()).toBe(true)
   })
 
   it('renders the FreqsAutosomal info with no data', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: FreqsAutosomal },
       {
@@ -42,6 +49,10 @@ describe.concurrent('FreqsAutosomal', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('gnomAD Genomes')
     expect(wrapper.text()).toContain('No allele frequency information available in local database.')
   })

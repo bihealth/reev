@@ -6,6 +6,7 @@ import { StoreState } from '@/stores/misc'
 
 describe.concurrent('CaseCard', async () => {
   it('renders the CaseCard information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CaseCard },
       {
@@ -23,13 +24,16 @@ describe.concurrent('CaseCard', async () => {
       }
     )
 
-    expect(wrapper.text()).toContain('Case Information')
+    // act: nothing, only test rendering
 
+    // assert:
+    expect(wrapper.text()).toContain('Case Information')
     const vForm = wrapper.findComponent({ name: 'VForm' })
     expect(vForm.exists()).toBe(true)
   })
 
   it('renders the CaseCard while loading', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CaseCard },
       {
@@ -47,11 +51,15 @@ describe.concurrent('CaseCard', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const vProgressCircular = wrapper.findComponent({ name: 'VProgressCircular' })
     expect(vProgressCircular.exists()).toBe(true)
   })
 
   it('renders the CaseCard with error State.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CaseCard },
       {
@@ -69,6 +77,9 @@ describe.concurrent('CaseCard', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).not.toContain('Case Information')
     expect(wrapper.text()).toContain('Error loading data')
   })

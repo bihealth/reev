@@ -13,7 +13,7 @@ import { useSeqvarInfoStore } from '../seqvarInfo'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
   genomeBuild: 'grch37',
   chrom: '17',

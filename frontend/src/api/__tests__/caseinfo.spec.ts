@@ -6,7 +6,7 @@ import { type Case, Ethnicity, Inheritance, Sex, Zygosity } from '@/stores/case'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Case data */
 const mockCaseInfo: Case = {
   pseudonym: '',
   diseases: [],

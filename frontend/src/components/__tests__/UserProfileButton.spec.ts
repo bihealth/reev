@@ -6,7 +6,7 @@ import { type UserData, useUserStore } from '@/stores/user'
 
 import UserProfileButton from '../UserProfileButton.vue'
 
-// Test data
+/** Example User data */
 const adminUser: UserData = {
   id: '2c0a153e-5e8c-11ee-8c99-0242ac120002',
   email: 'admin@example.com',
@@ -36,7 +36,7 @@ describe.concurrent('UserProfileButton', () => {
         }
       }
     )
-    
+
     // act: nothing, only test rendering
 
     // assert:

@@ -9,8 +9,10 @@ import { LinearStrucvarImpl } from '@/lib/genomicVars'
 
 const fetchMocker = createFetchMock(vi)
 
-// Test data
+/** Example Sequence Variant */
 const seqVar = new SeqvarImpl('grch37', '1', 123, 'A', 'G')
+
+/** Example Structure Variant */
 const strucVar = new LinearStrucvarImpl('DEL', 'grch37', 'chr17', 43044295, 43044297)
 
 describe.concurrent('Mehari Client', () => {

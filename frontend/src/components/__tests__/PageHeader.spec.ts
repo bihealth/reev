@@ -8,7 +8,7 @@ import { StoreState } from '@/stores/misc'
 
 import PageHeader from '../PageHeader.vue'
 
-// Test data
+/** Example gene related data */
 const geneData = {
   storeState: 'active',
   geneSymbol: 'BRCA1',
@@ -43,7 +43,7 @@ describe.concurrent('PageHeader', async () => {
 
     // assert:
     const logo = wrapper.find('#logo')
-    const menu = wrapper.findComponent({'name': 'VMenu'})
+    const menu = wrapper.findComponent({ name: 'VMenu' })
     expect(logo.exists()).toBe(true)
     expect(menu.exists()).toBe(true)
   })

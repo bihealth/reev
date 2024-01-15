@@ -6,6 +6,7 @@ import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('SupplementaryList', async () => {
   it('renders the SupplementaryList information.', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: SupplementaryList },
       {
@@ -14,6 +15,10 @@ describe.concurrent('SupplementaryList', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     expect(wrapper.text()).toContain('ACMG Supplementary Findings List')
   })
 })
