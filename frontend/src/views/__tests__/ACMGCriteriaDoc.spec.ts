@@ -2,11 +2,11 @@ import { describe, expect, it } from 'vitest'
 import { VMenu } from 'vuetify/components'
 
 import { setupMountedComponents } from '@/lib/testUtils'
-
-import ACMGCriteriaDocs from '../ACMGCriteriaDocs.vue'
+import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
 
 describe.concurrent('ACMGCriteriaDocs', async () => {
   it('renders the header', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ACMGCriteriaDocs },
       {
@@ -18,6 +18,9 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const logo = wrapper.find('#logo')
     const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
@@ -25,6 +28,7 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
   })
 
   it('renders the main content', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: ACMGCriteriaDocs },
       {
@@ -36,6 +40,9 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const mainContent = wrapper.find('.docs-view')
     expect(mainContent.exists()).toBe(true)
     expect(mainContent.html()).toMatch('PVS1')

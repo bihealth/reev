@@ -1,16 +1,13 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
 import { VMenu } from 'vuetify/components'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import SearchBar from '@/components/SearchBar.vue'
 import { setupMountedComponents } from '@/lib/testUtils'
-import { useGeneInfoStore } from '@/stores/geneInfo'
 import { StoreState } from '@/stores/misc'
+import HomeView from '@/views/HomeView.vue'
 
-import HomeView from '../HomeView.vue'
-
+/** Example gene Data */
 const geneData = {
   storeState: 'active',
   geneSymbol: 'BRCA1',
@@ -29,6 +26,7 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('renders the header and the footer', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: HomeView },
       {
@@ -44,6 +42,10 @@ describe.concurrent('HomeView with mocked router', async () => {
         }
       }
     )
+
+    // act: nothing, only test rendering
+
+    // assert:
     const header = wrapper.findComponent(PageHeader)
     const footer = wrapper.findComponent(FooterDefault)
     expect(header.exists()).toBe(true)
@@ -56,6 +58,7 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('renders the search bar', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: HomeView },
       {
@@ -72,6 +75,9 @@ describe.concurrent('HomeView with mocked router', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const textField = wrapper.find('.v-text-field')
     const genomeReleaseButton = wrapper.find('.genome-release-menu')
     const searchButton = wrapper.find('.start-search')
@@ -81,6 +87,7 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('renders example search terms', async () => {
+    // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: HomeView },
       {
@@ -97,6 +104,9 @@ describe.concurrent('HomeView with mocked router', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const exampleTermsCard = wrapper.find('#examples')
     expect(exampleTermsCard.exists()).toBe(true)
     const exampleTerms = exampleTermsCard.findAll('.v-btn')
@@ -104,6 +114,7 @@ describe.concurrent('HomeView with mocked router', async () => {
   })
 
   it('examples have correct href', async () => {
+    // arrange:
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
     )
@@ -124,52 +135,12 @@ describe.concurrent('HomeView with mocked router', async () => {
       }
     )
 
+    // act: nothing, only test rendering
+
+    // assert:
     const exampleTermsCard = wrapper.find('#examples')
     expect(exampleTermsCard.exists()).toBe(true)
     const exampleTerm = exampleTermsCard.find('.example')
     expect(exampleTerm.attributes().href).toEqual('/query?q=BRCA1&genomeBuild=grch37')
-  })
-
-  it.skip('correctly uses the router', async () => {
-    global.fetch = vi.fn((): any =>
-      Promise.resolve({ ok: true, json: () => Promise.resolve({ success: false, value: null }) })
-    )
-
-    const { wrapper, router } = await setupMountedComponents(
-      { component: HomeView },
-      {
-        initialStoreState: {
-          geneInfo: {
-            storeState: StoreState.Active,
-            geneSymbol: geneData.geneSymbol,
-            geneInfo: JSON.parse(JSON.stringify(geneData.geneInfo))
-          },
-          misc: {
-            appVersion: 'v0.0.0'
-          }
-        }
-      }
-    )
-    const store = useGeneInfoStore()
-    store.storeState = StoreState.Active
-    store.hgncId = geneData.geneSymbol
-    store.geneInfo = JSON.parse(JSON.stringify(geneData.geneInfo))
-
-    // search bar value is updated to "HGNC:1100"
-    const searchBar = wrapper.findComponent(SearchBar)
-    await searchBar.setValue('HGNC:1100', 'searchTerm')
-    await searchBar.setValue('grch37', 'genomeRelease')
-
-    // press search
-    const button = wrapper.findComponent('#search') as any
-    await button.trigger('click')
-
-    await nextTick()
-
-    expect(router.push).toHaveBeenCalledOnce()
-    expect(router.push).toHaveBeenCalledWith({
-      name: 'gene-details',
-      params: { gene: 'BRCA1' }
-    })
   })
 })
