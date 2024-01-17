@@ -22,7 +22,7 @@ export class AcmgSeqVarClient {
    * @returns The list of ACMG ratings for the user.
    */
   async listAcmgRatings(): Promise<any> {
-    const url = `${this.apiBaseUrl}acmgSeqvar/list`
+    const url = `${this.apiBaseUrl}acmgseqvar/list`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -38,7 +38,7 @@ export class AcmgSeqVarClient {
    * @returns The ACMG rating for the variant.
    */
   async fetchAcmgRating(seqvar: SeqvarImpl): Promise<any> {
-    const url = `${this.apiBaseUrl}acmgSeqvar/get?seqvar=${seqvar.toName()}`
+    const url = `${this.apiBaseUrl}acmgseqvar/get?seqvar=${seqvar.toName()}`
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -58,7 +58,8 @@ export class AcmgSeqVarClient {
       "seqvar_name": "${seqVar.toName()}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
-    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/create`, {
+    console.log(postData)
+    const response = await fetch(`${this.apiBaseUrl}acmgseqvar/create`, {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',
@@ -68,6 +69,7 @@ export class AcmgSeqVarClient {
       },
       body: postData
     })
+    console.log(response)
     return await response.json()
   }
 
@@ -82,7 +84,7 @@ export class AcmgSeqVarClient {
       "seqvar_name": "${seqVar.toName()}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
-    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/update`, {
+    const response = await fetch(`${this.apiBaseUrl}acmgseqvar/update`, {
       method: 'PUT',
       mode: 'cors',
       credentials: 'include',
@@ -99,7 +101,7 @@ export class AcmgSeqVarClient {
    * Delete the ACMG rating for a variant.
    */
   async deleteAcmgRating(seqVar: SeqvarImpl): Promise<AcmgRatingBackend> {
-    const response = await fetch(`${this.apiBaseUrl}acmgSeqvar/delete?seqvar=${seqVar.toName()}`, {
+    const response = await fetch(`${this.apiBaseUrl}acmgseqvar/delete?seqvar=${seqVar.toName()}`, {
       method: 'DELETE',
       mode: 'cors',
       credentials: 'include'

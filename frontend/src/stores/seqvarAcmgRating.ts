@@ -199,7 +199,11 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
       const acmgSeqvar = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
-      if (acmgSeqvar && acmgSeqvar.detail !== 'ACMG Sequence Variant not found') {
+      if (
+        acmgSeqvar &&
+        acmgSeqvar.detail !== 'ACMG Sequence Variant not found' &&
+        acmgSeqvar.detail !== 'Not Found'
+      ) {
         await acmgSeqvarClient.updateAcmgRating(seqvarImpl, acmgRating)
       } else {
         await acmgSeqvarClient.saveAcmgRating(seqvarImpl, acmgRating)
