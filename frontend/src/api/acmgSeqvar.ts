@@ -58,7 +58,6 @@ export class AcmgSeqVarClient {
       "seqvar_name": "${seqVar.toName()}",
       "acmg_rank": ${JSON.stringify(acmgRating)}
     }`
-    console.log(postData)
     const response = await fetch(`${this.apiBaseUrl}acmgseqvar/create`, {
       method: 'POST',
       mode: 'cors',
@@ -69,7 +68,6 @@ export class AcmgSeqVarClient {
       },
       body: postData
     })
-    console.log(response)
     return await response.json()
   }
 
