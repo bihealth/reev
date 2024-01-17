@@ -117,12 +117,19 @@ const sexExpanded: any = ref({})
               <tr @click.prevent="sexExpanded[key] = !sexExpanded[key]">
                 <td colspan="2">
                   {{ label }}
-                  <a v-if="!sexExpanded[key]">
+                  <a>
+                    <v-btn size="40" color="" icon>
+                      <v-icon>
+                        {{ sexExpanded[key] ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
+                      </v-icon>
+                    </v-btn>
+                  </a>
+                  <!-- <a v-if="!sexExpanded[key]">
                     <v-icon>mdi-chevron-right</v-icon>
                   </a>
                   <a v-else>
                     <v-icon>mdi-chevron-down</v-icon>
-                  </a>
+                  </a> -->
                 </td>
                 <td class="text-right text-no-wrap">
                   {{ sep(byPop[key]?.counts?.overall?.an ?? 0) }}

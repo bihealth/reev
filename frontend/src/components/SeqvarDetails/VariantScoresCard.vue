@@ -416,17 +416,19 @@ const polyphenScore = computed((): number | null =>
               <th class="align-middle">
                 MMSplice
                 <!-- Toggle Button -->
-                <v-btn
-                  size="40"
-                  color=""
-                  icon
-                  :disabled="!bestMMSplice.key || bestMMSplice.score === Infinity"
-                  @click="expandMMSplice = !expandMMSplice"
-                >
-                  <v-icon>
-                    {{ expandMMSplice ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
-                  </v-icon>
-                </v-btn>
+                <a>
+                  <v-btn
+                    size="40"
+                    color=""
+                    icon
+                    :disabled="!bestMMSplice.key || bestMMSplice.score === Infinity"
+                    @click="expandMMSplice = !expandMMSplice"
+                  >
+                    <v-icon>
+                      {{ expandMMSplice ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
+                    </v-icon>
+                  </v-btn>
+                </a>
               </th>
               <template
                 v-if="
@@ -744,17 +746,19 @@ const polyphenScore = computed((): number | null =>
               <th class="align-middle">
                 SpliceAI
                 <!-- Toggle Button -->
-                <v-btn
-                  size="40"
-                  color=""
-                  icon
-                  :disabled="!bestSpliceAi.key || bestSpliceAi.score === Infinity"
-                  @click="expandSpliceAi = !expandSpliceAi"
-                >
-                  <v-icon>
-                    {{ expandSpliceAi ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
-                  </v-icon>
-                </v-btn>
+                <a>
+                  <v-btn
+                    size="40"
+                    color=""
+                    icon
+                    :disabled="!bestSpliceAi.key || bestSpliceAi.score === Infinity"
+                    @click="expandSpliceAi = !expandSpliceAi"
+                  >
+                    <v-icon>
+                      {{ expandSpliceAi ? 'mdi-chevron-down' : 'mdi-chevron-right' }}
+                    </v-icon>
+                  </v-btn>
+                </a>
               </th>
               <template
                 v-if="
