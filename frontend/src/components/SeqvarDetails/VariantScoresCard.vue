@@ -199,7 +199,8 @@ const polyphenScore = computed((): number | null =>
               <template
                 v-if="
                   props.varAnnos?.dbnsfp?.BayesDel_addAF_score &&
-                  props.varAnnos?.dbnsfp?.BayesDel_addAF_score !== Infinity
+                  props.varAnnos?.dbnsfp?.BayesDel_addAF_score !== Infinity &&
+                  props.varAnnos?.dbnsfp?.BayesDel_addAF_score !== undefined
                 "
               >
                 <!-- eslint-disable vue/no-v-html -->
@@ -272,7 +273,13 @@ const polyphenScore = computed((): number | null =>
 
             <tr>
               <th class="align-middle">CADD</th>
-              <template v-if="varAnnos?.cadd?.PHRED && varAnnos?.cadd?.PHRED !== Infinity">
+              <template
+                v-if="
+                  varAnnos?.cadd?.PHRED &&
+                  varAnnos?.cadd?.PHRED !== Infinity &&
+                  varAnnos?.cadd?.PHRED !== undefined
+                "
+              >
                 <td class="text-center align-middle">
                   {{ varAnnos?.cadd?.PHRED }}
                 </td>
@@ -326,7 +333,12 @@ const polyphenScore = computed((): number | null =>
             <tr>
               <th class="align-middle">FATHMM</th>
               <template
-                v-if="fathmmScore && translatedFathmmScore && translatedFathmmScore !== Infinity"
+                v-if="
+                  fathmmScore &&
+                  translatedFathmmScore &&
+                  translatedFathmmScore !== Infinity &&
+                  translatedFathmmScore !== undefined
+                "
               >
                 <td class="text-center align-middle">
                   {{ fathmmScore }}
@@ -373,7 +385,7 @@ const polyphenScore = computed((): number | null =>
 
             <tr>
               <th class="align-middle">Gerp++</th>
-              <template v-if="gerpScore && gerpScore !== Infinity">
+              <template v-if="gerpScore && gerpScore !== Infinity && gerpScore !== undefined">
                 <td class="text-center align-middle">
                   {{ gerpScore }}
                 </td>
@@ -405,8 +417,7 @@ const polyphenScore = computed((): number | null =>
                 MMSplice
                 <!-- Toggle Button -->
                 <v-btn
-                  variant="outlined"
-                  size="30"
+                  size="40"
                   color=""
                   icon
                   :disabled="!bestMMSplice.key || bestMMSplice.score === Infinity"
@@ -417,7 +428,13 @@ const polyphenScore = computed((): number | null =>
                   </v-icon>
                 </v-btn>
               </th>
-              <template v-if="bestMMSplice.key && bestMMSplice.score !== Infinity">
+              <template
+                v-if="
+                  bestMMSplice.key &&
+                  bestMMSplice.score !== Infinity &&
+                  bestMMSplice.score !== undefined
+                "
+              >
                 <td class="text-center align-middle">
                   {{ bestMMSplice.score }}
                   <span class="text-muted ml-2">({{ bestMMSplice.key }})</span>
@@ -442,7 +459,10 @@ const polyphenScore = computed((): number | null =>
               <tr v-for="(score, index) in allMMSplice" :key="index">
                 <th class="text-center align-middle">{{ index }}</th>
                 <td>{{ score }}</td>
-                <td class="text-center align-middle">
+                <td
+                  v-if="score !== Infinity && score !== undefined"
+                  class="text-center align-middle"
+                >
                   <ScoreDisplay
                     :range-lower="0"
                     :range-upper="1"
@@ -451,13 +471,14 @@ const polyphenScore = computed((): number | null =>
                     :value="score"
                   />
                 </td>
+                <td v-else class="text-center align-middle">&mdash;</td>
                 <td class="text-center align-middle">&mdash;</td>
               </tr>
             </template>
 
             <tr>
               <th class="align-middle">MPC</th>
-              <template v-if="mpcScore && mpcScore !== Infinity">
+              <template v-if="mpcScore && mpcScore !== Infinity && mpcScore !== undefined">
                 <td class="text-center align-middle" v-html="roundIt(mpcScore, 4)" />
                 <td class="text-center align-middle">
                   <ScoreDisplay
@@ -487,7 +508,13 @@ const polyphenScore = computed((): number | null =>
 
             <tr>
               <th class="align-middle">PolyPhen2</th>
-              <template v-if="polyphenScore !== null && polyphenScore !== Infinity">
+              <template
+                v-if="
+                  polyphenScore !== null &&
+                  polyphenScore !== Infinity &&
+                  polyphenScore !== undefined
+                "
+              >
                 <td class="text-center align-middle">
                   {{ polyphenScore }}
                 </td>
@@ -536,7 +563,8 @@ const polyphenScore = computed((): number | null =>
               <template
                 v-if="
                   props.varAnnos?.dbnsfp?.phyloP100way_vertebrate &&
-                  props.varAnnos?.dbnsfp?.phyloP100way_vertebrate !== Infinity
+                  props.varAnnos?.dbnsfp?.phyloP100way_vertebrate !== Infinity &&
+                  props.varAnnos?.dbnsfp?.phyloP100way_vertebrate !== undefined
                 "
               >
                 <td class="text-center align-middle">
@@ -599,7 +627,8 @@ const polyphenScore = computed((): number | null =>
               <template
                 v-if="
                   props.varAnnos?.dbnsfp?.PrimateAI_score &&
-                  props.varAnnos?.dbnsfp?.PrimateAI_score !== Infinity
+                  props.varAnnos?.dbnsfp?.PrimateAI_score !== Infinity &&
+                  props.varAnnos?.dbnsfp?.PrimateAI_score !== undefined
                 "
               >
                 <td
@@ -660,7 +689,14 @@ const polyphenScore = computed((): number | null =>
 
             <tr>
               <th class="align-middle">SIFT</th>
-              <template v-if="siftScore && translatedSiftScore && translatedSiftScore !== Infinity">
+              <template
+                v-if="
+                  siftScore &&
+                  translatedSiftScore &&
+                  translatedSiftScore !== Infinity &&
+                  translatedFathmmScore !== undefined
+                "
+              >
                 <td class="text-center align-middle">
                   {{ siftScore }}
                 </td>
@@ -709,8 +745,7 @@ const polyphenScore = computed((): number | null =>
                 SpliceAI
                 <!-- Toggle Button -->
                 <v-btn
-                  variant="outlined"
-                  size="30"
+                  size="40"
                   color=""
                   icon
                   :disabled="!bestSpliceAi.key || bestSpliceAi.score === Infinity"
@@ -721,7 +756,13 @@ const polyphenScore = computed((): number | null =>
                   </v-icon>
                 </v-btn>
               </th>
-              <template v-if="bestSpliceAi.key && bestSpliceAi.score !== Infinity">
+              <template
+                v-if="
+                  bestSpliceAi.key &&
+                  bestSpliceAi.score !== Infinity &&
+                  bestSpliceAi.score !== undefined
+                "
+              >
                 <td class="text-center align-middle">
                   {{ bestSpliceAi.score }}
                   <span class="text-muted ml-2">({{ bestSpliceAi.key }})</span>
@@ -746,7 +787,10 @@ const polyphenScore = computed((): number | null =>
               <tr v-for="(score, index) in allSpliceAi" :key="index">
                 <th class="text-center align-middle">{{ index }}</th>
                 <td>{{ score }}</td>
-                <td class="text-center align-middle">
+                <td
+                  v-if="score !== Infinity && score !== undefined"
+                  class="text-center align-middle"
+                >
                   <ScoreDisplay
                     :range-lower="0"
                     :range-upper="1"
@@ -755,13 +799,14 @@ const polyphenScore = computed((): number | null =>
                     :value="score"
                   />
                 </td>
+                <td v-else class="text-center align-middle">&mdash;</td>
                 <td class="text-center align-middle">&mdash;</td>
               </tr>
             </template>
 
             <tr>
               <th class="align-middle">REVEL</th>
-              <template v-if="revelScore && revelScore !== Infinity">
+              <template v-if="revelScore && revelScore !== Infinity && revelScore !== undefined">
                 <td class="text-center align-middle">
                   {{ revelScore }}
                 </td>
