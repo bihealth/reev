@@ -2,7 +2,7 @@ import { API_INTERNAL_BASE_PREFIX } from '@/api/common'
 import type { Seqvar } from '@/lib/genomicVars'
 import type { AcmgRatingBackend } from '@/stores/seqvarAcmgRating'
 
-const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX}/`
+const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX}`
 
 export class InterVarClient {
   private apiBaseUrl: string
