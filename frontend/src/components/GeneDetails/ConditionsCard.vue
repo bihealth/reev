@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { titleCase } from 'title-case'
 import { computed, ref } from 'vue'
+import { onMounted, watch } from 'vue'
 
 import type { HpoTerm } from '@/api/viguno'
 import DocsLink from '@/components/DocsLink.vue'
 import CadaRanking from '@/components/GeneDetails/ConditionsCard/CadaRanking.vue'
-import { extractDbnsfpMimDiseaseId, transformDbnsfpMimDiseaseId } from '@/lib/utils'
 
 export interface Props {
   geneInfo: any
@@ -47,136 +47,164 @@ const hpoTermsToShow = computed<HpoTerm[]>(() => {
   }
 })
 
-// -- code for PanelApp conditions -------------------------------------------
+// -- code for integrated conditions -----------------------------------------
 
-/** Enumeration for PanelApp confidence levels. */
-enum PanelAppConfidenceLevel {
-  Green = 'CONFIDENCE_LEVEL_GREEN',
-  Amber = 'CONFIDENCE_LEVEL_AMBER',
-  Red = 'CONFIDENCE_LEVEL_RED'
+enum GeneDiseaseAssociationSource {
+  Omim = 'GENE_DISEASE_ASSOCIATION_SOURCE_OMIM',
+  Orphanet = 'GENE_DISEASE_ASSOCIATION_SOURCE_ORPHANET',
+  Panelapp = 'GENE_DISEASE_ASSOCIATION_SOURCE_PANELAPP'
 }
 
-/** Compare `PanelAppConfidenceLevel` in a sort-compatible way */
-const comparePanelAppConfidenceLevel = (
-  lhs: PanelAppConfidenceLevel,
-  rhs: PanelAppConfidenceLevel
-): number => {
-  switch (lhs) {
-    case PanelAppConfidenceLevel.Green:
-      switch (rhs) {
-        case PanelAppConfidenceLevel.Green:
-          return 0
-        case PanelAppConfidenceLevel.Amber:
-        case PanelAppConfidenceLevel.Red:
-          return -1
-      }
-    case PanelAppConfidenceLevel.Amber:
-      switch (rhs) {
-        case PanelAppConfidenceLevel.Green:
-          return 1
-        case PanelAppConfidenceLevel.Amber:
-          return 0
-        case PanelAppConfidenceLevel.Red:
-          return -1
-      }
-    case PanelAppConfidenceLevel.Red:
-      switch (rhs) {
-        case PanelAppConfidenceLevel.Green:
-        case PanelAppConfidenceLevel.Amber:
-          return 1
-        case PanelAppConfidenceLevel.Red:
-          return 0
-      }
-  }
+const GDA_LABELS: { [key in GeneDiseaseAssociationSource]: string } = {
+  [GeneDiseaseAssociationSource.Omim]: 'OMIM',
+  [GeneDiseaseAssociationSource.Orphanet]: 'Orphanet',
+  [GeneDiseaseAssociationSource.Panelapp]: 'PanelApp'
 }
 
-/** Return label for `PanelAppConfidenceLevel`. */
-const confidenceLabel = (level: PanelAppConfidenceLevel): string => {
-  switch (level) {
-    case PanelAppConfidenceLevel.Green:
-      return 'green'
-    case PanelAppConfidenceLevel.Amber:
-      return 'amber'
-    case PanelAppConfidenceLevel.Red:
-      return 'red'
-  }
+enum ConfidenceLevel {
+  High = 'CONFIDENCE_LEVEL_HIGH',
+  Medium = 'CONFIDENCE_LEVEL_MEDIUM',
+  Low = 'CONFIDENCE_LEVEL_LOW'
 }
 
-/**
- * Representation of a PanelApp.
- */
-interface PanelAppCondition {
-  panelId: number
-  title: string
-  confidence: PanelAppConfidenceLevel
+const CONFIDENCE_LEVEL_LABELS: { [key in ConfidenceLevel]: string } = {
+  [ConfidenceLevel.High]: 'High',
+  [ConfidenceLevel.Medium]: 'Medium',
+  [ConfidenceLevel.Low]: 'Low'
 }
 
-/**
- * Return list of PanelApp conditions with reduced redundancy.
- *
- * Note that proper redundancy removal can only be done with proper named
- * entity normalization which is on our TODO list.
- */
-const panelAppConditions = computed<PanelAppCondition[]>(() => {
-  if (!props.geneInfo?.panelapp) {
-    return []
-  }
+interface LabeledDisorder {
+  termId: string
+  title: string | null
+}
 
-  // seen conditions
-  const seen = new Map<string, PanelAppCondition>()
+interface GeneDiseaseAssociation {
+  hgnc_id: string
+  labeledDisorders: LabeledDisorder[]
+  diseaseName: string | null
+  diseaseDefinition: string | null
+  sources: GeneDiseaseAssociationSource[]
+  confidence: ConfidenceLevel
+}
 
-  /** Normalize phenotype name. */
-  const normalizeName = (name: string): string => {
-    const match = [...name.matchAll(/\{(.*)\}/g)]
-    let result: string
-    if (match.length) {
-      result = match[0][1]
-    } else {
-      result = name
-    }
+interface PanelappPanel {
+  id: number
+  name: string
+  version: string
+}
 
-    result = result
-      .replace(/,? \d{6,6}$/, '')
-      .replace(/,? MONDO:\d{6,6}/, '')
-      .replace(/,? O?MIM:\d{6,6}/, '')
-      .replace(/,? \(\d{6,6}\)/, '')
+enum PanelappConfidence {
+  Green = 'PANELAPP_CONFIDENCE_GREEN',
+  Amber = 'PANELAPP_CONFIDENCE_AMBER',
+  Red = 'PANELAPP_CONFIDENCE_RED'
+}
 
-    return result
-  }
+const PANELAPP_CONFIDENCE_LABELS: { [key in PanelappConfidence]: string } = {
+  [PanelappConfidence.Green]: 'Green',
+  [PanelappConfidence.Amber]: 'Amber',
+  [PanelappConfidence.Red]: 'Red'
+}
 
-  // Collect phenotypes by panel in a somewhat non-redundant way.
-  for (const entry of props.geneInfo.panelapp) {
-    if (entry.phenotypes?.length) {
-      const phenotype = normalizeName(entry.phenotypes[0])
-      const seenEntry = seen.get(phenotype.toLowerCase())
-      let entryOverridesSeen = true
-      if (seenEntry) {
-        entryOverridesSeen =
-          comparePanelAppConfidenceLevel(entry.confidenceLevel, seenEntry.confidence) < 0
-      }
-      if (entryOverridesSeen) {
-        seen.set(phenotype.toLowerCase(), {
-          panelId: entry.panel?.id,
-          title: phenotype,
-          confidence: entry.confidenceLevel
-        })
-      }
+enum PanelappEntityType {
+  Gene = 'PANELAPP_ASSOCIATION_GENE',
+  Region = 'PANELAPP_ASSOCIATION_REGION',
+  Str = 'PANELAPP_ASSOCIATION_STR'
+}
+
+// const PANELAPP_ENTITY_TYPE_LABELS: { [key in PanelappEntityType]: string } = {
+//   [PanelappEntityType.Gene]: 'Gene',
+//   [PanelappEntityType.Region]: 'Region',
+//   [PanelappEntityType.Str]: 'STR'
+// }
+
+interface PanelappAssociation {
+  hgncId: string
+  confidenceLevel: PanelappConfidence
+  entityType: PanelappEntityType
+  modeOfInheritance: string | null
+  phenotypes: string[]
+  panel: PanelappPanel
+}
+
+interface ConditionsRecord {
+  hgncId: string
+  diseaseAssociations: GeneDiseaseAssociation[]
+  panelappAssociations: PanelappAssociation[]
+}
+
+const conditions = computed<ConditionsRecord>(() => {
+  if (props.geneInfo?.conditions) {
+    return props.geneInfo.conditions as ConditionsRecord
+  } else {
+    return {
+      hgncId: props.geneInfo?.hgnc?.id ?? '',
+      diseaseAssociations: [],
+      panelappAssociations: []
     }
   }
-
-  // Obtain list of conditions, sorted by confidence level.
-  const result = Array.from(seen.values())
-  result.sort((lhs, rhs) => {
-    const tmp = comparePanelAppConfidenceLevel(lhs.confidence, rhs.confidence)
-    if (tmp == 0) {
-      return lhs.title.localeCompare(rhs.title)
-    } else {
-      return tmp
-    }
-  })
-
-  return result
 })
+
+// -- code for shortened / full associate disease list -----------------------
+
+/** Maxmimal number of diseases terms to show by default. */
+const maxDiseases = 3
+
+/** Whether to show all terms. */
+const showAllDiseases = ref<boolean>(false)
+
+/** The diseases to show. */
+const diseasesToShow = computed<GeneDiseaseAssociation[]>(() => {
+  if (showAllDiseases.value) {
+    return conditions.value.diseaseAssociations
+  } else {
+    return conditions.value.diseaseAssociations.slice(0, maxDiseases)
+  }
+})
+
+/** Whether to display disease details. */
+const showDiseaseDetails = ref<boolean[]>([])
+
+/** Initialize the showDiseaseDetails. */
+const initShowDiseaseDetails = () => {
+  showDiseaseDetails.value = conditions.value.diseaseAssociations.map(() => false)
+}
+
+onMounted(() => initShowDiseaseDetails())
+watch(
+  () => conditions.value,
+  () => initShowDiseaseDetails()
+)
+
+// -- code for shortened / full PanelApp panel list --------------------------
+
+/** Maxmimal number of diseases terms to show by default. */
+const maxPanels = 3
+
+/** Whether to show all terms. */
+const showAllPanels = ref<boolean>(false)
+
+/** The diseases to show. */
+const panelsToShow = computed<PanelappAssociation[]>(() => {
+  if (showAllPanels.value) {
+    return conditions.value.panelappAssociations
+  } else {
+    return conditions.value.panelappAssociations.slice(0, maxPanels)
+  }
+})
+
+/** Whether to display PanelApp panel details. */
+const showPanelDetails = ref<boolean[]>([])
+
+/** Initialize the showPanelDetails. */
+const initShowPanelDetails = () => {
+  showPanelDetails.value = conditions.value.diseaseAssociations.map(() => false)
+}
+
+onMounted(() => initShowPanelDetails())
+watch(
+  () => conditions.value,
+  () => initShowPanelDetails()
+)
 </script>
 
 <template>
@@ -198,13 +226,11 @@ const panelAppConditions = computed<PanelAppCondition[]>(() => {
       <v-card-text class="pt-3">
         <v-row>
           <v-col cols="9" class="pt-0">
-            <!--
-            == HPO Terms ======================================================
-          -->
             <template v-if="hpoTerms === null">
               <v-skeleton-loader class="mt-3 mx-auto border" type="header,text" />
             </template>
             <template v-else>
+              <!-- == ACMG SF ====== -->
               <template v-if="geneInfo?.acmgSf">
                 <div class="text-subtitle-1">ACMG Supplementary Findings</div>
                 <div>
@@ -219,7 +245,157 @@ const panelAppConditions = computed<PanelAppCondition[]>(() => {
                   variants.
                 </div>
               </template>
+              <!-- == Conditions ===== -->
               <div class="text-subtitle-1" :class="{ 'mt-3': geneInfo?.acmgSf }">
+                Associated Diseases
+                <small>
+                  <template v-if="(conditions.diseaseAssociations?.length ?? 0) > maxDiseases">
+                    <template v-if="showAllDiseases">
+                      ({{ conditions.diseaseAssociations?.length }} of
+                      {{ conditions.diseaseAssociations?.length }})
+                    </template>
+                    <template v-else>
+                      ({{ diseasesToShow.length }} of {{ conditions.diseaseAssociations?.length }})
+                    </template>
+                  </template>
+                  <template v-else> ({{ conditions.diseaseAssociations?.length }}) </template>
+
+                  <template v-if="conditions.diseaseAssociations.length > maxDiseases">
+                    &bullet;
+                    <a href="#" @click.prevent="showAllDiseases = !showAllDiseases">
+                      {{ showAllDiseases ? ' show fewer' : ' show all' }}
+                    </a>
+                  </template>
+                </small>
+              </div>
+              <div v-if="conditions.diseaseAssociations.length">
+                <template v-for="(assoc, idx) in diseasesToShow" :key="idx">
+                  <v-sheet
+                    class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3"
+                    @click="showDiseaseDetails[idx] = !showDiseaseDetails[idx]"
+                  >
+                    <div class="text-h6">
+                      {{ assoc.diseaseName }}
+                    </div>
+                    <div class="text-body-2 mt-1">
+                      Description: {{ assoc.diseaseDefinition ?? 'N/A' }}
+                    </div>
+                    <div class="text-body-2 mt-2">
+                      <span class="font-weight-bold"> Confidence: </span>
+                      <span class="text-no-wrap" :title="CONFIDENCE_LEVEL_LABELS[assoc.confidence]">
+                        <template v-if="assoc.confidence === ConfidenceLevel.High">
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star</v-icon>
+                        </template>
+                        <template v-else-if="assoc.confidence === ConfidenceLevel.Medium">
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star-outline</v-icon>
+                        </template>
+                        <template v-else>
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star-outline</v-icon>
+                          <v-icon>mdi-star-outline</v-icon>
+                        </template>
+                      </span>
+                      <span class="font-weight-bold"> &bullet; Sources: </span>
+                      {{ assoc.sources.map((s) => GDA_LABELS[s]).join(', ') }}
+                    </div>
+                    <div
+                      v-if="showDiseaseDetails[idx]"
+                      style="border-top: 1px solid black"
+                      class="mt-2 pt-2 pl-4"
+                    >
+                      <ul
+                        v-for="(disorder, idxDisorder) in assoc.labeledDisorders"
+                        :key="idxDisorder"
+                      >
+                        <li>[{{ disorder.termId }}] {{ disorder.title }}</li>
+                      </ul>
+                    </div>
+                  </v-sheet>
+                </template>
+              </div>
+              <div v-else class="text-grey font-italic">No diseases associated with gene.</div>
+              <!-- == PanelApp Panels -->
+              <div class="text-subtitle-1 mt-3">
+                PanelApp Panels
+                <small>
+                  <template v-if="(conditions.panelappAssociations?.length ?? 0) > maxPanels">
+                    <template v-if="showAllPanels">
+                      ({{ conditions.panelappAssociations?.length }} of
+                      {{ conditions.panelappAssociations?.length }})
+                    </template>
+                    <template v-else>
+                      ({{ panelsToShow.length }} of {{ conditions.panelappAssociations?.length }})
+                    </template>
+                  </template>
+                  <template v-else> ({{ conditions.panelappAssociations?.length }}) </template>
+
+                  <template v-if="conditions.panelappAssociations.length > maxPanels">
+                    &bullet;
+                    <a href="#" @click.prevent="showAllPanels = !showAllPanels">
+                      {{ showAllPanels ? ' show fewer' : ' show all' }}
+                    </a>
+                  </template>
+                </small>
+              </div>
+              <div v-if="conditions.panelappAssociations.length">
+                <template v-for="(assoc, idx) in panelsToShow" :key="idx">
+                  <v-sheet
+                    class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3"
+                    @click="showPanelDetails[idx] = !showPanelDetails[idx]"
+                  >
+                    <div class="text-h6">
+                      {{ assoc.panel.name }}
+                      <small> (v{{ assoc.panel.version }}) </small>
+                    </div>
+                    <!-- <div class="text-body-2 mt-1">
+                      Description: {{ assoc.diseaseDefinition ?? 'N/A' }}
+                    </div> -->
+                    <div class="text-body-2 mt-2">
+                      <span class="font-weight-bold"> Confidence: </span>
+                      <span
+                        class="text-no-wrap"
+                        :title="PANELAPP_CONFIDENCE_LABELS[assoc.confidenceLevel]"
+                      >
+                        <template v-if="assoc.confidenceLevel === PanelappConfidence.Green">
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star</v-icon>
+                        </template>
+                        <template v-else-if="assoc.confidenceLevel === PanelappConfidence.Amber">
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star-outline</v-icon>
+                        </template>
+                        <template v-else>
+                          <v-icon>mdi-star</v-icon>
+                          <v-icon>mdi-star-outline</v-icon>
+                          <v-icon>mdi-star-outline</v-icon>
+                        </template>
+                      </span>
+                      <span class="font-weight-bold"> &bullet; Mode of Inheritance: </span>
+                      <span> {{ assoc.modeOfInheritance }} </span>
+                    </div>
+                    <div
+                      v-if="showPanelDetails[idx]"
+                      style="border-top: 1px solid black"
+                      class="mt-2 pt-2 pl-4"
+                    >
+                      <ul v-for="(phenotype, idxPhenotype) in assoc.phenotypes" :key="idxPhenotype">
+                        <li>{{ phenotype }}</li>
+                      </ul>
+                    </div>
+                  </v-sheet>
+                </template>
+              </div>
+              <div v-else class="text-grey font-italic">
+                No PanelApp panels associated with gene.
+              </div>
+              <!-- == HPO Terms ===== -->
+              <div class="text-subtitle-1 mt-3">
                 HPO Terms
                 <small>
                   <template v-if="(hpoTerms?.length ?? 0) > maxHpoTerms">
@@ -262,60 +438,6 @@ const panelAppConditions = computed<PanelAppCondition[]>(() => {
               </div>
               <div v-else class="text-grey font-italic">No HPO terms associated with gene.</div>
             </template>
-
-            <!--
-            == OMIM Diseases ==================================================
-          -->
-            <div class="text-subtitle-1 mt-3">
-              OMIM Diseases
-              <small> ({{ geneInfo?.dbnsfp?.mimDisease?.length ?? 0 }}) </small>
-            </div>
-            <div v-if="geneInfo?.dbnsfp?.mimDisease?.length">
-              <template v-for="(disease, idx) in geneInfo?.dbnsfp?.mimDisease" :key="idx">
-                <template v-if="idx > 0"> , </template>
-                <template v-if="showTermLinks">
-                  <a
-                    :href="`https://www.omim.org/entry/${extractDbnsfpMimDiseaseId(disease)}`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    {{ transformDbnsfpMimDiseaseId(disease, showTermIds) }}
-                  </a>
-                </template>
-                <template v-else>
-                  {{ transformDbnsfpMimDiseaseId(disease, showTermIds) }}
-                </template>
-              </template>
-            </div>
-            <div v-else class="text-grey font-italic">No OMIM diseases annotated in dbNSFP.</div>
-
-            <!--
-            == PanelApp Conditions ============================================
-          -->
-            <div class="text-subtitle-1 mt-3">
-              PanelApp Conditions
-              <small> ({{ panelAppConditions.length }}) </small>
-            </div>
-            <div v-if="panelAppConditions.length > 0">
-              <template v-for="(condition, idx) in panelAppConditions" :key="idx">
-                <template v-if="idx > 0"> , </template>
-                <template v-if="showTermLinks">
-                  <a
-                    :href="`https://panelapp.genomicsengland.co.uk/panels/${condition.panelId}/`"
-                    target="_blank"
-                  >
-                    <v-icon>mdi-launch</v-icon>
-                    {{ condition.title }}
-                    <small> ({{ confidenceLabel(condition.confidence) }}) </small>
-                  </a>
-                </template>
-                <template v-else>
-                  {{ condition.title }}
-                  <small> ({{ confidenceLabel(condition.confidence) }}) </small>
-                </template>
-              </template>
-            </div>
-            <div v-else class="text-grey font-italic">No PanelApp conditions found.</div>
           </v-col>
           <v-col cols="3">
             <CadaRanking :hgnc-id="geneInfo?.hgnc?.agr" />
@@ -359,6 +481,34 @@ const panelAppConditions = computed<PanelAppCondition[]>(() => {
             <div v-else class="text-grey font-italic">
               No Orphanet disorders annotated for gene.
             </div>
+
+            <!--
+            == OMIM Diseases ==================================================
+          -->
+            <div class="text-subtitle-1 mt-3">
+              OMIM Diseases
+              <small> ({{ geneInfo?.omim?.omimDiseases?.length ?? 0 }}) </small>
+            </div>
+            <div v-if="geneInfo?.omim?.omimDiseases?.length">
+              <template v-for="(disease, idx) in geneInfo?.omim?.omimDiseases" :key="idx">
+                <template v-if="idx > 0"> , </template>
+                <template v-if="showTermLinks">
+                  <a
+                    :href="`https://www.omim.org/entry/${disease.label.split(':')[1]}`"
+                    target="_blank"
+                  >
+                    <v-icon>mdi-launch</v-icon>
+                    <span v-if="showTermIds"> [{{ disease.omimId }}] </span>
+                    {{ disease.label }}
+                  </a>
+                </template>
+                <template v-else>
+                  <span v-if="showTermIds"> [{{ disease.omimId }}] </span>
+                  {{ disease.label }}
+                </template>
+              </template>
+            </div>
+            <div v-else class="text-grey font-italic">No OMIM diseases found.</div>
           </v-card-text>
         </div>
       </v-expand-transition>
@@ -414,7 +564,9 @@ const panelAppConditions = computed<PanelAppCondition[]>(() => {
 
         <v-spacer />
         <div class="text-grey text-caption">
-          Orphanet Diseases ({{ geneInfo?.orpha?.orphaDiseases?.length ?? 0 }})
+          OMIM ({{ geneInfo?.omim?.omimDiseases?.length ?? 0 }}) &bullet; Orphanet ({{
+            geneInfo?.orpha?.orphaDiseases?.length ?? 0
+          }})
         </div>
         <v-btn
           id="conditions-card-expand-button"
