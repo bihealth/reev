@@ -71,6 +71,11 @@ const refetchAcmgRatingInterVar = () => {
 
 /** Whether to re-fetch ACMG rating saved on server earlier. */
 const refetchAcmgRatingServer = () => {
+  tryCatchEmitErrorDisplay(async () => {
+    if (props.seqvar) {
+      await acmgRatingStore.refetchAcmgRating(props.seqvar)
+    }
+  })
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceServer())
 }
 

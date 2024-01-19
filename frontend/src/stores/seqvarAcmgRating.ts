@@ -166,6 +166,44 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
   }
 
   /**
+   * Refetch the server data.
+   *
+   * @param seqvar$ The sequence variant to retrieve the ACMG rating for.
+   */
+  const refetchAcmgRating = async (seqvar$: Seqvar) => {
+    // Fetch the ACMG rating from the server
+    try {
+      const acmgSeqvarClient = new AcmgSeqVarClient()
+      if (!seqvar$) {
+        throw new Error('There was an error loading the ACMG data from the server.')
+      }
+      const seqvarImpl = seqvarImplFromSeqvar(seqvar$)
+      const acmgRatingBackend = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
+      if (acmgRatingBackend.acmg_rank?.criterias) {
+        acmgRatingStatus.value = true
+        // Go through the data and setPresense for each criteria
+        for (const criteria of acmgRatingBackend.acmg_rank.criterias) {
+          const criteriaKey = criteria.criteria as keyof typeof AcmgCriteria
+          acmgRating.value.setPresence(
+            StateSource.Server,
+            AcmgCriteria[criteriaKey],
+            criteria.presence
+          )
+          acmgRating.value.setEvidenceLevel(
+            StateSource.Server,
+            AcmgCriteria[criteriaKey],
+            criteria.evidence
+          )
+        }
+      }
+    } catch (e) {
+      clearData()
+      storeState.value = StoreState.Error
+      throw new Error(`There was an error loading the ACMG data from the server: ${e}`)
+    }
+  }
+
+  /**
    * List all ACMG ratings for a user.
    *
    * @returns The list of ACMG ratings for the user.
@@ -199,7 +237,11 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
       const acmgSeqvar = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
-      if (acmgSeqvar && acmgSeqvar.detail !== 'ACMG Sequence Variant not found') {
+      if (
+        acmgSeqvar &&
+        acmgSeqvar.detail !== 'ACMG Sequence Variant not found' &&
+        acmgSeqvar.detail !== 'Not Found'
+      ) {
         await acmgSeqvarClient.updateAcmgRating(seqvarImpl, acmgRating)
       } else {
         await acmgSeqvarClient.saveAcmgRating(seqvarImpl, acmgRating)
@@ -241,6 +283,7 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     deleteAcmgRating,
     clearData,
     fetchAcmgRating,
+    refetchAcmgRating,
     listAcmgRatings
   }
 })

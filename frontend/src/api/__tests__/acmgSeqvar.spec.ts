@@ -43,7 +43,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
   it('fails to list ACMG ratings', async () => {
     // arrange:
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgSeqvar/list')) {
+      if (req.url.includes('acmgseqvar/list')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -72,7 +72,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
   it('fails to fetch ACMG rating', async () => {
     // arrange:
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgSeqvar/get')) {
+      if (req.url.includes('acmgseqvar/get')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -101,7 +101,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
   it('fails to save ACMG rating', async () => {
     // arrange:
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgSeqvar/create')) {
+      if (req.url.includes('acmgseqvar/create')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -130,7 +130,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
   it('fails to update ACMG rating', async () => {
     // arrange:
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgSeqvar/update')) {
+      if (req.url.includes('acmgseqvar/update')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
@@ -159,7 +159,7 @@ describe.concurrent('AcmgSeqVar Client', () => {
   it('fails to delete ACMG rating', async () => {
     // arrange:
     fetchMocker.mockResponse((req) => {
-      if (req.url.includes('acmgSeqvar/delete')) {
+      if (req.url.includes('acmgseqvar/delete')) {
         return Promise.resolve(JSON.stringify({ status: 500 }))
       }
       return Promise.resolve(JSON.stringify({ status: 400 }))
