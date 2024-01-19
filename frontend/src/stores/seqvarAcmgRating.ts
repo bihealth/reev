@@ -98,6 +98,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     // Load data from InterVar via API
     storeState.value = StoreState.Loading
 
+    // Set the variant
+    seqvar.value = seqvar$
+
     // Fetch the ACMG rating from InterVar
     try {
       const client = new InterVarClient()

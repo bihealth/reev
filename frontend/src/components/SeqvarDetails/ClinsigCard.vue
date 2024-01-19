@@ -23,6 +23,7 @@ import {
 import { type Seqvar } from '@/lib/genomicVars'
 import { StoreState } from '@/stores/misc'
 import { useSeqvarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
+import { useUserStore } from '@/stores/user'
 
 /** Data type used for component's props. */
 interface Props {
@@ -40,6 +41,9 @@ const emit = defineEmits<{
 
 /** Store to use for ACMG ratings of sequence variants. */
 const acmgRatingStore = useSeqvarAcmgRatingStore()
+
+/** Store for user data. */
+const userStore = useUserStore()
 
 /** Component state: error message to display, if any. */
 const errorMessage = ref<string>('')
@@ -172,6 +176,7 @@ watch(
 
 /** Fetch ACMG rating when mounted. */
 onMounted(async () => {
+  userStore.initialize()
   if (props.seqvar?.genomeBuild === 'grch37') {
     const seqvar = props.seqvar // so that it is not undefined in the async function
     await tryCatchEmitErrorDisplay(async () => await acmgRatingStore.fetchAcmgRating(seqvar))
@@ -257,6 +262,7 @@ onMounted(async () => {
         <v-col cols="6">
           <SummarySheet
             :calculated-acmg-class="calculatedAcmgClass"
+            :inter-var-available="acmgRatingStore.acmgRatingIntervarLoaded"
             @clear-all="() => unfetchAcmgRating()"
             @reset-to-auto="() => refetchAcmgRatingInterVar()"
           />
@@ -268,6 +274,7 @@ onMounted(async () => {
               variant="text"
               rounded="sm"
               prepend-icon="mdi-cloud-upload-outline"
+              :disabled="!userStore.isAuthenticated"
               @click="() => saveAcmgRating()"
             >
               Save to Server
@@ -277,6 +284,7 @@ onMounted(async () => {
               variant="text"
               rounded="sm"
               prepend-icon="mdi-cloud-download-outline"
+              :disabled="!userStore.isAuthenticated"
               @click="() => refetchAcmgRatingServer()"
             >
               Load from Server
@@ -286,6 +294,7 @@ onMounted(async () => {
               variant="text"
               rounded="sm"
               prepend-icon="mdi-cloud-remove-outline"
+              :disabled="!userStore.isAuthenticated"
               @click="() => deleteAcmgRating()"
             >
               Delete from Server

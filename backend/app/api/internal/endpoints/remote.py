@@ -3,7 +3,7 @@
 import json
 
 import httpx
-from fastapi import APIRouter, BackgroundTasks, Request, Response
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Request, Response
 from fastapi.responses import JSONResponse, StreamingResponse
 from starlette.background import BackgroundTask
 
@@ -140,9 +140,7 @@ async def acmg(request: Request):
     try:
         backend_json = backend_resp.json()
     except json.JSONDecodeError:
-        return Response(
-            status_code=500, content=json.dumps({"error": "Invalid response from Intervar"})
-        )
+        raise HTTPException(status_code=500, detail="Invalid response from InterVar")
 
     acmg_rating = default_acmg_rating()
     for key, value in backend_json.items():

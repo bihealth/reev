@@ -3,11 +3,13 @@ import { classColor } from '@/lib/utils'
 
 interface Props {
   calculatedAcmgClass?: string
+  interVarAvailable?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
-  calculatedAcmgClass: 'N/A'
+  calculatedAcmgClass: 'N/A',
+  interVaravailable: false
 })
 
 const emit = defineEmits(['clearAll', 'resetToAuto'])
@@ -38,6 +40,7 @@ const emit = defineEmits(['clearAll', 'resetToAuto'])
         variant="text"
         rounded="sm"
         prepend-icon="mdi-file-restore-outline"
+        :disabled="!interVarAvailable"
         @click="emit('resetToAuto')"
       >
         Reset to InterVar
