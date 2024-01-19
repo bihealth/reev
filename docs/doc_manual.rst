@@ -44,10 +44,25 @@ This card shows the avaible gene pathogenicity scores for a gene such as:
 Associated Conditions
 =====================
 
-This card shows the avaible information on the phenotypes associated to the respective gene as HPO terms and known OMIM phenotypes.
+This card shows the avaible information on the conditiosn associated to the respective gene.
+
+First, the card will display information on membership in the ACMG Supplementary Findings list, if the gene is contained.
+
+Second, the card will show diseases associated via OMIM, OrphaNet or PanelApp.
+The confidence corresponds to the highest evidence of the link (high, medium, or low).
+A link from OMIM has high confidence, as does have a link from OrphaNet with "Assessed" label.
+Orphanet links that are "Not yet assessed" have a link of low strength.
+Link strength from PanelApp are taken from the green/amber/red labels in PanelApp.
+Currently, links from PanelApp are only made if the gene-phenotype link is tagged with an Orphanet or OMIM disease.
+Clicking on the disease sheet will show you the OMIM and Orphanet terms that are integrated into the card.
+
+Below, you can see a list of PanelApp panels associated with the gene.
+You can see the panel name, the version, confidence, and labeled mode of inheritance.
+Clicking on the panel sheet will show you the full list of phenotypes labeled in the panel.
+
 Note than you can use the button "numeric terms" in the lower left corner to show or hide the corresponding numeric HPO term and OMIM phenotype IDs; with the button "show links" right next you can activate and deactivate the corresponding link-outs of the displayed HPO terms and OMIM phenotypes.
 At the bottom of the card you can also find more link-outs to further websites with gene-phenotype information, such as JAX and Orphanet.
-Note that you can also use the "More" button on the lower right of the card to show associated Orphanet disorders and their respective link-outs.
+Note that you can also use the "More" button on the lower right of the card to directly show non-integrated OMIM and Orphanet disorders and their respective link-outs.
 
 If you have logged in and provided case specific phenotype information with HPO terms you can find the gene-to-phenotype rank (i.e. how well your case's HPO terms fit the gene's associated HPO terms) in the grey box on the right.
 

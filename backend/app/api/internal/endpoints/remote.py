@@ -142,6 +142,7 @@ async def acmg(request: Request):
     except json.JSONDecodeError:
         raise HTTPException(status_code=500, detail="Invalid response from InterVar")
 
+
     acmg_rating = default_acmg_rating()
     for key, value in backend_json.items():
         if key.lower() in acmg_rating:

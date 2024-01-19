@@ -22,9 +22,9 @@ describe.concurrent('ConditionsCard', async () => {
 
     // assert:
     expect(wrapper.text()).toContain('The gene BRCA1')
+    expect(wrapper.text()).toContain('Associated Diseases')
+    expect(wrapper.text()).toContain('PanelApp Panels')
     expect(wrapper.text()).toContain('HPO Terms')
-    expect(wrapper.text()).toContain('OMIM Diseases')
-    expect(wrapper.text()).toContain('Orphanet Diseases (6)')
   })
 
   it('expands the Orphanet Disorders information.', async () => {

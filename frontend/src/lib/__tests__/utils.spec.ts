@@ -5,14 +5,12 @@ import { type Seqvar } from '@/lib/genomicVars'
 
 import {
   copy,
-  extractDbnsfpMimDiseaseId,
   infoFromQuery,
   isVariantMt,
   isVariantMtHomopolymer,
   removeCommasFromNumbers,
   roundIt,
-  separateIt,
-  transformDbnsfpMimDiseaseId
+  separateIt
 } from '../utils'
 
 /** Example Sequence variant. */
@@ -305,49 +303,5 @@ describe.concurrent('copy method', () => {
 
     // assert:
     expect(result).toEqual({ foo: 'bar' })
-  })
-})
-
-describe.concurrent('extractDbnsfpMimDiseaseId', () => {
-  it.each([
-    ['[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset', '616921'],
-    ['[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset [recessive?]', '616921']
-  ])('%s => %s', (lhs, rhs) => {
-    // arrange: nothing to do
-    // act: nothing to do
-
-    // assert:
-    expect(extractDbnsfpMimDiseaseId(lhs)).toEqual(rhs)
-  })
-})
-
-describe.concurrent('transformDbnsfpMimDiseaseId', () => {
-  it.each([
-    [
-      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset',
-      '[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset',
-      true
-    ],
-    [
-      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
-      '[MIM:616921] Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
-      true
-    ],
-    [
-      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset',
-      'Dyskinesia, limb and orofacial, infantile-onset',
-      false
-    ],
-    [
-      '[MIM:616921]Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
-      'Dyskinesia, limb and orofacial, infantile-onset [recessive?]',
-      false
-    ]
-  ])('should work correctly', (lhs, rhs, showTermIds) => {
-    // arrange: nothing to do
-    // act: nothing to do
-
-    // assert:
-    expect(transformDbnsfpMimDiseaseId(lhs, showTermIds)).toEqual(rhs)
   })
 })
