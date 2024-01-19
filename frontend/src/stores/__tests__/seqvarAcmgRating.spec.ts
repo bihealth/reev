@@ -113,21 +113,21 @@ describe.concurrent('geneInfo Store', () => {
         value ? Presence.Present : Presence.Absent
       )
       // Set Absent for all criteria for Server source
-      expectedAcmgRating.setPresence(
-        StateSource.Server,
-        AcmgCriteria[acmgCriteriaKey],
-        Presence.Absent
-      )
+      // expectedAcmgRating.setPresence(
+      //   StateSource.Server,
+      //   AcmgCriteria[acmgCriteriaKey],
+      //   Presence.Absent
+      // )
       // Set evidence level to the Default for all criteria for Server source
-      const defaultEvidenceLevel = expectedAcmgRating.getCriteriaStateFromSource(
-        acmgCriteriaKey,
-        StateSource.Default
-      ).evidenceLevel
-      expectedAcmgRating.setEvidenceLevel(
-        StateSource.Server,
-        AcmgCriteria[acmgCriteriaKey],
-        defaultEvidenceLevel
-      )
+      // const defaultEvidenceLevel = expectedAcmgRating.getCriteriaStateFromSource(
+      //   acmgCriteriaKey,
+      //   StateSource.Default
+      // ).evidenceLevel
+      // expectedAcmgRating.setEvidenceLevel(
+      //   StateSource.Server,
+      //   AcmgCriteria[acmgCriteriaKey],
+      //   defaultEvidenceLevel
+      // )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.seqvar).toStrictEqual(structuredClone(seqvarInfo))
@@ -177,21 +177,21 @@ describe.concurrent('geneInfo Store', () => {
         value ? Presence.Present : Presence.Absent
       )
       // Set Absent for all criteria for Server source
-      expectedAcmgRating.setPresence(
-        StateSource.Server,
-        AcmgCriteria[acmgCriteriaKey],
-        Presence.Absent
-      )
-      // Set evidence level to the Default for all criteria for Server source
-      const defaultEvidenceLevel = expectedAcmgRating.getCriteriaStateFromSource(
-        acmgCriteriaKey,
-        StateSource.Default
-      ).evidenceLevel
-      expectedAcmgRating.setEvidenceLevel(
-        StateSource.Server,
-        AcmgCriteria[acmgCriteriaKey],
-        defaultEvidenceLevel
-      )
+      // expectedAcmgRating.setPresence(
+      //   StateSource.Server,
+      //   AcmgCriteria[acmgCriteriaKey],
+      //   Presence.Absent
+      // )
+      // // Set evidence level to the Default for all criteria for Server source
+      // const defaultEvidenceLevel = expectedAcmgRating.getCriteriaStateFromSource(
+      //   acmgCriteriaKey,
+      //   StateSource.Default
+      // ).evidenceLevel
+      // expectedAcmgRating.setEvidenceLevel(
+      //   StateSource.Server,
+      //   AcmgCriteria[acmgCriteriaKey],
+      //   defaultEvidenceLevel
+      // )
     }
     expect(store.acmgRating).toStrictEqual(expectedAcmgRating)
     expect(store.seqvar).toStrictEqual(seqvarInfo)

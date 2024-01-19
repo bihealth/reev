@@ -140,7 +140,9 @@ async def acmg(request: Request):
     try:
         backend_json = backend_resp.json()
     except json.JSONDecodeError:
-        return Response(status_code=500, content="Invalid response from InterVar backend")
+        return Response(
+            status_code=500, content=json.dumps({"error": "Invalid response from Intervar"})
+        )
 
     acmg_rating = default_acmg_rating()
     for key, value in backend_json.items():
