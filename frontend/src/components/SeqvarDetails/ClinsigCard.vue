@@ -71,6 +71,7 @@ const unfetchAcmgRating = () => {
 /** Re-fetch ACMG rating from InterVar. */
 const refetchAcmgRatingInterVar = () => {
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceInterVar())
+  console.log(acmgRatingStore.acmgRating)
 }
 
 /** Whether to re-fetch ACMG rating saved on server earlier. */
