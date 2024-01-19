@@ -10,6 +10,7 @@ import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
   AcmgCriteria,
+  AcmgEvidenceLevel,
   MultiSourceAcmgCriteriaState,
   Presence,
   StateSource
@@ -97,6 +98,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
 
     // Load data from InterVar via API
     storeState.value = StoreState.Loading
+
+    // Set the variant
+    seqvar.value = seqvar$
 
     // Fetch the ACMG rating from InterVar
     try {
@@ -232,7 +236,7 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
       throw new Error('Cannot save ACMG rating without a variant.')
     }
     const seqvarImpl = seqvarImplFromSeqvar(seqvar.value)
-    const acmgRating = transformAcmgRating()
+    const acmgRatingServer = transformAcmgRating()
 
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
@@ -242,9 +246,23 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
         acmgSeqvar.detail !== 'ACMG Sequence Variant not found' &&
         acmgSeqvar.detail !== 'Not Found'
       ) {
-        await acmgSeqvarClient.updateAcmgRating(seqvarImpl, acmgRating)
+        await acmgSeqvarClient.updateAcmgRating(seqvarImpl, acmgRatingServer)
       } else {
-        await acmgSeqvarClient.saveAcmgRating(seqvarImpl, acmgRating)
+        await acmgSeqvarClient.saveAcmgRating(seqvarImpl, acmgRatingServer)
+      }
+      // Go through the data and setPresense for each criteria
+      for (const criteria of acmgRatingServer.criterias) {
+        const criteriaKey = criteria.criteria as keyof typeof AcmgCriteria
+        acmgRating.value.setPresence(
+          StateSource.Server,
+          AcmgCriteria[criteriaKey],
+          criteria.presence as Presence
+        )
+        acmgRating.value.setEvidenceLevel(
+          StateSource.Server,
+          AcmgCriteria[criteriaKey],
+          criteria.evidence as AcmgEvidenceLevel
+        )
       }
       acmgRatingStatus.value = true
     } catch (e) {
@@ -266,6 +284,10 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
       await acmgSeqvarClient.deleteAcmgRating(seqvarImpl)
+      // Go through the data and setPresense for each criteria
+      for (const criteria of ALL_ACMG_CRITERIA) {
+        acmgRating.value.setPresence(StateSource.Server, criteria, Presence.Unknown)
+      }
       acmgRatingStatus.value = false
     } catch (e) {
       throw new Error(`There was an error deleting the ACMG data: ${e}`)

@@ -180,9 +180,6 @@ async def cnv_acmg(request: Request):
     backend_resp = await client.send(backend_req)
     if backend_resp.status_code != 200:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
-
-    if backend_resp.status_code != 200:
-        return Response(status_code=backend_resp.status_code, content=backend_resp.content)
     return JSONResponse(backend_resp.json())
 
 
