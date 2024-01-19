@@ -4,8 +4,6 @@
 app.models
 ==========
 
-.. contents::
-
 ---------------------
 app.models.acmgseqvar
 ---------------------
