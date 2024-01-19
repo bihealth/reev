@@ -4,8 +4,6 @@
 app.api.internal
 ================
 
-.. contents::
-
 ---------------------------------
 app.api.internal.endpoints.remote
 ---------------------------------
