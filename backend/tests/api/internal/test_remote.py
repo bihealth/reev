@@ -51,6 +51,7 @@ async def test_acmg_missing_query_params(client: TestClient):
     """Test ACMG endpoint with missing query parameters."""
     # act:
     response = client.get("/internal/remote/acmg")
+    print(response.text)
     # assert:
     assert response.status_code == 400
     assert response.text == "Missing query parameters"

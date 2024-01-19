@@ -3,7 +3,7 @@
 import json
 
 import httpx
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Request
+from fastapi import APIRouter, BackgroundTasks, Request, Response
 from fastapi.responses import JSONResponse, StreamingResponse
 from starlette.background import BackgroundTask
 
@@ -124,7 +124,7 @@ async def acmg(request: Request):
     build = query_params.get("release")
 
     if not chromosome or not position or not reference or not alternative or not build:
-        return HTTPException(status_code=400, detail="Missing query parameters")
+        return Response(status_code=400, content="Missing query parameters")
 
     url = (
         f"http://wintervar.wglab.org/api_new.php?"
@@ -135,12 +135,14 @@ async def acmg(request: Request):
     backend_req = client.build_request(method="GET", url=url)
     backend_resp = await client.send(backend_req)
     if backend_resp.status_code != 200:
-        return HTTPException(status_code=backend_resp.status_code, detail=backend_resp.content)
+        return Response(status_code=backend_resp.status_code, content=backend_resp.content)
 
     try:
         backend_json = backend_resp.json()
     except json.JSONDecodeError:
-        raise HTTPException(status_code=500, detail="Invalid response from InterVar")
+        return Response(
+            status_code=500, content=json.dumps({"error": "Invalid response from Intervar"})
+        )
 
     acmg_rating = default_acmg_rating()
     for key, value in backend_json.items():
@@ -167,7 +169,7 @@ async def cnv_acmg(request: Request):
     func = query_params.get("func")
 
     if not chromosome or not start or not end or not func:
-        return HTTPException(status_code=400, detail="Missing query parameters")
+        return Response(status_code=400, content="Missing query parameters")
 
     client = httpx_client_wrapper()
     backend_req = client.build_request(
@@ -177,7 +179,7 @@ async def cnv_acmg(request: Request):
     )
     backend_resp = await client.send(backend_req)
     if backend_resp.status_code != 200:
-        return HTTPException(status_code=backend_resp.status_code, detail=backend_resp.content)
+        return Response(status_code=backend_resp.status_code, content=backend_resp.content)
     return JSONResponse(backend_resp.json())
 
 
