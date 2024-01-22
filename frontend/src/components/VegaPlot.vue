@@ -110,10 +110,16 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="plotDivRef" />
+  <div ref="plotDivRef" class="vega-embed" />
 </template>
 
 <style>
+.vega-embed {
+  padding-top: 2px;
+  padding-left: 2px;
+  border-radius: 8px;
+  background-color: #eeeeee;
+}
 /* .vega-embed summary {
   top: -25px !important;
   left: -5px;
