@@ -18,10 +18,8 @@ jobs:
     steps:
       - name: Create GitHub release
         id: release
-        uses: GoogleCloudPlatform/release-please-action@v3
+        uses: GoogleCloudPlatform/release-please-action@v4
         with:
-          release-type: python
-          package-name: reev
           token: ${{ secrets.BOT_TOKEN }}
 
   Container-Release:
