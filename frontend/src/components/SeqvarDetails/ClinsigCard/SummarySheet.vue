@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useTheme } from 'vuetify'
+
 import { classColor } from '@/lib/utils'
 
 interface Props {
@@ -12,7 +15,14 @@ const props = withDefaults(defineProps<Props>(), {
   interVaravailable: false
 })
 
+const theme = useTheme()
+
 const emit = defineEmits(['clearAll', 'resetToAuto'])
+
+/** Return font color for genome build based on current theme. */
+const fontColor = computed(() => {
+  return theme.global.current.value.dark ? 'white' : 'black'
+})
 </script>
 
 <template>
@@ -27,7 +37,7 @@ const emit = defineEmits(['clearAll', 'resetToAuto'])
 
     <div class="mt-3 d-flex flex-row">
       <v-btn
-        color="black"
+        :color="fontColor"
         variant="text"
         rounded="sm"
         prepend-icon="mdi-file-outline"
@@ -36,7 +46,7 @@ const emit = defineEmits(['clearAll', 'resetToAuto'])
         Clear
       </v-btn>
       <v-btn
-        color="black"
+        :color="fontColor"
         variant="text"
         rounded="sm"
         prepend-icon="mdi-file-restore-outline"

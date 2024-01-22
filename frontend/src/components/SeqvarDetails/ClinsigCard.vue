@@ -7,6 +7,7 @@ component via the `errorDisplay` event and are handled there.
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { useTheme } from 'vuetify'
 
 import DocsLink from '@/components/DocsLink.vue'
 import CriterionSwitch from '@/components/SeqvarDetails/ClinsigCard/CriterionSwitch.vue'
@@ -32,6 +33,9 @@ interface Props {
 
 /** Define component's props. */
 const props = defineProps<Props>()
+
+/** Vuetify theme. */
+const theme = useTheme()
 
 /** Define emits. */
 const emit = defineEmits<{
@@ -150,6 +154,11 @@ const currentConflicts = computed<Conflict[]>(() => {
   return result
 })
 
+/** Return font color for genome build based on current theme. */
+const fontColor = computed(() => {
+  return theme.global.current.value.dark ? 'white' : 'black'
+})
+
 /** Re-compute ACMG rating from InterVar when the sequence variant changed. */
 watch(
   () => [props.seqvar, acmgRatingStore.storeState],
@@ -239,7 +248,7 @@ onMounted(async () => {
               </template>
             </div>
             <v-btn
-              color="black"
+              :color="fontColor"
               variant="text"
               rounded="sm"
               :prepend-icon="showTerse ? 'mdi-playlist-remove' : 'mdi-playlist-check'"
@@ -248,7 +257,7 @@ onMounted(async () => {
               {{ showTerse ? 'Hide' : 'Show' }} terse mode
             </v-btn>
             <v-btn
-              color="black"
+              :color="fontColor"
               variant="text"
               rounded="sm"
               :prepend-icon="showFailed ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
@@ -270,7 +279,7 @@ onMounted(async () => {
         <v-col cols="3">
           <div class="d-flex flex-column">
             <v-btn
-              color="black"
+              :color="fontColor"
               variant="text"
               rounded="sm"
               prepend-icon="mdi-cloud-upload-outline"
@@ -280,7 +289,7 @@ onMounted(async () => {
               Save to Server
             </v-btn>
             <v-btn
-              color="black"
+              :color="fontColor"
               variant="text"
               rounded="sm"
               prepend-icon="mdi-cloud-download-outline"
@@ -290,7 +299,7 @@ onMounted(async () => {
               Load from Server
             </v-btn>
             <v-btn
-              color="black"
+              :color="fontColor"
               variant="text"
               rounded="sm"
               prepend-icon="mdi-cloud-remove-outline"

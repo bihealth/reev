@@ -167,7 +167,7 @@ const vegaLayer = [
         Tissue-Specific Gene Expression from GTeX
       </v-card-subtitle>
       <v-card-text class="pt-3 pb-0">
-        <v-sheet color="background">
+        <v-sheet color="background" class="pa-2">
           <VegaPlot
             data-name="expression"
             :data-values="vegaData"
