@@ -4,6 +4,7 @@ This component displays related literature using the PubTator 3 API.
 <script setup lang="ts">
 import { DateTime } from 'luxon'
 import { onMounted, ref, watch } from 'vue'
+import { useTheme } from 'vuetify'
 
 import DocsLink from '@/components/DocsLink.vue'
 import { StoreState } from '@/stores/misc'
@@ -22,6 +23,9 @@ export interface Props {
 /** This component's props. */
 const props = defineProps<Props>()
 
+/** Vuetify theme. */
+const theme = useTheme()
+
 /** The PubTator store. */
 const pubtatorStore = usePubtatorStore()
 
@@ -38,8 +42,8 @@ const TYPE_TO_CHIP_COLOR: { [key: string]: string } = {
   [AnnotationType.CellLine]: 'teal'
 }
 
-/** Mapping from annotation type to raw CSS color. */
-const TYPE_TO_RAW_COLOR: { [key: string]: string } = {
+/** Mapping from annotation type to raw CSS color in light mode. */
+const TYPE_TO_RAW_COLOR_LIGHT: { [key: string]: string } = {
   [AnnotationType.Disease]: '#FFF2E0',
   [AnnotationType.Gene]: '#C9B7CB',
   [AnnotationType.Chemical]: '#E9F5EA',
@@ -47,6 +51,20 @@ const TYPE_TO_RAW_COLOR: { [key: string]: string } = {
   [AnnotationType.Variant]: '#FEE8E7',
   [AnnotationType.CellLine]: '#E0FDFD'
 }
+
+/** Mapping from annotation type to raw CSS color in dark mode. */
+const TYPE_TO_RAW_COLOR_DARK: { [key: string]: string } = {
+  [AnnotationType.Disease]: '#9c6b24',
+  [AnnotationType.Gene]: '#743d7d',
+  [AnnotationType.Chemical]: '#5c7d5e',
+  [AnnotationType.Species]: '#577c99',
+  [AnnotationType.Variant]: '#853a3a',
+  [AnnotationType.CellLine]: '#4e8c94'
+}
+
+/** Mapping from annotation type to raw CSS color. */
+const TYPE_TO_RAW_COLOR =
+  theme.global.current.value.dark === true ? TYPE_TO_RAW_COLOR_DARK : TYPE_TO_RAW_COLOR_LIGHT
 
 /** Helper that returns `Annotation.text` if name is just a number or empty. */
 const annotationName = (annotation: Annotation) => {
