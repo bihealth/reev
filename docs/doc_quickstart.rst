@@ -8,6 +8,16 @@ Do you like to jump heads-first into the water? Then this is the place for you!
 For a more in-depth explanation of REEV, see the :ref:`tutorial <doc_tutorial>`.
 However, REEV also contains helpful help links throughout the web interface so you can also look up information as you go.
 
+.. _doc_quickstart_introduction:
+
+---------
+Introduction
+---------
+
+We have developed REEV (Review, Evaluate and Explain Variants) to help clinicians and researchers in rare disease genetics with an open and free platform to explore comprehensive information about genes as well as sequence and structural variants. REEV is designed to help you to quickly yet comprehensively record all the important information on a variant and, on the basis of this, to evaluate it on the basis of the ACMG criteria. To this end, REEV also integrates methods that allow users to (semi-)automatically fill the individual ACMG criteria sections to facilitate interpretation.
+
+Here, we provide a quick start as well as a full tutorial guiding you through the process on reviewing and evaluating genes and variants with the help of REEV.
+
 .. _doc_quickstart_home:
 
 ---------
