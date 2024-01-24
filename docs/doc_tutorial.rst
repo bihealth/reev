@@ -376,3 +376,16 @@ Let's scroll back up and see where we have landed on rating this variant with th
    :align: center
 
 Another solved case it is for us and REEV!
+
+-------------------
+User login
+-------------------
+
+All of the above is possible without any login. Beyond this, a login to REEV offers additional helpful features. 
+
+With creating a login you can:
+- upload case specific information which can be helpful in evaluating your variant. E.g., you can add phenotypic information on your case by providing the corresponding HPO terms (see also above in the OMIM and HPO section of the sequence variant tutorial). On having provided HPO terms, a gene-to-phenotype rank will be provided to help you evaluate how well your patient’s phenotype and the known gene-disease association fit one another.
+- bookmark genes and variants of interest to return to them at a later time point
+- submit your evaluated variant to ClinVar (see ClinVar submission section)
+
+
