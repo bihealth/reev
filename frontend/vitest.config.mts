@@ -11,7 +11,7 @@ export default mergeConfig(
       setupFiles: ['./src/vitest.setup.ts'],
       server: {
         deps: {
-          inline: ['vuetify', 'vitest-canvas-mock']
+          inline: ['vuetify', 'vitest-canvas-mock', '@bihealth/reev-frontend-lib']
         }
       },
       coverage: {

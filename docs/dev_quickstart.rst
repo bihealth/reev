@@ -54,15 +54,74 @@ Install NodeJS v20 (LTS):
     $ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
     $ sudo apt-get install -y nodejs
 
+Now, we will setup ``npm`` so packages are installed locally.
+
+.. code-block:: bash
+
+    $ mkdir ~/.local/share/npm
+    $ npm config set prefix '~/.local/share/npm'
+    $ cat <<"EOF" >> ~/.bashrc
+
+    # Install NodeJS packages locally
+    NPM_PACKAGES=~/.local/share/npm
+    export PATH="$PATH:$NPM_PACKAGES/bin"
+    # Preserve MANPATH if you already defined it somewhere in your config.
+    # Otherwise, fall back to `manpath` so we can inherit from "/etc/manpath".
+    export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+    EOF
+    $ exec $SHELL
+
+----------------------
+Cloning the Repository
+----------------------
+
+We will first clone the repositories.
+You will need ``reev`` (which has the application) but also ``reev-frontend-lib`` which has the reuseable frontend components.
+
+.. code-block:: bash
+
+    $ git clone git@github.com:bihealth/reev.git
+    $ git clone git@github.com:bihealth/reev-frontend-lib.git
+
 --------------------
 Install Dependencies
 --------------------
 
-You can use the provided ``Makefile`` files to install the dependencies.
+You can use the provided ``Makefile`` files to install the dependencies in the ``reev`` checkout.
 
 .. code-block:: bash
 
     $ make deps
+
+-----------------------
+Setup with ``npm link``
+-----------------------
+
+You will no have installed all dependencies of ``reev`.
+This will make a **copy** of ``reev-frontend-lib`` in the ``node_modules`` directory of ``reev``.
+This is probably not what you want for development.
+We will now setup a link from ``node_modules/@bihealth/reev-frontend-lib`` to the checkout of ``reev-frontend-lib``.
+
+.. code-block:: bash
+
+    $ cd path/to/reev-frontend-lib
+    $ npm link
+    $ cd path/to/reev
+    $ npm link @bihealth/reev-frontend-lib
+
+You can double-check that this worked:
+
+.. code-block:: bash
+
+    $ stat node_modules/@bihealth/reev-frontend-lib
+    File: node_modules/@bihealth/reev-frontend-lib -> ../../../reev-frontend-lib
+    Size: 26              Blocks: 0          IO Block: 4096   symbolic link
+    Device: 10302h/66306d   Inode: 44609651    Links: 1
+    Access: (0777/lrwxrwxrwx)  Uid: (100131/holtgrem_c)   Gid: (1005272/hpc-ag-cubi)
+    Access: 2024-01-25 13:15:07.337337778 +0100
+    Modify: 2024-01-25 13:15:01.961227891 +0100
+    Change: 2024-01-25 13:15:01.961227891 +0100
+    Birth: 2024-01-25 13:15:01.961227891 +0100
 
 -----------------
 Setup Environment

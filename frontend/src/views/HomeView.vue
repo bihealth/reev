@@ -8,6 +8,7 @@ Implements the search bar for variants and genes.
 import { computed, ref } from 'vue'
 import { type RouteLocationRaw, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
+import { foo } from '@bihealth/reev-frontend-lib'
 
 import FooterDefault from '@/components/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -15,6 +16,8 @@ import SearchBar from '@/components/SearchBar.vue'
 import { type GenomeBuild } from '@/lib/genomeBuilds'
 import { performSearch, searchTo } from '@/lib/utils'
 import { EXAMPLES, type Example } from '@/views/HomeView.c'
+
+foo()
 
 /** The current router. */
 const router = useRouter()
