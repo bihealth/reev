@@ -16,6 +16,7 @@
     "format:check": "prettier --list-different src/ *.ts *.mts *.json"
   },
   "dependencies": {
+    "@bihealth/reev-frontend-lib": "github:bihealth/reev-frontend-lib#0.4.1",
     "@mdi/font": "^7.3.67",
     "@reactgular/chunks": "^1.0.1",
     "@sentry/browser": "^7.90.0",
