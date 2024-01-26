@@ -169,6 +169,20 @@ const initShowDiseaseDetails = () => {
   showDiseaseDetails.value = conditions.value.diseaseAssociations.map(() => false)
 }
 
+/** Sorting `v-model` attributes for disease list. */
+const sortKeyDisease = ref<string>('diseaseName')
+const sortOrderDisease = ref<'asc' | 'desc'>('asc')
+const sortItemsDisease = [
+  {
+    label: 'confidence',
+    key: 'confidence'
+  },
+  {
+    label: 'name',
+    key: 'diseaseName'
+  }
+]
+
 onMounted(() => initShowDiseaseDetails())
 watch(
   () => conditions.value,
@@ -199,6 +213,24 @@ const showPanelDetails = ref<boolean[]>([])
 const initShowPanelDetails = () => {
   showPanelDetails.value = conditions.value.diseaseAssociations.map(() => false)
 }
+
+/** Sorting `v-model` attributes for PanelApp panel list. */
+const sortKeyPanelApp = ref<string>('confidenceLevel')
+const sortOrderPanelApp = ref<'asc' | 'desc'>('desc')
+const sortItemsPanelApp = [
+  {
+    label: 'confidence',
+    key: 'confidenceLevel'
+  },
+  {
+    label: 'name',
+    key: 'panel.name'
+  },
+  {
+    label: 'mode of inheritance',
+    key: 'modeOfInheritance'
+  }
+]
 
 onMounted(() => initShowPanelDetails())
 watch(
@@ -246,154 +278,287 @@ watch(
                 </div>
               </template>
               <!-- == Conditions ===== -->
-              <div class="text-subtitle-1" :class="{ 'mt-3': geneInfo?.acmgSf }">
-                Associated Diseases
-                <small>
-                  <template v-if="(conditions.diseaseAssociations?.length ?? 0) > maxDiseases">
-                    <template v-if="showAllDiseases">
-                      ({{ conditions.diseaseAssociations?.length }} of
-                      {{ conditions.diseaseAssociations?.length }})
-                    </template>
-                    <template v-else>
-                      ({{ diseasesToShow.length }} of {{ conditions.diseaseAssociations?.length }})
-                    </template>
-                  </template>
-                  <template v-else> ({{ conditions.diseaseAssociations?.length }}) </template>
 
-                  <template v-if="conditions.diseaseAssociations.length > maxDiseases">
-                    &bullet;
-                    <a href="#" @click.prevent="showAllDiseases = !showAllDiseases">
-                      {{ showAllDiseases ? ' show fewer' : ' show all' }}
-                    </a>
-                  </template>
-                </small>
-              </div>
               <div v-if="conditions.diseaseAssociations.length">
-                <template v-for="(assoc, idx) in diseasesToShow" :key="idx">
-                  <v-sheet
-                    class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3"
-                    @click="showDiseaseDetails[idx] = !showDiseaseDetails[idx]"
-                  >
-                    <div class="text-h6">
-                      {{ assoc.diseaseName }}
-                    </div>
-                    <div class="text-body-2 mt-1">
-                      Description: {{ assoc.diseaseDefinition ?? 'N/A' }}
-                    </div>
-                    <div class="text-body-2 mt-2">
-                      <span class="font-weight-bold"> Confidence: </span>
-                      <span class="text-no-wrap" :title="CONFIDENCE_LEVEL_LABELS[assoc.confidence]">
-                        <template v-if="assoc.confidence === ConfidenceLevel.High">
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star</v-icon>
-                        </template>
-                        <template v-else-if="assoc.confidence === ConfidenceLevel.Medium">
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star-outline</v-icon>
-                        </template>
-                        <template v-else>
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star-outline</v-icon>
-                          <v-icon>mdi-star-outline</v-icon>
-                        </template>
-                      </span>
-                      <span class="font-weight-bold"> &bullet; Sources: </span>
-                      {{ assoc.sources.map((s) => GDA_LABELS[s]).join(', ') }}
-                    </div>
-                    <div
-                      v-if="showDiseaseDetails[idx]"
-                      style="border-top: 1px solid black"
-                      class="mt-2 pt-2 pl-4"
-                    >
-                      <ul
-                        v-for="(disorder, idxDisorder) in assoc.labeledDisorders"
-                        :key="idxDisorder"
-                      >
-                        <li>[{{ disorder.termId }}] {{ disorder.title }}</li>
-                      </ul>
-                    </div>
-                  </v-sheet>
-                </template>
+                <v-data-iterator
+                  :items="diseasesToShow"
+                  :item-key="(item: GeneDiseaseAssociation) => item.hgnc_id"
+                  :sort-by="[{ key: sortKeyDisease, order: sortOrderDisease }]"
+                  :items-per-page="-1"
+                  :hide-default-footer="true"
+                  class="mt-3"
+                >
+                  <template #header>
+                    <v-toolbar class="px-2 rounded-t-lg border" color="background">
+                      <div class="text-subtitle-1" :class="{ 'mt-3': geneInfo?.acmgSf }">
+                        Associated Diseases
+                        <small>
+                          <template
+                            v-if="(conditions.diseaseAssociations?.length ?? 0) > maxDiseases"
+                          >
+                            <template v-if="showAllDiseases">
+                              ({{ conditions.diseaseAssociations?.length }} of
+                              {{ conditions.diseaseAssociations?.length }})
+                            </template>
+                            <template v-else>
+                              ({{ diseasesToShow.length }} of
+                              {{ conditions.diseaseAssociations?.length }})
+                            </template>
+                          </template>
+                          <template v-else>
+                            ({{ conditions.diseaseAssociations?.length }})
+                          </template>
+
+                          <template v-if="conditions.diseaseAssociations.length > maxDiseases">
+                            &bullet;
+                            <a href="#" @click.prevent="showAllDiseases = !showAllDiseases">
+                              {{ showAllDiseases ? ' show fewer' : ' show all' }}
+                            </a>
+                          </template>
+                        </small>
+                      </div>
+                      <v-spacer></v-spacer>
+                      <div style="width: 220px">
+                        <v-select
+                          v-model="sortKeyDisease"
+                          label="sort by"
+                          item-title="label"
+                          item-value="key"
+                          :items="sortItemsDisease"
+                          density="compact"
+                          :hide-details="true"
+                          variant="outlined"
+                        />
+                      </div>
+                      <v-btn @click="sortOrderDisease = sortOrderDisease == 'asc' ? 'desc' : 'asc'">
+                        {{ sortOrderDisease }}
+                        <v-icon
+                          :icon="
+                            sortOrderDisease == 'asc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'
+                          "
+                          class="pl-3"
+                        />
+                      </v-btn>
+                    </v-toolbar>
+                  </template>
+
+                  <template #default="{ items }">
+                    <template v-for="item in items" :key="item.raw">
+                      <v-sheet class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3">
+                        <div class="text-h6">
+                          {{ item.raw.diseaseName }}
+                        </div>
+                        <div class="text-body-2 mt-1">
+                          Description: {{ item.raw.diseaseDefinition ?? 'N/A' }}
+                        </div>
+                        <div class="text-body-2 mt-2">
+                          <span class="font-weight-bold"> Confidence: </span>
+                          <span
+                            class="text-no-wrap"
+                            :title="CONFIDENCE_LEVEL_LABELS[item.raw.confidence as ConfidenceLevel]"
+                          >
+                            <template v-if="item.raw.confidence === ConfidenceLevel.High">
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star</v-icon>
+                            </template>
+                            <template v-else-if="item.raw.confidence === ConfidenceLevel.Medium">
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star-outline</v-icon>
+                            </template>
+                            <template v-else>
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star-outline</v-icon>
+                              <v-icon>mdi-star-outline</v-icon>
+                            </template>
+                          </span>
+                          <span class="font-weight-bold"> &bullet; Sources: </span>
+                          {{
+                            item.raw.sources
+                              .map((s: keyof typeof GDA_LABELS) => GDA_LABELS[s])
+                              .join(', ')
+                          }}
+                        </div>
+                        <v-expansion-panels color="background" variant="popout">
+                          <v-expansion-panel bg-color="background" rounded="lg">
+                            <v-expansion-panel-title
+                              expand-icon="mdi-plus"
+                              collapse-icon="mdi-minus"
+                            >
+                              Additional Information
+                            </v-expansion-panel-title>
+                            <v-expansion-panel-text>
+                              <div style="border-top: 1px solid black" class="mt-2 pt-2 pl-4">
+                                <ul
+                                  v-for="(disorder, idxDisorder) in item.raw.labeledDisorders"
+                                  :key="idxDisorder"
+                                >
+                                  <li>[{{ disorder.termId }}] {{ disorder.title }}</li>
+                                </ul>
+                              </div>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                      </v-sheet>
+                    </template>
+                  </template>
+
+                  <template #no-data>
+                    <v-sheet class="pa-3 text-center font-italic border">
+                      No diseases associated with gene.
+                    </v-sheet>
+                  </template>
+                </v-data-iterator>
               </div>
+
               <div v-else class="text-grey font-italic">No diseases associated with gene.</div>
               <!-- == PanelApp Panels -->
-              <div class="text-subtitle-1 mt-3">
-                PanelApp Panels
-                <small>
-                  <template v-if="(conditions.panelappAssociations?.length ?? 0) > maxPanels">
-                    <template v-if="showAllPanels">
-                      ({{ conditions.panelappAssociations?.length }} of
-                      {{ conditions.panelappAssociations?.length }})
-                    </template>
-                    <template v-else>
-                      ({{ panelsToShow.length }} of {{ conditions.panelappAssociations?.length }})
-                    </template>
-                  </template>
-                  <template v-else> ({{ conditions.panelappAssociations?.length }}) </template>
 
-                  <template v-if="conditions.panelappAssociations.length > maxPanels">
-                    &bullet;
-                    <a href="#" @click.prevent="showAllPanels = !showAllPanels">
-                      {{ showAllPanels ? ' show fewer' : ' show all' }}
-                    </a>
-                  </template>
-                </small>
-              </div>
               <div v-if="conditions.panelappAssociations.length">
-                <template v-for="(assoc, idx) in panelsToShow" :key="idx">
-                  <v-sheet
-                    class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3"
-                    @click="showPanelDetails[idx] = !showPanelDetails[idx]"
-                  >
-                    <div class="text-h6">
-                      {{ assoc.panel.name }}
-                      <small> (v{{ assoc.panel.version }}) </small>
-                    </div>
-                    <!-- <div class="text-body-2 mt-1">
-                      Description: {{ assoc.diseaseDefinition ?? 'N/A' }}
-                    </div> -->
-                    <div class="text-body-2 mt-2">
-                      <span class="font-weight-bold"> Confidence: </span>
-                      <span
-                        class="text-no-wrap"
-                        :title="PANELAPP_CONFIDENCE_LABELS[assoc.confidenceLevel]"
+                <v-data-iterator
+                  :items="panelsToShow"
+                  :item-key="(item: PanelappAssociation) => item.panel.id"
+                  :sort-by="[{ key: sortKeyPanelApp, order: sortOrderPanelApp }]"
+                  :items-per-page="-1"
+                  :hide-default-footer="true"
+                  class="mt-3"
+                >
+                  <template #header>
+                    <v-toolbar class="px-2 rounded-t-lg border" color="background">
+                      <div class="text-subtitle-1 mt-3">
+                        PanelApp Panels
+                        <small>
+                          <template
+                            v-if="(conditions.panelappAssociations?.length ?? 0) > maxPanels"
+                          >
+                            <template v-if="showAllPanels">
+                              ({{ conditions.panelappAssociations?.length }} of
+                              {{ conditions.panelappAssociations?.length }})
+                            </template>
+                            <template v-else>
+                              ({{ panelsToShow.length }} of
+                              {{ conditions.panelappAssociations?.length }})
+                            </template>
+                          </template>
+                          <template v-else>
+                            ({{ conditions.panelappAssociations?.length }})
+                          </template>
+
+                          <template v-if="conditions.panelappAssociations.length > maxPanels">
+                            &bullet;
+                            <a href="#" @click.prevent="showAllPanels = !showAllPanels">
+                              {{ showAllPanels ? ' show fewer' : ' show all' }}
+                            </a>
+                          </template>
+                        </small>
+                      </div>
+                      <v-spacer></v-spacer>
+                      <div style="width: 220px">
+                        <v-select
+                          v-model="sortKeyPanelApp"
+                          label="sort by"
+                          item-title="label"
+                          item-value="key"
+                          :items="sortItemsPanelApp"
+                          density="compact"
+                          :hide-details="true"
+                          variant="outlined"
+                        />
+                      </div>
+                      <v-btn
+                        @click="sortOrderPanelApp = sortOrderPanelApp == 'asc' ? 'desc' : 'asc'"
                       >
-                        <template v-if="assoc.confidenceLevel === PanelappConfidence.Green">
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star</v-icon>
-                        </template>
-                        <template v-else-if="assoc.confidenceLevel === PanelappConfidence.Amber">
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star-outline</v-icon>
-                        </template>
-                        <template v-else>
-                          <v-icon>mdi-star</v-icon>
-                          <v-icon>mdi-star-outline</v-icon>
-                          <v-icon>mdi-star-outline</v-icon>
-                        </template>
-                      </span>
-                      <span class="font-weight-bold"> &bullet; Mode of Inheritance: </span>
-                      <span> {{ assoc.modeOfInheritance }} </span>
-                    </div>
-                    <div
-                      v-if="showPanelDetails[idx]"
-                      style="border-top: 1px solid black"
-                      class="mt-2 pt-2 pl-4"
-                    >
-                      <ul v-for="(phenotype, idxPhenotype) in assoc.phenotypes" :key="idxPhenotype">
-                        <li>{{ phenotype }}</li>
-                      </ul>
-                    </div>
-                  </v-sheet>
-                </template>
+                        {{ sortOrderPanelApp }}
+                        <v-icon
+                          :icon="
+                            sortOrderPanelApp == 'asc'
+                              ? 'mdi-sort-ascending'
+                              : 'mdi-sort-descending'
+                          "
+                          class="pl-3"
+                        />
+                      </v-btn>
+                    </v-toolbar>
+                  </template>
+
+                  <template #default="{ items }">
+                    <template v-for="item in items" :key="item.raw.panel.name">
+                      <v-sheet class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3">
+                        <div class="text-h6">
+                          {{ item.raw.panel.name }}
+                          <small> (v{{ item.raw.panel.version }}) </small>
+                        </div>
+                        <!-- <div class="text-body-2 mt-1">
+                        Description: {{ item.raw.diseaseDefinition ?? 'N/A' }}
+                      </div> -->
+                        <div class="text-body-2 mt-2">
+                          <span class="font-weight-bold"> Confidence: </span>
+                          <span
+                            class="text-no-wrap"
+                            :title="
+                              PANELAPP_CONFIDENCE_LABELS[
+                                item.raw.confidenceLevel as PanelappConfidence
+                              ]
+                            "
+                          >
+                            <template v-if="item.raw.confidenceLevel === PanelappConfidence.Green">
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star</v-icon>
+                            </template>
+                            <template
+                              v-else-if="item.raw.confidenceLevel === PanelappConfidence.Amber"
+                            >
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star-outline</v-icon>
+                            </template>
+                            <template v-else>
+                              <v-icon>mdi-star</v-icon>
+                              <v-icon>mdi-star-outline</v-icon>
+                              <v-icon>mdi-star-outline</v-icon>
+                            </template>
+                          </span>
+                          <span class="font-weight-bold"> &bullet; Mode of Inheritance: </span>
+                          <span> {{ item.raw.modeOfInheritance }} </span>
+                        </div>
+
+                        <v-expansion-panels color="background" variant="popout">
+                          <v-expansion-panel bg-color="background" rounded="lg">
+                            <v-expansion-panel-title
+                              expand-icon="mdi-plus"
+                              collapse-icon="mdi-minus"
+                            >
+                              Additional Information
+                            </v-expansion-panel-title>
+                            <v-expansion-panel-text>
+                              <div style="border-top: 1px solid black" class="mt-2 pt-2 pl-4">
+                                <ul
+                                  v-for="(phenotype, idxPhenotype) in item.raw.phenotypes"
+                                  :key="idxPhenotype"
+                                >
+                                  <li>{{ phenotype }}</li>
+                                </ul>
+                              </div>
+                            </v-expansion-panel-text>
+                          </v-expansion-panel>
+                        </v-expansion-panels>
+                      </v-sheet>
+                    </template>
+                  </template>
+
+                  <template #no-data>
+                    <v-sheet class="pa-3 text-center font-italic border">
+                      No PanelApp panels associated with gene.
+                    </v-sheet>
+                  </template>
+                </v-data-iterator>
               </div>
               <div v-else class="text-grey font-italic">
                 No PanelApp panels associated with gene.
               </div>
+
               <!-- == HPO Terms ===== -->
               <div class="text-subtitle-1 mt-3">
                 HPO Terms
