@@ -105,6 +105,12 @@ const PANELAPP_CONFIDENCE_LABELS: { [key in PanelappConfidence]: string } = {
   [PanelappConfidence.Red]: 'Red'
 }
 
+const PANELAPP_CONFIDENCE_ORDER: { [key in PanelappConfidence]: number } = {
+  [PanelappConfidence.Green]: 0,
+  [PanelappConfidence.Amber]: 1,
+  [PanelappConfidence.Red]: 2
+}
+
 enum PanelappEntityType {
   Gene = 'PANELAPP_ASSOCIATION_GENE',
   Region = 'PANELAPP_ASSOCIATION_REGION',
@@ -182,6 +188,22 @@ const sortItemsDisease = [
     key: 'diseaseName'
   }
 ]
+
+/** Custom function for sorting confidence Level. */
+const confidenceLevelSorting = (a: string, b: string) => {
+  const confidenceA = PANELAPP_CONFIDENCE_ORDER[a as PanelappConfidence]
+  const confidenceB = PANELAPP_CONFIDENCE_ORDER[b as PanelappConfidence]
+  return confidenceA - confidenceB
+}
+
+/** Custom sorting functions for `v-data-iterator` */
+type DataTableCompareFunction<T = any> = (a: T, b: T) => number
+const customKeySortPanelApp: { [key: string]: DataTableCompareFunction } = {
+  confidenceLevel: confidenceLevelSorting
+}
+const customKeySortDisease: { [key: string]: DataTableCompareFunction } = {
+  confidence: confidenceLevelSorting
+}
 
 onMounted(() => initShowDiseaseDetails())
 watch(
@@ -284,6 +306,7 @@ watch(
                   :items="diseasesToShow"
                   :item-key="(item: GeneDiseaseAssociation) => item.hgnc_id"
                   :sort-by="[{ key: sortKeyDisease, order: sortOrderDisease }]"
+                  :custom-key-sort="customKeySortDisease"
                   :items-per-page="-1"
                   :hide-default-footer="true"
                   class="mt-3"
@@ -420,6 +443,7 @@ watch(
                   :items="panelsToShow"
                   :item-key="(item: PanelappAssociation) => item.panel.id"
                   :sort-by="[{ key: sortKeyPanelApp, order: sortOrderPanelApp }]"
+                  :custom-key-sort="customKeySortPanelApp"
                   :items-per-page="-1"
                   :hide-default-footer="true"
                   class="mt-3"
@@ -427,7 +451,13 @@ watch(
                   <template #header>
                     <v-toolbar class="px-2 rounded-t-lg border" color="background">
                       <div class="text-subtitle-1 mt-3">
-                        PanelApp Panels
+                        PanelApp Panels for {{ geneInfo.acmgSf.geneSymbol }}
+                        <a
+                          :href="`https://panelapp.genomicsengland.co.uk/panels/entities/${geneInfo.acmgSf.geneSymbol}`"
+                          target="_blank"
+                        >
+                          <v-icon>mdi-launch</v-icon>
+                        </a>
                         <small>
                           <template
                             v-if="(conditions.panelappAssociations?.length ?? 0) > maxPanels"
@@ -488,6 +518,13 @@ watch(
                         <div class="text-h6">
                           {{ item.raw.panel.name }}
                           <small> (v{{ item.raw.panel.version }}) </small>
+                          <a
+                            :href="`https://panelapp.genomicsengland.co.uk/panels/${item.raw.panel.id}`"
+                            target="_blank"
+                            class="ml-2"
+                          >
+                            <v-icon>mdi-launch</v-icon>
+                          </a>
                         </div>
                         <!-- <div class="text-body-2 mt-1">
                         Description: {{ item.raw.diseaseDefinition ?? 'N/A' }}
@@ -533,6 +570,13 @@ watch(
                               Additional Information
                             </v-expansion-panel-title>
                             <v-expansion-panel-text>
+                              Gene specific panel decision in PanelApp:
+                              <a
+                                :href="`https://panelapp.genomicsengland.co.uk/panels/${item.raw.panel.id}/gene/${geneInfo.acmgSf.geneSymbol}`"
+                                target="_blank"
+                              >
+                                <v-icon>mdi-launch</v-icon>
+                              </a>
                               <div style="border-top: 1px solid black" class="mt-2 pt-2 pl-4">
                                 <ul
                                   v-for="(phenotype, idxPhenotype) in item.raw.phenotypes"
