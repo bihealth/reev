@@ -367,7 +367,7 @@ watch(
 
                   <template #default="{ items }">
                     <template v-for="item in items" :key="item.raw">
-                      <v-sheet class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3">
+                      <v-sheet class="rounded-l px-3 py-2 mt-3" color="background">
                         <div class="text-h6">
                           {{ item.raw.diseaseName }}
                         </div>
@@ -514,7 +514,7 @@ watch(
 
                   <template #default="{ items }">
                     <template v-for="item in items" :key="item.raw.panel.name">
-                      <v-sheet class="rounded-l bg-grey-lighten-2 px-3 py-2 mt-3">
+                      <v-sheet class="rounded-l px-3 py-2 mt-3" color="background">
                         <div class="text-h6">
                           {{ item.raw.panel.name }}
                           <small> (v{{ item.raw.panel.version }}) </small>
