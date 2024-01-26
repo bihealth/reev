@@ -63,8 +63,10 @@ const TYPE_TO_RAW_COLOR_DARK: { [key: string]: string } = {
 }
 
 /** Mapping from annotation type to raw CSS color. */
-const TYPE_TO_RAW_COLOR =
-  theme.global.current.value.dark === true ? TYPE_TO_RAW_COLOR_DARK : TYPE_TO_RAW_COLOR_LIGHT
+let TYPE_TO_RAW_COLOR =
+  theme.global.current.value.dark === true
+    ? { ...TYPE_TO_RAW_COLOR_DARK }
+    : { ...TYPE_TO_RAW_COLOR_LIGHT }
 
 /** Helper that returns `Annotation.text` if name is just a number or empty. */
 const annotationName = (annotation: Annotation) => {
@@ -174,6 +176,16 @@ const highlight = (text: string, annotations: Annotation[], baseOffset: number):
 onMounted(loadPubTator)
 // Load information when the gene symbol changes.
 watch(() => props.geneInfo?.hgnc?.symbol, loadPubTator)
+// Reload template when theme changes.
+watch(
+  () => theme.global.current.value,
+  () => {
+    TYPE_TO_RAW_COLOR =
+      theme.global.current.value.dark === true
+        ? { ...TYPE_TO_RAW_COLOR_DARK }
+        : { ...TYPE_TO_RAW_COLOR_LIGHT }
+  }
+)
 </script>
 
 <template>
