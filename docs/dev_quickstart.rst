@@ -100,11 +100,13 @@ Setup with ``npm link``
 You will no have installed all dependencies of ``reev`.
 This will make a **copy** of ``reev-frontend-lib`` in the ``node_modules`` directory of ``reev``.
 This is probably not what you want for development.
-We will now setup a link from ``node_modules/@bihealth/reev-frontend-lib`` to the checkout of ``reev-frontend-lib``.
+We will now first build the library and then setup a link from ``node_modules/@bihealth/reev-frontend-lib`` to the checkout of ``reev-frontend-lib``.
 
 .. code-block:: bash
 
     $ cd path/to/reev-frontend-lib
+    $ npm ci
+    $ npm build
     $ npm link
     $ cd path/to/reev
     $ npm link @bihealth/reev-frontend-lib
