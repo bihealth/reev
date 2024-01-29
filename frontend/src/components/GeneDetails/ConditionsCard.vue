@@ -313,7 +313,7 @@ watch(
                 >
                   <template #header>
                     <v-toolbar class="px-2 rounded-t-lg border" color="background">
-                      <div class="text-subtitle-1" :class="{ 'mt-3': geneInfo?.acmgSf }">
+                      <div class="text-subtitle-1" :class="{ 'mt-3': geneInfo?.hgnc }">
                         Associated Diseases
                         <small>
                           <template
@@ -451,9 +451,9 @@ watch(
                   <template #header>
                     <v-toolbar class="px-2 rounded-t-lg border" color="background">
                       <div class="text-subtitle-1 mt-3">
-                        PanelApp Panels for {{ geneInfo.acmgSf.geneSymbol }}
+                        PanelApp Panels for {{ geneInfo.hgnc.symbol }}
                         <a
-                          :href="`https://panelapp.genomicsengland.co.uk/panels/entities/${geneInfo.acmgSf.geneSymbol}`"
+                          :href="`https://panelapp.genomicsengland.co.uk/panels/entities/${geneInfo.hgnc.symbol}`"
                           target="_blank"
                         >
                           <v-icon>mdi-launch</v-icon>
@@ -572,7 +572,7 @@ watch(
                             <v-expansion-panel-text>
                               Gene specific panel decision in PanelApp:
                               <a
-                                :href="`https://panelapp.genomicsengland.co.uk/panels/${item.raw.panel.id}/gene/${geneInfo.acmgSf.geneSymbol}`"
+                                :href="`https://panelapp.genomicsengland.co.uk/panels/${item.raw.panel.id}/gene/${geneInfo.hgnc.symbol}`"
                                 target="_blank"
                               >
                                 <v-icon>mdi-launch</v-icon>
