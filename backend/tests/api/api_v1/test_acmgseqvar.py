@@ -517,8 +517,29 @@ async def test_get_no_acmgseqvar(
         f"{settings.API_V1_STR}/acmgseqvar/get?seqvar=invalid",
     )
     # assert:
+    # Status code is 404 because we use internal agent
     assert response.status_code == 404
     assert response.json() == {"detail": "ACMG Sequence Variant not found"}
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
+async def test_get_no_acmgseqvar_with_browser_header(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    test_user: User,
+):
+    """Test getting a acmgseqvar with no acmgseqvar by simulating the browser behaviour."""
+    _ = db_session
+    _ = test_user
+    # act:
+    response = client_user.get(
+        f"{settings.API_V1_STR}/acmgseqvar/get?seqvar=invalid",
+        headers={"user-agent": "Mozilla/5.0"},
+    )
+    # assert:
+    # Status code is 204 because we use browser header
+    assert response.status_code == 204
 
 
 # ------------------------------------------------------------------------------
@@ -895,5 +916,26 @@ async def test_delete_acmgseqvar_no_acmgseqvar(
         f"{settings.API_V1_STR}/acmgseqvar/delete?seqvar=invalid",
     )
     # assert:
+    # Status code is 404 because we use internal agent
     assert response.status_code == 404
     assert response.json() == {"detail": "ACMG Sequence Variant not found"}
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
+async def test_delete_acmgseqvar_no_acmgseqvar_with_browser_header(
+    db_session: AsyncSession,
+    client_user: TestClient,
+    test_user: User,
+):
+    """Test deleting a acmgseqvar with invalid data by simulating the browser behaviour."""
+    _ = db_session
+    _ = test_user
+    # act:
+    response = client_user.delete(
+        f"{settings.API_V1_STR}/acmgseqvar/delete?seqvar=invalid",
+        headers={"user-agent": "Mozilla/5.0"},
+    )
+    # assert:
+    # Status code is 204 because we use browser header
+    assert response.status_code == 204

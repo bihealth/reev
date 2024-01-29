@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Header, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
@@ -92,7 +92,7 @@ async def get_acmgseqvar_by_user(
     seqvar: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
-    user_agent: Annotated[str, Header()] = None,
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Get a ACMG Sequence Variant by id.
@@ -166,7 +166,7 @@ async def delete_acmgseqvar_by_user(
     seqvar: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
-    user_agent: Annotated[str, Header()] = None,
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Delete a ACMG Sequence Variant by id.
