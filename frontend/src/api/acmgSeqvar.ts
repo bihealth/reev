@@ -44,6 +44,9 @@ export class AcmgSeqVarClient {
       mode: 'cors',
       credentials: 'include'
     })
+    if (response.status === 204) {
+      return null
+    }
     return await response.json()
   }
 
@@ -98,12 +101,15 @@ export class AcmgSeqVarClient {
   /**
    * Delete the ACMG rating for a variant.
    */
-  async deleteAcmgRating(seqVar: SeqvarImpl): Promise<AcmgRatingBackend> {
+  async deleteAcmgRating(seqVar: SeqvarImpl): Promise<AcmgRatingBackend | null> {
     const response = await fetch(`${this.apiBaseUrl}acmgseqvar/delete?seqvar=${seqVar.toName()}`, {
       method: 'DELETE',
       mode: 'cors',
       credentials: 'include'
     })
+    if (response.status === 204) {
+      return null
+    }
     return await response.json()
   }
 }

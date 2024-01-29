@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Header, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
@@ -90,6 +92,7 @@ async def get_acmgseqvar_by_user(
     seqvar: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
+    user_agent: Annotated[str, Header()] = None,
 ):
     """
     Get a ACMG Sequence Variant by id.
@@ -98,10 +101,16 @@ async def get_acmgseqvar_by_user(
     :type id: uuid
     :return: ACMG Sequence Variant
     :rtype: dict
+    :raises HTTPException 404: ACMG Sequence Variant not found
+    :note: If user_agent is browser, return 204 Response
     """
     result = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
     if not result:  # pragma: no cover
-        raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
+        # if user_agent is browser, return 204, else 404
+        if user_agent and "Mozilla" in user_agent:
+            return Response(status_code=204)
+        else:
+            raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
         return result
 
@@ -157,6 +166,7 @@ async def delete_acmgseqvar_by_user(
     seqvar: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
+    user_agent: Annotated[str, Header()] = None,
 ):
     """
     Delete a ACMG Sequence Variant by id.
@@ -168,6 +178,10 @@ async def delete_acmgseqvar_by_user(
     """
     result = await crud.acmgseqvar.get_by_user(db, user_id=user.id, seqvar_name=seqvar)
     if not result:  # pragma: no cover
-        raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
+        # if user_agent is browser, return 204, else 404
+        if user_agent and "Mozilla" in user_agent:
+            return Response(status_code=204)
+        else:
+            raise HTTPException(status_code=404, detail="ACMG Sequence Variant not found")
     else:
         return await crud.acmgseqvar.remove(db, id=result.id)
