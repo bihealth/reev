@@ -39,7 +39,6 @@ onMounted(async () => {
       }
     })
     .catch((e) => {
-      console.log('WTF')
       isBookmarked.value = false
       console.error(e)
     })
@@ -71,7 +70,6 @@ const toggleBookmark = async () => {
     <v-skeleton-loader type="list-item"></v-skeleton-loader>
   </template>
   <template v-else-if="bookmarksStore.storeState === StoreState.Error">
-    {{ bookmarksStore.storeState === StoreState.Error }}
     <v-list-item class="text-caption"> Bookmarks available after login </v-list-item>
   </template>
   <template v-else>
