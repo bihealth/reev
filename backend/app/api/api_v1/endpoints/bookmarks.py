@@ -160,8 +160,8 @@ async def delete_bookmark_for_user(
     :type obj_id: uuid
     :return: bookmark which was deleted
     :rtype: dict
-    :raises HTTPException: if bookmark not found
-    :note: if user_agent is browser, return 204, else 404
+    :raises HTTPException 404: if bookmark not found
+    :note: if user_agent is browser, return 204 Response
     """
     bookmark = await crud.bookmark.get_by_user_and_obj(
         db, user_id=user.id, obj_type=obj_type, obj_id=obj_id
