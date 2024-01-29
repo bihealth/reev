@@ -127,8 +127,8 @@ async def get_bookmark_for_user(
     :type obj_id: uuid
     :return: bookmark
     :rtype: dict
-    :raises HTTPException: if bookmark not found
-    :note: if user_agent is browser, return 204, else 404
+    :raises HTTPException 404: if bookmark not found
+    :note: if user_agent is browser, return 204
     """
     result = await crud.bookmark.get_by_user_and_obj(
         db, user_id=user.id, obj_type=obj_type, obj_id=obj_id
@@ -136,7 +136,7 @@ async def get_bookmark_for_user(
     if not result:  # pragma: no cover
         # if user_agent is browser, return 204, else 404
         if user_agent and "Mozilla" in user_agent:
-            raise HTTPException(status_code=204, detail="Bookmark not found")
+            raise HTTPException(status_code=204)
         else:
             raise HTTPException(status_code=404, detail="Bookmark not found")
     else:
