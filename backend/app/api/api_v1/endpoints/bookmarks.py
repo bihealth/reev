@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Header, HTTPException
+from fastapi import APIRouter, Depends, Header, HTTPException, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
@@ -171,6 +171,6 @@ async def delete_bookmark_for_user(
     else:  # pragma: no cover
         # if user_agent is browser, return 204, else 404
         if user_agent and "Mozilla" in user_agent:
-            raise HTTPException(status_code=204, detail="Bookmark not found")
+            return Response(status_code=204)
         else:
             raise HTTPException(status_code=404, detail="Bookmark not found")
