@@ -144,6 +144,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
       }
       const seqvarImpl = seqvarImplFromSeqvar(seqvar$)
       const acmgRatingBackend = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
+      if (acmgRatingBackend === null) {
+        return
+      }
       if (acmgRatingBackend.acmg_rank?.criterias) {
         acmgRatingStatus.value = true
         // Go through the data and setPresense for each criteria
@@ -183,6 +186,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
       }
       const seqvarImpl = seqvarImplFromSeqvar(seqvar$)
       const acmgRatingBackend = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
+      if (acmgRatingBackend === null) {
+        return
+      }
       if (acmgRatingBackend.acmg_rank?.criterias) {
         acmgRatingStatus.value = true
         // Go through the data and setPresense for each criteria
@@ -241,7 +247,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     try {
       const acmgSeqvarClient = new AcmgSeqVarClient()
       const acmgSeqvar = await acmgSeqvarClient.fetchAcmgRating(seqvarImpl)
-      if (
+      if (acmgSeqvar === null) {
+        await acmgSeqvarClient.saveAcmgRating(seqvarImpl, acmgRatingServer)
+      } else if (
         acmgSeqvar &&
         acmgSeqvar.detail !== 'ACMG Sequence Variant not found' &&
         acmgSeqvar.detail !== 'Not Found'
