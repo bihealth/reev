@@ -44,18 +44,18 @@ const TYPE_TO_CHIP_COLOR: { [key: string]: string } = {
 
 /** Mapping from annotation type to raw CSS color in light mode. */
 const TYPE_TO_RAW_COLOR_LIGHT: { [key: string]: string } = {
-  [AnnotationType.Disease]: '#ffe0b2', // #ffe0b2    FFF2E0
-  [AnnotationType.Gene]: '#e1bee7', // #e1bee7   C9B7CB
-  [AnnotationType.Chemical]: '#c8e6c9', // #c8e6c9   E9F5EA
-  [AnnotationType.Species]: '#dcf1fc', // #dcf1fc   E4F2FE
-  [AnnotationType.Variant]: '#d7ccc8', // #d7ccc8   FEE8E7
-  [AnnotationType.CellLine]: '#b2ebf2' // #b2ebf2   E0FDFD
+  [AnnotationType.Disease]: '#ffe0b2',
+  [AnnotationType.Gene]: '#e1bee7',
+  [AnnotationType.Chemical]: '#c8e6c9',
+  [AnnotationType.Species]: '#dcf1fc',
+  [AnnotationType.Variant]: '#d7ccc8',
+  [AnnotationType.CellLine]: '#b2ebf2'
 }
 
 /** Mapping from annotation type to raw CSS color in dark mode. */
 const TYPE_TO_RAW_COLOR_DARK: { [key: string]: string } = {
   [AnnotationType.Disease]: '#9c6b24',
-  [AnnotationType.Gene]: '#743d7d',
+  [AnnotationType.Gene]: '#7a4a82',
   [AnnotationType.Chemical]: '#5c7d5e',
   [AnnotationType.Species]: '#577c99',
   [AnnotationType.Variant]: '#853a3a',
@@ -80,12 +80,12 @@ const TYPE_TO_FONT_COLOR_LIGHT: { [key: string]: string } = {
 
 /** Mapping from annotation type to CSS font color in dark mode. */
 const TYPE_TO_FONT_COLOR_DARK: { [key: string]: string } = {
-  [AnnotationType.Disease]: '#000000',
-  [AnnotationType.Gene]: '#000000',
-  [AnnotationType.Chemical]: '#000000',
-  [AnnotationType.Species]: '#000000',
-  [AnnotationType.Variant]: '#000000',
-  [AnnotationType.CellLine]: '#000000'
+  [AnnotationType.Disease]: '#e8d4b7',
+  [AnnotationType.Gene]: '#edcef2',
+  [AnnotationType.Chemical]: '#caedcc',
+  [AnnotationType.Species]: '#bedef7',
+  [AnnotationType.Variant]: '#fcd7d7',
+  [AnnotationType.CellLine]: '#c1f1f7'
 }
 
 /** Mapping from annotation type to CSS font color. */
@@ -185,7 +185,9 @@ const highlight = (text: string, annotations: Annotation[], baseOffset: number):
       `<span style="
         background-color: ${TYPE_TO_RAW_COLOR[locationAnnotation.annotation.type]}; 
         color: ${TYPE_TO_FONT_COLOR[locationAnnotation.annotation.type]}; 
-        border-radius: 5px">`
+        border-radius: 5px;
+        padding-left: 5px;
+        padding-right: 5px;">`
     )
     arr.push(text.slice(annoStart - baseOffset, annoEnd - baseOffset))
     arr.push('</span>')
@@ -286,7 +288,13 @@ watch(
                   />
                   <!-- eslint-enable -->
                 </div>
-                <div class="text-body-2 text-grey-darken-1">
+                <div
+                  class="text-body-2"
+                  :class="{
+                    'text-grey-lighten-1': theme.global.current.value.dark,
+                    'text-grey-darken-1': !theme.global.current.value.dark
+                  }"
+                >
                   {{ pubtatorStore.searchResults[pmid]?.abstract?.authors.join(', ') }}
                 </div>
               </div>
