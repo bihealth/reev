@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Header, HTTPException, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
@@ -114,6 +116,7 @@ async def get_bookmark_for_user(
     obj_id: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Get a bookmark for a current user by obj_type and obj_id.
@@ -124,12 +127,18 @@ async def get_bookmark_for_user(
     :type obj_id: uuid
     :return: bookmark
     :rtype: dict
+    :raises HTTPException 404: if bookmark not found
+    :note: if user_agent is browser, return 204
     """
     result = await crud.bookmark.get_by_user_and_obj(
         db, user_id=user.id, obj_type=obj_type, obj_id=obj_id
     )
     if not result:  # pragma: no cover
-        raise HTTPException(status_code=404, detail="Bookmark not found")
+        # if user_agent is browser, return 204, else 404
+        if user_agent and "Mozilla" in user_agent:
+            raise HTTPException(status_code=204)
+        else:
+            raise HTTPException(status_code=404, detail="Bookmark not found")
     else:
         return result
 
@@ -140,6 +149,7 @@ async def delete_bookmark_for_user(
     obj_id: str,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Delete a bookmark for a current user by obj_type and obj_id.
@@ -150,7 +160,8 @@ async def delete_bookmark_for_user(
     :type obj_id: uuid
     :return: bookmark which was deleted
     :rtype: dict
-    :raises HTTPException: if bookmark not found
+    :raises HTTPException 404: if bookmark not found
+    :note: if user_agent is browser, return 204 Response
     """
     bookmark = await crud.bookmark.get_by_user_and_obj(
         db, user_id=user.id, obj_type=obj_type, obj_id=obj_id
@@ -158,4 +169,8 @@ async def delete_bookmark_for_user(
     if bookmark:
         return await crud.bookmark.remove(db, id=bookmark.id)
     else:  # pragma: no cover
-        raise HTTPException(status_code=404, detail="Bookmark not found")
+        # if user_agent is browser, return 204, else 404
+        if user_agent and "Mozilla" in user_agent:
+            return Response(status_code=204)
+        else:
+            raise HTTPException(status_code=404, detail="Bookmark not found")

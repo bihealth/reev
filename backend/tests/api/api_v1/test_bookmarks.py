@@ -498,8 +498,29 @@ async def test_get_no_bookmarks(
         f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
+    # Status code is 404 because we use internal agent
     assert response.status_code == 404
     assert response.json() == {"detail": "Bookmark not found"}
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
+async def test_get_no_bookmark_with_browser_header(
+    db_session: AsyncSession, client_user: TestClient, obj_names: ObjNames
+):
+    """
+    Test getting a bookmark as superuser when there are no bookmarks by simulating the browser
+    behaviour.
+    """
+    _ = db_session
+    # act:
+    response = client_user.get(
+        f"{settings.API_V1_STR}/bookmarks/get?obj_type=gene&obj_id={obj_names.gene[0]}",
+        headers={"user-agent": "Mozilla/5.0"},
+    )
+    # assert:
+    # Status code is 204 because we use browser agent
+    assert response.status_code == 204
 
 
 # ------------------------------------------------------------------------------
@@ -591,5 +612,26 @@ async def test_delete_no_bookmarks(
         f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
+    # Status code is 404 because we use internal agent
     assert response.status_code == 404
     assert response.json() == {"detail": "Bookmark not found"}
+
+
+@pytest.mark.anyio
+@pytest.mark.parametrize("test_user, client_user", [(SUPER, SUPER)], indirect=True)
+async def test_delete_no_bookmark_with_browser_header(
+    db_session: AsyncSession, client_user: TestClient, obj_names: ObjNames
+):
+    """
+    Test deleting a bookmark as superuser when there are no bookmarks by simulating the browser
+    behaviour.
+    """
+    _ = db_session
+    # act:
+    response = client_user.delete(
+        f"{settings.API_V1_STR}/bookmarks/delete?obj_type=gene&obj_id={obj_names.gene[0]}",
+        headers={"user-agent": "Mozilla/5.0"},
+    )
+    # assert:
+    # Status code is 204 because we use browser agent
+    assert response.status_code == 204
