@@ -26,7 +26,7 @@ It provides the following features as a central resource:
     - ClinVar variant information
     - gnomAD population frequency
     - UCSC 100 vertebrate conservation
-    - semi-automated ACMG classification from InterVar
+    - semi-automated ACMG classification from InterVar\ :footcite:p:`Li:2017`
     - link-out to external resources and tools
     - query the GA4GH beacon network for the variant
     - query the VariantValidator API for the variant
@@ -34,9 +34,11 @@ It provides the following features as a central resource:
 - structural variant (currently copy number loss/gain only)-related functionality:
     - consequences on overlapping genes
     - information on overlapping structural variants in ClinVar
-    - semi-automated ACMG classification from AutoCNV
+    - semi-automated ACMG classification from AutoCNV\ :footcite:p:`Fan:2021`
     - link-out to external resources and tools
     - integrated genome browser with useful tracks for interpreting the variant
+
+.. footbibliography::
 
 .. toctree::
     :hidden:

@@ -13,7 +13,7 @@ The following assumes a Debian/Ubuntu machine; your mileage may vary.
 Prerequisites
 -------------
 
-You can use `pyenv <https://github.com/pyenv/pyenv>`__` for getting a specific python version.
+You can use `pyenv <https://github.com/pyenv/pyenv>`__ for getting a specific python version.
 
 .. code-block:: bash
 

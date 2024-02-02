@@ -159,9 +159,9 @@ Sequence Variants
 Clinical Significance
 =====================
 
-This card shows the semi-automated pathogenicity prediction based on InterVar.
+This card shows the semi-automated pathogenicity prediction based on InterVar\ :footcite:p:`Li:2017`.
 Using the buttons on the left you can...
-- Hide/show the terse mode of ACMG criteria display.
+- Hide/show the terse mode of ACMG criteria\ :footcite:p:`Richards:2015` display.
 On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
 - hide/show failed criteria (not set to "active" by the little switch displayed left to every criterion)
 
@@ -287,8 +287,8 @@ By clicking on the “Jump in local IGV” button on the bottom, you can also lo
 Clinical Significance
 =====================
 
-This card shows the semi-automated pathogenicity prediction based on AutoCNV.
-Using the buttons to the left of each criterion you can select or deselect every ACMG CNV criterion.
+This card shows the semi-automated pathogenicity prediction based on AutoCNV\ :footcite:p:`Fan:2021`.
+Using the buttons to the left of each criterion you can select or deselect every ACMG CNV criterion\ :footcite:p:`Riggs:2020`.
 The semi-automated prediction is providing an automated scoring for criteria 1-3 while you always have to select criteria 4 and 5 manually based on your clinical information on the case.
 On default you will see the automated selection of ACMG criteria.
 You can individually select and deselect every ACMG CNV criterion using the little switch displayed left to every criterion and also select the individual points you score on this criterion.

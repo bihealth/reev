@@ -16,7 +16,7 @@ Introduction
 ------------
 
 We have developed REEV (Review, Evaluate and Explain Variants) to help clinicians and researchers in rare disease genetics with an open and free platform to explore comprehensive information about genes as well as sequence and structural variants.
-REEV is designed to help you to quickly yet comprehensively record all the important information on a variant and, on the basis of this, to evaluate it on the basis of the ACMG criteria.
+REEV is designed to help you to quickly yet comprehensively record all the important information on a variant and, on the basis of this, to evaluate it on the basis of the ACMG criteria\ :footcite:p:`Richards:2015`.
 To this end, REEV also integrates methods that allow users to (semi-)automatically fill the individual ACMG criteria sections to facilitate interpretation.
 
 Here, we provide a quick start as well as a full tutorial guiding you through the process on reviewing and evaluating genes and variants with the help of REEV.
@@ -131,7 +131,7 @@ We will thus focus on the second half of the page shown in the following figure.
 
 You can find the following elements on the page:
 
-1. Semi-automated ACMG variant class assessment based on the InterVar tool.
+1. Semi-automated ACMG variant class assessment based on the InterVar\ :footcite:p:`Li:2017` tool.
 2. A table with the impact of the variant on different transcripts.
 3. Information with ClinVar assertions on the variant.
    This displays the ClinVar reference assertion with the most pathogenic significance and its review status.
@@ -201,7 +201,7 @@ This is shown in the following figure.
 5. The variants will be sorted by reciprocal overlap (the fraction of the overlap of the variant - yours and the ClinVar one - and the large of the variant lenghts).
    This is useful to find the "best fitting" one.
 6. Open the location of the variant in an external genome browser or an external tool for further analysis.
-7. Semi-automated assessment of the variant following ACMG standards using the AutoCNV tool.
+7. Semi-automated assessment of the variant following ACMG standards\ :footcite:p:`Richards:2015` using the AutoCNV\ :footcite:p:`Fan:2021` tool.
 8. See the location of the variant in an internal genome browser with useful tracks for interpreting the variant.
 
 For more details, see the section :ref:`doc_tutorial_strucvar` of the :ref:`doc_tutorial` or use the little (?) help icons on the page.
