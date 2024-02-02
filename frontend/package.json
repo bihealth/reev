@@ -32,6 +32,7 @@
     "luxon": "^3.4.4",
     "mitt": "^3.0.1",
     "pinia": "^2.1.7",
+    "plotly.js-dist-min": "^2.29.0",
     "title-case": "^4.2.0",
     "vega": "^5.26.1",
     "vega-embed": "^6.24.0",
