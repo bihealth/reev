@@ -44,12 +44,12 @@ const TYPE_TO_CHIP_COLOR: { [key: string]: string } = {
 
 /** Mapping from annotation type to raw CSS color in light mode. */
 const TYPE_TO_RAW_COLOR_LIGHT: { [key: string]: string } = {
-  [AnnotationType.Disease]: '#FFF2E0',
-  [AnnotationType.Gene]: '#C9B7CB',
-  [AnnotationType.Chemical]: '#E9F5EA',
-  [AnnotationType.Species]: '#E4F2FE',
-  [AnnotationType.Variant]: '#FEE8E7',
-  [AnnotationType.CellLine]: '#E0FDFD'
+  [AnnotationType.Disease]: '#ffe0b2', // #ffe0b2    FFF2E0
+  [AnnotationType.Gene]: '#e1bee7', // #e1bee7   C9B7CB
+  [AnnotationType.Chemical]: '#c8e6c9', // #c8e6c9   E9F5EA
+  [AnnotationType.Species]: '#dcf1fc', // #dcf1fc   E4F2FE
+  [AnnotationType.Variant]: '#d7ccc8', // #d7ccc8   FEE8E7
+  [AnnotationType.CellLine]: '#b2ebf2' // #b2ebf2   E0FDFD
 }
 
 /** Mapping from annotation type to raw CSS color in dark mode. */
@@ -67,6 +67,32 @@ let TYPE_TO_RAW_COLOR =
   theme.global.current.value.dark === true
     ? { ...TYPE_TO_RAW_COLOR_DARK }
     : { ...TYPE_TO_RAW_COLOR_LIGHT }
+
+/** Mapping from annotation type to CSS font color in light mode. */
+const TYPE_TO_FONT_COLOR_LIGHT: { [key: string]: string } = {
+  [AnnotationType.Disease]: '#ff9800',
+  [AnnotationType.Gene]: '#673ab7',
+  [AnnotationType.Chemical]: '#4caf50',
+  [AnnotationType.Species]: '#2196f3',
+  [AnnotationType.Variant]: '#5d4037',
+  [AnnotationType.CellLine]: '#50b4b4'
+}
+
+/** Mapping from annotation type to CSS font color in dark mode. */
+const TYPE_TO_FONT_COLOR_DARK: { [key: string]: string } = {
+  [AnnotationType.Disease]: '#000000',
+  [AnnotationType.Gene]: '#000000',
+  [AnnotationType.Chemical]: '#000000',
+  [AnnotationType.Species]: '#000000',
+  [AnnotationType.Variant]: '#000000',
+  [AnnotationType.CellLine]: '#000000'
+}
+
+/** Mapping from annotation type to CSS font color. */
+let TYPE_TO_FONT_COLOR =
+  theme.global.current.value.dark === true
+    ? { ...TYPE_TO_FONT_COLOR_DARK }
+    : { ...TYPE_TO_FONT_COLOR_LIGHT }
 
 /** Helper that returns `Annotation.text` if name is just a number or empty. */
 const annotationName = (annotation: Annotation) => {
@@ -156,7 +182,10 @@ const highlight = (text: string, annotations: Annotation[], baseOffset: number):
     const annoStart = locationAnnotation.location.offset
     const annoEnd = locationAnnotation.location.offset + locationAnnotation.location.length
     arr.push(
-      `<span style="background-color: ${TYPE_TO_RAW_COLOR[locationAnnotation.annotation.type]};">`
+      `<span style="
+        background-color: ${TYPE_TO_RAW_COLOR[locationAnnotation.annotation.type]}; 
+        color: ${TYPE_TO_FONT_COLOR[locationAnnotation.annotation.type]}; 
+        border-radius: 5px">`
     )
     arr.push(text.slice(annoStart - baseOffset, annoEnd - baseOffset))
     arr.push('</span>')
@@ -184,6 +213,11 @@ watch(
       theme.global.current.value.dark === true
         ? { ...TYPE_TO_RAW_COLOR_DARK }
         : { ...TYPE_TO_RAW_COLOR_LIGHT }
+
+    TYPE_TO_FONT_COLOR =
+      theme.global.current.value.dark === true
+        ? { ...TYPE_TO_FONT_COLOR_DARK }
+        : { ...TYPE_TO_FONT_COLOR_LIGHT }
   }
 )
 </script>
