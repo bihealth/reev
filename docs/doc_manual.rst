@@ -35,6 +35,7 @@ Gene Pathogenicity
 ==================
 
 This card shows the avaible gene pathogenicity scores for a gene such as:
+
 - ClinGen haploinsufficiency and triplosensitivity scores
 - gnomAD pLI and LOEUF scores (for loss of function variants) and Z-score (for missense variants)
 - DECIPHER haploinsufficiency and triplosensitivity scores as well as sHet (Selection coefficient of heterozygous loss-of-function variants) scores
