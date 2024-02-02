@@ -9,6 +9,9 @@ import type { GenomeBuild } from '@/lib/genomeBuilds'
 const VariationLandscape = defineAsyncComponent(
   () => import('@/components/GeneDetails/ClinvarCard/VariationLandscape.vue')
 )
+const VarLand = defineAsyncComponent(
+  () => import('@/components/GeneDetails/ClinvarCard/VarLand.vue')
+)
 
 export interface Props {
   geneClinvar: any
@@ -46,6 +49,14 @@ const props = defineProps<Props>()
         </v-col>
         <v-col cols="12">
           <VariationLandscape
+            :clinvar="geneClinvar"
+            :transcripts="transcripts"
+            :genome-build="genomeBuild"
+            :gene-symbol="geneInfo?.hgnc?.symbol"
+          />
+        </v-col>
+        <v-col cols="12">
+          <VarLand
             :clinvar="geneClinvar"
             :transcripts="transcripts"
             :genome-build="genomeBuild"

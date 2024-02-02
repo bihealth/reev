@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import Plotly from 'plotly.js-dist-min'
 
 import VegaPlot from '@/components/VegaPlot.vue'
 import type { GenomeBuild } from '@/lib/genomeBuilds'
-import { onMounted, watch } from 'vue'
 
 export interface Props {
   /** Gene information from annonars. */
@@ -354,81 +352,6 @@ const vegaLayer = [
     }
   }
 ]
-
-const PlotlyData = computed(() => {
-  const x = [10, 20, 30, 40]
-  const y = [0, 1, 2, 3]
-  const z = [
-    [2, 2, 2, 3],
-    [1, 1, 1, 1],
-    [1, 1, 0, 0],
-    [0, 0, 0, 0]
-  ]
-
-  const data = [
-    {
-      opacity: 0.9,
-      type: 'surface',
-      x: x,
-      y: y,
-      z: z,
-      contours: {
-        x: {
-          highlight: true,
-          highlightcolor: '#41a7b3'
-        },
-        y: { highlight: false },
-        z: { highlight: false }
-      }
-    }
-  ]
-  const layout = {
-    scene: {
-      xaxis: { showspikes: false },
-      yaxis: { showspikes: false },
-      zaxis: { showspikes: true }
-    }
-  }
-  return [data, layout]
-})
-
-// Watch when myDiv is mounted
-watch(() => document.getElementById('myDiv'), (newVal) => {
-  if (newVal) {
-    // const x = [10,20,30,40]
-    // const y = [0,1,2,3]
-    // const z = [
-    //   [2,2,2,3],
-    //   [1,1,1,1],
-    //   [1,1,0,0],
-    //   [0,0,0,0]
-    // ];
-
-    // const data=[
-    //     {
-    //     opacity:0.9,
-    //     type: 'surface',
-    //     x:x, y:y, z:z,
-    //     contours: {
-    //     x: {
-    //       highlight: true,
-    //       highlightcolor: "#41a7b3"
-    //         },
-    //     y: { highlight: false },
-    //     z: { highlight: false}
-    //   }
-    //     },
-    // ];
-    // const layout = {
-    //   scene:{
-    //     xaxis: { showspikes: false },
-    //     yaxis: { showspikes: false },
-    //     zaxis: { showspikes: true }
-    //   },
-    // };
-    // Plotly.newPlot('myDiv', data, layout);
-  }
-})
 </script>
 
 <template>
@@ -451,9 +374,6 @@ watch(() => document.getElementById('myDiv'), (newVal) => {
         The plot above shows the sequence variants in the ClinVar database that are that are located
         in the gene <span class="font-italic"> {{ geneSymbol }} </span>.
       </div>
-    </v-sheet>
-    <v-sheet color="background" class="pa-3 mt-3 h-100">
-      <div id="myDiv"></div>
     </v-sheet>
   </div>
 </template>
