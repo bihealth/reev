@@ -36,3 +36,9 @@ html_static_path = ["_static"]
 # https://sphinxcontrib-bibtex.readthedocs.io/en/latest/usage.html
 
 bibtex_bibfiles = ["refs.bib"]
+
+# -- Special LaTeX Errors ----------------------------------------------------
+# cf. https://stackoverflow.com/a/28454426/84349
+latex_elements = {
+    "preamble": r"\usepackage{enumitem}\setlistdepth{99}",
+}

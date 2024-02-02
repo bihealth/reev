@@ -306,3 +306,5 @@ Genome Browser
 
 This card provides an internal genome browser with useful tracks for interpreting the variant.
 You see the genomic location of the variant along with useful tracks from UCSC (e.g. Repeat Masker), RefSeq Genes as well as gnomAD and DGV SVs, ExAC CNVs.
+
+.. footbibliography::
