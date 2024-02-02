@@ -125,7 +125,7 @@ In line with the low Z-score retrieved from the gnomAD database, we see that mos
 However, indeed there are also some pathogenic missense variants.
 Time to look at the variant level and find out whether our missense variant is one of these few!
 
-The semi-automated ACMG variant class assessment based on the InterVar tool tells us: we don't know…
+The semi-automated ACMG variant class assessment\ :footcite:p:`Richards:2015` based on the InterVar\ :footcite:p:`Li:2017` tool tells us: we don't know…
 
 .. figure:: img/tutorial/clinvar-significance-card-uncertain.png
    :width: 100%
@@ -232,10 +232,10 @@ Let's scroll back up to the ACMG rating tool and check the criteria ultimately a
    :width: 100%
    :align: center
 
-PM1, PM2, PP3 and BP1 had already been automatically selected by the InterVar tool.
+PM1, PM2, PP3 and BP1 had already been automatically selected by the InterVar\ :footcite:p:`Li:2017` tool.
 However, we were able to adjust PM2 to supporting and PP3 to strong level now with the help of REEV.
 Additionally, we applied the PS4 criterion on supporting level as we noticed that this variant is already listed in ClinVar as a pathogenic variant with one star.
-So solely by the help of the information provided by REEV we were able to correct the InterVar scoring as a variant of uncertain significance to a likely pathogenic variant!
+So solely by the help of the information provided by REEV we were able to correct the InterVar\ :footcite:p:`Li:2017` scoring as a variant of uncertain significance to a likely pathogenic variant!
 
 But, of course, since we also have some clinical information on our patient at hand, we can additionally state the patient's phenotype fits the *GLI3*-related spectrum.
 However, there are more genes than just *GLI3* causing polydactyly, so that we apply the PP4 criterion on supporting level only.
@@ -329,13 +329,13 @@ But the links to ENSEMBL and UCSC (2) tell us that this variant affects exon 3 o
 We also see that this deletion is absent from healthy controls in gnomAD (3).
 
 I think we can all agree: a very hot variant!
-But can we rate it pathogenic according to the `ACMG and ClinGen recommendations for copy-number variants <https://doi.org/10.1038/s41436-019-0686-8>`__?
+But can we rate it pathogenic according to the ACMG and ClinGen recommendations for copy-number variants\ :footcite:p:`Riggs:2020`?
 
 .. figure:: img/tutorial/strucvar-acmg-rating.png
    :width: 100%
    :align: center
 
-Semi-automated prediction from `autoCNV <https://doi.org/10.1186/s12864-021-08011-4>`__ implemented in REEV tells us it still remains unclear.
+Semi-automated prediction from AutoCNV\ :footcite:p:`Fan:2021` implemented in REEV tells us it still remains unclear.
 We have to use our knowledge gathered from the REEV information above and our clinical knowledge on this case, let's go through the CNV criteria!
 
 .. figure:: img/tutorial/strucvar-acmg-rating-show-failed.png
@@ -399,3 +399,5 @@ Just click the corresponding button the login screen.
   Go to  https://orcid.org for more information.
 - LifeScience Research Infrastructure allows researchers from the European Union to login with the account from their home organization.
   See https://lifescience-ri.eu/ls-login/ for more information.
+
+.. footbibliography::
