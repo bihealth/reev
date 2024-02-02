@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.5.0](https://github.com/bihealth/reev/compare/v0.4.0...v0.5.0) (2024-02-02)
+
+
+### Features
+
+* Add sorting to PanelApp ([#397](https://github.com/bihealth/reev/issues/397)) ([#409](https://github.com/bihealth/reev/issues/409)) ([2ebdcc8](https://github.com/bihealth/reev/commit/2ebdcc8c34ff9430ff069516e7813ac3a06a36af))
+* cleanup front-end tests ([#355](https://github.com/bihealth/reev/issues/355)) ([#363](https://github.com/bihealth/reev/issues/363)) ([161da9e](https://github.com/bihealth/reev/commit/161da9e8e47c7cd230ca7b1d1ed2ceeab1ce6174))
+* Disable "server" buttons for anonymous users ([#391](https://github.com/bihealth/reev/issues/391)) ([#392](https://github.com/bihealth/reev/issues/392)) ([bfabd6e](https://github.com/bihealth/reev/commit/bfabd6e1c1063a211c5e316440c83eb4933fff43))
+* enable user feedback after fixing it on the server ([#358](https://github.com/bihealth/reev/issues/358)) ([a6c436f](https://github.com/bihealth/reev/commit/a6c436f7fb05bd4728c94a521a8daca933507b5a))
+* Frontest test cleanup ([#364](https://github.com/bihealth/reev/issues/364)) ([#382](https://github.com/bihealth/reev/issues/382)) ([15a565d](https://github.com/bihealth/reev/commit/15a565d03f969e4bb8824de933cda5eae8cf58cf))
+* improved validation for writing bookmarks etc. ([#365](https://github.com/bihealth/reev/issues/365)) ([#367](https://github.com/bihealth/reev/issues/367)) ([d6e0413](https://github.com/bihealth/reev/commit/d6e04137c1cb9d2e0161b50ef1f839b97d613d96))
+* integrate AlphaMissense display in scores ([#375](https://github.com/bihealth/reev/issues/375)) ([385b584](https://github.com/bihealth/reev/commit/385b5840912755f7f788739406116de7423ce15a))
+* integrate new gnomAD v4 data ([#374](https://github.com/bihealth/reev/issues/374)) ([fdaa808](https://github.com/bihealth/reev/commit/fdaa808266bd50491000716269b972d7b8c9a0c8))
+* integrate PanelApp in gene details card ([#373](https://github.com/bihealth/reev/issues/373)) ([c7c7ea8](https://github.com/bihealth/reev/commit/c7c7ea8b6214dcb1129a9a28f0f4ab831c23a4bf))
+* Literature higlight in dark mode ([#407](https://github.com/bihealth/reev/issues/407)) ([#415](https://github.com/bihealth/reev/issues/415)) ([2ec6845](https://github.com/bihealth/reev/commit/2ec68452de2b5e6007b48f8ccfa1bedc43d40d4e))
+* more robust backend code and cleanup in tests ([#354](https://github.com/bihealth/reev/issues/354)) ([#356](https://github.com/bihealth/reev/issues/356)) ([5306196](https://github.com/bihealth/reev/commit/530619650757a48cbc82903b91494ca664006b1c))
+* Provide linkouts for PanelApps ([#408](https://github.com/bihealth/reev/issues/408)) ([#414](https://github.com/bihealth/reev/issues/414)) ([57f6938](https://github.com/bihealth/reev/commit/57f6938fd7fd14837c9805bcfa334f02f4bf5334))
+* Rounded corners for Vega plots ([#394](https://github.com/bihealth/reev/issues/394), [#405](https://github.com/bihealth/reev/issues/405)) ([#406](https://github.com/bihealth/reev/issues/406)) ([84dfd86](https://github.com/bihealth/reev/commit/84dfd86d1f672a396ce757a8c8eae35af79bb5bc))
+* use integrated gene-wise conditions data from annonars ([#389](https://github.com/bihealth/reev/issues/389)) ([#390](https://github.com/bihealth/reev/issues/390)) ([7e377c9](https://github.com/bihealth/reev/commit/7e377c9d68a89d3dcef9cd37746b3c899872c3f8))
+* Use Seqvar and LinearStrucvar whenever possible ([#366](https://github.com/bihealth/reev/issues/366)) ([#378](https://github.com/bihealth/reev/issues/378)) ([c35ae0f](https://github.com/bihealth/reev/commit/c35ae0f8a6340d4378d5fda4fa96d64ce5fff605))
+* using links for home view examples ([#349](https://github.com/bihealth/reev/issues/349)) ([#353](https://github.com/bihealth/reev/issues/353)) ([e0e73ee](https://github.com/bihealth/reev/commit/e0e73ee31e9a68d448218427a8ed83d47bf144d6))
+
+
+### Bug Fixes
+
+* ACMG criteria can not be saved to the server ([#379](https://github.com/bihealth/reev/issues/379)) ([#386](https://github.com/bihealth/reev/issues/386)) ([8359dff](https://github.com/bihealth/reev/commit/8359dfff70055f8ad6147965a3f647f5cd34afbb))
+* Adjust colors of highlightings in dark mode ([#393](https://github.com/bihealth/reev/issues/393)) ([#402](https://github.com/bihealth/reev/issues/402)) ([5329a6b](https://github.com/bihealth/reev/commit/5329a6bddba6830bb9982ab045becf3c7f260682))
+* adjusting VariantValidator API ([#292](https://github.com/bihealth/reev/issues/292)) ([#376](https://github.com/bihealth/reev/issues/376)) ([63b9275](https://github.com/bihealth/reev/commit/63b9275e484ccaafa6d22e9208def62e43218940))
+* Expantion of MMSplice and SpliceAI scores properly handle Infinity scores ([#381](https://github.com/bihealth/reev/issues/381)) ([#383](https://github.com/bihealth/reev/issues/383)) ([8e3efc1](https://github.com/bihealth/reev/commit/8e3efc15f3256bd4bd49b4aabd1d0742ee3c743f))
+* Loading the ACMG criteria from intervar ([#384](https://github.com/bihealth/reev/issues/384)) ([0fefba5](https://github.com/bihealth/reev/commit/0fefba582b4b70abb1ef364e05754e01f72cb1ab))
+* make PDF documentation build and remove some WIP docs ([#368](https://github.com/bihealth/reev/issues/368)) ([#423](https://github.com/bihealth/reev/issues/423)) ([c6b17f3](https://github.com/bihealth/reev/commit/c6b17f382dc7f16f23f3874f05eacbc93a8e8de8))
+* more robust handling of async sessions ([#360](https://github.com/bihealth/reev/issues/360)) ([#361](https://github.com/bihealth/reev/issues/361)) ([86510e8](https://github.com/bihealth/reev/commit/86510e8dbcee899813766a494df0ad01b8ad5a62))
+* more robust handling of InterVar result ([#362](https://github.com/bihealth/reev/issues/362)) ([25c825f](https://github.com/bihealth/reev/commit/25c825ff20583d998336278b4000fb505905cd4b))
+* properly handle undefined pubtator abstracts ([#359](https://github.com/bihealth/reev/issues/359)) ([970b400](https://github.com/bihealth/reev/commit/970b400d8bf760b058cfb8acc2a5c50c42c6c1b3))
+* Replace acmgSf data with hgnc one in PanelApp ([#416](https://github.com/bihealth/reev/issues/416)) ([#417](https://github.com/bihealth/reev/issues/417)) ([d308661](https://github.com/bihealth/reev/commit/d3086614e39103a757befa2d441def35ce432a1f))
+* resolve issues with example links on home view ([#350](https://github.com/bihealth/reev/issues/350)) ([#351](https://github.com/bihealth/reev/issues/351)) ([714bcea](https://github.com/bihealth/reev/commit/714bcea733db4706ca2a6c6a4b5e5df8afc047b2))
+
 ## [0.4.0](https://github.com/bihealth/reev/compare/v0.3.0...v0.4.0) (2023-12-27)
 
 
