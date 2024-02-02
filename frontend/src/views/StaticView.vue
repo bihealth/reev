@@ -4,9 +4,9 @@ import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
 // Components
-import FooterDefault from '@/components/FooterDefault.vue'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 
-const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader/PageHeader.vue'))
 const AboutView = defineAsyncComponent(() => import('@/components/StaticViews/AboutView.vue'))
 const ContactView = defineAsyncComponent(() => import('@/components/StaticViews/ContactView.vue'))
 const PrivacyView = defineAsyncComponent(() => import('@/components/StaticViews/PrivacyView.vue'))

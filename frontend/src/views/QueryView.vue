@@ -5,14 +5,14 @@ The home page and search bars redirect here when the user executes the query.
 -->
 
 <script setup lang="ts">
+import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { InvalidPos } from '@bihealth/reev-frontend-lib/lib/genomicVars'
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import FooterDefault from '@/components/FooterDefault.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
-import { InvalidPos } from '@/lib/genomicVars'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
 import { NotOneGeneInfo, type ScoredGeneInfo, performQuery } from '@/lib/query'
 
 /** The global Router instance. */

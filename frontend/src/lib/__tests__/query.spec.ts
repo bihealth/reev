@@ -1,8 +1,8 @@
+import { type GenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { type Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { type GenomeBuild } from '@/lib/genomeBuilds'
-import { type Seqvar } from '@/lib/genomicVars'
 import { lookupGene, lookupWithDotty, resolveSeqvar, resolveStrucvar } from '@/lib/query'
 
 const fetchMocker = createFetchMock(vi)

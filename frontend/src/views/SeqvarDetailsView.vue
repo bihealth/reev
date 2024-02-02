@@ -14,67 +14,79 @@ may fail in which case the view will display an error.
 -->
 
 <script setup lang="ts">
+import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { type Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
+import { useSeqvarInfoStore } from '@bihealth/reev-frontend-lib/stores/seqvarInfo'
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import BookmarkListItem from '@/components/BookmarkListItem.vue'
-import FooterDefault from '@/components/FooterDefault.vue'
-import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
-import { type Seqvar } from '@/lib/genomicVars'
+import BookmarkListItem from '@/components/BookmarkListItem/BookmarkListItem.vue'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import { resolveSeqvar } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
-import { useCaseStore } from '@/stores/case'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-import { StoreState } from '@/stores/misc'
-import { useSeqvarInfoStore } from '@/stores/seqvarInfo'
+import { useCaseInfoStore } from '@/stores/caseInfo'
 
 // Define the async components to use in this view.
-const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader/PageHeader.vue'))
 
 const GeneOverviewCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/OverviewCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneOverviewCard/GeneOverviewCard.vue')
 )
 const GenePathogenicityCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/PathogenicityCard.vue')
+  () =>
+    import('@bihealth/reev-frontend-lib/components/GenePathogenicityCard/GenePathogenicityCard.vue')
 )
 const GeneConditionsCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ConditionsCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneConditionsCard/GeneConditionsCard.vue')
 )
 const GeneExpressionCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ExpressionCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneExpressionCard/GeneExpressionCard.vue')
 )
 const GeneClinvarCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ClinvarCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneClinvarCard/GeneClinvarCard.vue')
 )
-const LiteratureCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/LiteratureCard.vue')
+const GeneLiteratureCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneLiteratureCard/GeneLiteratureCard.vue')
 )
 
-const ClinsigCard = defineAsyncComponent(() => import('@/components/SeqvarDetails/ClinsigCard.vue'))
+const SeqvarClinsigCard = defineAsyncComponent(
+  () => import('@/components/SeqvarClinsigCard/SeqvarClinsigCard.vue')
+)
 const ClinvarsubCard = defineAsyncComponent(
-  () => import('@/components/VarDetails/ClinvarsubCard.vue')
+  () => import('@/components/ClinvarsubCard/ClinvarsubCard.vue')
 )
-const BeaconNetworkCard = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/BeaconNetworkCard.vue')
+const SeqvarBeaconNetworkCard = defineAsyncComponent(
+  () =>
+    import(
+      '@bihealth/reev-frontend-lib/components/SeqvarBeaconNetworkCard/SeqvarBeaconNetworkCard.vue'
+    )
 )
-const VariantDetailsClinvar = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/ClinvarCard.vue')
+const SeqvarClinvarCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/SeqvarClinvarCard/SeqvarClinvarCard.vue')
 )
-const VariantDetailsTxCsq = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/TxCsqCard.vue')
+const SeqvarConsequencesCard = defineAsyncComponent(
+  () =>
+    import(
+      '@bihealth/reev-frontend-lib/components/SeqvarConsequencesCard/SeqvarConsequencesCard.vue'
+    )
 )
-const VariantDetailsFreqs = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/FreqsCard.vue')
+const SeqvarFreqsCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/SeqvarFreqsCard/SeqvarFreqsCard.vue')
 )
-const VariantToolsCard = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/VariantToolsCard.vue')
+const SeqvarToolsCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/SeqvarToolsCard/SeqvarToolsCard.vue')
 )
-const VariantScoresCard = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/VariantScoresCard.vue')
+const SeqvarScoresCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/SeqvarScoresCard/SeqvarScoresCard.vue')
 )
-const VariantValidatorCard = defineAsyncComponent(
-  () => import('@/components/SeqvarDetails/VariantValidatorCard.vue')
+const SeqvarVariantValidatorCard = defineAsyncComponent(
+  () =>
+    import(
+      '@bihealth/reev-frontend-lib/components/SeqvarVariantValidatorCard/SeqvarVariantValidatorCard.vue'
+    )
 )
 
 /** Type for this component's props. */
@@ -103,7 +115,7 @@ const seqvarInfoStore = useSeqvarInfoStore()
 /** Information about the affected gene, used to fetch information on load. */
 const geneInfoStore = useGeneInfoStore()
 /** Currently active case - for HPO terms. */
-const caseStore = useCaseStore()
+const caseStore = useCaseInfoStore()
 
 /** The user's original input from the query, if given. */
 const orig = computed<string | undefined>(() => (route.query.orig as string) || undefined)
@@ -180,11 +192,11 @@ const loadDataToStore = async () => {
 
   // Finally, load sequence variant, ACMG rating information, and case info.
   await Promise.all([
-    seqvarInfoStore.loadData(seqvar.value).then(() => {
+    seqvarInfoStore.initialize(seqvar.value).then(() => {
       // If we have gene information, load the gene information.  Otherwise,
       // clear the gene info store.
       if (seqvarInfoStore.geneInfo?.hgnc?.agr) {
-        return geneInfoStore.loadData(seqvarInfoStore.geneInfo?.hgnc?.agr, genomeBuild)
+        return geneInfoStore.initialize(seqvarInfoStore.geneInfo?.hgnc?.agr, genomeBuild)
       } else {
         geneInfoStore.clearData()
         return Promise.resolve()
@@ -390,7 +402,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 />
               </div>
               <div id="gene-literature">
-                <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
+                <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
               </div>
             </template>
             <div>
@@ -403,34 +415,37 @@ const SECTIONS: { [key: string]: Section[] } = {
                 </template>
               </div>
               <div id="seqvar-clinsig">
-                <ClinsigCard :seqvar="seqvarInfoStore.seqvar" @error-display="handleDisplayError" />
+                <SeqvarClinsigCard
+                  :seqvar="seqvarInfoStore.seqvar"
+                  @error-display="handleDisplayError"
+                />
               </div>
               <div id="seqvar-csq" class="mt-3">
-                <VariantDetailsTxCsq :tx-csq="seqvarInfoStore.txCsq" />
+                <SeqvarConsequencesCard :tx-csq="seqvarInfoStore.txCsq" />
               </div>
               <div id="seqvar-clinvar" class="mt-3">
-                <VariantDetailsClinvar :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
+                <SeqvarClinvarCard :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
               </div>
               <div id="seqvar-scores" class="mt-3">
-                <VariantScoresCard :var-annos="seqvarInfoStore.varAnnos" />
+                <SeqvarScoresCard :var-annos="seqvarInfoStore.varAnnos" />
               </div>
               <div id="seqvar-freqs" class="mt-3">
-                <VariantDetailsFreqs
+                <SeqvarFreqsCard
                   :seqvar="seqvarInfoStore.seqvar"
                   :var-annos="seqvarInfoStore.varAnnos"
                 />
               </div>
               <div id="seqvar-tools" class="mt-3">
-                <VariantToolsCard
+                <SeqvarToolsCard
                   :seqvar="seqvarInfoStore.seqvar"
                   :var-annos="seqvarInfoStore.varAnnos"
                 />
               </div>
               <div id="seqvar-ga4ghbeacons" class="mt-3">
-                <BeaconNetworkCard :seqvar="seqvarInfoStore.seqvar" />
+                <SeqvarBeaconNetworkCard :seqvar="seqvarInfoStore.seqvar" />
               </div>
               <div id="seqvar-variantvalidator" class="mt-3">
-                <VariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
+                <SeqvarVariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
               </div>
               <div id="seqvar-clinvarsub" class="mt-3">
                 <ClinvarsubCard :seqvar="seqvarInfoStore.seqvar" />

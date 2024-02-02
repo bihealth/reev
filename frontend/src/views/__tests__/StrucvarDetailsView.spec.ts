@@ -1,3 +1,4 @@
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
@@ -5,7 +6,6 @@ import { nextTick } from 'vue'
 import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as CurrentSV from '@/assets/__tests__/ExampleSV.json'
 import { setupMountedComponents } from '@/lib/testUtils'
-import { StoreState } from '@/stores/misc'
 import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
 
 const makeWrapper = (strucvarDetailsStoreState: StoreState) => {

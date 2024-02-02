@@ -1,10 +1,10 @@
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { VMenu } from 'vuetify/components'
 
-import FooterDefault from '@/components/FooterDefault.vue'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import { setupMountedComponents } from '@/lib/testUtils'
-import { StoreState } from '@/stores/misc'
 import HomeView from '@/views/HomeView.vue'
 
 /** Example gene Data */

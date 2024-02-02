@@ -1,5 +1,3 @@
-import { describe, expect, it } from 'vitest'
-
 import {
   CHROM_LENGTHS_37,
   CHROM_LENGTHS_38,
@@ -7,7 +5,8 @@ import {
   CHROM_REFSEQ_38,
   GENOME_BUILD_ALIASES,
   refseqToGenomeBuild
-} from '@/lib/genomeBuilds'
+} from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { describe, expect, it } from 'vitest'
 
 describe.concurrent('constants', () => {
   it('genomeBuildAliases should have the well-known keys', () => {

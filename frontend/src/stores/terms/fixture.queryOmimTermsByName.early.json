@@ -1,0 +1,198 @@
+{
+  "version": { "hpo": "2023-06-06", "viguno": "0.2.0" },
+  "query": {
+    "omim_id": null,
+    "name": "early",
+    "match_": "contains",
+    "max_results": 100,
+    "hpo_terms": false
+  },
+  "result": [
+    {
+      "omim_id": "OMIM:165800",
+      "name": "Short stature and advanced bone age, with or without early-onset osteoarthritis and/or osteochondritis dissecans"
+    },
+    {
+      "omim_id": "OMIM:167320",
+      "name": "Inclusion body myopathy with early-onset paget disease with or without frontotemporal dementia 1"
+    },
+    {
+      "omim_id": "OMIM:208920",
+      "name": "Ataxia, early-onset, with oculomotor apraxia and hypoalbuminemia"
+    },
+    {
+      "omim_id": "OMIM:217200",
+      "name": "Convulsive disorder, familial, with prenatal or early onset"
+    },
+    {
+      "omim_id": "OMIM:226980",
+      "name": "Epiphyseal dysplasia, multiple, with early-onset diabetes mellitus"
+    },
+    { "omim_id": "OMIM:260300", "name": "Parkinson disease 15, autosomal recessive early-onset" },
+    { "omim_id": "OMIM:261900", "name": "Pili torti, early-onset" },
+    { "omim_id": "OMIM:300088", "name": "Epileptic encephalopathy, early infantile, 9" },
+    { "omim_id": "OMIM:300717", "name": "Myopathy, reducing body, X-linked, early-onset, severe" },
+    { "omim_id": "OMIM:300884", "name": "Epileptic encephalopathy, early infantile, 36" },
+    { "omim_id": "OMIM:602080", "name": "Paget disease of bone 2, early-onset" },
+    {
+      "omim_id": "OMIM:603689",
+      "name": "Myopathy, myofibrillar, 9, with early respiratory failure"
+    },
+    {
+      "omim_id": "OMIM:605055",
+      "name": "Alzheimer disease, familial early-onset, with coexisting amyloid and prion pathology"
+    },
+    {
+      "omim_id": "OMIM:605115",
+      "name": "Hypertension, early-onset, autosomal dominant, with severe exacerbationin pregnancy"
+    },
+    { "omim_id": "OMIM:605909", "name": "Parkinson disease 6, autosomal recessive early-onset" },
+    { "omim_id": "OMIM:606324", "name": "Parkinson disease 7, autosomal recessive early-onset" },
+    {
+      "omim_id": "OMIM:607208",
+      "name": "Epileptic encephalopathy, early infantile, 6 (Dravet syndrome)"
+    },
+    { "omim_id": "OMIM:609304", "name": "Epileptic encephalopathy, early infantile, 3" },
+    {
+      "omim_id": "OMIM:609734",
+      "name": "Obesity, early-onset, with adrenal insufficiency and red hair"
+    },
+    { "omim_id": "OMIM:612164", "name": "Epileptic encephalopathy, early infantile, 4" },
+    {
+      "omim_id": "OMIM:612567",
+      "name": "Inflammatory bowel disease 25, early onset, autosomal recessive"
+    },
+    {
+      "omim_id": "OMIM:612938",
+      "name": "Growth retardation, developmental delay, coarse facies, and earlydeath"
+    },
+    { "omim_id": "OMIM:612949", "name": "Epileptic encephalopathy, early infantile, 39" },
+    {
+      "omim_id": "OMIM:613148",
+      "name": "Inflammatory bowel disease 28, early onset, autosomal recessive"
+    },
+    { "omim_id": "OMIM:613477", "name": "Epileptic encephalopathy, early infantile, 5" },
+    { "omim_id": "OMIM:613720", "name": "Epileptic encephalopathy, early infantile, 7" },
+    { "omim_id": "OMIM:613721", "name": "Epileptic encephalopathy, early infantile, 11" },
+    {
+      "omim_id": "OMIM:614399",
+      "name": "Myopathy, areflexia, respiratory distress, and dysphagia, early-onset"
+    },
+    { "omim_id": "OMIM:614558", "name": "Epileptic encephalopathy, early infantile, 13" },
+    {
+      "omim_id": "OMIM:615422",
+      "name": "Inclusion body myopathy with early-onset Paget disease with or without frontotemporal dementia 2"
+    },
+    {
+      "omim_id": "OMIM:615424",
+      "name": "Inclusion body myopathy with early-onset Paget disease without frontotemporal dementia 3"
+    },
+    { "omim_id": "OMIM:615530", "name": "Parkinson disease 20, early-onset" },
+    { "omim_id": "OMIM:615744", "name": "Epileptic encephalopathy, early infantile, 19" },
+    { "omim_id": "OMIM:615833", "name": "Epileptic encephalopathy, early infantile, 21" },
+    { "omim_id": "OMIM:615871", "name": "Epileptic encephalopathy, early infantile, 24" },
+    {
+      "omim_id": "OMIM:615905",
+      "name": "Epileptic encephalopathy, early infantile, 25, with amelogenesis imperfecta"
+    },
+    { "omim_id": "OMIM:616118", "name": "Macular degeneration, early-onset" },
+    { "omim_id": "OMIM:616339", "name": "Epileptic encephalopathy, early infantile, 29" },
+    { "omim_id": "OMIM:616341", "name": "Epileptic encephalopathy, early infantile, 30" },
+    { "omim_id": "OMIM:616346", "name": "Epileptic encephalopathy, early infantile, 31" },
+    { "omim_id": "OMIM:616366", "name": "Epileptic encephalopathy, early infantile, 32" },
+    { "omim_id": "OMIM:616645", "name": "Epileptic encephalopathy, early infantile, 34" },
+    { "omim_id": "OMIM:616647", "name": "Epileptic encephalopathy, early infantile, 35" },
+    { "omim_id": "OMIM:616840", "name": "Parkinson disease 23, autosomal recessive early-onset" },
+    { "omim_id": "OMIM:616981", "name": "Epileptic encephalopathy, early infantile, 37" },
+    { "omim_id": "OMIM:617020", "name": "Epileptic encephalopathy, early infantile, 38" },
+    { "omim_id": "OMIM:617065", "name": "Epileptic encephalopathy, early infantile, 40" },
+    { "omim_id": "OMIM:617105", "name": "Epileptic encephalopathy, early infantile, 41" },
+    { "omim_id": "OMIM:617106", "name": "Epileptic encephalopathy, early infantile, 42" },
+    { "omim_id": "OMIM:617113", "name": "Epileptic encephalopathy, early infantile, 43" },
+    { "omim_id": "OMIM:617153", "name": "Epileptic encephalopathy, early infantile, 45" },
+    { "omim_id": "OMIM:617162", "name": "Epileptic encephalopathy, early infantile, 46" },
+    {
+      "omim_id": "OMIM:617186",
+      "name": "Encephalopathy, progressive, early-onset, with brain edema and/or leukoencephalopathy, 1"
+    },
+    {
+      "omim_id": "OMIM:617193",
+      "name": "Encephalopathy, progressive, early-onset, with brain atrophy and thin corpus callosum"
+    },
+    { "omim_id": "OMIM:617281", "name": "Epileptic encephalopathy, early infantile, 49" },
+    { "omim_id": "OMIM:617290", "name": "Epilepsy, early-onset, vitamin b6-dependent" },
+    { "omim_id": "OMIM:617339", "name": "Epileptic encephalopathy, early infantile, 51" },
+    { "omim_id": "OMIM:617350", "name": "Epileptic encephalopathy, early infantile, 52" },
+    { "omim_id": "OMIM:617389", "name": "Epileptic encephalopathy, early infantile, 53" },
+    { "omim_id": "OMIM:617391", "name": "Epileptic encephalopathy, early infantile, 54" },
+    { "omim_id": "OMIM:617599", "name": "Epileptic encephalopathy, early infantile, 55" },
+    { "omim_id": "OMIM:617665", "name": "Epileptic encephalopathy, early infantile, 56" },
+    {
+      "omim_id": "OMIM:617669",
+      "name": "Encephalopathy, progressive, early-onset, with brain atrophy and spasticity"
+    },
+    { "omim_id": "OMIM:617762", "name": "Leukodystrophy, progressive, early childhood-onset" },
+    {
+      "omim_id": "OMIM:617829",
+      "name": "Epileptic encephalopathy, infantile or early childhood, 2"
+    },
+    { "omim_id": "OMIM:617879", "name": "Leber congenital amaurosis with early-onset deafness" },
+    { "omim_id": "OMIM:617904", "name": "Epileptic encephalopathy, early infantile, 59" },
+    { "omim_id": "OMIM:617929", "name": "Epileptic encephalopathy, early infantile, 60" },
+    { "omim_id": "OMIM:617933", "name": "Epileptic encephalopathy, early infantile, 61" },
+    { "omim_id": "OMIM:617976", "name": "Epileptic encephalopathy, early infantile, 63" },
+    { "omim_id": "OMIM:618004", "name": "Epileptic encephalopathy, early infantile, 64" },
+    { "omim_id": "OMIM:618067", "name": "Epileptic encephalopathy, early infantile, 66" },
+    {
+      "omim_id": "OMIM:618087",
+      "name": "Spinocerebellar ataxia 42, early-onset, severe, with neurodevelopmental deficits"
+    },
+    { "omim_id": "OMIM:618141", "name": "Epileptic encephalopathy, early infantile, 67" },
+    { "omim_id": "OMIM:618201", "name": "Epileptic encephalopathy, early infantile, 68" },
+    {
+      "omim_id": "OMIM:618321",
+      "name": "Encephalopathy, progressive, early-onset, with brain edema and/or leukoencephalopathy, 2"
+    },
+    { "omim_id": "OMIM:618328", "name": "Epileptic encephalopathy, early infantile, 71" },
+    {
+      "omim_id": "OMIM:618331",
+      "name": "Encephalopathy, progressive, early-onset, with episodic rhabdomyolysis"
+    },
+    { "omim_id": "OMIM:618374", "name": "Epileptic encephalopathy, early infantile, 72" },
+    { "omim_id": "OMIM:618396", "name": "Epileptic encephalopathy, early infantile, 74" },
+    { "omim_id": "OMIM:618437", "name": "Epileptic encephalopathy, early infantile, 75" },
+    {
+      "omim_id": "OMIM:618451",
+      "name": "Neurodegeneration, early-onset, with choreoathetoid movements and microcytic anemia"
+    },
+    { "omim_id": "OMIM:618468", "name": "Epileptic encephalopathy, early infantile, 76" },
+    { "omim_id": "OMIM:618548", "name": "Epileptic encephalopathy, early infantile, 77" },
+    { "omim_id": "OMIM:618557", "name": "Epileptic encephalopathy, early infantile, 78" },
+    { "omim_id": "OMIM:618559", "name": "Epileptic encephalopathy, early infantile, 79" },
+    { "omim_id": "OMIM:618580", "name": "Epileptic encephalopathy, early infantile, 80" },
+    { "omim_id": "OMIM:618663", "name": "Epileptic encephalopathy, early infantile, 81" },
+    { "omim_id": "OMIM:618721", "name": "Epileptic encephalopathy, early infantile, 82" },
+    { "omim_id": "OMIM:618744", "name": "Epileptic encephalopathy, early infantile, 83" },
+    { "omim_id": "OMIM:618792", "name": "Epileptic encephalopathy, early infantile, 84" },
+    {
+      "omim_id": "OMIM:618832",
+      "name": "Epilepsy, early-onset, with or without developmental delay"
+    },
+    {
+      "omim_id": "OMIM:618875",
+      "name": "Seizures, early-onset, with neurodegeneration and brain calcification"
+    },
+    { "omim_id": "OMIM:618910", "name": "Epileptic encephalopathy, early infantile, 86" },
+    { "omim_id": "OMIM:618916", "name": "Epileptic encephalopathy, early infantile, 87" },
+    { "omim_id": "OMIM:618959", "name": "Epileptic encephalopathy, early infantile, 88" },
+    {
+      "omim_id": "OMIM:619157",
+      "name": "Neurodevelopmental disorder with or without early-onset generalized epilepsy"
+    },
+    { "omim_id": "OMIM:619681", "name": "Dystonia, early-onset, and/or spastic paraplegia" },
+    {
+      "omim_id": "OMIM:619911",
+      "name": "Intellectual developmental disorder with language impairment and early-onset DOPA-responsive dystonia-parkinsonism"
+    }
+  ]
+}

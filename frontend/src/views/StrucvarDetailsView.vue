@@ -14,58 +14,61 @@ may fail in which case the view will display an error.
 -->
 
 <script setup lang="ts">
+import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { type Strucvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
+import { useStrucvarInfoStore } from '@bihealth/reev-frontend-lib/stores/strucvarInfo'
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import BookmarkListItem from '@/components/BookmarkListItem.vue'
-import FooterDefault from '@/components/FooterDefault.vue'
-import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
-import { type Strucvar } from '@/lib/genomicVars'
+import BookmarkListItem from '@/components/BookmarkListItem/BookmarkListItem.vue'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import { resolveStrucvar } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
-import { useCaseStore } from '@/stores/case'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-import { StoreState } from '@/stores/misc'
-import { useStrucvarInfoStore } from '@/stores/strucvarInfo'
+import { useCaseInfoStore } from '@/stores/caseInfo'
 
 // Define the async components to use in this view.
-const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader/PageHeader.vue'))
 
-const GeneListCard = defineAsyncComponent(
-  () => import('@/components/StrucvarDetails/GeneListCard.vue')
+const StrucvarGeneListCard = defineAsyncComponent(
+  () =>
+    import('@bihealth/reev-frontend-lib/components/StrucvarGeneListCard/StrucvarGeneListCard.vue')
 )
 const GeneOverviewCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/OverviewCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneOverviewCard/GeneOverviewCard.vue')
 )
 const GenePathogenicityCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/PathogenicityCard.vue')
+  () =>
+    import('@bihealth/reev-frontend-lib/components/GenePathogenicityCard/GenePathogenicityCard.vue')
 )
 const GeneConditionsCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ConditionsCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneConditionsCard/GeneConditionsCard.vue')
 )
 const GeneExpressionCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ExpressionCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneExpressionCard/GeneExpressionCard.vue')
 )
 const GeneClinvarCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ClinvarCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/GeneClinvarCard/GeneClinvarCard.vue')
 )
-const LiteratureCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/LiteratureCard.vue')
+const GeneLiteratureCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneLiteratureCard/GeneLiteratureCard.vue')
 )
-
 const StrucvarClinvarCard = defineAsyncComponent(
-  () => import('@/components/StrucvarDetails/ClinvarCard.vue')
+  () => import('@bihealth/reev-frontend-lib/components/StrucvarClinvarCard/StrucvarClinvarCard.vue')
 )
-const VariantToolsCard = defineAsyncComponent(
-  () => import('@/components/StrucvarDetails/VariantToolsCard.vue')
+const StrucvarToolsCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/StrucvarToolsCard/StrucvarToolsCard.vue')
 )
-const GenomeBrowser = defineAsyncComponent(() => import('@/components/GenomeBrowser.vue'))
+const GenomeBrowserCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GenomeBrowserCard/GenomeBrowserCard.vue')
+)
 const ClinsigCard = defineAsyncComponent(
-  () => import('@/components/StrucvarDetails/ClinsigCard.vue')
+  () => import('@/components/StrucvarClinsigCard/StrucvarClinsigCard.vue')
 )
 const ClinvarsubCard = defineAsyncComponent(
-  () => import('@/components/VarDetails/ClinvarsubCard.vue')
+  () => import('@/components/ClinvarsubCard/ClinvarsubCard.vue')
 )
 
 /** Type for this component's props. */
@@ -94,7 +97,7 @@ const strucvarInfoStore = useStrucvarInfoStore()
 /** Information about the genes. */
 const geneInfoStore = useGeneInfoStore()
 /** Currently active case - for HPO terms. */
-const caseStore = useCaseStore()
+const caseStore = useCaseInfoStore()
 
 const strucvar = ref<Strucvar | undefined>(undefined)
 /** Component state; use for opening sections by default. */
@@ -176,7 +179,7 @@ const loadDataToStore = async () => {
   }
 
   // Finally, load structural variant and case information.
-  await Promise.all([strucvarInfoStore.loadData(strucvar.value), caseStore.initialize()])
+  await Promise.all([strucvarInfoStore.initialize(strucvar.value), caseStore.initialize()])
   await scrollToSection(route)
 }
 
@@ -187,7 +190,7 @@ const loadDataToStore = async () => {
  */
 const loadGeneToStore = async (hgncId: string) => {
   if (strucvar.value !== undefined) {
-    await geneInfoStore.loadData(hgncId, strucvar.value.genomeBuild)
+    await geneInfoStore.initialize(hgncId, strucvar.value.genomeBuild)
     await scrollToSection(route)
   }
 }
@@ -388,7 +391,7 @@ const SECTIONS: { [key: string]: Section[] } = {
             </v-alert>
 
             <div id="gene-list">
-              <GeneListCard
+              <StrucvarGeneListCard
                 v-model:selected-gene-hgnc-id="selectedGeneHgncId"
                 :current-strucvar-record="strucvarInfoStore.strucvar"
                 :csq="strucvarInfoStore.csq"
@@ -424,7 +427,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 />
               </div>
               <div id="gene-literature">
-                <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
+                <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
               </div>
             </template>
 
@@ -435,7 +438,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <StrucvarClinvarCard :strucvar="strucvar" />
               </div>
               <div id="strucvar-tools">
-                <VariantToolsCard :strucvar="strucvar" />
+                <StrucvarToolsCard :strucvar="strucvar" />
               </div>
               <div id="strucvar-clinsig">
                 <ClinsigCard :strucvar="strucvar" @error-display="handleDisplayError" />
@@ -444,7 +447,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <ClinvarsubCard :strucvar="strucvarInfoStore.strucvar" />
               </div>
               <div id="strucvar-genomebrowser">
-                <GenomeBrowser
+                <GenomeBrowserCard
                   :genome-build="strucvar?.genomeBuild"
                   :locus="svLocus(strucvar) as string"
                 />

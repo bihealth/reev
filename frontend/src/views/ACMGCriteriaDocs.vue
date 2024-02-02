@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent } from 'vue'
 import { useTheme } from 'vuetify'
 
 // Components
-const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader/PageHeader.vue'))
 /** The global theme. */
 const theme = useTheme()
 

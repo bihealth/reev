@@ -15,35 +15,40 @@ of this resolution.
 -->
 
 <script setup lang="ts">
+import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import BookmarkListItem from '@/components/BookmarkListItem.vue'
-import FooterDefault from '@/components/FooterDefault.vue'
-import { type GenomeBuild, guessGenomeBuild } from '@/lib/genomeBuilds'
+import BookmarkListItem from '@/components/BookmarkListItem/BookmarkListItem.vue'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import { lookupGene } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
-import { useCaseStore } from '@/stores/case'
-import { useGeneInfoStore } from '@/stores/geneInfo'
-import { StoreState } from '@/stores/misc'
+import { useCaseInfoStore } from '@/stores/caseInfo'
 
 // Define the async components to use in this view.
-const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
-const OverviewCard = defineAsyncComponent(() => import('@/components/GeneDetails/OverviewCard.vue'))
-const PathogenicityCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/PathogenicityCard.vue')
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader/PageHeader.vue'))
+const GeneOverviewCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneOverviewCard/GeneOverviewCard.vue')
 )
-const LiteratureCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/LiteratureCard.vue')
+const GenePathogenicityCard = defineAsyncComponent(
+  () =>
+    import('@bihealth/reev-frontend-lib/components/GenePathogenicityCard/GenePathogenicityCard.vue')
 )
-const ConditionsCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ConditionsCard.vue')
+const GeneLiteratureCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneLiteratureCard/GeneLiteratureCard.vue')
 )
-const ExpressionCard = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ExpressionCard.vue')
+const GeneConditionsCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneConditionsCard/GeneConditionsCard.vue')
 )
-const ClinvarCard = defineAsyncComponent(() => import('@/components/GeneDetails/ClinvarCard.vue'))
+const GeneExpressionCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneExpressionCard/GeneExpressionCard.vue')
+)
+const GeneClinvarCard = defineAsyncComponent(
+  () => import('@bihealth/reev-frontend-lib/components/GeneClinvarCard/GeneClinvarCard.vue')
+)
 
 /** Type for this component's props. */
 export interface Props {
@@ -65,7 +70,7 @@ const theme = useTheme()
 /** Detailed information about the currently selected gene. */
 const geneInfoStore = useGeneInfoStore()
 /** Information about the current case, used for HPO terms and phenotypes. */
-const caseStore = useCaseStore()
+const caseStore = useCaseInfoStore()
 
 /** Component state; used genome build. */
 const genomeBuild = ref<GenomeBuild>('grch37')
@@ -95,7 +100,7 @@ const loadDataToStore = async () => {
     errorMessage.value = `${err}`
     return
   }
-  await geneInfoStore.loadData(hgncId, genomeBuild.value)
+  await geneInfoStore.initialize(hgncId, genomeBuild.value)
   await caseStore.initialize()
   await scrollToSection(route)
 }
@@ -188,22 +193,25 @@ const SECTIONS: Section[] = [
             </v-alert>
 
             <div id="gene-overview">
-              <OverviewCard :gene-info="geneInfoStore.geneInfo" :show-gene-details-link="false" />
+              <GeneOverviewCard
+                :gene-info="geneInfoStore.geneInfo"
+                :show-gene-details-link="false"
+              />
             </div>
 
             <div id="gene-pathogenicity">
-              <PathogenicityCard :gene-info="geneInfoStore.geneInfo" />
+              <GenePathogenicityCard :gene-info="geneInfoStore.geneInfo" />
             </div>
 
             <div id="gene-conditions">
-              <ConditionsCard
+              <GeneConditionsCard
                 :gene-info="geneInfoStore.geneInfo"
                 :hpo-terms="geneInfoStore.hpoTerms"
               />
             </div>
 
             <div id="gene-expression">
-              <ExpressionCard
+              <GeneExpressionCard
                 :gene-symbol="geneInfoStore.geneInfo?.hgnc?.symbol"
                 :expression-records="geneInfoStore.geneInfo?.gtex?.records"
                 :ensembl-gene-id="geneInfoStore.geneInfo?.gtex?.ensemblGeneId"
@@ -211,7 +219,7 @@ const SECTIONS: Section[] = [
             </div>
 
             <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
-              <ClinvarCard
+              <GeneClinvarCard
                 :gene-clinvar="geneInfoStore.geneClinvar"
                 :transcripts="geneInfoStore.transcripts"
                 :genome-build="genomeBuild"
@@ -221,7 +229,7 @@ const SECTIONS: Section[] = [
             </div>
 
             <div id="gene-literature">
-              <LiteratureCard :gene-info="geneInfoStore.geneInfo" />
+              <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
             </div>
           </v-col>
         </v-row>

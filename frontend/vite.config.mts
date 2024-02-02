@@ -1,7 +1,9 @@
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import { URL, fileURLToPath } from 'node:url'
+import ViteFonts from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import dts from 'vite-plugin-dts'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
@@ -13,17 +15,34 @@ export default defineConfig({
     vue({
       template: { transformAssetUrls }
     }),
-    vueJsx(),
+    dts({
+      insertTypesEntry: true
+    }),
+    cssInjectedByJsPlugin(),
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
       styles: {
         configFile: 'src/styles/settings.scss'
       }
+    }),
+    ViteFonts({
+      google: {
+        families: [
+          {
+            name: 'Roboto',
+            styles: 'wght@100;300;400;500;700;900'
+          }
+        ]
+      }
     })
   ],
+  define: { 'process.env': {} },
   resolve: {
     alias: {
+      '@bihealth/reev-frontend-lib': fileURLToPath(
+        new URL('./src/ext/reev-frontend-lib/src', import.meta.url)
+      ),
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
@@ -45,8 +64,5 @@ export default defineConfig({
         secure: false
       }
     }
-  },
-  build: {
-    chunkSizeWarningLimit: 1500
   }
 })

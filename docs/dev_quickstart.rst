@@ -54,6 +54,14 @@ Install NodeJS v20 (LTS):
     $ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
     $ sudo apt-get install -y nodejs
 
+----------------
+Clone Repository
+----------------
+
+.. code-block:: bash
+
+    $ git clone --recursive git@github.com/bihealth/reev.git
+
 --------------------
 Install Dependencies
 --------------------

@@ -1,11 +1,9 @@
 /**
  * Code implementing the query strategy.
  */
-import { type RouteLocationRaw } from 'vue-router'
-
-import { AnnonarsClient } from '@/api/annonars'
-import { DottyClient } from '@/api/dotty'
-import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { AnnonarsClient } from '@bihealth/reev-frontend-lib/api/annonars'
+import { DottyClient } from '@bihealth/reev-frontend-lib/api/dotty'
+import { type GenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 import {
   ParseError,
   type Seqvar,
@@ -14,7 +12,8 @@ import {
   parseIscnCnv,
   parseSeparatedSeqvar,
   parseSeparatedStrucvar
-} from '@/lib/genomicVars'
+} from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { type RouteLocationRaw } from 'vue-router'
 
 /**
  * Attempt to translate the variant with dotty to SPDI.

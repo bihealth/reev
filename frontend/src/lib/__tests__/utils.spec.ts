@@ -1,7 +1,6 @@
+import { type GenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
+import { type Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
 import { describe, expect, it } from 'vitest'
-
-import { type GenomeBuild } from '@/lib/genomeBuilds'
-import { type Seqvar } from '@/lib/genomicVars'
 
 import {
   copy,

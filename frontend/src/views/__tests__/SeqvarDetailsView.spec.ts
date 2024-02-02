@@ -1,3 +1,5 @@
+import { type Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
@@ -6,9 +8,7 @@ import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import { MultiSourceAcmgCriteriaState } from '@/lib/acmgSeqvar'
-import { type Seqvar } from '@/lib/genomicVars'
 import { setupMountedComponents } from '@/lib/testUtils'
-import { StoreState } from '@/stores/misc'
 import SeqvarDetailsView from '@/views/SeqvarDetailsView.vue'
 
 /** Example Sequence Variant */

@@ -1,0 +1,193 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`geneInfo Store > should load data 1`] = `
+[
+  {
+    "data": {
+      "aliasName": [],
+      "aliasSymbol": [
+        "TMP",
+        "CL-20",
+      ],
+      "ensemblGeneId": "ENSG00000134531",
+      "hgncId": "HGNC:3333",
+      "name": "epithelial membrane protein 1",
+      "ncbiGeneId": "2012",
+      "symbol": "EMP1",
+    },
+    "score": 0.75,
+  },
+  {
+    "data": {
+      "aliasName": undefined,
+      "aliasSymbol": undefined,
+      "ensemblGeneId": undefined,
+      "hgncId": "HGNC:3334",
+      "name": undefined,
+      "ncbiGeneId": undefined,
+      "symbol": "EMP2",
+    },
+    "score": 0.75,
+  },
+]
+`;
+
+exports[`geneInfo Store > should not load data if gene symbol is the same 1`] = `
+[
+  {
+    "data": {
+      "aliasName": [],
+      "aliasSymbol": [
+        "TMP",
+        "CL-20",
+      ],
+      "ensemblGeneId": "ENSG00000134531",
+      "hgncId": "HGNC:3333",
+      "name": "epithelial membrane protein 1",
+      "ncbiGeneId": "2012",
+      "symbol": "EMP1",
+    },
+    "score": 0.75,
+  },
+  {
+    "data": {
+      "aliasName": undefined,
+      "aliasSymbol": undefined,
+      "ensemblGeneId": undefined,
+      "hgncId": "HGNC:3334",
+      "name": undefined,
+      "ncbiGeneId": undefined,
+      "symbol": "EMP2",
+    },
+    "score": 0.75,
+  },
+]
+`;
+
+exports[`geneInfo Store > should redirect if the searchTerm matched ensembl_gene_id 1`] = `
+[
+  {
+    "data": {
+      "aliasName": [],
+      "aliasSymbol": [
+        "TMP",
+        "CL-20",
+      ],
+      "ensemblGeneId": "ENSG00000134531",
+      "hgncId": "HGNC:3333",
+      "name": "epithelial membrane protein 1",
+      "ncbiGeneId": "2012",
+      "symbol": "EMP1",
+    },
+    "score": 0.75,
+  },
+  {
+    "data": {
+      "aliasName": undefined,
+      "aliasSymbol": undefined,
+      "ensemblGeneId": undefined,
+      "hgncId": "HGNC:3334",
+      "name": undefined,
+      "ncbiGeneId": undefined,
+      "symbol": "EMP2",
+    },
+    "score": 0.75,
+  },
+]
+`;
+
+exports[`geneInfo Store > should redirect if the searchTerm matched hgnc_id 1`] = `
+[
+  {
+    "data": {
+      "aliasName": [],
+      "aliasSymbol": [
+        "TMP",
+        "CL-20",
+      ],
+      "ensemblGeneId": "ENSG00000134531",
+      "hgncId": "HGNC:3333",
+      "name": "epithelial membrane protein 1",
+      "ncbiGeneId": "2012",
+      "symbol": "EMP1",
+    },
+    "score": 0.75,
+  },
+  {
+    "data": {
+      "aliasName": undefined,
+      "aliasSymbol": undefined,
+      "ensemblGeneId": undefined,
+      "hgncId": "HGNC:3334",
+      "name": undefined,
+      "ncbiGeneId": undefined,
+      "symbol": "EMP2",
+    },
+    "score": 0.75,
+  },
+]
+`;
+
+exports[`geneInfo Store > should redirect if the searchTerm matched ncbi_gene_id 1`] = `
+[
+  {
+    "data": {
+      "aliasName": [],
+      "aliasSymbol": [
+        "TMP",
+        "CL-20",
+      ],
+      "ensemblGeneId": "ENSG00000134531",
+      "hgncId": "HGNC:3333",
+      "name": "epithelial membrane protein 1",
+      "ncbiGeneId": "2012",
+      "symbol": "EMP1",
+    },
+    "score": 0.75,
+  },
+  {
+    "data": {
+      "aliasName": undefined,
+      "aliasSymbol": undefined,
+      "ensemblGeneId": undefined,
+      "hgncId": "HGNC:3334",
+      "name": undefined,
+      "ncbiGeneId": undefined,
+      "symbol": "EMP2",
+    },
+    "score": 0.75,
+  },
+]
+`;
+
+exports[`geneInfo Store > should redirect if the searchTerm matched symbol 1`] = `
+[
+  {
+    "data": {
+      "aliasName": [],
+      "aliasSymbol": [
+        "TMP",
+        "CL-20",
+      ],
+      "ensemblGeneId": "ENSG00000134531",
+      "hgncId": "HGNC:3333",
+      "name": "epithelial membrane protein 1",
+      "ncbiGeneId": "2012",
+      "symbol": "EMP1",
+    },
+    "score": 0.75,
+  },
+  {
+    "data": {
+      "aliasName": undefined,
+      "aliasSymbol": undefined,
+      "ensemblGeneId": undefined,
+      "hgncId": "HGNC:3334",
+      "name": undefined,
+      "ncbiGeneId": undefined,
+      "symbol": "EMP2",
+    },
+    "score": 0.75,
+  },
+]
+`;

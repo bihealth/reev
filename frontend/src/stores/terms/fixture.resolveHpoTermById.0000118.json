@@ -1,0 +1,13 @@
+{
+  "version": { "hpo": "2023-06-06", "viguno": "0.2.0" },
+  "query": { "term_id": "0000118", "name": null, "max_results": 100, "genes": false },
+  "result": [
+    {
+      "term_id": "HP:0000118",
+      "name": "Phenotypic abnormality",
+      "definition": "A phenotypic abnormality.",
+      "synonyms": ["Organ abnormality"],
+      "xrefs": ["UMLS:C4021819"]
+    }
+  ]
+}

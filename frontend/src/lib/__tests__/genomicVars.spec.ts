@@ -1,6 +1,4 @@
-import { describe, expect, it } from 'vitest'
-
-import { GENOME_BUILD_LABELS, type GenomeBuild } from '@/lib/genomeBuilds'
+import { GENOME_BUILD_LABELS, type GenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 import {
   type LinearStrucvar,
   LinearStrucvarImpl,
@@ -21,7 +19,8 @@ import {
   parseSeparatedStrucvar,
   seqvarImplFromSeqvar,
   validateSeqvar
-} from '@/lib/genomicVars'
+} from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { describe, expect, it } from 'vitest'
 
 describe.concurrent('regular expression REGEX_GNOMAD_VARIANT', () => {
   it('should match variants with chromosome name only', () => {

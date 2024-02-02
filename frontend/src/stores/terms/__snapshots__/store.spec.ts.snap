@@ -1,0 +1,2219 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Terms Store > fetches HPO term by ID 1`] = `
+[
+  {
+    "definition": "A phenotypic abnormality.",
+    "name": "Phenotypic abnormality",
+    "synonyms": [
+      "Organ abnormality",
+    ],
+    "termId": "HP:0000118",
+    "xrefs": [
+      "UMLS:C4021819",
+    ],
+  },
+]
+`;
+
+exports[`Terms Store > fetches HPO terms by name 1`] = `
+[
+  {
+    "definition": "An abnormality affecting one or both hands.",
+    "name": "Abnormality of the hand",
+    "synonyms": [
+      "Abnormal hands",
+      "Abnormality of the hand",
+      "Hand anomalies",
+      "Hand deformities",
+    ],
+    "termId": "HP:0001155",
+    "xrefs": [
+      "MSH:D006226",
+      "SNOMEDCT_US:299033004",
+      "UMLS:C0018564",
+    ],
+  },
+  {
+    "definition": "An abnormal structure of the first digit of the hand.",
+    "name": "Abnormal thumb morphology",
+    "synonyms": [
+      "Abnormality of the thumb",
+      "Abnormality of the thumbs",
+      "Thumb deformity",
+    ],
+    "termId": "HP:0001172",
+    "xrefs": [
+      "MSH:C536903",
+      "SNOMEDCT_US:299130003",
+      "UMLS:C0575897",
+    ],
+  },
+  {
+    "definition": "An abnormality affecting the carpal bones of the wrist (scaphoid, lunate, triquetral, pisiform, trapezium, trapezoid, capitate, hamate).",
+    "name": "Abnormal carpal morphology",
+    "synonyms": [
+      "Abnormal carpal bones",
+      "Abnormal wrist bones",
+      "Abnormality of the carpal bones",
+      "Anomalous carpal bones",
+      "Carpal bone anomalies",
+    ],
+    "termId": "HP:0001191",
+    "xrefs": [
+      "UMLS:C1840535",
+    ],
+  },
+  {
+    "definition": "An abnormality of the placenta (the organ that connects the developing fetus to the uterine wall) or of the umbilical cord (the cord that connects the fetus to the placenta).",
+    "name": "Abnormalities of placenta or umbilical cord",
+    "synonyms": [
+      "Abnormalities of placenta or umbilical cord",
+    ],
+    "termId": "HP:0001194",
+    "xrefs": [
+      "UMLS:C4025798",
+    ],
+  },
+  {
+    "definition": "An abnormality of the fetus or the birth of the fetus, excluding structural abnormalities.",
+    "name": "Abnormality of prenatal development or birth",
+    "synonyms": [
+      "Abnormality of prenatal development or birth",
+    ],
+    "termId": "HP:0001197",
+    "xrefs": [
+      "UMLS:C4025797",
+    ],
+  },
+  {
+    "definition": "An abnormal structure of the tip (end) of a finger.",
+    "name": "Abnormal fingertip morphology",
+    "synonyms": [
+      "Abnormality of the fingertips",
+    ],
+    "termId": "HP:0001211",
+    "xrefs": [
+      "UMLS:C4025796",
+    ],
+  },
+  {
+    "definition": "An abnormality of the thenar eminence, i.e., of the muscle on the palm of the human hand just beneath the thumb.",
+    "name": "Abnormality of the thenar eminence",
+    "synonyms": [
+      "Thenar abnormality",
+    ],
+    "termId": "HP:0001227",
+    "xrefs": [
+      "UMLS:C4021783",
+    ],
+  },
+  {
+    "definition": "An abnormality of the fingernails.",
+    "name": "Abnormal fingernail morphology",
+    "synonyms": [
+      "Abnormal fingernails",
+      "Abnormality of the fingernails",
+    ],
+    "termId": "HP:0001231",
+    "xrefs": [
+      "UMLS:C4021782",
+    ],
+  },
+  {
+    "definition": "Abnormality of the corpus callosum.",
+    "name": "Abnormal corpus callosum morphology",
+    "synonyms": [
+      "Abnormal corpus callosum",
+      "Abnormality of the corpus callosum",
+      "Corpus callosum abnormality",
+    ],
+    "termId": "HP:0001273",
+    "xrefs": [
+      "UMLS:C1842581",
+    ],
+  },
+  {
+    "definition": "Structural abnormality affecting one or more of the cranial nerves, which emerge directly from the brain stem.",
+    "name": "Abnormal cranial nerve morphology",
+    "synonyms": [
+      "Abnormality of cranial nerve",
+      "Abnormality of the cranial nerves",
+      "Cranial nerve abnormality",
+      "Cranial nerve disease",
+      "Cranial nerve involvement",
+    ],
+    "termId": "HP:0001291",
+    "xrefs": [
+      "UMLS:C1854510",
+      "UMLS:C4020872",
+    ],
+  },
+  {
+    "definition": "An abnormality of the function of the electrical signals with which nerve cells communicate with each other or with muscles as measured by electrophysiological investigations.",
+    "name": "Abnormal nervous system electrophysiology",
+    "synonyms": [
+      "Neurophysiologic abnormalities",
+      "Neurophysiologic abnormality",
+    ],
+    "termId": "HP:0001311",
+    "xrefs": [
+      "UMLS:C4021781",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of the cerebellum.",
+    "name": "Abnormal cerebellum morphology",
+    "synonyms": [
+      "Abnormality of the cerebellum",
+      "Cerebellar abnormalities",
+      "Cerebellar abnormality",
+      "Cerebellar anomaly",
+      "Cerebellar signs",
+    ],
+    "termId": "HP:0001317",
+    "xrefs": [
+      "UMLS:C0742038",
+      "UMLS:C1866129",
+    ],
+  },
+  {
+    "definition": "An abnormal structure or form of the joints, i.e., one or more of the articulations where two bones join.",
+    "name": "Abnormal joint morphology",
+    "synonyms": [
+      "Abnormal shape of joints",
+      "Abnormality of the joints",
+      "Anomaly of the joints",
+      "Joint disease",
+    ],
+    "termId": "HP:0001367",
+    "xrefs": [
+      "MSH:D007592",
+      "SNOMEDCT_US:399269003",
+      "UMLS:C0022408",
+      "UMLS:C0240083",
+    ],
+  },
+  {
+    "definition": "An abnormality of the hip joint.",
+    "name": "Abnormal hip joint morphology",
+    "synonyms": [
+      "Abnormality of the hip joint",
+      "Abnormality of the hip joints",
+    ],
+    "termId": "HP:0001384",
+    "xrefs": [
+      "UMLS:C4020870",
+    ],
+  },
+  {
+    "definition": "A structural abnormality of the abdomen ('belly'), that is, the part of the body between the pelvis and the thorax.",
+    "name": "Abnormal abdomen morphology",
+    "synonyms": [
+      "Abdomen abnormality",
+      "Abnormality of abdomen morphology",
+      "Abnormality of abdomen structure",
+      "Abnormality of the abdomen",
+    ],
+    "termId": "HP:0001438",
+    "xrefs": [
+      "UMLS:C4020869",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of the pulmonary valve.",
+    "name": "Abnormal pulmonary valve morphology",
+    "synonyms": [
+      "Abnormality of the pulmonary valve",
+      "Anomaly of the pulmonary valve",
+    ],
+    "termId": "HP:0001641",
+    "xrefs": [
+      "Fyler:1600",
+      "Fyler:1602",
+      "SNOMEDCT_US:448643005",
+      "UMLS:C3164374",
+    ],
+  },
+  {
+    "definition": "An abnormality of the pericardium, i.e., of the fluid filled sac that surrounds the heart and the proximal ends of the aorta, vena cava, and the pulmonary artery.",
+    "name": "Abnormal pericardium morphology",
+    "synonyms": [
+      "Abnormality of the pericardium",
+    ],
+    "termId": "HP:0001697",
+    "xrefs": [
+      "Fyler:1900",
+      "UMLS:C4025754",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of the left ventricle of the heart.",
+    "name": "Abnormal left ventricle morphology",
+    "synonyms": [
+      "Abnormal heart left ventricle morphology",
+      "Abnormality of the left ventricle",
+      "Left ventricular abnormality",
+    ],
+    "termId": "HP:0001711",
+    "xrefs": [
+      "Fyler:1810",
+      "SNOMEDCT_US:253535002",
+      "UMLS:C0344905",
+    ],
+  },
+  {
+    "definition": "An abnormality of the pancreas.",
+    "name": "Abnormality of the pancreas",
+    "synonyms": [
+      "Abnormality of the pancreas",
+      "Pancreatic disease",
+    ],
+    "termId": "HP:0001732",
+    "xrefs": [
+      "MSH:D010182",
+      "SNOMEDCT_US:3855007",
+      "UMLS:C0030286",
+      "UMLS:C4025751",
+    ],
+  },
+  {
+    "definition": "An abnormality of the skeleton of foot.",
+    "name": "Abnormal foot morphology",
+    "synonyms": [
+      "Abnormal feet structure",
+      "Abnormality of the feet",
+      "Abnormality of the foot",
+      "Foot deformities",
+      "Foot deformity",
+    ],
+    "termId": "HP:0001760",
+    "xrefs": [
+      "MSH:D005530",
+      "SNOMEDCT_US:229844004",
+      "UMLS:C0016506",
+    ],
+  },
+  {
+    "definition": "An abnormality of the birth process.",
+    "name": "Abnormal delivery",
+    "synonyms": [
+      "Abnormal delivery",
+      "Delivery complication",
+    ],
+    "termId": "HP:0001787",
+    "xrefs": [
+      "SNOMEDCT_US:274127000",
+      "UMLS:C0549629",
+    ],
+  },
+  {
+    "definition": "This term applies for all abnormalities of the big toe, also called hallux.",
+    "name": "Abnormal hallux morphology",
+    "synonyms": [
+      "Abnormalities of the hallux",
+      "Abnormality of the big toe",
+      "Abnormality of the hallux",
+    ],
+    "termId": "HP:0001844",
+    "xrefs": [
+      "UMLS:C4021773",
+    ],
+  },
+  {
+    "definition": "An abnormality of the tarsus are the cluster of seven bones in the foot between the tibia and fibula and the metatarsus, including the calcaneus (heel) bone and the talus (ankle) bone.",
+    "name": "Abnormality of the tarsal bones",
+    "synonyms": [
+      "Abnormal ankle bones",
+      "Abnormal tarsals",
+    ],
+    "termId": "HP:0001850",
+    "xrefs": [
+      "UMLS:C1862136",
+    ],
+  },
+  {
+    "definition": "An abnormality of platelets.",
+    "name": "Abnormality of thrombocytes",
+    "synonyms": [
+      "Blood platelet disease",
+      "Platelet abnormalities",
+      "Thrombasthenia",
+    ],
+    "termId": "HP:0001872",
+    "xrefs": [
+      "MSH:D013915",
+      "SNOMEDCT_US:127566005",
+      "SNOMEDCT_US:32942005",
+      "UMLS:C0040015",
+      "UMLS:C0151854",
+      "UMLS:C4020863",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of erythrocytes (red-blood cells).",
+    "name": "Abnormal erythrocyte morphology",
+    "synonyms": [
+      "Abnormality of erythrocytes",
+      "Abnormality of erythroid lineage cell",
+      "Abnormality of red blood cells",
+    ],
+    "termId": "HP:0001877",
+    "xrefs": [
+      "SNOMEDCT_US:12222001",
+      "UMLS:C0391870",
+      "UMLS:C4020862",
+    ],
+  },
+  {
+    "definition": "An abnormal count or structure of eosinophils.",
+    "name": "Abnormal eosinophil morphology",
+    "synonyms": [
+      "Abnormality of eosinophils",
+    ],
+    "termId": "HP:0001879",
+    "xrefs": [
+      "UMLS:C4025738",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality or abnormal count of granulocytes.",
+    "name": "Abnormal granulocyte morphology",
+    "synonyms": [
+      "Abnormality of granulocytes",
+    ],
+    "termId": "HP:0001911",
+    "xrefs": [
+      "SNOMEDCT_US:250274006",
+      "UMLS:C0427515",
+    ],
+  },
+  {
+    "definition": "An abnormality of leukocytes.",
+    "name": "Abnormal leukocyte morphology",
+    "synonyms": [
+      "Abnormality of leukocytes",
+    ],
+    "termId": "HP:0001881",
+    "xrefs": [
+      "SNOMEDCT_US:134199001",
+      "SNOMEDCT_US:24827003",
+      "UMLS:C0152009",
+    ],
+  },
+  {
+    "definition": "An abnormal morphology (form) of the face or its components.",
+    "name": "Abnormal facial shape",
+    "synonyms": [
+      "Abnormal facial shape",
+      "Abnormal morphology of the face",
+      "Deformity of face",
+      "Distinctive facies",
+      "Distortion of face",
+      "Dysmorphic facial features",
+      "Dysmorphic facies",
+      "Facial dysmorphism",
+      "Funny looking face",
+      "Malformation of face",
+      "Unusual facial appearance",
+      "Unusual facies",
+    ],
+    "termId": "HP:0001999",
+    "xrefs": [
+      "SNOMEDCT_US:248200007",
+      "SNOMEDCT_US:32003007",
+      "SNOMEDCT_US:398206004",
+      "SNOMEDCT_US:398302004",
+      "UMLS:C0266617",
+      "UMLS:C0424503",
+      "UMLS:C1385263",
+      "UMLS:C4072832",
+      "UMLS:C4072833",
+    ],
+  },
+  {
+    "definition": "An abnormality of the glabella.",
+    "name": "Abnormality of the glabella",
+    "synonyms": [
+      "Abnormality of the area between the eyebrows",
+      "Deformity of the area between the eyebrows",
+      "Glabellar abnormality",
+      "Malformation of the area between the eyebrows",
+    ],
+    "termId": "HP:0002056",
+    "xrefs": [
+      "UMLS:C4021763",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of the pyramidal tract, whose chief element, the corticospinal tract, is the only direct connection between the brain and the spinal cord. In addition to the corticospinal tract, the pyramidal system includes the corticobulbar, corticomesencephalic, and corticopontine tracts.",
+    "name": "Morphological abnormality of the pyramidal tract",
+    "synonyms": [
+      "Abnormality of the pyramidal tracts",
+      "Pyramidal tract disease",
+    ],
+    "termId": "HP:0002062",
+    "xrefs": [
+      "UMLS:C4020859",
+      "UMLS:C4021761",
+    ],
+  },
+  {
+    "definition": "A structural abnormality of the spinal cord (myelon).",
+    "name": "Abnormal spinal cord morphology",
+    "synonyms": [
+      "Abnormality of the spinal cord",
+      "Spinal cord disease",
+      "Spinal cord pathology",
+    ],
+    "termId": "HP:0002143",
+    "xrefs": [
+      "MSH:D013118",
+      "SNOMEDCT_US:48522003",
+      "UMLS:C0037928",
+      "UMLS:C4025722",
+    ],
+  },
+  {
+    "definition": "An abnormality of the intestine. The closely related term enteropathy is used to refer to any disease of the intestine.",
+    "name": "Abnormal intestine morphology",
+    "synonyms": [
+      "Abnormality of the intestine",
+      "Enteropathy",
+    ],
+    "termId": "HP:0002242",
+    "xrefs": [
+      "MSH:D007410",
+      "SNOMEDCT_US:85919009",
+      "UMLS:C0021831",
+    ],
+  },
+  {
+    "definition": "A structural abnormality of the small intestine.",
+    "name": "Abnormal small intestine morphology",
+    "synonyms": [
+      "Abnormality of the small intestine",
+    ],
+    "termId": "HP:0002244",
+    "xrefs": [
+      "UMLS:C4025717",
+    ],
+  },
+  {
+    "definition": "Any abnormality of the large intestine.",
+    "name": "Abnormal large intestine morphology",
+    "synonyms": [
+      "Abnormality of the large intestine",
+    ],
+    "termId": "HP:0002250",
+    "xrefs": [
+      "UMLS:C4025715",
+    ],
+  },
+  {
+    "definition": "Abnormality observed by electroencephalogram (EEG), which is used to record of the brain's spontaneous electrical activity from multiple electrodes placed on the scalp.",
+    "name": "EEG abnormality",
+    "synonyms": [
+      "Abnormal EEG",
+      "Abnormal electroencephalogram",
+      "EEG abnormalities",
+      "Electroencephalogram abnormal",
+      "Electroencephalogram abnormalities",
+    ],
+    "termId": "HP:0002353",
+    "xrefs": [
+      "SNOMEDCT_US:274521009",
+      "UMLS:C0151611",
+    ],
+  },
+  {
+    "definition": "An abnormality of the midbrain, which has as its parts the tectum, cerebral peduncle, midbrain tegmentum and cerebral aqueduct.",
+    "name": "Abnormal midbrain morphology",
+    "synonyms": [
+      "Abnormal shape of midbrain",
+      "Abnormality of midbrain morphology",
+      "Abnormality of the mesencephalon",
+      "Abnormality of the midbrain",
+    ],
+    "termId": "HP:0002418",
+    "xrefs": [
+      "UMLS:C4021755",
+    ],
+  },
+  {
+    "definition": "Abnormality of REM sleep. Phases of REM sleep are characterized by desynchronized EEG patterns, increases in heart rate and blood pressure, sympathetic activation, and a profound loss of muscle tonus except for the eye and middle-ear muscles. There are then phases of rapid eye movements.",
+    "name": "Abnormal rapid eye movement sleep",
+    "synonyms": [
+      "Abnormal REM sleep",
+    ],
+    "termId": "HP:0002494",
+    "xrefs": [
+      "SNOMEDCT_US:69020003",
+      "UMLS:C0392188",
+    ],
+  },
+  {
+    "definition": "Abnormality of the corticospinal tract, which is the chief element of the pyramidal system (the principle motor tract) and is the only direct connection between the cerebrum and the spinal cord.",
+    "name": "Morphological abnormality of the corticospinal tract",
+    "synonyms": [
+      "Abnormality of the corticospinal tract",
+      "Involvement of the corticospinal pathways",
+    ],
+    "termId": "HP:0002492",
+    "xrefs": [
+      "UMLS:C4020852",
+      "UMLS:C4025704",
+    ],
+  },
+  {
+    "definition": "An abnormality of the cerebral white matter.",
+    "name": "Abnormal cerebral white matter morphology",
+    "synonyms": [
+      "Abnormality of subcortical white matter",
+      "Abnormality of the cerebral white matter",
+      "Cerebral white matter abnormalities",
+      "Cortical white matter abnormalities seen on MRI",
+      "Leukoaraiosis",
+      "White matter abnormalities",
+      "White matter alterations",
+    ],
+    "termId": "HP:0002500",
+    "xrefs": [
+      "MSH:D049292",
+      "UMLS:C0948163",
+      "UMLS:C4020851",
+    ],
+  },
+  {
+    "definition": "An abnormality of the stomach.",
+    "name": "Abnormal stomach morphology",
+    "synonyms": [
+      "Abnormality of the stomach",
+    ],
+    "termId": "HP:0002577",
+    "xrefs": [
+      "UMLS:C4025699",
+    ],
+  },
+  {
+    "definition": "An abnormality of the bony pelvic girdle, which is a ring of bones connecting the vertebral column to the femurs.",
+    "name": "Abnormal pelvic girdle bone morphology",
+    "synonyms": [
+      "Abnormal shape of pelvic girdle bone",
+      "Abnormality of pelvic girdle bone morphology",
+      "Abnormality of the pelvic girdle",
+    ],
+    "termId": "HP:0002644",
+    "xrefs": [
+      "UMLS:C4020847",
+    ],
+  },
+  {
+    "definition": "Abnormality of the morphology (structure) of the calvaria (skullcap), that is, of that part of the skull that is made up of the superior portions of the frontal bone, occipital bone, and parietal bones and covers the cranial cavity that contains the brain.",
+    "name": "Abnormal calvaria morphology",
+    "synonyms": [
+      "Abnormality of calvarium",
+      "Abnormality of cranial vault",
+      "Abnormality of cranium",
+      "Abnormality of the calvaria",
+      "Abnormality of the shape of calvarium",
+      "Abnormality of the skull cap",
+      "Abnormality of the skullcap",
+    ],
+    "termId": "HP:0002683",
+    "xrefs": [
+      "UMLS:C4025691",
+      "UMLS:C4280561",
+    ],
+  },
+  {
+    "definition": "Any abnormality of the parietal bone of the skull.",
+    "name": "Abnormal parietal bone morphology",
+    "synonyms": [
+      "Abnormality of the parietal bone",
+      "Abnormality of the parietal bone of skull",
+    ],
+    "termId": "HP:0002696",
+    "xrefs": [
+      "UMLS:C4021834",
+    ],
+  },
+  {
+    "definition": "Any abnormality of the foramen magnum.",
+    "name": "Abnormal foramen magnum morphology",
+    "synonyms": [
+      "Abnormality of the foramen magnum",
+    ],
+    "termId": "HP:0002699",
+    "xrefs": [
+      "UMLS:C4025687",
+    ],
+  },
+  {
+    "definition": "An abnormality of the process of ossification of the skull.",
+    "name": "Abnormality of skull ossification",
+    "synonyms": [
+      "Abnormality of bone calcification of calvarium",
+      "Abnormality of bone calcification of cranium",
+      "Abnormality of bone calcification of skull",
+      "Abnormality of bone formation of calvarium",
+      "Abnormality of bone formation of cranium",
+      "Abnormality of bone mineralization of calvarium",
+      "Abnormality of bone mineralization of cranium",
+      "Abnormality of bone mineralization of skull",
+      "Abnormality of ossification of calvarium",
+      "Abnormality of ossification of cranium",
+      "Abnormality of skull bone formation",
+    ],
+    "termId": "HP:0002703",
+    "xrefs": [
+      "UMLS:C4025686",
+      "UMLS:C4280550",
+      "UMLS:C4280551",
+      "UMLS:C4280552",
+      "UMLS:C4280553",
+    ],
+  },
+  {
+    "definition": "An abnormality of the immune system.",
+    "name": "Abnormality of the immune system",
+    "synonyms": [
+      "Abnormality of the immune system",
+      "Immunological abnormality",
+    ],
+    "termId": "HP:0002715",
+    "xrefs": [
+      "UMLS:C4021753",
+    ],
+  },
+  {
+    "definition": "An abnormality of the base of the skull, which forms the floor of the cranial cavity and separates the brain from other facial structures. The skull base is made up of five bones: the ethmoid, sphenoid, occipital, paired frontal, and paired parietal bones, and is subdivided into 3 regions: the anterior, middle, and posterior cranial fossae. The petro-occipital fissure subdivides the middle cranial fossa into 1 central component and 2 lateral components.",
+    "name": "Abnormal skull base morphology",
+    "synonyms": [
+      "Abnormality of cranial base",
+      "Abnormality of the skull base",
+    ],
+    "termId": "HP:0002693",
+    "xrefs": [
+      "UMLS:C4025688",
+    ],
+  },
+  {
+    "definition": "A structural lymph node abnormality.",
+    "name": "Abnormal lymph node morphology",
+    "synonyms": [
+      "Abnormal lymph node histology",
+      "Abnormality of the lymph nodes",
+    ],
+    "termId": "HP:0002733",
+    "xrefs": [
+      "UMLS:C0149727",
+    ],
+  },
+  {
+    "definition": "Any morphological abnormality of cartilage.",
+    "name": "Abnormal cartilage morphology",
+    "synonyms": [
+      "Abnormal shape of cartilage",
+      "Abnormality of cartilage morphology",
+    ],
+    "termId": "HP:0002763",
+    "xrefs": [
+      "UMLS:C4025680",
+    ],
+  },
+  {
+    "definition": "An abnormality of the leg.",
+    "name": "Abnormality of the lower limb",
+    "synonyms": [
+      "Abnormality of the leg",
+      "Abnormality of the lower limb",
+      "Lower limb deformities",
+    ],
+    "termId": "HP:0002814",
+    "xrefs": [
+      "SNOMEDCT_US:449715001",
+      "UMLS:C1096086",
+    ],
+  },
+  {
+    "definition": "An abnormality of the knee joint or surrounding structures.",
+    "name": "Abnormality of the knee",
+    "synonyms": [
+      "Abnormality of the knee",
+    ],
+    "termId": "HP:0002815",
+    "xrefs": [
+      "UMLS:C4025676",
+    ],
+  },
+  {
+    "definition": "An abnormality of the arm.",
+    "name": "Abnormality of the upper limb",
+    "synonyms": [
+      "Abnormality of the arm",
+      "Abnormality of the upper limb",
+    ],
+    "termId": "HP:0002817",
+    "xrefs": [
+      "UMLS:C4020900",
+    ],
+  },
+  {
+    "definition": "Any abnormality of bones of the arms or legs.",
+    "name": "Abnormality of limb bone morphology",
+    "synonyms": [
+      "Abnormal shape of limb bone",
+      "Arm and/or leg bone differences",
+      "Limb abnormality",
+    ],
+    "termId": "HP:0002813",
+    "xrefs": [
+      "UMLS:C4082761",
+    ],
+  },
+  {
+    "definition": "An abnormality of the radius.",
+    "name": "Abnormal morphology of the radius",
+    "synonyms": [
+      "Abnormality of the radius",
+    ],
+    "termId": "HP:0002818",
+    "xrefs": [
+      "UMLS:C4025675",
+    ],
+  },
+  {
+    "definition": "An abnormality of T cells.",
+    "name": "Abnormal T cell morphology",
+    "synonyms": [
+      "Abnormal T cells",
+      "Abnormality of T cells",
+      "Cellular immune defect",
+      "Defective cellular immunity",
+    ],
+    "termId": "HP:0002843",
+    "xrefs": [
+      "UMLS:C1855752",
+    ],
+  },
+  {
+    "definition": "An abnormality of the ilium, the largest and uppermost bone of the pelvis.",
+    "name": "Abnormal ilium morphology",
+    "synonyms": [
+      "Abnormality of the ilium",
+      "Iliac abnormalities",
+    ],
+    "termId": "HP:0002867",
+    "xrefs": [
+      "UMLS:C4021746",
+    ],
+  },
+  {
+    "definition": "An abnormality of the cerebrospinal fluid (CSF).",
+    "name": "Abnormal cerebrospinal fluid morphology",
+    "synonyms": [
+      "Abnormal CSF findings",
+      "Abnormality of the cerebrospinal fluid",
+      "Abnormality of the CSF",
+    ],
+    "termId": "HP:0002921",
+    "xrefs": [
+      "UMLS:C0151583",
+    ],
+  },
+  {
+    "definition": "An abnormality of the lower arm.",
+    "name": "Abnormal forearm morphology",
+    "synonyms": [
+      "Abnormality of the forearm",
+    ],
+    "termId": "HP:0002973",
+    "xrefs": [
+      "UMLS:C4025666",
+    ],
+  },
+  {
+    "definition": "Abnormality of the wrist, the structure connecting the hand and the forearm.",
+    "name": "Abnormality of the wrist",
+    "synonyms": [
+      "Abnormalities of the wrists",
+      "Abnormality of the wrist",
+    ],
+    "termId": "HP:0003019",
+    "xrefs": [
+      "UMLS:C4021744",
+    ],
+  },
+  {
+    "definition": "An abnormality of compact bone (also known as cortical bone), which forms the dense surface of bones.",
+    "name": "Abnormal cortical bone morphology",
+    "synonyms": [
+      "Abnormal compact bone morphology",
+      "Abnormality of cortical bone",
+    ],
+    "termId": "HP:0003103",
+    "xrefs": [
+      "UMLS:C4021741",
+    ],
+  },
+  {
+    "definition": "Abnormality of the homeostasis (concentration) of a monoatomic ion.",
+    "name": "Abnormal blood ion concentration",
+    "synonyms": [
+      "Abnormality of ion homeostasis",
+      "Electrolyte disorders",
+      "Electrolyte disturbance",
+    ],
+    "termId": "HP:0003111",
+    "xrefs": [
+      "SNOMEDCT_US:237840007",
+      "UMLS:C1704431",
+      "UMLS:C4025654",
+    ],
+  },
+  {
+    "definition": "Abnormal rhythm of the heart.",
+    "name": "Abnormal EKG",
+    "synonyms": [
+      "Abnormal ECG",
+      "Abnormal EKG",
+      "Abnormal electrocardiogram",
+      "EKG abnormality",
+    ],
+    "termId": "HP:0003115",
+    "xrefs": [
+      "SNOMEDCT_US:102594003",
+      "UMLS:C0522055",
+    ],
+  },
+  {
+    "definition": "An abnormal concentration of a hormone in the blood.",
+    "name": "Abnormal circulating hormone concentration",
+    "synonyms": [
+      "Abnormal circulating hormone level",
+      "Abnormality of circulating hormone level",
+    ],
+    "termId": "HP:0003117",
+    "xrefs": [
+      "UMLS:C4025652",
+    ],
+  },
+  {
+    "definition": "An abnormality of the acetabulum, i.e., the Acetabular part of hip bone, which together with the head of the femur forms the hip joint.",
+    "name": "Abnormal acetabulum morphology",
+    "synonyms": [
+      "Abnormality of the acetabulum",
+      "Abnormality of the hipbone socket",
+      "Acetabular abnormality",
+    ],
+    "termId": "HP:0003170",
+    "xrefs": [
+      "UMLS:C4021739",
+    ],
+  },
+  {
+    "definition": "An abnormality of the hip bone.",
+    "name": "Abnormal hip bone morphology",
+    "synonyms": [
+      "Abnormality of the hip bone",
+      "Abnormality of the hips",
+    ],
+    "termId": "HP:0003272",
+    "xrefs": [
+      "UMLS:C4021735",
+    ],
+  },
+  {
+    "definition": "Abnormal morphology of vertebral body.",
+    "name": "Abnormal form of the vertebral bodies",
+    "synonyms": [
+      "Abnormally shaped vertebrae",
+    ],
+    "termId": "HP:0003312",
+    "xrefs": [
+      "UMLS:C1839326",
+    ],
+  },
+  {
+    "definition": "Any abnormality of the cervical vertebral column.",
+    "name": "Abnormality of the cervical spine",
+    "synonyms": [
+      "Abnormal cervical spine",
+      "Abnormality of cervical vertebra",
+      "Abnormality of the cervical vertebrae",
+      "Cervical spine abnormalities",
+      "Cervical vertebral abnormalities",
+      "Cervical vertebral anomalies",
+      "Disorder of cervical vertebra",
+    ],
+    "termId": "HP:0003319",
+    "xrefs": [
+      "UMLS:C1852464",
+    ],
+  },
+  {
+    "definition": "Abnormality of the dens of the axis, which is also known as the odontoid process.",
+    "name": "Abnormality of the odontoid process",
+    "synonyms": [
+      "Abnormal odontoid peg",
+      "Abnormal odontoid process",
+    ],
+    "termId": "HP:0003310",
+    "xrefs": [
+      "UMLS:C1864794",
+    ],
+  },
+  {
+    "definition": "An abnormality of the femoral head.",
+    "name": "Abnormal femoral head morphology",
+    "synonyms": [
+      "Abnormal head of thigh bone",
+      "Abnormality of the femoral head",
+    ],
+    "termId": "HP:0003368",
+    "xrefs": [
+      "UMLS:C4025620",
+    ],
+  },
+  {
+    "definition": "An abnormality of the femoral neck (which is the process of bone, connecting the femoral head with the femoral shaft).",
+    "name": "Abnormal femoral neck morphology",
+    "synonyms": [
+      "Abnormal neck of thigh bone",
+      "Abnormality of the femoral neck",
+    ],
+    "termId": "HP:0003367",
+    "xrefs": [
+      "UMLS:C4025621",
+    ],
+  },
+  {
+    "definition": "Any abnormality of the neuromuscular junction, which is the synapse between the motor end plate of a motor neuron and the skeletal muscle fibers.",
+    "name": "Abnormal synaptic transmission at the neuromuscular junction",
+    "synonyms": [
+      "Abnormality of neuromuscular transmission",
+    ],
+    "termId": "HP:0003398",
+    "xrefs": [
+      "UMLS:C4020842",
+      "UMLS:C4025618",
+    ],
+  },
+  {
+    "definition": "Abnormality of the phalanges of the 5th (little) finger.",
+    "name": "Abnormal 5th finger phalanx morphology",
+    "synonyms": [
+      "Abnormality of the little finger bone",
+      "Abnormality of the phalanges of the 5th finger",
+      "Abnormality of the pinkie finger bone",
+      "Abnormality of the pinky finger bone",
+    ],
+    "termId": "HP:0004213",
+    "xrefs": [
+      "UMLS:C4025408",
+    ],
+  },
+  {
+    "definition": "Abnormality of the distal phalanx of the 5th (little) finger.",
+    "name": "Abnormality of the distal phalanx of the 5th finger",
+    "synonyms": [
+      "Abnormality of the distal phalanx of the little finger",
+      "Abnormality of the outermost little finger bone",
+      "Abnormality of the outermost pinkie finger bone",
+      "Abnormality of the outermost pinky finger bone",
+      "Abnormality of the terminal phalanx of the little finger",
+    ],
+    "termId": "HP:0004225",
+    "xrefs": [
+      "UMLS:C4021673",
+    ],
+  },
+  {
+    "definition": "Abnormality of the epiphysis of the middle phalanx of the fifth finger. This epiphysis is located on the proximal end of the phalanx.",
+    "name": "Abnormality of the epiphysis of the middle phalanx of the 5th finger",
+    "synonyms": [
+      "Abnormality of the end part of middle little finger bone",
+      "Abnormality of the end part of middle pinkie finger bone",
+      "Abnormality of the end part of middle pinky finger bone",
+    ],
+    "termId": "HP:0004224",
+    "xrefs": [
+      "UMLS:C4025405",
+    ],
+  },
+  {
+    "definition": "The presence of any abnormality affecting the abdominal wall.",
+    "name": "Abnormality of the abdominal wall",
+    "synonyms": [
+      "Abnormality of external features of the abdomen",
+      "Abnormality of the abdominal wall",
+    ],
+    "termId": "HP:0004298",
+    "xrefs": [
+      "UMLS:C4021664",
+    ],
+  },
+  {
+    "definition": "An abnormality of the endocardium.",
+    "name": "Abnormal endocardium morphology",
+    "synonyms": [
+      "Abnormality of the endocardium",
+      "Abnormality of the endomycoardium",
+    ],
+    "termId": "HP:0004306",
+    "xrefs": [
+      "UMLS:C4021662",
+    ],
+  },
+  {
+    "definition": "A reticulocyte abnormality.",
+    "name": "Abnormal reticulocyte morphology",
+    "synonyms": [
+      "Abnormality of reticulocytes",
+    ],
+    "termId": "HP:0004312",
+    "xrefs": [
+      "UMLS:C4025358",
+    ],
+  },
+  {
+    "definition": "Any abnormality of the skeletal muscle cell. Muscle fibers are subdivided into two types. Type I fibers are fatigue-resistant and rich in oxidative enzymes (they stain light with the myosin ATPase reaction), and type II fibers are fast-contracting, fatigue-prone, and rich in glycolytic enzymes (these fibers stain darkly). Normal muscle tissue has a random distribution of type I and type II fibers.",
+    "name": "Abnormal muscle fiber morphology",
+    "synonyms": [
+      "Abnormal muscle fibre morphology",
+      "Abnormal skeletal muscle fiber morphology",
+      "Abnormal skeletal muscle fibre morphology",
+      "Abnormality of muscle fibers",
+      "Abnormality of muscle fibres",
+    ],
+    "termId": "HP:0004303",
+    "xrefs": [
+      "UMLS:C4021663",
+    ],
+  },
+  {
+    "definition": "An abnormality of the anterior segment of the eyeball (which comprises the structures in front of the vitreous humour: the cornea, iris, ciliary body, and lens).",
+    "name": "Abnormal anterior eye segment morphology",
+    "synonyms": [
+      "Abnormal anterior segment morphology",
+      "Abnormality of the anterior segment of the eye",
+      "Abnormality of the anterior segment of the eyeball",
+      "Abnormality of the anterior segment of the globe",
+    ],
+    "termId": "HP:0004328",
+    "xrefs": [
+      "UMLS:C4025355",
+    ],
+  },
+  {
+    "definition": "Abnormality of an amino acid metabolic process.",
+    "name": "Abnormality of amino acid metabolism",
+    "synonyms": [
+      "Amino acid levels abnormal",
+    ],
+    "termId": "HP:0004337",
+    "xrefs": [
+      "UMLS:C1328440",
+    ],
+  },
+  {
+    "definition": "An abnormality of glycosphingolipid metabolism.",
+    "name": "Abnormal glycosphingolipid metabolism",
+    "synonyms": [
+      "Abnormality of glycosphingolipid metabolism",
+    ],
+    "termId": "HP:0004343",
+    "xrefs": [
+      "UMLS:C4025350",
+    ],
+  },
+  {
+    "definition": "An abnormal concentration of leptin in the blood.",
+    "name": "Abnormal circulating leptin concentration",
+    "synonyms": [
+      "Abnormality of circulating leptin level",
+    ],
+    "termId": "HP:0004361",
+    "xrefs": [
+      "UMLS:C4025339",
+    ],
+  },
+  {
+    "definition": "Abnormality of the anal canal.",
+    "name": "Abnormality of the anus",
+    "synonyms": [
+      "Abnormality of the anus",
+    ],
+    "termId": "HP:0004378",
+    "xrefs": [
+      "UMLS:C4025329",
+    ],
+  },
+  {
+    "definition": "An abnormality of the pulmonary artery.",
+    "name": "Abnormality of the pulmonary artery",
+    "synonyms": [
+      "Abnormality of lung artery",
+    ],
+    "termId": "HP:0004414",
+    "xrefs": [
+      "SNOMEDCT_US:128588008",
+      "SNOMEDCT_US:198914002",
+      "SNOMEDCT_US:36110001",
+      "UMLS:C0009681",
+    ],
+  },
+  {
+    "definition": "An abnormality of the renal collecting system.",
+    "name": "Abnormal renal collecting system morphology",
+    "synonyms": [
+      "Abnormal collecting system",
+      "Abnormality of the renal collecting system",
+      "Renal collecting system anomalies",
+    ],
+    "termId": "HP:0004742",
+    "xrefs": [
+      "UMLS:C1851303",
+    ],
+  },
+  {
+    "definition": "An abnormal resistance to glucose, i.e., a reduction in the ability to maintain glucose levels in the blood stream within normal limits following oral administration of glucose.",
+    "name": "Abnormal oral glucose tolerance",
+    "synonyms": [
+      "Abnormal glucose oral tolerance test",
+    ],
+    "termId": "HP:0004924",
+    "xrefs": [
+      "UMLS:C1847425",
+    ],
+  },
+  {
+    "definition": "An abnormality of magnesium ion homeostasis.",
+    "name": "Abnormal magnesium concentration",
+    "synonyms": [
+      "Abnormal magnesium metabolism",
+      "Abnormal Mg concentration",
+      "Abnormality of magnesium homeostasis",
+    ],
+    "termId": "HP:0004921",
+    "xrefs": [
+      "UMLS:C4020826",
+      "UMLS:C4025274",
+    ],
+  },
+  {
+    "definition": "An abnormality of the sacral bone.",
+    "name": "Abnormal sacrum morphology",
+    "synonyms": [
+      "Abnormality of the sacrum",
+    ],
+    "termId": "HP:0005107",
+    "xrefs": [
+      "UMLS:C4025250",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of a cardiac atrium.",
+    "name": "Abnormal cardiac atrium morphology",
+    "synonyms": [
+      "Abnormality of cardiac atrium morphology",
+      "Abnormality of heart atrium",
+    ],
+    "termId": "HP:0005120",
+    "xrefs": [
+      "UMLS:C4025246",
+    ],
+  },
+  {
+    "definition": "An abnormality of the T wave on the electrocardiogram, which mainly represents the repolarization of the ventricles.",
+    "name": "Abnormal T-wave",
+    "synonyms": [
+      "EKG: T-wave abnormalities",
+      "T-wave abnormalities",
+    ],
+    "termId": "HP:0005135",
+    "xrefs": [
+      "UMLS:C4025245",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of the intervertebral disk.",
+    "name": "Abnormal intervertebral disk morphology",
+    "synonyms": [
+      "Abnormality of the intervertebral disc",
+      "Abnormality of the intervertebral disk",
+    ],
+    "termId": "HP:0005108",
+    "xrefs": [
+      "UMLS:C4025249",
+    ],
+  },
+  {
+    "definition": "An abnormality of the Achilles tendon.",
+    "name": "Abnormality of the Achilles tendon",
+    "synonyms": [
+      "Abnormality of the Achilles tendon",
+      "Abnormality of the calcaneal tendon",
+    ],
+    "termId": "HP:0005109",
+    "xrefs": [
+      "UMLS:C4021642",
+    ],
+  },
+  {
+    "definition": "Abnormality of the nostril.",
+    "name": "Abnormal nostril morphology",
+    "synonyms": [
+      "Abnormal naris morphology",
+      "Abnormality of the nares",
+      "Abnormality of the nostrils",
+      "Anomaly of the nares",
+      "Deformity of the nares",
+      "Deformity of the nostrils",
+      "Malformation of the nares",
+      "Malformation of the nostrils",
+    ],
+    "termId": "HP:0005288",
+    "xrefs": [
+      "UMLS:C4021637",
+    ],
+  },
+  {
+    "definition": "An abnormality of the structure of the veins that return deoxygenated blood from the body into the heart, i.e., the superior vena cava and the inferior vena cava.",
+    "name": "Abnormal vena cava morphology",
+    "synonyms": [
+      "Abnormality of the vena cava",
+    ],
+    "termId": "HP:0005345",
+    "xrefs": [
+      "UMLS:C4025210",
+    ],
+  },
+  {
+    "definition": "An abnormality of the physiological functioning of B cells.",
+    "name": "Abnormality of B cell physiology",
+    "synonyms": [
+      "Abnormality of B cell physiology",
+      "Reduced B cell function",
+    ],
+    "termId": "HP:0005372",
+    "xrefs": [
+      "UMLS:C1849242",
+    ],
+  },
+  {
+    "definition": "Any structural abnormality of the carotid arteries, including the common carotid artery and its' arterial branches.",
+    "name": "Abnormal carotid artery morphology",
+    "synonyms": [
+      "Abnormality of the carotid arteries",
+    ],
+    "termId": "HP:0005344",
+    "xrefs": [
+      "UMLS:C4025211",
+    ],
+  },
+  {
+    "definition": "An abnormality of the zygomatic arch, also known as the cheek bone.",
+    "name": "Abnormal zygomatic arch morphology",
+    "synonyms": [
+      "Abnormality of the malar arch",
+      "Abnormality of the zygomatic arch",
+      "Anomaly of the malar arch",
+      "Anomaly of the zygomatic arch",
+      "Deformity of the malar arch",
+      "Deformity of the zygomatic arch",
+      "Malformation of the malar arch",
+      "Malformation of the zygomatic arch",
+    ],
+    "termId": "HP:0005557",
+    "xrefs": [
+      "UMLS:C4025179",
+    ],
+  },
+  {
+    "definition": "Any abnormal shape or structure of the metacarpal bones.",
+    "name": "Abnormal metacarpal morphology",
+    "synonyms": [
+      "Abnormal shape of long bones of hand",
+      "Abnormal shape of metacarpal bones",
+    ],
+    "termId": "HP:0005916",
+    "xrefs": [
+      "UMLS:C4021615",
+    ],
+  },
+  {
+    "definition": "The presence of an abnormal curvature of the cervical vertebral column.",
+    "name": "Abnormal cervical curvature",
+    "synonyms": [
+      "Abnormal neck curve",
+    ],
+    "termId": "HP:0005905",
+    "xrefs": [
+      "UMLS:C3151523",
+    ],
+  },
+]
+`;
+
+exports[`Terms Store > fetches OMIM term by ID 1`] = `
+[
+  {
+    "hpoTerms": [
+      {
+        "definition": undefined,
+        "name": "Autosomal recessive inheritance",
+        "synonyms": undefined,
+        "termId": "HP:0000007",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Inguinal hernia",
+        "synonyms": undefined,
+        "termId": "HP:0000023",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Cryptorchidism",
+        "synonyms": undefined,
+        "termId": "HP:0000028",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Narrow mouth",
+        "synonyms": undefined,
+        "termId": "HP:0000160",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Glossoptosis",
+        "synonyms": undefined,
+        "termId": "HP:0000162",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Cleft palate",
+        "synonyms": undefined,
+        "termId": "HP:0000175",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Bifid uvula",
+        "synonyms": undefined,
+        "termId": "HP:0000193",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Pierre-Robin sequence",
+        "synonyms": undefined,
+        "termId": "HP:0000201",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Cleft upper lip",
+        "synonyms": undefined,
+        "termId": "HP:0000204",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "High palate",
+        "synonyms": undefined,
+        "termId": "HP:0000218",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Full cheeks",
+        "synonyms": undefined,
+        "termId": "HP:0000293",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Hypertelorism",
+        "synonyms": undefined,
+        "termId": "HP:0000316",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Micrognathia",
+        "synonyms": undefined,
+        "termId": "HP:0000347",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Low-set ears",
+        "synonyms": undefined,
+        "termId": "HP:0000369",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Narrow nose",
+        "synonyms": undefined,
+        "termId": "HP:0000460",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Short neck",
+        "synonyms": undefined,
+        "termId": "HP:0000470",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Cystic hygroma",
+        "synonyms": undefined,
+        "termId": "HP:0000476",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Proptosis",
+        "synonyms": undefined,
+        "termId": "HP:0000520",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Nasolacrimal duct obstruction",
+        "synonyms": undefined,
+        "termId": "HP:0000579",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Upslanted palpebral fissure",
+        "synonyms": undefined,
+        "termId": "HP:0000582",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Pectus excavatum",
+        "synonyms": undefined,
+        "termId": "HP:0000767",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Pectus carinatum",
+        "synonyms": undefined,
+        "termId": "HP:0000768",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Single transverse palmar crease",
+        "synonyms": undefined,
+        "termId": "HP:0000954",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Adducted thumb",
+        "synonyms": undefined,
+        "termId": "HP:0001181",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Seizure",
+        "synonyms": undefined,
+        "termId": "HP:0001250",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Global developmental delay",
+        "synonyms": undefined,
+        "termId": "HP:0001263",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Joint dislocation",
+        "synonyms": undefined,
+        "termId": "HP:0001373",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Joint laxity",
+        "synonyms": undefined,
+        "termId": "HP:0001388",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Intrauterine growth retardation",
+        "synonyms": undefined,
+        "termId": "HP:0001511",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Umbilical hernia",
+        "synonyms": undefined,
+        "termId": "HP:0001537",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Ventricular septal defect",
+        "synonyms": undefined,
+        "termId": "HP:0001629",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Dextrocardia",
+        "synonyms": undefined,
+        "termId": "HP:0001651",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Coarctation of aorta",
+        "synonyms": undefined,
+        "termId": "HP:0001680",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Talipes equinovarus",
+        "synonyms": undefined,
+        "termId": "HP:0001762",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Short toe",
+        "synonyms": undefined,
+        "termId": "HP:0001831",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Overriding aorta",
+        "synonyms": undefined,
+        "termId": "HP:0002623",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Scoliosis",
+        "synonyms": undefined,
+        "termId": "HP:0002650",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Genu valgum",
+        "synonyms": undefined,
+        "termId": "HP:0002857",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Short femur",
+        "synonyms": undefined,
+        "termId": "HP:0003097",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Congenital onset",
+        "synonyms": undefined,
+        "termId": "HP:0003577",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Clinodactyly of the 5th finger",
+        "synonyms": undefined,
+        "termId": "HP:0004209",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Short humerus",
+        "synonyms": undefined,
+        "termId": "HP:0005792",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Postnatal growth retardation",
+        "synonyms": undefined,
+        "termId": "HP:0008897",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Ulnar deviation of the 2nd finger",
+        "synonyms": undefined,
+        "termId": "HP:0009464",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Narrow naris",
+        "synonyms": undefined,
+        "termId": "HP:0009933",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Short metacarpal",
+        "synonyms": undefined,
+        "termId": "HP:0010049",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Low insertion of columella",
+        "synonyms": undefined,
+        "termId": "HP:0010763",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Camptodactyly",
+        "synonyms": undefined,
+        "termId": "HP:0012385",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Hyperphalangy of the 2nd finger",
+        "synonyms": undefined,
+        "termId": "HP:0030368",
+        "xrefs": undefined,
+      },
+      {
+        "definition": undefined,
+        "name": "Thin eyebrow",
+        "synonyms": undefined,
+        "termId": "HP:0045074",
+        "xrefs": undefined,
+      },
+    ],
+    "name": "Catel-Manzke syndrome",
+    "omimId": "OMIM:616145",
+  },
+]
+`;
+
+exports[`Terms Store > fetches OMIM terms by name 1`] = `
+[
+  {
+    "hpoTerms": undefined,
+    "name": "Short stature and advanced bone age, with or without early-onset osteoarthritis and/or osteochondritis dissecans",
+    "omimId": "OMIM:165800",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Inclusion body myopathy with early-onset paget disease with or without frontotemporal dementia 1",
+    "omimId": "OMIM:167320",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Ataxia, early-onset, with oculomotor apraxia and hypoalbuminemia",
+    "omimId": "OMIM:208920",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Convulsive disorder, familial, with prenatal or early onset",
+    "omimId": "OMIM:217200",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epiphyseal dysplasia, multiple, with early-onset diabetes mellitus",
+    "omimId": "OMIM:226980",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Parkinson disease 15, autosomal recessive early-onset",
+    "omimId": "OMIM:260300",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Pili torti, early-onset",
+    "omimId": "OMIM:261900",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 9",
+    "omimId": "OMIM:300088",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Myopathy, reducing body, X-linked, early-onset, severe",
+    "omimId": "OMIM:300717",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 36",
+    "omimId": "OMIM:300884",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Paget disease of bone 2, early-onset",
+    "omimId": "OMIM:602080",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Myopathy, myofibrillar, 9, with early respiratory failure",
+    "omimId": "OMIM:603689",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Alzheimer disease, familial early-onset, with coexisting amyloid and prion pathology",
+    "omimId": "OMIM:605055",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Hypertension, early-onset, autosomal dominant, with severe exacerbationin pregnancy",
+    "omimId": "OMIM:605115",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Parkinson disease 6, autosomal recessive early-onset",
+    "omimId": "OMIM:605909",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Parkinson disease 7, autosomal recessive early-onset",
+    "omimId": "OMIM:606324",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 6 (Dravet syndrome)",
+    "omimId": "OMIM:607208",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 3",
+    "omimId": "OMIM:609304",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Obesity, early-onset, with adrenal insufficiency and red hair",
+    "omimId": "OMIM:609734",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 4",
+    "omimId": "OMIM:612164",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Inflammatory bowel disease 25, early onset, autosomal recessive",
+    "omimId": "OMIM:612567",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Growth retardation, developmental delay, coarse facies, and earlydeath",
+    "omimId": "OMIM:612938",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 39",
+    "omimId": "OMIM:612949",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Inflammatory bowel disease 28, early onset, autosomal recessive",
+    "omimId": "OMIM:613148",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 5",
+    "omimId": "OMIM:613477",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 7",
+    "omimId": "OMIM:613720",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 11",
+    "omimId": "OMIM:613721",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Myopathy, areflexia, respiratory distress, and dysphagia, early-onset",
+    "omimId": "OMIM:614399",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 13",
+    "omimId": "OMIM:614558",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Inclusion body myopathy with early-onset Paget disease with or without frontotemporal dementia 2",
+    "omimId": "OMIM:615422",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Inclusion body myopathy with early-onset Paget disease without frontotemporal dementia 3",
+    "omimId": "OMIM:615424",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Parkinson disease 20, early-onset",
+    "omimId": "OMIM:615530",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 19",
+    "omimId": "OMIM:615744",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 21",
+    "omimId": "OMIM:615833",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 24",
+    "omimId": "OMIM:615871",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 25, with amelogenesis imperfecta",
+    "omimId": "OMIM:615905",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Macular degeneration, early-onset",
+    "omimId": "OMIM:616118",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 29",
+    "omimId": "OMIM:616339",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 30",
+    "omimId": "OMIM:616341",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 31",
+    "omimId": "OMIM:616346",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 32",
+    "omimId": "OMIM:616366",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 34",
+    "omimId": "OMIM:616645",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 35",
+    "omimId": "OMIM:616647",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Parkinson disease 23, autosomal recessive early-onset",
+    "omimId": "OMIM:616840",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 37",
+    "omimId": "OMIM:616981",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 38",
+    "omimId": "OMIM:617020",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 40",
+    "omimId": "OMIM:617065",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 41",
+    "omimId": "OMIM:617105",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 42",
+    "omimId": "OMIM:617106",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 43",
+    "omimId": "OMIM:617113",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 45",
+    "omimId": "OMIM:617153",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 46",
+    "omimId": "OMIM:617162",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Encephalopathy, progressive, early-onset, with brain edema and/or leukoencephalopathy, 1",
+    "omimId": "OMIM:617186",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Encephalopathy, progressive, early-onset, with brain atrophy and thin corpus callosum",
+    "omimId": "OMIM:617193",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 49",
+    "omimId": "OMIM:617281",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epilepsy, early-onset, vitamin b6-dependent",
+    "omimId": "OMIM:617290",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 51",
+    "omimId": "OMIM:617339",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 52",
+    "omimId": "OMIM:617350",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 53",
+    "omimId": "OMIM:617389",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 54",
+    "omimId": "OMIM:617391",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 55",
+    "omimId": "OMIM:617599",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 56",
+    "omimId": "OMIM:617665",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Encephalopathy, progressive, early-onset, with brain atrophy and spasticity",
+    "omimId": "OMIM:617669",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Leukodystrophy, progressive, early childhood-onset",
+    "omimId": "OMIM:617762",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, infantile or early childhood, 2",
+    "omimId": "OMIM:617829",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Leber congenital amaurosis with early-onset deafness",
+    "omimId": "OMIM:617879",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 59",
+    "omimId": "OMIM:617904",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 60",
+    "omimId": "OMIM:617929",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 61",
+    "omimId": "OMIM:617933",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 63",
+    "omimId": "OMIM:617976",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 64",
+    "omimId": "OMIM:618004",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 66",
+    "omimId": "OMIM:618067",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Spinocerebellar ataxia 42, early-onset, severe, with neurodevelopmental deficits",
+    "omimId": "OMIM:618087",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 67",
+    "omimId": "OMIM:618141",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 68",
+    "omimId": "OMIM:618201",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Encephalopathy, progressive, early-onset, with brain edema and/or leukoencephalopathy, 2",
+    "omimId": "OMIM:618321",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 71",
+    "omimId": "OMIM:618328",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Encephalopathy, progressive, early-onset, with episodic rhabdomyolysis",
+    "omimId": "OMIM:618331",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 72",
+    "omimId": "OMIM:618374",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 74",
+    "omimId": "OMIM:618396",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 75",
+    "omimId": "OMIM:618437",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Neurodegeneration, early-onset, with choreoathetoid movements and microcytic anemia",
+    "omimId": "OMIM:618451",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 76",
+    "omimId": "OMIM:618468",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 77",
+    "omimId": "OMIM:618548",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 78",
+    "omimId": "OMIM:618557",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 79",
+    "omimId": "OMIM:618559",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 80",
+    "omimId": "OMIM:618580",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 81",
+    "omimId": "OMIM:618663",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 82",
+    "omimId": "OMIM:618721",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 83",
+    "omimId": "OMIM:618744",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 84",
+    "omimId": "OMIM:618792",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epilepsy, early-onset, with or without developmental delay",
+    "omimId": "OMIM:618832",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Seizures, early-onset, with neurodegeneration and brain calcification",
+    "omimId": "OMIM:618875",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 86",
+    "omimId": "OMIM:618910",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 87",
+    "omimId": "OMIM:618916",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Epileptic encephalopathy, early infantile, 88",
+    "omimId": "OMIM:618959",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Neurodevelopmental disorder with or without early-onset generalized epilepsy",
+    "omimId": "OMIM:619157",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Dystonia, early-onset, and/or spastic paraplegia",
+    "omimId": "OMIM:619681",
+  },
+  {
+    "hpoTerms": undefined,
+    "name": "Intellectual developmental disorder with language impairment and early-onset DOPA-responsive dystonia-parkinsonism",
+    "omimId": "OMIM:619911",
+  },
+]
+`;

@@ -1,7 +1,7 @@
 /**
  * Constants for the `HomeView`.
  */
-import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { type GenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 
 /** Interface for one example. */
 export interface Example {

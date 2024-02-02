@@ -3,28 +3,40 @@ import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
 
-import FooterDefault from '@/components/FooterDefault.vue'
+import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import { useUserStore } from '@/stores/user'
 
-const CaseCard = defineAsyncComponent(() => import('@/components/Profile/CaseCard.vue'))
-const BookmarksCard = defineAsyncComponent(() => import('@/components/Profile/BookmarksCard.vue'))
-const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader.vue'))
+const ProfileCaseCard = defineAsyncComponent(
+  () => import('@/components/ProfileCaseCard/ProfileCaseCard.vue')
+)
+const ProfileBookmarksCard = defineAsyncComponent(
+  () => import('@/components/ProfileBookmarksCard/ProfileBookmarksCard.vue')
+)
+const PageHeader = defineAsyncComponent(() => import('@/components/PageHeader/PageHeader.vue'))
 const ProfileInformationCard = defineAsyncComponent(
-  () => import('@/components/Profile/ProfileInformationCard.vue')
+  () => import('@/components/ProfileInformationCard/ProfileInformationCard.vue')
 )
-const SeqVarsACMGCard = defineAsyncComponent(
-  () => import('@/components/Profile/SeqVarsACMGCard.vue')
+const ProfileSeqvarAcmgCard = defineAsyncComponent(
+  () => import('@/components/ProfileSeqvarAcmgCard/ProfileSeqvarAcmgCard.vue')
 )
-const StrucVarsACMGCard = defineAsyncComponent(
-  () => import('@/components/Profile/StrucVarsACMGCard.vue')
+const ProfileStrucvarAcmgCard = defineAsyncComponent(
+  () => import('@/components/ProfileStrucvarAcmgCard/ProfileStrucvarAcmgCard.vue')
 )
-const ClinvarsubSubmittingOrgsCard = defineAsyncComponent(
-  () => import('@/components/Profile/ClinvarsubSubmittingOrgsCard.vue')
+const ProfileClinvarsubSubmittingOrgsCard = defineAsyncComponent(
+  () =>
+    import(
+      '@/components/ProfileClinvarsubSubmittingOrgsCard/ProfileClinvarsubSubmittingOrgsCard.vue'
+    )
 )
-const ClinvarsubSubmissionThreadCard = defineAsyncComponent(
-  () => import('@/components/Profile/ClinvarsubSubmissionThreadCard.vue')
+const ProfileClinvarsubSubmissionThreadCard = defineAsyncComponent(
+  () =>
+    import(
+      '@/components/ProfileClinvarsubSubmissionThreadCard/ProfileClinvarsubSubmissionThreadCard.vue'
+    )
 )
-const TestEmailCard = defineAsyncComponent(() => import('@/components/Profile/TestEmailCard.vue'))
+const ProfileTestEmailCard = defineAsyncComponent(
+  () => import('@/components/ProfileTestEmailCard/ProfileTestEmailCard.vue')
+)
 
 const userStore = useUserStore()
 
@@ -150,43 +162,43 @@ const mainBackgroundColor = computed(() => {
                 v-if="currentSection === ProfileSection.Bookmarks"
                 :id="ProfileSection.Bookmarks"
               >
-                <BookmarksCard />
+                <ProfileBookmarksCard />
               </div>
               <div
                 v-if="currentSection === ProfileSection.CaseInformation"
                 :id="ProfileSection.CaseInformation"
               >
-                <CaseCard />
+                <ProfileCaseCard />
               </div>
               <div
                 v-if="currentSection === ProfileSection.AcmgSeqvar"
                 :id="ProfileSection.AcmgSeqvar"
               >
-                <SeqVarsACMGCard />
+                <ProfileSeqvarAcmgCard />
               </div>
               <div
                 v-if="currentSection === ProfileSection.AcmgStrucvar"
                 :id="ProfileSection.AcmgStrucvar"
               >
-                <StrucVarsACMGCard />
+                <ProfileStrucvarAcmgCard />
               </div>
               <div
                 v-if="currentSection === ClinvarsubSection.SubmittingOrgs"
                 :id="ClinvarsubSection.SubmittingOrgs"
               >
-                <ClinvarsubSubmittingOrgsCard />
+                <ProfileClinvarsubSubmittingOrgsCard />
               </div>
               <div
                 v-if="currentSection === ClinvarsubSection.SubmissionThread"
                 :id="ClinvarsubSection.SubmissionThread"
               >
-                <ClinvarsubSubmissionThreadCard />
+                <ProfileClinvarsubSubmissionThreadCard />
               </div>
               <div
                 v-if="currentSection === AdminSection.SendTestEmail"
                 :id="AdminSection.SendTestEmail"
               >
-                <TestEmailCard />
+                <ProfileTestEmailCard />
               </div>
             </v-col>
           </v-row>
