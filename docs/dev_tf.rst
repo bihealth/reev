@@ -4,6 +4,11 @@
 GitHub Project Management
 =========================
 
+.. admonition:: Developer or User?
+
+    This section is part of the instrutions for programmers interested in REEV.
+    If you want to **use** REEV, the best place is to start at :ref:`doc_quickstart`.
+
 We use Terraform for managing the GitHub project settings (as applicable):
 
 .. code-block:: bash

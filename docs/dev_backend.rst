@@ -4,7 +4,10 @@
 Backend Development
 ===================
 
-This section describes the best practices to use for backend development.
+.. admonition:: Developer or User?
+
+    This section is part of the instrutions for programmers interested in REEV.
+    If you want to **use** REEV, the best place is to start at :ref:`doc_quickstart`.
 
 -----
 Types

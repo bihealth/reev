@@ -4,6 +4,11 @@
 Deployment
 ==========
 
+.. admonition:: Developer or User?
+
+    This section is part of the instrutions for programmers interested in REEV.
+    If you want to **use** REEV, the best place is to start at :ref:`doc_quickstart`.
+
 We deploy with Docker images.
 These are built automatically via GitHub CI and publisheed to the GitHub Container Registry (``ghcr.io``).
 
