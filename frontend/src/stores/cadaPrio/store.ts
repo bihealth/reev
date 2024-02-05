@@ -38,12 +38,11 @@ export const useCadaPrioStore = defineStore('cadaPrio', () => {
     // Clear against artifact unless skipped.
     if (!options?.skipClear) {
       clearData()
-    } else {
-      // also clear if hpoTerms is empty, then exit
-      if (hpoTerms.length === 0) {
-        clearData()
-        return
-      }
+    }
+    // If HPO terms is empty, clear and exit.
+    if (hpoTerms.length === 0) {
+      clearData()
+      return
     }
 
     // Load data via API

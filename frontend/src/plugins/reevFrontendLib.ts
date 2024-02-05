@@ -8,5 +8,5 @@ export function setupBackendUrls() {
   urlConfig.baseUrlPubtator = '/internal/remote/pubtator3-api'
   urlConfig.baseUrlCadaPrio = '/internal/proxy/cada-prio'
   urlConfig.baseUrlDotty = '/internal/proxy/dotty'
-  urlConfig.baseUrlVariantValidator = '/remote/variantvalidator'
+  urlConfig.baseUrlVariantValidator = '/internal/remote/variantvalidator'
 }
