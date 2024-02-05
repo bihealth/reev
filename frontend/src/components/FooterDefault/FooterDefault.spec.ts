@@ -5,7 +5,12 @@ import { h } from 'vue'
 import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 
 /** Dummy routes for testing. */
-const dummyRoutes = [
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
   {
     path: '/info',
     name: 'info',
@@ -24,7 +29,7 @@ describe.concurrent('FooterDefault.vue', () => {
             appVersion: 'v0.0.0'
           }
         },
-        routes: dummyRoutes
+        routes
       }
     )
 

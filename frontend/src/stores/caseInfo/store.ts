@@ -142,7 +142,6 @@ export const useCaseInfoStore = defineStore('caseInfo', () => {
 
         storeState.value = StoreState.Active
       } catch (e) {
-        console.error(`ERR: ${e}`)
         storeState.value = StoreState.Error
       }
     }

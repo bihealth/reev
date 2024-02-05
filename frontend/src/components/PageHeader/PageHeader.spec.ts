@@ -2,7 +2,7 @@ import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtil
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { h, nextTick } from 'vue'
 
 import PageHeader from './PageHeader.vue'
 
@@ -19,6 +19,19 @@ const geneData = {
   }
 }
 
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
+
 describe.concurrent('PageHeader', async () => {
   afterEach(() => {
     vi.restoreAllMocks()
@@ -29,7 +42,8 @@ describe.concurrent('PageHeader', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: PageHeader },
       {
-        initialStoreState: geneData
+        initialStoreState: geneData,
+        routes
       }
     )
     const store = useGeneInfoStore()
@@ -51,7 +65,8 @@ describe.concurrent('PageHeader', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: PageHeader },
       {
-        initialStoreState: geneData
+        initialStoreState: geneData,
+        routes
       }
     )
     const store = useGeneInfoStore()
@@ -77,7 +92,8 @@ describe.concurrent('PageHeader', async () => {
     const { wrapper, router } = await setupMountedComponents(
       { component: PageHeader },
       {
-        initialStoreState: geneData
+        initialStoreState: geneData,
+        routes
       }
     )
     const store = useGeneInfoStore()

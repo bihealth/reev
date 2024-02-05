@@ -109,18 +109,18 @@ const mainBackgroundColor = computed(() => {
                     {{ section.text }}
                   </div>
                   <div class="mt-2">
-                    <v-btn
-                      v-for="(example, idx) in section.examples"
-                      :key="idx"
-                      class="mx-1 mb-1 example text-none px-2"
-                      variant="text"
-                      :rounded="false"
-                      prepend-icon="mdi-arrow-right-circle-outline"
-                      :to="exampleSearchTo(example)"
-                    >
-                      {{ example.query }}
-                      <template v-if="example.hint">({{ example.hint }})</template>
-                    </v-btn>
+                    <template v-for="(example, idx) in section.examples" :key="`example-${idx}`">
+                      <v-btn
+                        class="mx-1 mb-1 example text-none px-2"
+                        variant="text"
+                        :rounded="false"
+                        prepend-icon="mdi-arrow-right-circle-outline"
+                        :to="exampleSearchTo(example)"
+                      >
+                        {{ example.query }}
+                        <template v-if="example.hint">({{ example.hint }})</template>
+                      </v-btn>
+                    </template>
                   </div>
                 </div>
               </v-card-text>

@@ -29,8 +29,18 @@ const routes = [
     component: h('div', { innerHTML: 'for testing' })
   },
   {
-    path: '/info#terms-of-use',
-    name: 'info-terms-of-use',
+    path: '/login',
+    name: 'login',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/info',
+    name: 'info',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/query',
+    name: 'query',
     component: h('div', { innerHTML: 'for testing' })
   }
 ]
@@ -43,7 +53,9 @@ describe.concurrent('HomeView with mocked router', async () => {
   it('renders the header and the footer', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: HomeView },
+      {
+        component: HomeView
+      },
       {
         initialStoreState: {
           geneInfo: {
@@ -63,13 +75,13 @@ describe.concurrent('HomeView with mocked router', async () => {
 
     // assert:
     const header = wrapper.findComponent(PageHeader)
-    const footer = wrapper.findComponent(FooterDefault)
     expect(header.exists()).toBe(true)
+    const footer = wrapper.findComponent(FooterDefault)
     expect(footer.exists()).toBe(true)
 
     const logo = wrapper.find('#logo')
-    const menu = wrapper.findComponent(VMenu)
     expect(logo.exists()).toBe(true)
+    const menu = wrapper.findComponent(VMenu)
     expect(menu.exists()).toBe(true)
   })
 

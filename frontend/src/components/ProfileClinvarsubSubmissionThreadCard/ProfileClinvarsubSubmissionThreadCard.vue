@@ -2,7 +2,7 @@
 This component displays the `ClinvarsubThreadList` component for the profile.
 -->
 <script setup lang="ts">
-import ClinvarsubThreadList from './ClinvarsubThreadList.vue'
+import ClinvarsubThreadList from '../ClinvarsubCard/ClinvarsubThreadList.vue'
 </script>
 
 <template>

@@ -23,8 +23,8 @@ const routes = [
     component: h('div', { innerHTML: 'for testing' })
   },
   {
-    path: '/info#terms-of-use',
-    name: 'info-terms-of-use',
+    path: '/info',
+    name: 'info',
     component: h('div', { innerHTML: 'for testing' })
   },
   {
