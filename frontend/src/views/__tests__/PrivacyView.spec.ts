@@ -1,7 +1,7 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 
 import PrivacyView from '@/components/StaticViews/PrivacyView.vue'
-import { setupMountedComponents } from '@/lib/testUtils'
 
 describe.concurrent('PrivacyView', async () => {
   it('renders the privacy policy link', async () => {

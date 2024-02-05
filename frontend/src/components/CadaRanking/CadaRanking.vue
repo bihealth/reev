@@ -31,7 +31,7 @@ onMounted(async () => await caseInfoStore.initialize())
   <v-sheet color="blue-grey-lighten-2" class="px-3 pt-1 pb-3 rounded h-100 text-center">
     <div class="text-overline mb-1" style="font-size: 120% !important">Gene-to-Phenotype Rank</div>
 
-    <div v-if="!caseInfoStore.caseInfo.hpoTerms.length">No Case HPO terms</div>
+    <div v-if="caseInfoStore.caseInfo.hpoTerms.length === 0">No Case HPO terms</div>
     <div v-else-if="!geneRank">No Rank Computed</div>
     <div v-else>
       <div class="text-h2 mb-6 mt-6">#{{ separateIt(geneRank?.rank) }}</div>

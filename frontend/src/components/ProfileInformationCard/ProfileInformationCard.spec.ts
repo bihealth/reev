@@ -1,7 +1,7 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { describe, expect, it } from 'vitest'
 
-import { setupMountedComponents } from '@/lib/testUtils'
 import { type UserData } from '@/stores/user'
 
 import ProfileInformationCard from './ProfileInformationCard.vue'

@@ -1,7 +1,6 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { describe, expect, it } from 'vitest'
-
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import CaseCard from './ProfileCaseCard.vue'
 
@@ -12,7 +11,7 @@ describe.concurrent('CaseCard', async () => {
       { component: CaseCard },
       {
         initialStoreState: {
-          case: {
+          caseInfo: {
             storeState: StoreState.Active
           },
           terms: {
@@ -39,7 +38,7 @@ describe.concurrent('CaseCard', async () => {
       { component: CaseCard },
       {
         initialStoreState: {
-          case: {
+          caseInfo: {
             storeState: StoreState.Loading
           },
           terms: {
@@ -65,7 +64,7 @@ describe.concurrent('CaseCard', async () => {
       { component: CaseCard },
       {
         initialStoreState: {
-          case: {
+          caseInfo: {
             storeState: StoreState.Error
           },
           terms: {

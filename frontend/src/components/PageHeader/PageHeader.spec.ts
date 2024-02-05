@@ -1,10 +1,8 @@
-import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
+import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-
-import SearchBar from '@/components/SearchBar.vue'
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import PageHeader from './PageHeader.vue'
 
@@ -65,7 +63,7 @@ describe.concurrent('PageHeader', async () => {
 
     // assert:
     // search bar value is updated to "HGNC:1100"
-    const searchBar = wrapper.findComponent(SearchBar)
+    const searchBar = wrapper.findComponent({ name: 'SearchBar' })
     expect(searchBar.exists()).toBe(true)
   })
 
@@ -89,7 +87,7 @@ describe.concurrent('PageHeader', async () => {
 
     // act:
     // search bar value is updated to "HGNC:1100"
-    const searchBar = wrapper.findComponent(SearchBar)
+    const searchBar = wrapper.findComponent({ name: 'SearchBar' })
     await searchBar.setValue('HGNC:1100', 'searchTerm')
     await searchBar.setValue('grch37', 'genomeRelease')
 

@@ -46,7 +46,7 @@ describe('Terms Store', () => {
   it('clears data', () => {
     // arrange:
     const store = useTermsStore()
-    store.hpoTerms = [{ term_id: 'HP:0000118', name: 'Phenotypic abnormality' }]
+    store.hpoTerms = [{ termId: 'HP:0000118', name: 'Phenotypic abnormality' }]
 
     // act:
     store.clearData()

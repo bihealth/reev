@@ -1,7 +1,8 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { describe, expect, it, vi } from 'vitest'
+import { h } from 'vue'
 
-import { setupMountedComponents } from '@/lib/testUtils'
 import { type BookmarkData } from '@/stores/bookmarks'
 
 import BookmarksCard from './ProfileBookmarksCard.vue'
@@ -13,6 +14,20 @@ const exampleBookmark: BookmarkData = {
   obj_id: 'HGNC:1100',
   id: '2c0a153e-5e8c-11ee-8c99-0242ac120001'
 }
+
+/** Dummy routes for testing. */
+const dummyRoutes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/seqvar-details/:seqvar',
+    name: 'seqvar-details',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
 
 describe.concurrent('BookmarksCard', async () => {
   it('renders the BookmarksCard information with no bookmarks.', async () => {
@@ -27,7 +42,8 @@ describe.concurrent('BookmarksCard', async () => {
             bookmarks: [],
             fetchBookmark: mockFetchBookmark
           }
-        }
+        },
+        routes: dummyRoutes
       }
     )
 
@@ -49,7 +65,8 @@ describe.concurrent('BookmarksCard', async () => {
             bookmarks: [exampleBookmark],
             fetchBookmark: mockFetchBookmark
           }
-        }
+        },
+        routes: dummyRoutes
       }
     )
 

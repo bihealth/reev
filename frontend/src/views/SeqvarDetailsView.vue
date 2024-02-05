@@ -16,9 +16,9 @@ may fail in which case the view will display an error.
 <script setup lang="ts">
 import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 import { type Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
 import { useSeqvarInfoStore } from '@bihealth/reev-frontend-lib/stores/seqvarInfo'
-import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'

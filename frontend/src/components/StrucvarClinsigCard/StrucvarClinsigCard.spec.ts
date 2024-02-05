@@ -1,8 +1,7 @@
 import type { Strucvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { describe, expect, it, vi } from 'vitest'
-
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import StrucvarClinsigCard from './StrucvarClinsigCard.vue'
 import {

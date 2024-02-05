@@ -1,5 +1,5 @@
 import vue from '@vitejs/plugin-vue'
-import { URL, fileURLToPath } from 'node:url'
+import * as path from 'path'
 import ViteFonts from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
@@ -37,13 +37,10 @@ export default defineConfig({
       }
     })
   ],
-  define: { 'process.env': {} },
   resolve: {
     alias: {
-      '@bihealth/reev-frontend-lib': fileURLToPath(
-        new URL('./src/ext/reev-frontend-lib/src', import.meta.url)
-      ),
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@bihealth/reev-frontend-lib': path.resolve(__dirname, 'src/ext/reev-frontend-lib/src'),
+      '@': path.resolve(__dirname, 'src')
     }
   },
   server: {

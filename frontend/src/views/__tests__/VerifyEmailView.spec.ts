@@ -1,7 +1,7 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { setupMountedComponents } from '@/lib/testUtils'
 import VerifyView from '@/views/VerifyEmailView.vue'
 
 // Mock the auth client

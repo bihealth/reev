@@ -1,27 +1,24 @@
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
-import { createPinia, setActivePinia } from 'pinia'
+import { Pinia, createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
 import { type BookmarkData, useBookmarksStore } from '../bookmarks'
-import { useCadaPrioStore } from '../cadaPrio'
 
 const fetchMocker = createFetchMock(vi)
 
-describe('User Store', () => {
+describe('bookmarks Store', () => {
+  let pinia: Pinia
   beforeEach(() => {
-    setActivePinia(createPinia())
+    pinia = createPinia()
+    setActivePinia(pinia)
     fetchMocker.enableMocks()
     fetchMocker.resetMocks()
   })
 
   it('should have initial state', () => {
     // arrange:
-    const store2 = useCadaPrioStore()
-    store2.storeState = StoreState.Active
-
-    const store = useBookmarksStore()
-    store.storeState = StoreState.Active
+    const store = useBookmarksStore(pinia)
 
     // act: nothing to do
 

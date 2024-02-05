@@ -5,6 +5,7 @@ The home page and search bars redirect here when the user executes the query.
 -->
 
 <script setup lang="ts">
+import { ScoreGeneNames } from '@bihealth/reev-frontend-lib/api/annonars'
 import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 import { InvalidPos } from '@bihealth/reev-frontend-lib/lib/genomicVars'
 import { computed, onMounted, ref } from 'vue'
@@ -13,7 +14,7 @@ import { useTheme } from 'vuetify'
 
 import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
-import { NotOneGeneInfo, type ScoredGeneInfo, performQuery } from '@/lib/query'
+import { NotOneGeneInfo, performQuery } from '@/lib/query'
 
 /** The global Router instance. */
 const router = useRouter()
@@ -24,7 +25,7 @@ const theme = useTheme()
 /** Component state; Warning or error message to display to user. */
 const errorMessage = ref<string>('')
 /** Component state; Resulting genes if we fell through to gene query and count was not 1. */
-const scoredGeneInfos = ref<ScoredGeneInfo[] | null>(null)
+const scoredGeneInfos = ref<ScoreGeneNames[] | null>(null)
 
 /** Executes the query resolution, to be called on mounted. */
 const queryExecutionOnMounted = async () => {
@@ -117,13 +118,13 @@ onMounted(queryExecutionOnMounted)
                     </v-btn>
                   </div>
                   <div>
-                    <template v-if="geneInfo.alias_symbol?.length">
-                      {{ geneInfo.alias_symbol.join(', ') }} |
+                    <template v-if="geneInfo.aliasSymbol?.length">
+                      {{ geneInfo.aliasSymbol.join(', ') }} |
                     </template>
                     {{ geneInfo.name }}
-                    <template v-if="geneInfo.alias_name?.length">
+                    <template v-if="geneInfo.aliasName?.length">
                       |
-                      {{ geneInfo.alias_name.join(', ') }}
+                      {{ geneInfo.aliasName.join(', ') }}
                     </template>
                   </div>
                 </v-sheet>

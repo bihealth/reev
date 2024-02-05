@@ -1,8 +1,8 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqvar'
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import CriterionSwitch from './CriterionSwitch.vue'
 

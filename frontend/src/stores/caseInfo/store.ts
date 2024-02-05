@@ -1,53 +1,19 @@
 /**
  * Store for case information.
  */
+import { StoreState } from '@bihealth/reev-frontend-lib/stores/types'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { CaseInfoClient } from '@/api/caseInfo/api'
-import { ApiResponse, CaseInfo, Ethnicity, Inheritance, Sex, Zygosity, isCaseInfo$Api, isFailureInfo } from '@/api/caseInfo/types'
+import { CaseInfo, StorageMode, isCaseInfo$Api, isFailureInfo } from '@/api/caseInfo/types'
 import { MITT } from '@/lib/utils'
 import { useCadaPrioStore } from '@/stores/cadaPrio'
-import { StoreState } from '@bihealth/reev-frontend-lib/stores/types'
 import { Events as UserStoreEvents, useUserStore } from '@/stores/user'
 
-/** Prefix to use for local storage. */
-export const LOCAL_STORAGE_PREFIX = 'reev.caseStore'
+import { DEFAULT_CASE_INFO, LOCAL_STORAGE_PREFIX } from './constants'
 
-/** The storage mode. */
-export enum StorageMode {
-  /** Local browser storage. */
-  Local = 'local',
-  /** Server storage. */
-  Server = 'server'
-}
-
-/** Translate from `ApiResponse` to `Case` (use in frontend). */
-const apiResponseToFrontendCase = (apiResponse: ApiResponse): CaseInfo => {
-  if (!isCaseInfo$Api(apiResponse)) {
-    throw new Error(`Invalid API response: ${apiResponse.message}`)
-  } else {
-    return CaseInfo.fromJson(apiResponse)
-  }
-}
-
-/** Default case information. */
-export const DEFAULT_CASE_INFO: CaseInfo = Object.freeze({
-  pseudonym: '',
-  diseases: [],
-  hpoTerms: [],
-  inheritance: Inheritance.Unknown,
-  affectedFamilyMembers: null,
-  sex: Sex.Unknown,
-  ageOfOnsetMonths: null,
-  ethnicity: Ethnicity.Unknown,
-  zygosity: Zygosity.Unknown,
-  familySegregation: null,
-  id: '',
-  user: ''
-})
-
-export const useCaseStore = defineStore('case', () => {
+export const useCaseInfoStore = defineStore('caseInfo', () => {
   /** Current storage mode, set on initialization. */
   const storageMode = ref<StorageMode>(StorageMode.Local)
   /** The current store state. */
@@ -126,7 +92,10 @@ export const useCaseStore = defineStore('case', () => {
       try {
         const client = new CaseInfoClient()
         const result = await client.fetchCaseInfo()
-        caseInfo.value = apiResponseToFrontendCase(result)
+        if (!isCaseInfo$Api(result)) {
+          throw new Error(`Response is not a valid case info: ${result.message}`)
+        }
+        caseInfo.value = CaseInfo.fromJson(result)
 
         // refresh CADA prio store after loading case
         await refreshCadaPrioStore()
@@ -162,7 +131,10 @@ export const useCaseStore = defineStore('case', () => {
           await client.createCaseInfo(caseData)
         } else {
           const updatedCase = await client.updateCaseInfo(caseData)
-          caseInfo.value = apiResponseToFrontendCase(updatedCase)
+          if (!isCaseInfo$Api(updatedCase)) {
+            throw new Error(`Response is not a valid case info: ${result.message}`)
+          }
+          caseInfo.value = CaseInfo.fromJson(updatedCase)
         }
 
         // refresh CADA prio store after loading case
@@ -170,6 +142,7 @@ export const useCaseStore = defineStore('case', () => {
 
         storeState.value = StoreState.Active
       } catch (e) {
+        console.error(`ERR: ${e}`)
         storeState.value = StoreState.Error
       }
     }

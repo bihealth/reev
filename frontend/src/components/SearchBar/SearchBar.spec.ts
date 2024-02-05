@@ -1,8 +1,7 @@
 import { DottyClient } from '@bihealth/reev-frontend-lib/api/dotty'
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import SearchBar from './SearchBar.vue'
 

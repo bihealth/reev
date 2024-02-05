@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { roundIt } from '@bihealth/reev-frontend-lib/lib/utils'
-import { useCadaPrioStore } from '@bihealth/reev-frontend-lib/stores/cadaPrio'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
+import { useCadaPrioStore } from '@bihealth/reev-frontend-lib/stores/cadaPrio'
 import _ from 'lodash'
 import { computed, onMounted, ref, watch } from 'vue'
 
@@ -269,11 +269,11 @@ watch(
                 <router-link
                   :to="{
                     name: 'gene-details',
-                    params: { gene: item.gene_symbol }
+                    params: { gene: item.geneSymbol }
                   }"
                   target="_blank"
                 >
-                  {{ item.gene_symbol }}
+                  {{ item.geneSymbol }}
                 </router-link>
               </template>
 

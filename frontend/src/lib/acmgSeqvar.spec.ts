@@ -6,7 +6,7 @@ import {
   MultiSourceAcmgCriteriaState,
   Presence,
   StateSource
-} from '../acmgSeqvar'
+} from './acmgSeqvar'
 
 describe.concurrent('MultiSourceAcmgCriteriaState', () => {
   it('should have correct default values', () => {
@@ -585,7 +585,7 @@ describe.concurrent(
         Presence.Present // PP4
       ]
     ])(
-      `should return 'Pathogenic' for 'PVS1: %s, PS1: %s, PS2: %s, PM1: %s, PM2: %s, PM3: %s, 
+      `should return 'Pathogenic' for 'PVS1: %s, PS1: %s, PS2: %s, PM1: %s, PM2: %s, PM3: %s,
   PM4: %s, PP1: %s, PP2: %s, PP3: %s, PP4: %s' with no confclicts`,
       (pvs1, ps1, ps2, pm1, pm2, pm3, pp1, pp2, pp3, pp4) => {
         // arrange: nothing, only test check
@@ -745,7 +745,7 @@ describe.concurrent(
       [Presence.Absent, Presence.Present, Presence.Absent, Presence.Present, Presence.Absent],
       [Presence.Absent, Presence.Absent, Presence.Absent, Presence.Present, Presence.Present]
     ])(
-      `should return 'Likely benign' for 'BA1: %s, BS1: %s, BS2: %s, BP1: %s, BP2: %s' with no 
+      `should return 'Likely benign' for 'BA1: %s, BS1: %s, BS2: %s, BP1: %s, BP2: %s' with no
     confclicts`,
       (ba1, bs1, bs2, bp1, bp2) => {
         // arrange: nothing, only test check
@@ -773,7 +773,7 @@ describe.concurrent(
       [Presence.Absent, Presence.Present, Presence.Present, Presence.Absent, Presence.Present],
       [Presence.Absent, Presence.Absent, Presence.Absent, Presence.Absent, Presence.Absent]
     ])(
-      `should return 'Uncertain significance' for 'PM1: %s, PP1: %s, PP2: %s, BS1: %s, BP1: %s' 
+      `should return 'Uncertain significance' for 'PM1: %s, PP1: %s, PP2: %s, BS1: %s, BP1: %s'
     with no confclicts`,
       (pm1, pp1, pp2, bs1, bp1) => {
         // arrange: nothing, only test check

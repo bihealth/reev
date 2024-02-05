@@ -1,7 +1,6 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
-
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import CLINVARSUB_PAGE from '../../api/clinvarsub/fixture.clinvarsubPage.json'
 import ClinvarsubSubmittingOrgsCard from './ProfileClinvarsubSubmittingOrgsCard.vue'

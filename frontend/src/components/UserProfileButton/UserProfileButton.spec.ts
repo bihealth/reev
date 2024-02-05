@@ -1,7 +1,7 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
-import { nextTick } from 'vue'
+import { h, nextTick } from 'vue'
 
-import { setupMountedComponents } from '@/lib/testUtils'
 import { type UserData, useUserStore } from '@/stores/user'
 
 import UserProfileButton from './UserProfileButton.vue'
@@ -23,6 +23,25 @@ const adminUser: UserData = {
   ]
 }
 
+/** Dummy routes for testing. */
+const dummyRoutes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
+
 describe.concurrent('UserProfileButton', () => {
   it('displays Login button without any user', async () => {
     // arrange:
@@ -33,7 +52,8 @@ describe.concurrent('UserProfileButton', () => {
           user: {
             currentUser: null
           }
-        }
+        },
+        routes: dummyRoutes
       }
     )
 
@@ -55,7 +75,8 @@ describe.concurrent('UserProfileButton', () => {
           user: {
             currentUser: adminUser
           }
-        }
+        },
+        routes: dummyRoutes
       }
     )
 
@@ -79,7 +100,8 @@ describe.concurrent('UserProfileButton', () => {
           user: {
             currentUser: null
           }
-        }
+        },
+        routes: dummyRoutes
       }
     )
 

@@ -1,7 +1,17 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
+import { h } from 'vue'
 
 import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
-import { setupMountedComponents } from '@/lib/testUtils'
+
+/** Dummy routes for testing. */
+const dummyRoutes = [
+  {
+    path: '/info',
+    name: 'info',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
 
 describe.concurrent('FooterDefault.vue', () => {
   it('renders information', async () => {
@@ -13,7 +23,8 @@ describe.concurrent('FooterDefault.vue', () => {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes: dummyRoutes
       }
     )
 

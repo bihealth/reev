@@ -1,8 +1,8 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
 import PageHeader from '@/components/PageHeader.vue'
-import { setupMountedComponents } from '@/lib/testUtils'
 import StaticView from '@/views/StaticView.vue'
 
 describe.concurrent('StaticView', async () => {

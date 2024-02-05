@@ -1,7 +1,7 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
-import { setupMountedComponents } from '@/lib/testUtils'
 import LoginView from '@/views/LoginView.vue'
 
 describe.concurrent('Login view', async () => {

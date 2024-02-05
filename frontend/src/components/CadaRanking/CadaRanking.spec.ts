@@ -1,7 +1,5 @@
-import { createTestingPinia } from '@pinia/testing'
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
-
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import CadaRanking from './CadaRanking.vue'
 
@@ -11,12 +9,11 @@ describe.concurrent('CadaRanking', async () => {
     const { wrapper } = await setupMountedComponents(
       { component: CadaRanking },
       {
-        pinia: createTestingPinia(),
         props: {
           hgncId: 'HGNC:1100'
         },
         initialStoreState: {
-          case: {
+          caseInfo: {
             caseInfo: {
               hpoTerms: [
                 {
@@ -33,9 +30,9 @@ describe.concurrent('CadaRanking', async () => {
           cadaPrio: {
             geneRanking: [
               {
-                gene_symbol: 'BRCA1',
-                ncbi_gene_id: '672',
-                hgnc_id: 'HGNC:1100',
+                geneSymbol: 'BRCA1',
+                ncbiGeneId: '672',
+                hgncId: 'HGNC:1100',
                 rank: 1,
                 score: 0.5
               }

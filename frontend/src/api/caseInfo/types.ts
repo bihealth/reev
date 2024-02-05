@@ -65,7 +65,6 @@ export interface CaseInfo$Api {
   zygosity: string
 }
 
-
 /** Interface for the case data, for storage and API. */
 export interface CaseInfo {
   /* The case pseudonym. */

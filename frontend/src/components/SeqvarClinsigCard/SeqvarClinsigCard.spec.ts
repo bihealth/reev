@@ -1,11 +1,11 @@
 import type { Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 import { nextTick } from 'vue'
 
 import { AcmgCriteria, MultiSourceAcmgCriteriaState, Presence, StateSource } from '@/lib/acmgSeqvar'
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import CriterionSwitch from './CriterionSwitch.vue'
 import SeqvarClinsigCard from './SeqvarClinsigCard.vue'

@@ -302,15 +302,15 @@ watch(
                 :items-per-page="10"
                 density="compact"
               >
-                <template #[`item.gene_symbol`]="{ item }">
+                <template #[`item.geneSymbol`]="{ item }">
                   <router-link
                     :to="{
                       name: 'gene-details',
-                      params: { gene: item.hgnc_id }
+                      params: { gene: item.hgncId }
                     }"
                     target="_blank"
                   >
-                    {{ item.gene_symbol }}
+                    {{ item.geneSymbol }}
                   </router-link>
                 </template>
 

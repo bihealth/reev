@@ -8,8 +8,8 @@
 import type { App } from 'vue'
 
 import router from '../router'
-import pinia from './pinia'
 import { setupMatomo } from './matomo'
+import pinia from './pinia'
 import { setupBackendUrls } from './reevFrontendLib'
 import { setupSentry } from './sentry'
 import vuetify from './vuetify'

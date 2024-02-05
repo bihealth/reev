@@ -1,7 +1,7 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 import { VMenu } from 'vuetify/components'
 
-import { setupMountedComponents } from '@/lib/testUtils'
 import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
 
 describe.concurrent('ACMGCriteriaDocs', async () => {

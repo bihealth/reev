@@ -16,8 +16,8 @@ of this resolution.
 
 <script setup lang="ts">
 import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
-import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
+import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'

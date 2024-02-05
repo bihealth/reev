@@ -1,6 +1,5 @@
+import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
-
-import { setupMountedComponents } from '@/lib/testUtils'
 
 import SummarySheet from './SummarySheet.vue'
 
