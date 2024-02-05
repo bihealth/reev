@@ -3,7 +3,6 @@ import Plotly from 'plotly.js-dist-min'
 import { computed, onMounted, watch } from 'vue'
 
 import type { GenomeBuild } from '@/lib/genomeBuilds'
-import { scale } from 'vega'
 
 export interface Props {
   /** Gene information from annonars. */
@@ -49,6 +48,12 @@ interface ClinvarVariant {
   referenceAssertions: ClinvarReferenceAssertions[]
 }
 
+interface PlotlyData {
+  x: number
+  y: number
+}
+
+/* Convert clinvar significance to a number */
 const convertClinvarSignificance = (input: string): number => {
   if (input in clinvarSignificanceMapping) {
     return clinvarSignificanceMapping[input]
@@ -57,183 +62,130 @@ const convertClinvarSignificance = (input: string): number => {
   }
 }
 
-const exons = computed(() => {
-  if (!props.transcripts?.length) {
-    return []
+/* Compute color for each point */
+const markerColor = (value: number) => {
+  if (value === 2) {
+    return 'red'
+  } else if (value === 1) {
+    return 'orange'
+  } else if (value === 0) {
+    return 'yellow'
+  } else if (value === -1) {
+    return 'lightgreen'
+  } else if (value === -2) {
+    return 'green'
+  } else {
+    return 'grey'
   }
-  const exons = []
-  for (const transcript of props.transcripts.transcripts) {
-    for (const alignment of transcript.alignments) {
-      for (const exon of alignment.exons) {
-        exons.push({
-          start: exon.ref_start,
-          stop: exon.ref_end
-        })
-      }
-    }
-  }
-  return exons
-})
+}
 
-// const minMax = computed(() => {
-//   if (!props.clinvar) {
+// const exons = computed(() => {
+//   if (!props.transcripts?.length) {
 //     return []
 //   }
-//   let min = null
-//   let max = null
-//   for (const item of props.clinvar.variants ?? []) {
-//     if (item.genomeRelease.toLowerCase() == props.genomeBuild) {
-//       // Go through all item.variants and find the min and max pos.
-//       for (const variant of item.variants) {
-//         if (variant.start < min || min === null) {
-//           min = variant.start
-//         }
-//         if (variant.start > max || max === null) {
-//           max = variant.start
-//         }
+//   const exons = []
+//   for (const transcript of props.transcripts.transcripts) {
+//     for (const alignment of transcript.alignments) {
+//       for (const exon of alignment.exons) {
+//         exons.push({
+//           start: exon.ref_start,
+//           stop: exon.ref_end
+//         })
 //       }
 //     }
 //   }
-//   for (const exon of exons.value) {
-//     if (exon.start < min || min === null) {
-//       min = exon.start
-//     }
-//     if (exon.stop > max || max === null) {
-//       max = exon.stop
-//     }
-//   }
-//   const totalLength = max - min
-//   const padding = Math.round(totalLength * 0.05)
-//   return [min - padding, max + padding]
+//   return exons
 // })
 
-// const paddedMinMax = computed(() => {
-//   const [min, max] = minMax.value
-//   const totalLength = max - min
-//   const padding = Math.round(totalLength * 0.05)
-//   return [min - padding, max + padding]
-// })
-
-const plotlyData = computed(() => {
+const plotlyData = computed<PlotlyData[]>(() => {
   if (!props.clinvar) {
-    return null
+    return []
   }
 
-  const data = []
-  for (const variant of props.clinvar.variants) {
-    for (const assertion of variant.variants) {
-      data.push({
-        x: assertion.start,
-        y: convertClinvarSignificance(assertion.referenceAssertions[0].clinicalSignificance),
-        text: assertion.title,
-        vcv: assertion.vcv,
-        rcv: assertion.rcv
-      })
+  let clinvarInfo = []
+  for (const item of props.clinvar.variants) {
+    if (item.genomeRelease.toLowerCase() == props.genomeBuild) {
+      clinvarInfo = item.variants
     }
   }
-  return data
-})
 
-// const trace1 = {
-//     x:['2020-10-04', '2021-11-04', '2023-12-04'],
-//     y: [90, 40, 60],
-//     type: 'scatter'
-// }
+  return clinvarInfo.map((variant: ClinvarVariant) => ({
+    x: variant.start,
+    y: convertClinvarSignificance(variant.referenceAssertions[0].clinicalSignificance)
+  }))
+})
 
 const trace1 = {
   uid: 'fc47f27b-f3b0-4d31-8dac-9782780ba6b8',
   mode: 'markers',
   type: 'scatter',
   xsrc: 'caiotaniguchi:3:45beec',
-  // x: [
-  //   0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-  //   26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
-  //   50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
-  //   74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97,
-  //   98, 99
-  // ],
   x: plotlyData.value ? plotlyData.value.map((item) => item.x) : [],
   ysrc: 'caiotaniguchi:3:9f1314',
-  // y: [
-  //   0.4967141530112327, -0.13826430117118466, 0.6476885381006925, 1.5230298564080254,
-  //   -0.23415337472333597, -0.23413695694918055, 1.5792128155073915, 0.7674347291529088,
-  //   -0.4694743859349521, 0.5425600435859647, -0.46341769281246226, -0.46572975357025687,
-  //   0.24196227156603412, -1.913280244657798, -1.7249178325130328, -0.5622875292409727,
-  //   -1.0128311203344238, 0.3142473325952739, -0.9080240755212109, -1.4123037013352915,
-  //   1.465648768921554, -0.22577630048653566, 0.06752820468792384, -1.4247481862134568,
-  //   -0.5443827245251827, 0.11092258970986608, -1.1509935774223028, 0.37569801834567196,
-  //   -0.600638689918805, -0.2916937497932768, -0.6017066122293969, 1.8522781845089378,
-  //   -0.013497224737933921, -1.0577109289559004, 0.822544912103189, -1.2208436499710222,
-  //   0.2088635950047554, -1.9596701238797756, -1.3281860488984305, 0.19686123586912352,
-  //   0.7384665799954104, 0.1713682811899705, -0.11564828238824053, -0.3011036955892888,
-  //   -1.4785219903674274, -0.7198442083947086, -0.4606387709597875, 1.0571222262189157,
-  //   0.3436182895684614, -1.763040155362734, 0.324083969394795, -0.38508228041631654,
-  //   -0.6769220003059587, 0.6116762888408679, 1.030999522495951, 0.9312801191161986,
-  //   -0.8392175232226385, -0.3092123758512146, 0.33126343140356396, 0.9755451271223592,
-  //   -0.47917423784528995, -0.18565897666381712, -1.1063349740060282, -1.1962066240806708,
-  //   0.812525822394198, 1.356240028570823, -0.07201012158033385, 1.0035328978920242,
-  //   0.36163602504763415, -0.6451197546051243, 0.36139560550841393, 1.5380365664659692,
-  //   -0.03582603910995154, 1.5646436558140062, -2.6197451040897444, 0.8219025043752238,
-  //   0.08704706823817121, -0.2990073504658674, 0.0917607765355023, -1.9875689146008928,
-  //   -0.21967188783751193, 0.3571125715117464, 1.477894044741516, -0.5182702182736474,
-  //   -0.8084936028931876, -0.5017570435845365, 0.9154021177020741, 0.32875110965968446,
-  //   -0.5297602037670388, 0.5132674331133561, 0.09707754934804039, 0.9686449905328892,
-  //   -0.7020530938773524, -0.3276621465977682, -0.39210815313215763, -1.4635149481321186,
-  //   0.29612027706457605, 0.26105527217988933, 0.00511345664246089, -0.23458713337514692
-  // ],
   y: plotlyData.value ? plotlyData.value.map((item) => item.y) : [],
-  marker: { color: 'red' },
-  scaleanchor: 'y',
+  marker: {
+    color: plotlyData.value ? plotlyData.value.map((item) => markerColor(item.y)) : [],
+    size: 10
+  },
+  scaleanchor: 'y'
 }
 
 const data = [trace1]
 
-// const layout = {
-//     title: 'Scroll and Zoom',
-//     showlegend: false
-// };
+const lollipopSticks = computed(() => {
+  if (!props.clinvar) {
+    return []
+  }
+  const sticks = []
+  for (const variant of plotlyData.value) {
+    sticks.push({
+      x0: variant.x,
+      x1: variant.x,
+      y0: 0,
+      y1: variant.y,
+      line: {
+        color: markerColor(variant.y),
+        width: 0.2
+      },
+      type: 'line',
+      xref: 'x',
+      yref: 'y'
+    })
+  }
+
+  return sticks
+})
 
 const layout = {
-  title: 'Lollipop Chart',
+  title: 'Variation Landscape',
   xaxis: {
     type: 'linear',
-    // range: [-6.206577595066804, 105.2065775950668],
     autorange: true
   },
   yaxis: {
     type: 'linear',
-    // range: [-2.9514501380072518, 2.183983218426445],
-    autorange: true
+    autorange: false,
+    range: [-3.5, 2.5],
+    tickvals: [2, 1, 0, -1, -2, -3],
+    ticktext: [
+      'Pathogenic',
+      'Likely pathogenic',
+      'Uncertain significance',
+      'Likely benign',
+      'Benign',
+      'Unknown'
+    ],
+    fixedrange: true
   },
-  shapes: [
-    // {
-    //   x0: 0,
-    //   x1: 0,
-    //   y0: 0,
-    //   y1: 0.4567141530112327,
-    //   line: {
-    //     color: 'grey',
-    //     width: 1
-    //   },
-    //   type: 'line',
-    //   xref: 'x',
-    //   yref: 'y'
-    // },
-    // {
-    //   x0: 1,
-    //   x1: 1,
-    //   y0: 0,
-    //   y1: -0.09826430117118465,
-    //   line: {
-    //     color: 'grey',
-    //     width: 1
-    //   },
-    //   type: 'line',
-    //   xref: 'x',
-    //   yref: 'y'
-    // }
-  ],
-  autosize: true
+  shapes: lollipopSticks.value,
+  autosize: true,
+  margin: {
+    l: 150,
+    r: 50,
+    b: 50,
+    t: 50,
+    pad: 4
+  }
 }
 
 // Watch when myDiv is mounted
@@ -241,17 +193,13 @@ watch(
   () => document.getElementById('myDiv'),
   (newVal) => {
     if (newVal) {
-      console.log('Yes')
       Plotly.newPlot('myDiv', data, layout, { scrollZoom: true })
     }
-    console.log('myDiv mounted')
   }
 )
 
 onMounted(() => {
-  console.log('Mount')
   Plotly.newPlot('myDiv', data, layout, { scrollZoom: true })
-  console.log('myDiv ? mounted')
 })
 </script>
 
