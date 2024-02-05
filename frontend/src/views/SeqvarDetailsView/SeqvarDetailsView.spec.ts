@@ -9,7 +9,8 @@ import * as BRCA1GeneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1TxInfo from '@/assets/__tests__/BRCA1TxInfo.json'
 import * as BRCA1VariantInfo from '@/assets/__tests__/BRCA1VariantInfo.json'
 import { MultiSourceAcmgCriteriaState } from '@/lib/acmgSeqvar'
-import SeqvarDetailsView from '@/views/SeqvarDetailsView.vue'
+
+import SeqvarDetailsView from './SeqvarDetailsView.vue'
 
 /** Example Sequence Variant */
 const seqvarInfo: Seqvar = {
@@ -113,28 +114,28 @@ describe.concurrent('SeqvarDetailsView', async () => {
     expect(wrapper.html()).toContain(
       '<gene-expression-card-stub gene-symbol="BRCA1" expression-records="[object Object]'
     )
-    expect(wrapper.html()).toContain('<literature-card-stub></literature-card-stub>')
+    expect(wrapper.html()).toContain('<gene-literature-card-stub></gene-literature-card-stub>')
     expect(wrapper.html()).toContain(
-      '<clinsig-card-stub seqvar="[object Object]"></clinsig-card-stub>'
+      '<seqvar-clinsig-card-stub seqvar="[object Object]"></seqvar-clinsig-card-stub>'
     )
-    expect(wrapper.html()).toContain('<variant-details-tx-csq-stub tx-csq="[object Object],')
+    expect(wrapper.html()).toContain('<seqvar-consequences-card-stub tx-csq="[object Object],')
     expect(wrapper.html()).toContain(
-      '<variant-details-clinvar-stub clinvar="[object Object]"></variant-details-clinvar-stub>'
-    )
-    expect(wrapper.html()).toContain(
-      '<variant-scores-card-stub var-annos="[object Object]"></variant-scores-card-stub>'
+      '<seqvar-clinvar-card-stub clinvar="[object Object]"></seqvar-clinvar-card-stub>'
     )
     expect(wrapper.html()).toContain(
-      '<variant-details-freqs-stub seqvar="[object Object]" var-annos="[object Object]"></variant-details-freqs-stub>'
+      '<seqvar-scores-card-stub var-annos="[object Object]"></seqvar-scores-card-stub>'
     )
     expect(wrapper.html()).toContain(
-      '<variant-tools-card-stub seqvar="[object Object]" var-annos="[object Object]"></variant-tools-card-stub>'
+      '<seqvar-freqs-card-stub seqvar="[object Object]" var-annos="[object Object]"></seqvar-freqs-card-stub>'
     )
     expect(wrapper.html()).toContain(
-      '<beacon-network-card-stub seqvar="[object Object]"></beacon-network-card-stub>'
+      '<seqvar-tools-card-stub seqvar="[object Object]" var-annos="[object Object]"></seqvar-tools-card-stub>'
     )
     expect(wrapper.html()).toContain(
-      '<variant-validator-card-stub seqvar="[object Object]"></variant-validator-card-stub>'
+      '<seqvar-beacon-network-card-stub seqvar="[object Object]"></seqvar-beacon-network-card-stub>'
+    )
+    expect(wrapper.html()).toContain(
+      '<seqvar-variant-validator-card-stub seqvar="[object Object]"></seqvar-variant-validator-card-stub>'
     )
     expect(wrapper.html()).toContain(
       '<clinvarsub-card-stub seqvar="[object Object]"></clinvarsub-card-stub>'

@@ -1,7 +1,7 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 
-import PathNotFound from '@/views/PathNotFound.vue'
+import PathNotFound from './PathNotFound.vue'
 
 describe.concurrent('PathNotFound', async () => {
   it('renders the main content', async () => {

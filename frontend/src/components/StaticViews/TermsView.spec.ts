@@ -1,7 +1,7 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 
-import TermsView from '@/components/StaticViews/TermsView.vue'
+import TermsView from './TermsView.vue'
 
 describe.concurrent('TermsView', async () => {
   it('renders the terms of use content', async () => {

@@ -1,13 +1,39 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it, vi } from 'vitest'
-import { nextTick } from 'vue'
+import { h, nextTick } from 'vue'
 
-import LoginView from '@/views/LoginView.vue'
+import LoginView from './LoginView.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/info#terms-of-use',
+    name: 'info-terms-of-use',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
 
 describe.concurrent('Login view', async () => {
   it('renders the main content', async () => {
     // arrange:
-    const { wrapper } = await setupMountedComponents({ component: LoginView }, {})
+    const { wrapper } = await setupMountedComponents(
+      { component: LoginView, stubs: { PageHeader: true, FooterDefault: true } },
+      { routes }
+    )
 
     // act: nothing, only test rendering
 
@@ -33,7 +59,10 @@ describe.concurrent('Login view', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: true, json: () => Promise.resolve(JSON.stringify({ status: 200 })) })
     )
-    const { wrapper } = await setupMountedComponents({ component: LoginView }, {})
+    const { wrapper } = await setupMountedComponents(
+      { component: LoginView, stubs: { PageHeader: true, FooterDefault: true } },
+      { routes }
+    )
 
     // act:
     const emailField = wrapper.find('#email')
@@ -56,7 +85,10 @@ describe.concurrent('Login view', async () => {
     global.fetch = vi.fn((): any =>
       Promise.resolve({ ok: false, json: () => Promise.resolve({ foo: 'foo' }) })
     )
-    const { wrapper } = await setupMountedComponents({ component: LoginView }, {})
+    const { wrapper } = await setupMountedComponents(
+      { component: LoginView, stubs: { PageHeader: true, FooterDefault: true } },
+      { routes }
+    )
 
     // act:
     const emailField = wrapper.find('#email')

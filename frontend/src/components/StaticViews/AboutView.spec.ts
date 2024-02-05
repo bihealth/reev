@@ -1,7 +1,7 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 
-import AboutView from '@/components/StaticViews/AboutView.vue'
+import AboutView from './AboutView.vue'
 
 describe.concurrent('AboutView', async () => {
   it('renders the main content', async () => {

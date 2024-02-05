@@ -2,12 +2,13 @@ import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtil
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
-import { nextTick } from 'vue'
+import { h, nextTick } from 'vue'
 
 import * as BRCA1ClinVar from '@/assets/__tests__/BRCA1ClinVar.json'
 import * as BRCA1geneInfo from '@/assets/__tests__/BRCA1GeneInfo.json'
 import * as BRCA1Transcripts from '@/assets/__tests__/BRCA1Transcripts.json'
-import GeneDetailView from '@/views/GeneDetailView.vue'
+
+import GeneDetailView from './GeneDetailView.vue'
 
 /** Local helper that performs store setup and selective stubbing. */
 const makeWrapper = (geneInfoStoreState: StoreState) => {
@@ -36,7 +37,19 @@ const makeWrapper = (geneInfoStoreState: StoreState) => {
       },
       props: {
         hgncSymbol: 'BRCA1'
-      }
+      },
+      routes: [
+        {
+          path: '/',
+          name: 'home',
+          component: h('div', { innerHTML: 'for testing' })
+        },
+        {
+          path: '/login',
+          name: 'login',
+          component: h('div', { innerHTML: 'for testing' })
+        }
+      ]
     }
   )
 }
@@ -68,15 +81,15 @@ describe.concurrent('GeneDetailView', async () => {
     // assert:
     expect(wrapper.html()).toContain('<bookmark-list-item-stub id="HGNC:1100" type="gene">')
     expect(wrapper.html()).toContain(
-      '<overview-card-stub gene-info="[object Object]" show-gene-details-link="false">'
+      '<gene-overview-card-stub gene-info="[object Object]" show-gene-details-link="false"'
     )
-    expect(wrapper.html()).toContain('<pathogenicity-card-stub gene-info="[object Object]">')
-    expect(wrapper.html()).toContain('<conditions-card-stub gene-info="[object Object]"')
-    expect(wrapper.html()).toContain('<expression-card-stub gene-symbol="BRCA1"')
+    expect(wrapper.html()).toContain('<gene-pathogenicity-card-stub gene-info="[object Object]">')
+    expect(wrapper.html()).toContain('<gene-conditions-card-stub gene-info="[object Object]"')
+    expect(wrapper.html()).toContain('<gene-expression-card-stub gene-symbol="BRCA1"')
     expect(wrapper.html()).toContain(
-      '<clinvar-card-stub gene-clinvar="[object Object]" transcripts="[object Object]" genome-build="grch37" gene-info="[object Object]"'
+      '<gene-clinvar-card-stub gene-clinvar="[object Object]" transcripts="[object Object]" genome-build="grch37" gene-info="[object Object]"'
     )
-    expect(wrapper.html()).toContain('<literature-card-stub gene-info="[object Object]">')
+    expect(wrapper.html()).toContain('<gene-literature-card-stub gene-info="[object Object]">')
 
     expect(fetchMock).toHaveBeenCalledOnce()
   })

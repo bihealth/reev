@@ -14,7 +14,9 @@ import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
 import PageHeader from '@/components/PageHeader/PageHeader.vue'
 import SearchBar from '@/components/SearchBar/SearchBar.vue'
 import { performSearch, searchTo } from '@/lib/utils'
-import { EXAMPLES, type Example } from '@/views/HomeView.c'
+
+import { EXAMPLES } from './constants'
+import { type Example } from './types'
 
 /** The current router. */
 const router = useRouter()

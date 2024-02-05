@@ -1,10 +1,10 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
+import { h, nextTick } from 'vue'
 
-import PageHeader from '@/components/PageHeader.vue'
-import ProfileInformationCard from '@/components/Profile/ProfileInformationCard.vue'
 import { type UserData } from '@/stores/user'
-import ProfileView from '@/views/ProfileView.vue'
+
+import ProfileView from './ProfileView.vue'
 
 /** Example user data */
 const adminUser: UserData = {
@@ -16,55 +16,85 @@ const adminUser: UserData = {
   oauth_accounts: []
 }
 
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/info#terms-of-use',
+    name: 'info-terms-of-use',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
+
 describe.concurrent('Profile view', async () => {
   it('renders the header', async () => {
     // arrange:
-    const { wrapper } = await setupMountedComponents({ component: ProfileView }, {})
+    const { wrapper } = await setupMountedComponents(
+      { component: ProfileView, stubs: { PageHeader: true, FooterDefault: true } },
+      { routes }
+    )
 
-    // act: nothing, only test rendering
+    // act: nothing, just wait for the next tick
+    await nextTick()
 
     // assert:
-    const header = wrapper.findComponent(PageHeader)
+    const header = wrapper.findComponent({ name: 'PageHeader' })
     expect(header.exists()).toBe(true)
   })
 
   it('renders the main content if logged in', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ProfileView },
+      { component: ProfileView, stubs: { PageHeader: true, FooterDefault: true } },
       {
         initialStoreState: {
           user: {
             currentUser: adminUser
           }
-        }
+        },
+        routes
       }
     )
 
-    // act: nothing, only test rendering
+    // act: nothing, just wait for the next tick
+    await nextTick()
 
     // assert:
     expect(wrapper.html()).toMatch('User Profile')
     expect(wrapper.text()).toMatch('Bookmarks')
-    expect(wrapper.text()).toMatch('Case Info')
-    const profileInformationCard = wrapper.findComponent(ProfileInformationCard)
+    const profileInformationCard = wrapper.findComponent({ name: 'ProfileInformationCard' })
     expect(profileInformationCard.exists()).toBe(true)
   })
 
   it('renders the main content if not logged in', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ProfileView },
+      { component: ProfileView, stubs: { PageHeader: true, FooterDefault: true } },
       {
         initialStoreState: {
           user: {
             currentUser: null
           }
-        }
+        },
+        routes
       }
     )
 
-    // act: nothing, only test rendering
+    // act: nothing, just wait for the next tick
+    await nextTick()
 
     // assert:
     expect(wrapper.html()).toMatch('User Profile')

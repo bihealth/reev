@@ -1,14 +1,13 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
-import { VMenu } from 'vuetify/components'
 
-import ACMGSVDocs from '@/views/ACMGSVDocs.vue'
+import PrivacyView from './PrivacyView.vue'
 
-describe.concurrent('ACMGSVDocs', async () => {
-  it('renders the header', async () => {
+describe.concurrent('PrivacyView', async () => {
+  it('renders the privacy policy link', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGSVDocs },
+      { component: PrivacyView },
       {
         initialStoreState: {
           misc: {
@@ -21,16 +20,15 @@ describe.concurrent('ACMGSVDocs', async () => {
     // act: nothing, only test rendering
 
     // assert:
-    const logo = wrapper.find('#logo')
-    const menu = wrapper.findComponent(VMenu)
-    expect(logo.exists()).toBe(true)
-    expect(menu.exists()).toBe(true)
+    const privacyPolicyLink = wrapper.find('a[href="https://www.bihealth.org/en/privacy"]')
+    expect(privacyPolicyLink.exists()).toBe(true)
+    expect(privacyPolicyLink.text()).toMatch('privacy policy of the Berlin Institute of Health')
   })
 
   it('renders the main content', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGSVDocs },
+      { component: PrivacyView },
       {
         initialStoreState: {
           misc: {
@@ -43,10 +41,7 @@ describe.concurrent('ACMGSVDocs', async () => {
     // act: nothing, only test rendering
 
     // assert:
-    const mainContent = wrapper.find('.docs-view')
-    expect(mainContent.exists()).toBe(true)
-    expect(mainContent.html()).toMatch('Copy-number loss')
-    expect(mainContent.html()).toMatch('Copy-number gain')
-    expect(mainContent.html()).toMatch('Loss 1A')
+    expect(wrapper.exists()).toBe(true)
+    expect(wrapper.text()).toMatch('Privacy Policy')
   })
 })

@@ -1,11 +1,13 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import { h } from 'vue'
 import { VMenu } from 'vuetify/components'
 
 import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import HomeView from '@/views/HomeView.vue'
+import PageHeader from '@/components/PageHeader/PageHeader.vue'
+
+import HomeView from './HomeView.vue'
 
 /** Example gene Data */
 const geneData = {
@@ -19,6 +21,19 @@ const geneData = {
     entrezId: '12345'
   }
 }
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/info#terms-of-use',
+    name: 'info-terms-of-use',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
 
 describe.concurrent('HomeView with mocked router', async () => {
   afterEach(() => {
@@ -39,7 +54,8 @@ describe.concurrent('HomeView with mocked router', async () => {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes
       }
     )
 
@@ -71,7 +87,8 @@ describe.concurrent('HomeView with mocked router', async () => {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes
       }
     )
 
@@ -100,7 +117,8 @@ describe.concurrent('HomeView with mocked router', async () => {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes
       }
     )
 
@@ -131,7 +149,8 @@ describe.concurrent('HomeView with mocked router', async () => {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes
       }
     )
 

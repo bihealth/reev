@@ -1,20 +1,35 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
+import { h } from 'vue'
 import { VMenu } from 'vuetify/components'
 
-import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
+import AcmgStrucvarDocs from '@/views/AcmgStrucvarDocs/AcmgStrucvarDocs.vue'
 
-describe.concurrent('ACMGCriteriaDocs', async () => {
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: h('div', { innerHTML: 'for testing' })
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: h('div', { innerHTML: 'for testing' })
+  }
+]
+
+describe.concurrent('AcmgStrucvarDocs', async () => {
   it('renders the header', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGCriteriaDocs },
+      { component: AcmgStrucvarDocs },
       {
         initialStoreState: {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes
       }
     )
 
@@ -30,13 +45,14 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
   it('renders the main content', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
-      { component: ACMGCriteriaDocs },
+      { component: AcmgStrucvarDocs },
       {
         initialStoreState: {
           misc: {
             appVersion: 'v0.0.0'
           }
-        }
+        },
+        routes
       }
     )
 
@@ -45,8 +61,8 @@ describe.concurrent('ACMGCriteriaDocs', async () => {
     // assert:
     const mainContent = wrapper.find('.docs-view')
     expect(mainContent.exists()).toBe(true)
-    expect(mainContent.html()).toMatch('PVS1')
-    expect(mainContent.html()).toMatch('Benign Criteria')
-    expect(mainContent.html()).toMatch('BP1')
+    expect(mainContent.html()).toMatch('Copy-number loss')
+    expect(mainContent.html()).toMatch('Copy-number gain')
+    expect(mainContent.html()).toMatch('Loss 1A')
   })
 })

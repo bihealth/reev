@@ -2,8 +2,7 @@ import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtil
 import { describe, expect, it } from 'vitest'
 import { nextTick } from 'vue'
 
-import PageHeader from '@/components/PageHeader.vue'
-import StaticView from '@/views/StaticView.vue'
+import StaticView from './StaticView.vue'
 
 describe.concurrent('StaticView', async () => {
   it('renders the about page', async () => {
@@ -33,7 +32,7 @@ describe.concurrent('StaticView', async () => {
     // act: nothing, only test rendering
 
     // assert:
-    const header = wrapper.findComponent(PageHeader)
+    const header = wrapper.findComponent({ name: 'PageHeader' })
     expect(header.exists()).toBe(true)
   })
 })

@@ -1,7 +1,7 @@
 import { setupMountedComponents } from '@bihealth/reev-frontend-lib/lib/testUtils'
 import { describe, expect, it } from 'vitest'
 
-import ContactView from '@/components/StaticViews/ContactView.vue'
+import ContactView from './ContactView.vue'
 
 describe.concurrent('ContactView', async () => {
   it('renders the main content', async () => {
