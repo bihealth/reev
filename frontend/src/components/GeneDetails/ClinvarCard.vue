@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, watch } from 'vue'
 
 import DocsLink from '@/components/DocsLink.vue'
 import ClinvarFreqPlot from '@/components/GeneDetails/ClinvarCard/ClinvarFreqPlot.vue'
@@ -23,6 +23,14 @@ export interface Props {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = defineProps<Props>()
+
+// Watch for changes in the transctipts prop
+watch(
+  () => props.transcripts,
+  () => {
+    // Just update props.transcripts
+  }
+)
 </script>
 
 <template>

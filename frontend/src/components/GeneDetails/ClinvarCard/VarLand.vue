@@ -79,24 +79,6 @@ const markerColor = (value: number) => {
   }
 }
 
-// const exons = computed(() => {
-//   if (!props.transcripts?.length) {
-//     return []
-//   }
-//   const exons = []
-//   for (const transcript of props.transcripts.transcripts) {
-//     for (const alignment of transcript.alignments) {
-//       for (const exon of alignment.exons) {
-//         exons.push({
-//           start: exon.ref_start,
-//           stop: exon.ref_end
-//         })
-//       }
-//     }
-//   }
-//   return exons
-// })
-
 const plotlyData = computed<PlotlyData[]>(() => {
   if (!props.clinvar) {
     return []
@@ -156,6 +138,54 @@ const lollipopSticks = computed(() => {
   return sticks
 })
 
+const exons = computed(() => {
+  if (!props.transcripts) {
+    return []
+  }
+  const exons = []
+  for (const transcript of props.transcripts.transcripts) {
+    for (const alignment of transcript.alignments) {
+      for (const exon of alignment.exons) {
+        exons.push({
+          start: exon.ref_start,
+          stop: exon.ref_end
+        })
+      }
+    }
+  }
+  return exons
+})
+
+// Horizontal line at y=3
+const horizontalLine = {
+  type: 'line',
+  x0: 0,
+  y0: 3,
+  x1: 1,
+  y1: 3,
+  xref: 'paper', // This makes the line span the entire width of the plot area
+  yref: 'y',
+  line: {
+    color: 'grey',
+    width: 2
+  }
+}
+
+// Grey rectangles for exons
+const exonShapes = exons.value.map((exon) => ({
+  type: 'rect',
+  x0: exon.start,
+  x1: exon.stop,
+  y0: 2.9, // Slightly below y=3 for visualization
+  y1: 3.1, // Slightly above y=3 for visualization
+  xref: 'x',
+  yref: 'y',
+  fillcolor: 'grey',
+  line: {
+    width: 0
+  }
+}))
+
 const layout = {
   title: 'Variation Landscape',
   xaxis: {
@@ -165,9 +195,10 @@ const layout = {
   yaxis: {
     type: 'linear',
     autorange: false,
-    range: [-3.5, 2.5],
-    tickvals: [2, 1, 0, -1, -2, -3],
+    range: [-3.5, 3.5],
+    tickvals: [3, 2, 1, 0, -1, -2, -3],
     ticktext: [
+      'Exons',
       'Pathogenic',
       'Likely pathogenic',
       'Uncertain significance',
@@ -177,7 +208,7 @@ const layout = {
     ],
     fixedrange: true
   },
-  shapes: lollipopSticks.value,
+  shapes: [...lollipopSticks.value, ...exonShapes, horizontalLine],
   autosize: true,
   margin: {
     l: 150,

@@ -108,7 +108,10 @@ const mainBackgroundColor = computed(() => {
 // When the component is mounted or the gene symbol or genome release are
 // changed through the router then we need to fetch the gene information
 // from the backend through the store.
-onMounted(loadDataToStore)
+onMounted(async () => {
+  await loadDataToStore()
+})
+
 // Watch change of HGNC symbol and hash and update store or scroll to
 // selected section.
 watch(() => [props.hgncSymbol, genomeBuild.value], loadDataToStore)
