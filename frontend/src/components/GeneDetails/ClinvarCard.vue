@@ -6,9 +6,9 @@ import ClinvarFreqPlot from '@/components/GeneDetails/ClinvarCard/ClinvarFreqPlo
 import ClinvarImpact from '@/components/GeneDetails/ClinvarCard/ClinvarImpact.vue'
 import type { GenomeBuild } from '@/lib/genomeBuilds'
 
-const VariationLandscape = defineAsyncComponent(
-  () => import('@/components/GeneDetails/ClinvarCard/VariationLandscape.vue')
-)
+// const VariationLandscape = defineAsyncComponent(
+//   () => import('@/components/GeneDetails/ClinvarCard/VariationLandscape.vue')
+// )
 const VarLand = defineAsyncComponent(
   () => import('@/components/GeneDetails/ClinvarCard/VarLand.vue')
 )
@@ -55,14 +55,14 @@ watch(
         <v-col cols="6">
           <ClinvarFreqPlot :per-freq-counts="perFreqCounts" />
         </v-col>
-        <v-col cols="12">
+        <!-- <v-col cols="12">
           <VariationLandscape
             :clinvar="geneClinvar"
             :transcripts="transcripts"
             :genome-build="genomeBuild"
             :gene-symbol="geneInfo?.hgnc?.symbol"
           />
-        </v-col>
+        </v-col> -->
         <v-col cols="12">
           <VarLand
             :clinvar="geneClinvar"
