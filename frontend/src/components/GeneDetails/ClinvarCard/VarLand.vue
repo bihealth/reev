@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Plotly from 'plotly.js-dist-min'
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 import type { GenomeBuild } from '@/lib/genomeBuilds'
 
@@ -48,10 +48,22 @@ interface ClinvarVariant {
   referenceAssertions: ClinvarReferenceAssertions[]
 }
 
-interface PlotlyData {
+interface PlotlyDataPoint {
   x: number
   y: number
 }
+
+interface DownsampledDataPoint {
+  x: number
+  y: number
+  count: number
+}
+
+/** The current plot boundaries. */
+const currentPlotBoundaries = ref({
+  minX: 0,
+  maxX: 0
+})
 
 /* Convert clinvar significance to a number */
 const convertClinvarSignificance = (input: string): number => {
@@ -79,7 +91,7 @@ const markerColor = (value: number) => {
   }
 }
 
-const plotlyData = computed<PlotlyData[]>(() => {
+const clinvarData = computed<PlotlyDataPoint[]>(() => {
   if (!props.clinvar) {
     return []
   }
@@ -87,17 +99,67 @@ const plotlyData = computed<PlotlyData[]>(() => {
   let clinvarInfo = []
   for (const item of props.clinvar.variants) {
     if (item.genomeRelease.toLowerCase() == props.genomeBuild) {
-      clinvarInfo = item.variants
+      clinvarInfo = item.variants.sort((a: ClinvarVariant, b: ClinvarVariant) => a.start - b.start)
     }
   }
 
+  // Update plot boundaries
+  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+  currentPlotBoundaries.value = {
+    minX: clinvarInfo[0].start,
+    maxX: clinvarInfo[clinvarInfo.length - 1].start
+  }
+  
   return clinvarInfo.map((variant: ClinvarVariant) => ({
     x: variant.start,
     y: convertClinvarSignificance(variant.referenceAssertions[0].clinicalSignificance)
   }))
 })
 
-const trace1 = {
+/** Helper function for downstreaming data. 
+ * @param data - The data to downsample.
+ * @param windowSize - The size of the window to downsample.
+ * @returns The downsampled data.
+ */
+const downsample = (data: PlotlyDataPoint[], windowSize: number): DownsampledDataPoint[] => {
+  if (data.length === 0) return []
+  // If there are less then 800 variants, do not downsample
+  if (data.length < 800) return data.map(item => ({ x: item.x, y: item.y, count: 1 }))
+
+  const minX = data[0].x
+  const maxX = data[data.length - 1].x
+
+  const bins: DownsampledDataPoint[] = []
+  for (let x = minX; x <= maxX; x += windowSize) {
+    for (let y = -3; y <= 2; y++) {
+      bins.push({ x: x+windowSize/2, y: y, count: 0 })
+    }
+  }
+
+  data.forEach(point => {
+    const binIndex = Math.floor((point.x - minX) / windowSize)
+    const bin = bins[binIndex * 5 + (point.y + 3)]
+    bin.count++
+  })
+
+  // Return only bins with count > 0
+  return bins.filter(bin => bin.count > 0)
+}
+
+/** Downsampled data. */
+const plotlyData = computed(() => {
+  // If there are less then 800 variants, return the data
+  if (clinvarData.value.length < 800) {
+    return clinvarData.value
+  }
+  
+  const windowSize = (currentPlotBoundaries.value.maxX - currentPlotBoundaries.value.minX) / 800
+  return downsample(clinvarData.value, windowSize)
+  // DEBUG: Uncomment the line below to return the full data and compare with the original plot
+  // return clinvarData.value
+})
+
+const trace = {
   uid: 'fc47f27b-f3b0-4d31-8dac-9782780ba6b8',
   mode: 'markers',
   type: 'scatter',
@@ -111,8 +173,6 @@ const trace1 = {
   },
   scaleanchor: 'y'
 }
-
-const data = [trace1]
 
 const lollipopSticks = computed(() => {
   if (!props.clinvar) {
@@ -219,18 +279,61 @@ const layout = {
   }
 }
 
-// Watch when myDiv is mounted
-watch(
-  () => document.getElementById('myDiv'),
-  (newVal) => {
-    if (newVal) {
-      Plotly.newPlot('myDiv', data, layout, { scrollZoom: true })
-    }
+/** Method to update plot with new data based on zoom or pan */
+const updatePlotData = (minX: number, maxX: number) => {
+  // Filter clinvarData for new boundaries and compute new downsampled data
+  const windowSize = (maxX - minX) / 800
+  const filteredClinvarData = clinvarData.value.filter(item => item.x >= minX && item.x <= maxX)
+  const newDownsampledData = downsample(filteredClinvarData, windowSize)
+
+  trace.x = newDownsampledData.map(item => item.x)
+  trace.y = newDownsampledData.map(item => item.y)
+  trace.marker.color = newDownsampledData.map(item => markerColor(item.y))
+
+  // Update lollipopSticks
+  const newLollipopSticks = []
+  for (const variant of newDownsampledData) {
+    newLollipopSticks.push({
+      x0: variant.x,
+      x1: variant.x,
+      y0: 0,
+      y1: variant.y,
+      line: {
+        color: markerColor(variant.y),
+        width: 0.2
+      },
+      type: 'line',
+      xref: 'x',
+      yref: 'y'
+    })
   }
-)
+  layout.shapes = [...newLollipopSticks, ...exonShapes, horizontalLine]
+
+  // Re-render plot with new data
+  Plotly.react('plot', [trace], layout)
+}
 
 onMounted(() => {
-  Plotly.newPlot('myDiv', data, layout, { scrollZoom: true })
+  Plotly.newPlot('plot', [trace], layout, { scrollZoom: true }).then(() => {
+    // @ts-expect-error Property 'on' seems to exist on type 'HTMLElement'
+    document.getElementById('plot')?.on('plotly_relayout', (eventdata: any) => {
+      if (eventdata['xaxis.range[0]'] && eventdata['xaxis.range[1]']) {
+        // Update plot boundaries based on zoom or pan
+        const minX = parseFloat(eventdata['xaxis.range[0]'])
+        const maxX = parseFloat(eventdata['xaxis.range[1]'])
+        currentPlotBoundaries.value = { minX, maxX }
+        updatePlotData(minX, maxX)
+      }
+    })
+
+    // @ts-expect-error Property 'on' seems to exist on type 'HTMLElement'
+    document.getElementById('plot')?.on('plotly_doubleclick', () => {
+      const minX = clinvarData.value[0].x
+      const maxX = clinvarData.value[clinvarData.value.length - 1].x
+      currentPlotBoundaries.value = { minX, maxX }
+      updatePlotData(minX, maxX)
+    })
+  })
 })
 </script>
 
@@ -240,7 +343,7 @@ onMounted(() => {
       <v-skeleton-loader class="mt-3 mx-auto border" type="text,image,text" />
     </template>
     <v-sheet v-else color="background" class="pa-3 mt-3 h-100">
-      <div id="myDiv"></div>
+      <div id="plot"></div>
     </v-sheet>
   </div>
 </template>
