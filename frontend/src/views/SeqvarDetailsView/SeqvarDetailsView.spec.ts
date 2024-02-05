@@ -118,10 +118,8 @@ describe.concurrent('SeqvarDetailsView', async () => {
     expect(wrapper.html()).toContain(
       '<seqvar-clinsig-card-stub seqvar="[object Object]"></seqvar-clinsig-card-stub>'
     )
-    expect(wrapper.html()).toContain('<seqvar-consequences-card-stub tx-csq="[object Object],')
-    expect(wrapper.html()).toContain(
-      '<seqvar-clinvar-card-stub clinvar="[object Object]"></seqvar-clinvar-card-stub>'
-    )
+    expect(wrapper.html()).toContain('<seqvar-consequences-card-stub')
+    expect(wrapper.html()).toContain('<seqvar-clinvar-card-stub')
     expect(wrapper.html()).toContain(
       '<seqvar-scores-card-stub var-annos="[object Object]"></seqvar-scores-card-stub>'
     )

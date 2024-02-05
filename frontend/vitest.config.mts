@@ -22,7 +22,7 @@ export default mergeConfig(
         exclude: ['**/*.spec.ts', '**/*.stories.ts']
       },
       environment: 'jsdom',
-      exclude: [...configDefaults.exclude, 'e2e/*'],
+      exclude: [...configDefaults.exclude, 'e2e/*', '**/ext**'],
       root: fileURLToPath(new URL('./', import.meta.url)),
       testTransformMode: {
         web: ['**/*.{jsx,tsx}']

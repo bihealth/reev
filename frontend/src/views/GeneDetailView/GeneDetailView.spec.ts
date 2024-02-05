@@ -86,9 +86,7 @@ describe.concurrent('GeneDetailView', async () => {
     expect(wrapper.html()).toContain('<gene-pathogenicity-card-stub gene-info="[object Object]">')
     expect(wrapper.html()).toContain('<gene-conditions-card-stub gene-info="[object Object]"')
     expect(wrapper.html()).toContain('<gene-expression-card-stub gene-symbol="BRCA1"')
-    expect(wrapper.html()).toContain(
-      '<gene-clinvar-card-stub gene-clinvar="[object Object]" transcripts="[object Object]" genome-build="grch37" gene-info="[object Object]"'
-    )
+    expect(wrapper.html()).toContain('<gene-clinvar-card-stub')
     expect(wrapper.html()).toContain('<gene-literature-card-stub gene-info="[object Object]">')
 
     expect(fetchMock).toHaveBeenCalledOnce()

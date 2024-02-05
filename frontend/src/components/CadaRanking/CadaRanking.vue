@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { roundIt, separateIt } from '@bihealth/reev-frontend-lib/lib/utils'
 import { type GeneRank, useCadaPrioStore } from '@bihealth/reev-frontend-lib/stores/cadaPrio'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 
 import { useCaseInfoStore } from '@/stores/caseInfo'
 
@@ -23,8 +23,20 @@ const geneRank = computed<GeneRank | null>(() => {
   )
 })
 
+// Function to load the data.
+const loadData = async () => {
+  await caseInfoStore.initialize()
+  await cadaPrioStore.loadData(caseInfoStore.caseInfo.hpoTerms.map((term) => term.termId))
+}
+
 // Load case store when mounted.
-onMounted(async () => await caseInfoStore.initialize())
+onMounted(async () => loadData())
+watch(
+  () => [props.hgncId, caseInfoStore.caseInfo.hpoTerms],
+  async () => {
+    await loadData()
+  }
+)
 </script>
 
 <template>

@@ -42,6 +42,7 @@ const GenePathogenicityCard = defineAsyncComponent(
 const GeneConditionsCard = defineAsyncComponent(
   () => import('@bihealth/reev-frontend-lib/components/GeneConditionsCard/GeneConditionsCard.vue')
 )
+const CadaRanking = defineAsyncComponent(() => import('@/components/CadaRanking/CadaRanking.vue'))
 const GeneExpressionCard = defineAsyncComponent(
   () => import('@bihealth/reev-frontend-lib/components/GeneExpressionCard/GeneExpressionCard.vue')
 )
@@ -376,32 +377,38 @@ const SECTIONS: { [key: string]: Section[] } = {
               <div id="gene-overview">
                 <GeneOverviewCard :gene-info="seqvarInfoStore?.geneInfo" />
               </div>
-              <div id="gene-pathogenicity">
-                <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo" />
+              <div id="gene-pathogenicity" class="mt-3">
+                <GenePathogenicityCard :gene-info="seqvarInfoStore?.geneInfo">
+                  <CadaRanking :hgnc-id="geneInfoStore.geneInfo?.hgnc!.hgncId" />
+                </GenePathogenicityCard>
               </div>
-              <div id="gene-conditions">
+              <div id="gene-conditions" class="mt-3">
                 <GeneConditionsCard
                   :gene-info="seqvarInfoStore?.geneInfo"
                   :hpo-terms="seqvarInfoStore.hpoTerms"
                 />
               </div>
-              <div id="gene-expression">
+              <div id="gene-expression" class="mt-3">
                 <GeneExpressionCard
                   :gene-symbol="seqvarInfoStore?.geneInfo?.hgnc?.symbol"
                   :expression-records="seqvarInfoStore?.geneInfo?.gtex?.records"
                   :ensembl-gene-id="seqvarInfoStore?.geneInfo?.gtex?.ensemblGeneId"
                 />
               </div>
-              <div v-if="geneInfoStore?.geneClinvar && seqvar?.genomeBuild" id="gene-clinvar">
+              <div
+                v-if="geneInfoStore?.geneClinvar && seqvar?.genomeBuild"
+                id="gene-clinvar"
+                class="mt-3"
+              >
                 <GeneClinvarCard
-                  :gene-clinvar="geneInfoStore.geneClinvar"
+                  :clinvar-per-gene="geneInfoStore.geneClinvar"
                   :transcripts="geneInfoStore.transcripts"
-                  :genome-build="seqvar?.genomeBuild"
-                  :gene-info="geneInfoStore?.geneInfo"
+                  :genome-build="seqvar.genomeBuild"
+                  :gene-info="geneInfoStore.geneInfo"
                   :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
                 />
               </div>
-              <div id="gene-literature">
+              <div id="gene-literature" class="mt-3">
                 <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
               </div>
             </template>
@@ -421,10 +428,10 @@ const SECTIONS: { [key: string]: Section[] } = {
                 />
               </div>
               <div id="seqvar-csq" class="mt-3">
-                <SeqvarConsequencesCard :tx-csq="seqvarInfoStore.txCsq" />
+                <SeqvarConsequencesCard :consequences="seqvarInfoStore.txCsq" />
               </div>
               <div id="seqvar-clinvar" class="mt-3">
-                <SeqvarClinvarCard :clinvar="seqvarInfoStore.varAnnos?.clinvar" />
+                <SeqvarClinvarCard :clinvar-record="seqvarInfoStore.varAnnos?.clinvar" />
               </div>
               <div id="seqvar-scores" class="mt-3">
                 <SeqvarScoresCard :var-annos="seqvarInfoStore.varAnnos" />

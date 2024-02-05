@@ -46,6 +46,7 @@ const GenePathogenicityCard = defineAsyncComponent(
 const GeneConditionsCard = defineAsyncComponent(
   () => import('@bihealth/reev-frontend-lib/components/GeneConditionsCard/GeneConditionsCard.vue')
 )
+const CadaRanking = defineAsyncComponent(() => import('@/components/CadaRanking/CadaRanking.vue'))
 const GeneExpressionCard = defineAsyncComponent(
   () => import('@bihealth/reev-frontend-lib/components/GeneExpressionCard/GeneExpressionCard.vue')
 )
@@ -138,7 +139,7 @@ const idForBookmark = computed<string | undefined>(() => {
 /** Selected gene information. */
 const selectedGeneInfo = computed<any | undefined>(() => {
   return (strucvarInfoStore.genesInfos || []).find((geneInfo) => {
-    return geneInfo.hgnc.agr === selectedGeneHgncId.value
+    return geneInfo.hgnc?.hgncId === selectedGeneHgncId.value
   })
 })
 
@@ -404,29 +405,31 @@ const SECTIONS: { [key: string]: Section[] } = {
               <div id="gene-overview" class="mt-3">
                 <GeneOverviewCard :gene-info="selectedGeneInfo" />
               </div>
-              <div id="gene-pathogenicity">
+              <div id="gene-pathogenicity" class="mt-3">
                 <GenePathogenicityCard :gene-info="selectedGeneInfo" />
               </div>
-              <div id="gene-conditions">
-                <GeneConditionsCard :gene-info="selectedGeneInfo" :hpo-terms="[]" />
+              <div id="gene-conditions" class="mt-3">
+                <GeneConditionsCard :gene-info="selectedGeneInfo">
+                  <CadaRanking :hgnc-id="geneInfoStore.geneInfo?.hgnc!.hgncId" />
+                </GeneConditionsCard>
               </div>
-              <div id="gene-expression">
+              <div id="gene-expression" class="mt-3">
                 <GeneExpressionCard
                   :gene-symbol="selectedGeneInfo?.hgnc?.symbol"
                   :expression-records="selectedGeneInfo?.gtex?.records"
                   :ensembl-gene-id="selectedGeneInfo?.gtex?.ensemblGeneId"
                 />
               </div>
-              <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar">
+              <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar" class="mt-3">
                 <GeneClinvarCard
-                  :gene-clinvar="geneInfoStore.geneClinvar"
+                  :clinvar-per-gene="geneInfoStore.geneClinvar"
                   :transcripts="geneInfoStore.transcripts"
-                  :genome-build="strucvar?.genomeBuild"
-                  :gene-info="geneInfoStore?.geneInfo"
+                  :genome-build="strucvarInfoStore.strucvar?.genomeBuild"
+                  :gene-info="geneInfoStore.geneInfo"
                   :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
                 />
               </div>
-              <div id="gene-literature">
+              <div id="gene-literature" class="mt-3">
                 <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
               </div>
             </template>
@@ -435,7 +438,10 @@ const SECTIONS: { [key: string]: Section[] } = {
               <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
 
               <div id="strucvar-clinvar">
-                <StrucvarClinvarCard :strucvar="strucvar" />
+                <StrucvarClinvarCard
+                  :strucvar="strucvar"
+                  :clinvar-sv-records="strucvarInfoStore.clinvarSvRecords"
+                />
               </div>
               <div id="strucvar-tools">
                 <StrucvarToolsCard :strucvar="strucvar" />
