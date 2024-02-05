@@ -22,6 +22,7 @@ const props = withDefaults(defineProps<Props>(), {
   geneSymbol: '???'
 })
 
+/** Mapping from clinvar significance to a number. */
 const clinvarSignificanceMapping: { [key: string]: number } = {
   CLINICAL_SIGNIFICANCE_UNKNOWN: -3,
   CLINICAL_SIGNIFICANCE_PATHOGENIC: 2,
@@ -31,6 +32,7 @@ const clinvarSignificanceMapping: { [key: string]: number } = {
   CLINICAL_SIGNIFICANCE_BENIGN: -2
 }
 
+/** Interface for clinvar reference assertions. */
 interface ClinvarReferenceAssertions {
   rcv: string
   clinicalSignificance: string
@@ -38,6 +40,7 @@ interface ClinvarReferenceAssertions {
   title: string
 }
 
+/** Interface for clinvar variant. */
 interface ClinvarVariant {
   chrom: string
   start: number
@@ -48,11 +51,13 @@ interface ClinvarVariant {
   referenceAssertions: ClinvarReferenceAssertions[]
 }
 
+/** Interface for plotly data point. */
 interface PlotlyDataPoint {
   x: number
   y: number
 }
 
+/** Interface for downsampled data point. */
 interface DownsampledDataPoint {
   x: number
   y: number
@@ -91,6 +96,7 @@ const markerColor = (value: number) => {
   }
 }
 
+/** Compute the min and max values for the plot */
 const clinvarData = computed<PlotlyDataPoint[]>(() => {
   if (!props.clinvar) {
     return []
@@ -109,14 +115,14 @@ const clinvarData = computed<PlotlyDataPoint[]>(() => {
     minX: clinvarInfo[0].start,
     maxX: clinvarInfo[clinvarInfo.length - 1].start
   }
-  
+
   return clinvarInfo.map((variant: ClinvarVariant) => ({
     x: variant.start,
     y: convertClinvarSignificance(variant.referenceAssertions[0].clinicalSignificance)
   }))
 })
 
-/** Helper function for downstreaming data. 
+/** Helper function for downstreaming data.
  * @param data - The data to downsample.
  * @param windowSize - The size of the window to downsample.
  * @returns The downsampled data.
@@ -124,7 +130,7 @@ const clinvarData = computed<PlotlyDataPoint[]>(() => {
 const downsample = (data: PlotlyDataPoint[], windowSize: number): DownsampledDataPoint[] => {
   if (data.length === 0) return []
   // If there are less then 800 variants, do not downsample
-  if (data.length < 800) return data.map(item => ({ x: item.x, y: item.y, count: 1 }))
+  if (data.length < 800) return data.map((item) => ({ x: item.x, y: item.y, count: 1 }))
 
   const minX = data[0].x
   const maxX = data[data.length - 1].x
@@ -132,18 +138,18 @@ const downsample = (data: PlotlyDataPoint[], windowSize: number): DownsampledDat
   const bins: DownsampledDataPoint[] = []
   for (let x = minX; x <= maxX; x += windowSize) {
     for (let y = -3; y <= 2; y++) {
-      bins.push({ x: x+windowSize/2, y: y, count: 0 })
+      bins.push({ x: x + windowSize / 2, y: y, count: 0 })
     }
   }
 
-  data.forEach(point => {
+  data.forEach((point) => {
     const binIndex = Math.floor((point.x - minX) / windowSize)
     const bin = bins[binIndex * 5 + (point.y + 3)]
     bin.count++
   })
 
   // Return only bins with count > 0
-  return bins.filter(bin => bin.count > 0)
+  return bins.filter((bin) => bin.count > 0)
 }
 
 /** Downsampled data. */
@@ -152,13 +158,14 @@ const plotlyData = computed(() => {
   if (clinvarData.value.length < 800) {
     return clinvarData.value
   }
-  
+
   const windowSize = (currentPlotBoundaries.value.maxX - currentPlotBoundaries.value.minX) / 800
   return downsample(clinvarData.value, windowSize)
   // DEBUG: Uncomment the line below to return the full data and compare with the original plot
   // return clinvarData.value
 })
 
+/** Plotly trace */
 const trace = {
   uid: 'fc47f27b-f3b0-4d31-8dac-9782780ba6b8',
   mode: 'markers',
@@ -174,7 +181,8 @@ const trace = {
   scaleanchor: 'y'
 }
 
-const lollipopSticks = computed(() => {
+/** Initial Lollipop sticks for each variant */
+const initiallollipopSticks = computed(() => {
   if (!props.clinvar) {
     return []
   }
@@ -198,6 +206,7 @@ const lollipopSticks = computed(() => {
   return sticks
 })
 
+/** Exons for the gene */
 const exons = computed(() => {
   if (!props.transcripts) {
     return []
@@ -246,6 +255,7 @@ const exonShapes = exons.value.map((exon) => ({
   }
 }))
 
+/** Plot layout */
 const layout = {
   title: 'Variation Landscape',
   xaxis: {
@@ -268,7 +278,7 @@ const layout = {
     ],
     fixedrange: true
   },
-  shapes: [...lollipopSticks.value, ...exonShapes, horizontalLine],
+  shapes: [...initiallollipopSticks.value, ...exonShapes, horizontalLine],
   autosize: true,
   margin: {
     l: 150,
@@ -283,12 +293,12 @@ const layout = {
 const updatePlotData = (minX: number, maxX: number) => {
   // Filter clinvarData for new boundaries and compute new downsampled data
   const windowSize = (maxX - minX) / 800
-  const filteredClinvarData = clinvarData.value.filter(item => item.x >= minX && item.x <= maxX)
+  const filteredClinvarData = clinvarData.value.filter((item) => item.x >= minX && item.x <= maxX)
   const newDownsampledData = downsample(filteredClinvarData, windowSize)
 
-  trace.x = newDownsampledData.map(item => item.x)
-  trace.y = newDownsampledData.map(item => item.y)
-  trace.marker.color = newDownsampledData.map(item => markerColor(item.y))
+  trace.x = newDownsampledData.map((item) => item.x)
+  trace.y = newDownsampledData.map((item) => item.y)
+  trace.marker.color = newDownsampledData.map((item) => markerColor(item.y))
 
   // Update lollipopSticks
   const newLollipopSticks = []
