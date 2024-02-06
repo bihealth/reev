@@ -37,7 +37,10 @@ class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
         super().__init__(user_db, password_helper)
 
     async def on_after_register(self, user: User, request: Request | None = None):
-        print(f"User {user.id} has registered.")
+        print(
+            f"User {user.id} has registered (active={user.is_active}, "
+            f"verified={user.is_verified}, superuser={user.is_superuser})."
+        )
 
     async def on_after_forgot_password(
         self, user: User, token: str, request: Request | None = None

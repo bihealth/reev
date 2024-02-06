@@ -15,6 +15,7 @@ def bookmark_create(obj_names: ObjNames) -> CommentCreate:
         obj_type=CommentTypes.gene,
         obj_id=obj_names.gene[0],
         user=uuid.uuid4(),
+        text="This is a test comment.",
     )
 
 

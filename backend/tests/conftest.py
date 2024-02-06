@@ -19,7 +19,7 @@ from sqlalchemy.ext.asyncio import (
 
 from app import crud
 from app.api import deps
-from app.api.deps import current_active_superuser, current_active_user
+from app.api.deps import current_active_superuser, current_active_user, current_verified_user
 from app.db import init_db, session
 from app.db.base import Base
 from app.main import app
@@ -93,7 +93,7 @@ def db_engine() -> Iterator[AsyncEngine]:
     yield engine
 
 
-@pytest.fixture()
+@pytest.fixture
 async def db_session(
     db_engine: AsyncEngine, monkeypatch: MonkeyPatch
 ) -> AsyncGenerator[AsyncSession, None]:
@@ -124,7 +124,7 @@ async def db_session(
         await conn.run_sync(Base.metadata.drop_all)
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="function")
 def client() -> Iterator[TestClient]:
     """Fixture with a test client for the FastAPI app."""
     with TestClient(app) as c:
@@ -148,11 +148,13 @@ class UserChoice(enum.Enum):
     NONE = "anonymous"
     #: Regular user
     REGULAR = "regular"
+    #: Verified user
+    VERIFIED = "verified"
     #: Superuser
     SUPERUSER = "superuser"
 
 
-@pytest.fixture()
+@pytest.fixture
 def test_user(db_session: AsyncSession, request: pytest.FixtureRequest) -> User | None:
     """Create a test user and return it.
 
@@ -170,6 +172,8 @@ def test_user(db_session: AsyncSession, request: pytest.FixtureRequest) -> User 
         init_db.create_user(
             email="test@example.com",
             password="password123",
+            is_active=True,
+            is_verified=user_choice in [UserChoice.VERIFIED, UserChoice.SUPERUSER],
             is_superuser=user_choice == UserChoice.SUPERUSER,
             get_async_session=get_db_session,
         )
@@ -177,28 +181,26 @@ def test_user(db_session: AsyncSession, request: pytest.FixtureRequest) -> User 
     return user
 
 
-@pytest.fixture()
+@pytest.fixture
 def client_user(test_user: User | None, request: pytest.FixtureRequest):
     """Create a test client with a test user.
 
     Special handling for ``request.param`` (type ``TestUser``).
     """
     # Get the user type from the request, defaulting to regular and early return for anonymous.
-    user: UserChoice = getattr(request, "param", UserChoice.REGULAR)
+    user_choice: UserChoice = getattr(request, "param", UserChoice.REGULAR)
 
     app.dependency_overrides[current_active_user] = lambda: test_user
-
-    if test_user is not None:
-        app.dependency_overrides[current_active_user] = lambda: test_user
-
-        if user == UserChoice.SUPERUSER:
-            app.dependency_overrides[current_active_superuser] = lambda: test_user
+    if user_choice in [UserChoice.VERIFIED, UserChoice.SUPERUSER]:
+        app.dependency_overrides[current_verified_user] = lambda: test_user
+    if user_choice == UserChoice.SUPERUSER:
+        app.dependency_overrides[current_active_superuser] = lambda: test_user
 
     client = TestClient(app)
     yield client
 
     app.dependency_overrides.pop(current_active_user, None)
-    if user == UserChoice.SUPERUSER:
+    if user_choice == UserChoice.SUPERUSER:
         app.dependency_overrides.pop(current_active_superuser, None)
 
 

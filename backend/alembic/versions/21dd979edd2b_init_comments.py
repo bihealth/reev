@@ -29,7 +29,7 @@ def upgrade():
             "obj_type", sa.Enum("seqvar", "strucvar", "gene", name="commenttypes"), nullable=False
         ),
         sa.Column("obj_id", sa.String(length=255), nullable=False),
-        sa.Column("comment", sa.Text(), nullable=False),
+        sa.Column("text", sa.Text(), nullable=False),
         sa.Column("public", sa.Boolean(), nullable=False),
         sa.ForeignKeyConstraint(["user"], ["user.id"], ondelete="CASCADE"),
         sa.PrimaryKeyConstraint("id"),

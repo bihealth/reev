@@ -18,6 +18,8 @@ class CommentBase(BaseModel):
     user: UUID | None = None
     obj_type: CommentTypes
     obj_id: CommentableId
+    text: str
+    public: bool = True
 
     @model_validator(mode="after")
     def check_obj_type_id(self):

@@ -43,7 +43,7 @@ class Comment(Base):
     #: ID of the commented object.
     obj_id = Column(String(255), nullable=False)
     #: Comment text.
-    comment = Column(Text, nullable=False)
+    text = Column(Text, nullable=False)
     #: Whether the comment is public.
     public = Column(Boolean, nullable=False, default=True)
     #: Timestamp of creation.
