@@ -23,9 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-            lfs: 'true'
+         lfs: 'true'
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
@@ -49,9 +49,9 @@ jobs:
       - Backend-Lint
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-            lfs: 'true'
+         lfs: 'true'
 
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
@@ -87,9 +87,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-            lfs: 'true'
+          lfs: 'true'
+          submodules: recursive
 
       - name: Set up node 20.x
         uses: actions/setup-node@v3
@@ -111,9 +112,10 @@ jobs:
       - Frontend-Lint
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-            lfs: 'true'
+          lfs: 'true'
+          submodules: recursive
 
       - name: Set up node 20.x
         uses: actions/setup-node@v3

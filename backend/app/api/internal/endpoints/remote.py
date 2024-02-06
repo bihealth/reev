@@ -70,7 +70,7 @@ class HTTPXClientWrapper:
 httpx_client_wrapper = HTTPXClientWrapper()
 
 
-@router.get("/internal/remote/variantvalidator/{path:path}")
+@router.get("/variantvalidator/{path:path}")
 async def variantvalidator(request: Request, path: str):
     """
     Implement VariantValidator API. Proxy requests to the
