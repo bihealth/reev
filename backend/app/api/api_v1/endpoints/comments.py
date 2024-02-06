@@ -1,11 +1,18 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Response
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
 from app.api import deps
-from app.api.deps import current_active_superuser, current_active_user, current_verified_user
+from app.api.deps import (
+    current_active_superuser,
+    current_active_user,
+    current_verified_user,
+    optional_current_user,
+)
+from app.etc.fastapi_pagination import TotalCursorPage
 from app.models.user import User
 
 router = APIRouter()
@@ -30,22 +37,23 @@ async def create_comment(
 
 
 @router.get(
-    "/list-all",
-    dependencies=[Depends(current_active_user)],
-    response_model=list[schemas.CommentRead],
+    "/list/{obj_type}/{obj_id}",
+    response_model=TotalCursorPage[schemas.CommentRead],
 )
-async def list_comments(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(deps.get_db)):
+async def list_comments(
+    obj_type: str,
+    obj_id: str,
+    db: AsyncSession = Depends(deps.get_db),
+    user: User | None = Depends(optional_current_user),
+):
     """
     List all comments. Available only for superusers.
 
-    :param skip: number of comments to skip
-    :type skip: int
-    :param limit: maximum number of comments to return
-    :type limit: int
-    :return: list of comments
-    :rtype: list
+    :
+    :return: paginated list of comments
     """
-    return await crud.comment.get_multi(db, skip=skip, limit=limit)
+    query = crud.comment.query_by_object(obj_type=obj_type, obj_id=obj_id, user=user)
+    return await paginate(db, query)
 
 
 @router.get(

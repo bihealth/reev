@@ -1,42 +1,22 @@
 """Endpoints for the ClinVar submission API."""
 
 import logging
-from typing import Generic, Optional, TypeVar
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from fastapi_pagination.bases import CursorRawParams
-from fastapi_pagination.cursor import CursorPage, CursorParams
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas, worker
 from app.api import deps
 from app.api.deps import current_active_user
+from app.etc.fastapi_pagination import TotalCursorPage
 from app.models.clinvarsub import SubmissionActivityStatus
 from app.models.user import User
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-T = TypeVar("T")
-
-
-class TotalCursorParams(CursorParams):
-    """Cursor params with total count."""
-
-    def to_raw_params(self) -> CursorRawParams:
-        params = super().to_raw_params()
-        params.include_total = True
-
-        return params
-
-
-class TotalCursorPage(CursorPage[T], Generic[T]):
-    """Cursor page with total count."""
-
-    __params_type__ = TotalCursorParams
-
 
 # -- SumbmittingOrg -----------------------------------------------------------
 
