@@ -31,7 +31,7 @@ async def create_comment(
 
 @router.get(
     "/list-all",
-    dependencies=[Depends(current_active_superuser)],
+    dependencies=[Depends(current_active_user)],
     response_model=list[schemas.CommentRead],
 )
 async def list_comments(skip: int = 0, limit: int = 100, db: AsyncSession = Depends(deps.get_db)):

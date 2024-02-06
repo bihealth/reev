@@ -200,6 +200,8 @@ def client_user(test_user: User | None, request: pytest.FixtureRequest):
     yield client
 
     app.dependency_overrides.pop(current_active_user, None)
+    if user_choice in [UserChoice.VERIFIED, UserChoice.SUPERUSER]:
+        app.dependency_overrides.pop(current_verified_user, None)
     if user_choice == UserChoice.SUPERUSER:
         app.dependency_overrides.pop(current_active_superuser, None)
 

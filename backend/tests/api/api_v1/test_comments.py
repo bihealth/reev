@@ -97,7 +97,7 @@ async def test_create_comment_invalid_data(
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
+@pytest.mark.parametrize("test_user, client_user", [(VERIF, VERIF)], indirect=True)
 async def test_list_all_comments(
     db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
@@ -110,11 +110,14 @@ async def test_list_all_comments(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     response_list_all = client_user.get(f"{settings.API_V1_STR}/comments/list-all/")
     # assert:s
-    assert response_create.status_code == 200
-    assert response_list_all.status_code == 401
-    assert response_list_all.json() == {"detail": "Unauthorized"}
+    assert response_list_all.status_code == 200
+    assert response_list_all.json()[0]["obj_type"] == "gene"
+    assert response_list_all.json()[0]["obj_id"] == obj_names.gene[0]
+    assert response_list_all.json()[0]["text"] == "This is a test comment."
+    assert response_list_all.json()[0]["user"] == str(test_user.id)
 
 
 @pytest.mark.anyio
@@ -130,9 +133,9 @@ async def test_list_all_comments_superuser(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     response_list_all = client_user.get(f"{settings.API_V1_STR}/comments/list-all/")
     # assert:
-    assert response_create.status_code == 200
     assert response_list_all.status_code == 200
     assert response_list_all.json()[0]["obj_type"] == "gene"
     assert response_list_all.json()[0]["obj_id"] == obj_names.gene[0]
@@ -173,7 +176,7 @@ async def test_list_all_no_comments(
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
+@pytest.mark.parametrize("test_user, client_user", [(VERIF, VERIF)], indirect=True)
 async def test_get_comment_by_id(
     db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
@@ -202,6 +205,7 @@ async def test_get_comment_by_id_superuser(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     # Get the comment id
     response_list = client_user.get(f"{settings.API_V1_STR}/comments/list/")
     comment_id = response_list.json()[0]["id"]
@@ -209,7 +213,6 @@ async def test_get_comment_by_id_superuser(
         f"{settings.API_V1_STR}/comments/get-by-id?id={comment_id}"
     )
     # assert:
-    assert response_create.status_code == 200
     assert response_get_by_id.status_code == 200
     assert response_get_by_id.json()["id"] == comment_id
 
@@ -265,6 +268,7 @@ async def test_delete_comment_by_id(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     # Get the comment id
     response_list = client_user.get(f"{settings.API_V1_STR}/comments/list/")
     comment_id = response_list.json()[0]["id"]
@@ -274,7 +278,6 @@ async def test_delete_comment_by_id(
     # Verify that the comment was not deleted
     response_list = client_user.get(f"{settings.API_V1_STR}/comments/list/")
     # assert:
-    assert response_create.status_code == 200
     assert response_delete_by_id.status_code == 401
     assert response_delete_by_id.json() == {"detail": "Unauthorized"}
     assert response_list.status_code == 200
@@ -350,7 +353,7 @@ async def test_delete_comment_by_invalid_id(
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
+@pytest.mark.parametrize("test_user, client_user", [(VERIF, VERIF)], indirect=True)
 async def test_list_comments(
     db_session: AsyncSession, client_user: TestClient, test_user: User, obj_names: ObjNames
 ):
@@ -362,9 +365,9 @@ async def test_list_comments(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     response_list = client_user.get(f"{settings.API_V1_STR}/comments/list/")
     # assert:
-    assert response_create.status_code == 200
     assert response_list.status_code == 200
     assert response_list.json()[0]["obj_type"] == "gene"
     assert response_list.json()[0]["obj_id"] == obj_names.gene[0]
@@ -384,9 +387,9 @@ async def test_list_comments_superuser(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     response_list = client_user.get(f"{settings.API_V1_STR}/comments/list/")
     # assert:
-    assert response_create.status_code == 200
     assert response_list.status_code == 200
     assert response_list.json()[0]["obj_type"] == "gene"
     assert response_list.json()[0]["obj_id"] == obj_names.gene[0]
@@ -425,7 +428,7 @@ async def test_list_no_comments(
 
 
 @pytest.mark.anyio
-@pytest.mark.parametrize("test_user, client_user", [(REGUL, REGUL)], indirect=True)
+@pytest.mark.parametrize("test_user, client_user", [(VERIF, VERIF)], indirect=True)
 async def test_get_comment(
     db_session: AsyncSession,
     client_user: TestClient,
@@ -440,11 +443,11 @@ async def test_get_comment(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     response_get = client_user.get(
         f"{settings.API_V1_STR}/comments/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
-    assert response_create.status_code == 200
     assert response_get.status_code == 200
     assert response_get.json()["obj_type"] == "gene"
     assert response_get.json()["obj_id"] == obj_names.gene[0]
@@ -464,11 +467,11 @@ async def test_get_comment_superuser(
         f"{settings.API_V1_STR}/comments/create/",
         json={"obj_type": "gene", "obj_id": obj_names.gene[0], "text": "This is a test comment."},
     )
+    assert response_create.status_code == 200  # guard assertion
     response_get = client_user.get(
         f"{settings.API_V1_STR}/comments/get?obj_type=gene&obj_id={obj_names.gene[0]}"
     )
     # assert:
-    assert response_create.status_code == 200
     assert response_get.status_code == 200
     assert response_get.json()["obj_type"] == "gene"
     assert response_get.json()["obj_id"] == obj_names.gene[0]
