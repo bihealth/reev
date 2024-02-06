@@ -296,7 +296,10 @@ const SECTIONS: { [key: string]: Section[] } = {
       <v-container fluid>
         <v-row>
           <v-col cols="2">
-            <div v-if="strucvarInfoStore.storeState == StoreState.Active">
+            <div
+              v-if="strucvarInfoStore.storeState == StoreState.Active"
+              style="position: sticky; top: 20px"
+            >
               <v-list v-model:opened="openedSection" density="compact" rounded="lg">
                 <BookmarkListItem :id="idForBookmark" type="strucvar" />
 
