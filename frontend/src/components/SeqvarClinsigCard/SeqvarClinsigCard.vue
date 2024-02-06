@@ -164,10 +164,7 @@ const fontColor = computed(() => {
 watch(
   () => [props.seqvar, acmgRatingStore.storeState],
   async () => {
-    if (
-      props.seqvar?.genomeBuild === 'grch37' &&
-      ![StoreState.Loading, StoreState.Error].includes(acmgRatingStore.storeState)
-    ) {
+    if (props.seqvar?.genomeBuild === 'grch37') {
       try {
         await acmgRatingStore.fetchAcmgRating(props.seqvar)
         if (acmgRatingStore.acmgRatingStatus === false) {
@@ -180,6 +177,8 @@ watch(
         errorMessage.value = msg
         emit('errorDisplay', msg)
       }
+    } else {
+      acmgRatingStore.clearData()
     }
   }
 )

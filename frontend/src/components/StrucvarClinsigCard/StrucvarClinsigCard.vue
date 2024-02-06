@@ -84,8 +84,10 @@ const calculateAcmgScore = computed((): number => {
 watch(
   () => [props.strucvar, acmgRatingStore.storeState],
   async () => {
-    if (props.strucvar && acmgRatingStore.storeState === StoreState.Active) {
+    if (props.strucvar) {
       await acmgRatingStore.fetchAcmgRating(props.strucvar)
+    } else {
+      acmgRatingStore.clearData()
     }
   }
 )
