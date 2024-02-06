@@ -8,6 +8,9 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      typecheck: {
+        tsconfig: './tsconfig.vitest.json'
+      },
       setupFiles: ['./src/vitest.setup.ts'],
       server: {
         deps: {
@@ -15,13 +18,17 @@ export default mergeConfig(
         }
       },
       coverage: {
-        provider: 'istanbul'
+        all: true,
+        provider: 'istanbul',
+        reporter: ['text', 'html', 'clover', 'json'],
+        include: ['src/lib/**/*.ts', 'src/stores/**/*.ts', 'src/components/**/*.{vue,ts}'],
+        exclude: ['**/*.spec.ts', '**/*.stories.ts']
       },
       environment: 'jsdom',
-      exclude: [...configDefaults.exclude, 'e2e/*'],
+      exclude: [...configDefaults.exclude, 'e2e/*', '**/ext/**'],
       root: fileURLToPath(new URL('./', import.meta.url)),
-      transformMode: {
-        web: [/\.[jt]sx$/]
+      testTransformMode: {
+        web: ['**/*.{jsx,tsx}']
       },
       testTimeout: 10000
     }

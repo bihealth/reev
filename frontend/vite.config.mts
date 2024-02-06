@@ -1,7 +1,10 @@
+import typescript from '@rollup/plugin-typescript'
 import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-import { URL, fileURLToPath } from 'node:url'
+import * as path from 'path'
+import ViteFonts from 'unplugin-fonts/vite'
 import { defineConfig } from 'vite'
+import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
+import dts from 'vite-plugin-dts'
 import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 
 // https://vitejs.dev/config/
@@ -13,18 +16,32 @@ export default defineConfig({
     vue({
       template: { transformAssetUrls }
     }),
-    vueJsx(),
+    dts({
+      insertTypesEntry: true
+    }),
+    cssInjectedByJsPlugin(),
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
       styles: {
         configFile: 'src/styles/settings.scss'
       }
+    }),
+    ViteFonts({
+      google: {
+        families: [
+          {
+            name: 'Roboto',
+            styles: 'wght@100;300;400;500;700;900'
+          }
+        ]
+      }
     })
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@bihealth/reev-frontend-lib': path.resolve(__dirname, 'src/ext/reev-frontend-lib/src'),
+      '@': path.resolve(__dirname, 'src')
     }
   },
   server: {
@@ -47,6 +64,13 @@ export default defineConfig({
     }
   },
   build: {
-    chunkSizeWarningLimit: 1500
+    chunkSizeWarningLimit: 5000,
+    rollupOptions: {
+      plugins: [
+        typescript({
+          exclude: ['**/*.spec.ts', '**/*.stories.ts', '**/fixture.*.json']
+        })
+      ]
+    }
   }
 })

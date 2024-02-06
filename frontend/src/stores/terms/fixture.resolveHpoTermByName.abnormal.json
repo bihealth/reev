@@ -1,0 +1,945 @@
+{
+  "version": { "hpo": "2023-06-06", "viguno": "0.2.0" },
+  "query": { "term_id": null, "name": "abnormal", "max_results": 100, "genes": false },
+  "result": [
+    {
+      "term_id": "HP:0001155",
+      "name": "Abnormality of the hand",
+      "definition": "An abnormality affecting one or both hands.",
+      "synonyms": [
+        "Abnormal hands",
+        "Abnormality of the hand",
+        "Hand anomalies",
+        "Hand deformities"
+      ],
+      "xrefs": ["MSH:D006226", "SNOMEDCT_US:299033004", "UMLS:C0018564"]
+    },
+    {
+      "term_id": "HP:0001172",
+      "name": "Abnormal thumb morphology",
+      "definition": "An abnormal structure of the first digit of the hand.",
+      "synonyms": ["Abnormality of the thumb", "Abnormality of the thumbs", "Thumb deformity"],
+      "xrefs": ["MSH:C536903", "SNOMEDCT_US:299130003", "UMLS:C0575897"]
+    },
+    {
+      "term_id": "HP:0001191",
+      "name": "Abnormal carpal morphology",
+      "definition": "An abnormality affecting the carpal bones of the wrist (scaphoid, lunate, triquetral, pisiform, trapezium, trapezoid, capitate, hamate).",
+      "synonyms": [
+        "Abnormal carpal bones",
+        "Abnormal wrist bones",
+        "Abnormality of the carpal bones",
+        "Anomalous carpal bones",
+        "Carpal bone anomalies"
+      ],
+      "xrefs": ["UMLS:C1840535"]
+    },
+    {
+      "term_id": "HP:0001194",
+      "name": "Abnormalities of placenta or umbilical cord",
+      "definition": "An abnormality of the placenta (the organ that connects the developing fetus to the uterine wall) or of the umbilical cord (the cord that connects the fetus to the placenta).",
+      "synonyms": ["Abnormalities of placenta or umbilical cord"],
+      "xrefs": ["UMLS:C4025798"]
+    },
+    {
+      "term_id": "HP:0001197",
+      "name": "Abnormality of prenatal development or birth",
+      "definition": "An abnormality of the fetus or the birth of the fetus, excluding structural abnormalities.",
+      "synonyms": ["Abnormality of prenatal development or birth"],
+      "xrefs": ["UMLS:C4025797"]
+    },
+    {
+      "term_id": "HP:0001211",
+      "name": "Abnormal fingertip morphology",
+      "definition": "An abnormal structure of the tip (end) of a finger.",
+      "synonyms": ["Abnormality of the fingertips"],
+      "xrefs": ["UMLS:C4025796"]
+    },
+    {
+      "term_id": "HP:0001227",
+      "name": "Abnormality of the thenar eminence",
+      "definition": "An abnormality of the thenar eminence, i.e., of the muscle on the palm of the human hand just beneath the thumb.",
+      "synonyms": ["Thenar abnormality"],
+      "xrefs": ["UMLS:C4021783"]
+    },
+    {
+      "term_id": "HP:0001231",
+      "name": "Abnormal fingernail morphology",
+      "definition": "An abnormality of the fingernails.",
+      "synonyms": ["Abnormal fingernails", "Abnormality of the fingernails"],
+      "xrefs": ["UMLS:C4021782"]
+    },
+    {
+      "term_id": "HP:0001273",
+      "name": "Abnormal corpus callosum morphology",
+      "definition": "Abnormality of the corpus callosum.",
+      "synonyms": [
+        "Abnormal corpus callosum",
+        "Abnormality of the corpus callosum",
+        "Corpus callosum abnormality"
+      ],
+      "xrefs": ["UMLS:C1842581"]
+    },
+    {
+      "term_id": "HP:0001291",
+      "name": "Abnormal cranial nerve morphology",
+      "definition": "Structural abnormality affecting one or more of the cranial nerves, which emerge directly from the brain stem.",
+      "synonyms": [
+        "Abnormality of cranial nerve",
+        "Abnormality of the cranial nerves",
+        "Cranial nerve abnormality",
+        "Cranial nerve disease",
+        "Cranial nerve involvement"
+      ],
+      "xrefs": ["UMLS:C1854510", "UMLS:C4020872"]
+    },
+    {
+      "term_id": "HP:0001311",
+      "name": "Abnormal nervous system electrophysiology",
+      "definition": "An abnormality of the function of the electrical signals with which nerve cells communicate with each other or with muscles as measured by electrophysiological investigations.",
+      "synonyms": ["Neurophysiologic abnormalities", "Neurophysiologic abnormality"],
+      "xrefs": ["UMLS:C4021781"]
+    },
+    {
+      "term_id": "HP:0001317",
+      "name": "Abnormal cerebellum morphology",
+      "definition": "Any structural abnormality of the cerebellum.",
+      "synonyms": [
+        "Abnormality of the cerebellum",
+        "Cerebellar abnormalities",
+        "Cerebellar abnormality",
+        "Cerebellar anomaly",
+        "Cerebellar signs"
+      ],
+      "xrefs": ["UMLS:C0742038", "UMLS:C1866129"]
+    },
+    {
+      "term_id": "HP:0001367",
+      "name": "Abnormal joint morphology",
+      "definition": "An abnormal structure or form of the joints, i.e., one or more of the articulations where two bones join.",
+      "synonyms": [
+        "Abnormal shape of joints",
+        "Abnormality of the joints",
+        "Anomaly of the joints",
+        "Joint disease"
+      ],
+      "xrefs": ["MSH:D007592", "SNOMEDCT_US:399269003", "UMLS:C0022408", "UMLS:C0240083"]
+    },
+    {
+      "term_id": "HP:0001384",
+      "name": "Abnormal hip joint morphology",
+      "definition": "An abnormality of the hip joint.",
+      "synonyms": ["Abnormality of the hip joint", "Abnormality of the hip joints"],
+      "xrefs": ["UMLS:C4020870"]
+    },
+    {
+      "term_id": "HP:0001438",
+      "name": "Abnormal abdomen morphology",
+      "definition": "A structural abnormality of the abdomen ('belly'), that is, the part of the body between the pelvis and the thorax.",
+      "synonyms": [
+        "Abdomen abnormality",
+        "Abnormality of abdomen morphology",
+        "Abnormality of abdomen structure",
+        "Abnormality of the abdomen"
+      ],
+      "xrefs": ["UMLS:C4020869"]
+    },
+    {
+      "term_id": "HP:0001641",
+      "name": "Abnormal pulmonary valve morphology",
+      "definition": "Any structural abnormality of the pulmonary valve.",
+      "synonyms": ["Abnormality of the pulmonary valve", "Anomaly of the pulmonary valve"],
+      "xrefs": ["Fyler:1600", "Fyler:1602", "SNOMEDCT_US:448643005", "UMLS:C3164374"]
+    },
+    {
+      "term_id": "HP:0001697",
+      "name": "Abnormal pericardium morphology",
+      "definition": "An abnormality of the pericardium, i.e., of the fluid filled sac that surrounds the heart and the proximal ends of the aorta, vena cava, and the pulmonary artery.",
+      "synonyms": ["Abnormality of the pericardium"],
+      "xrefs": ["Fyler:1900", "UMLS:C4025754"]
+    },
+    {
+      "term_id": "HP:0001711",
+      "name": "Abnormal left ventricle morphology",
+      "definition": "Any structural abnormality of the left ventricle of the heart.",
+      "synonyms": [
+        "Abnormal heart left ventricle morphology",
+        "Abnormality of the left ventricle",
+        "Left ventricular abnormality"
+      ],
+      "xrefs": ["Fyler:1810", "SNOMEDCT_US:253535002", "UMLS:C0344905"]
+    },
+    {
+      "term_id": "HP:0001732",
+      "name": "Abnormality of the pancreas",
+      "definition": "An abnormality of the pancreas.",
+      "synonyms": ["Abnormality of the pancreas", "Pancreatic disease"],
+      "xrefs": ["MSH:D010182", "SNOMEDCT_US:3855007", "UMLS:C0030286", "UMLS:C4025751"]
+    },
+    {
+      "term_id": "HP:0001760",
+      "name": "Abnormal foot morphology",
+      "definition": "An abnormality of the skeleton of foot.",
+      "synonyms": [
+        "Abnormal feet structure",
+        "Abnormality of the feet",
+        "Abnormality of the foot",
+        "Foot deformities",
+        "Foot deformity"
+      ],
+      "xrefs": ["MSH:D005530", "SNOMEDCT_US:229844004", "UMLS:C0016506"]
+    },
+    {
+      "term_id": "HP:0001787",
+      "name": "Abnormal delivery",
+      "definition": "An abnormality of the birth process.",
+      "synonyms": ["Abnormal delivery", "Delivery complication"],
+      "xrefs": ["SNOMEDCT_US:274127000", "UMLS:C0549629"]
+    },
+    {
+      "term_id": "HP:0001844",
+      "name": "Abnormal hallux morphology",
+      "definition": "This term applies for all abnormalities of the big toe, also called hallux.",
+      "synonyms": [
+        "Abnormalities of the hallux",
+        "Abnormality of the big toe",
+        "Abnormality of the hallux"
+      ],
+      "xrefs": ["UMLS:C4021773"]
+    },
+    {
+      "term_id": "HP:0001850",
+      "name": "Abnormality of the tarsal bones",
+      "definition": "An abnormality of the tarsus are the cluster of seven bones in the foot between the tibia and fibula and the metatarsus, including the calcaneus (heel) bone and the talus (ankle) bone.",
+      "synonyms": ["Abnormal ankle bones", "Abnormal tarsals"],
+      "xrefs": ["UMLS:C1862136"]
+    },
+    {
+      "term_id": "HP:0001872",
+      "name": "Abnormality of thrombocytes",
+      "definition": "An abnormality of platelets.",
+      "synonyms": ["Blood platelet disease", "Platelet abnormalities", "Thrombasthenia"],
+      "xrefs": [
+        "MSH:D013915",
+        "SNOMEDCT_US:127566005",
+        "SNOMEDCT_US:32942005",
+        "UMLS:C0040015",
+        "UMLS:C0151854",
+        "UMLS:C4020863"
+      ]
+    },
+    {
+      "term_id": "HP:0001877",
+      "name": "Abnormal erythrocyte morphology",
+      "definition": "Any structural abnormality of erythrocytes (red-blood cells).",
+      "synonyms": [
+        "Abnormality of erythrocytes",
+        "Abnormality of erythroid lineage cell",
+        "Abnormality of red blood cells"
+      ],
+      "xrefs": ["SNOMEDCT_US:12222001", "UMLS:C0391870", "UMLS:C4020862"]
+    },
+    {
+      "term_id": "HP:0001879",
+      "name": "Abnormal eosinophil morphology",
+      "definition": "An abnormal count or structure of eosinophils.",
+      "synonyms": ["Abnormality of eosinophils"],
+      "xrefs": ["UMLS:C4025738"]
+    },
+    {
+      "term_id": "HP:0001911",
+      "name": "Abnormal granulocyte morphology",
+      "definition": "Any structural abnormality or abnormal count of granulocytes.",
+      "synonyms": ["Abnormality of granulocytes"],
+      "xrefs": ["SNOMEDCT_US:250274006", "UMLS:C0427515"]
+    },
+    {
+      "term_id": "HP:0001881",
+      "name": "Abnormal leukocyte morphology",
+      "definition": "An abnormality of leukocytes.",
+      "synonyms": ["Abnormality of leukocytes"],
+      "xrefs": ["SNOMEDCT_US:134199001", "SNOMEDCT_US:24827003", "UMLS:C0152009"]
+    },
+    {
+      "term_id": "HP:0001999",
+      "name": "Abnormal facial shape",
+      "definition": "An abnormal morphology (form) of the face or its components.",
+      "synonyms": [
+        "Abnormal facial shape",
+        "Abnormal morphology of the face",
+        "Deformity of face",
+        "Distinctive facies",
+        "Distortion of face",
+        "Dysmorphic facial features",
+        "Dysmorphic facies",
+        "Facial dysmorphism",
+        "Funny looking face",
+        "Malformation of face",
+        "Unusual facial appearance",
+        "Unusual facies"
+      ],
+      "xrefs": [
+        "SNOMEDCT_US:248200007",
+        "SNOMEDCT_US:32003007",
+        "SNOMEDCT_US:398206004",
+        "SNOMEDCT_US:398302004",
+        "UMLS:C0266617",
+        "UMLS:C0424503",
+        "UMLS:C1385263",
+        "UMLS:C4072832",
+        "UMLS:C4072833"
+      ]
+    },
+    {
+      "term_id": "HP:0002056",
+      "name": "Abnormality of the glabella",
+      "definition": "An abnormality of the glabella.",
+      "synonyms": [
+        "Abnormality of the area between the eyebrows",
+        "Deformity of the area between the eyebrows",
+        "Glabellar abnormality",
+        "Malformation of the area between the eyebrows"
+      ],
+      "xrefs": ["UMLS:C4021763"]
+    },
+    {
+      "term_id": "HP:0002062",
+      "name": "Morphological abnormality of the pyramidal tract",
+      "definition": "Any structural abnormality of the pyramidal tract, whose chief element, the corticospinal tract, is the only direct connection between the brain and the spinal cord. In addition to the corticospinal tract, the pyramidal system includes the corticobulbar, corticomesencephalic, and corticopontine tracts.",
+      "synonyms": ["Abnormality of the pyramidal tracts", "Pyramidal tract disease"],
+      "xrefs": ["UMLS:C4020859", "UMLS:C4021761"]
+    },
+    {
+      "term_id": "HP:0002143",
+      "name": "Abnormal spinal cord morphology",
+      "definition": "A structural abnormality of the spinal cord (myelon).",
+      "synonyms": [
+        "Abnormality of the spinal cord",
+        "Spinal cord disease",
+        "Spinal cord pathology"
+      ],
+      "xrefs": ["MSH:D013118", "SNOMEDCT_US:48522003", "UMLS:C0037928", "UMLS:C4025722"]
+    },
+    {
+      "term_id": "HP:0002242",
+      "name": "Abnormal intestine morphology",
+      "definition": "An abnormality of the intestine. The closely related term enteropathy is used to refer to any disease of the intestine.",
+      "synonyms": ["Abnormality of the intestine", "Enteropathy"],
+      "xrefs": ["MSH:D007410", "SNOMEDCT_US:85919009", "UMLS:C0021831"]
+    },
+    {
+      "term_id": "HP:0002244",
+      "name": "Abnormal small intestine morphology",
+      "definition": "A structural abnormality of the small intestine.",
+      "synonyms": ["Abnormality of the small intestine"],
+      "xrefs": ["UMLS:C4025717"]
+    },
+    {
+      "term_id": "HP:0002250",
+      "name": "Abnormal large intestine morphology",
+      "definition": "Any abnormality of the large intestine.",
+      "synonyms": ["Abnormality of the large intestine"],
+      "xrefs": ["UMLS:C4025715"]
+    },
+    {
+      "term_id": "HP:0002353",
+      "name": "EEG abnormality",
+      "definition": "Abnormality observed by electroencephalogram (EEG), which is used to record of the brain's spontaneous electrical activity from multiple electrodes placed on the scalp.",
+      "synonyms": [
+        "Abnormal EEG",
+        "Abnormal electroencephalogram",
+        "EEG abnormalities",
+        "Electroencephalogram abnormal",
+        "Electroencephalogram abnormalities"
+      ],
+      "xrefs": ["SNOMEDCT_US:274521009", "UMLS:C0151611"]
+    },
+    {
+      "term_id": "HP:0002418",
+      "name": "Abnormal midbrain morphology",
+      "definition": "An abnormality of the midbrain, which has as its parts the tectum, cerebral peduncle, midbrain tegmentum and cerebral aqueduct.",
+      "synonyms": [
+        "Abnormal shape of midbrain",
+        "Abnormality of midbrain morphology",
+        "Abnormality of the mesencephalon",
+        "Abnormality of the midbrain"
+      ],
+      "xrefs": ["UMLS:C4021755"]
+    },
+    {
+      "term_id": "HP:0002494",
+      "name": "Abnormal rapid eye movement sleep",
+      "definition": "Abnormality of REM sleep. Phases of REM sleep are characterized by desynchronized EEG patterns, increases in heart rate and blood pressure, sympathetic activation, and a profound loss of muscle tonus except for the eye and middle-ear muscles. There are then phases of rapid eye movements.",
+      "synonyms": ["Abnormal REM sleep"],
+      "xrefs": ["SNOMEDCT_US:69020003", "UMLS:C0392188"]
+    },
+    {
+      "term_id": "HP:0002492",
+      "name": "Morphological abnormality of the corticospinal tract",
+      "definition": "Abnormality of the corticospinal tract, which is the chief element of the pyramidal system (the principle motor tract) and is the only direct connection between the cerebrum and the spinal cord.",
+      "synonyms": [
+        "Abnormality of the corticospinal tract",
+        "Involvement of the corticospinal pathways"
+      ],
+      "xrefs": ["UMLS:C4020852", "UMLS:C4025704"]
+    },
+    {
+      "term_id": "HP:0002500",
+      "name": "Abnormal cerebral white matter morphology",
+      "definition": "An abnormality of the cerebral white matter.",
+      "synonyms": [
+        "Abnormality of subcortical white matter",
+        "Abnormality of the cerebral white matter",
+        "Cerebral white matter abnormalities",
+        "Cortical white matter abnormalities seen on MRI",
+        "Leukoaraiosis",
+        "White matter abnormalities",
+        "White matter alterations"
+      ],
+      "xrefs": ["MSH:D049292", "UMLS:C0948163", "UMLS:C4020851"]
+    },
+    {
+      "term_id": "HP:0002577",
+      "name": "Abnormal stomach morphology",
+      "definition": "An abnormality of the stomach.",
+      "synonyms": ["Abnormality of the stomach"],
+      "xrefs": ["UMLS:C4025699"]
+    },
+    {
+      "term_id": "HP:0002644",
+      "name": "Abnormal pelvic girdle bone morphology",
+      "definition": "An abnormality of the bony pelvic girdle, which is a ring of bones connecting the vertebral column to the femurs.",
+      "synonyms": [
+        "Abnormal shape of pelvic girdle bone",
+        "Abnormality of pelvic girdle bone morphology",
+        "Abnormality of the pelvic girdle"
+      ],
+      "xrefs": ["UMLS:C4020847"]
+    },
+    {
+      "term_id": "HP:0002683",
+      "name": "Abnormal calvaria morphology",
+      "definition": "Abnormality of the morphology (structure) of the calvaria (skullcap), that is, of that part of the skull that is made up of the superior portions of the frontal bone, occipital bone, and parietal bones and covers the cranial cavity that contains the brain.",
+      "synonyms": [
+        "Abnormality of calvarium",
+        "Abnormality of cranial vault",
+        "Abnormality of cranium",
+        "Abnormality of the calvaria",
+        "Abnormality of the shape of calvarium",
+        "Abnormality of the skull cap",
+        "Abnormality of the skullcap"
+      ],
+      "xrefs": ["UMLS:C4025691", "UMLS:C4280561"]
+    },
+    {
+      "term_id": "HP:0002696",
+      "name": "Abnormal parietal bone morphology",
+      "definition": "Any abnormality of the parietal bone of the skull.",
+      "synonyms": ["Abnormality of the parietal bone", "Abnormality of the parietal bone of skull"],
+      "xrefs": ["UMLS:C4021834"]
+    },
+    {
+      "term_id": "HP:0002699",
+      "name": "Abnormal foramen magnum morphology",
+      "definition": "Any abnormality of the foramen magnum.",
+      "synonyms": ["Abnormality of the foramen magnum"],
+      "xrefs": ["UMLS:C4025687"]
+    },
+    {
+      "term_id": "HP:0002703",
+      "name": "Abnormality of skull ossification",
+      "definition": "An abnormality of the process of ossification of the skull.",
+      "synonyms": [
+        "Abnormality of bone calcification of calvarium",
+        "Abnormality of bone calcification of cranium",
+        "Abnormality of bone calcification of skull",
+        "Abnormality of bone formation of calvarium",
+        "Abnormality of bone formation of cranium",
+        "Abnormality of bone mineralization of calvarium",
+        "Abnormality of bone mineralization of cranium",
+        "Abnormality of bone mineralization of skull",
+        "Abnormality of ossification of calvarium",
+        "Abnormality of ossification of cranium",
+        "Abnormality of skull bone formation"
+      ],
+      "xrefs": ["UMLS:C4025686", "UMLS:C4280550", "UMLS:C4280551", "UMLS:C4280552", "UMLS:C4280553"]
+    },
+    {
+      "term_id": "HP:0002715",
+      "name": "Abnormality of the immune system",
+      "definition": "An abnormality of the immune system.",
+      "synonyms": ["Abnormality of the immune system", "Immunological abnormality"],
+      "xrefs": ["UMLS:C4021753"]
+    },
+    {
+      "term_id": "HP:0002693",
+      "name": "Abnormal skull base morphology",
+      "definition": "An abnormality of the base of the skull, which forms the floor of the cranial cavity and separates the brain from other facial structures. The skull base is made up of five bones: the ethmoid, sphenoid, occipital, paired frontal, and paired parietal bones, and is subdivided into 3 regions: the anterior, middle, and posterior cranial fossae. The petro-occipital fissure subdivides the middle cranial fossa into 1 central component and 2 lateral components.",
+      "synonyms": ["Abnormality of cranial base", "Abnormality of the skull base"],
+      "xrefs": ["UMLS:C4025688"]
+    },
+    {
+      "term_id": "HP:0002733",
+      "name": "Abnormal lymph node morphology",
+      "definition": "A structural lymph node abnormality.",
+      "synonyms": ["Abnormal lymph node histology", "Abnormality of the lymph nodes"],
+      "xrefs": ["UMLS:C0149727"]
+    },
+    {
+      "term_id": "HP:0002763",
+      "name": "Abnormal cartilage morphology",
+      "definition": "Any morphological abnormality of cartilage.",
+      "synonyms": ["Abnormal shape of cartilage", "Abnormality of cartilage morphology"],
+      "xrefs": ["UMLS:C4025680"]
+    },
+    {
+      "term_id": "HP:0002814",
+      "name": "Abnormality of the lower limb",
+      "definition": "An abnormality of the leg.",
+      "synonyms": [
+        "Abnormality of the leg",
+        "Abnormality of the lower limb",
+        "Lower limb deformities"
+      ],
+      "xrefs": ["SNOMEDCT_US:449715001", "UMLS:C1096086"]
+    },
+    {
+      "term_id": "HP:0002815",
+      "name": "Abnormality of the knee",
+      "definition": "An abnormality of the knee joint or surrounding structures.",
+      "synonyms": ["Abnormality of the knee"],
+      "xrefs": ["UMLS:C4025676"]
+    },
+    {
+      "term_id": "HP:0002817",
+      "name": "Abnormality of the upper limb",
+      "definition": "An abnormality of the arm.",
+      "synonyms": ["Abnormality of the arm", "Abnormality of the upper limb"],
+      "xrefs": ["UMLS:C4020900"]
+    },
+    {
+      "term_id": "HP:0002813",
+      "name": "Abnormality of limb bone morphology",
+      "definition": "Any abnormality of bones of the arms or legs.",
+      "synonyms": [
+        "Abnormal shape of limb bone",
+        "Arm and/or leg bone differences",
+        "Limb abnormality"
+      ],
+      "xrefs": ["UMLS:C4082761"]
+    },
+    {
+      "term_id": "HP:0002818",
+      "name": "Abnormal morphology of the radius",
+      "definition": "An abnormality of the radius.",
+      "synonyms": ["Abnormality of the radius"],
+      "xrefs": ["UMLS:C4025675"]
+    },
+    {
+      "term_id": "HP:0002843",
+      "name": "Abnormal T cell morphology",
+      "definition": "An abnormality of T cells.",
+      "synonyms": [
+        "Abnormal T cells",
+        "Abnormality of T cells",
+        "Cellular immune defect",
+        "Defective cellular immunity"
+      ],
+      "xrefs": ["UMLS:C1855752"]
+    },
+    {
+      "term_id": "HP:0002867",
+      "name": "Abnormal ilium morphology",
+      "definition": "An abnormality of the ilium, the largest and uppermost bone of the pelvis.",
+      "synonyms": ["Abnormality of the ilium", "Iliac abnormalities"],
+      "xrefs": ["UMLS:C4021746"]
+    },
+    {
+      "term_id": "HP:0002921",
+      "name": "Abnormal cerebrospinal fluid morphology",
+      "definition": "An abnormality of the cerebrospinal fluid (CSF).",
+      "synonyms": [
+        "Abnormal CSF findings",
+        "Abnormality of the cerebrospinal fluid",
+        "Abnormality of the CSF"
+      ],
+      "xrefs": ["UMLS:C0151583"]
+    },
+    {
+      "term_id": "HP:0002973",
+      "name": "Abnormal forearm morphology",
+      "definition": "An abnormality of the lower arm.",
+      "synonyms": ["Abnormality of the forearm"],
+      "xrefs": ["UMLS:C4025666"]
+    },
+    {
+      "term_id": "HP:0003019",
+      "name": "Abnormality of the wrist",
+      "definition": "Abnormality of the wrist, the structure connecting the hand and the forearm.",
+      "synonyms": ["Abnormalities of the wrists", "Abnormality of the wrist"],
+      "xrefs": ["UMLS:C4021744"]
+    },
+    {
+      "term_id": "HP:0003103",
+      "name": "Abnormal cortical bone morphology",
+      "definition": "An abnormality of compact bone (also known as cortical bone), which forms the dense surface of bones.",
+      "synonyms": ["Abnormal compact bone morphology", "Abnormality of cortical bone"],
+      "xrefs": ["UMLS:C4021741"]
+    },
+    {
+      "term_id": "HP:0003111",
+      "name": "Abnormal blood ion concentration",
+      "definition": "Abnormality of the homeostasis (concentration) of a monoatomic ion.",
+      "synonyms": [
+        "Abnormality of ion homeostasis",
+        "Electrolyte disorders",
+        "Electrolyte disturbance"
+      ],
+      "xrefs": ["SNOMEDCT_US:237840007", "UMLS:C1704431", "UMLS:C4025654"]
+    },
+    {
+      "term_id": "HP:0003115",
+      "name": "Abnormal EKG",
+      "definition": "Abnormal rhythm of the heart.",
+      "synonyms": ["Abnormal ECG", "Abnormal EKG", "Abnormal electrocardiogram", "EKG abnormality"],
+      "xrefs": ["SNOMEDCT_US:102594003", "UMLS:C0522055"]
+    },
+    {
+      "term_id": "HP:0003117",
+      "name": "Abnormal circulating hormone concentration",
+      "definition": "An abnormal concentration of a hormone in the blood.",
+      "synonyms": [
+        "Abnormal circulating hormone level",
+        "Abnormality of circulating hormone level"
+      ],
+      "xrefs": ["UMLS:C4025652"]
+    },
+    {
+      "term_id": "HP:0003170",
+      "name": "Abnormal acetabulum morphology",
+      "definition": "An abnormality of the acetabulum, i.e., the Acetabular part of hip bone, which together with the head of the femur forms the hip joint.",
+      "synonyms": [
+        "Abnormality of the acetabulum",
+        "Abnormality of the hipbone socket",
+        "Acetabular abnormality"
+      ],
+      "xrefs": ["UMLS:C4021739"]
+    },
+    {
+      "term_id": "HP:0003272",
+      "name": "Abnormal hip bone morphology",
+      "definition": "An abnormality of the hip bone.",
+      "synonyms": ["Abnormality of the hip bone", "Abnormality of the hips"],
+      "xrefs": ["UMLS:C4021735"]
+    },
+    {
+      "term_id": "HP:0003312",
+      "name": "Abnormal form of the vertebral bodies",
+      "definition": "Abnormal morphology of vertebral body.",
+      "synonyms": ["Abnormally shaped vertebrae"],
+      "xrefs": ["UMLS:C1839326"]
+    },
+    {
+      "term_id": "HP:0003319",
+      "name": "Abnormality of the cervical spine",
+      "definition": "Any abnormality of the cervical vertebral column.",
+      "synonyms": [
+        "Abnormal cervical spine",
+        "Abnormality of cervical vertebra",
+        "Abnormality of the cervical vertebrae",
+        "Cervical spine abnormalities",
+        "Cervical vertebral abnormalities",
+        "Cervical vertebral anomalies",
+        "Disorder of cervical vertebra"
+      ],
+      "xrefs": ["UMLS:C1852464"]
+    },
+    {
+      "term_id": "HP:0003310",
+      "name": "Abnormality of the odontoid process",
+      "definition": "Abnormality of the dens of the axis, which is also known as the odontoid process.",
+      "synonyms": ["Abnormal odontoid peg", "Abnormal odontoid process"],
+      "xrefs": ["UMLS:C1864794"]
+    },
+    {
+      "term_id": "HP:0003368",
+      "name": "Abnormal femoral head morphology",
+      "definition": "An abnormality of the femoral head.",
+      "synonyms": ["Abnormal head of thigh bone", "Abnormality of the femoral head"],
+      "xrefs": ["UMLS:C4025620"]
+    },
+    {
+      "term_id": "HP:0003367",
+      "name": "Abnormal femoral neck morphology",
+      "definition": "An abnormality of the femoral neck (which is the process of bone, connecting the femoral head with the femoral shaft).",
+      "synonyms": ["Abnormal neck of thigh bone", "Abnormality of the femoral neck"],
+      "xrefs": ["UMLS:C4025621"]
+    },
+    {
+      "term_id": "HP:0003398",
+      "name": "Abnormal synaptic transmission at the neuromuscular junction",
+      "definition": "Any abnormality of the neuromuscular junction, which is the synapse between the motor end plate of a motor neuron and the skeletal muscle fibers.",
+      "synonyms": ["Abnormality of neuromuscular transmission"],
+      "xrefs": ["UMLS:C4020842", "UMLS:C4025618"]
+    },
+    {
+      "term_id": "HP:0004213",
+      "name": "Abnormal 5th finger phalanx morphology",
+      "definition": "Abnormality of the phalanges of the 5th (little) finger.",
+      "synonyms": [
+        "Abnormality of the little finger bone",
+        "Abnormality of the phalanges of the 5th finger",
+        "Abnormality of the pinkie finger bone",
+        "Abnormality of the pinky finger bone"
+      ],
+      "xrefs": ["UMLS:C4025408"]
+    },
+    {
+      "term_id": "HP:0004225",
+      "name": "Abnormality of the distal phalanx of the 5th finger",
+      "definition": "Abnormality of the distal phalanx of the 5th (little) finger.",
+      "synonyms": [
+        "Abnormality of the distal phalanx of the little finger",
+        "Abnormality of the outermost little finger bone",
+        "Abnormality of the outermost pinkie finger bone",
+        "Abnormality of the outermost pinky finger bone",
+        "Abnormality of the terminal phalanx of the little finger"
+      ],
+      "xrefs": ["UMLS:C4021673"]
+    },
+    {
+      "term_id": "HP:0004224",
+      "name": "Abnormality of the epiphysis of the middle phalanx of the 5th finger",
+      "definition": "Abnormality of the epiphysis of the middle phalanx of the fifth finger. This epiphysis is located on the proximal end of the phalanx.",
+      "synonyms": [
+        "Abnormality of the end part of middle little finger bone",
+        "Abnormality of the end part of middle pinkie finger bone",
+        "Abnormality of the end part of middle pinky finger bone"
+      ],
+      "xrefs": ["UMLS:C4025405"]
+    },
+    {
+      "term_id": "HP:0004298",
+      "name": "Abnormality of the abdominal wall",
+      "definition": "The presence of any abnormality affecting the abdominal wall.",
+      "synonyms": [
+        "Abnormality of external features of the abdomen",
+        "Abnormality of the abdominal wall"
+      ],
+      "xrefs": ["UMLS:C4021664"]
+    },
+    {
+      "term_id": "HP:0004306",
+      "name": "Abnormal endocardium morphology",
+      "definition": "An abnormality of the endocardium.",
+      "synonyms": ["Abnormality of the endocardium", "Abnormality of the endomycoardium"],
+      "xrefs": ["UMLS:C4021662"]
+    },
+    {
+      "term_id": "HP:0004312",
+      "name": "Abnormal reticulocyte morphology",
+      "definition": "A reticulocyte abnormality.",
+      "synonyms": ["Abnormality of reticulocytes"],
+      "xrefs": ["UMLS:C4025358"]
+    },
+    {
+      "term_id": "HP:0004303",
+      "name": "Abnormal muscle fiber morphology",
+      "definition": "Any abnormality of the skeletal muscle cell. Muscle fibers are subdivided into two types. Type I fibers are fatigue-resistant and rich in oxidative enzymes (they stain light with the myosin ATPase reaction), and type II fibers are fast-contracting, fatigue-prone, and rich in glycolytic enzymes (these fibers stain darkly). Normal muscle tissue has a random distribution of type I and type II fibers.",
+      "synonyms": [
+        "Abnormal muscle fibre morphology",
+        "Abnormal skeletal muscle fiber morphology",
+        "Abnormal skeletal muscle fibre morphology",
+        "Abnormality of muscle fibers",
+        "Abnormality of muscle fibres"
+      ],
+      "xrefs": ["UMLS:C4021663"]
+    },
+    {
+      "term_id": "HP:0004328",
+      "name": "Abnormal anterior eye segment morphology",
+      "definition": "An abnormality of the anterior segment of the eyeball (which comprises the structures in front of the vitreous humour: the cornea, iris, ciliary body, and lens).",
+      "synonyms": [
+        "Abnormal anterior segment morphology",
+        "Abnormality of the anterior segment of the eye",
+        "Abnormality of the anterior segment of the eyeball",
+        "Abnormality of the anterior segment of the globe"
+      ],
+      "xrefs": ["UMLS:C4025355"]
+    },
+    {
+      "term_id": "HP:0004337",
+      "name": "Abnormality of amino acid metabolism",
+      "definition": "Abnormality of an amino acid metabolic process.",
+      "synonyms": ["Amino acid levels abnormal"],
+      "xrefs": ["UMLS:C1328440"]
+    },
+    {
+      "term_id": "HP:0004343",
+      "name": "Abnormal glycosphingolipid metabolism",
+      "definition": "An abnormality of glycosphingolipid metabolism.",
+      "synonyms": ["Abnormality of glycosphingolipid metabolism"],
+      "xrefs": ["UMLS:C4025350"]
+    },
+    {
+      "term_id": "HP:0004361",
+      "name": "Abnormal circulating leptin concentration",
+      "definition": "An abnormal concentration of leptin in the blood.",
+      "synonyms": ["Abnormality of circulating leptin level"],
+      "xrefs": ["UMLS:C4025339"]
+    },
+    {
+      "term_id": "HP:0004378",
+      "name": "Abnormality of the anus",
+      "definition": "Abnormality of the anal canal.",
+      "synonyms": ["Abnormality of the anus"],
+      "xrefs": ["UMLS:C4025329"]
+    },
+    {
+      "term_id": "HP:0004414",
+      "name": "Abnormality of the pulmonary artery",
+      "definition": "An abnormality of the pulmonary artery.",
+      "synonyms": ["Abnormality of lung artery"],
+      "xrefs": [
+        "SNOMEDCT_US:128588008",
+        "SNOMEDCT_US:198914002",
+        "SNOMEDCT_US:36110001",
+        "UMLS:C0009681"
+      ]
+    },
+    {
+      "term_id": "HP:0004742",
+      "name": "Abnormal renal collecting system morphology",
+      "definition": "An abnormality of the renal collecting system.",
+      "synonyms": [
+        "Abnormal collecting system",
+        "Abnormality of the renal collecting system",
+        "Renal collecting system anomalies"
+      ],
+      "xrefs": ["UMLS:C1851303"]
+    },
+    {
+      "term_id": "HP:0004924",
+      "name": "Abnormal oral glucose tolerance",
+      "definition": "An abnormal resistance to glucose, i.e., a reduction in the ability to maintain glucose levels in the blood stream within normal limits following oral administration of glucose.",
+      "synonyms": ["Abnormal glucose oral tolerance test"],
+      "xrefs": ["UMLS:C1847425"]
+    },
+    {
+      "term_id": "HP:0004921",
+      "name": "Abnormal magnesium concentration",
+      "definition": "An abnormality of magnesium ion homeostasis.",
+      "synonyms": [
+        "Abnormal magnesium metabolism",
+        "Abnormal Mg concentration",
+        "Abnormality of magnesium homeostasis"
+      ],
+      "xrefs": ["UMLS:C4020826", "UMLS:C4025274"]
+    },
+    {
+      "term_id": "HP:0005107",
+      "name": "Abnormal sacrum morphology",
+      "definition": "An abnormality of the sacral bone.",
+      "synonyms": ["Abnormality of the sacrum"],
+      "xrefs": ["UMLS:C4025250"]
+    },
+    {
+      "term_id": "HP:0005120",
+      "name": "Abnormal cardiac atrium morphology",
+      "definition": "Any structural abnormality of a cardiac atrium.",
+      "synonyms": ["Abnormality of cardiac atrium morphology", "Abnormality of heart atrium"],
+      "xrefs": ["UMLS:C4025246"]
+    },
+    {
+      "term_id": "HP:0005135",
+      "name": "Abnormal T-wave",
+      "definition": "An abnormality of the T wave on the electrocardiogram, which mainly represents the repolarization of the ventricles.",
+      "synonyms": ["EKG: T-wave abnormalities", "T-wave abnormalities"],
+      "xrefs": ["UMLS:C4025245"]
+    },
+    {
+      "term_id": "HP:0005108",
+      "name": "Abnormal intervertebral disk morphology",
+      "definition": "Any structural abnormality of the intervertebral disk.",
+      "synonyms": [
+        "Abnormality of the intervertebral disc",
+        "Abnormality of the intervertebral disk"
+      ],
+      "xrefs": ["UMLS:C4025249"]
+    },
+    {
+      "term_id": "HP:0005109",
+      "name": "Abnormality of the Achilles tendon",
+      "definition": "An abnormality of the Achilles tendon.",
+      "synonyms": ["Abnormality of the Achilles tendon", "Abnormality of the calcaneal tendon"],
+      "xrefs": ["UMLS:C4021642"]
+    },
+    {
+      "term_id": "HP:0005288",
+      "name": "Abnormal nostril morphology",
+      "definition": "Abnormality of the nostril.",
+      "synonyms": [
+        "Abnormal naris morphology",
+        "Abnormality of the nares",
+        "Abnormality of the nostrils",
+        "Anomaly of the nares",
+        "Deformity of the nares",
+        "Deformity of the nostrils",
+        "Malformation of the nares",
+        "Malformation of the nostrils"
+      ],
+      "xrefs": ["UMLS:C4021637"]
+    },
+    {
+      "term_id": "HP:0005345",
+      "name": "Abnormal vena cava morphology",
+      "definition": "An abnormality of the structure of the veins that return deoxygenated blood from the body into the heart, i.e., the superior vena cava and the inferior vena cava.",
+      "synonyms": ["Abnormality of the vena cava"],
+      "xrefs": ["UMLS:C4025210"]
+    },
+    {
+      "term_id": "HP:0005372",
+      "name": "Abnormality of B cell physiology",
+      "definition": "An abnormality of the physiological functioning of B cells.",
+      "synonyms": ["Abnormality of B cell physiology", "Reduced B cell function"],
+      "xrefs": ["UMLS:C1849242"]
+    },
+    {
+      "term_id": "HP:0005344",
+      "name": "Abnormal carotid artery morphology",
+      "definition": "Any structural abnormality of the carotid arteries, including the common carotid artery and its' arterial branches.",
+      "synonyms": ["Abnormality of the carotid arteries"],
+      "xrefs": ["UMLS:C4025211"]
+    },
+    {
+      "term_id": "HP:0005557",
+      "name": "Abnormal zygomatic arch morphology",
+      "definition": "An abnormality of the zygomatic arch, also known as the cheek bone.",
+      "synonyms": [
+        "Abnormality of the malar arch",
+        "Abnormality of the zygomatic arch",
+        "Anomaly of the malar arch",
+        "Anomaly of the zygomatic arch",
+        "Deformity of the malar arch",
+        "Deformity of the zygomatic arch",
+        "Malformation of the malar arch",
+        "Malformation of the zygomatic arch"
+      ],
+      "xrefs": ["UMLS:C4025179"]
+    },
+    {
+      "term_id": "HP:0005916",
+      "name": "Abnormal metacarpal morphology",
+      "definition": "Any abnormal shape or structure of the metacarpal bones.",
+      "synonyms": ["Abnormal shape of long bones of hand", "Abnormal shape of metacarpal bones"],
+      "xrefs": ["UMLS:C4021615"]
+    },
+    {
+      "term_id": "HP:0005905",
+      "name": "Abnormal cervical curvature",
+      "definition": "The presence of an abnormal curvature of the cervical vertebral column.",
+      "synonyms": ["Abnormal neck curve"],
+      "xrefs": ["UMLS:C3151523"]
+    }
+  ]
+}

@@ -58,7 +58,7 @@ async def test_acmg_missing_query_params(client: TestClient):
 
 @pytest.mark.anyio
 async def test_cnv_acmg(httpx_mock: HTTPXMock, client: TestClient):
-    """Test forwarding to PubTator 3 API."""
+    """Test forwarding to AutoCNV API."""
     # arrange:
     httpx_mock.add_response(
         url="https://phoenix.bgi.com/api/acit/jobs/",

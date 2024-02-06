@@ -1,4 +1,1 @@
-// Utilities
-import { createPinia } from 'pinia'
-
-export default createPinia()
+export * from '@bihealth/reev-frontend-lib/stores/types'

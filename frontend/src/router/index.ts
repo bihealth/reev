@@ -1,18 +1,18 @@
 import { nextTick } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
-import ACMGCriteriaDocs from '@/views/ACMGCriteriaDocs.vue'
-import ACMGSVDocs from '@/views/ACMGSVDocs.vue'
-import GeneDetailView from '@/views/GeneDetailView.vue'
-import HomeView from '@/views/HomeView.vue'
-import LoginView from '@/views/LoginView.vue'
-import PathNotFound from '@/views/PathNotFound.vue'
-import ProfileView from '@/views/ProfileView.vue'
-import QueryView from '@/views/QueryView.vue'
-import SeqvarDetailsView from '@/views/SeqvarDetailsView.vue'
-import StaticView from '@/views/StaticView.vue'
-import StrucvarDetailsView from '@/views/StrucvarDetailsView.vue'
-import VerifyEmailView from '@/views/VerifyEmailView.vue'
+import AcmgSeqvarDocs from '@/views/AcmgSeqvarDocs/AcmgSeqvarDocs.vue'
+import AcmgStrucvarDocs from '@/views/AcmgStrucvarDocs/AcmgStrucvarDocs.vue'
+import GeneDetailView from '@/views/GeneDetailView/GeneDetailView.vue'
+import HomeView from '@/views/HomeView/HomeView.vue'
+import LoginView from '@/views/LoginView/LoginView.vue'
+import PathNotFound from '@/views/PathNotFound/PathNotFound.vue'
+import ProfileView from '@/views/ProfileView/ProfileView.vue'
+import QueryView from '@/views/QueryView/QueryView.vue'
+import SeqvarDetailsView from '@/views/SeqvarDetailsView/SeqvarDetailsView.vue'
+import StaticView from '@/views/StaticView/StaticView.vue'
+import StrucvarDetailsView from '@/views/StrucvarDetailsView/StrucvarDetailsView.vue'
+import VerifyEmailView from '@/views/VerifyEmailView/VerifyEmailView.vue'
 
 const routes = [
   {
@@ -74,12 +74,12 @@ const routes = [
   {
     path: '/docs/acmg-docs',
     name: 'acmg-docs',
-    component: ACMGCriteriaDocs
+    component: AcmgSeqvarDocs
   },
   {
     path: '/docs/acmg-cnv',
     name: 'docs-acmg-cnv',
-    component: ACMGSVDocs
+    component: AcmgStrucvarDocs
   },
   {
     path: '/:pathMatch(.*)*',

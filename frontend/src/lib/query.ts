@@ -1,11 +1,9 @@
 /**
  * Code implementing the query strategy.
  */
-import { type RouteLocationRaw } from 'vue-router'
-
-import { AnnonarsClient } from '@/api/annonars'
-import { DottyClient } from '@/api/dotty'
-import { type GenomeBuild } from '@/lib/genomeBuilds'
+import { AnnonarsClient, ScoreGeneNames } from '@bihealth/reev-frontend-lib/api/annonars'
+import { DottyClient } from '@bihealth/reev-frontend-lib/api/dotty'
+import { type GenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 import {
   ParseError,
   type Seqvar,
@@ -14,7 +12,8 @@ import {
   parseIscnCnv,
   parseSeparatedSeqvar,
   parseSeparatedStrucvar
-} from '@/lib/genomicVars'
+} from '@bihealth/reev-frontend-lib/lib/genomicVars'
+import { type RouteLocationRaw } from 'vue-router'
 
 /**
  * Attempt to translate the variant with dotty to SPDI.
@@ -32,13 +31,13 @@ export async function lookupWithDotty(
   const dottyClient = new DottyClient()
   const result = await dottyClient.toSpdi(queryTerm, genomeBuild === 'grch37' ? 'GRCh37' : 'GRCh38')
 
-  if (result && result?.success) {
+  if (result && result?.success && result!.value) {
     const spdi = result.value
     return {
       chrom: spdi.contig,
       pos: spdi.pos,
-      del: spdi.reference_deleted,
-      ins: spdi.alternate_inserted,
+      del: spdi.referenceDeleted,
+      ins: spdi.alternateInserted,
       genomeBuild,
       userRepr: queryTerm
     }
@@ -134,40 +133,12 @@ export function resolveStrucvar(queryTerm: string, genomeBuild: GenomeBuild): St
 }
 
 /**
- * Information about a gene as returned by the API gene lookup.
- */
-export interface GeneInfo {
-  name: string
-  symbol: string
-  alias_name?: string[]
-  alias_symbol?: string[]
-  ensembl_gene_id?: string
-  hgnc_id: string
-  ncbi_gene_id: string
-}
-
-/**
- * Item returned by the API gene lookup.
- */
-export interface ScoredGeneInfo {
-  score: number
-  data: GeneInfo
-}
-
-/**
- * Result of the API gene lookup.
- */
-export interface GeneLookupResult {
-  genes: ScoredGeneInfo[]
-}
-
-/**
  * Exception thrown in GeneLookup if there was not exactly one entry.
  */
 export class NotOneGeneInfo extends Error {
-  entries: ScoredGeneInfo[]
+  entries: ScoreGeneNames[]
 
-  constructor(message: string, entries: ScoredGeneInfo[]) {
+  constructor(message: string, entries: ScoreGeneNames[]) {
     super(message)
 
     this.entries = entries
@@ -189,13 +160,13 @@ export async function lookupGene(
   field: 'geneSymbol' | 'hgncId' = 'geneSymbol'
 ): Promise<string> {
   const annonarsClient = new AnnonarsClient()
-  const data = (await annonarsClient.fetchGenes(queryTerm)) as GeneLookupResult
+  const data = await annonarsClient.fetchGenes(queryTerm)
   // Handle case of a single match.
   if (data.genes.length === 1) {
     if (field == 'geneSymbol') {
       return data.genes[0].data.symbol
     } else {
-      return data.genes[0].data.hgnc_id
+      return data.genes[0].data.hgncId
     }
   }
   // Handle case of multiple matches.
@@ -204,15 +175,15 @@ export async function lookupGene(
       if (field == 'geneSymbol') {
         return gene.symbol
       } else {
-        return gene.hgnc_id
+        return gene.hgncId
       }
     } else if (
-      (gene.alias_symbol ?? []).find((alias) => alias.toLowerCase() === queryTerm.toLowerCase())
+      (gene.aliasSymbol ?? []).find((alias) => alias.toLowerCase() === queryTerm.toLowerCase())
     ) {
       if (field == 'geneSymbol') {
         return gene.symbol
       } else {
-        return gene.hgnc_id
+        return gene.hgncId
       }
     }
   }

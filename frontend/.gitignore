@@ -1,8 +1,8 @@
 /coverage
 
 .DS_Store
-node_modules
-/dist
+**/node_modules
+**/dist
 
 
 # local env files

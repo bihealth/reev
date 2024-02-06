@@ -22,7 +22,7 @@ ARG version_file=utils/docker/empty-file-dont-remove
 COPY frontend/. .
 COPY ${version_file} /VERSION
 
-RUN REEV_VERSION=$(cat /VERSION) npm run build
+RUN REEV_VERSION=$(cat /VERSION) npm run build-only
 
 
 # ---------------------------------------------------------------------------
