@@ -162,7 +162,7 @@ const fontColor = computed(() => {
 
 /** Re-compute ACMG rating from InterVar when the sequence variant changed. */
 watch(
-  () => [props.seqvar, acmgRatingStore.storeState],
+  () => [props.seqvar],
   async () => {
     if (props.seqvar?.genomeBuild === 'grch37') {
       try {
