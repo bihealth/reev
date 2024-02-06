@@ -26,7 +26,9 @@ const geneRank = computed<GeneRank | null>(() => {
 // Function to load the data.
 const loadData = async () => {
   await caseInfoStore.initialize()
-  await cadaPrioStore.loadData(caseInfoStore.caseInfo.hpoTerms.map((term) => term.termId))
+  if ((caseInfoStore.caseInfo.hpoTerms ?? []).length !== 0) {
+    await cadaPrioStore.loadData(caseInfoStore.caseInfo.hpoTerms.map((term) => term.termId))
+  }
 }
 
 // Load case store when mounted.
