@@ -35,3 +35,8 @@ HgncId: TypeAlias = constr(min_length=1, strip_whitespace=True, pattern=RE_HGNCI
 BookmarkableId: TypeAlias = constr(  # type: ignore
     min_length=1, strip_whitespace=True, pattern=f"{RE_SEQVAR}|{RE_STRUCVAR}|{RE_HGNCID}"
 )
+
+#: Type for a commentable object.
+CommentableId: TypeAlias = constr(  # type: ignore
+    min_length=1, strip_whitespace=True, pattern=f"{RE_SEQVAR}|{RE_STRUCVAR}|{RE_HGNCID}"
+)

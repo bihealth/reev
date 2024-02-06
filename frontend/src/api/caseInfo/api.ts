@@ -1,7 +1,6 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
-import type { CaseInfo } from '@/stores/caseInfo'
 
-import type { ApiResponse } from './types'
+import { type ApiResponse, CaseInfo } from './types'
 
 /**
  * Access to the caseinfo part of the API.
@@ -39,18 +38,6 @@ export class CaseInfoClient {
    * @returns created case information
    */
   async createCaseInfo(caseInfo: CaseInfo): Promise<ApiResponse> {
-    const postData = `{
-      "pseudonym": "${caseInfo.pseudonym}",
-      "diseases": ${JSON.stringify(caseInfo.diseases)},
-      "hpo_terms": ${JSON.stringify(caseInfo.hpoTerms)},
-      "inheritance": "${caseInfo.inheritance}",
-      "affected_family_members": ${caseInfo.affectedFamilyMembers},
-      "sex": "${caseInfo.sex}",
-      "age_of_onset_month": ${caseInfo.ageOfOnsetMonths},
-      "ethincity": "${caseInfo.ethnicity}",
-      "zygosity": "${caseInfo.zygosity}",
-      "family_segregation": ${caseInfo.familySegregation}
-    }`
     const response = await fetch(`${this.apiBaseUrl}caseinfo/create`, {
       method: 'POST',
       mode: 'cors',
@@ -59,7 +46,7 @@ export class CaseInfoClient {
         accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: postData
+      body: JSON.stringify(CaseInfo.toJson(caseInfo))
     })
     return await response.json()
   }
@@ -71,18 +58,6 @@ export class CaseInfoClient {
    * @returns updated case information
    */
   async updateCaseInfo(caseInfo: CaseInfo): Promise<ApiResponse> {
-    const postData = `{
-      "pseudonym": "${caseInfo.pseudonym}",
-      "diseases": ${JSON.stringify(caseInfo.diseases)},
-      "hpo_terms": ${JSON.stringify(caseInfo.hpoTerms)},
-      "inheritance": "${caseInfo.inheritance}",
-      "affected_family_members": ${caseInfo.affectedFamilyMembers},
-      "sex": "${caseInfo.sex}",
-      "age_of_onset_month": ${caseInfo.ageOfOnsetMonths},
-      "ethincity": "${caseInfo.ethnicity}",
-      "zygosity": "${caseInfo.zygosity}",
-      "family_segregation": ${caseInfo.familySegregation}
-    }`
     const response = await fetch(`${this.apiBaseUrl}caseinfo/update`, {
       method: 'PATCH',
       mode: 'cors',
@@ -91,7 +66,7 @@ export class CaseInfoClient {
         accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: postData
+      body: JSON.stringify(CaseInfo.toJson(caseInfo))
     })
     return await response.json()
   }

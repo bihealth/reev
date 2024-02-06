@@ -24,6 +24,7 @@ import { useTheme } from 'vuetify'
 
 import BookmarkListItem from '@/components/BookmarkListItem/BookmarkListItem.vue'
 import FooterDefault from '@/components/FooterDefault/FooterDefault.vue'
+import GeneCommentsCard from '@/components/GeneCommentsCard/GeneCommentsCard.vue'
 import { lookupGene } from '@/lib/query'
 import { scrollToSection } from '@/lib/utils'
 import { useCaseInfoStore } from '@/stores/caseInfo'
@@ -132,6 +133,7 @@ interface Section {
 /** Sections in the navigation. */
 const SECTIONS: Section[] = [
   { id: 'gene-overview', title: 'Overview' },
+  { id: 'gene-comments', title: 'Comments' },
   { id: 'gene-pathogenicity', title: 'Pathogenicity' },
   { id: 'gene-conditions', title: 'Conditions' },
   { id: 'gene-expression', title: 'Expression' },
@@ -196,14 +198,18 @@ const SECTIONS: Section[] = [
               </v-btn>
             </v-alert>
 
-            <div id="gene-overview">
+            <!-- <div id="gene-overview">
               <GeneOverviewCard
                 :gene-info="geneInfoStore.geneInfo"
                 :show-gene-details-link="false"
               />
+            </div> -->
+
+            <div id="gene-comments" class="mt-3">
+              <GeneCommentsCard />
             </div>
 
-            <div id="gene-pathogenicity" class="mt-3">
+            <!-- <div id="gene-pathogenicity" class="mt-3">
               <GenePathogenicityCard :gene-info="geneInfoStore.geneInfo">
                 <CadaRanking :hgnc-id="geneInfoStore.geneInfo?.hgnc!.hgncId" />
               </GenePathogenicityCard>
@@ -236,7 +242,7 @@ const SECTIONS: Section[] = [
 
             <div id="gene-literature" class="mt-3">
               <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
-            </div>
+            </div> -->
           </v-col>
         </v-row>
         <FooterDefault />

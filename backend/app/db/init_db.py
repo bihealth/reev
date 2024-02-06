@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 async def create_user(
     email: str,
     password: str,
+    is_active: bool = True,
+    is_verified: bool = False,
     is_superuser: bool = False,
     get_async_session: Callable[[], AsyncGenerator[AsyncSession, None]] | None = None,
 ):
@@ -32,7 +34,13 @@ async def create_user(
             async with get_user_db_context(session) as user_db:
                 async with get_user_manager_context(user_db) as user_manager:
                     user = await user_manager.create(
-                        UserCreate(email=email, password=password, is_superuser=is_superuser)
+                        UserCreate(
+                            email=email,
+                            password=password,
+                            is_active=is_active,
+                            is_verified=is_verified,
+                            is_superuser=is_superuser,
+                        )
                     )
                     logger.info(f"User created {email}")
                     return user

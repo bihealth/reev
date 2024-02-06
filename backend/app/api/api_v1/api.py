@@ -11,6 +11,7 @@ from app.api.api_v1.endpoints import (
     bookmarks,
     caseinfo,
     clinvarsub,
+    comments,
     utils,
 )
 from app.core.auth import auth_backend_bearer, auth_backend_cookie, fastapi_users
@@ -21,6 +22,7 @@ api_router = APIRouter()
 api_router.include_router(acmgseqvar.router, prefix="/acmgseqvar", tags=["acmgseqvar"])
 api_router.include_router(adminmsgs.router, prefix="/adminmsgs", tags=["adminmsgs"])
 api_router.include_router(bookmarks.router, prefix="/bookmarks", tags=["bookmarks"])
+api_router.include_router(comments.router, prefix="/comments", tags=["comments"])
 api_router.include_router(utils.router, prefix="/utils", tags=["utils"])
 api_router.include_router(caseinfo.router, prefix="/caseinfo", tags=["caseinfo"])
 api_router.include_router(clinvarsub.router, prefix="/clinvarsub", tags=["clinvarsub"])
