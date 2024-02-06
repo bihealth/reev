@@ -1,3 +1,4 @@
+import typescript from '@rollup/plugin-typescript'
 import vue from '@vitejs/plugin-vue'
 import * as path from 'path'
 import ViteFonts from 'unplugin-fonts/vite'
@@ -60,6 +61,16 @@ export default defineConfig({
         changeOrigin: false,
         secure: false
       }
+    }
+  },
+  build: {
+    chunkSizeWarningLimit: 5000,
+    rollupOptions: {
+      plugins: [
+        typescript({
+          exclude: ['**/*.spec.ts', '**/*.stories.ts', '**/fixture.*.json']
+        })
+      ]
     }
   }
 })

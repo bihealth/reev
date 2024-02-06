@@ -8,6 +8,9 @@ export default mergeConfig(
   viteConfig,
   defineConfig({
     test: {
+      typecheck: {
+        tsconfig: './tsconfig.vitest.json'
+      },
       setupFiles: ['./src/vitest.setup.ts'],
       server: {
         deps: {
