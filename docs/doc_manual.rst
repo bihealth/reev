@@ -182,7 +182,7 @@ Finally, you can save your ACMG rating, load a preexisting one, or delete it fro
 InterVar Automation
 -------------------
 
-Explaining the ACMG criteria for sequence variants is beyond the scope of this manual, but we provide a brief overview of the InterVar\ :footcite:p:`Li:2017` automation.
+Explaining the ACMG criteria for sequence variants is beyond the scope of this manual, but we provide a brief overview of the InterVar\ :footcite:p:`Li:2017` automation rules.
 
 .. list-table:: Sequence variant ACMG criteria as implemented in InterVar.
     :widths: 10 90
@@ -381,7 +381,7 @@ AutoCNV Automation
 ------------------
 
 Explaining the ACMG criteria for copy number variants is beyond the scope of this manual, but we provide a brief overview of the AutoCNV\ :footcite:p:`Fan:2021` automation.
-The following criteria are implemented for deletions / copy number loss variants.
+The following criteria are implemented.
 
 .. list-table:: Copy number loss variant ACMG criteria as implemented in AutoCNV.
     :widths: 10 10 80
@@ -392,54 +392,55 @@ The following criteria are implemented for deletions / copy number loss variants
       - Summary
     * - 1
       - 1A
-      - 0 otherwise
+      - :math:`0` otherwise
     * -
       - 1B
-      - -0.6 if no protein coding genes or functionally important elements
+      - :math:`-0.6` if no protein coding genes or functionally important elements
     * - 2
       - 2A
-      - 1 if del spans haploinssuficient or dup spans triplosensitive gene or region (clingen database)
+      - :math:`1` if del spans haploinssuficient or dup spans triplosensitive gene or region (clingen database)
     * -
       - 2B
       - 0 no overlap
     * -
       - 2C
-      - 0.9 if exon involved or 0.0 without for partial 5' overlap
+      - del\: :math:`0.9` if exon involved or :math:`0.0` without for partial 5' overlap;
+        dup\: :math:`-1` if same gene content as known benign CNV
     * -
       - 2D
-      - 0.9 for 3' overlap if pathogenic variants documented in exon (P/LP ClinVar /w AF <1% gnomAD), 0.3 without known pathogenic, 0.9 multiple exons
+      - del\: :math:`0.9` for 3' overlap if pathogenic variants documented in exon (P/LP ClinVar with AF <1% gnomAD), :math:`0.3` without known pathogenic, :math:`0.9` multiple exons; dup\: :math:`-1` smaller than benign CNV
     * -
       - 2E
-      - AutoPVS1, 0.9 if NMD, 0.45 if altered region critical, 0.45 if >10% protein removed, 0.3 <10% protein
+      - del\: AutoPVS1, :math:`0.9` if NMD, :math:`0.45` if altered region critical, :math:`0.45` if :math:`>10\%` protein removed, :math:`0.3` if :math:`<10\%` protein; dup\: assign :math:`0` if interrupts protein coding gene
     * -
       - 2F
-      - -1 if established benign genes, regions
+      - del\: :math:`-1` if established benign genes, regions; dup\: :math:`[-1, 0]` if larger than benign duplication without additional coding genes
     * -
       - 2G
-      - 0 if established benign genes but includes additional regions
+      - :math:`0` if established benign genes but includes additional regions
     * -
       - 2H
-      - 0.15 gene pLI >=0.9 and Decipher HI <=10%
+      - :math:`0.15` gene pLI :math:`\ge0.9` and Decipher HI :math:`\le10\%`
     * -
       - 2I
-      - dups AutoPVS1, 0.9 if tandem + NMD, 0.45 if tandem
+      - dup\: AutoPVS1, :math:`0.9` if tandem + NMD, :math:`0.45` if tandem
     * -
       - 2L
-      - dups 0 genes without clinical significance
+      - dup\: :math:`0` genes without clinical significance
     * - 3
       - 3A
-      - 0 otherwise
+      - :math:`0` otherwise
     * -
       - 3B
-      - 0.45 del 25-34 or dup 35-49 protein coding genes
+      - :math:`0.45` if del :math:`[25..34]` or dup :math:`[35..49]` protein coding genes
     * -
       - 3C
-      - 0.9 for del >35 and dup >50 protein coding genes
+      - :math:`0.9` for del :math:`>35` and dup :math:`>50` protein coding genes
     * - 4
       - 4O
-      - -1 if CNV entirely within common variation (DGV Freq >=1% or gnomAD >=1%), or if overlap >50% without containing other protein coding genes
+      - :math:`-1` if CNV entirely within common variation (DGV Freq :math:`\ge1\%` or gnomAD :math:`\ge1\%`), or if overlap :math:`>50\%` without containing other protein coding genes
 
-The following criteria for deletions / copy number loss variants are not implemented in AutoCNV.
+The following criteria are not implemented in AutoCNV.
 
 .. list-table:: Copy number loss variant ACMG criteria not implemented in AutoCNV.
     :widths: 10 10 80
@@ -457,32 +458,6 @@ The following criteria for deletions / copy number loss variants are not impleme
     * - 5
       - 5A-5H
       - patient phenotype, family segregation
-
-The following criteria are implemented for duplications / copy number gain variants.
-
-.. list-table:: Copy number gain variant ACMG criteria as implemented in AutoCNV.
-    :widths: 10 10 80
-    :header-rows: 1
-
-    * - Section
-      - Rule
-      - Summary
-    * - TBD
-      - TBD
-      - TBD
-
-The following criteria for duplications / copy number gain variants are not implemented in AutoCNV.
-
-.. list-table:: Copy number gain variant ACMG criteria not implemented in AutoCNV.
-    :widths: 10 10 80
-    :header-rows: 1
-
-    * - Section
-      - Rule
-      - Summary
-    * - TBD
-      - TBD
-      - TBD
 
 .. _doc_manual_strucvar_genome_browser:
 
