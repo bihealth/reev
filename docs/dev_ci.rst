@@ -4,6 +4,11 @@
 Continuous Integration
 ======================
 
+.. admonition:: Developer or User?
+
+    This section is part of the instrutions for programmers interested in REEV.
+    If you want to **use** REEV, the best place is to start at :ref:`doc_quickstart`.
+
 We make extensive use of GitHub actions for continuous integration:
 
 - ``automerge.yml`` will automatically accept merge requests from dependabot if when CI passes

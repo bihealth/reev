@@ -4,6 +4,19 @@
 Dev Quickstart
 ==============
 
+.. admonition:: Developer or User?
+
+    This section is part of the instrutions for programmers interested in REEV.
+    If you want to **use** REEV, the best place is to start at :ref:`doc_quickstart`.
+
+This section explains how to get started when you want to do REEV software development.
+Probably, it is best to contact us via email to cubi@bih-charite.de or open a discussion `in the GitHub repository <https://github.com/bihealth/reev/discussions>`__.
+However, REEV is fully open source, so here is how to get started hacking away - also on your own.
+
+--------
+Overview
+--------
+
 You will need to have Python 3.10, pipenv, and Node.js 20.x installed.
 The next step is to checkout the repository and install the Python/Node dependencies.
 Then, you will be able to run the frontend and backend servers.
