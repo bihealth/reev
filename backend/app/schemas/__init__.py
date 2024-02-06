@@ -20,6 +20,7 @@ from app.schemas.clinvarsub import (  # noqa
     SubmittingOrgUpdate,
     VariantPresence,
 )
+from app.schemas.comment import CommentCreate, CommentRead, CommentUpdate  # noqa
 from app.schemas.common import RE_HGNCID, RE_SEQVAR, RE_STRUCVAR  # noqa
 from app.schemas.msg import Msg  # noqa
 from app.schemas.user import UserCreate, UserRead, UserUpdate  # noqa

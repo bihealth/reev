@@ -40,3 +40,5 @@ def downgrade():
     op.drop_index(op.f("ix_bookmarks_id"), table_name="bookmarks")
     op.drop_table("bookmarks")
     # ### end Alembic commands ###
+
+    sa.Enum(name="bookmarktypes").drop(op.get_bind(), checkfirst=False)
