@@ -1,4 +1,4 @@
-import type { HpoTerm } from '@/ext/reev-frontend-lib/src/api/viguno/types'
+import { HpoTerm, HpoTerm$Api } from '@/ext/reev-frontend-lib/src/api/viguno/types'
 import type { OmimTerm } from '@/ext/reev-frontend-lib/src/pbs/annonars/genes/base'
 
 /** The storage mode. */
@@ -56,17 +56,21 @@ export interface CaseInfo$Api {
   diseases: any[] // Replace with the actual type from your API
   ethinicity: string
   family_segregation: boolean | null
-  hpo_terms: any[] // Replace with the actual type from your API
-  id: string
+  hpo_terms: HpoTerm$Api[]
+  id?: string
   inheritance: string | null
   pseudonym: string
   sex: string | null
-  user: string
+  user?: string
   zygosity: string
 }
 
 /** Interface for the case data, for storage and API. */
 export interface CaseInfo {
+  /* CaseInfo UUID, if any. */
+  id?: string
+  /* Owner UUID, if any. */
+  user?: string
   /* The case pseudonym. */
   pseudonym: string
   /* Orphanet / OMIM disease(s). */
@@ -90,14 +94,16 @@ export interface CaseInfo {
 }
 
 /**
- * Helper class for converting from CaseInfo$Api to CaseInfo.
+ * Helper class for converting between CaseInfo$Api and CaseInfo.
  */
 export class CaseInfo$Type {
   fromJson(apiResponse: CaseInfo$Api): CaseInfo {
     return {
+      id: apiResponse.id,
+      user: apiResponse.user,
       pseudonym: apiResponse.pseudonym,
       diseases: apiResponse.diseases,
-      hpoTerms: apiResponse.hpo_terms,
+      hpoTerms: apiResponse.hpo_terms.map(HpoTerm.fromJson),
       inheritance: apiResponse.inheritance as Inheritance,
       affectedFamilyMembers: apiResponse.affected_family_members,
       sex: apiResponse.sex as Sex,
@@ -107,10 +113,27 @@ export class CaseInfo$Type {
       familySegregation: apiResponse.family_segregation
     }
   }
+
+  toJson(caseInfo: CaseInfo): CaseInfo$Api {
+    return {
+      id: caseInfo.id,
+      user: caseInfo.user,
+      pseudonym: caseInfo.pseudonym,
+      diseases: caseInfo.diseases,
+      hpo_terms: caseInfo.hpoTerms.map(HpoTerm.toJson),
+      inheritance: caseInfo.inheritance,
+      affected_family_members: caseInfo.affectedFamilyMembers,
+      sex: caseInfo.sex,
+      age_of_onset_month: caseInfo.ageOfOnsetMonths,
+      ethinicity: caseInfo.ethnicity,
+      zygosity: caseInfo.zygosity,
+      family_segregation: caseInfo.familySegregation
+    }
+  }
 }
 
 /**
- * Helper instance for converting from CaseInfo$Api to CaseInfo.
+ * Helper instance for converting between CaseInfo$Api and CaseInfo.
  */
 export const CaseInfo = new CaseInfo$Type()
 
