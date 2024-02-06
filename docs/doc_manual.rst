@@ -162,18 +162,93 @@ Clinical Significance
 
 This card shows the semi-automated pathogenicity prediction based on InterVar\ :footcite:p:`Li:2017`.
 Using the buttons on the left you can...
+
 - Hide/show the terse mode of ACMG criteria\ :footcite:p:`Richards:2015` display.
-On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
-- hide/show failed criteria (not set to "active" by the little switch displayed left to every criterion)
+  On show this will provide you an overview of just the different criteria and their evidence level, on hide you will see the full display also providing a description on every ACMG criterion and how it should be used.
+- Hide/show failed criteria (not set to "active" by the little switch displayed left to every criterion)
 
 Tipp: you can also see are brief description of every ACMG criterion in the terse mode when moving your curser of the little "i" in the upper right corner of every ACMG criterion box.
 
-On default you will see the automated selection of ACMG criteria. You can individually select and deselect every ACMG criterion using the little switch displayed left to every criterion and also select the respective level of evidence (very strong, strong, moderate, supporting) using the button below the respective ACMG criterion.
+On default you will see the automated selection of ACMG criteria.
+You can individually select and deselect every ACMG criterion using the little switch displayed left to every criterion and also select the respective level of evidence (very strong, strong, moderate, supporting) using the button below the respective ACMG criterion.
 
 Note that you can also clear all selected ACMG criteria or reset them to auto using the respective buttons below the pathogenicity prediction box on the top of the card. Here, you can also find a link-out to the detailed REEV documentation on ACMG criteria.
 
-@Manuel: need your help: ?? Finally, you can save your ACMG rating, load a preexisting one or delete it from the server ??
+Finally, you can save your ACMG rating, load a preexisting one, or delete it from the server.
 
+.. _doc_manual_seqvar_clinical_significance_intervar_automation:
+
+-------------------
+InterVar Automation
+-------------------
+
+Explaining the ACMG criteria for sequence variants is beyond the scope of this manual, but we provide a brief overview of the InterVar\ :footcite:p:`Li:2017` automation.
+
+.. list-table:: Sequence variant ACMG criteria as implemented in InterVar.
+    :widths: 10 90
+    :header-rows: 1
+
+    * - Criteria
+      - Summary
+    * - PVS1
+      - Null variants on canonical transcript for 4807 identified LOF-intolerant gene list, before 50 nucleotides of final exon-junction complex
+    * - PVS1
+      - Null variants on canonical transcript for 4807 identified LOF-intolerant gene list, before 50 nucleotides of final exon-junction complex
+    * - PS1
+      - Automatic match against list of ClinVar pathogenic missense-variants, same AA change
+    * - PS4
+      - Variants with OR > 5.0 in GWASdb v2
+    * - PM1
+      - domain info from dbnsfp31a_interpro database, list of domains with only pathogenic and likely pathogenic variants based on ClinVar data
+    * - PM2
+      - absent in ESP6500, 1000 Genomes, ExAC for dominant or AAF <0,5% for recessive
+    * - PM4
+      - non-frameshift insertion/deletion, stop-loss in non-repeat regions (rmsk database UCSC browser)
+    * - PM5
+      - Automatic match against list of ClinVar pathogenic missense-variants, different AA change
+    * - PP2
+      - >80% pathogenic (at least one) clinvar variants missense and <10% benign (and less than one)
+    * - PP3
+      - dfnsfp30a MetaSVM (>0, deleteriousness), GERP++ (>2.0, conservation), dbscnv11 (>0.6 ADA, RF scores)
+    * - PP5
+      - ClinVar or HGMD as database
+    * - BA1
+      - AAF >5%
+    * - BS1
+      - AAF >1% (default cutoff, user-adjustable)
+    * - BS2
+      - hom (for AR) or het (for AD) in 1000 Genomes
+    * - BP1
+      - >80% pathogenic (at least one) clinvar variants truncating
+    * - BP3
+      - non-frameshift insertion, non-frameshift deletion in repeat region (defined by rmsk database)
+    * - BP4
+      - Evidence (see PP3) does not suggest impact
+    * - BP6
+      - ClinVar or HGMD as database
+    * - BP7
+      - dbscnv RF and ADA <0.6, GERP++ <2 (not conserved)
+
+The following criteria are not implemented in InterVar:
+
+.. list-table:: Sequence variant ACMG criteria not implemented in InterVar.
+    :widths: 20 80
+    :header-rows: 1
+
+    * - Criteria
+      - Summary
+    * - PS2, PM6
+      - de novo status of variant
+    * - PS3, BS6
+      - functional studies
+    * - PM3, BP2
+      - variant in cis/trans with known pathogenic
+    * - PP1, BS4
+      - familial segregation
+    * - PP4
+      - phenotype and family history
+    * - BP5
+      - alternative molecular basis
 
 .. _doc_manual_seqvar_consequences:
 
@@ -299,6 +374,115 @@ To help you with your manual ACMG assessment, you find a description next to eve
 Note, that you can also reset all selected ACMG criteria  to auto using the respective button below the pathogenicity prediction box on the top of the card.
 Here, you can also find a link-out to the detailed REEV documentation on ACMG criteria.
 
+.. _doc_manual_strucvar_clinical_significance_autocnv_automation:
+
+------------------
+AutoCNV Automation
+------------------
+
+Explaining the ACMG criteria for copy number variants is beyond the scope of this manual, but we provide a brief overview of the AutoCNV\ :footcite:p:`Fan:2021` automation.
+The following criteria are implemented for deletions / copy number loss variants.
+
+.. list-table:: Copy number loss variant ACMG criteria as implemented in AutoCNV.
+    :widths: 10 10 80
+    :header-rows: 1
+
+    * - Section
+      - Rule
+      - Summary
+    * - 1
+      - 1A
+      - 0 otherwise
+    * -
+      - 1B
+      - -0.6 if no protein coding genes or functionally important elements
+    * - 2
+      - 2A
+      - 1 if del spans haploinssuficient or dup spans triplosensitive gene or region (clingen database)
+    * -
+      - 2B
+      - 0 no overlap
+    * -
+      - 2C
+      - 0.9 if exon involved or 0.0 without for partial 5' overlap
+    * -
+      - 2D
+      - 0.9 for 3' overlap if pathogenic variants documented in exon (P/LP ClinVar /w AF <1% gnomAD), 0.3 without known pathogenic, 0.9 multiple exons
+    * -
+      - 2E
+      - AutoPVS1, 0.9 if NMD, 0.45 if altered region critical, 0.45 if >10% protein removed, 0.3 <10% protein
+    * -
+      - 2F
+      - -1 if established benign genes, regions
+    * -
+      - 2G
+      - 0 if established benign genes but includes additional regions
+    * -
+      - 2H
+      - 0.15 gene pLI >=0.9 and Decipher HI <=10%
+    * -
+      - 2I
+      - dups AutoPVS1, 0.9 if tandem + NMD, 0.45 if tandem
+    * -
+      - 2L
+      - dups 0 genes without clinical significance
+    * - 3
+      - 3A
+      - 0 otherwise
+    * -
+      - 3B
+      - 0.45 del 25-34 or dup 35-49 protein coding genes
+    * -
+      - 3C
+      - 0.9 for del >35 and dup >50 protein coding genes
+    * - 4
+      - 4O
+      - -1 if CNV entirely within common variation (DGV Freq >=1% or gnomAD >=1%), or if overlap >50% without containing other protein coding genes
+
+The following criteria for deletions / copy number loss variants are not implemented in AutoCNV.
+
+.. list-table:: Copy number loss variant ACMG criteria not implemented in AutoCNV.
+    :widths: 10 10 80
+    :header-rows: 1
+
+    * - Section
+      - Rule
+      - Summary
+    * - 2
+      - 2J, 2K
+      - patient phenotype consistency with LoF of gene
+    * - 4
+      - 4A-N
+      - phenotype, segregation in literature, case/control
+    * - 5
+      - 5A-5H
+      - patient phenotype, family segregation
+
+The following criteria are implemented for duplications / copy number gain variants.
+
+.. list-table:: Copy number gain variant ACMG criteria as implemented in AutoCNV.
+    :widths: 10 10 80
+    :header-rows: 1
+
+    * - Section
+      - Rule
+      - Summary
+    * - TBD
+      - TBD
+      - TBD
+
+The following criteria for duplications / copy number gain variants are not implemented in AutoCNV.
+
+.. list-table:: Copy number gain variant ACMG criteria not implemented in AutoCNV.
+    :widths: 10 10 80
+    :header-rows: 1
+
+    * - Section
+      - Rule
+      - Summary
+    * - TBD
+      - TBD
+      - TBD
 
 .. _doc_manual_strucvar_genome_browser:
 

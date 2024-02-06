@@ -47,7 +47,7 @@ Consider the following structure, an example is given below.
     - use ``async () => { ... }`` only when necessary, e.g., for ``await nextTick()``
 - use the ``setupMountedComponents()`` helper from ``@/components/__tests__/utils`` to mount components, setup store, and setup router with mocks
 
-.. literalinclude:: ../frontend/src/components/__tests__/UserProfileButton.spec.ts
+.. literalinclude:: ../frontend/src/components/UserProfileButton/UserProfileButton.spec.ts
     :language: typescript
 
 Note that there is a separation between views and components (cf. https://stackoverflow.com/a/50866150/84349) that is also reflected in the tests.
