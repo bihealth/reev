@@ -147,7 +147,10 @@ const SECTIONS: Section[] = [
       <v-container fluid>
         <v-row>
           <v-col cols="2">
-            <div v-if="geneInfoStore.storeState == StoreState.Active">
+            <div
+              v-if="geneInfoStore.storeState == StoreState.Active"
+              style="position: sticky; top: 20px"
+            >
               <v-list v-model:opened="openedSection" rounded="lg">
                 <BookmarkListItem :id="geneInfoStore.hgncId ?? ''" :type="'gene'" />
 
