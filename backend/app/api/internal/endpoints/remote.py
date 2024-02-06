@@ -134,7 +134,7 @@ async def acmg(request: Request):
     client = httpx_client_wrapper()
     backend_req = client.build_request(method="GET", url=url)
     backend_resp = await client.send(backend_req)
-    if backend_resp.status_code != 200:
+    if backend_resp.is_error:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
 
     try:
@@ -178,9 +178,10 @@ async def cnv_acmg(request: Request):
         data={"chromosome": chromosome, "start": start, "end": end, "func": func, "error": 0},
     )
     backend_resp = await client.send(backend_req)
-    if backend_resp.status_code != 200:
+    if backend_resp.is_error:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
-    return JSONResponse(backend_resp.json())
+    else:
+        return JSONResponse(backend_resp.json())
 
 
 @router.get("/pubtator3-api/{path:path}")

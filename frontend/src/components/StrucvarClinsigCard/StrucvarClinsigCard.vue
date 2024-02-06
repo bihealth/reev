@@ -82,7 +82,7 @@ const calculateAcmgScore = computed((): number => {
 
 /** Fetch ACMG rating of SV from server when it changed. */
 watch(
-  () => [props.strucvar, acmgRatingStore.storeState],
+  () => [props.strucvar],
   async () => {
     if (props.strucvar) {
       await acmgRatingStore.fetchAcmgRating(props.strucvar)
