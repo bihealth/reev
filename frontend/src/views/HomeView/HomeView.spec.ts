@@ -137,9 +137,9 @@ describe.concurrent('HomeView with mocked router', async () => {
     // act: nothing, only test rendering
 
     // assert:
-    const exampleTermsCard = wrapper.find('#examples')
-    expect(exampleTermsCard.exists()).toBe(true)
-    const exampleTerms = exampleTermsCard.findAll('.v-btn')
+    const exampleTermsSheet = wrapper.find('#examples')
+    expect(exampleTermsSheet.exists()).toBe(true)
+    const exampleTerms = exampleTermsSheet.findAll('.router-link')
     expect(exampleTerms.length).toBe(13)
   })
 
@@ -169,9 +169,9 @@ describe.concurrent('HomeView with mocked router', async () => {
     // act: nothing, only test rendering
 
     // assert:
-    const exampleTermsCard = wrapper.find('#examples')
-    expect(exampleTermsCard.exists()).toBe(true)
-    const exampleTerm = exampleTermsCard.find('.example')
+    const exampleTermsSheet = wrapper.find('#examples')
+    expect(exampleTermsSheet.exists()).toBe(true)
+    const exampleTerm = exampleTermsSheet.find('.example')
     expect(exampleTerm.attributes().href).toEqual('/query?q=BRCA1&genomeBuild=grch37')
   })
 })

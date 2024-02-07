@@ -95,7 +95,7 @@ const STRUCVARS_PROD: Example[] = [
 export const EXAMPLES: Section[] = [
   {
     title: 'Genes',
-    text: 'Search by HGNC symbol or NCBI/ENSEMBL/HGNC ID',
+    text: 'Search by HGNC symbol or NCBI / ENSEMBL / HGNC ID',
     examples: [
       {
         query: 'BRCA1'
