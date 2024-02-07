@@ -25,7 +25,7 @@ def case_create() -> CaseInfoCreate:
         affected_family_members=True,
         sex=Sex.Unknown,
         age_of_onset_month=20,
-        ethinicity=Ethnicity.Unknown,
+        ethnicity=Ethnicity.Unknown,
         zygosity=Zygosity.Unknown,
         family_segregation=True,
         user=uuid.uuid4(),
@@ -48,7 +48,7 @@ async def test_create_get_caseinfo(db_session: AsyncSession, case_create: CaseIn
     assert caseinfo_postcreate.affected_family_members == stored_item.affected_family_members
     assert caseinfo_postcreate.sex == stored_item.sex
     assert caseinfo_postcreate.age_of_onset_month == stored_item.age_of_onset_month
-    assert caseinfo_postcreate.ethinicity == stored_item.ethinicity
+    assert caseinfo_postcreate.ethnicity == stored_item.ethnicity
     assert caseinfo_postcreate.zygosity == stored_item.zygosity
     assert caseinfo_postcreate.family_segregation == stored_item.family_segregation
 
@@ -81,7 +81,7 @@ async def test_get_multi_by_user(db_session: AsyncSession, case_create: CaseInfo
     assert caseinfo_postcreate.affected_family_members == stored_items[0].affected_family_members
     assert caseinfo_postcreate.sex == stored_items[0].sex
     assert caseinfo_postcreate.age_of_onset_month == stored_items[0].age_of_onset_month
-    assert caseinfo_postcreate.ethinicity == stored_items[0].ethinicity
+    assert caseinfo_postcreate.ethnicity == stored_items[0].ethnicity
     assert caseinfo_postcreate.zygosity == stored_items[0].zygosity
     assert caseinfo_postcreate.family_segregation == stored_items[0].family_segregation
 
@@ -105,6 +105,6 @@ async def test_get_by_user(db_session: AsyncSession, case_create: CaseInfoCreate
     assert caseinfo_postcreate.affected_family_members == stored_item.affected_family_members
     assert caseinfo_postcreate.sex == stored_item.sex
     assert caseinfo_postcreate.age_of_onset_month == stored_item.age_of_onset_month
-    assert caseinfo_postcreate.ethinicity == stored_item.ethinicity
+    assert caseinfo_postcreate.ethnicity == stored_item.ethnicity
     assert caseinfo_postcreate.zygosity == stored_item.zygosity
     assert caseinfo_postcreate.family_segregation == stored_item.family_segregation

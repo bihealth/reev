@@ -38,7 +38,7 @@ async def test_create_caseinfo(
             "affected_family_members": True,
             "sex": "reev:unknown_sex",
             "age_of_onset_month": 20,
-            "ethinicity": "reev:unknown_ethnicity",
+            "ethnicity": "reev:unknown_ethnicity",
             "zygosity": "reev:unknown_zygosity",
             "family_segregation": True,
         },
@@ -53,7 +53,7 @@ async def test_create_caseinfo(
     assert response.json()["affected_family_members"] == True
     assert response.json()["sex"] == "reev:unknown_sex"
     assert response.json()["age_of_onset_month"] == 20
-    assert response.json()["ethinicity"] == "reev:unknown_ethnicity"
+    assert response.json()["ethnicity"] == "reev:unknown_ethnicity"
     assert response.json()["zygosity"] == "reev:unknown_zygosity"
     assert response.json()["family_segregation"] == True
 

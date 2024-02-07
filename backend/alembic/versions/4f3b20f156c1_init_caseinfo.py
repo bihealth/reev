@@ -44,7 +44,7 @@ def upgrade():
         sa.Column("sex", sa.Enum("Male", "Female", "Unknown", name="sex"), nullable=True),
         sa.Column("age_of_onset_month", sa.Integer(), nullable=True),
         sa.Column(
-            "ethinicity",
+            "ethnicity",
             sa.Enum(
                 "AfricanAmerican",
                 "AshkenaziJewish",

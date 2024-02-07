@@ -128,6 +128,23 @@ You have to restart jupyterlab manually.
 Now you can navigate to the frontend development server at http://localhost:8081.
 This server will transparently forward the API requests to the backend server at http://localhost:8081.
 
+---------------
+Troubleshooting
+---------------
+
+Issues with nested git submodules.
+    We have put the shared code into ``frontend/src/ext/reev-frontend-lib``.
+    Make sure that you get a fresh clone of the repository with the ``--recursive`` flag.
+    To initialize the submodules, use ``git submodule update --init --recursive``.
+    You can reset the submodule to the version stored in the main ``reev`` repository with ``git submodule foreach --recursive git reset --hard``.
+
+Issues with ``reev-frontend-lib`` as a submodule.
+    Having the library as a submodule is useful for development.
+    There are some drawbacks.
+    If you see **weird issues with typescript that you don't understand**, try to ``rm -rf frontend/src/ext/reev-frontend-lib/{node_modules,dist}``.
+    Such issues include problems with assigning the reactive classes from ``vue``, such as ``ref`` and ``computed``, or other weird stuff with types.
+    In this case, try to clear out the directories described above and restart VS Code.
+
 -----
 Notes
 -----

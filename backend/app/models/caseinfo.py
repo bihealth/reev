@@ -40,7 +40,7 @@ class CaseInfo(Base):
         affected_family_members: bool
         sex: Sex
         age_of_onset_month: int
-        ethinicity: Ethnicity
+        ethnicity: Ethnicity
         zygosity: Zygosity
         family_segregation: bool
     else:
@@ -65,7 +65,7 @@ class CaseInfo(Base):
         #: Age of onset of the patient.
         age_of_onset_month = Column(Integer, nullable=True)
         #: Ethnicity of the patient.
-        ethinicity = Column(Enum(Ethnicity), nullable=True)
+        ethnicity = Column(Enum(Ethnicity), nullable=True)
         #: Zygosity of the patient.
         zygosity = Column(Enum(Zygosity), nullable=True)
         #: Family segregation of the patient.

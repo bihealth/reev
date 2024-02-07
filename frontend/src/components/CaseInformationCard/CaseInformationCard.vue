@@ -13,7 +13,7 @@ import {
   StorageMode,
   Zygosity,
   ZygosityLabels,
-  ethinicityLabels,
+  ethnicityLabels,
   useCaseInfoStore
 } from '@/stores/caseInfo'
 import { useTermsStore } from '@/stores/terms'
@@ -46,7 +46,7 @@ const inheritanceOptions = computed(() => {
 const ethnicityOptions = computed(() => {
   return Object.values(Ethnicity).map((value) => {
     return {
-      text: ethinicityLabels.get(value),
+      text: ethnicityLabels.get(value),
       value: value
     }
   })
