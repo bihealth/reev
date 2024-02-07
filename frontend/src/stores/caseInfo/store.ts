@@ -84,8 +84,22 @@ export const useCaseInfoStore = defineStore('caseInfo', () => {
       if (!storeData) {
         clearData()
       } else {
-        caseInfo.value = JSON.parse(storeData) as CaseInfo
+        caseInfo.value = CaseInfo.fromJson(JSON.parse(storeData))
       }
+
+      // Ensure that we do not obtain undefined HPO terms.  This is similar to
+      // the code in the case info card.  In the error case, we clear the data.
+      // This can happen if the user has "legacy" data. in the local store.
+      try {
+        const tmp = caseInfo.value.hpoTerms.map((term) => term.termId)
+        // @ts-ignore
+        if (tmp.includes(undefined)) {
+          throw new Error('Invalid HPO terms')
+        }
+      } catch (e) {
+        clearData()
+      }
+
       storeState.value = StoreState.Active
     } else {
       storeState.value = StoreState.Loading
@@ -117,7 +131,10 @@ export const useCaseInfoStore = defineStore('caseInfo', () => {
     if (storageMode.value === StorageMode.Local) {
       storeState.value = StoreState.Loading
       caseInfo.value = caseData
-      localStorage.setItem(`${LOCAL_STORAGE_PREFIX}.caseInfo`, JSON.stringify(caseData))
+      localStorage.setItem(
+        `${LOCAL_STORAGE_PREFIX}.caseInfo`,
+        JSON.stringify(CaseInfo.toJson(caseData))
+      )
       storeState.value = StoreState.Active
     } else {
       storeState.value = StoreState.Loading

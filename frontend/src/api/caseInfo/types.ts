@@ -51,41 +51,45 @@ export enum Zygosity {
 
 /** Case Info as returned by API */
 export interface CaseInfo$Api {
+  id?: string
+  user?: string
   affected_family_members: boolean | null
   age_of_onset_month: number | null
   diseases: any[] // Replace with the actual type from your API
   ethinicity: string
   family_segregation: boolean | null
   hpo_terms: any[] // Replace with the actual type from your API
-  id: string
   inheritance: string | null
   pseudonym: string
   sex: string | null
-  user: string
   zygosity: string
 }
 
 /** Interface for the case data, for storage and API. */
 export interface CaseInfo {
-  /* The case pseudonym. */
+  /** The case info ID. */
+  id?: string
+  /** The user ID. */
+  user?: string
+  /** The case pseudonym. */
   pseudonym: string
-  /* Orphanet / OMIM disease(s). */
+  /** Orphanet / OMIM disease(s). */
   diseases: OmimTerm[]
-  /* HPO terms. */
+  /** HPO terms. */
   hpoTerms: HpoTerm[]
-  /* Inheritance. */
+  /** Inheritance. */
   inheritance: Inheritance
-  /* Affected family members. */
+  /** Affected family members. */
   affectedFamilyMembers: boolean | null
-  /* Sex. */
+  /** Sex. */
   sex: Sex
-  /* Age of onset in month. */
+  /** Age of onset in month. */
   ageOfOnsetMonths: number | null
-  /* Ethnicity. */
+  /** Ethnicity. */
   ethnicity: Ethnicity
-  /* Zygosity. */
+  /** Zygosity. */
   zygosity: Zygosity
-  /* Family segregation. */
+  /** Family segregation. */
   familySegregation: boolean | null
 }
 
@@ -95,9 +99,11 @@ export interface CaseInfo {
 export class CaseInfo$Type {
   fromJson(apiResponse: CaseInfo$Api): CaseInfo {
     return {
+      id: apiResponse.id,
+      user: apiResponse.user,
       pseudonym: apiResponse.pseudonym,
       diseases: apiResponse.diseases,
-      hpoTerms: apiResponse.hpo_terms,
+      hpoTerms: apiResponse.hpo_terms ?? [],
       inheritance: apiResponse.inheritance as Inheritance,
       affectedFamilyMembers: apiResponse.affected_family_members,
       sex: apiResponse.sex as Sex,
@@ -105,6 +111,21 @@ export class CaseInfo$Type {
       ethnicity: apiResponse.ethinicity as Ethnicity,
       zygosity: apiResponse.zygosity as Zygosity,
       familySegregation: apiResponse.family_segregation
+    }
+  }
+
+  toJson(caseInfo: CaseInfo): CaseInfo$Api {
+    return {
+      pseudonym: caseInfo.pseudonym,
+      diseases: caseInfo.diseases,
+      hpo_terms: caseInfo.hpoTerms,
+      inheritance: caseInfo.inheritance,
+      affected_family_members: caseInfo.affectedFamilyMembers,
+      sex: caseInfo.sex,
+      age_of_onset_month: caseInfo.ageOfOnsetMonths,
+      ethinicity: caseInfo.ethnicity,
+      zygosity: caseInfo.zygosity,
+      family_segregation: caseInfo.familySegregation
     }
   }
 }

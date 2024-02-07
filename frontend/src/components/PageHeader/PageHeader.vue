@@ -44,6 +44,9 @@ const searchTermRef = ref<string>('')
 /** Component state; genome build. */
 const genomeBuildRef = ref<GenomeBuild>('grch37')
 
+/** Whether to show the case info box. */
+const showCaseInfo = ref<boolean>(false)
+
 /** Helper function to between light and dark theme. */
 function toggleTheme() {
   theme.global.name.value = theme.global.current.value.dark ? 'customLightTheme' : 'dark'
@@ -80,16 +83,12 @@ function toggleTheme() {
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
 
-      <v-dialog scrollable width="auto" location="top">
-        <template #activator="{ props: vProps }">
-          <v-btn class="mr-4" prepend-icon="mdi-account-group" v-bind="vProps"> Case Info </v-btn>
-        </template>
-        <v-card>
-          <CaseInformationCard />
-        </v-card>
-      </v-dialog>
+      <v-btn class="mr-4" prepend-icon="mdi-account-group" @click="showCaseInfo = true">
+        Case Info
+      </v-btn>
 
       <UserProfileButton />
+
       <v-menu id="menu">
         <template #activator="{ props: vProps }">
           <v-btn icon="mdi-dots-vertical" v-bind="vProps" />
@@ -112,4 +111,10 @@ function toggleTheme() {
       </v-menu>
     </v-container>
   </v-app-bar>
+
+  <v-dialog v-model="showCaseInfo" scrollable width="auto" location="top">
+    <v-card>
+      <CaseInformationCard @click-close="showCaseInfo = false" />
+    </v-card>
+  </v-dialog>
 </template>

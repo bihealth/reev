@@ -18,6 +18,11 @@ import {
 } from '@/stores/caseInfo'
 import { useTermsStore } from '@/stores/terms'
 
+/** This component's emits. */
+const emit = defineEmits<{
+  (eventName: 'clickClose'): void
+}>()
+
 const caseStore = useCaseInfoStore()
 const termsStore = useTermsStore()
 const cadaPrioStore = useCadaPrioStore()
@@ -278,8 +283,16 @@ watch(
                 />
 
                 <!-- Buttons -->
-                <v-btn class="ml-2" @click="saveChanges"> Save Changes </v-btn>
-                <v-btn class="ml-2" color="secondary" @click="deleteCaseInformation">
+                <v-btn class="ml-2" color="primary" @click="saveChanges"> Save Changes </v-btn>
+                <v-btn class="ml-2" color="primary" @click="emit('clickClose')">
+                  Close Window
+                </v-btn>
+                <v-btn
+                  class="ml-2"
+                  color="warning"
+                  variant="outlined"
+                  @click="deleteCaseInformation"
+                >
                   Delete Case info
                 </v-btn>
               </v-form>
