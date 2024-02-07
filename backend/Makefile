@@ -13,6 +13,7 @@ help:
 	@echo "  test    Run tests"
 	@echo "  ci      Install dependencies, run lints and tests"
 	@echo "  docs    Generate the documentation"
+	@echo "  mksuperuser Create a superuser"
 	@echo "  serve   Run the (development) server"
 	@echo "  jupyterlab Run jupyterlab"
 	@echo "  celery  Run celery"
@@ -88,6 +89,11 @@ ci: \
 .PHONY: docs
 docs:
 	PYTHONPATH=$(PWD) pipenv run -- make -C ../docs clean html
+
+.PHONY: mksuperuser
+mksuperuser:
+	PYTHONPATH=. pipenv run python app/backend_pre_start.py
+	PYTHONPATH=. pipenv run python app/initial_data.py
 
 .PHONY: serve
 serve:
