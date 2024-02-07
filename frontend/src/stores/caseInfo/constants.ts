@@ -12,16 +12,18 @@ export const SexLabels = new Map<Sex, string>([
 
 /** Default case information. */
 export const DEFAULT_CASE_INFO: CaseInfo = {
+  id: 'iduuid',
+  user: 'useruuid',
   pseudonym: '',
   diseases: [],
   hpoTerms: [],
   inheritance: Inheritance.Unknown,
-  affectedFamilyMembers: null,
+  affectedFamilyMembers: undefined,
   sex: Sex.Unknown,
-  ageOfOnsetMonths: null,
+  ageOfOnsetMonths: undefined,
   ethnicity: Ethnicity.Unknown,
   zygosity: Zygosity.Unknown,
-  familySegregation: null
+  familySegregation: undefined
 }
 
 /** Labels for `Zygosity`. */
@@ -33,7 +35,7 @@ export const ZygosityLabels = new Map<Zygosity, string>([
 ])
 
 /** Labels for `Ethnicity`. */
-export const ethinicityLabels = new Map<Ethnicity, string>([
+export const ethnicityLabels = new Map<Ethnicity, string>([
   [Ethnicity.AfricanAmerican, 'African American'],
   [Ethnicity.AshkenaziJewish, 'Ashkenazi Jewish'],
   [Ethnicity.EastAsian, 'East Asian'],

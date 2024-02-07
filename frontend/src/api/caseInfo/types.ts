@@ -51,42 +51,46 @@ export enum Zygosity {
 
 /** Case Info as returned by API */
 export interface CaseInfo$Api {
+  id?: string
+  user?: string
   affected_family_members: boolean | null
   age_of_onset_month: number | null
   diseases: any[] // Replace with the actual type from your API
-  ethinicity: string
+  ethnicity: string
   family_segregation: boolean | null
   hpo_terms: any[] // Replace with the actual type from your API
-  id: string
   inheritance: string | null
   pseudonym: string
   sex: string | null
-  user: string
   zygosity: string
 }
 
 /** Interface for the case data, for storage and API. */
 export interface CaseInfo {
-  /* The case pseudonym. */
+  /** The case info ID. */
+  id?: string
+  /** The user ID. */
+  user?: string
+  /** The case pseudonym. */
   pseudonym: string
-  /* Orphanet / OMIM disease(s). */
+  /** Orphanet / OMIM disease(s). */
   diseases: OmimTerm[]
-  /* HPO terms. */
+  /** HPO terms. */
   hpoTerms: HpoTerm[]
-  /* Inheritance. */
+  /** Inheritance. */
   inheritance: Inheritance
-  /* Affected family members. */
-  affectedFamilyMembers: boolean | null
-  /* Sex. */
+  /** Affected family members. */
+  affectedFamilyMembers?: boolean
+  /** Sex. */
   sex: Sex
-  /* Age of onset in month. */
-  ageOfOnsetMonths: number | null
-  /* Ethnicity. */
+  /** Age of onset in month. */
+  ageOfOnsetMonths?: number
+  /** Ethnicity. */
   ethnicity: Ethnicity
-  /* Zygosity. */
+  /** Zygosity. */
   zygosity: Zygosity
-  /* Family segregation. */
-  familySegregation: boolean | null
+  /** Family segregation. */
+  familySegregation?: boolean
 }
 
 /**
@@ -95,16 +99,35 @@ export interface CaseInfo {
 export class CaseInfo$Type {
   fromJson(apiResponse: CaseInfo$Api): CaseInfo {
     return {
+      id: apiResponse.id,
+      user: apiResponse.user,
       pseudonym: apiResponse.pseudonym,
       diseases: apiResponse.diseases,
-      hpoTerms: apiResponse.hpo_terms,
+      hpoTerms: apiResponse.hpo_terms ?? [],
       inheritance: apiResponse.inheritance as Inheritance,
-      affectedFamilyMembers: apiResponse.affected_family_members,
-      sex: apiResponse.sex as Sex,
-      ageOfOnsetMonths: apiResponse.age_of_onset_month,
-      ethnicity: apiResponse.ethinicity as Ethnicity,
+      affectedFamilyMembers: apiResponse.affected_family_members ?? undefined,
+      sex: (apiResponse.sex as Sex) ?? undefined,
+      ageOfOnsetMonths: apiResponse.age_of_onset_month ?? undefined,
+      ethnicity: apiResponse.ethnicity as Ethnicity,
       zygosity: apiResponse.zygosity as Zygosity,
-      familySegregation: apiResponse.family_segregation
+      familySegregation: apiResponse.family_segregation ?? undefined
+    }
+  }
+
+  toJson(caseInfo: CaseInfo): CaseInfo$Api {
+    return {
+      id: caseInfo.id,
+      user: caseInfo.user,
+      pseudonym: caseInfo.pseudonym,
+      diseases: caseInfo.diseases,
+      hpo_terms: caseInfo.hpoTerms,
+      inheritance: caseInfo.inheritance,
+      affected_family_members: caseInfo.affectedFamilyMembers ?? null,
+      sex: caseInfo.sex,
+      age_of_onset_month: caseInfo.ageOfOnsetMonths ?? null,
+      ethnicity: caseInfo.ethnicity,
+      zygosity: caseInfo.zygosity,
+      family_segregation: caseInfo.familySegregation ?? null
     }
   }
 }

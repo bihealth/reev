@@ -65,7 +65,7 @@ class CaseInfoBase(BaseModel):
     affected_family_members: bool | None = None
     sex: Sex = Sex.Unknown
     age_of_onset_month: int | None = None
-    ethinicity: Ethnicity = Ethnicity.Unknown
+    ethnicity: Ethnicity = Ethnicity.Unknown
     zygosity: Zygosity = Zygosity.Unknown
     family_segregation: bool | None = None
 

@@ -4,7 +4,7 @@ import { setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import createFetchMock from 'vitest-fetch-mock'
 
-import { type ApiResponse } from '@/api/caseInfo'
+import { type ApiResponse, CaseInfo } from '@/api/caseInfo'
 
 import { DEFAULT_CASE_INFO } from './constants'
 import { LOCAL_STORAGE_PREFIX } from './constants'
@@ -22,7 +22,7 @@ const MOCK_RESPONSE: ApiResponse = {
   affected_family_members: null,
   sex: Sex.Unknown,
   age_of_onset_month: null,
-  ethinicity: Ethnicity.Unknown,
+  ethnicity: Ethnicity.Unknown,
   zygosity: Zygosity.Unknown,
   family_segregation: null
 }
@@ -299,12 +299,12 @@ describe('case store with logged in user', () => {
       "diseases": [],\n\
       "hpo_terms": [],\n\
       "inheritance": "reev:unknown_inheritance",\n\
-      "affected_family_members": null,\n\
+      "affected_family_members": undefined,\n\
       "sex": "reev:unknown_sex",\n\
-      "age_of_onset_month": null,\n\
+      "age_of_onset_month": undefined,\n\
       "ethincity": "reev:unknown_ethnicity",\n\
       "zygosity": "reev:unknown_zygosity",\n\
-      "family_segregation": null\n\
+      "family_segregation": undefined\n\
     }'
     })
     expect(store.storeState).toBe(StoreState.Active)
@@ -365,7 +365,7 @@ describe('case store with local storage', () => {
   it('deleteCase() should delete case information', async () => {
     // arrange:
     const caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
-    localStorage.setItem(ITEM_KEY, JSON.stringify(caseInfo))
+    localStorage.setItem(ITEM_KEY, JSON.stringify(CaseInfo.toJson(caseInfo)))
     const store = useCaseInfoStore()
     store.caseInfo = caseInfo
 
@@ -388,7 +388,7 @@ describe('case store with local storage', () => {
     // arrange:
     const caseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'TestPseudonym' }
     const store = useCaseInfoStore()
-    localStorage.setItem(ITEM_KEY, JSON.stringify(caseInfo))
+    localStorage.setItem(ITEM_KEY, JSON.stringify(CaseInfo.toJson(caseInfo)))
     expect(store.caseInfo).toStrictEqual(DEFAULT_CASE_INFO)
 
     // act:
@@ -398,7 +398,7 @@ describe('case store with local storage', () => {
     expect(fetchMocker).not.toBeCalled()
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toStrictEqual(caseInfo)
-    expect(localStorage.getItem(ITEM_KEY)).toStrictEqual(JSON.stringify(caseInfo))
+    expect(localStorage.getItem(ITEM_KEY)).toStrictEqual(JSON.stringify(CaseInfo.toJson(caseInfo)))
     expect(getItemSpy).toBeCalled()
     expect(setItemSpy).toBeCalled()
     expect(removeItemSpy).not.toHaveBeenCalled()
@@ -407,7 +407,7 @@ describe('case store with local storage', () => {
 
   it('updateCase() should update case information', async () => {
     // arrange:
-    localStorage.setItem(ITEM_KEY, JSON.stringify(DEFAULT_CASE_INFO))
+    localStorage.setItem(ITEM_KEY, JSON.stringify(CaseInfo.toJson(DEFAULT_CASE_INFO)))
     const store = useCaseInfoStore()
     const updatedCaseInfo = { ...DEFAULT_CASE_INFO, pseudonym: 'test' }
     expect(store.storeState).toBe(StoreState.Initial)
@@ -420,7 +420,9 @@ describe('case store with local storage', () => {
     expect(fetchMocker).not.toBeCalled()
     expect(store.storeState).toBe(StoreState.Active)
     expect(store.caseInfo).toEqual(updatedCaseInfo)
-    expect(localStorage.getItem(ITEM_KEY)).toStrictEqual(JSON.stringify(updatedCaseInfo))
+    expect(localStorage.getItem(ITEM_KEY)).toStrictEqual(
+      JSON.stringify(CaseInfo.toJson(updatedCaseInfo))
+    )
     expect(getItemSpy).toBeCalled()
     expect(setItemSpy).toBeCalled()
     expect(removeItemSpy).not.toHaveBeenCalled()

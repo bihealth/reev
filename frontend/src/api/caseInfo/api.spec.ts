@@ -12,12 +12,12 @@ const mockCaseInfo: CaseInfo = {
   diseases: [],
   hpoTerms: [],
   inheritance: Inheritance.Unknown,
-  affectedFamilyMembers: null,
+  affectedFamilyMembers: undefined,
   sex: Sex.Unknown,
-  ageOfOnsetMonths: null,
+  ageOfOnsetMonths: undefined,
   ethnicity: Ethnicity.Unknown,
   zygosity: Zygosity.Unknown,
-  familySegregation: null
+  familySegregation: undefined
 }
 
 describe.concurrent('CaseInfo Client', () => {

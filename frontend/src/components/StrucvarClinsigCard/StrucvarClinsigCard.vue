@@ -8,7 +8,6 @@ component via the `errorDisplay` event and are handled there.
 <script setup lang="ts">
 import DocsLink from '@bihealth/reev-frontend-lib/components/DocsLink/DocsLink.vue'
 import type { Strucvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
-import { StoreState } from '@bihealth/reev-frontend-lib/stores'
 import { computed, onMounted, ref, watch } from 'vue'
 
 import { useStrucvarAcmgRatingStore } from '@/stores/strucvarAcmgRating'

@@ -51,6 +51,10 @@ export enum Zygosity {
 
 /** Interface for the case data, for storage and API. */
 export interface CaseInfo {
+  /* The case ID. */
+  id?: string
+  /* The user ID. */
+  user?: string
   /* The case pseudonym. */
   pseudonym: string
   /* Orphanet / OMIM disease(s). */
@@ -60,15 +64,15 @@ export interface CaseInfo {
   /* Inheritance. */
   inheritance: Inheritance
   /* Affected family members. */
-  affectedFamilyMembers: boolean | null
+  affectedFamilyMembers?: boolean
   /* Sex. */
   sex: Sex
   /* Age of onset in month. */
-  ageOfOnsetMonths: number | null
+  ageOfOnsetMonths?: number
   /* Ethnicity. */
   ethnicity: Ethnicity
   /* Zygosity. */
   zygosity: Zygosity
   /* Family segregation. */
-  familySegregation: boolean | null
+  familySegregation?: boolean
 }
