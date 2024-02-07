@@ -56,7 +56,7 @@ function toggleTheme() {
 <template>
   <v-app-bar flat>
     <v-container class="mx-auto d-flex align-center justify-center">
-      <router-link to="/">
+      <router-link to="/" class="text-no-wrap">
         <img
           id="logo"
           class="ml-4 mr-3"
@@ -65,7 +65,7 @@ function toggleTheme() {
           alt="logo"
           width="50"
         />
-        <span class="text-h6"> REEV </span>
+        <span class="text-h6 d-none d-sm-inline"> REEV </span>
       </router-link>
 
       <v-spacer></v-spacer>
@@ -79,12 +79,17 @@ function toggleTheme() {
       </template>
       <v-spacer></v-spacer>
 
-      <v-btn variant="text" title="Toggle between dark and light theme." @click="toggleTheme">
+      <v-btn
+        variant="text"
+        title="Toggle between dark and light theme."
+        class="d-none d-sm-inline-block"
+        @click="toggleTheme"
+      >
         <v-icon>mdi-theme-light-dark</v-icon>
       </v-btn>
 
-      <v-btn class="mr-4" prepend-icon="mdi-account-group" @click="showCaseInfo = true">
-        Case Info
+      <v-btn class="mr-2" prepend-icon="mdi-account-group" @click="showCaseInfo = true">
+        <span class="d-none d-sm-inline"> Case Info </span>
       </v-btn>
 
       <UserProfileButton />

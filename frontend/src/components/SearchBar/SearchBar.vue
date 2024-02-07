@@ -17,13 +17,15 @@ interface Props {
   searchTerm?: string
   genomeRelease?: GenomeBuild
   density?: 'default' | 'comfortable' | 'compact'
+  minWidth?: string
 }
 
 /** Define the component's props. */
 const props = withDefaults(defineProps<Props>(), {
   searchTerm: '',
   genomeRelease: 'grch37',
-  density: 'default'
+  density: 'default',
+  minWidth: '300px'
 })
 
 /** Define the emits. */
@@ -48,7 +50,7 @@ const fontColor = computed(() => {
 </script>
 
 <template>
-  <div class="d-flex d-flex-row flex-grow-0" style="min-width: 400px">
+  <div class="d-flex d-flex-row flex-grow-0" style="min-width: 300px">
     <v-text-field
       class="my-3 search-term"
       :label="props.density != 'compact' ? 'Search for variant or gene' : undefined"

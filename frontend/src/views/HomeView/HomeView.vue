@@ -45,10 +45,9 @@ const mainBackgroundColor = computed(() => {
     <PageHeader :hide-search-bar="true" />
     <v-main :class="mainBackgroundColor">
       <v-container>
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-col cols="12" lg="6" class="py-2">
-            <v-sheet class="px-6 py-3">
+        <v-row class="justify-center align-center">
+          <v-col cols="12" md="12" lg="10" xl="6" class="py-2">
+            <v-sheet class="px-4 py-3 mx-auto">
               <p>
                 <span class="font-weight-bold"> REEV evaluates and explains variants. </span>
               </p>
@@ -76,14 +75,12 @@ const mainBackgroundColor = computed(() => {
               </p>
             </v-sheet>
           </v-col>
-          <v-spacer></v-spacer>
         </v-row>
 
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-col cols="12" lg="6" class="py-2">
-            <v-sheet class="px-6 py-3">
-              <div class="text-h6">Enter a variant or gene to query for</div>
+        <v-row class="justify-center align-center">
+          <v-col cols="12" md="12" lg="10" xl="6" class="py-2">
+            <v-sheet class="px-4 py-3 mx-auto">
+              <div class="text-h6">Enter variant/gene to query for</div>
 
               <SearchBar
                 v-model:search-term="searchTerm"
@@ -92,41 +89,41 @@ const mainBackgroundColor = computed(() => {
               />
             </v-sheet>
           </v-col>
-          <v-spacer></v-spacer>
         </v-row>
 
-        <v-row>
-          <v-spacer></v-spacer>
-          <v-col cols="12" lg="6" class="py-2">
-            <v-card id="examples" class="px-3 py-3">
-              <v-card-title> Need some inspiration? </v-card-title>
-              <v-card-text>
-                <div v-for="section in EXAMPLES" :key="section.title">
-                  <div class="text-overline mt-3">
+        <v-row class="justify-center align-center">
+          <v-col cols="12" lg="10" xl="6" class="py-2">
+            <v-sheet id="examples" class="px-3 py-3 mx-auto">
+              <v-card-title class="px-1 pb-0"> Need some inspiration? </v-card-title>
+              <v-card-text class="px-1">
+                <div v-for="(section, idx) in EXAMPLES" :key="section.title">
+                  <div class="text-overline" :class="{ 'mt-0': idx === 0, 'mt-3': idx !== 0 }">
                     {{ section.title }}
                   </div>
                   <div v-if="section.text">
                     {{ section.text }}
                   </div>
                   <div class="mt-2">
-                    <template v-for="(example, idx) in section.examples" :key="`example-${idx}`">
-                      <v-btn
-                        class="mx-1 mb-1 example text-none px-2"
-                        variant="text"
-                        :rounded="false"
-                        prepend-icon="mdi-arrow-right-circle-outline"
+                    <template
+                      v-for="(example, idxInner) in section.examples"
+                      :key="`example-${idxInner}`"
+                    >
+                      <router-link
                         :to="exampleSearchTo(example)"
+                        class="mr-2 px-2 py-1 d-block d-sm-inline-block router-link example"
                       >
-                        {{ example.query }}
-                        <template v-if="example.hint">({{ example.hint }})</template>
-                      </v-btn>
+                        <v-icon class="pr-2">mdi-arrow-right-circle-outline</v-icon>
+                        <span style="text-wrap: wrap !important">{{ example.query }}</span>
+                        <span v-if="example.hint" class="d-none d-md-inline"
+                          >({{ example.hint }})</span
+                        >
+                      </router-link>
                     </template>
                   </div>
                 </div>
               </v-card-text>
-            </v-card>
+            </v-sheet>
           </v-col>
-          <v-spacer></v-spacer>
         </v-row>
         <FooterDefault />
       </v-container>
