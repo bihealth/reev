@@ -82,7 +82,7 @@
     "vite-plugin-css-injected-by-js": "^3.4.0",
     "vite-plugin-dts": "^3.7.2",
     "vite-plugin-vuetify": "^2.0.1",
-    "vitest": "^1.1.0",
+    "vitest": "^1.2.2",
     "vitest-canvas-mock": "^0.3.3",
     "vitest-fetch-mock": "^0.2.2",
     "vue-cli-plugin-vuetify": "~2.5.8",
