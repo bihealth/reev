@@ -38,6 +38,13 @@ It provides the following features as a central resource:
     - link-out to external resources and tools
     - integrated genome browser with useful tracks for interpreting the variant
 
+--------------------
+Open Source and Data
+--------------------
+
+REEV is open source software using open data.
+See section :ref:`ops_intro` for more information.
+
 .. footbibliography::
 
 .. toctree::
@@ -66,6 +73,14 @@ It provides the following features as a central resource:
     dev_docs
     dev_tests
     dev_tf
+
+.. toctree::
+    :hidden:
+    :maxdepth: 1
+    :caption: Operator's Manual
+
+    ops_intro
+    ops_deploy
 
 .. toctree::
     :hidden:
