@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.6.0](https://github.com/bihealth/reev/compare/v0.5.0...v0.6.0) (2024-02-08)
+
+
+### Features
+
+* bump rfl to fix strucvar parsing ([#434](https://github.com/bihealth/reev/issues/434)) ([#437](https://github.com/bihealth/reev/issues/437)) ([715f05c](https://github.com/bihealth/reev/commit/715f05c001ba8f460c902e8af9f2ab044a10f1c2))
+* bump rfl to integrate plotly-based clinvar landscape ([#430](https://github.com/bihealth/reev/issues/430)) ([#436](https://github.com/bihealth/reev/issues/436)) ([6194541](https://github.com/bihealth/reev/commit/619454104d0c86b4b619fe9dadcdf63c21552403))
+* Change API status code for nor found ACMG ratings ([#388](https://github.com/bihealth/reev/issues/388)) ([#419](https://github.com/bihealth/reev/issues/419)) ([ab294cd](https://github.com/bihealth/reev/commit/ab294cd0174cffeb85c65dc17562729a120125d5))
+* Change API status code for not found bookmarks ([#387](https://github.com/bihealth/reev/issues/387)) ([#418](https://github.com/bihealth/reev/issues/418)) ([9229358](https://github.com/bihealth/reev/commit/92293586204f0ddc47bee4c113fdbec8e46f5ef3))
+* Cleanup module Declarations ([#458](https://github.com/bihealth/reev/issues/458)) ([#459](https://github.com/bihealth/reev/issues/459)) ([0f22245](https://github.com/bihealth/reev/commit/0f22245b31c804246afcc6651d51f916e8d3fb7c))
+* Improvements in Literature highlighting ([#427](https://github.com/bihealth/reev/issues/427)) ([#431](https://github.com/bihealth/reev/issues/431)) ([2d64ddb](https://github.com/bihealth/reev/commit/2d64ddbf85039652420d904ea35691f4791af37f))
+* integrate reev-frontend-lib as git submodule ([#412](https://github.com/bihealth/reev/issues/412)) ([#435](https://github.com/bihealth/reev/issues/435)) ([28bc7f2](https://github.com/bihealth/reev/commit/28bc7f2be1aef0ee17a32c32b8d8be2bb42f3a77))
+* make home page work on mobile (360x800) resolution ([#304](https://github.com/bihealth/reev/issues/304)) ([#457](https://github.com/bihealth/reev/issues/457)) ([23109be](https://github.com/bihealth/reev/commit/23109bedb6885cd96d4c2c4b7b4a2ea418a35e53))
+* make left-side navigation bar sticky ([#439](https://github.com/bihealth/reev/issues/439)) ([#441](https://github.com/bihealth/reev/issues/441)) ([f25548e](https://github.com/bihealth/reev/commit/f25548eb8134054d91f8721a308e63a00f6b43a6))
+
+
+### Bug Fixes
+
+* bump rfl for gene-clinvar plot coloring ([#445](https://github.com/bihealth/reev/issues/445)) ([#449](https://github.com/bihealth/reev/issues/449)) ([9765fe2](https://github.com/bihealth/reev/commit/9765fe27b9a766609fd663bd7960ed434138d607))
+* bump rfl to display correct MMSplice score ([#444](https://github.com/bihealth/reev/issues/444)) ([#452](https://github.com/bihealth/reev/issues/452)) ([ecefe37](https://github.com/bihealth/reev/commit/ecefe37c77b0f673647498324a92ae14f8d701f7))
+* bump rfl to fix non-coding splice display ([#446](https://github.com/bihealth/reev/issues/446)) ([#451](https://github.com/bihealth/reev/issues/451)) ([c5dd0f1](https://github.com/bihealth/reev/commit/c5dd0f134770c967963fd2ef95cb412f3a1bc0b1))
+* bump rfl to remove issue with sequenceInfo store ([#447](https://github.com/bihealth/reev/issues/447)) ([#450](https://github.com/bihealth/reev/issues/450)) ([1d15de5](https://github.com/bihealth/reev/commit/1d15de5eb0fc5efde151b3756e6d33b963e36fb0))
+* Fix initial superuser setup ([#460](https://github.com/bihealth/reev/issues/460)) ([#461](https://github.com/bihealth/reev/issues/461)) ([98e6d91](https://github.com/bihealth/reev/commit/98e6d917ddc93e008884e06977912b5aab99be59))
+* fixing InterVar display issues after lookup failure ([#443](https://github.com/bihealth/reev/issues/443)) ([#448](https://github.com/bihealth/reev/issues/448)) ([fec70e3](https://github.com/bihealth/reev/commit/fec70e36b08daeca9efee1917e8417a21f5d1cf6))
+* preventing infinite loop in ACMG predictions ([#453](https://github.com/bihealth/reev/issues/453)) ([212cfaf](https://github.com/bihealth/reev/commit/212cfafe27e986aa9f30895494162a4aeaca4532))
+* resolving issues with caseInfo storage and API ([#454](https://github.com/bihealth/reev/issues/454)) ([#456](https://github.com/bihealth/reev/issues/456)) ([2f3ea9d](https://github.com/bihealth/reev/commit/2f3ea9d8c04990c53b692b961ffb2292ce1bbd98))
+
 ## [0.5.0](https://github.com/bihealth/reev/compare/v0.4.0...v0.5.0) (2024-02-02)
 
 
