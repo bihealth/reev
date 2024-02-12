@@ -137,6 +137,9 @@ async def acmg(request: Request):
     if backend_resp.is_error:
         return Response(status_code=backend_resp.status_code, content=backend_resp.content)
 
+    if backend_resp.content == b"":
+        return Response(status_code=404, content="Variant not found in WinterVar")
+
     try:
         backend_json = backend_resp.json()
     except json.JSONDecodeError:
