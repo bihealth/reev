@@ -1,7 +1,7 @@
 import { API_V1_BASE_PREFIX } from '@/api/common'
 import type { CaseInfo } from '@/stores/caseInfo'
 
-import type { ApiResponse } from './types'
+import type { ApiResponse, FailureInfo } from './types'
 
 /**
  * Access to the caseinfo part of the API.
@@ -29,6 +29,9 @@ export class CaseInfoClient {
       mode: 'cors',
       credentials: 'include'
     })
+    if (response.status == 204) {
+      return { message: 'Case info not found' } as FailureInfo
+    }
     return await response.json()
   }
 
@@ -49,7 +52,7 @@ export class CaseInfoClient {
       "age_of_onset_month": ${caseInfo.ageOfOnsetMonths},
       "ethincity": "${caseInfo.ethnicity}",
       "zygosity": "${caseInfo.zygosity}",
-      "family_segregation": ${caseInfo.familySegregation}
+      "family_segregation": "${caseInfo.familySegregation}"
     }`
     const response = await fetch(`${this.apiBaseUrl}caseinfo/create`, {
       method: 'POST',

@@ -42,7 +42,7 @@ class Zygosity(Enum):
 
 class DiseaseTerm(BaseModel):
     # len(term_id) <= 64
-    omim_id: str
+    omimId: str
     # len(name) <= 512
     name: str
     # term_id.startswith("OMIM:") or term_id.startswith("Orphanet:") or term_id.startswith("MONDO:")
@@ -50,7 +50,7 @@ class DiseaseTerm(BaseModel):
 
 class HpoTerm(BaseModel):
     # len(term_id) <= 64
-    term_id: str
+    termId: str
     # len(name) <= 512
     name: str
     # term_id ~= /^HP:\d{7}$/

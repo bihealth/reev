@@ -144,7 +144,15 @@ export const useCaseInfoStore = defineStore('caseInfo', () => {
         if (result.detail === 'Unauthorized') {
           storeState.value = StoreState.Error
           return
-        } else if (result.detail === 'Case Information not found') {
+        } else if (result.detail === 'Case Information not found' || isFailureInfo(result)) {
+          // Prepare the case data for the server.
+          caseData.hpoTerms = caseData.hpoTerms.map((term) => ({
+            termId: term.termId,
+            name: term.name
+          }))
+          caseData.affectedFamilyMembers = caseData.affectedFamilyMembers ?? false
+          caseData.ageOfOnsetMonths = caseData.ageOfOnsetMonths ?? null
+          caseData.familySegregation = caseData.familySegregation ?? false
           await client.createCaseInfo(caseData)
         } else {
           const updatedCase = await client.updateCaseInfo(caseData)
