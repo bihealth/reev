@@ -155,6 +155,14 @@ export const useCaseInfoStore = defineStore('caseInfo', () => {
           caseData.familySegregation = caseData.familySegregation ?? false
           await client.createCaseInfo(caseData)
         } else {
+          // Prepare the case data for the server
+          caseData.hpoTerms = caseData.hpoTerms.map((term) => ({
+            termId: term.termId,
+            name: term.name
+          }))
+          caseData.affectedFamilyMembers = caseData.affectedFamilyMembers ?? false
+          caseData.ageOfOnsetMonths = caseData.ageOfOnsetMonths ?? null
+          caseData.familySegregation = caseData.familySegregation ?? false
           const updatedCase = await client.updateCaseInfo(caseData)
           if (!isCaseInfo$Api(updatedCase)) {
             throw new Error(`Response is not a valid case info: ${result.message}`)
