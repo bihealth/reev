@@ -299,12 +299,12 @@ describe('case store with logged in user', () => {
       "diseases": [],\n\
       "hpo_terms": [],\n\
       "inheritance": "reev:unknown_inheritance",\n\
-      "affected_family_members": undefined,\n\
+      "affected_family_members": false,\n\
       "sex": "reev:unknown_sex",\n\
-      "age_of_onset_month": undefined,\n\
+      "age_of_onset_month": null,\n\
       "ethincity": "reev:unknown_ethnicity",\n\
       "zygosity": "reev:unknown_zygosity",\n\
-      "family_segregation": undefined\n\
+      "family_segregation": false\n\
     }'
     })
     expect(store.storeState).toBe(StoreState.Active)
