@@ -19,8 +19,8 @@ from app.schemas.caseinfo import (
 def case_create() -> CaseInfoCreate:
     return CaseInfoCreate(
         pseudonym="test1",
-        diseases=[DiseaseTerm(omim_id="string", name="string")],
-        hpo_terms=[HpoTerm(term_id="string", name="string")],
+        diseases=[DiseaseTerm(omimId="string", name="string")],
+        hpo_terms=[HpoTerm(termId="string", name="string")],
         inheritance=Inheritance.Unknown,
         affected_family_members=True,
         sex=Sex.Unknown,

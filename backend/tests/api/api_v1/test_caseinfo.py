@@ -32,8 +32,8 @@ async def test_create_caseinfo(
         f"{settings.API_V1_STR}/caseinfo/create/",
         json={
             "pseudonym": "test1",
-            "diseases": [{"omim_id": "string", "name": "string"}],
-            "hpo_terms": [{"term_id": "string", "name": "string"}],
+            "diseases": [{"omimId": "string", "name": "string"}],
+            "hpo_terms": [{"termId": "string", "name": "string"}],
             "inheritance": "reev:unknown_inheritance",
             "affected_family_members": True,
             "sex": "reev:unknown_sex",
@@ -47,8 +47,8 @@ async def test_create_caseinfo(
     assert response.status_code == 200
     assert response.json()["user"] == str(test_user.id)
     assert response.json()["pseudonym"] == "test1"
-    assert response.json()["diseases"] == [{"omim_id": "string", "name": "string"}]
-    assert response.json()["hpo_terms"] == [{"term_id": "string", "name": "string"}]
+    assert response.json()["diseases"] == [{"omimId": "string", "name": "string"}]
+    assert response.json()["hpo_terms"] == [{"termId": "string", "name": "string"}]
     assert response.json()["inheritance"] == "reev:unknown_inheritance"
     assert response.json()["affected_family_members"] == True
     assert response.json()["sex"] == "reev:unknown_sex"
@@ -141,7 +141,7 @@ async def test_create_caseinfo_invalid_terms(
     # act:
     response = client_user.post(
         f"{settings.API_V1_STR}/caseinfo/create/",
-        json={"pseudonym": "test1", "diseases": [{"omim_id_invalid": "string"}]},
+        json={"pseudonym": "test1", "diseases": [{"omimId_invalid": "string"}]},
     )
     # assert:
     assert response.status_code == 422
@@ -725,7 +725,7 @@ async def test_update_caseinfo_invalid_terms(
         json={
             "pseudonym": "test1",
             "age_of_onset_month": 20,
-            "diseases": [{"omim_id_invalid": "string"}],
+            "diseases": [{"omimId_invalid": "string"}],
         },
     )
     # assert:

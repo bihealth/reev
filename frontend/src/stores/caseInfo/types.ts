@@ -68,7 +68,7 @@ export interface CaseInfo {
   /* Sex. */
   sex: Sex
   /* Age of onset in month. */
-  ageOfOnsetMonths?: number
+  ageOfOnsetMonths?: number | null
   /* Ethnicity. */
   ethnicity: Ethnicity
   /* Zygosity. */

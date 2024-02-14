@@ -18,12 +18,12 @@ export const DEFAULT_CASE_INFO: CaseInfo = {
   diseases: [],
   hpoTerms: [],
   inheritance: Inheritance.Unknown,
-  affectedFamilyMembers: undefined,
+  affectedFamilyMembers: false,
   sex: Sex.Unknown,
-  ageOfOnsetMonths: undefined,
+  ageOfOnsetMonths: null,
   ethnicity: Ethnicity.Unknown,
   zygosity: Zygosity.Unknown,
-  familySegregation: undefined
+  familySegregation: false
 }
 
 /** Labels for `Zygosity`. */

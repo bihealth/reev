@@ -1,4 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, Header, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app import crud, schemas
@@ -83,7 +85,9 @@ async def list_caseinfos_for_user(
 
 @router.get("/get", response_model=schemas.CaseInfoRead)
 async def get_caseinfo_for_user(
-    db: AsyncSession = Depends(deps.get_db), user: User = Depends(current_active_user)
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Get a Case Information for a current user.
@@ -93,7 +97,11 @@ async def get_caseinfo_for_user(
     """
     caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
     if not caseinfo:  # pragma: no cover
-        raise HTTPException(status_code=404, detail="Case Information not found")
+        # if user_agent is browser, return 204, else return 404
+        if user_agent and "Mozilla" in user_agent:
+            raise HTTPException(status_code=204, detail="Case Information not found")
+        else:
+            raise HTTPException(status_code=404, detail="Case Information not found")
     return caseinfo
 
 
@@ -103,6 +111,7 @@ async def update_caseinfo_for_user(
     caseinfoupdate: schemas.CaseInfoUpdate,
     db: AsyncSession = Depends(deps.get_db),
     user: User = Depends(current_active_user),
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Update a Case Information for a current user.
@@ -114,8 +123,12 @@ async def update_caseinfo_for_user(
     """
     caseinfoupdate.user = user.id
     caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
-    if not caseinfo:  # pragma: no cover  # pragma: no cover
-        raise HTTPException(status_code=404, detail="Case Information not found")
+    if not caseinfo:  # pragma: no cover
+        # if user_agent is browser, return 204, else return 404
+        if user_agent and "Mozilla" in user_agent:
+            raise HTTPException(status_code=204, detail="Case Information not found")
+        else:
+            raise HTTPException(status_code=404, detail="Case Information not found")
     return await crud.caseinfo.update(db, db_obj=caseinfo, obj_in=caseinfoupdate)
 
 
@@ -142,7 +155,9 @@ async def delete_caseinfo(id: str, db: AsyncSession = Depends(deps.get_db)):
 
 @router.delete("/delete", response_model=schemas.CaseInfoRead)
 async def delete_caseinfo_for_user(
-    db: AsyncSession = Depends(deps.get_db), user: User = Depends(current_active_user)
+    db: AsyncSession = Depends(deps.get_db),
+    user: User = Depends(current_active_user),
+    user_agent: Annotated[str | None, Header()] = None,
 ):
     """
     Delete a Case Information for a current user.
@@ -152,5 +167,9 @@ async def delete_caseinfo_for_user(
     """
     caseinfo = await crud.caseinfo.get_by_user(db, user_id=user.id)
     if not caseinfo:  # pragma: no cover
-        raise HTTPException(status_code=404, detail="Case Information not found")
+        # if user_agent is browser, return 204, else return 404
+        if user_agent and "Mozilla" in user_agent:
+            raise HTTPException(status_code=204, detail="Case Information not found")
+        else:
+            raise HTTPException(status_code=404, detail="Case Information not found")
     return await crud.caseinfo.remove(db, id=caseinfo.id)
