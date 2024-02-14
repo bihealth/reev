@@ -153,6 +153,8 @@ export const useCaseInfoStore = defineStore('caseInfo', () => {
           caseData.affectedFamilyMembers = caseData.affectedFamilyMembers ?? false
           caseData.ageOfOnsetMonths = caseData.ageOfOnsetMonths ?? null
           caseData.familySegregation = caseData.familySegregation ?? false
+          caseData.ageOfOnsetMonths =
+            typeof caseData.ageOfOnsetMonths === 'number' ? caseData.ageOfOnsetMonths : null
           await client.createCaseInfo(caseData)
         } else {
           // Prepare the case data for the server
