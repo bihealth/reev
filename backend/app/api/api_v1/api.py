@@ -129,6 +129,7 @@ for config in settings.OAUTH2_PROVIDERS:
             client_id=config.client_id,
             client_secret=config.client_secret,
             openid_configuration_endpoint=str(config.config_url),
+            name=config.name,
             base_scopes=["openid", "/read-limited"],
         )
     else:
@@ -136,6 +137,7 @@ for config in settings.OAUTH2_PROVIDERS:
             client_id=config.client_id,
             client_secret=config.client_secret,
             openid_configuration_endpoint=str(config.config_url),
+            name=config.name,
         )
     # Add route for authentication via OAuth2 endpoint.
     oauth_router = fastapi_users.get_oauth_router(
