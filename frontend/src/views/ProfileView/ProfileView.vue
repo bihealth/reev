@@ -98,6 +98,10 @@ onMounted(async () => {
 watch(
   () => route.hash,
   () => {
+    if (route.hash.slice(1) === '' || route.hash.slice(1) === '#') {
+      updateCurrentSection(ProfileSection.GeneralInfo)
+      return
+    }
     updateCurrentSection(route.hash.slice(1) as ProfileSection)
   }
 )
