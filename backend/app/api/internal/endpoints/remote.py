@@ -233,7 +233,7 @@ async def litvar_api(request: Request, path: str):
     :rtype: :class:`fastapi.responses.StreamingResponse`
     """
     url = request.url
-    backend_url = "https://www.ncbi.nlm.nih.gov/research/bionlp/litvar/api/v1/entity/search" + path
+    backend_url = "https://www.ncbi.nlm.nih.gov/research/bionlp/litvar/api/v1/entity/search/" + path
 
     client = httpx_client_wrapper()
     backend_req = client.build_request(
