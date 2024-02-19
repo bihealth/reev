@@ -4,7 +4,7 @@ from fastapi_users_db_sqlalchemy import (
     SQLAlchemyBaseOAuthAccountTableUUID,
     SQLAlchemyBaseUserTableUUID,
 )
-from sqlalchemy import BigInteger, String
+from sqlalchemy import BigInteger, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.base import Base
@@ -14,6 +14,12 @@ TOKEN_SIZE = 64 * 1024
 
 
 class OAuthAccount(SQLAlchemyBaseOAuthAccountTableUUID, Base):
+    """Base OAuth account table definition."""
+
+    __tablename__ = "oauth_account"
+
+    __table_args__ = (UniqueConstraint("oauth_name", "user_id"),)
+
     if TYPE_CHECKING:  # pragma: no cover
         access_token: str
         refresh_token: Optional[str]
