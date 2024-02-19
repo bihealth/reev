@@ -30,4 +30,9 @@ class UserCreate(schemas.BaseUserCreate):
 
 
 class UserUpdate(schemas.BaseUserUpdate):
-    pass
+    """Model to use for updateing users.
+
+    We expose the public OAuth account information.
+    """
+
+    oauth_accounts: typing.List[PublicOAuthAccount] = []
