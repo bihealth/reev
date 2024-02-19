@@ -86,3 +86,19 @@ async def test_pubtator3_api(httpx_mock: HTTPXMock, client: TestClient):
     # assert:
     assert response.status_code == 200
     assert response.json() == {"res": "Mocked response"}
+
+
+@pytest.mark.anyio
+async def test_litvar_api(httpx_mock: HTTPXMock, client: TestClient):
+    """Test forwarding to LitVar API."""
+    # arrange:
+    httpx_mock.add_response(
+        url="https://www.ncbi.nlm.nih.gov/research/bionlp/litvar/api/v1/entity/search/foo",
+        method="GET",
+        json={"res": "Mocked response"},
+    )
+    # act:
+    response = client.get("/internal/remote/litvar/foo")
+    # assert:
+    assert response.status_code == 200
+    assert response.json() == {"res": "Mocked response"}
