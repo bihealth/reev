@@ -34,6 +34,23 @@ def upgrade():
         type_=sa.JSON(),
         existing_nullable=True,
     )
+
+    # Delete conflicting rows in oauth_account before adding unique constraint
+    op.execute(
+        """
+    BEGIN;
+    -- Create a temporary table to store the ids of the rows to keep
+    CREATE TEMP TABLE keep_rows AS
+    SELECT DISTINCT ON (oauth_name, user_id) id
+    FROM oauth_account;
+    -- Delete rows from oauth_account that are not in the keep_rows temporary table
+    DELETE FROM oauth_account
+    WHERE id NOT IN (SELECT id FROM keep_rows);
+    DROP TABLE keep_rows;
+    COMMIT;
+    """
+    )
+
     op.create_unique_constraint(None, "oauth_account", ["oauth_name", "user_id"])
     # ### end Alembic commands ###
 
