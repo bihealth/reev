@@ -218,3 +218,33 @@ async def pubtator3_api(request: Request, path: str):
         headers=backend_resp.headers,
         background=BackgroundTasks([BackgroundTask(backend_resp.aclose)]),
     )
+
+
+@router.get("/litvar/{path:path}")
+async def litvar_api(request: Request, path: str):
+    """
+    Proxy requests to the `LitVar <https://www.ncbi.nlm.nih.gov/research/bionlp/litvar/api/v1/entity/search>`_ backend.
+
+    :param request: request
+    :type request: :class:`fastapi.Request`
+    :param path: path to append to the backend URL
+    :type path: str
+    :return: response
+    :rtype: :class:`fastapi.responses.StreamingResponse`
+    """
+    url = request.url
+    backend_url = "https://www.ncbi.nlm.nih.gov/research/bionlp/litvar/api/v1/entity/search" + path
+
+    client = httpx_client_wrapper()
+    backend_req = client.build_request(
+        method=request.method,
+        url=backend_url,
+        content=await request.body(),
+    )
+    backend_resp = await client.send(backend_req, stream=True)
+    return StreamingResponse(
+        backend_resp.aiter_raw(),
+        status_code=backend_resp.status_code,
+        headers=backend_resp.headers,
+        background=BackgroundTasks([BackgroundTask(backend_resp.aclose)]),
+    )
