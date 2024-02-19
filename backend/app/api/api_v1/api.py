@@ -155,6 +155,7 @@ for config in settings.OAUTH2_PROVIDERS:
         oauth_client=oauth_client,
         user_schema=UserRead,
         state_secret=settings.SECRET_KEY,
+        redirect_url="/",
     )
     api_router.include_router(
         oauth_associate_router,
