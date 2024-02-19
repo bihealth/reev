@@ -48,7 +48,7 @@
     "@rollup/plugin-typescript": "^11.1.6",
     "@rushstack/eslint-patch": "^1.6.1",
     "@storybook/addon-essentials": "^7.6.12",
-    "@storybook/addon-interactions": "^7.6.12",
+    "@storybook/addon-interactions": "^7.6.16",
     "@storybook/addon-links": "^7.6.12",
     "@storybook/blocks": "^7.6.12",
     "@storybook/test": "^7.6.14",
