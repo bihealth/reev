@@ -24,6 +24,7 @@ api_router.include_router(bookmarks.router, prefix="/bookmarks", tags=["bookmark
 api_router.include_router(utils.router, prefix="/utils", tags=["utils"])
 api_router.include_router(caseinfo.router, prefix="/caseinfo", tags=["caseinfo"])
 api_router.include_router(clinvarsub.router, prefix="/clinvarsub", tags=["clinvarsub"])
+api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 
 api_router.include_router(
     fastapi_users.get_auth_router(auth_backend_bearer), prefix="/auth/bearer", tags=["auth"]
@@ -31,7 +32,6 @@ api_router.include_router(
 api_router.include_router(
     fastapi_users.get_auth_router(auth_backend_cookie), prefix="/auth/cookie", tags=["auth"]
 )
-api_router.include_router(auth.router, prefix="/auth", tags=["auth"])
 # api_router.include_router(
 #     fastapi_users.get_register_router(UserRead, UserCreate),
 #     prefix="/auth",
