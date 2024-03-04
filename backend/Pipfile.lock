@@ -3072,12 +3072,12 @@
         },
         "sphinx-autobuild": {
             "hashes": [
-                "sha256:8fe8cbfdb75db04475232f05187c776f46f6e9e04cacf1e49ce81bdac649ccac",
-                "sha256:de1ca3b66e271d2b5b5140c35034c89e47f263f2cd5db302c9217065f7443f05"
+                "sha256:63fd87ab7505872a89aef468ce6503f65e794a195f4ae62269db3b85b72d4854",
+                "sha256:cb9d2121a176d62d45471624872afc5fad7755ad662738abe400ecf4a7954303"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.6'",
-            "version": "==2021.3.14"
+            "markers": "python_version >= '3.9'",
+            "version": "==2024.2.4"
         },
         "sphinx-basic-ng": {
             "hashes": [
