@@ -3162,12 +3162,12 @@
         },
         "starlette": {
             "hashes": [
-                "sha256:53a95037cf6a563fca942ea16ba0260edce10258c213cbd554adc263fad22dfc",
-                "sha256:d1ec71a84fd1f691b800361a6a64ecb0e9c17ab308507ccc7f911727888293c7"
+                "sha256:6fe59f29268538e5d0d182f2791a479a0c64638e6935d1c6989e63fb2699c6ee",
+                "sha256:9af890290133b79fc3db55474ade20f6220a364a0402e0b556e7cd5e1e093823"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==0.37.0"
+            "version": "==0.37.2"
         },
         "syrupy": {
             "hashes": [
@@ -3249,7 +3249,7 @@
                 "sha256:69b1a937c3a517342112fb4c6df7e72fc39a38e7891a5730ed4985b5214b5475",
                 "sha256:b0abd7c89e8fb96f98db18d86106ff1d90ab692004eb746cf6eda2682f91b3cb"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_version < '3.11'",
             "version": "==4.10.0"
         },
         "uri-template": {
