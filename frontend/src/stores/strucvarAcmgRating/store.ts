@@ -122,7 +122,9 @@ export const useStrucvarAcmgRatingStore = defineStore('strucvarAcmgRating', () =
       }
 
       // Retrieve ACMG rating from AutoCNV
-      const { chrom, start, stop, svType } = strucvar$
+      const { chrom, start, svType } = strucvar$
+      // Handle the case of InsertionStrucvar
+      const stop = 'stop' in strucvar$ ? strucvar$.stop : start
       const func = svType === 'DEL' ? 'del' : 'dup'
       const response = await fetch(
         `${API_BASE_URL}remote/cnv/acmg/?chromosome=${chrom}&start=${start}&end=${stop}&func=${func}`,

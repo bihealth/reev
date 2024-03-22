@@ -49,7 +49,9 @@ const primaryVariantDesc = computed<string | undefined>(() => {
     const { genomeBuild, chrom, pos, del, ins } = props.seqvar
     return `${genomeBuild}-${chrom}-${pos}-${del}-${ins}`
   } else if (props.strucvar) {
-    const { svType, genomeBuild, chrom, start, stop } = props.strucvar
+    const { svType, genomeBuild, chrom, start } = props.strucvar
+    // Handle the case of InsertionStrucvar
+    const stop = 'stop' in props.strucvar ? props.strucvar.stop : start
     return `${svType}-${genomeBuild}-${chrom}-${start}-${stop}`
   } else {
     return ''
@@ -298,7 +300,8 @@ const constructStrucvarVariant = (
   strucvar: Strucvar,
   model: CreateUpdateModel
 ): SubmissionVariant => {
-  const { svType, genomeBuild, chrom, start, stop } = strucvar
+  const { svType, genomeBuild, chrom, start } = strucvar
+  const stop = 'stop' in strucvar ? strucvar.stop : start
   const assembly = genomeBuild === 'grch37' ? Assembly.Grch37 : Assembly.Grch38
   let referenceCopyNumber: number | undefined = undefined
   if (model.referenceCopyNumber !== undefined) {

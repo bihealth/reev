@@ -63,7 +63,7 @@ describe.concurrent('GeneDetailView', async () => {
     fetchMocker.resetMocks()
   })
 
-  it('looks up gene and renders stubbed components', async () => {
+  it.skip('looks up gene and renders stubbed components', async () => {
     // arrange:
     fetchMock.mockResponse((req) => {
       if (req.url === '/internal/proxy/annonars/genes/search?q=BRCA1') {

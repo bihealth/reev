@@ -72,7 +72,7 @@ If you have logged in and provided case specific phenotype information with HPO 
 Literature
 ==========
 
-This card displays the latest ten publications in PubMed related to this gene.
+This card displays the most relevant ten publications in PubMed related to this gene.
 For more genes, follow the link-out to `PubTator <https://www.ncbi.nlm.nih.gov/research/pubtator3>`__.
 
 .. _doc_manual_gene_expression:
