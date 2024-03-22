@@ -131,7 +131,9 @@ const orig = computed<string | undefined>(() => (route.query.orig as string) || 
 const idForBookmark = computed<string | undefined>(() => {
   const strucvar = strucvarInfoStore.strucvar
   if (strucvar) {
-    return `${strucvar.svType}-${strucvar.genomeBuild}-${strucvar.chrom}-${strucvar.start}-${strucvar.stop}`
+    // Handle the case of InsertionStrucvar
+    const stop = 'stop' in strucvar ? strucvar.stop : strucvar.start
+    return `${strucvar.svType}-${strucvar.genomeBuild}-${strucvar.chrom}-${strucvar.start}-${stop}`
   } else {
     return undefined
   }
@@ -227,12 +229,16 @@ const svLocus = (strucvar: Strucvar | undefined): string | undefined => {
  * Jump to the locus in the local IGV.
  */
 const jumpToLocus = async () => {
+  if (strucvar.value === undefined) {
+    return
+  }
   const chrPrefixed = strucvar.value?.chrom.startsWith('chr')
     ? strucvar.value?.chrom
     : `chr${strucvar.value?.chrom}`
+  const stop = 'stop' in strucvar.value ? strucvar.value?.stop : strucvar.value?.start
   // NB: we allow the call to fetch here as it goes to local IGV.
   await fetch(
-    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${strucvar.value?.start}-${strucvar.value?.stop}`
+    `http://127.0.0.1:60151/goto?locus=${chrPrefixed}:${strucvar.value?.start}-${stop}`
   ).catch((e) => {
     const msg = "Couldn't connect to IGV. Please make sure IGV is running and try again."
     alert(msg)

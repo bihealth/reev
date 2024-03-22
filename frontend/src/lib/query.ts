@@ -221,7 +221,9 @@ export async function performQuery(
   // Attempt to parse as structural variant.
   try {
     const strucvar = resolveStrucvar(queryTerm, genomeBuild)
-    const { svType, genomeBuild: gb, chrom, start, stop, userRepr } = strucvar
+    const { svType, genomeBuild: gb, chrom, start, userRepr } = strucvar
+    // Handle the case of InsertionStrucvar
+    const stop = 'stop' in strucvar ? strucvar.stop : start
     return {
       name: 'strucvar-details',
       params: {
