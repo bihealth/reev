@@ -11,6 +11,7 @@ const AboutView = defineAsyncComponent(() => import('@/components/StaticViews/Ab
 const ContactView = defineAsyncComponent(() => import('@/components/StaticViews/ContactView.vue'))
 const PrivacyView = defineAsyncComponent(() => import('@/components/StaticViews/PrivacyView.vue'))
 const TermsView = defineAsyncComponent(() => import('@/components/StaticViews/TermsView.vue'))
+const DataVersionsView = defineAsyncComponent(() => import('@/components/StaticViews/DataVersionsView.vue'))
 
 const router = useRouter()
 const route = useRoute()
@@ -25,17 +26,18 @@ const mainBackgroundColor = computed(() => {
 
 enum StaticPages {
   About = 'about',
-  Acknowledgements = 'acknowledgements',
   Contact = 'contact',
   PrivacyPolicy = 'privacy-policy',
-  TermsOfUse = 'terms-of-use'
+  TermsOfUse = 'terms-of-use',
+  DataVersions = 'data-versions'
 }
 
 const PAGES = [
   { id: StaticPages.About, title: 'About' },
   { id: StaticPages.Contact, title: 'Contact' },
   { id: StaticPages.PrivacyPolicy, title: 'Privacy Policy' },
-  { id: StaticPages.TermsOfUse, title: 'Terms of Use' }
+  { id: StaticPages.TermsOfUse, title: 'Terms of Use' },
+  { id: StaticPages.DataVersions, title: 'Data Versions' }
 ]
 
 const currentStaticPage = ref(StaticPages.About)
@@ -92,6 +94,9 @@ watch(
             </div>
             <div v-if="currentStaticPage === StaticPages.TermsOfUse">
               <TermsView />
+            </div>
+            <div v-if="currentStaticPage === StaticPages.DataVersions">
+              <DataVersionsView />
             </div>
           </v-col>
         </v-row>
