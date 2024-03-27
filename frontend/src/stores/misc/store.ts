@@ -9,13 +9,22 @@ import { MiscClient } from '@/api/misc'
 
 /** Data Versions type */
 interface DataVersions {
+  annonars: string
+  viguno: string
+  mehari: string
+  cada_prio: string
+  dotty: string
+  variant_validator: string
+  intervar: string
+  autocnv: string
+  pubtator3: string
+  beacon_network: string
   alphamissense: string
   clingen_gene: string
   clingen_variant: string
   ensembl_37: string
   ensembl_38: string
-  ensembl: string
-  today: string
+  ensembl: StringConstructor
   dbnsfp: string
   dbscsnv: string
   cadd: string
@@ -53,7 +62,6 @@ interface DataVersions {
   mehari_tx: string
   clinvar_release: string
   clinvar_version: string
-  tracks: string
   refseq_fe_37: string
   refseq_fe_38: string
 }

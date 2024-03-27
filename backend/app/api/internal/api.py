@@ -17,6 +17,26 @@ api_router.include_router(remote.router, prefix="/remote", tags=["remote"])
 class DataVersions(BaseModel):
     """Container with data versions."""
 
+    #: Annonars version.
+    annonars: str
+    #: Viguno version.
+    viguno: str
+    #: Mehari version.
+    mehari: str
+    #: Cada-prio version.
+    cada_prio: str
+    #: Dotty version.
+    dotty: str
+    #: Variant validator version.
+    variant_validator: str
+    #: InterVar version.
+    intervar: str
+    #: AutoCNV version.
+    autocnv: str
+    #: PubTator3 version.
+    pubtator3: str
+    #: Beacon Network version.
+    beacon_network: str
     #: String to use for AlphaMissense version.
     alphamissense: str
     #: String to use for ClinGen gene curation version.
@@ -29,8 +49,6 @@ class DataVersions(BaseModel):
     ensembl_38: str
     #: String to use for ENSEMBL version.
     ensembl: str
-    #: String to use for current date.
-    today: str
     #: Version of dbNSFP.
     dbnsfp: str
     #: Version of dbscSNV.
@@ -105,9 +123,6 @@ class DataVersions(BaseModel):
     clinvar_release: str
     #: ClinVar version.
     clinvar_version: str
-    #: Marker file for the tracks version.  This allows us to update the
-    #: tracks BED files later on.
-    tracks: str
     #: RefSeq functional elements for GRCh37.
     refseq_fe_37: str
     #: RefSeq functional elements for GRCh38.
@@ -119,13 +134,22 @@ TODAY = datetime.date.strftime(datetime.date.today(), "%Y%m%d")
 
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
+    annonars="0.2.1",
+    viguno="0.36.1",
+    mehari="0.25.4",
+    cada_prio="0.6.1",
+    dotty="0.4.1",
+    variant_validator="2.2.1",
+    intervar="2021-08",
+    autocnv="latest",
+    pubtator3="latest",
+    beacon_network="latest",
     alphamissense="1",
     clingen_gene=TODAY,
     clingen_variant=TODAY,
     ensembl_37="87",
     ensembl_38="109",
     ensembl="111",
-    today=TODAY,
     dbnsfp="4.5",
     dbscsnv="1.1",
     cadd="1.6",
@@ -163,7 +187,6 @@ DATA_VERSIONS = DataVersions(
     mehari_tx="0.4.4",
     clinvar_release="2023_09",
     clinvar_version="v2.0",
-    tracks="0",
     refseq_fe_37="105.20201022",
     refseq_fe_38="110",
 )

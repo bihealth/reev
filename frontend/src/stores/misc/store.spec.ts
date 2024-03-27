@@ -28,7 +28,14 @@ describe('miscInfo Store', () => {
 
   it('should load data', async () => {
     // arrange:
-    fetchMocker.mockResponseOnce('v0.0.0')
+    fetchMocker.mockResponse((req) => {
+      if (req.url.includes('version') && !req.url.includes('data')) {
+        return Promise.resolve(JSON.stringify('v0.0.0'))
+      } else if (req.url.includes('data')) {
+        return Promise.resolve(JSON.stringify({ dataVersions: { data: 'versions' } }))
+      }
+      return Promise.resolve(JSON.stringify({ status: 400 }))
+    })
     const store = useMiscStore()
 
     // act:
@@ -36,7 +43,8 @@ describe('miscInfo Store', () => {
 
     // assert:
     expect(store.storeState).toBe(StoreState.Active)
-    expect(store.appVersion).toBe('v0.0.0')
+    expect(store.appVersion).toBe('"v0.0.0"')
+    expect(store.dataVersions).toStrictEqual({ dataVersions: { data: 'versions' } })
   })
 
   it('should handle error', async () => {
