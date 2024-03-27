@@ -11,7 +11,9 @@ const AboutView = defineAsyncComponent(() => import('@/components/StaticViews/Ab
 const ContactView = defineAsyncComponent(() => import('@/components/StaticViews/ContactView.vue'))
 const PrivacyView = defineAsyncComponent(() => import('@/components/StaticViews/PrivacyView.vue'))
 const TermsView = defineAsyncComponent(() => import('@/components/StaticViews/TermsView.vue'))
-const DataVersionsView = defineAsyncComponent(() => import('@/components/StaticViews/DataVersionsView.vue'))
+const DataVersionsView = defineAsyncComponent(
+  () => import('@/components/StaticViews/DataVersionsView.vue')
+)
 
 const router = useRouter()
 const route = useRoute()

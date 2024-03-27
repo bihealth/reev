@@ -113,6 +113,7 @@ class DataVersions(BaseModel):
     #: RefSeq functional elements for GRCh38.
     refseq_fe_38: str
 
+
 #: The current date.
 TODAY = datetime.date.strftime(datetime.date.today(), "%Y%m%d")
 
@@ -205,7 +206,7 @@ async def frontend_settings():
 async def data_versions():
     """
     Return versions of data and services used in the application.
-    
+
     :return: A JSON response containing the versions of various data and services.
     :rtype: dict
     """

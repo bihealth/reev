@@ -112,6 +112,9 @@ function toggleTheme() {
           <v-list-item id="terms" to="/info#terms-of-use">
             <v-list-item-title> Terms of Use </v-list-item-title>
           </v-list-item>
+          <v-list-item id="data-versions" to="/info#data-versions">
+            <v-list-item-title> Data Versions </v-list-item-title>
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-container>
