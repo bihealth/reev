@@ -233,4 +233,4 @@ async def data_versions():
     :return: A JSON response containing the versions of various data and services.
     :rtype: dict
     """
-    return JSONResponse(content=DATA_VERSIONS.__dict__)
+    return JSONResponse(content=DATA_VERSIONS.dict())
