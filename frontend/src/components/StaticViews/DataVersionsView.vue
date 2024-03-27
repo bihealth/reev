@@ -21,10 +21,14 @@ const initializeDataVersions = async () => {
     return
   } else {
     const transformDataVersions = () => {
-      return Object.entries(miscStore.dataVersions).map(([name, version]) => ({
-        name,
-        version: version ? String(version) : ''
-      }))
+      if (miscStore.dataVersions) {
+        return Object.entries(miscStore.dataVersions).map(([name, version]) => ({
+          name,
+          version: version ? String(version) : ''
+        }))
+      } else {
+        return []
+      }
     }
 
     transformedDataVersions.value = transformDataVersions()
