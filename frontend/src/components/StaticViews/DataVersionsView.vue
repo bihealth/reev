@@ -36,8 +36,10 @@ onMounted(initializeDataVersions)
 
 <template>
   <v-card>
-    <v-card-title>Data Versions</v-card-title>
-    <v-divider />
+    <v-card-title>Data Sources</v-card-title>
+    <v-card-subtitle>
+      The following data sources and service versions are used in REEV application.
+    </v-card-subtitle>
     <v-card-text>
       <div v-if="transformedDataVersions && transformedDataVersions.length > 0"></div>
       <v-table>
