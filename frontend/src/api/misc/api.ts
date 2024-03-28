@@ -17,4 +17,11 @@ export class MiscClient {
     })
     return await response.text()
   }
+
+  async fetchDataVersions(): Promise<any> {
+    const response = await fetch(`${this.apiBaseUrl}data-versions`, {
+      method: 'GET'
+    })
+    return await response.json()
+  }
 }
