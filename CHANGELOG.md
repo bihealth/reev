@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.7.0](https://github.com/bihealth/reev/compare/v0.6.0...v0.7.0) (2024-03-28)
+
+
+### Features
+
+* Add page about version of services we use ([#603](https://github.com/bihealth/reev/issues/603)) ([#604](https://github.com/bihealth/reev/issues/604)) ([aad9eaa](https://github.com/bihealth/reev/commit/aad9eaa83171dea2bd4b2c9306cda345487ef753))
+* Adding constraints for multiple auth methods ([#531](https://github.com/bihealth/reev/issues/531)) ([a74cb15](https://github.com/bihealth/reev/commit/a74cb1538e74545b5f88084c0bc01874f33a2a8a))
+* Allow users to link their account with more login sources ([#185](https://github.com/bihealth/reev/issues/185)) ([#535](https://github.com/bihealth/reev/issues/535)) ([a0156ee](https://github.com/bihealth/reev/commit/a0156ee8a30290cc1e5721d505df2b508275d2ab))
+
+
+### Bug Fixes
+
+* CaseInfo loading/saving/updating functionality ([#501](https://github.com/bihealth/reev/issues/501)) ([#507](https://github.com/bihealth/reev/issues/507)) ([ad264c2](https://github.com/bihealth/reev/commit/ad264c224a6d6f083a36f5d85708c46e0b45c33e))
+* General info on douple click on Profile page ([#511](https://github.com/bihealth/reev/issues/511)) ([#528](https://github.com/bihealth/reev/issues/528)) ([d2fc78d](https://github.com/bihealth/reev/commit/d2fc78d97b54921c8ed01aa6b16e9f667473aaf1))
+* Proper naming of openid accounts ([#533](https://github.com/bihealth/reev/issues/533)) ([#534](https://github.com/bihealth/reev/issues/534)) ([20a7c2b](https://github.com/bihealth/reev/commit/20a7c2b8a29abdd3edec404029bba9db901882b5))
+* Proper redirect link for authentification callback ([#536](https://github.com/bihealth/reev/issues/536)) ([1334f80](https://github.com/bihealth/reev/commit/1334f80b295efcb0d50b10ee6a6cbec0dca12176))
+* return 404 error from witntervar edpoint ([#503](https://github.com/bihealth/reev/issues/503)) ([#504](https://github.com/bihealth/reev/issues/504)) ([b7d34af](https://github.com/bihealth/reev/commit/b7d34af0436e8e073dc605e586231fdce1953196))
+
 ## [0.6.0](https://github.com/bihealth/reev/compare/v0.5.0...v0.6.0) (2024-02-08)
 
 
