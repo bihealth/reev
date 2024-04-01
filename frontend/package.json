@@ -40,7 +40,7 @@
     "vega-embed": "^6.24.0",
     "vue": "^3.3.13",
     "vue-matomo": "^4.2.0",
-    "vue-router": "^4.2.5",
+    "vue-router": "^4.3.0",
     "vuetify": "^3.5.11"
   },
   "devDependencies": {
