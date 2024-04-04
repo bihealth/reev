@@ -54,9 +54,13 @@ class HTTPXClientWrapper:
     async_client: httpx.AsyncClient | None = None
 
     def start(self):
-        self.transport = httpx.AsyncHTTPTransport(retries=1)
+        self.transport = httpx.AsyncHTTPTransport(
+            retries=1, verify=False
+        )  # Disabling cert verification for now
         self.transport._pool._ssl_context.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
-        self.async_client = httpx.AsyncClient(timeout=httpx.Timeout(60.0), transport=self.transport)
+        self.async_client = httpx.AsyncClient(
+            timeout=httpx.Timeout(60.0), transport=self.transport, verify=False
+        )  # Disablinng cert verification for now
 
     async def stop(self):
         await self.async_client.aclose()
@@ -175,6 +179,7 @@ async def cnv_acmg(request: Request):
         return Response(status_code=400, content="Missing query parameters")
 
     client = httpx_client_wrapper()
+    print("Client:", client.__dict__)
     backend_req = client.build_request(
         method="POST",
         url="https://phoenix.bgi.com/api/acit/jobs/",

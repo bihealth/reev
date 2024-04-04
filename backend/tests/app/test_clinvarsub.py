@@ -145,9 +145,11 @@ async def test_handler_with_session_update_status_in_progress_then_run(
         db_session,
         db_obj=submissionactivity,
         obj_in={
-            "kind": SubmissionActivityKind.CREATE
-            if kind == "create"
-            else SubmissionActivityKind.RETRIEVE,
+            "kind": (
+                SubmissionActivityKind.CREATE
+                if kind == "create"
+                else SubmissionActivityKind.RETRIEVE
+            ),
             "status": SubmissionActivityStatus.WAITING,
         },
     )
