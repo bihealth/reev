@@ -179,7 +179,6 @@ async def cnv_acmg(request: Request):
         return Response(status_code=400, content="Missing query parameters")
 
     client = httpx_client_wrapper()
-    print("Client:", client.__dict__)
     backend_req = client.build_request(
         method="POST",
         url="https://phoenix.bgi.com/api/acit/jobs/",
