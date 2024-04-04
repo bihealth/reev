@@ -5,6 +5,7 @@ Revises: 397feb4e1315
 Create Date: 2024-02-19 17:43:45.473226+01:00
 
 """
+
 import fastapi_users_db_sqlalchemy.generics  # noqa
 import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql

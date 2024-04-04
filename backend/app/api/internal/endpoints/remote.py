@@ -54,9 +54,13 @@ class HTTPXClientWrapper:
     async_client: httpx.AsyncClient | None = None
 
     def start(self):
-        self.transport = httpx.AsyncHTTPTransport(retries=1)
+        self.transport = httpx.AsyncHTTPTransport(
+            retries=1, verify=False
+        )  # Disabling cert verification for AutCNV
         self.transport._pool._ssl_context.options |= 0x4  # OP_LEGACY_SERVER_CONNECT
-        self.async_client = httpx.AsyncClient(timeout=httpx.Timeout(60.0), transport=self.transport)
+        self.async_client = httpx.AsyncClient(
+            timeout=httpx.Timeout(60.0), transport=self.transport, verify=False
+        )  # Disablinng cert verification for AutoCNV
 
     async def stop(self):
         await self.async_client.aclose()

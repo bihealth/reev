@@ -5,6 +5,7 @@ Revises: 8ccd31a4f116
 Create Date: 2023-10-27 09:40:49.740067+02:00
 
 """
+
 import fastapi_users_db_sqlalchemy.generics  # noqa
 import sqlalchemy as sa
 
