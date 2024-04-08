@@ -16,7 +16,7 @@
     "format:check": "prettier --list-different src/ *.ts *.mts *.json"
   },
   "dependencies": {
-    "@mdi/font": "^7.3.67",
+    "@mdi/font": "^7.4.47",
     "@protobuf-ts/runtime": "^2.9.4",
     "@reactgular/chunks": "^1.0.1",
     "@sentry/browser": "^7.107.0",
