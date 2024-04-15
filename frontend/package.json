@@ -22,7 +22,7 @@
     "@sentry/browser": "^7.107.0",
     "@sentry/integrations": "^7.102.1",
     "@sentry/tracing": "^7.89.0",
-    "@sentry/vue": "^7.105.0",
+    "@sentry/vue": "^7.110.0",
     "@types/luxon": "^3.4.2",
     "@vue/eslint-config-standard": "^8.0.1",
     "@vuelidate/core": "^2.0.3",
