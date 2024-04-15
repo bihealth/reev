@@ -86,6 +86,6 @@
     "vitest-canvas-mock": "^0.3.3",
     "vitest-fetch-mock": "^0.2.2",
     "vue-cli-plugin-vuetify": "~2.5.8",
-    "vue-tsc": "^2.0.11"
+    "vue-tsc": "^2.0.13"
   }
 }
