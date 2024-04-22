@@ -1926,11 +1926,11 @@
         },
         "docutils": {
             "hashes": [
-                "sha256:96f387a2c5562db4476f09f13bbab2192e764cac08ebbf3a34a95d9b1e4a59d6",
-                "sha256:f08a4e276c3a1583a86dce3e34aba3fe04d02bba2dd51ed16106244e8a923e3b"
+                "sha256:14c8d34a55b46c88f9f714adb29cefbdd69fb82f3fef825e59c5faab935390d8",
+                "sha256:65249d8a5345bc95e0f40f280ba63c98eb24de35c6c8f5b662e3e8948adea83f"
             ],
-            "markers": "python_version >= '3.7'",
-            "version": "==0.20.1"
+            "markers": "python_version >= '3.9'",
+            "version": "==0.21.1"
         },
         "exceptiongroup": {
             "hashes": [
@@ -3114,12 +3114,12 @@
         },
         "sphinx": {
             "hashes": [
-                "sha256:1e09160a40b956dc623c910118fa636da93bd3ca0b9876a7b3df90f07d691560",
-                "sha256:9a5160e1ea90688d5963ba09a2dcd8bdd526620edbb65c328728f1b2228d5ab5"
+                "sha256:413f75440be4cacf328f580b4274ada4565fb2187d696a84970c23f77b64d8c3",
+                "sha256:a4a7db75ed37531c05002d56ed6948d4c42f473a36f46e1382b0bd76ca9627bc"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==7.2.6"
+            "version": "==7.3.7"
         },
         "sphinx-autobuild": {
             "hashes": [
