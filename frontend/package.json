@@ -37,7 +37,7 @@
     "title-case": "^4.3.1",
     "unplugin-fonts": "^1.1.1",
     "vega": "^5.28.0",
-    "vega-embed": "^6.24.0",
+    "vega-embed": "^6.25.0",
     "vue": "^3.3.13",
     "vue-matomo": "^4.2.0",
     "vue-router": "^4.3.0",
