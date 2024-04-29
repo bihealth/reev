@@ -1926,11 +1926,11 @@
         },
         "docutils": {
             "hashes": [
-                "sha256:14c8d34a55b46c88f9f714adb29cefbdd69fb82f3fef825e59c5faab935390d8",
-                "sha256:65249d8a5345bc95e0f40f280ba63c98eb24de35c6c8f5b662e3e8948adea83f"
+                "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f",
+                "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==0.21.1"
+            "version": "==0.21.2"
         },
         "exceptiongroup": {
             "hashes": [
@@ -1999,12 +1999,12 @@
         },
         "furo": {
             "hashes": [
-                "sha256:3548be2cef45a32f8cdc0272d415fcb3e5fa6a0eb4ddfe21df3ecf1fe45a13cf",
-                "sha256:4d6b2fe3f10a6e36eb9cc24c1e7beb38d7a23fc7b3c382867503b7fcac8a1e02"
+                "sha256:15a9b65269038def2cefafb86c71c6616e3969b8f07ba231f588c10c4aee6d88",
+                "sha256:f7eb1b2c2204fd9cbd4af42e027289a67f17a98a4e14f4f9e2f17b96d61bb020"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==2024.1.29"
+            "version": "==2024.4.27"
         },
         "gevent": {
             "hashes": [
