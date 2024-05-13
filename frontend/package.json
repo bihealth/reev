@@ -19,7 +19,7 @@
     "@mdi/font": "^7.4.47",
     "@protobuf-ts/runtime": "^2.9.4",
     "@reactgular/chunks": "^1.0.1",
-    "@sentry/browser": "^7.111.0",
+    "@sentry/browser": "^7.114.0",
     "@sentry/integrations": "^7.111.0",
     "@sentry/tracing": "^7.89.0",
     "@sentry/vue": "^7.111.0",
