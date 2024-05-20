@@ -1291,12 +1291,12 @@
                 "fastapi"
             ],
             "hashes": [
-                "sha256:392f1065d6b46e87bf0a0a8eda2fe271601a62b0daf56eeb74e813f99ca0caec",
-                "sha256:968b599d2ecdb1fae15d529ab03750ff2f34954fd317b4fb1dbc2725bb1702d0"
+                "sha256:674f58da37835ea7447fe0e34c57b4a4277fad558b0a7cb4a6c83bcb263086be",
+                "sha256:70eca103cf4c6302365a9d7cf522e7ed7720828910eb23d43ada8e50d1ecda9d"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==2.1.0"
+            "version": "==2.2.0"
         },
         "six": {
             "hashes": [
