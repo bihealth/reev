@@ -42,6 +42,9 @@ export default createVuetify({
     },
     VSheet: {
       rounded: 'lg'
+    },
+    VChip: {
+      rounded: 'xl'
     }
   },
   theme: {
