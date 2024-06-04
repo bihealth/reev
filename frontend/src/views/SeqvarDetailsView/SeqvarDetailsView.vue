@@ -434,7 +434,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <SeqvarConsequencesCard :consequences="seqvarInfoStore.txCsq" />
               </div>
               <div id="seqvar-clinvar" class="mt-3">
-                <SeqvarClinvarCard :clinvar-record="seqvarInfoStore.varAnnos?.clinvar" />
+                <SeqvarClinvarCard :clinvar-records="seqvarInfoStore.varAnnos?.clinvar" />
               </div>
               <div id="seqvar-scores" class="mt-3">
                 <SeqvarScoresCard :var-annos="seqvarInfoStore.varAnnos" />
