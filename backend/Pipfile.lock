@@ -1614,12 +1614,12 @@
         },
         "tenacity": {
             "hashes": [
-                "sha256:5ea66b27e881eec324b15adc7be9ec35001d231d4cfb5d10eee1bf9323d723a9",
-                "sha256:6c72aeb4d300b9858be0d52f1894ee952f0b391ec583cdc19c2523030efcc4eb"
+                "sha256:28522e692eda3e1b8f5e99c51464efcc0b9fc86933da92415168bc1c4e2308fa",
+                "sha256:54b1412b878ddf7e1f1577cd49527bad8cdef32421bd599beac0c6c3f10582fd"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==8.4.0"
+            "version": "==8.4.1"
         },
         "toml": {
             "hashes": [
