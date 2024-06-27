@@ -125,7 +125,7 @@ onMounted(async () => {
                     v-bind="props"
                     @click="handleProviderLogin(provider)"
                   >
-                    <v-card-title class="mt-3"> LifeSciene Research Infrastructure </v-card-title>
+                    <v-card-title class="mt-3"> LifeScience Research Infrastructure </v-card-title>
                     <v-card-text>
                       <div class="mb-3">
                         Members of European Union Academia can login with their organizational
