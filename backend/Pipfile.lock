@@ -3629,12 +3629,12 @@
         },
         "sphinx": {
             "hashes": [
-                "sha256:413f75440be4cacf328f580b4274ada4565fb2187d696a84970c23f77b64d8c3",
-                "sha256:a4a7db75ed37531c05002d56ed6948d4c42f473a36f46e1382b0bd76ca9627bc"
+                "sha256:09539a16d74d1850b123cdd0752b9d24f3adc025ff887d611d1010348cd3648c",
+                "sha256:ae21f3f4337ccc0a1054459bf232a25e495bdf647ccbcd50d3b5e355293ceff3"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==7.3.7"
+            "version": "==7.4.1"
         },
         "sphinx-autobuild": {
             "hashes": [
