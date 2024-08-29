@@ -23,6 +23,8 @@
     "@sentry/integrations": "^7.111.0",
     "@sentry/tracing": "^7.114.0",
     "@sentry/vue": "^7.111.0",
+    "@tanstack/vue-query": "^5.52.2",
+    "@tanstack/vue-query-devtools": "^5.52.2",
     "@types/luxon": "^3.4.2",
     "@vue/eslint-config-standard": "^8.0.1",
     "@vuelidate/core": "^2.0.3",

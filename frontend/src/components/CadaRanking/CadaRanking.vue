@@ -5,12 +5,11 @@ import { computed, onMounted, watch } from 'vue'
 
 import { useCaseInfoStore } from '@/stores/caseInfo'
 
-export interface Props {
+/** This component's props. */
+const props = withDefaults(defineProps<{
   /** HGNC ID of gene to display */
   hgncId?: string
-}
-
-const props = withDefaults(defineProps<Props>(), { hgncId: '' })
+}>(), { hgncId: '' })
 
 const caseInfoStore = useCaseInfoStore()
 const cadaPrioStore = useCadaPrioStore()
