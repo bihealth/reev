@@ -19,6 +19,8 @@ class DataVersions(BaseModel):
 
     #: Annonars version.
     annonars: str
+    #: AutoACMG version.
+    autoacmg: str
     #: Viguno version.
     viguno: str
     #: Mehari version.
@@ -135,6 +137,7 @@ TODAY = datetime.date.strftime(datetime.date.today(), "%Y%m%d")
 #: The data versions to use.
 DATA_VERSIONS = DataVersions(
     annonars="0.2.1",
+    autoacmg="0.3.0",
     viguno="0.36.1",
     mehari="0.25.4",
     cada_prio="0.6.1",

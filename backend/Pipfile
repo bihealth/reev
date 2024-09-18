@@ -58,6 +58,7 @@ celery-types = "*"
 jupyterlab = "*"
 pytest-mock = "*"
 gevent = "*"
+tomli = "*"
 
 [requires]
 python_version = "3.10"
