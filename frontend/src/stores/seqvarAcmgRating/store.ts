@@ -7,7 +7,6 @@ import equal from 'fast-deep-equal'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-import { AcmgSeqVarClient } from '@/api/acmgSeqvar'
 import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
