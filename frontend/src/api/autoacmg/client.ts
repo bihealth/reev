@@ -1,8 +1,10 @@
-import { ConfigError } from "@bihealth/reev-frontend-lib/api/common"
-import { urlConfig } from "@bihealth/reev-frontend-lib/lib"
-import { Seqvar } from "@bihealth/reev-frontend-lib/lib/genomicVars"
-// Add this import
-import { SeqVarClassificationResult } from "./types"
+import { ConfigError } from '@bihealth/reev-frontend-lib/api/common'
+import { Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
+
+import { API_INTERNAL_BASE_PREFIX } from '../common'
+
+//: URL to the AutoACMG API
+const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX}proxy/autoacmg/api/v1`
 
 export class AutoACMGClient {
   private apiBaseUrl: string
@@ -14,10 +16,9 @@ export class AutoACMGClient {
    * @throws ConfigError if the API base URL is not configured.
    */
   constructor(apiBaseUrl?: string) {
-    // Change this line
-    if (apiBaseUrl !== undefined || urlConfig.baseUrlAutoAcmg !== undefined) {
+    if (apiBaseUrl !== undefined || API_BASE_URL !== undefined) {
       // @ts-ignore
-      this.apiBaseUrl = apiBaseUrl ?? urlConfig.baseUrlAutoAcmg
+      this.apiBaseUrl = apiBaseUrl ?? API_BASE_URL
     } else {
       throw new ConfigError('Configuration error: API base URL not configured')
     }
@@ -31,26 +32,24 @@ export class AutoACMGClient {
    * @throws StatusCodeNotOk if the request fails.
    * @throws InvalidResponseContent if the response is not valid JSON.
    */
-  async classifyVariant(seqvar: Seqvar): Promise<any> {
-    const seqvarName = seqvar.toString()
-    console.log(seqvarName)
+  async classifySequenceVariant(seqvar: Seqvar): Promise<any> {
+    const seqvarName = `chr${seqvar.chrom}:${seqvar.pos}:${seqvar.del}:${seqvar.ins}`
 
     const url =
       `${this.apiBaseUrl}/predict/seqvar?variant_name=${seqvarName}` +
       `&genome_release=${seqvar.genomeBuild}`
-
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-      },
+        'Content-Type': 'application/json'
+      }
     })
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const data = await response.json()
-    console.log(data)
+    console.log('data: ', data)
     return data
   }
 }

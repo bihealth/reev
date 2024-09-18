@@ -7,6 +7,8 @@ import equal from 'fast-deep-equal'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
+import { AcmgSeqVarClient } from '@/api/acmgSeqvar'
+import { AutoACMGClient } from '@/api/autoacmg'
 import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
@@ -103,6 +105,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
 
     // Fetch the ACMG rating from InterVar
     try {
+      const aa_client = new AutoACMGClient()
+      const aa_data = await aa_client.classifySequenceVariant(seqvar$)
+      console.log('aa_data: ', aa_data)
       const client = new InterVarClient()
       const acmgRatingInterVarData = await client.fetchAcmgRating(seqvar$)
       // Go through the data and setPresense for each criteria
