@@ -24,13 +24,13 @@ describe('AutoACMGClient', () => {
     const result = await client.classifySequenceVariant({
       genomeBuild: 'grch37',
       chrom: '17',
-      pos: 41245466,
+      pos: 41215920,
       del: 'G',
-      ins: 'A',
-      userRepr: 'GRCh37-17-41245466-G-A'
+      ins: 'T',
+      userRepr: 'chr17:41215920:G:T'
     })
 
-    expect(result).toEqual(AUTOACMG_SEQVAR_RESULT)
+    expect(result).toEqual(AUTOACMG_SEQVAR_RESULT['prediction'])
     expect(fetchMocker).toHaveBeenCalledTimes(1)
     expect(fetchMocker).toHaveBeenCalledWith(
       'http://localhost:8080/api/v1/proxy/autoacmg/api/v1/predict/seqvar?variant_name=chr17:41245466:G:A&genome_release=grch37',
