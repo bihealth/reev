@@ -74,7 +74,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: undefined
     }
 
     // act:
@@ -161,8 +162,7 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.NotSet,
-      summary: undefined
+      evidenceLevel: AcmgEvidenceLevel.NotSet
     }
 
     // act:
