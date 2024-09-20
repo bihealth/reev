@@ -18,7 +18,8 @@ import {
   ALL_ACMG_CRITERIA,
   AcmgCriteria,
   AcmgEvidenceLevel,
-  Presence
+  Presence,
+  StateSource
 } from '@/lib/acmgSeqvar'
 import { useSeqvarAcmgRatingStore } from '@/stores/seqvarAcmgRating'
 import { useUserStore } from '@/stores/user'
@@ -69,22 +70,55 @@ const tryCatchEmitErrorDisplay = async (fn: () => Promise<any>) => {
 
 /** Clear ACMG ratings to result. */
 const unfetchAcmgRating = () => {
+  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
+  // Presence
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceAbsent())
+  // Evidence level
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelDefault())
+  // Summary
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryAbsent())
+  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
+}
+
+/** Re-fetch ACMG rating from AutoACMG. */
+const refetchAcmgRatingAutoacmg = () => {
+  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
+  // Presence
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceAutoACMG())
+  // Evidence level
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelAutoACMG())
+  // Summary
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryAutoACMG())
+  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Re-fetch ACMG rating from InterVar. */
 const refetchAcmgRatingInterVar = () => {
+  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
+  // Presence
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceInterVar())
+  // Evidence level
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelDefault())
+  // Summary
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryInterVar())
+  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Whether to re-fetch ACMG rating saved on server earlier. */
 const refetchAcmgRatingServer = () => {
+  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   tryCatchEmitErrorDisplay(async () => {
     if (props.seqvar) {
       await acmgRatingStore.refetchAcmgRating(props.seqvar)
     }
   })
+  // Presence
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceServer())
+  // Evidence level
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelServer())
+  // Summary
+  tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryServer())
+  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Store ACMG rating on server. */
@@ -159,14 +193,16 @@ const fontColor = computed(() => {
   return theme.global.current.value.dark ? 'white' : 'black'
 })
 
-/** Re-compute ACMG rating from InterVar when the sequence variant changed. */
+/** Re-compute ACMG rating from AutoACMG and InterVar when the sequence variant changed. */
 watch(
   () => [props.seqvar],
   async () => {
-    if (props.seqvar?.genomeBuild === 'grch37') {
+    if (props.seqvar) {
       try {
         await acmgRatingStore.fetchAcmgRating(props.seqvar)
         if (acmgRatingStore.acmgRatingStatus === false) {
+          refetchAcmgRatingAutoacmg()
+        } else if (props.seqvar?.genomeBuild === 'grch37') {
           refetchAcmgRatingInterVar()
         } else {
           refetchAcmgRatingServer()
@@ -176,19 +212,19 @@ watch(
         errorMessage.value = msg
         emit('errorDisplay', msg)
       }
-    } else {
-      acmgRatingStore.clearData()
     }
+    console.log('acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   }
 )
 
 /** Fetch ACMG rating when mounted. */
 onMounted(async () => {
   userStore.initialize()
-  if (props.seqvar?.genomeBuild === 'grch37') {
+  if (props.seqvar) {
     const seqvar = props.seqvar // so that it is not undefined in the async function
     await tryCatchEmitErrorDisplay(async () => await acmgRatingStore.fetchAcmgRating(seqvar))
   }
+  console.log('acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 })
 </script>
 
@@ -201,24 +237,20 @@ onMounted(async () => {
     <v-card-subtitle class="text-overline">
       Semi-Automated Pathogenicity Prediction
     </v-card-subtitle>
-    <v-card-text v-if="seqvar?.genomeBuild !== 'grch37'">
-      <div class="text-center font-italic py-6">
-        Sequence variant ACMG classification is provided by InterVar. This only works for GRCh37 at
-        the moment.
-      </div>
-    </v-card-text>
-    <v-card-text v-else-if="errorMessage">
+    <v-card-text v-if="errorMessage">
       <v-card>
         <v-alert type="error"> {{ errorMessage }} </v-alert>
       </v-card>
     </v-card-text>
     <v-card-text v-else>
       <p class="mb-6">
-        Classification of variants is based on InterVar
+        Classification of variants is based on predictions from AutoACMG
+        <a href="https://github.com/bihealth/auto-acmg" target="_blank"> (BIH, 2023) </a> and
+        InterVar
         <a href="https://europepmc.org/article/MED/28132688" target="_blank">
           (Li &amp; Wang, 2017)
         </a>
-        which follows the ACMG 2015 criteria
+        which follow the ACMG 2015 criteria
         <a href="https://europepmc.org/article/MED/25741868" target="_blank"
           >(Richards et al., 2015)</a
         >.
@@ -228,6 +260,24 @@ onMounted(async () => {
       <v-row>
         <v-col cols="3">
           <div class="d-flex flex-column">
+            <div
+              color="black"
+              variant="text"
+              class="d-block pa-3 text-center text-body-1"
+              :class="{
+                'text-success': acmgRatingStore.acmgRatingAutoacmgLoaded,
+                'text-error': !acmgRatingStore.acmgRatingAutoacmgLoaded
+              }"
+            >
+              <template v-if="acmgRatingStore.acmgRatingAutoacmgLoaded">
+                <v-icon>mdi-check-circle-outline</v-icon>
+                AutoACMG provides prediction
+              </template>
+              <template v-else>
+                <v-icon>mdi-close-circle</v-icon>
+                No AutoACMG prediction
+              </template>
+            </div>
             <div
               color="black"
               variant="text"
@@ -270,9 +320,11 @@ onMounted(async () => {
         <v-col cols="6">
           <SummarySheet
             :calculated-acmg-class="calculatedAcmgClass"
+            :autoacmg-available="acmgRatingStore.acmgRatingAutoacmgLoaded"
             :inter-var-available="acmgRatingStore.acmgRatingIntervarLoaded"
             @clear-all="() => unfetchAcmgRating()"
-            @reset-to-auto="() => refetchAcmgRatingInterVar()"
+            @reset-to-autoacmg="() => refetchAcmgRatingAutoacmg()"
+            @reset-to-inter-var="() => refetchAcmgRatingInterVar()"
           />
         </v-col>
         <v-col cols="3">
@@ -347,7 +399,12 @@ onMounted(async () => {
                 <CriterionSwitch
                   :acmg-rating="acmgRatingStore.acmgRating"
                   :criteria="criteria"
-                  :criteria-state="acmgRatingStore.acmgRating.getCriteriaState(criteria)"
+                  :criteria-state="
+                    acmgRatingStore.acmgRating.getCriteriaStateFromSource(
+                      criteria,
+                      StateSource.User
+                    )
+                  "
                 />
               </div>
             </div>
@@ -414,11 +471,11 @@ onMounted(async () => {
         </v-col>
       </v-row>
     </v-card-text>
-    <v-card-actions>
+    <!-- <v-card-actions>
       <v-btn href="http://wintervar.wglab.org/" target="_blank" prepend-icon="mdi-launch">
         wInterVar
       </v-btn>
-    </v-card-actions>
+    </v-card-actions> -->
   </v-card>
 </template>
 

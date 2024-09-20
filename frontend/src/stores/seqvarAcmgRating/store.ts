@@ -9,6 +9,7 @@ import { ref } from 'vue'
 
 import { AcmgSeqVarClient } from '@/api/acmgSeqvar'
 import { AutoACMGClient } from '@/api/autoacmg'
+import { AutoACMGPrediction, AutoACMGStrength } from '@/api/autoacmg/types'
 import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
@@ -23,11 +24,24 @@ export interface AcmgRatingBackendCriteria {
   criteria: string
   presence: string
   evidence: string
+  summary?: string
 }
 
 export interface AcmgRatingBackend {
   criterias: AcmgRatingBackendCriteria[]
   comment: string
+}
+
+// Mapping from AutoACMG strength to REEV evidence level
+const autoAcmgStrengthToEvidenceLevel: Record<AutoACMGStrength, AcmgEvidenceLevel> = {
+  [AutoACMGStrength.NotSet]: AcmgEvidenceLevel.NotSet,
+  [AutoACMGStrength.PathogenicVeryStrong]: AcmgEvidenceLevel.PathogenicVeryStrong,
+  [AutoACMGStrength.PathogenicStrong]: AcmgEvidenceLevel.PathogenicStrong,
+  [AutoACMGStrength.PathogenicModerate]: AcmgEvidenceLevel.PathogenicModerate,
+  [AutoACMGStrength.PathogenicSupporting]: AcmgEvidenceLevel.PathogenicSupporting,
+  [AutoACMGStrength.BenignStandAlone]: AcmgEvidenceLevel.BenignStandalone,
+  [AutoACMGStrength.BenignStrong]: AcmgEvidenceLevel.BenignStrong,
+  [AutoACMGStrength.BenignSupporting]: AcmgEvidenceLevel.BenignSupporting
 }
 
 export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
@@ -43,6 +57,9 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
   /** All ACMG ratings for a user. */
   const acmgRatings = ref<any>([])
 
+  /** Whether the ACMG rating could be loaded form AutoACMG. */
+  const acmgRatingAutoacmgLoaded = ref<boolean>(false)
+
   /** Whether the ACMG rating could be loaded form InterVar. */
   const acmgRatingIntervarLoaded = ref<boolean>(false)
 
@@ -57,6 +74,7 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     acmgRating.value = new MultiSourceAcmgCriteriaState()
     seqvar.value = null
     acmgRatings.value = []
+    acmgRatingAutoacmgLoaded.value = false
     acmgRatingIntervarLoaded.value = false
     acmgRatingStatus.value = false
   }
@@ -75,7 +93,8 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
       acmgRatingBackend.criterias.push({
         criteria: criteriaKey,
         presence: criteria.presence,
-        evidence: criteria.evidenceLevel
+        evidence: criteria.evidenceLevel,
+        summary: criteria.summary
       })
     }
 
@@ -99,15 +118,64 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
 
     // Load data from InterVar via API
     storeState.value = StoreState.Loading
-
+    acmgRatingAutoacmgLoaded.value = false
+    acmgRatingIntervarLoaded.value = false
     // Set the variant
     seqvar.value = seqvar$
 
-    // Fetch the ACMG rating from InterVar
+    // Fetch the ACMG rating from AutoACMG
     try {
       const aa_client = new AutoACMGClient()
       const aa_data = await aa_client.classifySequenceVariant(seqvar$)
-      console.log('aa_data: ', aa_data)
+      // Go through the data and add criteria to the acmgRating
+      for (const [criteriaId, details] of Object.entries(aa_data.criteria)) {
+        if (criteriaId === 'pp5' || criteriaId === 'bp6') {
+          continue
+        }
+        const criteriaIdKey = details.name as keyof typeof AcmgCriteria
+        // Set presence of criteria
+        if (details.prediction === AutoACMGPrediction.Applicable) {
+          acmgRating.value.setPresence(
+            StateSource.AutoACMG,
+            AcmgCriteria[criteriaIdKey],
+            Presence.Present
+          )
+        } else {
+          acmgRating.value.setPresence(
+            StateSource.AutoACMG,
+            AcmgCriteria[criteriaIdKey],
+            Presence.Absent
+          )
+        }
+        // Set evidence level of criteria
+        const evidenceLevel = autoAcmgStrengthToEvidenceLevel[details.strength]
+        if (evidenceLevel !== AcmgEvidenceLevel.NotSet) {
+          acmgRating.value.setEvidenceLevel(
+            StateSource.AutoACMG,
+            AcmgCriteria[criteriaIdKey],
+            evidenceLevel
+          )
+        }
+        // Set summary of criteria prediction
+        if (details.summary) {
+          acmgRating.value.setSummary(
+            StateSource.AutoACMG,
+            AcmgCriteria[criteriaIdKey],
+            details.summary
+          )
+        }
+      }
+      // Flag ACMG rating as coming from AutoACMG.
+      acmgRatingAutoacmgLoaded.value = true
+    } catch (e) {
+      console.error('There was an error loading the ACMG data from AutoACMG: ', e)
+      // In case of errors, we do not want to block the user from doing anything.
+      // We just do not set `acmgRatingAutoacmgLoaded` to true.
+      acmgRatingAutoacmgLoaded.value = false
+    }
+
+    // Fetch the ACMG rating from InterVar
+    try {
       const client = new InterVarClient()
       const acmgRatingInterVarData = await client.fetchAcmgRating(seqvar$)
       // Go through the data and setPresense for each criteria
@@ -138,6 +206,7 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     } catch (e) {
       // In case of errors, we do not want to block the user from doing anything.
       // We just do not set `acmgRatingIntervarLoaded` to true.
+      acmgRatingIntervarLoaded.value = false
     }
 
     // Fetch the ACMG rating from the server
@@ -165,6 +234,11 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
             StateSource.Server,
             AcmgCriteria[criteriaKey],
             criteria.evidence
+          )
+          acmgRating.value.setSummary(
+            StateSource.Server,
+            AcmgCriteria[criteriaKey],
+            criteria.summary
           )
         }
       }
@@ -207,6 +281,11 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
             StateSource.Server,
             AcmgCriteria[criteriaKey],
             criteria.evidence
+          )
+          acmgRating.value.setSummary(
+            StateSource.Server,
+            AcmgCriteria[criteriaKey],
+            criteria.summary
           )
         }
       }
@@ -312,6 +391,7 @@ export const useSeqvarAcmgRatingStore = defineStore('seqvarAcmgRating', () => {
     acmgRating,
     acmgRatings,
     acmgRatingStatus,
+    acmgRatingAutoacmgLoaded,
     acmgRatingIntervarLoaded,
     saveAcmgRating,
     deleteAcmgRating,

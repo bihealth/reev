@@ -6,18 +6,20 @@ import { classColor } from '@/lib/utils'
 
 interface Props {
   calculatedAcmgClass?: string
+  autoacmgAvailable?: boolean
   interVarAvailable?: boolean
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const props = withDefaults(defineProps<Props>(), {
   calculatedAcmgClass: 'N/A',
-  interVaravailable: false
+  interVarAvailable: false,
+  autoacmgAvailable: false
 })
 
 const theme = useTheme()
 
-const emit = defineEmits(['clearAll', 'resetToAuto'])
+const emit = defineEmits(['clearAll', 'resetToAutoacmg', 'resetToInterVar'])
 
 /** Return font color for genome build based on current theme. */
 const fontColor = computed(() => {
@@ -50,8 +52,18 @@ const fontColor = computed(() => {
         variant="text"
         rounded="sm"
         prepend-icon="mdi-file-restore-outline"
+        :disabled="!autoacmgAvailable"
+        @click="emit('resetToAutoacmg')"
+      >
+        Reset to AutoACMG
+      </v-btn>
+      <v-btn
+        :color="fontColor"
+        variant="text"
+        rounded="sm"
+        prepend-icon="mdi-file-restore-outline"
         :disabled="!interVarAvailable"
-        @click="emit('resetToAuto')"
+        @click="emit('resetToInterVar')"
       >
         Reset to InterVar
       </v-btn>

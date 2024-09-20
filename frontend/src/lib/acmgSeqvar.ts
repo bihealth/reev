@@ -411,12 +411,15 @@ export interface CriteriaState {
    * to override both default and prediction tools.
    */
   evidenceLevel: AcmgEvidenceLevel
+  /** Optionally, a summary of the criteria prediction. */
+  summary?: string
 }
 
 /** Define where a given selection state comes from. */
 export enum StateSource {
   Default = 'Default',
   InterVar = 'InterVar',
+  AutoACMG = 'AutoACMG',
   Server = 'Server',
   User = 'User'
 }
@@ -425,6 +428,7 @@ export enum StateSource {
 export const ALL_STATE_SOURCES = [
   StateSource.Default,
   StateSource.InterVar,
+  StateSource.AutoACMG,
   StateSource.Server,
   StateSource.User
 ]
@@ -446,6 +450,7 @@ export class MultiSourceAcmgCriteriaState {
     this.criteriaStates = {
       Default: this.createCriteriaStateMap(StateSource.Default),
       InterVar: this.createCriteriaStateMap(StateSource.InterVar),
+      AutoACMG: this.createCriteriaStateMap(StateSource.AutoACMG),
       Server: this.createCriteriaStateMap(StateSource.Server),
       User: this.createCriteriaStateMap(StateSource.User)
     }
@@ -592,6 +597,7 @@ export class MultiSourceAcmgCriteriaState {
   getCriteriaState(criteria: AcmgCriteria): CriteriaState {
     let presence = Presence.Unknown
     let evidenceLevel = AcmgEvidenceLevel.NotSet
+    let summary = undefined
 
     for (const stateSource of ALL_STATE_SOURCES) {
       if (!this.criteriaStates[stateSource]) {
@@ -610,13 +616,17 @@ export class MultiSourceAcmgCriteriaState {
         if (criteriaState.evidenceLevel !== AcmgEvidenceLevel.NotSet) {
           evidenceLevel = criteriaState.evidenceLevel
         }
+        if (criteriaState.summary) {
+          summary = criteriaState.summary
+        }
       }
     }
 
     return {
       criteria,
       presence,
-      evidenceLevel
+      evidenceLevel,
+      summary
     }
   }
 
@@ -655,6 +665,14 @@ export class MultiSourceAcmgCriteriaState {
     }
   }
 
+  /** Resets the presence of all criteria for a `StateSource.User` to a presence of `StateSource.AutoACMG`. */
+  setUserPresenceAutoACMG() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateAutoACMG = this.getCriteriaStateFromSource(criteria, StateSource.AutoACMG)
+      this.setPresence(StateSource.User, criteria, criteriaStateAutoACMG.presence)
+    }
+  }
+
   /** Resets the presence of all criteria for a `StateSource.User` to a presence of `StateSource.InterVar`. */
   setUserPresenceInterVar() {
     for (const criteria of ALL_ACMG_CRITERIA) {
@@ -685,6 +703,69 @@ export class MultiSourceAcmgCriteriaState {
       throw new Error(`Criteria ${criteria} not found for source ${source}`)
     } else {
       this.criteriaStates[source][criteria].evidenceLevel = evidenceLevel
+    }
+  }
+
+  /** Resets the evidence level of all criteria for a `StateSource.User` to a default value. */
+  setUserEvidenceLevelDefault() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateDefault = this.getCriteriaStateFromSource(criteria, StateSource.Default)
+      this.setEvidenceLevel(StateSource.User, criteria, criteriaStateDefault.evidenceLevel)
+    }
+  }
+
+  /** Resets the evidence level of all criteria for a `StateSource.User` to evidence level of `StateSource.AutoACMG`. */
+  setUserEvidenceLevelAutoACMG() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateAutoACMG = this.getCriteriaStateFromSource(criteria, StateSource.AutoACMG)
+      this.setEvidenceLevel(StateSource.User, criteria, criteriaStateAutoACMG.evidenceLevel)
+    }
+  }
+
+  /** Resets the evidence level of all criteria for a `StateSource.User` to evidence level of `StateSource.Server`. */
+  setUserEvidenceLevelServer() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateServer = this.getCriteriaStateFromSource(criteria, StateSource.Server)
+      this.setEvidenceLevel(StateSource.User, criteria, criteriaStateServer.evidenceLevel)
+    }
+  }
+
+  /** Sets the `summary` of a `CriteriaState` for a given `StateSource` and `AcmgCriteria`. */
+  setSummary(source: StateSource, criteria: AcmgCriteria, summary: string | undefined) {
+    if (!this.criteriaStates[source] || !this.criteriaStates[source][criteria]) {
+      throw new Error(`Criteria ${criteria} not found for source ${source}`)
+    } else {
+      this.criteriaStates[source][criteria].summary = summary
+    }
+  }
+
+  /** Resets the summary of all criteria for a `StateSource.User` to a `undefined`. */
+  setUserSummaryAbsent() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      this.setSummary(StateSource.User, criteria, undefined)
+    }
+  }
+
+  /** Resets the summary of all criteria for a `StateSource.User` to summary of `StateSource.AutoACMG`. */
+  setUserSummaryAutoACMG() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateAutoACMG = this.getCriteriaStateFromSource(criteria, StateSource.AutoACMG)
+      this.setSummary(StateSource.User, criteria, criteriaStateAutoACMG.summary)
+    }
+  }
+
+  /** Resets the summary of all criteria for a `StateSource.User` to summary of `StateSource.InterVar`. */
+  setUserSummaryInterVar() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      this.setSummary(StateSource.User, criteria, undefined)
+    }
+  }
+
+  /** Resets the summary of all criteria for a `StateSource.User` to summary of `StateSource.Server`. */
+  setUserSummaryServer() {
+    for (const criteria of ALL_ACMG_CRITERIA) {
+      const criteriaStateServer = this.getCriteriaStateFromSource(criteria, StateSource.Server)
+      this.setSummary(StateSource.User, criteria, criteriaStateServer.summary)
     }
   }
 

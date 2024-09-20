@@ -2,6 +2,7 @@ import { ConfigError } from '@bihealth/reev-frontend-lib/api/common'
 import { Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
 
 import { API_INTERNAL_BASE_PREFIX } from '../common'
+import { AutoACMGSeqVarResult } from './types'
 
 //: URL to the AutoACMG API
 const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX}proxy/autoacmg/api/v1`
@@ -32,7 +33,7 @@ export class AutoACMGClient {
    * @throws StatusCodeNotOk if the request fails.
    * @throws InvalidResponseContent if the response is not valid JSON.
    */
-  async classifySequenceVariant(seqvar: Seqvar): Promise<any> {
+  async classifySequenceVariant(seqvar: Seqvar): Promise<AutoACMGSeqVarResult> {
     const seqvarName = `chr${seqvar.chrom}:${seqvar.pos}:${seqvar.del}:${seqvar.ins}`
 
     const url =
@@ -50,6 +51,6 @@ export class AutoACMGClient {
     }
     const data = await response.json()
     console.log('data: ', data)
-    return data
+    return data['prediction']
   }
 }

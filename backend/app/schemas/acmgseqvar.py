@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
@@ -56,6 +57,7 @@ class SeqVarCriteria(BaseModel):
     criteria: Criteria
     presence: Presence
     evidence: Evidence
+    summary: Optional[str] = None
 
 
 class AcmgRank(BaseModel):
