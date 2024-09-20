@@ -57,7 +57,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: undefined
     }
 
     // act:
@@ -89,7 +90,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Absent,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: undefined
     }
 
     // act:
@@ -106,7 +108,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: 'invalid' as AcmgCriteria,
       presence: Presence.Unknown,
-      evidenceLevel: AcmgEvidenceLevel.NotSet
+      evidenceLevel: AcmgEvidenceLevel.NotSet,
+      summary: undefined
     }
 
     // act:
@@ -158,7 +161,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.NotSet
+      evidenceLevel: AcmgEvidenceLevel.NotSet,
+      summary: undefined
     }
 
     // act:
