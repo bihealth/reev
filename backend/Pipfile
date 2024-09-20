@@ -29,6 +29,9 @@ fastapi-pagination = "*"
 sqlakeyset = "*"
 celery = "*"
 asgiref = "*"
+tomli = "*"
+exceptiongroup = "*"
+async-timeout = "*"
 
 [dev-packages]
 aiosqlite = "*"
@@ -58,9 +61,6 @@ celery-types = "*"
 jupyterlab = "*"
 pytest-mock = "*"
 gevent = "*"
-tomli = "*"
-exceptiongroup = "*"
-async-timeout = "*"
 
 [requires]
 python_version = "3.10"
