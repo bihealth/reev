@@ -50,7 +50,6 @@ export class AutoACMGClient {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
     const data = await response.json()
-    console.log('data: ', data)
     return data['prediction']
   }
 }

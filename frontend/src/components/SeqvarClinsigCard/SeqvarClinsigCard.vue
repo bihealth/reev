@@ -70,43 +70,36 @@ const tryCatchEmitErrorDisplay = async (fn: () => Promise<any>) => {
 
 /** Clear ACMG ratings to result. */
 const unfetchAcmgRating = () => {
-  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   // Presence
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceAbsent())
   // Evidence level
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelDefault())
   // Summary
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryAbsent())
-  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Re-fetch ACMG rating from AutoACMG. */
 const refetchAcmgRatingAutoacmg = () => {
-  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   // Presence
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceAutoACMG())
   // Evidence level
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelAutoACMG())
   // Summary
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryAutoACMG())
-  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Re-fetch ACMG rating from InterVar. */
 const refetchAcmgRatingInterVar = () => {
-  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   // Presence
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserPresenceInterVar())
   // Evidence level
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelDefault())
   // Summary
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryInterVar())
-  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Whether to re-fetch ACMG rating saved on server earlier. */
 const refetchAcmgRatingServer = () => {
-  console.log('BEFORE: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   tryCatchEmitErrorDisplay(async () => {
     if (props.seqvar) {
       await acmgRatingStore.refetchAcmgRating(props.seqvar)
@@ -118,7 +111,6 @@ const refetchAcmgRatingServer = () => {
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserEvidenceLevelServer())
   // Summary
   tryCatchEmitErrorDisplay(async () => acmgRatingStore.acmgRating.setUserSummaryServer())
-  console.log('AFTER: acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 }
 
 /** Store ACMG rating on server. */
@@ -213,7 +205,6 @@ watch(
         emit('errorDisplay', msg)
       }
     }
-    console.log('acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
   }
 )
 
@@ -224,7 +215,6 @@ onMounted(async () => {
     const seqvar = props.seqvar // so that it is not undefined in the async function
     await tryCatchEmitErrorDisplay(async () => await acmgRatingStore.fetchAcmgRating(seqvar))
   }
-  console.log('acmgRatingStore.acmgRating', acmgRatingStore.acmgRating)
 })
 </script>
 
