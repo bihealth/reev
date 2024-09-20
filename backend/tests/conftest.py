@@ -44,6 +44,16 @@ if os.environ.get("SQLALCHEMY_DEBUG", "0") == "1":
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 
+def import_models_before_freezing():
+    """Hack to get around Pydantic issue with Freeze Gun."""
+    from app.models.clinvarsub import SubmissionActivity
+    from app.schemas.clinvarsub import SubmissionActivityCreate, SubmissionActivityUpdate
+
+
+def pytest_sessionstart(session: pytest.Session) -> None:
+    import_models_before_freezing()
+
+
 class ObjNames(pydantic.BaseModel):
     """Namespace of valid object identifiers."""
 

@@ -23,3 +23,4 @@ Test Structure
 - properly use fixtures, place them in ``conftest.py`` files
 - use ``pytest.mark.parameterize`` to condense multiple test cases into one tests but don't overdo it
     - see ``test_clinvarsub.py`` for an example (e.g., ``test_create_submissionthreads``) that is still good a trade-off but probably shows the highest degree of complexity (read: different test code paths)
+

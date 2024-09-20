@@ -122,6 +122,8 @@ class Settings(BaseSettings):
     BACKEND_PREFIX_DOTTY: str = "http://dotty:8080"
     #: Prefix for the backend of cada-prio service.
     BACKEND_PREFIX_CADA_PRIO: str = "http://cada-prio:8080"
+    #: Prefix for the backend of autoacmg service.
+    BACKEND_PREFIX_AUTOACMG: str = "http://autoacmg:8000"
 
     #: URL to Redis service.
     REDIS_URL: str = "redis://redis:6379"

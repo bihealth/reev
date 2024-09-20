@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 /** The component for the Acmg Criteria Card. */
 import {
   ACMG_CRITERIA_DEFS,
@@ -23,6 +25,12 @@ const props = withDefaults(defineProps<Props>(), {
   criteria: undefined,
   criteriaState: undefined
 })
+
+const showSummary = ref(false)
+
+const toggleSummary = () => {
+  showSummary.value = !showSummary.value
+}
 
 const findSwitchColor = (): string => {
   const evidence = props.criteriaState.evidenceLevel
@@ -55,7 +63,7 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
 </script>
 
 <template>
-  <v-card class="mx-auto compact-form" width="150" style="margin: 10px">
+  <v-card class="mx-auto compact-form" width="180" style="margin: 10px">
     <div class="d-flex justify-content-between">
       <v-switch
         :color="findSwitchColor()"
@@ -71,6 +79,18 @@ const switchCriteria = (criteria: AcmgCriteria, presence: Presence) => {
           <v-icon style="margin: 10px" v-bind="vProps"> mdi-information </v-icon>
         </template>
       </v-tooltip>
+      <v-menu v-if="props.criteriaState.summary" offset-y>
+        <template #activator="{ props: vProps }">
+          <v-btn icon variant="plain" v-bind="vProps" size="small" @click="toggleSummary">
+            <v-icon>mdi-chevron-down</v-icon>
+          </v-btn>
+        </template>
+        <v-card width="500">
+          <v-card-text>
+            {{ props.criteriaState.summary }}
+          </v-card-text>
+        </v-card>
+      </v-menu>
     </div>
     <v-select
       :model-value="props.criteriaState.evidenceLevel"

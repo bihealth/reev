@@ -1,0 +1,289 @@
+{
+  "prediction": {
+    "seqvar": {
+      "genome_release": "GRCh37",
+      "chrom": "17",
+      "pos": 41215920,
+      "delete": "G",
+      "insert": "T",
+      "user_repr": "chr17:41215920:G:T"
+    },
+    "data": {
+      "consequence": {
+        "mehari": ["missense_variant"],
+        "cadd": "missense",
+        "cadd_consequence": "NON_SYNONYMOUS"
+      },
+      "gene_symbol": "BRCA1",
+      "hgnc_id": "HGNC:1100",
+      "transcript_id": "NM_007294.4",
+      "transcript_tags": ["ManeSelect"],
+      "tx_pos_utr": 5236,
+      "cds_pos": 5123,
+      "prot_pos": 1708,
+      "prot_length": 1864,
+      "pHGVS": "p.Ala566Glu;p.Ala1708Glu;p.Ala1729Glu;p.Ala604Glu;p.Ala199Glu;p.Ala18Glu;p.Ala1661Glu;p.Ala604Glu;p.Ala479Glu;p.Ala604Glu;p.Ala558Glu",
+      "cds_start": 41197694,
+      "cds_end": 41276113,
+      "strand": "minus",
+      "scores": {
+        "cadd": {
+          "phyloP100": 3.376,
+          "gerp": 5.83,
+          "spliceAI_acceptor_gain": 0,
+          "spliceAI_acceptor_loss": 0,
+          "spliceAI_donor_gain": 0,
+          "spliceAI_donor_loss": 0.15,
+          "ada": null,
+          "rf": null
+        },
+        "dbnsfp": {
+          "alpha_missense": 0.9914,
+          "metaRNN": 0.87201256,
+          "bayesDel_noAF": 0.423173,
+          "revel": 0.831,
+          "phyloP100": 6.179,
+          "sift": 0.002,
+          "polyphen2": 1,
+          "mutationTaster": 1,
+          "fathmm": 0.9,
+          "provean": -0.69,
+          "vest4": 0.934,
+          "mutpred": null,
+          "primateAI": 0.739370644093
+        },
+        "dbscsnv": {
+          "ada": null,
+          "rf": null
+        },
+        "misZ": 2.3217
+      },
+      "thresholds": {
+        "phyloP100": 3.58,
+        "gerp": 0,
+        "spliceAI_acceptor_gain": 0.2,
+        "spliceAI_acceptor_loss": 0.2,
+        "spliceAI_donor_gain": 0.2,
+        "spliceAI_donor_loss": 0.2,
+        "ada": 0.957813,
+        "rf": 0.584,
+        "metaRNN_pathogenic": 0.841,
+        "bayesDel_noAF_pathogenic": 0.28,
+        "revel_pathogenic": 0.773,
+        "cadd_pathogenic": 20,
+        "metaRNN_benign": 0.267,
+        "bayesDel_noAF_benign": 0.15,
+        "revel_benign": 0.016,
+        "cadd_benign": 10,
+        "pp2bp1_pathogenic": 0.808,
+        "pp2bp1_benign": 0.569,
+        "pm1_pathogenic": 8,
+        "ba1_benign": 0.001,
+        "bs1_benign": 0.00002,
+        "pm2_pathogenic": 0.0001,
+        "an_min": 2000,
+        "pp3bp4_strategy": "default",
+        "bp7_donor": 7,
+        "bp7_acceptor": 21
+      }
+    },
+    "criteria": {
+      "pvs1": {
+        "name": "PVS1",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_very_strong",
+        "summary": "The gene HGNC:1100 has custom PVS1 criteria, which are not implemented yet! Variant consequence is Missense. PVS1 criteria cannot be applied.",
+        "description": "Prediction path: Not Set"
+      },
+      "ps1": {
+        "name": "PS1",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_strong",
+        "summary": "Variant affects splicing. PM5 is not applicable.",
+        "description": ""
+      },
+      "ps2": {
+        "name": "PS2",
+        "prediction": "not_automated",
+        "strength": "pathogenic_strong",
+        "summary": "",
+        "description": ""
+      },
+      "ps3": {
+        "name": "PS3",
+        "prediction": "not_automated",
+        "strength": "pathogenic_strong",
+        "summary": "",
+        "description": ""
+      },
+      "ps4": {
+        "name": "PS4",
+        "prediction": "not_automated",
+        "strength": "pathogenic_strong",
+        "summary": "",
+        "description": ""
+      },
+      "pm1": {
+        "name": "PM1",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_moderate",
+        "summary": "PM1 is not applicable for BRCA1 and BRCA2.",
+        "description": ""
+      },
+      "pm2": {
+        "name": "PM2",
+        "prediction": "failed",
+        "strength": "pathogenic_moderate",
+        "summary": "An error occurred while predicting PM2, BA1, BS1, BS2 criteria: No allele frequency found in gnomad data.",
+        "description": ""
+      },
+      "pm3": {
+        "name": "PM3",
+        "prediction": "not_automated",
+        "strength": "pathogenic_moderate",
+        "summary": "",
+        "description": ""
+      },
+      "pm4": {
+        "name": "PM4",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_moderate",
+        "summary": "PM4 is not applicable for the ENIGMA VCEP.",
+        "description": ""
+      },
+      "pm5": {
+        "name": "PM5",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_moderate",
+        "summary": "Variant affects splicing. PM5 is not applicable.",
+        "description": ""
+      },
+      "pm6": {
+        "name": "PM6",
+        "prediction": "not_automated",
+        "strength": "pathogenic_moderate",
+        "summary": "",
+        "description": ""
+      },
+      "pp1": {
+        "name": "PP1",
+        "prediction": "not_automated",
+        "strength": "pathogenic_supporting",
+        "summary": "",
+        "description": ""
+      },
+      "pp2": {
+        "name": "PP2",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_supporting",
+        "summary": "PP2 is not applicable for the gene.",
+        "description": ""
+      },
+      "pp3": {
+        "name": "PP3",
+        "prediction": "applicable",
+        "strength": "pathogenic_supporting",
+        "summary": "BayesDel_noAF score 0.423173 > 0.28, PP3 met.",
+        "description": ""
+      },
+      "pp4": {
+        "name": "PP4",
+        "prediction": "not_automated",
+        "strength": "pathogenic_supporting",
+        "summary": "",
+        "description": ""
+      },
+      "pp5": {
+        "name": "PP5",
+        "prediction": "depricated",
+        "strength": "pathogenic_supporting",
+        "summary": "",
+        "description": ""
+      },
+      "ba1": {
+        "name": "BA1",
+        "prediction": "failed",
+        "strength": "benign_stand_alone",
+        "summary": "An error occurred while predicting PM2, BA1, BS1, BS2 criteria: No allele frequency found in gnomad data.",
+        "description": ""
+      },
+      "bs1": {
+        "name": "BS1",
+        "prediction": "failed",
+        "strength": "benign_strong",
+        "summary": "An error occurred while predicting PM2, BA1, BS1, BS2 criteria: No allele frequency found in gnomad data.",
+        "description": ""
+      },
+      "bs2": {
+        "name": "BS2",
+        "prediction": "failed",
+        "strength": "benign_strong",
+        "summary": "An error occurred while predicting PM2, BA1, BS1, BS2 criteria: No allele frequency found in gnomad data.",
+        "description": ""
+      },
+      "bs3": {
+        "name": "BS3",
+        "prediction": "not_automated",
+        "strength": "benign_strong",
+        "summary": "",
+        "description": ""
+      },
+      "bs4": {
+        "name": "BS4",
+        "prediction": "not_automated",
+        "strength": "benign_strong",
+        "summary": "",
+        "description": ""
+      },
+      "bp1": {
+        "name": "BP1",
+        "prediction": "not_applicable",
+        "strength": "pathogenic_strong",
+        "summary": "Variant is not synonymous, missense or inframe indel, or in an important domain, or predicted to affect splicing. BP1 is not met.",
+        "description": ""
+      },
+      "bp2": {
+        "name": "BP2",
+        "prediction": "not_automated",
+        "strength": "benign_supporting",
+        "summary": "",
+        "description": ""
+      },
+      "bp3": {
+        "name": "BP3",
+        "prediction": "not_applicable",
+        "strength": "benign_supporting",
+        "summary": "BP3 is not applicable for the ENIGMA VCEP.",
+        "description": ""
+      },
+      "bp4": {
+        "name": "BP4",
+        "prediction": "not_applicable",
+        "strength": "benign_supporting",
+        "summary": "BP4 criteria not met.",
+        "description": ""
+      },
+      "bp5": {
+        "name": "BP5",
+        "prediction": "not_automated",
+        "strength": "benign_supporting",
+        "summary": "",
+        "description": ""
+      },
+      "bp6": {
+        "name": "BP6",
+        "prediction": "depricated",
+        "strength": "benign_supporting",
+        "summary": "",
+        "description": ""
+      },
+      "bp7": {
+        "name": "BP7",
+        "prediction": "not_applicable",
+        "strength": "benign_supporting",
+        "summary": "Variant is not synonymous or not in an important domain, or intronic variant is conserved. BP7 is not met.",
+        "description": ""
+      }
+    }
+  }
+}

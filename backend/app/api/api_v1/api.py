@@ -2,7 +2,7 @@ from typing import Any, Dict, Optional, Tuple
 
 from fastapi import APIRouter
 from httpx_oauth.clients.openid import OpenID
-from httpx_oauth.errors import GetIdEmailError
+from httpx_oauth.exceptions import GetIdEmailError
 
 from app.api.api_v1.endpoints import (
     acmgseqvar,

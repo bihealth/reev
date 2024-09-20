@@ -30,6 +30,7 @@ def acmgseqvar_post_data(obj_names: ObjNames) -> dict[str, Any]:
                     "criteria": "PM4",
                     "presence": "Absent",
                     "evidence": "Pathogenic Moderate",
+                    "summary": None,
                 }
             ],
         },
@@ -558,6 +559,7 @@ def acmgseqvar_update_data(obj_names: ObjNames) -> dict[str, Any]:
                     "criteria": "PM4",
                     "presence": "Present",
                     "evidence": "Pathogenic Moderate",
+                    "summary": "Update",
                 }
             ],
         },

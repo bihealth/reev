@@ -21,6 +21,8 @@ async def reverse_proxy(request: Request) -> Response:
     - Viguno
     - NGINX
     - Dotty
+    - CADA-Prio
+    - AutoACMG
 
     :param request: request
     :type request: :class:`fastapi.Request`
@@ -49,6 +51,10 @@ async def reverse_proxy(request: Request) -> Response:
     elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/cada-prio"):
         backend_url = settings.BACKEND_PREFIX_CADA_PRIO + url.path.replace(
             "/internal/proxy/cada-prio", ""
+        )
+    elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/autoacmg"):
+        backend_url = settings.BACKEND_PREFIX_AUTOACMG + url.path.replace(
+            "/internal/proxy/autoacmg", ""
         )
 
     if backend_url:

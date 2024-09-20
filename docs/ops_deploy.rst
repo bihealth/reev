@@ -53,6 +53,70 @@ Now, we create the directories for data storage.
    mkdir -p .dev/volumes/rabbitmq/data
    mkdir -p .dev/volumes/redis/data
    mkdir -p .dev/volumes/reev-static/data
+   mkdir -p .dev/volumes/seqrepo/local
+   mkdir -p .dev/volumes/seqrepo/master
+
+Next, we have to configure the seqrepo volumes. Now let's setup the seqrepo:
+Ensure these directories exist on your host and are populated with the necessary data:
+
+.. code-block:: bash
+
+    mkdir -p /usr/local/share/seqrepo
+    chown -R root:root /usr/local/share/seqrepo
+
+.. code-block:: bash
+
+    pipenv run seqrepo init -i auto-acmg
+
+.. code-block:: bash
+
+    pipenv run seqrepo fetch-load -i auto-acmg -n RefSeq NC_000001.10 NC_000002.11 NC_000003.11 \
+        NC_000004.11 NC_000005.9 NC_000006.11 NC_000007.13 NC_000008.10 NC_000009.11 NC_000010.10 \
+        NC_000011.9 NC_000012.11 NC_000013.10 NC_000014.8 NC_000015.9 NC_000016.9 NC_000017.10 \
+        NC_000018.9 NC_000019.9 NC_000020.10 NC_000021.8 NC_000022.10 NC_000023.10 NC_000024.9 \
+        NC_012920.1 NC_000001.11 NC_000002.12 NC_000003.12 NC_000004.12 NC_000005.10 NC_000006.12 \
+        NC_000007.14 NC_000008.11 NC_000009.12 NC_000010.11 NC_000011.10 NC_000012.12 NC_000013.11 \
+        NC_000014.9 NC_000015.10 NC_000016.10 NC_000017.11 NC_000018.10 NC_000019.10 NC_000020.11 \
+        NC_000021.9 NC_000022.11 NC_000023.11 NC_000024.10 NC_012920.1
+
+After successful execution, you should have the "general" seqrepo directory at
+``/usr/local/share/seqrepo`` or similar directory. Also you should see the auto-acmg related seqrepo
+directory at ``/home/username/.seqrepo/auto-acmg``, where ``username`` is your username. Note, that
+this path may vary! Now make local copies of both directories to the seqrepo volumes:
+
+.. code-block:: bash
+
+    cp -r /usr/local/share/seqrepo .dev/volumes/seqrepo/local
+    cp -r /home/username/.seqrepo/auto-acmg .dev/volumes/seqrepo/master
+
+If the above doesn't work for you, you can try to download backups from the CUBI SharePoint. The
+backups are located in the folder ``/Documents/Coding and Engineering/AutoACMG``. Then unarchive
+them with the following command:
+
+.. code-block:: bash
+
+    tar -czvf seqrepo_local.tar.gz .dev/volumes/seqrepo/local --strip-components=1
+    tar -czvf seqrepo_master.tar.gz .dev/volumes/seqrepo/master --strip-components=1
+
+Finally, you should have the following directories structures:
+
+.. code-block:: bash
+
+    seqrepo
+    ├── master
+    │   ├── aliases.sqlite3
+    │   ├── sequences
+    │          └── db.sqlite3
+    │          └── 2024
+    │                └── 1224
+    │                └── ....
+
+    └── local
+        ├── master
+            ├── aliases.sqlite3
+            ├── sequences
+                └── db.sqlite3
+
 
 Next, we setup some "secrets" for the passwords.
 
