@@ -17,7 +17,7 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
 
     // assert:
     // Check keys of AcmgCriteriaState.criteriaStates
-    expect(Object.keys(AcmgCriteriaState.criteriaStates).length).toEqual(4)
+    expect(Object.keys(AcmgCriteriaState.criteriaStates).length).toEqual(5)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.Default)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.InterVar)
     expect(AcmgCriteriaState.criteriaStates).toHaveProperty(StateSource.Server)
@@ -57,7 +57,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: 'summary'
     }
 
     // act:
@@ -73,7 +74,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: 'summary'
     }
 
     // act:
@@ -89,7 +91,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Absent,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: 'summary'
     }
 
     // act:
@@ -106,7 +109,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: 'invalid' as AcmgCriteria,
       presence: Presence.Unknown,
-      evidenceLevel: AcmgEvidenceLevel.NotSet
+      evidenceLevel: AcmgEvidenceLevel.NotSet,
+      summary: 'summary'
     }
 
     // act:
@@ -123,7 +127,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Unknown,
-      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong
+      evidenceLevel: AcmgEvidenceLevel.PathogenicVeryStrong,
+      summary: 'summary'
     }
 
     // act:
@@ -140,7 +145,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.NotSet
+      evidenceLevel: AcmgEvidenceLevel.NotSet,
+      summary: 'summary'
     }
 
     // act:
@@ -158,7 +164,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.NotSet
+      evidenceLevel: AcmgEvidenceLevel.NotSet,
+      summary: 'summary'
     }
 
     // act:
@@ -176,7 +183,8 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
     const criteriaState = {
       criteria: AcmgCriteria.PVS1,
       presence: Presence.Present,
-      evidenceLevel: AcmgEvidenceLevel.NotSet
+      evidenceLevel: AcmgEvidenceLevel.NotSet,
+      summary: 'summary'
     }
 
     // act:
@@ -426,7 +434,7 @@ describe.concurrent('MultiSourceAcmgCriteriaState', () => {
 
     // assert:
     // Check keys of AcmgCriteriaState.criteriaStates
-    expect(Object.keys(criteriaStates).length).toEqual(4)
+    expect(Object.keys(criteriaStates).length).toEqual(5)
     expect(criteriaStates).toHaveProperty(StateSource.Default)
     expect(criteriaStates).toHaveProperty(StateSource.InterVar)
     expect(criteriaStates).toHaveProperty(StateSource.Server)

@@ -18,7 +18,8 @@ const mockAcmgRating: AcmgRatingBackend = {
     {
       criteria: 'Pm1',
       presence: 'Present',
-      evidence: 'Pathogenic Moderate'
+      evidence: 'Pathogenic Moderate',
+      summary: 'summary'
     }
   ]
 }
