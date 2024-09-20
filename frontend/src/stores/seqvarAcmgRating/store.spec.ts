@@ -200,6 +200,6 @@ describe('geneInfo Store', () => {
     await store.fetchAcmgRating(structuredClone(seqvarInfo))
 
     // assert2:
-    expect(fetchMocker.mock.calls.length).toBe(2)
+    expect(fetchMocker.mock.calls.length).toBe(3)
   })
 })
