@@ -33,7 +33,13 @@ describe('AutoACMGClient', () => {
     expect(result).toEqual(AUTOACMG_SEQVAR_RESULT['prediction'])
     expect(fetchMocker).toHaveBeenCalledTimes(1)
     expect(fetchMocker).toHaveBeenCalledWith(
-      '/internal/proxy/autoacmg/api/v1/predict/seqvar?variant_name=chr17:41215920:G:T&genome_release=grch37'
+      '/internal/proxy/autoacmg/api/v1/predict/seqvar?variant_name=chr17:41215920:G:T&genome_release=grch37',
+      expect.objectContaining({
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     )
   })
 
