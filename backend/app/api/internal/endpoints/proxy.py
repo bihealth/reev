@@ -52,9 +52,9 @@ async def reverse_proxy(request: Request) -> Response:
         backend_url = settings.BACKEND_PREFIX_CADA_PRIO + url.path.replace(
             "/internal/proxy/cada-prio", ""
         )
-    elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/autoacmg"):
+    elif url.path.startswith(f"{settings.INTERNAL_STR}/proxy/auto-acmg"):
         backend_url = settings.BACKEND_PREFIX_AUTOACMG + url.path.replace(
-            "/internal/proxy/autoacmg", ""
+            "/internal/proxy/auto-acmg", ""
         )
 
     if backend_url:

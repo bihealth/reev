@@ -1,11 +1,11 @@
 import { ConfigError } from '@bihealth/reev-frontend-lib/api/common'
 import { Seqvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
 
-import { API_INTERNAL_BASE_PREFIX } from '../common'
+import { API_INTERNAL_BASE_PREFIX_AUTO_ACMG } from '../common'
 import { AutoACMGSeqVarResult } from './types'
 
 //: URL to the AutoACMG API
-const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX}proxy/autoacmg/api/v1`
+const API_BASE_URL = `${API_INTERNAL_BASE_PREFIX_AUTO_ACMG}/api/v1`
 
 export class AutoACMGClient {
   private apiBaseUrl: string
@@ -36,6 +36,7 @@ export class AutoACMGClient {
   async classifySequenceVariant(seqvar: Seqvar): Promise<AutoACMGSeqVarResult> {
     const seqvarName = `chr${seqvar.chrom}:${seqvar.pos}:${seqvar.del}:${seqvar.ins}`
 
+    console.log('REQUESTING', this.apiBaseUrl)
     const url =
       `${this.apiBaseUrl}/predict/seqvar?variant_name=${seqvarName}` +
       `&genome_release=${seqvar.genomeBuild}`

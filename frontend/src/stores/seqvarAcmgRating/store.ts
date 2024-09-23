@@ -8,8 +8,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 import { AcmgSeqVarClient } from '@/api/acmgSeqvar'
-import { AutoACMGClient } from '@/api/autoacmg'
-import { AutoACMGPrediction, AutoACMGStrength } from '@/api/autoacmg/types'
+import { AutoACMGClient, AutoACMGPrediction, AutoACMGStrength } from '@/api/autoacmg'
 import { InterVarClient } from '@/api/intervar'
 import {
   ALL_ACMG_CRITERIA,
