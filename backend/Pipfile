@@ -32,6 +32,7 @@ asgiref = "*"
 tomli = "*"
 exceptiongroup = "*"
 async-timeout = "*"
+types-pyyaml = "*"
 
 [dev-packages]
 aiosqlite = "*"
