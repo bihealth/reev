@@ -124,3 +124,11 @@ alembic-autogenerate:
 .PHONY: alembic-upgrade
 alembic-upgrade:
 	pipenv run alembic upgrade head
+
+.PHONY: dump-openapi
+dump-openapi:
+	pipenv run python -c "from app.etc.utils import dump_openapi_schema; dump_openapi_schema('openapi.yaml')"
+
+.PHONY: ci-dump-openapi
+ci-dump-openapi:
+	pipenv run python -c "from app.etc.utils import dump_openapi_schema; dump_openapi_schema('ci-openapi.yaml')"
