@@ -65,13 +65,21 @@ serve-public:
 # Build the OpenAPI TypeScript client for AutoACMG.
 .PHONY: openapi-ts-autoacmg
 openapi-ts-autoacmg:
-	rm -rf src/ext/autoacmg/{openapi.yaml,lib}
-	wget -O src/ext/autoacmg/openapi.yaml \
+	rm -rf src/ext/autoacmg-api/src/{openapi.yaml,lib}
+	mkdir -p src/ext/autoacmg-api/src
+	wget -O src/ext/autoacmg-api/openapi.yaml \
 		https://raw.githubusercontent.com/bihealth/auto-acmg/main/openapi.yaml
 	npx @hey-api/openapi-ts --file openapi-ts.config.autoacmg.ts
 
+# Build the OpenAPI TypeScript client for REEV.
+.PHONY: openapi-ts-reev
+openapi-ts-reev:
+	rm -rf src/ext/reev-api/src/{openapi.yaml,lib}
+	mkdir -p src/ext/reev-api/src
+	npx @hey-api/openapi-ts --file openapi-ts.config.ts
+
 .PHONY: openapi-ts
-openapi-ts: openapi-ts-autoacmg
+openapi-ts: openapi-ts-autoacmg openapi-ts-reev
 
 .PHONY: openapi
 openapi: openapi-ts format lint
