@@ -61,3 +61,17 @@ serve:
 .PHONY: serve-public
 serve-public:
 	MODE=development npm run dev-public
+
+# Build the OpenAPI TypeScript client for AutoACMG.
+.PHONY: openapi-ts-autoacmg
+openapi-ts-autoacmg:
+	rm -rf src/ext/autoacmg/{openapi.yaml,lib}
+	wget -O src/ext/autoacmg/openapi.yaml \
+		https://raw.githubusercontent.com/bihealth/auto-acmg/main/openapi.yaml
+	npx @hey-api/openapi-ts --file openapi-ts.config.autoacmg.ts
+
+.PHONY: openapi-ts
+openapi-ts: openapi-ts-autoacmg
+
+.PHONY: openapi
+openapi: openapi-ts format lint
