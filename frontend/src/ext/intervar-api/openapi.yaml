@@ -1,0 +1,173 @@
+components:
+  schemas:
+    VariantResponse:
+      type: object
+      properties:
+        Intervar:
+          type: string
+          example: "Uncertain significance"
+        Build:
+          type: string
+          example: "hg19"
+        Chromosome:
+          type: integer
+          example: 17
+        Position:
+          type: integer
+          example: 41197728
+        Ref_allele:
+          type: string
+          example: "G"
+        Alt_allele:
+          type: string
+          example: "T"
+        Gene:
+          type: string
+          example: "BRCA1"
+        PVS1:
+          type: integer
+          example: 0
+        PS1:
+          type: integer
+          example: 0
+        PS2:
+          type: integer
+          example: 0
+        PS3:
+          type: integer
+          example: 0
+        PS4:
+          type: integer
+          example: 0
+        PM1:
+          type: integer
+          example: 0
+        PM2:
+          type: integer
+          example: 1
+        PM3:
+          type: integer
+          example: 0
+        PM4:
+          type: integer
+          example: 0
+        PM5:
+          type: integer
+          example: 0
+        PM6:
+          type: integer
+          example: 0
+        PP1:
+          type: integer
+          example: 0
+        PP2:
+          type: integer
+          example: 0
+        PP3:
+          type: integer
+          example: 1
+        PP4:
+          type: integer
+          example: 0
+        PP5:
+          type: integer
+          example: 1
+        BA1:
+          type: integer
+          example: 0
+        BP1:
+          type: integer
+          example: 0
+        BP2:
+          type: integer
+          example: 0
+        BP3:
+          type: integer
+          example: 0
+        BP4:
+          type: integer
+          example: 0
+        BP5:
+          type: integer
+          example: 0
+        BP6:
+          type: integer
+          example: 0
+        BP7:
+          type: integer
+          example: 0
+        BS1:
+          type: integer
+          example: 0
+        BS2:
+          type: integer
+          example: 0
+        BS3:
+          type: integer
+          example: 0
+        BS4:
+          type: integer
+          example: 0
+info:
+  title: Intervar API
+  version: 0.1.0
+openapi: 3.1.0
+servers:
+  - url: http://wintervar.wglab.org
+paths:
+  /api_new.php:
+    get:
+      summary: Retrieves genetic variant annotations based on position.
+      operationId: getPosition
+      parameters:
+        - in: query
+          name: queryType
+          description: The type of query being performed, typically 'position'.
+          required: true
+          schema:
+            type: string
+            default: 'position'
+        - in: query
+          name: chr
+          description: Chromosome number.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: pos
+          description: Position on the chromosome.
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: ref
+          description: Reference allele.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: alt
+          description: Alternate allele.
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: build
+          description: Genome build (e.g., hg19, hg38).
+          required: true
+          schema:
+            type: string
+            enum:
+              - hg19
+              - hg38
+      responses:
+        '200':
+          description: Successful response with variant annotations or an empty object.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/VariantResponse'
+                  - type: object
+                    description: Empty response when no data is available or query parameters are incorrect.
+                    properties: {}
