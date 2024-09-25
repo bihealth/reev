@@ -11,7 +11,7 @@
     "test:unit:nocov": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path src/ext/reev-api/src/lib/@tanstack/vue-query.gen.ts --ignore-pattern 'src/ext/reev-frontend-lib/**'",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-pattern 'src/ext/reev-frontend-lib/**'",
     "format": "prettier --write src/ *.ts *.mts *.json",
     "format:check": "prettier --list-different src/ *.ts *.mts *.json"
   },

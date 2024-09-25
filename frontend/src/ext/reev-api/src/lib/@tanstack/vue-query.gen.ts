@@ -620,7 +620,8 @@ export const listSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetInfiniteQue
     createQueryKey("listSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGet", options, true)
 ];
 
-export const listSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetInfiniteOptions = (options?: Options<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetData>) => { return infiniteQueryOptions<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetResponse, ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetError, InfiniteData<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetResponse>, QueryKey<Options<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetData>>, unknown | Pick<QueryKey<Options<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+// Important: the type annotation (:any) is required to avoid a TypeScript error.
+export const listSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetInfiniteOptions: any = (options?: Options<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetData>) => { return infiniteQueryOptions<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetResponse, ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetError, InfiniteData<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetResponse>, QueryKey<Options<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetData>>, unknown | Pick<QueryKey<Options<ListSubmissionthreadsApiV1ClinvarsubSubmissionthreadsGetData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
 // @ts-ignore
 {
     queryFn: async ({ pageParam, queryKey }) => {
@@ -738,7 +739,8 @@ export const listSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissiont
     createQueryKey("listSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGet", options, true)
 ];
 
-export const listSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetInfiniteOptions = (options: Options<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetData>) => { return infiniteQueryOptions<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetResponse, ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetError, InfiniteData<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetResponse>, QueryKey<Options<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetData>>, unknown | Pick<QueryKey<Options<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+// Important: the type annotation (:any) is required to avoid a TypeScript error.
+export const listSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetInfiniteOptions: any = (options: Options<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetData>) => { return infiniteQueryOptions<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetResponse, ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetError, InfiniteData<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetResponse>, QueryKey<Options<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetData>>, unknown | Pick<QueryKey<Options<ListSubmissionactivitiesApiV1ClinvarsubSubmissionthreadsSubmissionthreadIdActivitiesGetData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
 // @ts-ignore
 {
     queryFn: async ({ pageParam, queryKey }) => {
@@ -820,7 +822,8 @@ export const listSubmittingorgsApiV1ClinvarsubSubmittingorgsGetInfiniteQueryKey 
     createQueryKey("listSubmittingorgsApiV1ClinvarsubSubmittingorgsGet", options, true)
 ];
 
-export const listSubmittingorgsApiV1ClinvarsubSubmittingorgsGetInfiniteOptions = (options?: Options<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetData>) => { return infiniteQueryOptions<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetResponse, ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetError, InfiniteData<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetResponse>, QueryKey<Options<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetData>>, unknown | Pick<QueryKey<Options<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+// Important: the type annotation (:any) is required to avoid a TypeScript error.
+export const listSubmittingorgsApiV1ClinvarsubSubmittingorgsGetInfiniteOptions: any = (options?: Options<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetData>) => { return infiniteQueryOptions<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetResponse, ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetError, InfiniteData<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetResponse>, QueryKey<Options<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetData>>, unknown | Pick<QueryKey<Options<ListSubmittingorgsApiV1ClinvarsubSubmittingorgsGetData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
 // @ts-ignore
 {
     queryFn: async ({ pageParam, queryKey }) => {
