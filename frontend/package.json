@@ -11,11 +11,13 @@
     "test:unit:nocov": "vitest",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore --ignore-pattern 'src/ext/reev-frontend-lib/src/pbs/google/protobuf/*'",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-pattern 'src/ext/reev-frontend-lib/**'",
     "format": "prettier --write src/ *.ts *.mts *.json",
     "format:check": "prettier --list-different src/ *.ts *.mts *.json"
   },
   "dependencies": {
+    "@hey-api/client-fetch": "^0.2.4",
+    "@hey-api/openapi-ts": "^0.53.3",
     "@mdi/font": "^7.4.47",
     "@protobuf-ts/runtime": "^2.9.4",
     "@reactgular/chunks": "^1.0.1",
@@ -23,6 +25,8 @@
     "@sentry/integrations": "^7.111.0",
     "@sentry/tracing": "^7.114.0",
     "@sentry/vue": "^7.111.0",
+    "@tanstack/vue-query": "^5.56.2",
+    "@tanstack/vue-query-devtools": "^5.52.2",
     "@types/luxon": "^3.4.2",
     "@vue/eslint-config-standard": "^8.0.1",
     "@vuelidate/core": "^2.0.3",

@@ -61,3 +61,32 @@ serve:
 .PHONY: serve-public
 serve-public:
 	MODE=development npm run dev-public
+
+# Build the OpenAPI TypeScript client for AutoACMG.
+.PHONY: openapi-ts-autoacmg
+openapi-ts-autoacmg:
+	rm -rf src/ext/autoacmg-api/src/{lib}
+	mkdir -p src/ext/autoacmg-api/src
+	wget -O src/ext/autoacmg-api/openapi.yaml \
+		https://raw.githubusercontent.com/bihealth/auto-acmg/main/openapi.yaml
+	npx @hey-api/openapi-ts --file openapi-ts.config.autoacmg.ts
+
+# Build the OpenAPI TypeScript client for InterVar.
+.PHONY: openapi-ts-intervar
+openapi-ts-intervar:
+	rm -rf src/ext/intervar-api/src/{lib}
+	mkdir -p src/ext/intervar-api/src
+	npx @hey-api/openapi-ts --file openapi-ts.config.intervar.ts
+
+# Build the OpenAPI TypeScript client for REEV.
+.PHONY: openapi-ts-reev
+openapi-ts-reev:
+	rm -rf src/ext/reev-api/src/{lib}
+	mkdir -p src/ext/reev-api/src
+	npx @hey-api/openapi-ts --file openapi-ts.config.ts
+
+.PHONY: openapi-ts
+openapi-ts: openapi-ts-autoacmg openapi-ts-intervar openapi-ts-reev
+
+.PHONY: openapi
+openapi: openapi-ts format lint

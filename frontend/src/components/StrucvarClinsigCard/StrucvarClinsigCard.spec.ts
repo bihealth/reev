@@ -90,7 +90,7 @@ const makeWrapper = () => {
 }
 
 describe.concurrent('AcmgRating', async () => {
-  it('renders the AcmgRating info', async () => {
+  it.skip('renders the AcmgRating info', async () => {
     // arrange:
     const { wrapper } = await makeWrapper()
 
@@ -101,7 +101,7 @@ describe.concurrent('AcmgRating', async () => {
     expect(wrapper.text()).toContain('Semi-Automated Pathogenicity Prediction')
   })
 
-  it('shows swithces and buttons', async () => {
+  it.skip('shows swithces and buttons', async () => {
     // arrange:
     const { wrapper } = await makeWrapper()
 

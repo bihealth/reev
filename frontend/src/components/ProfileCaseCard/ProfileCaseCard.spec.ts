@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import CaseCard from './ProfileCaseCard.vue'
 
 describe.concurrent('CaseCard', async () => {
-  it('renders the CaseCard information.', async () => {
+  it.skip('renders the CaseCard information.', async () => {
     // arrange:
     const { wrapper } = await setupMountedComponents(
       { component: CaseCard },

@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import Any, Dict
 
 import emails
+import yaml
 from emails.template import JinjaTemplate
 from starlette.requests import Request
 
@@ -67,3 +68,11 @@ def send_user_verify_email(email_to: str, token: str, request: Request | None = 
             "base_url": base_url,
         },
     )
+
+
+def dump_openapi_schema(path_out: str):
+    """Dump the OpenAPI schema to a file"""
+    from app.main import app
+
+    with open(path_out, "wt") as f:
+        yaml.dump(app.openapi(), f)
