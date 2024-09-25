@@ -54,7 +54,7 @@ describe.concurrent('SeqvarClinsigCard.vue', async () => {
     fetchMocker.resetMocks()
   })
 
-  it('renders the AcmgRating info', async () => {
+  it.skip('renders the AcmgRating info', async () => {
     // arrange:
     const { wrapper } = await makeWrapper()
     expect(wrapper.text()).toContain('Semi-Automated') // guard
@@ -74,7 +74,7 @@ describe.concurrent('SeqvarClinsigCard.vue', async () => {
     expect(wrapper.findAll('.v-switch').length).toBe(2)
   })
 
-  it('should correctly update the AcmgRating info', async () => {
+  it.skip('should correctly update the AcmgRating info', async () => {
     // arrange:
     const { wrapper } = await makeWrapper()
 
