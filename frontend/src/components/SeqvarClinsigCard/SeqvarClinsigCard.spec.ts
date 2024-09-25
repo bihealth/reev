@@ -24,7 +24,7 @@ const seqvarInfo: Seqvar = {
 /** Wrapper around `setupMountedComponents` that perform store setup. */
 const makeWrapper = async () => {
   const acmgRating = new MultiSourceAcmgCriteriaState()
-  acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+  acmgRating.setPresence(StateSource.AutoACMG, AcmgCriteria.PVS1, Presence.Present)
 
   return await setupMountedComponents(
     {

@@ -10,7 +10,7 @@ describe.concurrent('CriterionSwitch.vue', async () => {
   it('renders the AcmgRating info', async () => {
     // arrange:
     const acmgRating = new MultiSourceAcmgCriteriaState()
-    acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+    acmgRating.setPresence(StateSource.AutoACMG, AcmgCriteria.PVS1, Presence.Present)
     const criteria = AcmgCriteria.PVS1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
@@ -41,7 +41,7 @@ describe.concurrent('CriterionSwitch.vue', async () => {
   it('should correctly update the ClinsigCard info', async () => {
     // arrange:
     const acmgRating = new MultiSourceAcmgCriteriaState()
-    acmgRating.setPresence(StateSource.InterVar, AcmgCriteria.PVS1, Presence.Present)
+    acmgRating.setPresence(StateSource.AutoACMG, AcmgCriteria.PVS1, Presence.Present)
     const criteria = AcmgCriteria.PVS1
     const criteriaState = acmgRating.getCriteriaState(criteria)
 
