@@ -73,7 +73,12 @@ export class AutoACMGClient {
       `&genome_release=${seqvar.genomeBuild}`
 
     try {
-      const response = await this.fetchWithRetry(url)
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
