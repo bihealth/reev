@@ -26,6 +26,38 @@ export class AutoACMGClient {
   }
 
   /**
+   * Helper function for long-time requests
+   *
+   * @param url The url to request
+   * @param retries Number of retries
+   * @param delay The delay time
+   * @returns The Promise response
+   */
+  async fetchWithRetry(url: string, retries: number = 10, delay: number = 5000): Promise<Response> {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      if (!response.ok && retries > 0) {
+        console.log(`Retrying... ${retries} retries left`)
+        await new Promise((resolve) => setTimeout(resolve, delay))
+        return this.fetchWithRetry(url, retries - 1, delay)
+      }
+      return response
+    } catch (error) {
+      if (retries > 0) {
+        console.log(`Error occurred, retrying... ${retries} retries left`)
+        await new Promise((resolve) => setTimeout(resolve, delay))
+        return this.fetchWithRetry(url, retries - 1, delay)
+      }
+      throw error
+    }
+  }
+
+  /**
    * Classify sequence variant using AutoACMG.
    *
    * @param seqvar The variant to classify.
@@ -36,21 +68,20 @@ export class AutoACMGClient {
   async classifySequenceVariant(seqvar: Seqvar): Promise<AutoACMGSeqVarResult> {
     const seqvarName = `chr${seqvar.chrom}:${seqvar.pos}:${seqvar.del}:${seqvar.ins}`
 
-    console.log('REQUESTING', this.apiBaseUrl)
     const url =
       `${this.apiBaseUrl}/predict/seqvar?variant_name=${seqvarName}` +
       `&genome_release=${seqvar.genomeBuild}`
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+    try {
+      const response = await this.fetchWithRetry(url)
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const data = await response.json()
+      return data['prediction']
+    } catch (error) {
+      throw new Error('Failed to fetch auto-acmg.')
     }
-    const data = await response.json()
-    return data['prediction']
   }
 }

@@ -56,7 +56,7 @@ describe('AutoACMGClient', () => {
         ins: 'A',
         userRepr: 'GRCh37-17-41245466-G-A'
       })
-    ).rejects.toThrow('HTTP error! status: 404')
+    ).rejects.toThrow('Failed to fetch auto-acmg.')
   })
 
   it('should throw an error for invalid JSON response', async () => {
