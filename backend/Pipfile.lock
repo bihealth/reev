@@ -2474,7 +2474,6 @@
                 "sha256:4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369",
                 "sha256:bc5dd2abb727a5319567b7a813e6a2e7318c39f4f487cfe6c89c6f9c7d25197d"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.7'",
             "version": "==3.1.4"
         },
@@ -3397,12 +3396,12 @@
         },
         "sphinx-autobuild": {
             "hashes": [
-                "sha256:2dd4863d174e533c1cd075eb5dfc90ad9a21734af7efd25569bf228b405e08ef",
-                "sha256:57d974eebfc6461ff0fd136e78bf7a9c057d543d5166d318a45599898019b82c"
+                "sha256:158e16c36f9d633e613c9aaf81c19b0fc458ca78b112533b20dafcda430d60fa",
+                "sha256:248150f8f333e825107b6d4b86113ab28fa51750e5f9ae63b59dc339be951fb1"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==2024.9.19"
+            "version": "==2024.10.3"
         },
         "sphinx-basic-ng": {
             "hashes": [
@@ -3512,11 +3511,11 @@
         },
         "tomli": {
             "hashes": [
-                "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
-                "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
+                "sha256:2ebe24485c53d303f690b0ec092806a085f07af5a5aa1464f3931eec36caaa38",
+                "sha256:d46d457a85337051c36524bc5349dd91b1877838e2979ac5ced3e710ed8a60ed"
             ],
             "markers": "python_version < '3.11'",
-            "version": "==2.0.1"
+            "version": "==2.0.2"
         },
         "tornado": {
             "hashes": [
@@ -3597,12 +3596,11 @@
                 "standard"
             ],
             "hashes": [
-                "sha256:4b15decdda1e72be08209e860a1e10e92439ad5b97cf44cc945fcbee66fc5788",
-                "sha256:65fd46fe3fda5bdc1b03b94eb634923ff18cd35b2f084813ea79d1f103f711b5"
+                "sha256:13bc21373d103859f68fe739608e2eb054a816dea79189bc3ca08ea89a275906",
+                "sha256:cac7be4dd4d891c363cd942160a7b02e69150dcbc7a36be04d5f4af4b17c8ced"
             ],
-            "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==0.30.6"
+            "version": "==0.31.0"
         },
         "watchdog": {
             "hashes": [
