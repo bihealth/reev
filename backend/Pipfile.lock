@@ -530,12 +530,12 @@
         },
         "fastapi-pagination": {
             "hashes": [
-                "sha256:289fde844cb3b4852fffc26192ff18ae3c8b89ce8e9f3323c510863b93296315",
-                "sha256:caa5d8ee7dae786f1d5e23bd93e9892270201dfa7ebc493e6668634cd9e6445d"
+                "sha256:bbfa8af44636f9cda3ec10f59fe370a89a8f10cfa4035a6dc4da86b9f8d06649",
+                "sha256:c18e58c91cf7909490236ded4dae1326c68e286a0831de41ba1be170fb24f182"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8' and python_version < '4.0'",
-            "version": "==0.12.28"
+            "version": "==0.12.29"
         },
         "fastapi-users": {
             "extras": [
@@ -1638,7 +1638,7 @@
                 "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d",
                 "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"
             ],
-            "markers": "python_version < '3.11'",
+            "markers": "python_version >= '3.8'",
             "version": "==4.12.2"
         },
         "tzdata": {
