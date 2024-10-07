@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@hey-api/client-fetch": "^0.4.0",
-    "@hey-api/openapi-ts": "^0.53.3",
+    "@hey-api/openapi-ts": "^0.53.8",
     "@mdi/font": "^7.4.47",
     "@protobuf-ts/runtime": "^2.9.4",
     "@reactgular/chunks": "^1.0.1",
