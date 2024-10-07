@@ -3487,12 +3487,12 @@
         },
         "syrupy": {
             "hashes": [
-                "sha256:be002267a512a4bedddfae2e026c93df1ea928ae10baadc09640516923376d41",
-                "sha256:f9d4485f3f27d0e5df6ed299cac6fa32eb40a441915d988e82be5a4bdda335c8"
+                "sha256:ea45e099f242de1bb53018c238f408a5bb6c82007bc687aefcbeaa0e1c2e935a",
+                "sha256:eae7ba6be5aed190237caa93be288e97ca1eec5ca58760e4818972a10c4acc64"
             ],
             "index": "pypi",
             "markers": "python_full_version >= '3.8.1'",
-            "version": "==4.7.1"
+            "version": "==4.7.2"
         },
         "terminado": {
             "hashes": [
@@ -3512,11 +3512,11 @@
         },
         "tomli": {
             "hashes": [
-                "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
-                "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
+                "sha256:2ebe24485c53d303f690b0ec092806a085f07af5a5aa1464f3931eec36caaa38",
+                "sha256:d46d457a85337051c36524bc5349dd91b1877838e2979ac5ced3e710ed8a60ed"
             ],
             "markers": "python_version < '3.11'",
-            "version": "==2.0.1"
+            "version": "==2.0.2"
         },
         "tornado": {
             "hashes": [
