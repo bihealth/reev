@@ -538,12 +538,12 @@
         },
         "fastapi-pagination": {
             "hashes": [
-                "sha256:224d6dc2671f95f1d5e467e42898809438570cd662e1008c7b6b91889211d780",
-                "sha256:a985d1f1baca1c42e7bfa51e9c7d6433e30bdca2ae236c3f3fc01bd9e62dbda6"
+                "sha256:38e7e72abf252cbebbc1beff9081e4929762756c04959c471b2a5866bb7f0aaf",
+                "sha256:b808b5b8af493c51d96ae0091b60532b25688cbca1350f39cb72f10d4d69a6ab"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8' and python_version < '4.0'",
-            "version": "==0.12.31"
+            "version": "==0.12.32"
         },
         "fastapi-users": {
             "extras": [
