@@ -417,7 +417,8 @@ const SECTIONS: { [key: string]: Section[] } = {
               </v-alert>
 
               <template v-if="!!annonarsGenesInfoQuery.data.value">
-                <!-- <div id="gene-overview">
+                <!--
+                <div id="gene-overview">
                   <GeneOverviewCard :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]" />
                 </div>
                 <div id="gene-pathogenicity" class="mt-3">
@@ -434,8 +435,12 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <div id="gene-expression" class="mt-3">
                   <GeneExpressionCard
                     :gene-symbol="annonarsGenesInfoQuery.data.value?.genes?.[0]?.hgnc?.symbol"
-                    :expression-records="annonarsGenesInfoQuery.data.value?.genes?.[0]?.gtex?.records"
-                    :ensembl-gene-id="annonarsGenesInfoQuery.data.value?.genes?.[0]?.gtex?.ensembl_gene_id"
+                    :expression-records="
+                      annonarsGenesInfoQuery.data.value?.genes?.[0]?.gtex?.records
+                    "
+                    :ensembl-gene-id="
+                      annonarsGenesInfoQuery.data.value?.genes?.[0]?.gtex?.ensembl_gene_id
+                    "
                   />
                 </div>
                 <div
@@ -451,9 +456,11 @@ const SECTIONS: { [key: string]: Section[] } = {
                   />
                 </div>
                 <div id="gene-literature" class="mt-3">
-                  <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
+                  <GeneLiteratureCard
+                    :hgnc-symbol="annonarsGenesInfoQuery.data.value?.genes?.[0]?.hgnc?.symbol"
+                  />
                 </div>
-                 -->
+                -->
               </template>
               <!--
               <div>
@@ -475,34 +482,35 @@ const SECTIONS: { [key: string]: Section[] } = {
                   <SeqvarConsequencesCard :consequences="mehariSeqvarCsqQuery.data.value?.result" />
                 </div>
                 <div id="seqvar-clinvar" class="mt-3">
-                  <SeqvarClinvarCard :clinvar-records="seqvarInfoStore.varAnnos?.clinvar" />
+                  <SeqvarClinvarCard
+                    :clinvar-records="annonarsSeqvarsAnnosQuery.data.value?.result.clinvar"
+                  />
                 </div>
                 <div id="seqvar-scores" class="mt-3">
-                  <SeqvarScoresCard :var-annos="seqvarInfoStore.varAnnos" />
+                  <SeqvarScoresCard :var-annos="annonarsSeqvarsAnnosQuery.data.value?.result" />
                 </div>
                 <div id="seqvar-freqs" class="mt-3">
                   <SeqvarFreqsCard
-                    :seqvar="seqvarInfoStore.seqvar"
-                    :var-annos="seqvarInfoStore.varAnnos"
+                    :seqvar="seqvar"
+                    :var-annos="annonarsSeqvarsAnnosQuery.data.value?.result"
                   />
                 </div>
                 <div id="seqvar-tools" class="mt-3">
                   <SeqvarToolsCard
-                    :seqvar="seqvarInfoStore.seqvar"
-                    :var-annos="seqvarInfoStore.varAnnos"
+                    :seqvar="seqvar"
+                    :var-annos="annonarsSeqvarsAnnosQuery.data.value?.result"
                   />
                 </div>
                 <div id="seqvar-ga4ghbeacons" class="mt-3">
-                  <SeqvarBeaconNetworkCard :seqvar="seqvarInfoStore.seqvar" />
+                  <SeqvarBeaconNetworkCard :seqvar="seqvar" />
                 </div>
                 <div id="seqvar-variantvalidator" class="mt-3">
-                  <SeqvarVariantValidatorCard :seqvar="seqvarInfoStore.seqvar" />
+                  <SeqvarVariantValidatorCard :seqvar="seqvar" />
                 </div>
                 <div id="seqvar-clinvarsub" class="mt-3">
-                  <ClinvarsubCard :seqvar="seqvarInfoStore.seqvar" />
+                  <ClinvarsubCard :seqvar="seqvar" />
                 </div>
-              </div>
-              -->
+              </div> -->
             </v-col>
           </v-row>
           <FooterDefault />
