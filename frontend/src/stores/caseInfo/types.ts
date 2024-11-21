@@ -1,5 +1,5 @@
-import type { HpoTerm } from '@/ext/reev-frontend-lib/src/api/viguno/types'
-import type { OmimTerm } from '@/ext/reev-frontend-lib/src/pbs/annonars/genes/base'
+import type { HpoTerm } from '../../ext/reev-frontend-lib/src/api/viguno/types'
+import type { OmimTerm } from '../../ext/reev-frontend-lib/src/pbs/annonars/genes/base'
 
 /** The storage mode. */
 export enum StorageMode {

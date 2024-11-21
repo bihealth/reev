@@ -1,6 +1,6 @@
 import { urlConfig } from '@bihealth/reev-frontend-lib/lib/urlConfig'
 
-import { annonarsClient, mehariClient, vigunoClient } from './heyApi'
+import { annonarsClient, mehariClient, pubtator3Client, vigunoClient } from './heyApi'
 
 export function setupBackendUrls() {
   urlConfig.baseUrlAnnonars = '/internal/proxy/annonars'
@@ -20,5 +20,8 @@ export function setupBackendUrls() {
   })
   vigunoClient.setConfig({
     baseUrl: urlConfig.baseUrlViguno
+  })
+  pubtator3Client.setConfig({
+    baseUrl: urlConfig.baseUrlPubtator
   })
 }

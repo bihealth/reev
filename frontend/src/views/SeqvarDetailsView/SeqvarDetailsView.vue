@@ -21,6 +21,7 @@ import {
   useAnnonarsGenesInfoQuery
 } from '@bihealth/reev-frontend-lib/queries/annonars/genes'
 import { useAnnonarsSeqvarsAnnosQuery } from '@bihealth/reev-frontend-lib/queries/annonars/seqvars'
+import { useMehariGeneTranscriptsListQuery } from '@bihealth/reev-frontend-lib/queries/mehari/geneTranscripts'
 import { useMehariSeqvarsCsqQuery } from '@bihealth/reev-frontend-lib/queries/mehari/seqvars'
 import { useVigunoHpoGenesQuery } from '@bihealth/reev-frontend-lib/queries/viguno/genes'
 import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
@@ -173,6 +174,11 @@ const annonarsGenesClinvarQuery = useAnnonarsGenesClinvarQuery({
 /** Query for HPO terms via viguno. */
 const vigunoHpoTermsQuery = useVigunoHpoGenesQuery({
   gene_id: hgncId
+})
+/** Query for gene transcripts. */
+const mehariGenesTranscriptsListQuery = useMehariGeneTranscriptsListQuery({
+  genome_build: () => seqvar.value?.genomeBuild,
+  hgnc_id: hgncId
 })
 
 /**
@@ -431,24 +437,23 @@ const SECTIONS: { [key: string]: Section[] } = {
                     :expression-records="annonarsGenesInfoQuery.data.value?.genes?.[0]?.gtex?.records"
                     :ensembl-gene-id="annonarsGenesInfoQuery.data.value?.genes?.[0]?.gtex?.ensembl_gene_id"
                   />
-                </div> -->
+                </div>
                 <div
                   v-if="geneInfoStore.geneClinvar && seqvar?.genomeBuild"
                   id="gene-clinvar"
                   class="mt-3"
                 >
                   <GeneClinvarCard
-                    :clinvar-per-gene="geneInfoStore.geneClinvar"
-                    :transcripts="geneInfoStore.transcripts"
+                    :clinvar-per-gene="annonarsGenesClinvarQuery.data.value.genes?.[0].record"
+                    :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]"
                     :genome-build="seqvar.genomeBuild"
-                    :gene-info="geneInfoStore.geneInfo"
-                    :per-freq-counts="geneInfoStore.geneClinvar?.perFreqCounts"
+                    :transcripts="mehariGenesTranscriptsListQuery.data.value?.transcripts"
                   />
                 </div>
-                <!--
                 <div id="gene-literature" class="mt-3">
                   <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
-                </div> -->
+                </div>
+                 -->
               </template>
               <!--
               <div>
