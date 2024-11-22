@@ -1,10 +1,6 @@
 <!--
 This view displays the details for one structural variant.
 
-As done in all detail views, the component loads the information through
-the stores in a function `loadDataToStore`.  This is called both on
-mounted and when the props change.
-
 A canonical variant description will be given by the `strucvarDesc` prop.
 Optionally, a query parameter `orig` can be given that is the user's
 original input which will be displayed rather than the genome variant.
@@ -14,11 +10,20 @@ may fail in which case the view will display an error.
 -->
 
 <script setup lang="ts">
+import { ClinvarExtractedVariationType, GenesGeneInfoRecord } from '@bihealth/reev-frontend-lib/ext/annonars-api/src/lib'
 import { type GenomeBuild, guessGenomeBuild } from '@bihealth/reev-frontend-lib/lib/genomeBuilds'
 import { type Strucvar } from '@bihealth/reev-frontend-lib/lib/genomicVars'
-import { StoreState } from '@bihealth/reev-frontend-lib/stores'
+import {
+  useAnnonarsGenesClinvarQuery,
+  useAnnonarsGenesInfoQuery,
+} from '@bihealth/reev-frontend-lib/queries/annonars/genes'
+import { useAnnonarsStrucvarsClinvarQuery } from '@bihealth/reev-frontend-lib/queries/annonars/strucvars'
+import { useMehariGeneTranscriptsListQuery } from '@bihealth/reev-frontend-lib/queries/mehari/geneTranscripts'
+import { useMehariStrucvarsCsqQuery } from '@bihealth/reev-frontend-lib/queries/mehari/strucvars'
+import { useVigunoHpoGenesQuery } from '@bihealth/reev-frontend-lib/queries/viguno/genes'
 import { useGeneInfoStore } from '@bihealth/reev-frontend-lib/stores/geneInfo'
 import { useStrucvarInfoStore } from '@bihealth/reev-frontend-lib/stores/strucvarInfo'
+import { VueQueryDevtools } from '@tanstack/vue-query-devtools'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTheme } from 'vuetify'
@@ -100,6 +105,7 @@ const geneInfoStore = useGeneInfoStore()
 /** Currently active case - for HPO terms. */
 const caseStore = useCaseInfoStore()
 
+/** The strucvar to display details for. */
 const strucvar = ref<Strucvar | undefined>(undefined)
 /** Component state; use for opening sections by default. */
 const openedSection = ref<string[]>(['gene', 'strucvar'])
@@ -111,6 +117,53 @@ const errorMessage = ref<string>('')
 const errSnackbarShow = ref<boolean>(false)
 /** Component state; error message for snack bar. */
 const errSnackbarMsg = ref<string>('')
+
+/** Map `Struvar.svType` to `ClinvarExtractedVariationType` */
+const svTypeMap: { [key in Strucvar['svType']]: ClinvarExtractedVariationType[] } = {
+  DEL: ['deletion', 'copy_number_loss'],
+  DUP: ['duplication', 'copy_number_gain'],
+  INS: ['insertion'],
+  INV: ['inversion'],
+  BND: ['structural_variant', 'other']
+}
+/** Strucvar annotations from Annonars. */
+const annonarsStrucvarsClinvarQuery = useAnnonarsStrucvarsClinvarQuery({
+  genome_release: () => strucvar.value?.genomeBuild,
+  chromosome: () => strucvar.value?.chrom,
+  start: () => strucvar.value?.start,
+  stop: () => (!!strucvar.value && 'stop' in strucvar.value ? strucvar.value?.stop : undefined),
+  variation_types: () => (!!strucvar.value?.svType ? svTypeMap[strucvar.value?.svType] : undefined)
+})
+/** Query for consequences via Mehari. */
+const mehariStrucvarsCsqQuery = useMehariStrucvarsCsqQuery({
+  genome_release: () => strucvar.value?.genomeBuild,
+  chromosome: () => strucvar.value?.chrom,
+  start: () => strucvar.value?.start,
+  stop: () => (!!strucvar.value && 'stop' in strucvar.value ? strucvar.value?.stop : undefined),
+  sv_type: () => strucvar.value?.svType
+})
+/** HGNC IDs of the genes affected by the strucvar. */
+const hgncIds = computed(() => {
+  return mehariStrucvarsCsqQuery.data.value?.result?.map((result) => result.hgnc_id) ?? []
+})
+/** Queries for annonars general gene information. */
+const annonarsGenesInfoQuery = useAnnonarsGenesInfoQuery({
+  hgnc_ids: hgncIds
+})
+/** Queries for annonars ClinVar gene information. */
+const annonarsGenesClinvarQuery = useAnnonarsGenesClinvarQuery({
+  hgnc_ids: hgncIds
+})
+/** Query for HPO terms via viguno. */
+const vigunoHpoTermsQuery = useVigunoHpoGenesQuery({
+  gene_id: selectedGeneHgncId,
+  hpo_terms: true
+})
+/** Query for gene transcripts. */
+const mehariGenesTranscriptsListQuery = useMehariGeneTranscriptsListQuery({
+  genome_build: () => strucvar.value?.genomeBuild,
+  hgnc_id: selectedGeneHgncId
+})
 
 /**
  * Handler for `@display-error` event.
@@ -129,20 +182,18 @@ const mainBackgroundColor = computed(() => {
 const orig = computed<string | undefined>(() => (route.query.orig as string) || undefined)
 /** The variant identifier for the bookmark. */
 const idForBookmark = computed<string | undefined>(() => {
-  const strucvar = strucvarInfoStore.strucvar
-  if (strucvar) {
-    // Handle the case of InsertionStrucvar
-    const stop = 'stop' in strucvar ? strucvar.stop : strucvar.start
-    return `${strucvar.svType}-${strucvar.genomeBuild}-${strucvar.chrom}-${strucvar.start}-${stop}`
+  const strucvar$ = strucvar.value
+  if (strucvar$) {
+    // Handle the case of Insertion
+    const stop = 'stop' in strucvar$ ? strucvar$.stop : strucvar$.start
+    return `${strucvar$.svType}-${strucvar$.genomeBuild}-${strucvar$.chrom}-${strucvar$.start}-${stop}`
   } else {
     return undefined
   }
 })
 /** Selected gene information. */
-const selectedGeneInfo = computed<any | undefined>(() => {
-  return (strucvarInfoStore.genesInfos || []).find((geneInfo) => {
-    return geneInfo.hgnc?.hgncId === selectedGeneHgncId.value
-  })
+const selectedGeneInfo = computed<GenesGeneInfoRecord | undefined>(() => {
+  return annonarsGenesInfoQuery.data.value?.genes?.find((gene) => gene.hgnc?.hgnc_id === selectedGeneHgncId.value)
 })
 
 /**
@@ -296,193 +347,200 @@ const SECTIONS: { [key: string]: Section[] } = {
 </script>
 
 <template>
-  <v-app>
-    <PageHeader />
-    <v-main :class="mainBackgroundColor">
-      <v-container fluid>
-        <v-row>
-          <v-col cols="2">
-            <div
-              v-if="strucvarInfoStore.storeState == StoreState.Active"
-              style="position: sticky; top: 20px"
-            >
-              <v-list v-model:opened="openedSection" density="compact" rounded="lg">
-                <BookmarkListItem :id="idForBookmark" type="strucvar" />
-
-                <!-- Jump to IGV -->
-                <v-btn
-                  variant="outlined"
-                  color=""
-                  class="ma-2"
-                  prepend-icon="mdi-launch"
-                  @click.prevent="jumpToLocus()"
-                >
-                  Jump in Local IGV
-                </v-btn>
-
-                <v-list-item
-                  v-for="section in SECTIONS.TOP"
-                  :id="`${section.id}-nav`"
-                  :key="section.id"
-                  density="compact"
-                  prepend-icon="mdi-table-filter"
-                  @click="router.push({ hash: `#${section.id}` })"
-                >
-                  <v-list-item-title class="text-no-break">
-                    {{ section.title }}
-                  </v-list-item-title>
-                </v-list-item>
-
-                <v-list-group value="gene">
-                  <template #activator="{ props: vProps }">
-                    <v-list-item
-                      :value="vProps"
-                      prepend-icon="mdi-dna"
-                      v-bind="vProps"
-                      class="text-no-break"
-                    >
-                      Gene
-                      <span class="font-italic">
-                        {{ selectedGeneInfo?.hgnc?.symbol || selectedGeneInfo?.hgnc?.agr }}
-                      </span>
-                    </v-list-item>
-                  </template>
-
-                  <v-list-item
-                    v-for="section in SECTIONS.GENE"
-                    :id="`${section.id}-nav`"
-                    :key="section.id"
-                    density="compact"
-                    @click="router.push({ hash: `#${section.id}` })"
-                  >
-                    <v-list-item-title class="text-no-break">
-                      {{ section.title }}
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list-group>
-
-                <v-list-group value="strucvar">
-                  <template #activator="{ props: vProps }">
-                    <v-list-item :value="vProps" prepend-icon="mdi-magnify-expand" v-bind="vProps">
-                      <v-list-item-title class="text-no-break"> Variant Details </v-list-item-title>
-                    </v-list-item>
-                  </template>
-
-                  <v-list-item
-                    v-for="section in SECTIONS.STRUCVAR"
-                    :id="`${section.id}-nav`"
-                    :key="section.id"
-                    density="compact"
-                    @click="router.push({ hash: `#${section.id}` })"
-                  >
-                    <v-list-item-title class="text-no-break">
-                      {{ section.title }}
-                    </v-list-item-title>
-                  </v-list-item>
-                </v-list-group>
-              </v-list>
-            </div>
-          </v-col>
-
-          <v-col cols="10">
-            <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
-              <div>
-                {{ errorMessage }}
-              </div>
-              <v-btn
-                :to="{ name: 'home' }"
-                prepend-icon="mdi-arrow-left-circle-outline"
-                class="mt-3"
-                variant="outlined"
-                color="white"
+  <div>
+    <v-app>
+      <PageHeader />
+      <v-main :class="mainBackgroundColor">
+        <v-container fluid>
+          <v-row>
+            <v-col cols="2">
+              <div
+                v-if="mehariStrucvarsCsqQuery.data.value?.result?.length ?? 0"
+                style="position: sticky; top: 20px"
               >
-                Back to home
-              </v-btn>
-            </v-alert>
+                <v-list v-model:opened="openedSection" density="compact" rounded="lg">
+                  <BookmarkListItem :id="idForBookmark" type="strucvar" />
 
-            <div id="gene-list">
-              <StrucvarGeneListCard
-                v-model:selected-gene-hgnc-id="selectedGeneHgncId"
-                :current-strucvar-record="strucvarInfoStore.strucvar"
-                :csq="strucvarInfoStore.csq"
-                :genes-infos="strucvarInfoStore.genesInfos"
-                :store-state="strucvarInfoStore.storeState"
-              />
-            </div>
+                  <!-- Jump to IGV -->
+                  <v-btn
+                    variant="outlined"
+                    color=""
+                    class="ma-2"
+                    prepend-icon="mdi-launch"
+                    @click.prevent="jumpToLocus()"
+                  >
+                    Jump in Local IGV
+                  </v-btn>
 
-            <template v-if="selectedGeneInfo">
-              <div id="gene-overview" class="mt-3">
-                <GeneOverviewCard :gene-info="selectedGeneInfo" />
+                  <v-list-item
+                    v-for="section in SECTIONS.TOP"
+                    :id="`${section.id}-nav`"
+                    :key="section.id"
+                    density="compact"
+                    prepend-icon="mdi-table-filter"
+                    @click="router.push({ hash: `#${section.id}` })"
+                  >
+                    <v-list-item-title class="text-no-break">
+                      {{ section.title }}
+                    </v-list-item-title>
+                  </v-list-item>
+
+                  <v-list-group value="gene">
+                    <template #activator="{ props: vProps }">
+                      <v-list-item
+                        :value="vProps"
+                        prepend-icon="mdi-dna"
+                        v-bind="vProps"
+                        class="text-no-break"
+                      >
+                        Gene
+                        <span class="font-italic">
+                          {{ selectedGeneInfo?.hgnc?.symbol ?? selectedGeneInfo?.hgnc?.agr }}
+                        </span>
+                      </v-list-item>
+                    </template>
+
+                    <v-list-item
+                      v-for="section in SECTIONS.GENE"
+                      :id="`${section.id}-nav`"
+                      :key="section.id"
+                      density="compact"
+                      @click="router.push({ hash: `#${section.id}` })"
+                    >
+                      <v-list-item-title class="text-no-break">
+                        {{ section.title }}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list-group>
+
+                  <v-list-group value="strucvar">
+                    <template #activator="{ props: vProps }">
+                      <v-list-item
+                        :value="vProps"
+                        prepend-icon="mdi-magnify-expand"
+                        v-bind="vProps"
+                      >
+                        <v-list-item-title class="text-no-break">
+                          Variant Details
+                        </v-list-item-title>
+                      </v-list-item>
+                    </template>
+
+                    <v-list-item
+                      v-for="section in SECTIONS.STRUCVAR"
+                      :id="`${section.id}-nav`"
+                      :key="section.id"
+                      density="compact"
+                      @click="router.push({ hash: `#${section.id}` })"
+                    >
+                      <v-list-item-title class="text-no-break">
+                        {{ section.title }}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </v-list-group>
+                </v-list>
               </div>
-              <div id="gene-pathogenicity" class="mt-3">
-                <GenePathogenicityCard :gene-info="selectedGeneInfo" />
-              </div>
-              <div id="gene-conditions" class="mt-3">
-                <GeneConditionsCard :gene-info="selectedGeneInfo">
-                  <CadaRanking :hgnc-id="geneInfoStore.geneInfo?.hgnc!.hgncId" />
-                </GeneConditionsCard>
-              </div>
-              <div id="gene-expression" class="mt-3">
-                <GeneExpressionCard
-                  :gene-symbol="selectedGeneInfo?.hgnc?.symbol"
-                  :expression-records="selectedGeneInfo?.gtex?.records"
-                  :ensembl-gene-id="selectedGeneInfo?.gtex?.ensemblGeneId"
+            </v-col>
+
+            <v-col cols="10">
+              <v-alert v-if="errorMessage?.length" type="warning" class="mb-6">
+                <div>
+                  {{ errorMessage }}
+                </div>
+                <v-btn
+                  :to="{ name: 'home' }"
+                  prepend-icon="mdi-arrow-left-circle-outline"
+                  class="mt-3"
+                  variant="outlined"
+                  color="white"
+                >
+                  Back to home
+                </v-btn>
+              </v-alert>
+
+              <div id="gene-list">
+                <StrucvarGeneListCard
+                  v-model:selected-gene-hgnc-id="selectedGeneHgncId"
+                  :current-strucvar-record="strucvar"
+                  :csq="mehariStrucvarsCsqQuery.data.value?.result"
+                  :genes-infos="annonarsGenesInfoQuery.data.value?.genes"
                 />
               </div>
-              <div v-if="geneInfoStore?.geneClinvar" id="gene-clinvar" class="mt-3">
-                <GeneClinvarCard
-                  :clinvar-per-gene="geneInfoStore.geneClinvar"
-                  :transcripts="geneInfoStore.transcripts"
-                  :genome-build="strucvarInfoStore.strucvar?.genomeBuild"
-                  :gene-info="geneInfoStore.geneInfo"
-                  :per-freq-counts="geneInfoStore?.geneClinvar?.perFreqCounts"
-                />
-              </div>
-              <div id="gene-literature" class="mt-3">
-                <GeneLiteratureCard :gene-info="geneInfoStore.geneInfo" />
-              </div>
-            </template>
 
-            <div>
-              <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
+              <template v-if="selectedGeneInfo">
+                <div id="gene-overview" class="mt-3">
+                  <GeneOverviewCard :gene-info="selectedGeneInfo" />
+                </div>
+                <div id="gene-pathogenicity" class="mt-3">
+                  <GenePathogenicityCard :gene-info="selectedGeneInfo" />
+                </div>
+                <div id="gene-conditions" class="mt-3">
+                  <GeneConditionsCard :gene-info="selectedGeneInfo">
+                    <CadaRanking :hgnc-id="selectedGeneHgncId" />
+                  </GeneConditionsCard>
+                </div>
+                <div id="gene-expression" class="mt-3">
+                  <GeneExpressionCard
+                    :gene-symbol="selectedGeneInfo?.hgnc?.symbol"
+                    :expression-records="selectedGeneInfo?.gtex?.records"
+                    :ensembl-gene-id="selectedGeneInfo?.gtex?.ensembl_gene_id"
+                  />
+                </div>
+                <div v-if="annonarsGenesClinvarQuery.data.value" id="gene-clinvar" class="mt-3">
+                  <GeneClinvarCard
+                    :clinvar-per-gene="annonarsGenesClinvarQuery.data.value?.genes?.[0].record"
+                    :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]"
+                    :genome-build="strucvar?.genomeBuild"
+                    :transcripts="mehariGenesTranscriptsListQuery.data.value?.transcripts"
+                  />
+                </div>
+                <div id="gene-literature" class="mt-3">
+                  <GeneLiteratureCard :gene-info="selectedGeneInfo" />
+                </div>
+              </template>
 
-              <div id="strucvar-clinvar">
-                <StrucvarClinvarCard
-                  :strucvar="strucvar"
-                  :clinvar-sv-records="strucvarInfoStore.clinvarSvRecords"
-                />
-              </div>
-              <div id="strucvar-tools">
-                <StrucvarToolsCard :strucvar="strucvar" />
-              </div>
-              <div id="strucvar-clinsig">
-                <ClinsigCard :strucvar="strucvar" @error-display="handleDisplayError" />
-              </div>
-              <div id="seqvar-clinvarsub" class="mt-3">
-                <ClinvarsubCard :strucvar="strucvarInfoStore.strucvar" />
-              </div>
-              <div id="strucvar-genomebrowser">
-                <GenomeBrowserCard
-                  :genome-build="strucvar?.genomeBuild"
-                  :locus="svLocus(strucvar) as string"
-                />
-              </div>
-            </div>
-          </v-col>
-        </v-row>
-        <FooterDefault />
-      </v-container>
+              <div>
+                <div class="text-h4 mt-6 mb-3 ml-1">Variant Details</div>
 
-      <!-- VSnackbar for displaying errors -->
-      <v-snackbar v-model="errSnackbarShow" multi-line>
-        {{ errSnackbarMsg }}
+                <div id="strucvar-clinvar">
+                  <StrucvarClinvarCard
+                    :strucvar="strucvar"
+                    :clinvar-sv-records="annonarsStrucvarsClinvarQuery.data.value?.records"
+                  />
+                </div>
+                <div id="strucvar-tools">
+                  <StrucvarToolsCard :strucvar="strucvar" />
+                </div>
+                <div id="strucvar-clinsig">
+                  <ClinsigCard :strucvar="strucvar" @error-display="handleDisplayError" />
+                </div>
+                <div id="seqvar-clinvarsub" class="mt-3">
+                  <ClinvarsubCard :strucvar="strucvar" />
+                </div>
+                <div id="strucvar-genomebrowser">
+                  <GenomeBrowserCard
+                    :genome-build="strucvar?.genomeBuild"
+                    :locus="svLocus(strucvar) as string"
+                  />
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <FooterDefault />
+        </v-container>
 
-        <template #actions>
-          <v-btn color="red" variant="text" @click="errSnackbarShow = false"> Close </v-btn>
-        </template>
-      </v-snackbar>
-    </v-main>
-  </v-app>
+        <!-- VSnackbar for displaying errors -->
+        <v-snackbar v-model="errSnackbarShow" multi-line>
+          {{ errSnackbarMsg }}
+
+          <template #actions>
+            <v-btn color="red" variant="text" @click="errSnackbarShow = false"> Close </v-btn>
+          </template>
+        </v-snackbar>
+      </v-main>
+    </v-app>
+    <VueQueryDevtools />
+  </div>
 </template>
 
 <style scoped></style>

@@ -1,17 +1,12 @@
 <!--
 View that displays the details for a single gene.
 
-As done in all detail views, the component loads the information through
-the stores in a function `loadDataToStore`.  This is called both on
-mounted and when the props change.
-
 This view will attempt to obtain the genome build from the query string,
 falling back to 'grch37'.  In case that the genome build value is not
 valid, an error message is displayed.
 
 Note that the HGNC symbol is pushed into the component by  the router.
-The backend uses HGNC IDs, however.  The `geneInfo` store will take care
-of this resolution.
+The backend uses HGNC IDs, however.
 -->
 
 <script setup lang="ts">
@@ -91,17 +86,22 @@ const annonarsGenesLookupQueryParam = computed(() => [hgncSymbol])
 const annonarsGenesLookupQuery = useAnnonarsGenesLookupQuery({
   query: annonarsGenesLookupQueryParam
 })
-/** Gene's HGNC ID as `ComputedRef` for queries. */
-const hgncId = computed<string | undefined>(
-  () => annonarsGenesLookupQuery.data.value?.genes?.[0]?.gene_names?.hgnc_id
+/** Gene's HGNC ID as `ComputedRef` for queries (as array for some API). */
+const hgncIds = computed<string[] | undefined>(
+  () => {
+    const result = annonarsGenesLookupQuery.data.value?.genes?.[0]?.gene_names?.hgnc_id
+    return !!result ? [result] : undefined
+  }
 )
+/** Gene's HGNC ID as `ComputedRef` for queries. */
+const hgncId = computed<string | undefined>(() => hgncIds.value?.[0])
 /** Query for annonars general gene information. */
 const annonarsGenesInfoQuery = useAnnonarsGenesInfoQuery({
-  hgnc_id: hgncId
+  hgnc_ids: hgncIds
 })
 /** Query for annonars ClinVar gene information. */
 const annonarsGenesClinvarQuery = useAnnonarsGenesClinvarQuery({
-  hgnc_id: hgncId
+  hgnc_ids: hgncIds
 })
 /** Query for HPO terms via viguno. */
 const vigunoHpoTermsQuery = useVigunoHpoGenesQuery({
@@ -151,7 +151,7 @@ const SECTIONS: Section[] = [
         <v-container fluid>
           <v-row>
             <v-col cols="2">
-              <div v-if="!!hgncId" style="position: sticky; top: 20px">
+              <div v-if="!!hgncIds" style="position: sticky; top: 20px">
                 <v-list v-model:opened="openedSection" rounded="lg">
                   <BookmarkListItem :id="hgncId ?? ''" :type="'gene'" />
 
@@ -229,7 +229,7 @@ const SECTIONS: Section[] = [
 
               <div v-if="annonarsGenesClinvarQuery.data.value" id="gene-clinvar" class="mt-3">
                 <GeneClinvarCard
-                  :clinvar-per-gene="annonarsGenesClinvarQuery.data.value?.genes?.[0].record"
+                  :clinvar-per-gene="annonarsGenesClinvarQuery.data.value?.genes?.[0]?.record"
                   :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]"
                   :genome-build="resolvedGenomeBuild.genomeBuild"
                   :transcripts="mehariGenesTranscriptsListQuery.data.value?.transcripts"

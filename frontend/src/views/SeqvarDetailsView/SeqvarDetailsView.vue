@@ -1,10 +1,6 @@
 <!--
 This view displays the details for one sequence variants.
 
-As done in all detail views, the component loads the information through
-the stores in a function `loadDataToStore`.  This is called both on
-mounted and when the props change.
-
 A canonical variant description will be given by the `seqvarDesc` prop.
 Optionally, a query parameter `orig` can be given that is the user's
 original input which will be displayed rather than the genome variant.
@@ -160,16 +156,23 @@ const seqvarQueryParams = {
 /** Sequence variant annotations from Annonars. */
 const annonarsSeqvarsAnnosQuery = useAnnonarsSeqvarsAnnosQuery(seqvarQueryParams)
 /** Query for consequences via Mehari. */
-const mehariSeqvarCsqQuery = useMehariSeqvarsCsqQuery({ ...seqvarQueryParams, hgnc_id: undefined })
-/** HGNC ID as `ComputedRef` */
-const hgncId = computed(() => mehariSeqvarCsqQuery.data.value?.result?.[0]?.gene_id)
+const mehariSeqvarsCsqQuery = useMehariSeqvarsCsqQuery({ ...seqvarQueryParams, hgnc_id: undefined })
+/** Gene's HGNC ID as `ComputedRef` for queries (as array for some API). */
+const hgncIds = computed<string[] | undefined>(
+  () => {
+    const result = mehariSeqvarsCsqQuery.data.value?.result?.[0]?.gene_id
+    return !!result ? [result] : undefined
+  }
+)
+/** Gene's HGNC ID as `ComputedRef` for queries. */
+const hgncId = computed<string | undefined>(() => hgncIds.value?.[0])
 /** Query for annonars general gene information. */
 const annonarsGenesInfoQuery = useAnnonarsGenesInfoQuery({
-  hgnc_id: hgncId
+  hgnc_ids: hgncIds
 })
 /** Query for annonars ClinVar gene information. */
 const annonarsGenesClinvarQuery = useAnnonarsGenesClinvarQuery({
-  hgnc_id: hgncId
+  hgnc_ids: hgncIds
 })
 /** Query for HPO terms via viguno. */
 const vigunoHpoTermsQuery = useVigunoHpoGenesQuery({
@@ -319,7 +322,7 @@ const SECTIONS: { [key: string]: Section[] } = {
           <v-row>
             <v-col cols="2">
               <div
-                v-if="mehariSeqvarCsqQuery.data.value?.result?.length ?? 0"
+                v-if="mehariSeqvarsCsqQuery.data.value?.result?.length ?? 0"
                 style="position: sticky; top: 20px"
               >
                 <v-list v-model:opened="openedSection" density="compact" rounded="lg">
@@ -335,7 +338,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                     Jump in Local IGV
                   </v-btn>
 
-                  <template v-if="mehariSeqvarCsqQuery.data.value?.result?.[0]?.gene_id?.length">
+                  <template v-if="mehariSeqvarsCsqQuery.data.value?.result?.[0]?.gene_id?.length">
                     <v-list-group value="gene">
                       <template #activator="{ props: vProps }">
                         <v-list-item
@@ -423,7 +426,9 @@ const SECTIONS: { [key: string]: Section[] } = {
                 </div>
                 <div id="gene-pathogenicity" class="mt-3">
                   <GenePathogenicityCard :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]">
-                    <CadaRanking :hgnc-id="mehariSeqvarCsqQuery.data.value?.result?.[0]?.gene_id" />
+                    <CadaRanking
+                      :hgnc-id="mehariSeqvarsCsqQuery.data.value?.result?.[0]?.gene_id"
+                    />
                   </GenePathogenicityCard>
                 </div>
                 <div id="gene-conditions" class="mt-3">
@@ -477,7 +482,9 @@ const SECTIONS: { [key: string]: Section[] } = {
                   />
                 </div>
                 <div id="seqvar-csq" class="mt-3">
-                  <SeqvarConsequencesCard :consequences="mehariSeqvarCsqQuery.data.value?.result" />
+                  <SeqvarConsequencesCard
+                    :consequences="mehariSeqvarsCsqQuery.data.value?.result"
+                  />
                 </div>
                 <div id="seqvar-clinvar" class="mt-3">
                   <SeqvarClinvarCard
