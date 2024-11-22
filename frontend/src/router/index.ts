@@ -31,6 +31,7 @@ const routes = [
     component: GeneDetailView,
     props: (route: any) => {
       return {
+        genomeBuild: route.query.genomeBuild,
         hgncSymbol: route.params.gene
       }
     }

@@ -173,7 +173,8 @@ const annonarsGenesClinvarQuery = useAnnonarsGenesClinvarQuery({
 })
 /** Query for HPO terms via viguno. */
 const vigunoHpoTermsQuery = useVigunoHpoGenesQuery({
-  gene_id: hgncId
+  gene_id: hgncId,
+  hpo_terms: true
 })
 /** Query for gene transcripts. */
 const mehariGenesTranscriptsListQuery = useMehariGeneTranscriptsListQuery({
@@ -417,7 +418,6 @@ const SECTIONS: { [key: string]: Section[] } = {
               </v-alert>
 
               <template v-if="!!annonarsGenesInfoQuery.data.value">
-                <!--
                 <div id="gene-overview">
                   <GeneOverviewCard :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]" />
                 </div>
@@ -429,7 +429,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <div id="gene-conditions" class="mt-3">
                   <GeneConditionsCard
                     :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]"
-                    :hpo-terms="vigunoHpoTermsQuery.data.value?.hpo_terms"
+                    :hpo-terms="vigunoHpoTermsQuery.data.value?.result?.[0]?.hpo_terms ?? undefined"
                   />
                 </div>
                 <div id="gene-expression" class="mt-3">
@@ -449,7 +449,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                   class="mt-3"
                 >
                   <GeneClinvarCard
-                    :clinvar-per-gene="annonarsGenesClinvarQuery.data.value.genes?.[0].record"
+                    :clinvar-per-gene="annonarsGenesClinvarQuery.data.value?.genes?.[0].record"
                     :gene-info="annonarsGenesInfoQuery.data.value?.genes?.[0]"
                     :genome-build="seqvar.genomeBuild"
                     :transcripts="mehariGenesTranscriptsListQuery.data.value?.transcripts"
@@ -460,9 +460,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                     :hgnc-symbol="annonarsGenesInfoQuery.data.value?.genes?.[0]?.hgnc?.symbol"
                   />
                 </div>
-                -->
               </template>
-              <!--
               <div>
                 <div class="text-h4 mt-6 mb-3 ml-1">
                   Variant Details
@@ -483,7 +481,9 @@ const SECTIONS: { [key: string]: Section[] } = {
                 </div>
                 <div id="seqvar-clinvar" class="mt-3">
                   <SeqvarClinvarCard
-                    :clinvar-records="annonarsSeqvarsAnnosQuery.data.value?.result.clinvar"
+                    :clinvar-records="
+                      annonarsSeqvarsAnnosQuery.data.value?.result.clinvar ?? undefined
+                    "
                   />
                 </div>
                 <div id="seqvar-scores" class="mt-3">
@@ -510,7 +510,7 @@ const SECTIONS: { [key: string]: Section[] } = {
                 <div id="seqvar-clinvarsub" class="mt-3">
                   <ClinvarsubCard :seqvar="seqvar" />
                 </div>
-              </div> -->
+              </div>
             </v-col>
           </v-row>
           <FooterDefault />
