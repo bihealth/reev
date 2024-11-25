@@ -3492,12 +3492,12 @@
         },
         "starlette": {
             "hashes": [
-                "sha256:9834fd799d1a87fd346deb76158668cfa0b0d56f85caefe8268e2d97c3468b62",
-                "sha256:fbc189474b4731cf30fcef52f18a8d070e3f3b46c6a04c97579e85e6ffca942d"
+                "sha256:0e4ab3d16522a255be6b28260b938eae2482f98ce5cc934cb08dce8dc3ba5835",
+                "sha256:44cedb2b7c77a9de33a8b74b2b90e9f50d11fcf25d8270ea525ad71a25374ff7"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==0.41.2"
+            "version": "==0.41.3"
         },
         "syrupy": {
             "hashes": [
