@@ -2461,11 +2461,11 @@
         },
         "httpx": {
             "hashes": [
-                "sha256:7bb2708e112d8fdd7829cd4243970f0c223274051cb35ee80c03301ee29a3df0",
-                "sha256:f7c2be1d2f3c3c3160d441802406b206c2b76f5947b11115e6df10c6c65e66c2"
+                "sha256:0858d3bab51ba7e386637f22a61d8ccddaeec5f3fe4209da3a6168dbb91573e0",
+                "sha256:dc0b419a0cfeb6e8b34e85167c0da2671206f5095f1baa9663d23bcfd6b535fc"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==0.27.2"
+            "version": "==0.28.0"
         },
         "idna": {
             "hashes": [
@@ -3041,12 +3041,12 @@
         },
         "pytest-httpx": {
             "hashes": [
-                "sha256:3ca4b0975c0f93b985f17df19e76430c1086b5b0cce32b1af082d8901296a735",
-                "sha256:42cf0a66f7b71b9111db2897e8b38a903abd33a27b11c48aff4a3c7650313af2"
+                "sha256:d619ad5d2e67734abfbb224c3d9025d64795d4b8711116b1a13f72a251ae511f",
+                "sha256:ee11a00ffcea94a5cbff47af2114d34c5b231c326902458deed73f9c459fd744"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==0.34.0"
+            "version": "==0.35.0"
         },
         "pytest-mock": {
             "hashes": [
