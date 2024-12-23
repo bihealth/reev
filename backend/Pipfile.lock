@@ -224,11 +224,11 @@
         },
         "certifi": {
             "hashes": [
-                "sha256:922820b53db7a7257ffbda3f597266d435245903d80737e34f8a45ff3e3230d8",
-                "sha256:bec941d2aa8195e248a60b31ff9f0558284cf01a52591ceda73ea9afffd69fd9"
+                "sha256:1275f7a45be9464efc1173084eaa30f866fe2e47d389406136d332ed4967ec56",
+                "sha256:b650d30f370c2b724812bee08008be0c4163b163ddaec3f2546c1caf65f191db"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2024.8.30"
+            "version": "==2024.12.14"
         },
         "cffi": {
             "hashes": [
@@ -664,21 +664,21 @@
         },
         "httpx": {
             "hashes": [
-                "sha256:7bb2708e112d8fdd7829cd4243970f0c223274051cb35ee80c03301ee29a3df0",
-                "sha256:f7c2be1d2f3c3c3160d441802406b206c2b76f5947b11115e6df10c6c65e66c2"
+                "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc",
+                "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.8'",
-            "version": "==0.27.2"
+            "version": "==0.28.1"
         },
         "httpx-oauth": {
             "hashes": [
-                "sha256:4394a5e60cb66fd6e14031d41be8e4060580c553422a641b624ade0f33d0df04",
-                "sha256:5ce4696e4c9572711fb558808f7436afd7712db825c56b0f4f430e16c649f136"
+                "sha256:2fcad82f80f28d0473a0fc4b4eda223dc952050af7e3a8c8781342d850f09fb5",
+                "sha256:7402f061f860abc092ea4f5c90acfc576a40bbb79633c1d2920f1ca282c296ee"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==0.16.0"
+            "version": "==0.16.1"
         },
         "idna": {
             "hashes": [
