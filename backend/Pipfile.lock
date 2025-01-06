@@ -3060,12 +3060,12 @@
         },
         "pytest-subprocess": {
             "hashes": [
-                "sha256:23ac7732aa8bd45f1757265b1316eb72a7f55b41fb21e2ca22e149ba3629fa46",
-                "sha256:ad3ca8a35e798bf9c82d9f16d88700b30d98c5a28236117b86c5d6e581a8ed97"
+                "sha256:b62580f5a84335fb9f2ec65d49e56a3c93f4722c148fe1771a002835d310a75b",
+                "sha256:c00b1140fb0211b3153e09500d770db10770baccbe6e05ee9c140036d1d811d5"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==1.5.2"
+            "version": "==1.5.3"
         },
         "pytest-xdist": {
             "extras": [
