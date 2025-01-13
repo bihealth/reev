@@ -82,7 +82,7 @@
     "rollup-plugin-typescript2": "^0.36.0",
     "sass": "^1.83.0",
     "typescript": "^5.7.2",
-    "vite": "^5.4.11",
+    "vite": "^6.0.7",
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-dts": "^4.4.0",
     "vite-plugin-vuetify": "^2.0.4",
