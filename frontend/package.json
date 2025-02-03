@@ -69,7 +69,7 @@
     "@vue/eslint-config-prettier": "^10.1.0",
     "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/test-utils": "^2.4.6",
-    "@vue/tsconfig": "^0.6.0",
+    "@vue/tsconfig": "^0.7.0",
     "eslint": "^8.57.0",
     "eslint-plugin-mdx": "^3.1.5",
     "eslint-plugin-storybook": "^0.11.2",
