@@ -52,7 +52,7 @@
     "@rollup/plugin-typescript": "^12.1.2",
     "@rushstack/eslint-patch": "^1.10.3",
     "@storybook/addon-essentials": "^8.5.0",
-    "@storybook/addon-interactions": "^8.6.6",
+    "@storybook/addon-interactions": "^8.6.8",
     "@storybook/addon-links": "^8.4.6",
     "@storybook/blocks": "^8.5.3",
     "@storybook/test": "^8.3.4",
