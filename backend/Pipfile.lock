@@ -3614,12 +3614,12 @@
         },
         "types-passlib": {
             "hashes": [
-                "sha256:0fd7a0105365a462486afbc0cc0c029faf00c2b537519684825b432fb98a9a27",
-                "sha256:b10f95d80ec24e88f9d313e904e4d42f067f6614bc12eed958fe056f874ca0a8"
+                "sha256:50a783254fb173e250ac85fb451243352ccecb4cfd149b7122c1dc07492d1af9",
+                "sha256:5d037bfb3b65b2bfd36936b784a7f44635bf6909fea4d57746ae80610b89325d"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==1.7.7.20250322"
+            "version": "==1.7.7.20250326"
         },
         "types-python-dateutil": {
             "hashes": [
