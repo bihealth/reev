@@ -3593,12 +3593,12 @@
         },
         "types-passlib": {
             "hashes": [
-                "sha256:04cec96e438e1cf5d0440b1e31123abab1844f5293f8350c8d6d787bd00c46e6",
-                "sha256:7db7cb394658b194b0b252f87bcedf57fdc2b494c203c8a8d80e81d3b26516ae"
+                "sha256:0846c3d55e62a4a7e1a72094fb3e46d320cb42c4c8a817768d656955920edf73",
+                "sha256:f0175da758ab18b4e4c0859b735e7921992b8af95883694402a6bdb7a1c7cce7"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==1.7.7.20250408"
+            "version": "==1.7.7.20250516"
         },
         "types-python-dateutil": {
             "hashes": [
