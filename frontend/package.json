@@ -24,7 +24,7 @@
     "@sentry/browser": "^9.8.0",
     "@sentry/integrations": "^7.120.2",
     "@sentry/tracing": "^7.114.0",
-    "@sentry/vue": "^7.111.0",
+    "@sentry/vue": "^9.29.0",
     "@tanstack/vue-query": "^5.67.2",
     "@tanstack/vue-query-devtools": "^5.66.0",
     "@types/luxon": "^3.4.2",
