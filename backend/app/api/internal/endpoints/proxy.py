@@ -57,21 +57,28 @@ async def reverse_proxy(request: Request) -> Response:
             "/internal/proxy/auto-acmg", ""
         )
 
-    if backend_url:
-        client = httpx.AsyncClient()
-        backend_url = backend_url + (f"?{url.query}" if url.query else "")
-        backend_req = client.build_request(
-            method=request.method,
-            url=backend_url,
-            headers=request.headers.raw,
-            content=await request.body(),
-        )
-        backend_resp = await client.send(backend_req, stream=True)
-        return StreamingResponse(
-            backend_resp.aiter_raw(),
-            status_code=backend_resp.status_code,
-            headers=backend_resp.headers,
-            background=BackgroundTasks([BackgroundTask(backend_resp.aclose)]),
-        )
-    else:
+    if not backend_url:
         return Response(status_code=404, content="Reverse proxy route not found")
+
+    backend_url = backend_url + (f"?{url.query}" if url.query else "")
+
+    try:
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            backend_req = client.build_request(
+                method=request.method,
+                url=backend_url,
+                headers=request.headers.raw,
+                content=await request.body(),
+            )
+            backend_resp = await client.send(backend_req, stream=True)
+    except httpx.RequestError as exc:
+        return Response(status_code=502, content=f"Proxy error: {str(exc)}")
+    except Exception as exc:
+        return Response(status_code=500, content=f"Unexpected error: {str(exc)}")
+
+    return StreamingResponse(
+        backend_resp.aiter_raw(),
+        status_code=backend_resp.status_code,
+        headers=backend_resp.headers,
+        background=BackgroundTasks([BackgroundTask(backend_resp.aclose)]),
+    )
