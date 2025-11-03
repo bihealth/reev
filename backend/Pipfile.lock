@@ -3797,12 +3797,12 @@
         },
         "starlette": {
             "hashes": [
-                "sha256:0764ca97b097582558ecb498132ed0c7d942f233f365b86ba37770e026510659",
-                "sha256:7e8cee469a8ab2352911528110ce9088fdc6a37d9876926e73da7ce4aa4c7a46"
+                "sha256:9e5391843ec9b6e472eed1365a78c8098cfceb7a74bfd4d6b1c0c0095efb3bca",
+                "sha256:a2a17b22203254bcbc2e1f926d2d55f3f9497f769416b3190768befe598fa3ca"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.9'",
-            "version": "==0.48.0"
+            "markers": "python_version >= '3.10'",
+            "version": "==0.50.0"
         },
         "syrupy": {
             "hashes": [
