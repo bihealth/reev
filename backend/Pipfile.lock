@@ -1905,11 +1905,11 @@
         },
         "anyio": {
             "hashes": [
-                "sha256:0287e96f4d26d4149305414d4e3bc32f0dcd0862365a4bddea19d7a1ec38c4fc",
-                "sha256:82a8d0b81e318cc5ce71a5f1f8b5c4e63619620b63141ef8c995fa0db95a57c4"
+                "sha256:73c693b567b0c55130c104d0b43a9baf3aa6a31fc6110116509f27bf75e21ec0",
+                "sha256:dad2376a628f98eeca4881fc56cd06affd18f659b17a747d3ff0307ced94b1bb"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==4.11.0"
+            "version": "==4.12.0"
         },
         "argon2-cffi": {
             "hashes": [
@@ -3362,12 +3362,12 @@
         },
         "pytest-httpx": {
             "hashes": [
-                "sha256:d619ad5d2e67734abfbb224c3d9025d64795d4b8711116b1a13f72a251ae511f",
-                "sha256:ee11a00ffcea94a5cbff47af2114d34c5b231c326902458deed73f9c459fd744"
+                "sha256:9edb66a5fd4388ce3c343189bc67e7e1cb50b07c2e3fc83b97d511975e8a831b",
+                "sha256:bd4c120bb80e142df856e825ec9f17981effb84d159f9fa29ed97e2357c3a9c8"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.9'",
-            "version": "==0.35.0"
+            "markers": "python_version >= '3.10'",
+            "version": "==0.36.0"
         },
         "pytest-mock": {
             "hashes": [
