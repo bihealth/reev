@@ -1888,12 +1888,12 @@
         },
         "aiosqlite": {
             "hashes": [
-                "sha256:131bb8056daa3bc875608c631c678cda73922a2d4ba8aec373b19f18c17e7aa3",
-                "sha256:2549cf4057f95f53dcba16f2b64e8e2791d7e1adedb13197dd8ed77bb226d7d0"
+                "sha256:7e9e52d72b319fcdeac727668975056c49720c995176dc57370935e5ba162bb9",
+                "sha256:96007fac2ce70eda3ca1bba7a3008c435258a592b8fbf2ee3eeaa36d33971a09"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==0.21.0"
+            "version": "==0.22.0"
         },
         "alabaster": {
             "hashes": [
