@@ -51,11 +51,11 @@
         },
         "anyio": {
             "hashes": [
-                "sha256:73c693b567b0c55130c104d0b43a9baf3aa6a31fc6110116509f27bf75e21ec0",
-                "sha256:dad2376a628f98eeca4881fc56cd06affd18f659b17a747d3ff0307ced94b1bb"
+                "sha256:41cfcc3a4c85d3f05c932da7c26d0201ac36f72abd4435ba90d0464a3ffed703",
+                "sha256:d405828884fc140aa80a3c667b8beed277f1dfedec42ba031bd6ac3db606ab6c"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==4.12.0"
+            "version": "==4.12.1"
         },
         "argon2-cffi": {
             "hashes": [
@@ -642,12 +642,12 @@
         },
         "fastapi-pagination": {
             "hashes": [
-                "sha256:66d3eb5e28bfb8128a978c3f11c49300c5e914a03b96a24c9f491727e6a8d2d1",
-                "sha256:be9be01181399be0a54bdbd9c991b70ed6cde3aa52d543ffd92af76202ee1013"
+                "sha256:5c44bfaa78c1c968ca6f027b01a27c1805194c7cc8776eb84ec78235abcdaece",
+                "sha256:c59ca1aa056dccee3526953357c2d1128f988f83d3034d95ddb8de6f5a68e9f8"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.10'",
-            "version": "==0.15.4"
+            "version": "==0.15.6"
         },
         "fastapi-users": {
             "extras": [
