@@ -3911,12 +3911,12 @@
         },
         "starlette": {
             "hashes": [
-                "sha256:4c4fda9b1bc67f84037d3d14a5112e523509c369d9d47b111b2f984b0cc5ba6c",
-                "sha256:fb460a3d6fd3c958d729fdd96aee297f89a51b0181f16401fe8fd4cb6129165d"
+                "sha256:0029d43eb3d273bc4f83a08720b4912ea4b071087a3b48db01b7c839f7954d74",
+                "sha256:834edd1b0a23167694292e94f597773bc3f89f362be6effee198165a35d62933"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.10'",
-            "version": "==0.51.0"
+            "version": "==0.52.1"
         },
         "syrupy": {
             "hashes": [
