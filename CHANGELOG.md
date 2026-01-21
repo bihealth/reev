@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.7.0](https://github.com/bihealth/reev/compare/v0.6.0...v0.7.0) (2024-11-19)
+
+
+### Features
+
+* Add alembic migration for summary field of acmg rank model ([#820](https://github.com/bihealth/reev/issues/820)) ([a5a7af9](https://github.com/bihealth/reev/commit/a5a7af95a638dadffb51e28d11f028003987fadb))
+* Add documentation for AutoACMG microservice in `reev-docker-compose` ([#803](https://github.com/bihealth/reev/issues/803)) ([#804](https://github.com/bihealth/reev/issues/804)) ([20969f4](https://github.com/bihealth/reev/commit/20969f48a6408398b1b7c971b6ffe5e0a758ad2f))
+* Add page about version of services we use ([#603](https://github.com/bihealth/reev/issues/603)) ([#604](https://github.com/bihealth/reev/issues/604)) ([aad9eaa](https://github.com/bihealth/reev/commit/aad9eaa83171dea2bd4b2c9306cda345487ef753))
+* Adding constraints for multiple auth methods ([#531](https://github.com/bihealth/reev/issues/531)) ([a74cb15](https://github.com/bihealth/reev/commit/a74cb1538e74545b5f88084c0bc01874f33a2a8a))
+* Allow users to link their account with more login sources ([#185](https://github.com/bihealth/reev/issues/185)) ([#535](https://github.com/bihealth/reev/issues/535)) ([a0156ee](https://github.com/bihealth/reev/commit/a0156ee8a30290cc1e5721d505df2b508275d2ab))
+* bump rfl for compatibility with latest ClinVar ([#722](https://github.com/bihealth/reev/issues/722)) ([ea9cd74](https://github.com/bihealth/reev/commit/ea9cd742b046379f93ea41df02772919fb09382c))
+* Integrate TanStack migration ([#795](https://github.com/bihealth/reev/issues/795)) ([#819](https://github.com/bihealth/reev/issues/819)) ([d88d283](https://github.com/bihealth/reev/commit/d88d2832355cd947dea8e2d3a107e114f4a9efcd))
+
+
+### Bug Fixes
+
+* Add long await to the client ([#822](https://github.com/bihealth/reev/issues/822)) ([#823](https://github.com/bihealth/reev/issues/823)) ([ae05860](https://github.com/bihealth/reev/commit/ae058604f107d6dc21b268ccae1e4f76dae0ba37))
+* Add proper dependency for yaml ([#821](https://github.com/bihealth/reev/issues/821)) ([f8f056b](https://github.com/bihealth/reev/commit/f8f056b1a12ab9dc02501900feeaa6e23510899c))
+* bump rfl for ClinVar display bugfix ([#721](https://github.com/bihealth/reev/issues/721)) ([43976e3](https://github.com/bihealth/reev/commit/43976e340f92a23124094fa45de2bd5352d7a775))
+* bump rfl to support new annonars ClinVar XML format ([#719](https://github.com/bihealth/reev/issues/719)) ([#720](https://github.com/bihealth/reev/issues/720)) ([a521bc1](https://github.com/bihealth/reev/commit/a521bc11f470f5d12d37527674534ee10312a6e4))
+* CaseInfo loading/saving/updating functionality ([#501](https://github.com/bihealth/reev/issues/501)) ([#507](https://github.com/bihealth/reev/issues/507)) ([ad264c2](https://github.com/bihealth/reev/commit/ad264c224a6d6f083a36f5d85708c46e0b45c33e))
+* Cosmetic typo in LifeScience login ([#757](https://github.com/bihealth/reev/issues/757)) ([3c20339](https://github.com/bihealth/reev/commit/3c203396ae51285b57613c023b33357f9d0f840d))
+* Different fixes for AutoACMG in REEV ([#806](https://github.com/bihealth/reev/issues/806)) ([016be2a](https://github.com/bihealth/reev/commit/016be2aac9f64efd17770f49f4ff116383b3cd5c))
+* Disable cert verification in httpx Asyncclient for AutoCNV issue ([#616](https://github.com/bihealth/reev/issues/616)) ([b984ce1](https://github.com/bihealth/reev/commit/b984ce1ae0b35a4c3b1cd73d8827aedbebb1963e))
+* General info on douple click on Profile page ([#511](https://github.com/bihealth/reev/issues/511)) ([#528](https://github.com/bihealth/reev/issues/528)) ([d2fc78d](https://github.com/bihealth/reev/commit/d2fc78d97b54921c8ed01aa6b16e9f667473aaf1))
+* Proper naming of openid accounts ([#533](https://github.com/bihealth/reev/issues/533)) ([#534](https://github.com/bihealth/reev/issues/534)) ([20a7c2b](https://github.com/bihealth/reev/commit/20a7c2b8a29abdd3edec404029bba9db901882b5))
+* Proper redirect link for authentification callback ([#536](https://github.com/bihealth/reev/issues/536)) ([1334f80](https://github.com/bihealth/reev/commit/1334f80b295efcb0d50b10ee6a6cbec0dca12176))
+* return 404 error from witntervar edpoint ([#503](https://github.com/bihealth/reev/issues/503)) ([#504](https://github.com/bihealth/reev/issues/504)) ([b7d34af](https://github.com/bihealth/reev/commit/b7d34af0436e8e073dc605e586231fdce1953196))
+* Revert fetch with retry ([#824](https://github.com/bihealth/reev/issues/824)) ([923e72e](https://github.com/bihealth/reev/commit/923e72ed2d74455b9a6ab95a61f56482d3e135db))
+
 ## [0.6.0](https://github.com/bihealth/reev/compare/v0.5.0...v0.6.0) (2024-02-08)
 
 
