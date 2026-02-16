@@ -4033,12 +4033,12 @@
         },
         "types-passlib": {
             "hashes": [
-                "sha256:cf2350e78d36b6b09e4db44284d96651b57285f499cfabf111b616065abab7b3",
-                "sha256:ed73a91be9a22484ebd62cc0d127675ded542b892b99776db92dab760bbfe274"
+                "sha256:af73afffe1ce94c95c7f6072bd261572c29845de74fdffa3a265fc7634bca056",
+                "sha256:c0f1ad440c513a6c07f333b28249530686056fd54a7b3ac6128ae31fd46305d3"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.9'",
-            "version": "==1.7.7.20250602"
+            "markers": "python_version >= '3.10'",
+            "version": "==1.7.7.20260211"
         },
         "types-python-dateutil": {
             "hashes": [
