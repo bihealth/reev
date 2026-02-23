@@ -3303,11 +3303,11 @@
         },
         "pybtex": {
             "hashes": [
-                "sha256:10684ffb05af33b041b06dabe15868078fd75847b24e1dffd8dd91348bbb3a4b",
-                "sha256:bbc211abd458b42c5256d50185ea4f80000f43351959e1d5a3e86cd567a07a6d"
+                "sha256:9053b0d619409a0a83f38abad5d9921de5f7b3ede00742beafcd9f10ad0d8c5c",
+                "sha256:9eaf90267c7e83e225af89fea65c370afbf65f458220d3946a9e3049e1eca491"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==0.25.0"
+            "version": "==0.25.1"
         },
         "pybtex-docutils": {
             "hashes": [
@@ -3864,12 +3864,12 @@
         },
         "sphinxcontrib-bibtex": {
             "hashes": [
-                "sha256:aad018b730d324201f09777f6c25c4a2ff7ac1d5e66af187f21fc21840768760",
-                "sha256:bfd34d36322ba0ef0624a1bbee44adcedde86e0fa0ce5b2310304a3e68263f6f"
+                "sha256:455ea4509642ea0b28ede3721550273626f85af65af01f161bfd8e19dc1edd7d",
+                "sha256:9b3224dd6fece9268ebd8c905dc0a83ff2f6c54148a9235fe70e9d1e9ff149c0"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.9'",
-            "version": "==2.6.4"
+            "version": "==2.6.5"
         },
         "sphinxcontrib-devhelp": {
             "hashes": [
