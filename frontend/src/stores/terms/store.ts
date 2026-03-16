@@ -23,7 +23,7 @@ export const useTermsStore = defineStore('terms', () => {
    */
   const fetchHpoTerms = async (query: string) => {
     storeState.value = StoreState.Loading
-    const vigunoClient = new VigunoClient()
+    const vigunoClient = new VigunoClient('/internal/proxy/viguno/api/v1')
 
     // Regular expression to match "HPO:1234567" or "1234567"
     const hpoIdPattern = /^(HP:)?\d{7}$/
@@ -52,7 +52,7 @@ export const useTermsStore = defineStore('terms', () => {
    */
   const fetchOmimTerms = async (query: string) => {
     storeState.value = StoreState.Loading
-    const vigunoClient = new VigunoClient()
+    const vigunoClient = new VigunoClient('/internal/proxy/viguno/api/v1')
 
     // Regular expression to match "OMIM:1234567" or "1234567"
     const omimIdPattern = /^(OMIM:)?\d{6}$/
