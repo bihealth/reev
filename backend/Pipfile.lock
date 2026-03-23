@@ -3439,12 +3439,12 @@
         },
         "pytest-subprocess": {
             "hashes": [
-                "sha256:b62580f5a84335fb9f2ec65d49e56a3c93f4722c148fe1771a002835d310a75b",
-                "sha256:c00b1140fb0211b3153e09500d770db10770baccbe6e05ee9c140036d1d811d5"
+                "sha256:889e6618e3b2f8425deec15d0e9c2d846aa22ba352ab5764b633b3ab0d612ae8",
+                "sha256:8cf7c1245433afcda31b5bdf47bc386d573cee4787a6edafdd35cf04535e6bf6"
             ],
             "index": "pypi",
             "markers": "python_version >= '3.6'",
-            "version": "==1.5.3"
+            "version": "==1.5.4"
         },
         "pytest-xdist": {
             "hashes": [
