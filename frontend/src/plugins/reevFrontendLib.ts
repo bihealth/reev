@@ -3,7 +3,7 @@ import { urlConfig } from '@bihealth/reev-frontend-lib/lib/urlConfig'
 export function setupBackendUrls() {
   urlConfig.baseUrlAnnonars = '/internal/proxy/annonars'
   urlConfig.baseUrlMehari = '/internal/proxy/mehari'
-  urlConfig.baseUrlViguno = '/internal/proxy/viguno'
+  urlConfig.baseUrlViguno = '/internal/proxy/viguno/api/v1'
   urlConfig.baseUrlNginx = '/internal/proxy/nginx'
   urlConfig.baseUrlPubtator = '/internal/remote/pubtator3-api'
   urlConfig.baseUrlCadaPrio = '/internal/proxy/cada-prio'
